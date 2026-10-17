@@ -401,5 +401,400 @@
   ],
   "everyday": true,
   "origin": "numbers-shapes-computers"
+ },
+ {
+  "slug": "b-trees-transactions",
+  "title": "Databases: B-trees & transactions",
+  "level": 3,
+  "kind": "manipulate",
+  "category": "computing",
+  "interaction": "Insert and delete keys in a B+tree of adjustable fan-out and watch nodes split and merge, with the disk reads per lookup counted and compared with a binary tree on the same keys. Then run two transactions that interleave on the same rows with a write-ahead log, crash the machine at any point and replay the log to recover, and compare locking with snapshot isolation on an update that each transaction alone would get right.",
+  "takeaway": "A database keeps rows findable in a handful of disk reads by keeping its tree short and wide, and keeps them correct through a crash by writing its intentions down before acting on them.",
+  "prerequisites": [
+   "sorting",
+   "locks-deadlock"
+  ],
+  "related": [
+   "cache-memory-hierarchy",
+   "consensus-blockchains",
+   "hash-tables-bloom-filters"
+  ],
+  "needs": "",
+  "pitfall": "'Atomic' means all-or-nothing, not instantaneous, and a transaction is durable once its log record reaches disk, not when the rows are updated; the data pages can be stale at a crash and still be recovered.",
+  "why": "CMU 15-445 Database Systems, Lecture 08 'B+Tree Index' https://15445.courses.cs.cmu.edu/spring2024/slides/08-trees.pdf",
+  "overlapWith": "consensus-blockchains: that page replicates one log among machines; this one is a single machine's log and index, and why a tree rather than a chain is what makes lookup fast.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "computing-networks-l3"
+ },
+ {
+  "slug": "cache-memory-hierarchy",
+  "title": "Caches & the memory hierarchy",
+  "level": 3,
+  "kind": "simulate",
+  "category": "computing",
+  "interaction": "Choose a program's access pattern (sum an array row by row or column by column, walk a linked list, multiply matrices with and without blocking) and run it through a cache with adjustable size, line length, associativity and replacement policy; each access lights a line as a hit or a miss, and the miss count and the average memory access time plot live. Add a second level of cache and watch where the knee of the curve moves.",
+  "takeaway": "The same program runs many times faster or slower depending only on whether it touches memory in an order the cache can predict.",
+  "prerequisites": [
+   "cpu"
+  ],
+  "related": [
+   "gpu",
+   "virtual-memory"
+  ],
+  "needs": "",
+  "pitfall": "A bigger cache is not always better: a direct-mapped cache thrashes on a stride equal to its size however large it is, and the unit moved is a whole line, never a byte, so a miss costs the same for one byte as for sixty-four.",
+  "why": "MIT 6.004 Computation Structures, Unit 14 'Multilevel memories: locality, performance, caches' https://ocw.mit.edu/courses/6-004-computation-structures-spring-2017/pages/calendar",
+  "overlapWith": "cpu: that page single-steps instructions against a flat memory that answers instantly; this page makes memory itself the model and shows why one access costs one cycle and the next two hundred.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "computing-networks-l3"
+ },
+ {
+  "slug": "compilers",
+  "title": "Compilers",
+  "level": 3,
+  "kind": "step",
+  "category": "computing",
+  "interaction": "Type a small program in a toy language and step it through the compiler: characters become tokens, tokens a parse tree, the tree an intermediate form, and the intermediate form instructions for the minimal processor of the CPU page, which then runs them. Toggle optimisations (constant folding, dead-code elimination, register allocation by graph colouring) and watch the emitted code shrink and the instruction count fall; introduce a syntax error and see exactly where the parser gives up.",
+  "takeaway": "A compiler is a chain of mechanical translations, each simple on its own, that turns text a person wrote into instructions a processor can run.",
+  "prerequisites": [
+   "cpu",
+   "regular-expressions-automata"
+  ],
+  "related": [
+   "turing-machines",
+   "lambda-calculus"
+  ],
+  "needs": "",
+  "pitfall": "A compiler does not understand the program: parsing is a grammar check, and an optimisation may change the code only where it can prove the result is unchanged, which is why it often cannot.",
+  "why": "Stanford CS143 Compilers (lexical analysis, parsing, code generation, register allocation) https://web.stanford.edu/class/cs143/",
+  "overlapWith": "cpu: that page runs hand-written assembly; this page shows where the assembly comes from and reuses the same processor so the output actually runs.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "computing-networks-l3"
+ },
+ {
+  "slug": "cpu-pipelines",
+  "title": "Pipelines & branch prediction",
+  "level": 3,
+  "kind": "step",
+  "category": "computing",
+  "interaction": "Feed a short program into a five-stage pipeline and step it cycle by cycle while instructions overlap in a pipeline diagram; a dependency between neighbouring instructions stalls the pipe until forwarding is switched on. Insert a loop and compare a predictor that always guesses 'not taken' with a two-bit counter, counting the cycles thrown away on each misprediction, then deepen the pipeline and watch that cost grow.",
+  "takeaway": "A pipelined processor finishes an instruction nearly every cycle only while it can guess what comes next; each wrong guess empties the pipe.",
+  "prerequisites": [
+   "cpu"
+  ],
+  "related": [
+   "cache-memory-hierarchy",
+   "gpu"
+  ],
+  "needs": "",
+  "pitfall": "Pipelining does not make any single instruction faster; it raises throughput, and a deeper pipeline raises the price of every hazard.",
+  "why": "MIT 6.004 Computation Structures, Unit 15 'Pipelining the Beta: pipeline diagrams, data hazards' and 'control hazards and exceptions' https://ocw.mit.edu/courses/6-004-computation-structures-spring-2017/pages/calendar",
+  "overlapWith": "cpu: that page runs one instruction at a time through fetch, decode and execute; this page overlaps several in flight and shows what breaks when they depend on each other.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "computing-networks-l3"
+ },
+ {
+  "slug": "dynamic-programming",
+  "title": "Dynamic programming",
+  "level": 3,
+  "kind": "step",
+  "category": "computing",
+  "interaction": "Watch the recursion tree for the edit distance between two words explode with repeated subproblems, then fill the table cell by cell and trace the cheapest path back to the alignment. Carve seams out of a photo: the page finds the lowest-energy path through the pixel grid with the same table idea and removes it, so the image narrows without squashing its subject; try knapsack with a budget slider.",
+  "takeaway": "When a problem's subproblems overlap, solving each once and looking it up turns an exponential search into a table that fills in polynomial time.",
+  "prerequisites": [
+   "sorting",
+   "graph-search"
+  ],
+  "related": [
+   "sat-solving",
+   "compression"
+  ],
+  "needs": "One CC0 photograph for seam carving (Wikimedia Commons CC0, or a public-domain NASA image).",
+  "pitfall": "The name has nothing to do with programming or dynamics: it is memoised recursion, and it only works when an optimal solution is built from optimal solutions of subproblems, which the travelling-salesman problem does not offer in polynomial size.",
+  "why": "MIT 6.006 Introduction to Algorithms, Lectures 15 to 18 'Dynamic Programming' https://ocw.mit.edu/courses/6-006-introduction-to-algorithms-spring-2020/pages/calendar",
+  "overlapWith": "graph-search: Dijkstra's algorithm is a special case; this page makes the table and the overlapping subproblems the object, with seam carving as the visible payoff.",
+  "needsSource": "one CC0 photo (Wikimedia Commons CC0 or NASA public domain); openly licensed",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "computing-networks-l3"
+ },
+ {
+  "slug": "fast-fourier-transform",
+  "title": "The fast Fourier transform",
+  "level": 3,
+  "kind": "step",
+  "category": "computing",
+  "interaction": "Step the recursion on 8, 16 or 64 samples: split even and odd, recurse, and combine with twiddle factors drawn as rotations on the unit circle, in a butterfly diagram that grows with n. Count the multiplications against the direct transform as n doubles, then use the result to multiply two long polynomials (or two big integers) and watch the product appear in n log n steps.",
+  "takeaway": "The Fourier transform of n samples takes n squared steps done directly, but the two halves of the problem share nearly all their work, and reusing it brings the cost down to n log n.",
+  "prerequisites": [
+   "fourier-transform",
+   "sorting"
+  ],
+  "related": [
+   "compression",
+   "medical-imaging",
+   "wireless-signals"
+  ],
+  "needs": "",
+  "pitfall": "The FFT is not an approximation or a different transform: it computes exactly the discrete Fourier transform, only faster, and it needs evenly spaced samples.",
+  "why": "MIT 6.046J Design and Analysis of Algorithms, Lecture 3 'Divide & Conquer: FFT' (Demaine: 'probably the most taught algorithm at MIT') https://ocw.mit.edu/courses/6-046j-design-and-analysis-of-algorithms-spring-2015/resources/lecture-3-divide-conquer-fft/",
+  "overlapWith": "fourier-transform: that page shows what the transform means; this one shows how to compute it fast, and the counting of operations is the graphic.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "computing-networks-l3"
+ },
+ {
+  "slug": "floating-point",
+  "title": "Floating point",
+  "level": 3,
+  "kind": "explore",
+  "category": "computing",
+  "interaction": "Zoom along the number line and watch the representable numbers thin out away from zero, with the bits of the selected value shown; type 0.1 + 0.2 and see where each operand lands and why the sum misses 0.3 by one unit in the last place. Subtract two nearly equal numbers and watch the significant digits vanish, sum a million small numbers in two orders and compare, then switch on compensated summation; run the same calculation in half, single and double precision.",
+  "takeaway": "A floating-point number is the nearest representable value, not the number itself, and the gap between neighbours grows with size, so the order of operations changes the answer.",
+  "prerequisites": [
+   "binary"
+  ],
+  "related": [
+   "chaos-fractals",
+   "gpu"
+  ],
+  "needs": "",
+  "pitfall": "Floating-point arithmetic is not random or buggy: each operation is correctly rounded and its error is predictable from the exponent; the trouble is accumulation and cancellation, not the single operation.",
+  "why": "Computerphile 'Floating Point Numbers', about 2.5 million views (view count from aggregator snapshots found this session; the video id is recalled, not fetched this session) https://www.youtube.com/watch?v=PZRI1IfStY0",
+  "overlapWith": "binary: that page reads one bit pattern as a float; this page explores the gaps between floats and what they do to arithmetic.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "computing-networks-l3"
+ },
+ {
+  "slug": "garbage-collection",
+  "title": "Garbage collection",
+  "level": 3,
+  "kind": "simulate",
+  "category": "computing",
+  "interaction": "Run a small program that allocates objects and drops references, shown as a heap of boxes with pointers; press collect and watch mark-and-sweep trace from the roots and free what it never reached, then switch to a copying collector that compacts the survivors and to a generational one that collects only the nursery most of the time. Tune the heap size and watch pause length and memory use trade against each other; build a cycle of objects and see reference counting leak it.",
+  "takeaway": "A collector never knows what the program will need; it keeps whatever is still reachable from the running program and reclaims everything else.",
+  "prerequisites": [
+   "cpu"
+  ],
+  "related": [
+   "virtual-memory",
+   "graph-search"
+  ],
+  "needs": "",
+  "pitfall": "Reference counting is not the whole story: it cannot free cycles, and 'the program is done with this object' is undecidable in general, so reachability is the proxy every collector uses.",
+  "why": "UC Berkeley CS61B, Lecture 39 'Garbage collection' (mark-sweep, copying, generational) https://inst.eecs.berkeley.edu/~cs61b/fa17/materials/lectures/lect39.pdf",
+  "overlapWith": "graph-search: marking is a graph traversal; graph-search finds a path, this page uses the traversal to decide what memory can be thrown away and shows the pauses it costs.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "computing-networks-l3"
+ },
+ {
+  "slug": "hash-tables-bloom-filters",
+  "title": "Hash tables & Bloom filters",
+  "level": 3,
+  "kind": "manipulate",
+  "category": "computing",
+  "interaction": "Insert keys into a table with chaining or open addressing and raise the load factor; every probe is drawn, and the measured mean probe length is plotted against the expected curve until the table resizes and rehashes. Then feed the same keys to a Bloom filter with an adjustable bit array and number of hash functions, query keys that were never inserted and watch the measured false-positive rate track the formula; degrade the hash function with a slider and see both structures cluster.",
+  "takeaway": "A good hash spreads keys evenly, so lookups stay constant-time until the table fills, and a Bloom filter trades a known, tunable false-positive rate for a fraction of the memory.",
+  "prerequisites": [
+   "sorting",
+   "binary"
+  ],
+  "related": [
+   "cryptography",
+   "distributed-hash-tables",
+   "b-trees-transactions"
+  ],
+  "needs": "",
+  "pitfall": "A hash table's constant time is an average under a good hash, not a guarantee; the cryptographic hash of the cryptography page is a different tool; and a Bloom filter can only ever say 'definitely absent', never 'definitely present'.",
+  "why": "MIT 6.006 Introduction to Algorithms, Lecture 4 'Hashing' https://ocw.mit.edu/courses/6-006-introduction-to-algorithms-spring-2020/pages/lecture-notes (Bloom filters appear in CMU 15-445's index lectures)",
+  "overlapWith": "cryptography: that page shows a hash as a one-way fingerprint; here the hash is a fast bucket index, and the model is the statistics of collisions as the table fills.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "computing-networks-l3"
+ },
+ {
+  "slug": "lambda-calculus",
+  "title": "Lambda calculus & types",
+  "level": 3,
+  "kind": "step",
+  "category": "computing",
+  "interaction": "Write expressions in a language with three forms (variable, function, application) and step the reductions, with the redex highlighted and the substitution animated; encode numbers and booleans as functions and watch addition happen by substitution alone. Reduce the Y combinator to see recursion appear from nothing, run the self-applying omega and watch it never halt, then switch on simple types and see the same term rejected.",
+  "takeaway": "Functions alone, with substitution as the only rule, are enough to compute anything a computer can; adding types removes some programs, and with them the ones that never stop.",
+  "prerequisites": [
+   "turing-machines"
+  ],
+  "related": [
+   "compilers"
+  ],
+  "needs": "",
+  "pitfall": "It is not just functional-programming notation: evaluation order matters (normal order finds a normal form whenever one exists, applicative order can loop), and the simply typed calculus is not Turing-complete, which is the point of it.",
+  "why": "Computerphile 'Lambda Calculus' (Graham Hutton), about 1.08 million views (view count from aggregator snapshots found this session; the video id is recalled, not fetched this session) https://www.youtube.com/watch?v=eis11j_iGMs",
+  "overlapWith": "turing-machines: the same limit from the other side, a machine with a tape against a calculus with only substitution, and the page shows they compute the same things.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "computing-networks-l3"
+ },
+ {
+  "slug": "locks-deadlock",
+  "title": "Locks, races & deadlock",
+  "level": 3,
+  "kind": "manipulate",
+  "category": "computing",
+  "interaction": "Drag the interleaving of two threads that both increment a shared counter and watch the final value come out wrong; add a lock and the bad interleavings disappear. Then seat philosophers around a table, assign each an order for picking up forks and run them until they freeze, with a resource-allocation graph that shows the cycle; break it by ordering the locks or by a timeout and compare.",
+  "takeaway": "Two correct programs sharing memory can produce a wrong answer, and the locks that fix it can freeze both forever unless they are always taken in the same order.",
+  "prerequisites": [
+   "os-scheduling",
+   "cpu"
+  ],
+  "related": [
+   "consensus-blockchains",
+   "b-trees-transactions"
+  ],
+  "needs": "",
+  "pitfall": "A data race is not a rare glitch: an unsynchronised increment loses updates under every scheduler. Deadlock needs all four conditions (mutual exclusion, hold-and-wait, no preemption, circular wait), so removing any one of them prevents it.",
+  "why": "Berkeley CS162, 'Synchronization (Finish), Scheduling' lecture https://inst.eecs.berkeley.edu/~cs162/fa16 (the free OSTEP textbook's 'Common Concurrency Problems' chapter covers the same ground)",
+  "overlapWith": "consensus-blockchains: that page gets machines to agree over a network; this one is agreement between threads inside one machine that share memory, where the failure is silent corruption or a freeze.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "computing-networks-l3"
+ },
+ {
+  "slug": "os-scheduling",
+  "title": "Operating systems: processes & scheduling",
+  "level": 3,
+  "kind": "simulate",
+  "category": "computing",
+  "interaction": "Create a handful of jobs with different lengths and I/O habits and run them on one core under first-come-first-served, shortest-job-first, round robin with an adjustable time slice and a multi-level feedback queue; a Gantt chart fills in and each job's turnaround and response time are plotted. Add a context-switch cost and a second core and watch the fair policies lose throughput and an interactive job go unresponsive under the wrong one.",
+  "takeaway": "A single processor appears to run many programs at once by switching between them many times a second, and which one it picks next decides whether the machine feels fast or fair.",
+  "prerequisites": [
+   "cpu"
+  ],
+  "related": [
+   "virtual-memory",
+   "locks-deadlock"
+  ],
+  "needs": "",
+  "pitfall": "Shortest-job-first minimises average turnaround but the scheduler cannot know job lengths in advance; the feedback queue's whole point is that it learns them from how each job behaves.",
+  "why": "Berkeley CS162 Operating Systems and Systems Programming, scheduling lectures (course description: 'resource allocation and scheduling') https://inst.eecs.berkeley.edu/~cs162/fa23",
+  "overlapWith": "cpu: that page runs a single program; this page is what runs on top of it to share one processor between many.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "computing-networks-l3"
+ },
+ {
+  "slug": "pseudo-random-numbers",
+  "title": "Pseudo-random numbers",
+  "level": 3,
+  "kind": "explore",
+  "category": "computing",
+  "interaction": "Pick a generator (a linear congruential generator with editable multiplier and modulus, xorshift, a counter-based one) and a seed, and plot successive outputs as points in two and three dimensions; rotate the cloud until RANDU's points collapse onto fifteen planes. Run a chi-square and a serial test live, shrink the modulus until the period shows as repetition, and reseed from the clock or from real entropy to see when the sequence is reproducible and when it must not be.",
+  "takeaway": "A computer's random numbers are a deterministic sequence that merely looks random, and a bad generator hides its pattern until you look at it from the right angle.",
+  "prerequisites": [
+   "primes-modular-arithmetic",
+   "central-limit-theorem"
+  ],
+  "related": [
+   "cryptography",
+   "chaos-fractals",
+   "hash-tables-bloom-filters"
+  ],
+  "needs": "",
+  "pitfall": "Passing statistical tests is not security: a simulation generator can be predicted from a few outputs and must not make keys, and seeding with the time does not make it unpredictable.",
+  "why": "Marsaglia, 'Random numbers fall mainly in the planes', PNAS 1968 (RANDU's triples lie on 15 planes) https://pmc.ncbi.nlm.nih.gov/articles/PMC285899",
+  "overlapWith": "chaos-fractals: the logistic map there is deterministic chaos; here determinism is engineered to pass as randomness, and the lattice structure is the tell.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "computing-networks-l3"
+ },
+ {
+  "slug": "regular-expressions-automata",
+  "title": "Regular expressions & automata",
+  "level": 3,
+  "kind": "build",
+  "category": "computing",
+  "interaction": "Type a regular expression and watch it become a Thompson NFA, then collapse into a DFA by subset construction; feed it text one character at a time and watch the set of active states move. Race the DFA against a backtracking matcher on a pattern such as (a?)^n a^n: one runs in time linear in the input while the other explodes. Try to write a pattern for balanced parentheses and see the pumping argument show why no finite machine can.",
+  "takeaway": "A regular expression is a finite machine in disguise, which is why it can match in a single pass; what no finite machine can count, no regular expression can match.",
+  "prerequisites": [
+   "turing-machines"
+  ],
+  "related": [
+   "compilers",
+   "cellular-automata"
+  ],
+  "needs": "",
+  "pitfall": "Modern 'regex' engines with backreferences are not regular, and the exponential blow-up (ReDoS) is a property of the backtracking implementation, not of the language being matched.",
+  "why": "Russ Cox, 'Regular Expression Matching Can Be Simple And Fast' (Thompson NFA, 20 microseconds against Perl's 60 seconds) https://swtch.com/~rsc/regexp/regexp1.html",
+  "overlapWith": "turing-machines: Turing machines are the top of the hierarchy; this page is its bottom, a machine with no tape, and shows exactly what that costs and what it buys.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "computing-networks-l3"
+ },
+ {
+  "slug": "sat-solving",
+  "title": "P vs NP & SAT solving",
+  "level": 3,
+  "kind": "build",
+  "category": "computing",
+  "interaction": "Build a puzzle (colour a small map, or seat guests under constraints) and watch it compile into clauses; run a solver that propagates forced choices, branches, and learns a new clause from each conflict, with the search tree drawn as it is pruned. Generate random 3-SAT and sweep the clause-to-variable ratio: the solver's effort spikes near 4.26, where the formulas switch from almost always satisfiable to almost never.",
+  "takeaway": "A solver that learns from its dead ends prunes the search far below brute force, and random formulas turn hardest exactly where they switch from almost always satisfiable to almost never.",
+  "prerequisites": [
+   "turing-machines",
+   "logic-gates"
+  ],
+  "related": [
+   "graph-search",
+   "quantum-computing"
+  ],
+  "needs": "",
+  "pitfall": "NP does not mean 'exponential'; it means a solution can be checked quickly. NP-complete problems are solved routinely in practice, just not with a worst-case guarantee, and a quantum computer is not known to change that.",
+  "why": "MIT 6.045J Automata, Computability and Complexity, Lecture 15 'Polynomial-time reducibility, NP-completeness, SAT' https://ocw.mit.edu/courses/6-045j-automata-computability-and-complexity-spring-2011/resources/mit6_045js11_lec15",
+  "overlapWith": "turing-machines: that page shows the travelling-salesman search space exploding; this page shows what a reduction is and how a real solver still succeeds on structured instances, and where it stops.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "computing-networks-l3"
+ },
+ {
+  "slug": "virtual-memory",
+  "title": "Virtual memory & paging",
+  "level": 3,
+  "kind": "explore",
+  "category": "computing",
+  "interaction": "Pan across the address spaces of two processes that both use address 0x1000 and follow any address through its page table to a physical frame, with the TLB holding the recent translations and a hover showing each step. Run the processes until they ask for more memory than the machine has, watch pages fault in and get evicted to disk, and compare FIFO, LRU and the clock algorithm on the same reference string, including the case where adding frames causes more faults.",
+  "takeaway": "Every program sees its own private, contiguous memory, but that memory is an illusion assembled page by page from wherever free frames and disk happen to be.",
+  "prerequisites": [
+   "cache-memory-hierarchy",
+   "cpu"
+  ],
+  "related": [
+   "os-scheduling"
+  ],
+  "needs": "",
+  "pitfall": "Swapping is not what makes the memory 'virtual': isolation and relocation are the point, and a machine with no swap still uses it. A page fault is normal operation, not an error.",
+  "why": "MIT 6.004 Computation Structures, L18 'Virtual memory: mapping, protection, contexts' https://ocw.mit.edu/courses/6-004-computation-structures-spring-2017/pages/calendar (also Berkeley CS162 Fall 2023, three Virtual Memory lectures)",
+  "overlapWith": "cpu: that page addresses a single flat memory directly; this page puts a translation between every address and the frame that holds it, so many programs can share and be protected from each other.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "computing-networks-l3"
  }
 ]

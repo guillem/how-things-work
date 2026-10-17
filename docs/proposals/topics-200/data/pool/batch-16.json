@@ -1,0 +1,633 @@
+[
+ {
+  "slug": "lambda-calculus",
+  "title": "Lambda calculus & types",
+  "level": 3,
+  "kind": "step",
+  "category": "computing",
+  "interaction": "Write expressions in a language with three forms (variable, function, application) and step the reductions, with the redex highlighted and the substitution animated; encode numbers and booleans as functions and watch addition happen by substitution alone. Reduce the Y combinator to see recursion appear from nothing, run the self-applying omega and watch it never halt, then switch on simple types and see the same term rejected.",
+  "takeaway": "Functions alone, with substitution as the only rule, are enough to compute anything a computer can; adding types removes some programs, and with them the ones that never stop.",
+  "prerequisites": [
+   "turing-machines"
+  ],
+  "related": [
+   "compilers"
+  ],
+  "needs": "",
+  "pitfall": "It is not just functional-programming notation: evaluation order matters (normal order finds a normal form whenever one exists, applicative order can loop), and the simply typed calculus is not Turing-complete, which is the point of it.",
+  "why": "Computerphile 'Lambda Calculus' (Graham Hutton), about 1.08 million views (view count from aggregator snapshots found this session; the video id is recalled, not fetched this session) https://www.youtube.com/watch?v=eis11j_iGMs",
+  "overlapWith": "turing-machines: the same limit from the other side, a machine with a tape against a calculus with only substitution, and the page shows they compute the same things.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "computing-networks-l3"
+ },
+ {
+  "slug": "locks-deadlock",
+  "title": "Locks, races & deadlock",
+  "level": 3,
+  "kind": "manipulate",
+  "category": "computing",
+  "interaction": "Drag the interleaving of two threads that both increment a shared counter and watch the final value come out wrong; add a lock and the bad interleavings disappear. Then seat philosophers around a table, assign each an order for picking up forks and run them until they freeze, with a resource-allocation graph that shows the cycle; break it by ordering the locks or by a timeout and compare.",
+  "takeaway": "Two correct programs sharing memory can produce a wrong answer, and the locks that fix it can freeze both forever unless they are always taken in the same order.",
+  "prerequisites": [
+   "os-scheduling",
+   "cpu"
+  ],
+  "related": [
+   "consensus-blockchains",
+   "b-trees-transactions"
+  ],
+  "needs": "",
+  "pitfall": "A data race is not a rare glitch: an unsynchronised increment loses updates under every scheduler. Deadlock needs all four conditions (mutual exclusion, hold-and-wait, no preemption, circular wait), so removing any one of them prevents it.",
+  "why": "Berkeley CS162, 'Synchronization (Finish), Scheduling' lecture https://inst.eecs.berkeley.edu/~cs162/fa16 (the free OSTEP textbook's 'Common Concurrency Problems' chapter covers the same ground)",
+  "overlapWith": "consensus-blockchains: that page gets machines to agree over a network; this one is agreement between threads inside one machine that share memory, where the failure is silent corruption or a freeze.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "computing-networks-l3"
+ },
+ {
+  "slug": "os-scheduling",
+  "title": "Operating systems: processes & scheduling",
+  "level": 3,
+  "kind": "simulate",
+  "category": "computing",
+  "interaction": "Create a handful of jobs with different lengths and I/O habits and run them on one core under first-come-first-served, shortest-job-first, round robin with an adjustable time slice and a multi-level feedback queue; a Gantt chart fills in and each job's turnaround and response time are plotted. Add a context-switch cost and a second core and watch the fair policies lose throughput and an interactive job go unresponsive under the wrong one.",
+  "takeaway": "A single processor appears to run many programs at once by switching between them many times a second, and which one it picks next decides whether the machine feels fast or fair.",
+  "prerequisites": [
+   "cpu"
+  ],
+  "related": [
+   "virtual-memory",
+   "locks-deadlock"
+  ],
+  "needs": "",
+  "pitfall": "Shortest-job-first minimises average turnaround but the scheduler cannot know job lengths in advance; the feedback queue's whole point is that it learns them from how each job behaves.",
+  "why": "Berkeley CS162 Operating Systems and Systems Programming, scheduling lectures (course description: 'resource allocation and scheduling') https://inst.eecs.berkeley.edu/~cs162/fa23",
+  "overlapWith": "cpu: that page runs a single program; this page is what runs on top of it to share one processor between many.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "computing-networks-l3"
+ },
+ {
+  "slug": "pseudo-random-numbers",
+  "title": "Pseudo-random numbers",
+  "level": 3,
+  "kind": "explore",
+  "category": "computing",
+  "interaction": "Pick a generator (a linear congruential generator with editable multiplier and modulus, xorshift, a counter-based one) and a seed, and plot successive outputs as points in two and three dimensions; rotate the cloud until RANDU's points collapse onto fifteen planes. Run a chi-square and a serial test live, shrink the modulus until the period shows as repetition, and reseed from the clock or from real entropy to see when the sequence is reproducible and when it must not be.",
+  "takeaway": "A computer's random numbers are a deterministic sequence that merely looks random, and a bad generator hides its pattern until you look at it from the right angle.",
+  "prerequisites": [
+   "primes-modular-arithmetic",
+   "central-limit-theorem"
+  ],
+  "related": [
+   "cryptography",
+   "chaos-fractals",
+   "hash-tables-bloom-filters"
+  ],
+  "needs": "",
+  "pitfall": "Passing statistical tests is not security: a simulation generator can be predicted from a few outputs and must not make keys, and seeding with the time does not make it unpredictable.",
+  "why": "Marsaglia, 'Random numbers fall mainly in the planes', PNAS 1968 (RANDU's triples lie on 15 planes) https://pmc.ncbi.nlm.nih.gov/articles/PMC285899",
+  "overlapWith": "chaos-fractals: the logistic map there is deterministic chaos; here determinism is engineered to pass as randomness, and the lattice structure is the tell.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "computing-networks-l3"
+ },
+ {
+  "slug": "regular-expressions-automata",
+  "title": "Regular expressions & automata",
+  "level": 3,
+  "kind": "build",
+  "category": "computing",
+  "interaction": "Type a regular expression and watch it become a Thompson NFA, then collapse into a DFA by subset construction; feed it text one character at a time and watch the set of active states move. Race the DFA against a backtracking matcher on a pattern such as (a?)^n a^n: one runs in time linear in the input while the other explodes. Try to write a pattern for balanced parentheses and see the pumping argument show why no finite machine can.",
+  "takeaway": "A regular expression is a finite machine in disguise, which is why it can match in a single pass; what no finite machine can count, no regular expression can match.",
+  "prerequisites": [
+   "turing-machines"
+  ],
+  "related": [
+   "compilers",
+   "cellular-automata"
+  ],
+  "needs": "",
+  "pitfall": "Modern 'regex' engines with backreferences are not regular, and the exponential blow-up (ReDoS) is a property of the backtracking implementation, not of the language being matched.",
+  "why": "Russ Cox, 'Regular Expression Matching Can Be Simple And Fast' (Thompson NFA, 20 microseconds against Perl's 60 seconds) https://swtch.com/~rsc/regexp/regexp1.html",
+  "overlapWith": "turing-machines: Turing machines are the top of the hierarchy; this page is its bottom, a machine with no tape, and shows exactly what that costs and what it buys.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "computing-networks-l3"
+ },
+ {
+  "slug": "sat-solving",
+  "title": "P vs NP & SAT solving",
+  "level": 3,
+  "kind": "build",
+  "category": "computing",
+  "interaction": "Build a puzzle (colour a small map, or seat guests under constraints) and watch it compile into clauses; run a solver that propagates forced choices, branches, and learns a new clause from each conflict, with the search tree drawn as it is pruned. Generate random 3-SAT and sweep the clause-to-variable ratio: the solver's effort spikes near 4.26, where the formulas switch from almost always satisfiable to almost never.",
+  "takeaway": "A solver that learns from its dead ends prunes the search far below brute force, and random formulas turn hardest exactly where they switch from almost always satisfiable to almost never.",
+  "prerequisites": [
+   "turing-machines",
+   "logic-gates"
+  ],
+  "related": [
+   "graph-search",
+   "quantum-computing"
+  ],
+  "needs": "",
+  "pitfall": "NP does not mean 'exponential'; it means a solution can be checked quickly. NP-complete problems are solved routinely in practice, just not with a worst-case guarantee, and a quantum computer is not known to change that.",
+  "why": "MIT 6.045J Automata, Computability and Complexity, Lecture 15 'Polynomial-time reducibility, NP-completeness, SAT' https://ocw.mit.edu/courses/6-045j-automata-computability-and-complexity-spring-2011/resources/mit6_045js11_lec15",
+  "overlapWith": "turing-machines: that page shows the travelling-salesman search space exploding; this page shows what a reduction is and how a real solver still succeeds on structured instances, and where it stops.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "computing-networks-l3"
+ },
+ {
+  "slug": "virtual-memory",
+  "title": "Virtual memory & paging",
+  "level": 3,
+  "kind": "explore",
+  "category": "computing",
+  "interaction": "Pan across the address spaces of two processes that both use address 0x1000 and follow any address through its page table to a physical frame, with the TLB holding the recent translations and a hover showing each step. Run the processes until they ask for more memory than the machine has, watch pages fault in and get evicted to disk, and compare FIFO, LRU and the clock algorithm on the same reference string, including the case where adding frames causes more faults.",
+  "takeaway": "Every program sees its own private, contiguous memory, but that memory is an illusion assembled page by page from wherever free frames and disk happen to be.",
+  "prerequisites": [
+   "cache-memory-hierarchy",
+   "cpu"
+  ],
+  "related": [
+   "os-scheduling"
+  ],
+  "needs": "",
+  "pitfall": "Swapping is not what makes the memory 'virtual': isolation and relocation are the point, and a machine with no swap still uses it. A page fault is normal operation, not an error.",
+  "why": "MIT 6.004 Computation Structures, L18 'Virtual memory: mapping, protection, contexts' https://ocw.mit.edu/courses/6-004-computation-structures-spring-2017/pages/calendar (also Berkeley CS162 Fall 2023, three Virtual Memory lectures)",
+  "overlapWith": "cpu: that page addresses a single flat memory directly; this page puts a translation between every address and the frame that holds it, so many programs can share and be protected from each other.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "computing-networks-l3"
+ },
+ {
+  "slug": "barcode-stripes",
+  "title": "Barcodes at the checkout",
+  "level": 0,
+  "kind": "step",
+  "category": "networks",
+  "everyday": true,
+  "interaction": "Drag a scanner's red line across a barcode and watch what it sees, a trace of dark and light over time, then step through it: a start mark, six groups of stripes, a middle mark, six more and an end mark, each group of four widths one digit. Scan slowly, fast, at an angle or upside down and the widths all stretch together, so the digits come out the same. Smudge one stripe and the last digit, a check digit, says the number is wrong.",
+  "takeaway": "A barcode is a number written as stripe widths, read as proportions so that speed and angle do not matter, with a last digit that catches a misread; the price is looked up afterwards.",
+  "prerequisites": [],
+  "related": [
+   "qr-codes",
+   "remote-control-blinks"
+  ],
+  "needs": "",
+  "needsSource": "none; the EAN-13 layout (95 modules, 7 per digit, L/G/R patterns, weighted check digit) from the published GS1 specification.",
+  "pitfall": "The barcode does not contain the price or the product name; it is a number the till looks up. The scanner reads ratios of widths, not absolute sizes, which is why the code can be printed at any size.",
+  "why": "'Barcode' averaged about 29,200 views a month on English Wikipedia in 2025 (https://wikimedia.org/api/rest_v1/metrics/pageviews/per-article/en.wikipedia/all-access/user/Barcode/monthly/2025010100/2025123100).",
+  "overlapWith": "qr-codes in this batch: the two-dimensional cousin with error correction; this page is one row of widths, a check digit and no repair. binary reads bits; here a digit is a pattern of four widths.",
+  "leadsTo": [
+   "binary"
+  ],
+  "origin": "everyday-technology"
+ },
+ {
+  "slug": "cell-towers-handover",
+  "title": "How your phone finds a tower",
+  "level": 0,
+  "kind": "simulate",
+  "category": "networks",
+  "everyday": true,
+  "interaction": "Drag a phone across a town map dotted with towers; each tower's reach is drawn as a fading patch, the bars on the phone follow the nearest strong tower, and a line shows which tower the phone is talking to. Start a call and walk a route: as one tower fades and the next grows, the line jumps over without the call dropping. Drive into a valley or a thick building and watch the bars fall; put a stadium crowd in one patch and watch its calls queue because the tower has only so many lines.",
+  "takeaway": "Your phone only ever talks to the nearest tower with a clear signal, and towers pass you along as you move, so coverage means a tower close enough, not a satellite overhead.",
+  "prerequisites": [],
+  "related": [
+   "wifi-and-walls",
+   "radio-tuning"
+  ],
+  "needs": "",
+  "needsSource": "none; signal strength from a standard distance-and-obstacle path-loss model, handover to the stronger tower with a margin, and a fixed number of channels per tower. Real tower positions could come from OpenCelliD (CC BY-SA 4.0) but are not needed.",
+  "pitfall": "Ordinary phones do not talk to satellites, and a text does not go phone to phone: it goes to a tower, into the network and out of another tower. Bars measure the link to the tower, not the distance to the person you are calling.",
+  "why": "England KS2 computing: 'understand computer networks, including the internet; how they can provide multiple services' (https://www.gov.uk/government/publications/national-curriculum-in-england-computing-programmes-of-study/national-curriculum-in-england-computing-programmes-of-study); 'Cellular network' averaged about 12,400 views a month on English Wikipedia in 2025.",
+  "overlapWith": "internet (level 1): that page follows packets through routers; this one stays at the first hop, the radio link between a phone and a tower and the handover, and never shows a packet. wireless-signals (level 2) is how bits ride the wave.",
+  "leadsTo": [
+   "internet",
+   "waves-interference"
+  ],
+  "origin": "everyday-technology"
+ },
+ {
+  "slug": "password-guessing",
+  "title": "How a password gets guessed",
+  "level": 0,
+  "kind": "simulate",
+  "category": "networks",
+  "everyday": true,
+  "interaction": "Type a password (or pick one) and release a guessing machine against it. It tries the hundred thousand most common passwords first and finds '123456' or 'liverpool1' in a blink, then starts counting through every combination: a counter shows how many guesses are left and how long that takes at a million guesses a second. Make the password one letter longer and the count multiplies; swap letters for symbols and it barely moves; type three unrelated words and the counter runs off the chart.",
+  "takeaway": "Each extra character multiplies the guesses needed, so a long password of ordinary words beats a short one full of symbols, unless it is on the list of common ones that every guesser tries first.",
+  "prerequisites": [],
+  "related": [
+   "fingerprint-match",
+   "face-unlock-depth",
+   "contactless-cards"
+  ],
+  "needs": "The NCSC and Have I Been Pwned list of the 100,000 most common breached passwords (2019): the NCSC pages quote the top counts but state no licence for the file (NCSC content is usually under the Open Government Licence v3; unconfirmed). Fallback: the top entries and counts quoted in the NCSC announcement plus a permissively licensed word list (SCOWL).",
+  "needsSource": "NCSC top-100k password list, licence unconfirmed; the counting model itself needs no data.",
+  "pitfall": "Guessing at the login screen is slow and gets locked out; the fast guessing happens against stolen scrambled copies, which is why strength still matters. Symbol substitutions such as 'p@ssw0rd' are on the lists. The count assumes the guesser does not know your recipe: real guessers also try combinations of common words, so the words must be genuinely unrelated, and the page should say so. Do not show the scrambling itself; hashing is cryptography, level 2.",
+  "why": "England KS3 computing: 'use technology safely, respectfully, responsibly and securely, including protecting their online identity and privacy' (https://www.gov.uk/government/publications/national-curriculum-in-england-computing-programmes-of-study/national-curriculum-in-england-computing-programmes-of-study); NCSC's 2019 analysis of the 100,000 most common breached passwords (https://www.ncsc.gov.uk/news/most-hacked-passwords-revealed-as-uk-cyber-survey-exposes-gaps-in-online-security).",
+  "overlapWith": "cryptography (level 2) hashes and signs, and primes-modular-arithmetic shows easy-forward, hard-back; this page is only counting guesses, with the common-password list as the twist.",
+  "leadsTo": [
+   "primes-modular-arithmetic",
+   "binary"
+  ],
+  "origin": "everyday-technology"
+ },
+ {
+  "slug": "qr-codes",
+  "title": "QR codes",
+  "level": 0,
+  "kind": "build",
+  "category": "networks",
+  "everyday": true,
+  "interaction": "Type a short message and watch it become a square of black and white cells, built the real way: the three big corner squares that tell a camera where the code is and which way up, then the message as cells, then spare cells computed from the message. Point a drawn camera at it from any angle and it reads. Now paint over cells with a brush: the message still comes out, and a counter shows how many cells are damaged; keep painting and find the moment it fails, then paint over a corner square instead, which fails at once.",
+  "takeaway": "A QR code carries its message plus spare cells computed from it, so a scratched or half-covered code still reads, until too much is gone or the corner finders are hidden.",
+  "prerequisites": [],
+  "related": [
+   "barcode-stripes",
+   "emoji-and-text-as-numbers"
+  ],
+  "needs": "None to ship; the page runs a real encoder and decoder (open-source implementations of the QR standard exist under MIT and Apache 2.0, e.g. qrcode-generator and jsQR).",
+  "needsSource": "none; an in-browser QR encoder and decoder (Reed-Solomon) under MIT/Apache 2.0.",
+  "pitfall": "The three corner squares hold no message; they are for finding and orienting. The code is not read in a spiral or line by line, and the spare cells are not a copy of the message, so do not say the data is duplicated.",
+  "why": "NGSS 4-PS4-3: 'using a grid of 1's and 0's representing black and white to send information about a picture' (https://www.nextgenscience.org/pe/4-ps4-3-waves-and-their-applications-technologies-information-transfer); 'QR code' averaged about 388,000 views a month on English Wikipedia in 2025.",
+  "overlapWith": "error-correction (level 2): that page shows a Hamming code's parity checks on bits; this one is the object, with damage painted on and a count of cells survivable, and no arithmetic shown. barcode-stripes in this batch is the one-dimensional cousin with only a check digit.",
+  "leadsTo": [
+   "binary"
+  ],
+  "origin": "everyday-technology"
+ },
+ {
+  "slug": "radio-tuning",
+  "title": "Tuning a radio",
+  "level": 0,
+  "kind": "manipulate",
+  "category": "networks",
+  "everyday": true,
+  "interaction": "Several stations broadcast at once and the antenna wire picks up all of them as one tangled wiggle. Turn the tuning knob: a swing inside the radio that likes one rhythm builds up only for the station whose rhythm matches, and the others fall away; between stations the swing stays small and you hear hiss. Then look at one station's wave up close: the music rides on it as changes in height (AM) or in rhythm (FM); pick which and hear why FM survives a lightning crackle better.",
+  "takeaway": "Every station reaches the antenna at the same time, and tuning means choosing which rhythm the radio swings along with.",
+  "prerequisites": [],
+  "related": [
+   "cell-towers-handover",
+   "speakers-and-microphones"
+  ],
+  "needs": "",
+  "needsSource": "none; a sum of carrier waves through a tuned resonant filter whose centre follows the knob, then envelope or frequency detection, synthesised to audio.",
+  "pitfall": "Radio waves are not sound waves: nothing in the air is playing the music, and the station is not caught alone; selection happens inside the set by resonance. Tuning does not make the other stations leave the wire.",
+  "why": "'Radio' averaged about 25,200 views a month on English Wikipedia in 2025 (https://wikimedia.org/api/rest_v1/metrics/pageviews/per-article/en.wikipedia/all-access/user/Radio/monthly/2025010100/2025123100).",
+  "overlapWith": "oscillations-resonance (level 1) shows one oscillator building up when pushed at its natural frequency, and wireless-signals (level 2) shows modulation; what is new here is many stations on one wire at once and selection by the swing, with sound as the output.",
+  "leadsTo": [
+   "oscillations-resonance",
+   "waves-interference"
+  ],
+  "origin": "everyday-technology"
+ },
+ {
+  "slug": "remote-control-blinks",
+  "title": "What a remote control says",
+  "level": 0,
+  "kind": "step",
+  "category": "networks",
+  "everyday": true,
+  "interaction": "Press a button on a drawn remote and a lamp on its nose blinks in invisible light; the page shows the blinks slowed a thousand times: a long opening flash, then a string of short flashes with short and long gaps that spell the button's number, then the same string inverted as a check. Hold the button and a short 'still pressed' pattern repeats. Point the remote at the wall and the blinks bounce to the TV; put a hand in front and nothing arrives; look through a phone camera (a front camera especially; many rear ones filter infrared out) and the blinks become visible.",
+  "takeaway": "A remote talks in fast blinks of invisible light, each button its own pattern of long and short gaps, which is why it needs a clear line, or a wall to bounce off, and many phone cameras can see it.",
+  "prerequisites": [],
+  "related": [
+   "wifi-and-walls",
+   "barcode-stripes",
+   "digital-clock-counting"
+  ],
+  "needs": "",
+  "needsSource": "none; the pattern follows the widely documented NEC infrared protocol (38 kHz carrier, 9 ms leader, short and long gaps for 0 and 1, inverted copy of the command, repeat code), with brightness falling with distance and reflection.",
+  "pitfall": "The remote is not sending heat rays or radio: most TV remotes use infrared light pulses (some newer ones use radio and work through walls; say so). The TV does not see steady light: it listens for flashes at one fast rhythm, which is why sunlight does not change the channel.",
+  "why": "NGSS 4-PS4-3: 'generate and compare multiple solutions that use patterns to transfer information' (https://www.nextgenscience.org/pe/4-ps4-3-waves-and-their-applications-technologies-information-transfer).",
+  "overlapWith": "wireless-signals (level 2) modulates a carrier and binary reads bits; this page is the everyday object, with the pattern shown as long and short gaps and a line-of-sight model.",
+  "leadsTo": [
+   "binary",
+   "light-optics"
+  ],
+  "origin": "everyday-technology"
+ },
+ {
+  "slug": "wifi-and-walls",
+  "title": "Wi-Fi around the house",
+  "level": 0,
+  "kind": "build",
+  "category": "networks",
+  "everyday": true,
+  "interaction": "Place a router on a floor plan and the rooms fill with a signal map; drag the laptop around and its speed gauge follows the colour. Add walls, a brick one, a fridge, a fish tank, and watch each cut a shadow in the map and the gauge drop, as the link slows down to be heard through the loss. Switch the router to the faster, shorter-reach band and compare; then add a neighbour's router on the same channel and watch the two take turns.",
+  "takeaway": "Wi-Fi is radio: walls and water eat it, the link slows down rather than breaking as the signal fades, and two networks on one channel must take turns.",
+  "prerequisites": [],
+  "related": [
+   "cell-towers-handover",
+   "remote-control-blinks"
+  ],
+  "needs": "",
+  "needsSource": "none beyond published indoor loss figures (ITU-R P.1238 indoor propagation model and typical wall losses).",
+  "pitfall": "Wi-Fi is not the internet; a full signal to the router says nothing about the line out of the house. Distance does not reduce the router's 'speed': the devices slow their sending so that the weaker signal can still be read.",
+  "why": "NGSS MS-PS4-2: 'waves are reflected, absorbed, or transmitted through various materials' (https://www.nextgenscience.org/pe/ms-ps4-2-waves-and-their-applications-technologies-information-transfer); 'Wi-Fi' averaged about 73,900 views a month on English Wikipedia in 2025 (https://wikimedia.org/api/rest_v1/metrics/pageviews/per-article/en.wikipedia/all-access/user/Wi-Fi/monthly/2025010100/2025123100).",
+  "overlapWith": "wireless-signals (level 2): that page packs bits onto a carrier against noise; this one is where to put the router, computed from a wall-by-wall loss model, with speed shown as a gauge and no waveform.",
+  "leadsTo": [
+   "internet",
+   "waves-interference"
+  ],
+  "origin": "everyday-technology"
+ },
+ {
+  "slug": "audio-codecs",
+  "title": "Sampling & perceptual audio coding",
+  "level": 3,
+  "kind": "manipulate",
+  "category": "networks",
+  "interaction": "Sample a tone at an adjustable rate and watch it alias into a lower pitch once the rate drops below twice its frequency, then reconstruct the samples with sinc interpolation and reduce the bit depth until quantisation noise shows on the spectrum. Load a short clip: the page computes its spectrum frame by frame, draws a masking threshold around the loud components and drops everything beneath it; a slider trades bits against audible damage, shown on the spectrogram and in the bit count.",
+  "takeaway": "Digital audio can be perfect below half the sampling rate, and most of what a recording contains is sound the ear would never notice, so a codec throws it away.",
+  "prerequisites": [
+   "fourier-transform",
+   "compression",
+   "waves-interference"
+  ],
+  "related": [
+   "video-codecs",
+   "vision-color",
+   "fast-fourier-transform"
+  ],
+  "needs": "A short CC0 music or speech clip (Wikimedia Commons or Freesound CC0). The masking model must be a published simplification (a spreading-function model as in Johnston 1988), stated on the page, because the MPEG psychoacoustic model lives in an ISO standard that is not open; that makes this the weaker of the two codec candidates.",
+  "pitfall": "Sampling loses nothing below the Nyquist frequency, so 'digital sound is steppy' is wrong. Perceptual coding is lossy by design: what is dropped is gone, not hidden somewhere.",
+  "why": "MIT 6.003 Signals and Systems, Lecture 22 'Sampling and quantization' https://ocw.mit.edu/courses/6-003-signals-and-systems-fall-2011/resources/mit6_003f11_lec22/ (the sampling-theorem seed is folded in here)",
+  "overlapWith": "compression: that page drops frequencies an image will not miss; this page does it for sound with a model of hearing, and adds sampling itself, which no existing page covers.",
+  "needsSource": "CC0 audio clip (openly licensed); masking model from the published literature, since the ISO psychoacoustic model is not open",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "computing-networks-l3"
+ },
+ {
+  "slug": "distributed-hash-tables",
+  "title": "Distributed hash tables & consistent hashing",
+  "level": 3,
+  "kind": "simulate",
+  "category": "networks",
+  "interaction": "Hash keys and servers onto a ring and watch a lookup walk around it; add or remove a server and count how many keys move, with consistent hashing against the naive modulo rule. Then give each node a finger table and watch lookups finish in a number of hops that grows only logarithmically as the network grows to thousands of nodes; churn nodes in and out and see the ring heal or lose keys depending on how many replicas each key has.",
+  "takeaway": "Thousands of machines can find any key among them in a dozen hops with no directory, and adding one machine moves only its own share of the keys.",
+  "prerequisites": [
+   "hash-tables-bloom-filters",
+   "internet"
+  ],
+  "related": [
+   "consensus-blockchains",
+   "pagerank",
+   "graph-search"
+  ],
+  "needs": "",
+  "pitfall": "Consistent hashing is not fair by default: with one point per server the loads vary widely, which is what virtual nodes fix. A DHT finds where a key lives; it does not make the data durable, replication does.",
+  "why": "MIT 6.824 Distributed Systems, lecture 20 'DHTs / Chord' https://pdos.csail.mit.edu/archive/6.824-2011/notes/l20.txt",
+  "overlapWith": "consensus-blockchains: that page makes nodes agree on one log; this one spreads keys across nodes with no agreement at all, which is how a CDN or BitTorrent finds things.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "computing-networks-l3"
+ },
+ {
+  "slug": "elliptic-curve-cryptography",
+  "title": "Elliptic-curve cryptography",
+  "level": 3,
+  "kind": "manipulate",
+  "category": "networks",
+  "interaction": "Drag two points on an elliptic curve over the real numbers and watch the chord-and-tangent rule produce their sum; switch the same curve to a finite field and the smooth curve becomes a scatter of points on which the same rule still works. Multiply a point by k with double-and-add, step by step, and see that landing on a target point gives no clue what k was; then run Diffie-Hellman on the curve and compare the key sizes with the modular version.",
+  "takeaway": "Adding points on a curve is easy to do and, over a finite field, practically impossible to undo, so a 256-bit curve key does the job of a 3,000-bit modular one.",
+  "prerequisites": [
+   "cryptography"
+  ],
+  "related": [
+   "tls-handshake",
+   "consensus-blockchains",
+   "quantum-computing"
+  ],
+  "needs": "Curve parameters from public standards (secp256k1, Curve25519), which are published specifications.",
+  "pitfall": "The picture over the real numbers is for intuition only: the cryptography lives on the finite-field points, where there is no curve to see, and the hardness is the discrete logarithm, not the shape. 'Elliptic' has nothing to do with ellipses.",
+  "why": "Cloudflare, 'A (relatively easy to understand) primer on elliptic curve cryptography' https://blog.cloudflare.com/a-relatively-easy-to-understand-primer-on-elliptic-curve-cryptography/",
+  "overlapWith": "cryptography: that page does Diffie-Hellman with modular exponentiation on a clock face; this page swaps the group for curve points and shows why that buys so much for so few bits.",
+  "needsSource": "published curve parameters (public standards); nothing else",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "computing-networks-l3"
+ },
+ {
+  "slug": "git-merkle-trees",
+  "title": "Version control & Merkle trees",
+  "level": 3,
+  "kind": "build",
+  "category": "networks",
+  "interaction": "Edit files in a toy repository and commit; the page hashes each file, each directory and each commit and draws the resulting graph of content-addressed objects, where two identical files are one object. Branch, make conflicting edits and merge: the three-way merge runs a real diff algorithm on each file and shows where it has to ask you. Change one byte in an old commit and watch every hash above it change, then verify one file's membership with a Merkle proof whose size grows only with the logarithm of the tree.",
+  "takeaway": "Naming every piece of data by the hash of its contents makes history tamper-evident and lets two copies prove they agree by comparing one hash.",
+  "prerequisites": [
+   "cryptography"
+  ],
+  "related": [
+   "consensus-blockchains",
+   "distributed-hash-tables"
+  ],
+  "needs": "",
+  "pitfall": "Git does not store diffs; it stores snapshots and computes diffs on demand, and a commit hash commits to the whole history, not just to that change. A Merkle tree is a tree; the hash chain of consensus-blockchains is its degenerate one-branch case.",
+  "why": "Pro Git, chapter 10 'Git Internals: Git Objects' (free online, CC BY-NC-SA 3.0) https://git-scm.com/book/en/v2/Git-Internals-Git-Objects",
+  "overlapWith": "consensus-blockchains: that page chains blocks by hash to show tampering; this page builds the general tree, with branching and merging, and the membership proofs that follow from it.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "computing-networks-l3"
+ },
+ {
+  "slug": "kalman-filter",
+  "title": "The Kalman filter",
+  "level": 3,
+  "kind": "simulate",
+  "category": "networks",
+  "interaction": "Track a moving object from a noisy sensor: at each step the filter predicts where the object will be, then blends in the new measurement, with the estimate's uncertainty drawn as an ellipse that grows on prediction and shrinks on measurement. Turn the measurement noise up and watch the filter lean on its model; add a second sensor (an accelerometer to the GPS fix) and see the fused estimate beat either alone; make the object swerve and watch a filter with the wrong motion model lag behind, confidently.",
+  "takeaway": "The best estimate of where something is comes from weighing a prediction against a measurement in proportion to how much each can be trusted, and the filter keeps that weighting up to date.",
+  "prerequisites": [
+   "bayes-theorem",
+   "central-limit-theorem",
+   "linear-transformations",
+   "feedback-control"
+  ],
+  "related": [
+   "gps",
+   "radar-sonar"
+  ],
+  "needs": "",
+  "pitfall": "It does not average measurements: with a good model it can be more certain than any single measurement. It is optimal only for linear systems with Gaussian noise, and when the model is wrong the failure mode is confident and wrong.",
+  "why": "MIT OCW 16.322 Stochastic Estimation and Control (discrete- and continuous-time Kalman filtering) https://ocw.mit.edu/courses/16-322-stochastic-estimation-and-control-fall-2004/pages/syllabus",
+  "overlapWith": "feedback-control: that page corrects an actuator from an error signal; this page estimates the state the controller needs from noisy measurements, and the two are usually paired in a real robot.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "computing-networks-l3"
+ },
+ {
+  "slug": "mimo-beamforming",
+  "title": "Antenna arrays, beamforming & MIMO",
+  "level": 3,
+  "kind": "manipulate",
+  "category": "networks",
+  "interaction": "Set the spacing and relative phases of a row of antennas and watch the radiation pattern form a beam; steer it by phase alone, add elements to narrow it and widen the spacing until grating lobes appear. Then place scatterers between a transmitting and a receiving array: the page computes the channel matrix from the path geometry, and its singular values show how many independent streams the link can carry, from one in open line of sight to several in a cluttered room.",
+  "takeaway": "Many antennas can aim a signal without moving, and in a cluttered environment can send several signals at once over the same frequencies, which is where modern wireless capacity comes from.",
+  "prerequisites": [
+   "waves-interference",
+   "wireless-signals",
+   "linear-transformations"
+  ],
+  "related": [
+   "radar-sonar",
+   "channel-capacity",
+   "electromagnetism"
+  ],
+  "needs": "",
+  "pitfall": "Multipath is not only an enemy: MIMO needs scattering to work, and a clean line of sight gives one stream. A beam is formed by interference between elements, not by any element pointing anywhere.",
+  "why": "Stanford EE359 Wireless Communications, MIMO lectures 14 and 15 https://ee359.stanford.edu/pdfs/syllabusWIN20.pdf",
+  "overlapWith": "wireless-signals: that page modulates one carrier from one antenna; this page is what many antennas add, direction and parallel streams.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "computing-networks-l3"
+ },
+ {
+  "slug": "onion-routing",
+  "title": "Tor & onion routing",
+  "level": 3,
+  "kind": "simulate",
+  "category": "networks",
+  "interaction": "Pick a guard, a middle and an exit relay on a map and watch a message be wrapped in three layers of encryption and peeled one layer per hop; click any relay to see what it alone can learn (the guard knows you, the exit knows the destination, the middle knows neither). Give an observer control of some fraction of the relays and run many circuits to see how often one observer sees both ends; then let a global observer correlate the timing of packets at both ends anyway.",
+  "takeaway": "Routing through three relays with layered encryption means no single point knows both who is talking and to whom, and the protection is only as good as the share of relays an adversary does not control.",
+  "prerequisites": [
+   "internet",
+   "cryptography"
+  ],
+  "related": [
+   "tls-handshake",
+   "consensus-blockchains"
+  ],
+  "needs": "",
+  "pitfall": "Tor hides who is talking to whom, not what is said at the exit: traffic to a plain HTTP site is readable by the exit relay. It is not a VPN with extra hops; a VPN is one party who knows everything.",
+  "why": "Tor specifications, 'A short introduction to Tor' (relays, signed directory, circuits) https://spec.torproject.org/intro/",
+  "overlapWith": "internet: that page routes packets by shortest path with no secrecy; this page chooses the path for anonymity and encrypts in layers, and the fraction of compromised circuits is the graphic.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "computing-networks-l3"
+ },
+ {
+  "slug": "radar-sonar",
+  "title": "Radar & sonar",
+  "level": 3,
+  "kind": "simulate",
+  "category": "networks",
+  "interaction": "Fire a pulse at targets you place and drag, and watch the echoes return on a range display; shorten the pulse for resolution and lose energy, then replace it with a chirp and a matched filter and get both at once. Set a target moving and read its speed from the Doppler shift, build a range-Doppler map, raise the noise until targets vanish into clutter, and switch the medium to water to see why sonar runs slow and low-frequency.",
+  "takeaway": "Radar and sonar measure distance by timing an echo and speed by its pitch, and the shape of the pulse decides how finely each can be told apart.",
+  "prerequisites": [
+   "waves-interference",
+   "fourier-transform",
+   "wireless-signals"
+  ],
+  "related": [
+   "gps",
+   "medical-imaging",
+   "mimo-beamforming",
+   "kalman-filter"
+  ],
+  "needs": "",
+  "pitfall": "Range comes from timing, not triangulation; stealth is mostly about where the echo goes, not about absorbing it; and the Doppler shift measures only the speed toward or away from the antenna.",
+  "why": "MIT OCW RES.LL-003, 'Build a Small Radar System Capable of Sensing Range, Doppler, and Synthetic Aperture Radar Imaging' https://ocw.mit.edu/courses/res-ll-003-build-a-small-radar-system-capable-of-sensing-range-doppler-and-synthetic-aperture-radar-imaging-january-iap-2011/",
+  "overlapWith": "medical-imaging: that page reconstructs an image from projections and mentions ultrasound in passing; this page is the echo itself: pulse shape, matched filtering and Doppler.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "computing-networks-l3"
+ },
+ {
+  "slug": "tcp-congestion-control",
+  "title": "TCP congestion control",
+  "level": 3,
+  "kind": "simulate",
+  "category": "networks",
+  "interaction": "Send a file across a link with a bottleneck and a queue of adjustable size, and watch the sender's window grow in slow start, collapse on a loss and resume with additive increase, tracing the sawtooth of throughput against time. Add a second flow and see the two converge to a fair share; oversize the buffer and watch delay balloon while throughput does not improve; compare Reno, CUBIC and a delay-based sender on the same link.",
+  "takeaway": "The Internet has no traffic police; every sender probes for its share of the bottleneck by speeding up until packets drop and backing off, and that simple rule is what keeps the network from collapsing.",
+  "prerequisites": [
+   "internet",
+   "feedback-control"
+  ],
+  "related": [
+   "wireless-signals",
+   "channel-capacity"
+  ],
+  "needs": "",
+  "pitfall": "Congestion control is not flow control: the receiver's window protects the receiver, the congestion window protects the network. A loss on a wireless link is often noise rather than congestion, which classic TCP misreads as a signal to slow down.",
+  "why": "Stanford CS144 Introduction to Computer Networking, transport unit: 'reliable delivery over an unreliable network, flow control, and congestion control' (AIMD, Tahoe, Reno) https://bulletin.stanford.edu/courses/2075241",
+  "overlapWith": "internet: that page shows a lost packet being resent; this page is the rate-control loop that decides how fast to send in the first place, and what happens when every sender runs it at once.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "computing-networks-l3"
+ },
+ {
+  "slug": "tls-handshake",
+  "title": "TLS: how a connection becomes private",
+  "level": 3,
+  "kind": "step",
+  "category": "networks",
+  "interaction": "Step through a TLS 1.3 handshake between a browser and a server: hello messages carrying key shares, an elliptic-curve key exchange, a certificate chain checked signature by signature up to a root the browser already trusts, and the derivation of the session keys that then encrypt every record. Put an attacker in the middle who swaps in his own key share: the certificate check fails visibly; later reveal the server's long-term key and see that past sessions stay unreadable.",
+  "takeaway": "A padlock means two strangers agreed a fresh secret in the open, and one of them proved who it was through a chain of signatures leading to someone the browser already trusts.",
+  "prerequisites": [
+   "cryptography",
+   "elliptic-curve-cryptography",
+   "internet"
+  ],
+  "related": [
+   "onion-routing"
+  ],
+  "needs": "One real certificate chain, for example the site's own GitHub Pages chain; certificates are public documents.",
+  "pitfall": "The padlock says nothing about the site being honest, only that you are talking to the holder of that certificate. Key exchange and authentication are separate jobs: Diffie-Hellman alone is defeated by a man in the middle, which is exactly what the certificate prevents.",
+  "why": "Cloudflare Learning Center, 'What happens in a TLS handshake?' https://cloudflare.com/learning/ssl/what-happens-in-a-tls-handshake",
+  "overlapWith": "cryptography: that page shows key exchange, hashing and signing separately on small numbers; this page is the protocol that combines them, with the certificate chain as the new piece.",
+  "needsSource": "a real public certificate chain (public, no licence restriction)",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "computing-networks-l3"
+ },
+ {
+  "slug": "video-codecs",
+  "title": "Video compression",
+  "level": 3,
+  "kind": "step",
+  "category": "networks",
+  "interaction": "Step through encoding a short clip: each frame is cut into blocks, every block searches the previous frame for its best match and keeps only a motion vector and the difference, which is transformed and quantised like the JPEG blocks of the compression page. Scrub the quality and the search range and watch bits per frame fall while blocking and smearing appear; corrupt one keyframe and see the damage propagate until the next.",
+  "takeaway": "A video is mostly its previous frame moved a little, so a codec sends motion and the leftovers, and almost none of the pixels.",
+  "prerequisites": [
+   "compression",
+   "fourier-transform"
+  ],
+  "related": [
+   "convolution-vision",
+   "audio-codecs",
+   "gpu"
+  ],
+  "needs": "A few seconds of Big Buck Bunny frames (Blender Foundation, CC BY 3.0), video only: the film's score is CC BY-NC-ND and must not be shipped.",
+  "pitfall": "Motion vectors are not object tracking: each is whichever block matched best, which is why they look chaotic on textures. The decoder must reconstruct exactly what the encoder predicted from, or the drift compounds frame after frame.",
+  "why": "Demand: Google 'how does video compression work' https://www.google.com/search?q=how+does+video+compression+work (the Stanford EE398A Image and Video Compression course page was not fetched this session, the search budget ran out)",
+  "overlapWith": "compression: that page compresses one still image by discarding high frequencies; this page adds time, prediction from the previous frame, which is where almost all the saving comes from.",
+  "needsSource": "Big Buck Bunny frames, CC BY 3.0 (openly licensed; audio excluded)",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "computing-networks-l3"
+ }
+]

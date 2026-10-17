@@ -173,5 +173,315 @@
    "waves-interference"
   ],
   "origin": "everyday-technology"
+ },
+ {
+  "slug": "audio-codecs",
+  "title": "Sampling & perceptual audio coding",
+  "level": 3,
+  "kind": "manipulate",
+  "category": "networks",
+  "interaction": "Sample a tone at an adjustable rate and watch it alias into a lower pitch once the rate drops below twice its frequency, then reconstruct the samples with sinc interpolation and reduce the bit depth until quantisation noise shows on the spectrum. Load a short clip: the page computes its spectrum frame by frame, draws a masking threshold around the loud components and drops everything beneath it; a slider trades bits against audible damage, shown on the spectrogram and in the bit count.",
+  "takeaway": "Digital audio can be perfect below half the sampling rate, and most of what a recording contains is sound the ear would never notice, so a codec throws it away.",
+  "prerequisites": [
+   "fourier-transform",
+   "compression",
+   "waves-interference"
+  ],
+  "related": [
+   "video-codecs",
+   "vision-color",
+   "fast-fourier-transform"
+  ],
+  "needs": "A short CC0 music or speech clip (Wikimedia Commons or Freesound CC0). The masking model must be a published simplification (a spreading-function model as in Johnston 1988), stated on the page, because the MPEG psychoacoustic model lives in an ISO standard that is not open; that makes this the weaker of the two codec candidates.",
+  "pitfall": "Sampling loses nothing below the Nyquist frequency, so 'digital sound is steppy' is wrong. Perceptual coding is lossy by design: what is dropped is gone, not hidden somewhere.",
+  "why": "MIT 6.003 Signals and Systems, Lecture 22 'Sampling and quantization' https://ocw.mit.edu/courses/6-003-signals-and-systems-fall-2011/resources/mit6_003f11_lec22/ (the sampling-theorem seed is folded in here)",
+  "overlapWith": "compression: that page drops frequencies an image will not miss; this page does it for sound with a model of hearing, and adds sampling itself, which no existing page covers.",
+  "needsSource": "CC0 audio clip (openly licensed); masking model from the published literature, since the ISO psychoacoustic model is not open",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "computing-networks-l3"
+ },
+ {
+  "slug": "distributed-hash-tables",
+  "title": "Distributed hash tables & consistent hashing",
+  "level": 3,
+  "kind": "simulate",
+  "category": "networks",
+  "interaction": "Hash keys and servers onto a ring and watch a lookup walk around it; add or remove a server and count how many keys move, with consistent hashing against the naive modulo rule. Then give each node a finger table and watch lookups finish in a number of hops that grows only logarithmically as the network grows to thousands of nodes; churn nodes in and out and see the ring heal or lose keys depending on how many replicas each key has.",
+  "takeaway": "Thousands of machines can find any key among them in a dozen hops with no directory, and adding one machine moves only its own share of the keys.",
+  "prerequisites": [
+   "hash-tables-bloom-filters",
+   "internet"
+  ],
+  "related": [
+   "consensus-blockchains",
+   "pagerank",
+   "graph-search"
+  ],
+  "needs": "",
+  "pitfall": "Consistent hashing is not fair by default: with one point per server the loads vary widely, which is what virtual nodes fix. A DHT finds where a key lives; it does not make the data durable, replication does.",
+  "why": "MIT 6.824 Distributed Systems, lecture 20 'DHTs / Chord' https://pdos.csail.mit.edu/archive/6.824-2011/notes/l20.txt",
+  "overlapWith": "consensus-blockchains: that page makes nodes agree on one log; this one spreads keys across nodes with no agreement at all, which is how a CDN or BitTorrent finds things.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "computing-networks-l3"
+ },
+ {
+  "slug": "elliptic-curve-cryptography",
+  "title": "Elliptic-curve cryptography",
+  "level": 3,
+  "kind": "manipulate",
+  "category": "networks",
+  "interaction": "Drag two points on an elliptic curve over the real numbers and watch the chord-and-tangent rule produce their sum; switch the same curve to a finite field and the smooth curve becomes a scatter of points on which the same rule still works. Multiply a point by k with double-and-add, step by step, and see that landing on a target point gives no clue what k was; then run Diffie-Hellman on the curve and compare the key sizes with the modular version.",
+  "takeaway": "Adding points on a curve is easy to do and, over a finite field, practically impossible to undo, so a 256-bit curve key does the job of a 3,000-bit modular one.",
+  "prerequisites": [
+   "cryptography"
+  ],
+  "related": [
+   "tls-handshake",
+   "consensus-blockchains",
+   "quantum-computing"
+  ],
+  "needs": "Curve parameters from public standards (secp256k1, Curve25519), which are published specifications.",
+  "pitfall": "The picture over the real numbers is for intuition only: the cryptography lives on the finite-field points, where there is no curve to see, and the hardness is the discrete logarithm, not the shape. 'Elliptic' has nothing to do with ellipses.",
+  "why": "Cloudflare, 'A (relatively easy to understand) primer on elliptic curve cryptography' https://blog.cloudflare.com/a-relatively-easy-to-understand-primer-on-elliptic-curve-cryptography/",
+  "overlapWith": "cryptography: that page does Diffie-Hellman with modular exponentiation on a clock face; this page swaps the group for curve points and shows why that buys so much for so few bits.",
+  "needsSource": "published curve parameters (public standards); nothing else",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "computing-networks-l3"
+ },
+ {
+  "slug": "git-merkle-trees",
+  "title": "Version control & Merkle trees",
+  "level": 3,
+  "kind": "build",
+  "category": "networks",
+  "interaction": "Edit files in a toy repository and commit; the page hashes each file, each directory and each commit and draws the resulting graph of content-addressed objects, where two identical files are one object. Branch, make conflicting edits and merge: the three-way merge runs a real diff algorithm on each file and shows where it has to ask you. Change one byte in an old commit and watch every hash above it change, then verify one file's membership with a Merkle proof whose size grows only with the logarithm of the tree.",
+  "takeaway": "Naming every piece of data by the hash of its contents makes history tamper-evident and lets two copies prove they agree by comparing one hash.",
+  "prerequisites": [
+   "cryptography"
+  ],
+  "related": [
+   "consensus-blockchains",
+   "distributed-hash-tables"
+  ],
+  "needs": "",
+  "pitfall": "Git does not store diffs; it stores snapshots and computes diffs on demand, and a commit hash commits to the whole history, not just to that change. A Merkle tree is a tree; the hash chain of consensus-blockchains is its degenerate one-branch case.",
+  "why": "Pro Git, chapter 10 'Git Internals: Git Objects' (free online, CC BY-NC-SA 3.0) https://git-scm.com/book/en/v2/Git-Internals-Git-Objects",
+  "overlapWith": "consensus-blockchains: that page chains blocks by hash to show tampering; this page builds the general tree, with branching and merging, and the membership proofs that follow from it.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "computing-networks-l3"
+ },
+ {
+  "slug": "kalman-filter",
+  "title": "The Kalman filter",
+  "level": 3,
+  "kind": "simulate",
+  "category": "networks",
+  "interaction": "Track a moving object from a noisy sensor: at each step the filter predicts where the object will be, then blends in the new measurement, with the estimate's uncertainty drawn as an ellipse that grows on prediction and shrinks on measurement. Turn the measurement noise up and watch the filter lean on its model; add a second sensor (an accelerometer to the GPS fix) and see the fused estimate beat either alone; make the object swerve and watch a filter with the wrong motion model lag behind, confidently.",
+  "takeaway": "The best estimate of where something is comes from weighing a prediction against a measurement in proportion to how much each can be trusted, and the filter keeps that weighting up to date.",
+  "prerequisites": [
+   "bayes-theorem",
+   "central-limit-theorem",
+   "linear-transformations",
+   "feedback-control"
+  ],
+  "related": [
+   "gps",
+   "radar-sonar"
+  ],
+  "needs": "",
+  "pitfall": "It does not average measurements: with a good model it can be more certain than any single measurement. It is optimal only for linear systems with Gaussian noise, and when the model is wrong the failure mode is confident and wrong.",
+  "why": "MIT OCW 16.322 Stochastic Estimation and Control (discrete- and continuous-time Kalman filtering) https://ocw.mit.edu/courses/16-322-stochastic-estimation-and-control-fall-2004/pages/syllabus",
+  "overlapWith": "feedback-control: that page corrects an actuator from an error signal; this page estimates the state the controller needs from noisy measurements, and the two are usually paired in a real robot.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "computing-networks-l3"
+ },
+ {
+  "slug": "mimo-beamforming",
+  "title": "Antenna arrays, beamforming & MIMO",
+  "level": 3,
+  "kind": "manipulate",
+  "category": "networks",
+  "interaction": "Set the spacing and relative phases of a row of antennas and watch the radiation pattern form a beam; steer it by phase alone, add elements to narrow it and widen the spacing until grating lobes appear. Then place scatterers between a transmitting and a receiving array: the page computes the channel matrix from the path geometry, and its singular values show how many independent streams the link can carry, from one in open line of sight to several in a cluttered room.",
+  "takeaway": "Many antennas can aim a signal without moving, and in a cluttered environment can send several signals at once over the same frequencies, which is where modern wireless capacity comes from.",
+  "prerequisites": [
+   "waves-interference",
+   "wireless-signals",
+   "linear-transformations"
+  ],
+  "related": [
+   "radar-sonar",
+   "channel-capacity",
+   "electromagnetism"
+  ],
+  "needs": "",
+  "pitfall": "Multipath is not only an enemy: MIMO needs scattering to work, and a clean line of sight gives one stream. A beam is formed by interference between elements, not by any element pointing anywhere.",
+  "why": "Stanford EE359 Wireless Communications, MIMO lectures 14 and 15 https://ee359.stanford.edu/pdfs/syllabusWIN20.pdf",
+  "overlapWith": "wireless-signals: that page modulates one carrier from one antenna; this page is what many antennas add, direction and parallel streams.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "computing-networks-l3"
+ },
+ {
+  "slug": "onion-routing",
+  "title": "Tor & onion routing",
+  "level": 3,
+  "kind": "simulate",
+  "category": "networks",
+  "interaction": "Pick a guard, a middle and an exit relay on a map and watch a message be wrapped in three layers of encryption and peeled one layer per hop; click any relay to see what it alone can learn (the guard knows you, the exit knows the destination, the middle knows neither). Give an observer control of some fraction of the relays and run many circuits to see how often one observer sees both ends; then let a global observer correlate the timing of packets at both ends anyway.",
+  "takeaway": "Routing through three relays with layered encryption means no single point knows both who is talking and to whom, and the protection is only as good as the share of relays an adversary does not control.",
+  "prerequisites": [
+   "internet",
+   "cryptography"
+  ],
+  "related": [
+   "tls-handshake",
+   "consensus-blockchains"
+  ],
+  "needs": "",
+  "pitfall": "Tor hides who is talking to whom, not what is said at the exit: traffic to a plain HTTP site is readable by the exit relay. It is not a VPN with extra hops; a VPN is one party who knows everything.",
+  "why": "Tor specifications, 'A short introduction to Tor' (relays, signed directory, circuits) https://spec.torproject.org/intro/",
+  "overlapWith": "internet: that page routes packets by shortest path with no secrecy; this page chooses the path for anonymity and encrypts in layers, and the fraction of compromised circuits is the graphic.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "computing-networks-l3"
+ },
+ {
+  "slug": "radar-sonar",
+  "title": "Radar & sonar",
+  "level": 3,
+  "kind": "simulate",
+  "category": "networks",
+  "interaction": "Fire a pulse at targets you place and drag, and watch the echoes return on a range display; shorten the pulse for resolution and lose energy, then replace it with a chirp and a matched filter and get both at once. Set a target moving and read its speed from the Doppler shift, build a range-Doppler map, raise the noise until targets vanish into clutter, and switch the medium to water to see why sonar runs slow and low-frequency.",
+  "takeaway": "Radar and sonar measure distance by timing an echo and speed by its pitch, and the shape of the pulse decides how finely each can be told apart.",
+  "prerequisites": [
+   "waves-interference",
+   "fourier-transform",
+   "wireless-signals"
+  ],
+  "related": [
+   "gps",
+   "medical-imaging",
+   "mimo-beamforming",
+   "kalman-filter"
+  ],
+  "needs": "",
+  "pitfall": "Range comes from timing, not triangulation; stealth is mostly about where the echo goes, not about absorbing it; and the Doppler shift measures only the speed toward or away from the antenna.",
+  "why": "MIT OCW RES.LL-003, 'Build a Small Radar System Capable of Sensing Range, Doppler, and Synthetic Aperture Radar Imaging' https://ocw.mit.edu/courses/res-ll-003-build-a-small-radar-system-capable-of-sensing-range-doppler-and-synthetic-aperture-radar-imaging-january-iap-2011/",
+  "overlapWith": "medical-imaging: that page reconstructs an image from projections and mentions ultrasound in passing; this page is the echo itself: pulse shape, matched filtering and Doppler.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "computing-networks-l3"
+ },
+ {
+  "slug": "tcp-congestion-control",
+  "title": "TCP congestion control",
+  "level": 3,
+  "kind": "simulate",
+  "category": "networks",
+  "interaction": "Send a file across a link with a bottleneck and a queue of adjustable size, and watch the sender's window grow in slow start, collapse on a loss and resume with additive increase, tracing the sawtooth of throughput against time. Add a second flow and see the two converge to a fair share; oversize the buffer and watch delay balloon while throughput does not improve; compare Reno, CUBIC and a delay-based sender on the same link.",
+  "takeaway": "The Internet has no traffic police; every sender probes for its share of the bottleneck by speeding up until packets drop and backing off, and that simple rule is what keeps the network from collapsing.",
+  "prerequisites": [
+   "internet",
+   "feedback-control"
+  ],
+  "related": [
+   "wireless-signals",
+   "channel-capacity"
+  ],
+  "needs": "",
+  "pitfall": "Congestion control is not flow control: the receiver's window protects the receiver, the congestion window protects the network. A loss on a wireless link is often noise rather than congestion, which classic TCP misreads as a signal to slow down.",
+  "why": "Stanford CS144 Introduction to Computer Networking, transport unit: 'reliable delivery over an unreliable network, flow control, and congestion control' (AIMD, Tahoe, Reno) https://bulletin.stanford.edu/courses/2075241",
+  "overlapWith": "internet: that page shows a lost packet being resent; this page is the rate-control loop that decides how fast to send in the first place, and what happens when every sender runs it at once.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "computing-networks-l3"
+ },
+ {
+  "slug": "tls-handshake",
+  "title": "TLS: how a connection becomes private",
+  "level": 3,
+  "kind": "step",
+  "category": "networks",
+  "interaction": "Step through a TLS 1.3 handshake between a browser and a server: hello messages carrying key shares, an elliptic-curve key exchange, a certificate chain checked signature by signature up to a root the browser already trusts, and the derivation of the session keys that then encrypt every record. Put an attacker in the middle who swaps in his own key share: the certificate check fails visibly; later reveal the server's long-term key and see that past sessions stay unreadable.",
+  "takeaway": "A padlock means two strangers agreed a fresh secret in the open, and one of them proved who it was through a chain of signatures leading to someone the browser already trusts.",
+  "prerequisites": [
+   "cryptography",
+   "elliptic-curve-cryptography",
+   "internet"
+  ],
+  "related": [
+   "onion-routing"
+  ],
+  "needs": "One real certificate chain, for example the site's own GitHub Pages chain; certificates are public documents.",
+  "pitfall": "The padlock says nothing about the site being honest, only that you are talking to the holder of that certificate. Key exchange and authentication are separate jobs: Diffie-Hellman alone is defeated by a man in the middle, which is exactly what the certificate prevents.",
+  "why": "Cloudflare Learning Center, 'What happens in a TLS handshake?' https://cloudflare.com/learning/ssl/what-happens-in-a-tls-handshake",
+  "overlapWith": "cryptography: that page shows key exchange, hashing and signing separately on small numbers; this page is the protocol that combines them, with the certificate chain as the new piece.",
+  "needsSource": "a real public certificate chain (public, no licence restriction)",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "computing-networks-l3"
+ },
+ {
+  "slug": "video-codecs",
+  "title": "Video compression",
+  "level": 3,
+  "kind": "step",
+  "category": "networks",
+  "interaction": "Step through encoding a short clip: each frame is cut into blocks, every block searches the previous frame for its best match and keeps only a motion vector and the difference, which is transformed and quantised like the JPEG blocks of the compression page. Scrub the quality and the search range and watch bits per frame fall while blocking and smearing appear; corrupt one keyframe and see the damage propagate until the next.",
+  "takeaway": "A video is mostly its previous frame moved a little, so a codec sends motion and the leftovers, and almost none of the pixels.",
+  "prerequisites": [
+   "compression",
+   "fourier-transform"
+  ],
+  "related": [
+   "convolution-vision",
+   "audio-codecs",
+   "gpu"
+  ],
+  "needs": "A few seconds of Big Buck Bunny frames (Blender Foundation, CC BY 3.0), video only: the film's score is CC BY-NC-ND and must not be shipped.",
+  "pitfall": "Motion vectors are not object tracking: each is whichever block matched best, which is why they look chaotic on textures. The decoder must reconstruct exactly what the encoder predicted from, or the drift compounds frame after frame.",
+  "why": "Demand: Google 'how does video compression work' https://www.google.com/search?q=how+does+video+compression+work (the Stanford EE398A Image and Video Compression course page was not fetched this session, the search budget ran out)",
+  "overlapWith": "compression: that page compresses one still image by discarding high frequencies; this page adds time, prediction from the previous frame, which is where almost all the saving comes from.",
+  "needsSource": "Big Buck Bunny frames, CC BY 3.0 (openly licensed; audio excluded)",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "computing-networks-l3"
+ },
+ {
+  "slug": "zero-knowledge-proofs",
+  "title": "Zero-knowledge proofs",
+  "level": 3,
+  "kind": "step",
+  "category": "networks",
+  "interaction": "Colour a small graph with three colours, cover every vertex, and let the verifier uncover one random edge; repeat with a fresh random permutation of the colours each round and watch a cheater's chance of surviving fall round by round while the verifier's transcript never contains a full colouring. Then run the Schnorr protocol on small numbers: prove you know a discrete logarithm without revealing it, and watch a simulator forge a transcript that nobody could tell from a real one.",
+  "takeaway": "You can convince someone that a statement is true while their view of the exchange contains nothing they could not have made up themselves.",
+  "prerequisites": [
+   "cryptography"
+  ],
+  "related": [
+   "consensus-blockchains",
+   "sat-solving",
+   "tls-handshake"
+  ],
+  "needs": "",
+  "pitfall": "Zero-knowledge is a property of what the verifier learns, not a kind of encryption, and a single round proves almost nothing: soundness comes from repetition, and the verifier's choices must be unpredictable.",
+  "why": "Computerphile 'Zero Knowledge Proofs', about 235,000 views (view count from aggregator snapshots found this session; the video id is recalled, not fetched this session) https://www.youtube.com/watch?v=HUs1bH85X9I",
+  "overlapWith": "cryptography: that page proves identity with a signature, which reveals the signed message; this page proves knowledge while revealing nothing, and the probability of a cheater surviving is the graphic.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "computing-networks-l3"
  }
 ]

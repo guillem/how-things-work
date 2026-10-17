@@ -1,0 +1,648 @@
+[
+ {
+  "slug": "normalizing-flows",
+  "title": "Normalizing flows",
+  "level": 3,
+  "kind": "manipulate",
+  "category": "ai",
+  "interaction": "Stack invertible layers (an affine coupling layer, a rotation, an elementwise squash) and drag their parameters: a grid drawn on the plane warps, and the Gaussian base density is recolored by the exact change-of-variables rule, dense where the map squeezes space and thin where it stretches it. Then train the stack on two-moons data and watch the Gaussian flow into the data; run it backwards to see samples born from noise.",
+  "takeaway": "A chain of invertible maps with a cheap Jacobian is a generative model whose likelihood is exact: the density at a point is the base density at its preimage times how much the map shrank space there.",
+  "prerequisites": [
+   "linear-transformations",
+   "calculus",
+   "neural-networks",
+   "central-limit-theorem"
+  ],
+  "related": [
+   "variational-autoencoders",
+   "diffusion-models",
+   "generative-adversarial-networks",
+   "markov-chain-monte-carlo"
+  ],
+  "needs": "",
+  "pitfall": "The log-determinant must come from the layer structure (coupling layers make the Jacobian triangular); estimating the density from sample histograms is exactly what flows avoid. Say that flow matching is a different, later idea.",
+  "why": "Stanford CS236 Deep Generative Models covers flow models alongside VAEs and GANs: https://bulletin.stanford.edu/courses/2205691",
+  "overlapWith": "linear-transformations: that page warps a grid with one 2x2 matrix; here nonlinear invertible layers warp a probability density and the determinant becomes a likelihood.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "ai-l3"
+ },
+ {
+  "slug": "recommender-systems",
+  "title": "Recommender systems & collaborative filtering",
+  "level": 3,
+  "kind": "manipulate",
+  "category": "ai",
+  "interaction": "Rate a dozen films and watch a matrix-factorization model, two hidden factors per person and per film fit by alternating least squares live, place you and the films on a 2-D map and fill in your blank ratings. Add factors and regularization and see the held-out error curve; add a new film with no ratings and see cold start, and watch popularity bias as the most-rated films are recommended to everyone.",
+  "takeaway": "Recommendations come from factoring the sparse ratings table into a few hidden tastes per person and per item, so people who rated like you did are your prediction, and an item nobody has rated cannot be placed.",
+  "prerequisites": [
+   "linear-transformations",
+   "learning-from-data"
+  ],
+  "related": [
+   "embeddings",
+   "pagerank",
+   "dimensionality-reduction"
+  ],
+  "needs": "A ratings dataset. MovieLens ml-latest-small (GroupLens) permits redistribution only under its research, non-commercial conditions, which is not an open licence; this candidate's data is weak unless an openly licensed ratings set is found.",
+  "pitfall": "The factors are not genres; do not name them. Held-out ratings are a biased test because people choose what to rate.",
+  "why": "Stanford CS246 Mining Massive Data Sets, recommender systems lectures: http://web.stanford.edu/class/cs246/ ; MovieLens terms: https://files.grouplens.org/datasets/movielens/ml-latest-small-README.html",
+  "overlapWith": "embeddings: that page maps words from pretrained vectors; here the vectors are learned live from a ratings table and the problem is the missing entries.",
+  "needsSource": "MovieLens ml-latest-small: research-only, non-commercial redistribution terms (confirmed), not an open licence; weak.",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "ai-l3"
+ },
+ {
+  "slug": "recurrent-networks",
+  "title": "Recurrent networks & LSTMs",
+  "level": 3,
+  "kind": "step",
+  "category": "ai",
+  "interaction": "Feed a sequence symbol by symbol into a plain recurrent network and an LSTM trained to recall its first symbol after a gap you set: the hidden state and the LSTM's forget, input and output gates are drawn at each step. Then run backpropagation through time and watch the gradient reaching the early steps shrink geometrically in the plain network while the LSTM's cell state carries it almost unchanged; lengthen the gap until the plain network fails and the LSTM still works.",
+  "takeaway": "A recurrent network carries a state from step to step, and gates that choose what to keep let a signal, and its gradient, travel far back through time without vanishing.",
+  "prerequisites": [
+   "neural-networks",
+   "gradient-descent"
+  ],
+  "related": [
+   "transformers",
+   "induction-heads"
+  ],
+  "needs": "",
+  "pitfall": "Vanishing gradients come from repeated multiplication by the same Jacobian, not from forgetting; show the gradient norms, not a metaphor. LSTMs mitigate the problem, they do not remove it, and saturated gates stop learning.",
+  "why": "MIT 6.S191 2025, lecture 2 Deep Sequence Modeling (RNNs, LSTMs): https://introtodeeplearning.com/2025/index.html",
+  "overlapWith": "transformers: that page mixes all tokens at once with attention; here the model is sequential with a carried state and the question is how far a signal survives.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "ai-l3"
+ },
+ {
+  "slug": "retrieval-augmented-generation",
+  "title": "Retrieval-augmented generation",
+  "level": 3,
+  "kind": "build",
+  "category": "ai",
+  "interaction": "Assemble a retrieval pipeline over a few thousand Simple English Wikipedia paragraphs: choose the chunk size, keyword (BM25) or embedding search and how many chunks to keep, then type a question and watch the chunks ranked live with their scores and the prompt assembled from them. For a fixed set of questions, flip between the model's precomputed answer with and without the retrieved chunks and see the answer follow the chunks: right when the fact was retrieved, fluently wrong when it was not.",
+  "takeaway": "A language model can only use what is in its prompt, so retrieval decides what it can quote, and the chunking and ranking, not the model, is where most answers are won or lost.",
+  "prerequisites": [
+   "embeddings",
+   "language-models"
+  ],
+  "related": [
+   "pagerank",
+   "transformers",
+   "tokenization"
+  ],
+  "needs": "A Simple English Wikipedia extract (CC BY-SA 4.0); embeddings computed in the browser or precomputed with all-MiniLM-L6-v2 (Apache 2.0); precomputed answers from a small openly licensed model (an Apache-2.0 Qwen or SmolLM checkpoint).",
+  "pitfall": "Retrieval does not make a model truthful; it will quote a wrong chunk fluently. Keyword and dense search fail on different questions, so show both.",
+  "why": "Lewis et al. 2020, Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks: https://arxiv.org/abs/2005.11401",
+  "overlapWith": "embeddings: that page finds the nearest words in vector space; this one feeds the nearest passages to a generator and shows the generation change.",
+  "needsSource": "Simple English Wikipedia, CC BY-SA 4.0; all-MiniLM-L6-v2, Apache 2.0 (from memory, unverified); answer model licence to confirm when chosen.",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "ai-l3"
+ },
+ {
+  "slug": "rlhf-alignment",
+  "title": "RLHF: learning from human preferences",
+  "level": 3,
+  "kind": "simulate",
+  "category": "ai",
+  "interaction": "Read pairs of continuations that a real small language model wrote for a prompt and click the better one; a reward model (a linear layer on each continuation's sentence embedding, fit by the Bradley-Terry rule) updates after every click and scores all the candidates. Slide the KL penalty: the policy, computed exactly as the base model's distribution tilted by exp(reward/beta), drifts from the base model toward the reward model's favourites, and with a small penalty it collapses onto whichever odd continuation the reward model over-rates, reward hacking visible in the ranked list.",
+  "takeaway": "Comparisons train a reward model, and the policy is the base model's distribution pulled toward that reward and held back by a KL leash; loosen the leash and the policy exploits the reward model's mistakes instead of the preferences behind them.",
+  "prerequisites": [
+   "language-models",
+   "reinforcement-learning",
+   "bayes-theorem"
+  ],
+  "related": [
+   "transformers",
+   "uncertainty-calibration"
+  ],
+  "needs": "For a handful of prompts, about 64 sampled continuations each with reference log-probabilities from GPT-2 small (OpenAI, modified MIT licence) and one sentence embedding per continuation from an open embedding model (all-MiniLM-L6-v2, Apache 2.0), all precomputed.",
+  "pitfall": "RLHF teaches no new facts; it reweights outputs the base model could already produce. On a finite candidate set the KL-regularized optimum is closed-form, so the page must not pretend PPO is running; say that DPO uses the same closed form.",
+  "why": "Hugging Face, Illustrating RLHF (reward model, KL penalty): https://huggingface.co/blog/rlhf ; Stanford CS224N has an RLHF lecture (slide archive https://web.stanford.edu/class/archive/cs/cs224n/cs224n.1246/slides/).",
+  "overlapWith": "reinforcement-learning: that page learns values from rewards painted on a grid; here the reward itself is learned from comparisons and the environment is a language model's own output distribution.",
+  "needsSource": "GPT-2 weights, OpenAI modified MIT (confirmed); all-MiniLM-L6-v2, Apache 2.0 (from memory, unverified); the continuations and labels are generated by the project.",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "ai-l3"
+ },
+ {
+  "slug": "scaling-laws",
+  "title": "Scaling laws",
+  "level": 3,
+  "kind": "explore",
+  "category": "ai",
+  "interaction": "Scrub a precomputed sweep of small networks trained with growing width and data on one task and watch the loss fall as a straight line on log-log axes until the data or the model runs out, then retrain one point of the sweep live and see it land on the line. Switch to the Chinchilla parametric law and drag a compute budget: the page solves for the model size and token count that minimize the fitted loss, drawing the iso-compute curves and the optimal frontier.",
+  "takeaway": "Loss falls as a power law in model size and in data, each saturating when the other is the bottleneck, so a given compute budget has an optimal split between the two.",
+  "prerequisites": [
+   "neural-networks",
+   "gradient-descent",
+   "learning-from-data"
+  ],
+  "related": [
+   "double-descent",
+   "mixture-of-experts",
+   "language-models"
+  ],
+  "needs": "The project's own precomputed sweep of small models; the Chinchilla fit L = E + A/N^a + B/D^b with the constants published by Hoffmann et al. 2022; optionally Epoch AI's re-extracted data points.",
+  "pitfall": "Scaling laws are empirical fits with disputed constants (Epoch AI's replication); do not present them as physics. The live retrain must be tiny and labelled as such, not a per-slider sweep.",
+  "why": "Hoffmann et al. 2022, Training Compute-Optimal Large Language Models: https://arxiv.org/abs/2203.15556 ; Epoch AI replication: https://epoch.ai/publications/chinchilla-scaling-a-replication-attempt",
+  "overlapWith": "language-models: that page shows what a trained model does; this one shows how its loss depends on size and data and why models are the sizes they are.",
+  "needsSource": "Own sweep (none external); Chinchilla constants are published numbers (arXiv paper, licence not checked); Epoch AI extracted data, licence unverified.",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "ai-l3"
+ },
+ {
+  "slug": "superposition-features",
+  "title": "Superposition & sparse autoencoders",
+  "level": 3,
+  "kind": "simulate",
+  "category": "ai",
+  "interaction": "Train Anthropic's toy model live: more features than hidden neurons, each feature active with a sparsity you set; the learned feature directions are drawn in the hidden plane and go from only the most important features, at right angles, to all of them packed as antipodal pairs and pentagons as the features grow sparser. Then train a sparse autoencoder on the hidden activations and watch its dictionary recover the packed directions one by one.",
+  "takeaway": "A network can store more features than it has neurons by overlapping them when features are rarely active together, and a sparse autoencoder can pull the overlapped features apart again.",
+  "prerequisites": [
+   "neural-networks",
+   "linear-transformations",
+   "embeddings"
+  ],
+  "related": [
+   "induction-heads",
+   "dimensionality-reduction",
+   "variational-autoencoders"
+  ],
+  "needs": "",
+  "pitfall": "Neurons are not features, so do not label individual hidden units. Sparse-autoencoder features are a hypothesis about the model, not ground truth, and the toy model's results do not transfer wholesale to real networks.",
+  "why": "Anthropic, Toy Models of Superposition: https://transformer-circuits.pub/2022/toy_model/index.html ; DeepMind's Gemma Scope release of open SAEs: https://deepmind.google/blog/gemma-scope-helping-the-safety-community-shed-light-on-the-inner-workings-of-language-models/",
+  "overlapWith": "embeddings: that page shows meaning as directions in a vector space; here the question is how many directions fit in one layer and how to recover them from a trained network.",
+  "needsSource": "none (the toy model and the sparse autoencoder train in the browser)",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "ai-l3"
+ },
+ {
+  "slug": "support-vector-machines",
+  "title": "Support vector machines & kernels",
+  "level": 3,
+  "kind": "manipulate",
+  "category": "ai",
+  "interaction": "Drag labeled points on the plane: a perceptron finds some separating line, then the SVM finds the one with the widest margin, with the support vectors highlighted and every other point free to move without changing it. Lower the penalty C to let points inside the margin, then switch on a polynomial or Gaussian kernel and drag its width to see the straight margin in feature space land as a curved boundary on the plane.",
+  "takeaway": "The best separating line is the one farthest from the nearest points, which alone determine it, and a kernel lets the same margin-maximizer draw curves by measuring similarity instead of coordinates.",
+  "prerequisites": [
+   "linear-transformations",
+   "learning-from-data"
+  ],
+  "related": [
+   "neural-networks",
+   "gaussian-processes",
+   "tree-ensembles"
+  ],
+  "needs": "",
+  "pitfall": "The kernel trick never computes the high-dimensional features; the solution depends on the data only through inner products. Kernel width and C trade off flexibility against margin, not accuracy against speed.",
+  "why": "Stanford CS229 fall 2021 syllabus, lectures on support vector machines and kernels: https://cs229.stanford.edu/syllabus-fall2021.html",
+  "overlapWith": "neural-networks: that page learns a boundary by backpropagation; here the boundary solves a convex margin problem decided by a few points, and the kernel takes the place of hidden layers.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "ai-l3"
+ },
+ {
+  "slug": "tokenization",
+  "title": "Tokenization & byte-pair encoding",
+  "level": 3,
+  "kind": "step",
+  "category": "ai",
+  "interaction": "Type a small corpus and run byte-pair encoding one merge at a time: the most frequent adjacent pair fuses, the vocabulary grows by one and the token count of a sample sentence falls, plotted as a curve. Then type any text and watch GPT-2's real byte-level tokenizer apply its merges in rank order after the regex pre-split: common English words become one token, a rare word breaks into several pieces, numbers split oddly, and the same sentence in another language or script costs far more tokens.",
+  "takeaway": "Tokens are greedy merges of the most frequent byte pairs in the training text, so a model sees whole words where text is common and fragments where it is rare, and never sees letters.",
+  "prerequisites": [
+   "language-models",
+   "compression"
+  ],
+  "related": [
+   "transformers",
+   "embeddings"
+  ],
+  "needs": "GPT-2's merge list and vocabulary (OpenAI; shipped by tiktoken under MIT, the GPT-2 release under a modified MIT licence).",
+  "pitfall": "Merges apply in rank order, not by longest match, so the split is deterministic given the merge list; byte-level BPE never needs an unknown token. Do not say that models count letters.",
+  "why": "Hugging Face NLP course, chapter 6, byte-pair encoding tokenization: https://huggingface.co/learn/nlp-course/chapter6/5",
+  "overlapWith": "language-models: that page splits typed text into tokens as given; this one builds the tokenizer merge by merge and shows why the split falls where it does.",
+  "needsSource": "tiktoken, MIT (confirmed); the GPT-2 merge and vocabulary files sit in OpenAI's gpt-2 repository under its modified MIT licence (repository licence; the files were not separately checked).",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "ai-l3"
+ },
+ {
+  "slug": "tree-ensembles",
+  "title": "Decision trees, random forests & gradient boosting",
+  "level": 3,
+  "kind": "step",
+  "category": "ai",
+  "interaction": "Grow a decision tree one split at a time on 2-D points or on the Palmer penguins: each candidate split's impurity drop is shown, the chosen one slices the plane, and the tree deepens until it has memorized every point. Then bag many trees trained on bootstrap resamples and watch the jagged boundary average smooth, and finally boost: each new shallow tree fits the current residuals and the sum of trees staircases toward the data, with the learning rate and depth as sliders and the test error plotted.",
+  "takeaway": "A single tree slices the plane greedily and overfits, averaging many resampled trees cancels their noise, and boosting adds small trees that each fix what the ensemble still gets wrong.",
+  "prerequisites": [
+   "learning-from-data",
+   "gradient-descent"
+  ],
+  "related": [
+   "neural-networks",
+   "double-descent",
+   "support-vector-machines"
+  ],
+  "needs": "Palmer penguins dataset (Horst, Hill and Gorman; CC0).",
+  "pitfall": "A random forest does not overfit by adding trees; boosting does. Impurity-based feature importance is biased toward high-cardinality features and is not causal.",
+  "why": "Stanford CS229 summer 2020 syllabus covers decision trees, random forests and gradient boosting as tree ensembles: https://cs229.stanford.edu/summer2020/syllabus.html",
+  "overlapWith": "learning-from-data: that page fits one polynomial of growing degree; here axis-aligned splits grow a tree and the ensemble steps, bagging and boosting, are the content.",
+  "needsSource": "Palmer penguins, CC0 (from memory, unverified in this session).",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "ai-l3"
+ },
+ {
+  "slug": "uncertainty-calibration",
+  "title": "Confidence & calibration",
+  "level": 3,
+  "kind": "manipulate",
+  "category": "ai",
+  "interaction": "Train a small classifier on 2-D data and paint its confidence over the plane: it is near certain far from any data, where it has no business being sure. A reliability diagram bins predictions by confidence against how often they are right; drag a temperature slider to rescale the logits and watch the diagram straighten and the calibration error fall, then switch on an ensemble of five networks and see the far-away confidence finally drop where the members disagree.",
+  "takeaway": "A network's softmax confidence is not its probability of being right; one temperature can fix the calibration on data like the training data, but only disagreement between models reveals where there is no data at all.",
+  "prerequisites": [
+   "neural-networks",
+   "bayes-theorem"
+  ],
+  "related": [
+   "gaussian-processes",
+   "markov-chain-monte-carlo",
+   "adversarial-examples",
+   "rlhf-alignment"
+  ],
+  "needs": "",
+  "pitfall": "Temperature scaling changes no predicted class and no accuracy: calibration and accuracy are different things, and a calibrated model can still be confidently wrong off-distribution.",
+  "why": "Guo et al. 2017, On Calibration of Modern Neural Networks: https://arxiv.org/abs/1706.04599",
+  "overlapWith": "gaussian-processes: that page's uncertainty comes from a prior over functions; here it is a trained classifier's confidence and how to correct it.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "ai-l3"
+ },
+ {
+  "slug": "variational-autoencoders",
+  "title": "Autoencoders & variational autoencoders",
+  "level": 3,
+  "kind": "manipulate",
+  "category": "ai",
+  "interaction": "Push clothing images through a bottleneck of two numbers and drag the decoded point around the 2-D latent plane: a plain autoencoder's map has holes and jumps, a VAE's is smooth and dense. Click an image to see its encoding drawn as an ellipse rather than a point, then slide the weight of the KL term from zero upward and watch the encodings crowd toward the unit circle while reconstructions blur.",
+  "takeaway": "A VAE makes each code a distribution pulled toward a standard Gaussian, trading a little reconstruction sharpness for a latent space in which every point decodes to something plausible, so sampling works.",
+  "prerequisites": [
+   "neural-networks",
+   "central-limit-theorem",
+   "bayes-theorem"
+  ],
+  "related": [
+   "diffusion-models",
+   "normalizing-flows",
+   "generative-adversarial-networks",
+   "embeddings",
+   "dimensionality-reduction"
+  ],
+  "needs": "A Fashion-MNIST subset (Zalando, MIT licence) and an autoencoder and a VAE with a 2-D latent trained on it offline (own weights, a few hundred KB) whose decoders run in the browser.",
+  "pitfall": "A VAE is not an autoencoder with noise added: the KL term regularizes the encoder's distribution, not the decoded image, and the reparameterization trick exists so that gradients pass through the sampling step. The blur comes from the pixel-wise likelihood, not from the latent being small.",
+  "why": "Stanford CS236 Deep Generative Models lists VAEs, GANs and flow models as its core: https://bulletin.stanford.edu/courses/2205691",
+  "overlapWith": "diffusion-models: that page generates by denoising noise through many fixed steps; this one compresses through a bottleneck and shows a navigable latent map and the KL trade-off that makes it navigable.",
+  "needsSource": "Fashion-MNIST, MIT licence (confirmed); trained weights are the project's own.",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "ai-l3"
+ },
+ {
+  "slug": "world-models",
+  "title": "World models & model-based RL",
+  "level": 3,
+  "kind": "simulate",
+  "category": "ai",
+  "interaction": "Let an agent act in a small physical world (a cart balancing a pole) while a small network learns to predict the next state from the current state and action; imagined rollouts are drawn as ghosts over the real ones and drift apart as the horizon grows. Slide the number of planning steps taken in imagination per real step and watch the learning curve steepen, then lengthen the imagined horizon until compounding model error has the agent planning for a world that does not exist.",
+  "takeaway": "Learning a model of the world lets an agent practice in imagination, which buys sample efficiency as long as imagined rollouts stay shorter than the horizon at which the model's errors compound.",
+  "prerequisites": [
+   "reinforcement-learning",
+   "neural-networks"
+  ],
+  "related": [
+   "monte-carlo-tree-search",
+   "feedback-control",
+   "evolutionary-algorithms"
+  ],
+  "needs": "",
+  "pitfall": "A world model is not the true physics; show its error growing with horizon. Model-based learning is not always more sample-efficient, and a wrong model can make the agent worse than model-free learning.",
+  "why": "Berkeley CS285 fall 2023, lectures 10 to 12 on planning and model-based RL: https://rail.eecs.berkeley.edu/deeprlcourse-fa23/ ; Ha and Schmidhuber 2018, World Models: https://arxiv.org/abs/1803.10122",
+  "overlapWith": "reinforcement-learning: that page learns values by trial in a grid world; here the agent learns the world's dynamics and plans inside the learned model.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "ai-l3"
+ },
+ {
+  "slug": "battery-runs-down",
+  "title": "A battery is a bucket of pushes",
+  "level": 0,
+  "kind": "simulate",
+  "category": "energy",
+  "interaction": "Put a battery in a torch, switch it on and let the clock run: a gauge shows the store draining and the beam dimming over hours. Fit a bigger bulb and the store empties faster; add a second battery end to end and the bulb is brighter but the pair runs down sooner; put the two side by side and the bulb is as before but lasts twice as long. A counter records the hours each arrangement gives.",
+  "takeaway": "A battery holds a fixed store, so a brighter lamp means a shorter life, and two batteries can be stacked for more push or paired for more hours.",
+  "prerequisites": [],
+  "related": [
+   "light-bulb-hot-wire",
+   "redox-batteries"
+  ],
+  "needs": "",
+  "pitfall": "A battery does not store electricity or electrons: it stores a chemical push, and the electrons that flow were in the wire all along. The bulb does not use current up: the same current leaves the battery as returns to it, and what the bulb takes is the store.",
+  "why": "England KS2 science, Year 6 electricity: 'associate the brightness of a lamp or the volume of a buzzer with the number and voltage of cells used in the circuit', https://www.gov.uk/government/publications/national-curriculum-in-england-science-programmes-of-study",
+  "overlapWith": "electric-circuits: that page wires series and parallel circuits with meters; this page watches one torch over hours and is about the store running out, not the circuit. redox-batteries, at level 2, is the chemistry inside.",
+  "needsSource": "none (a typical AA cell's capacity and discharge shape quoted from a published manufacturer datasheet, cited on the page)",
+  "leadsTo": [
+   "electric-circuits"
+  ],
+  "everyday": true,
+  "origin": "vehicles-and-big-machines"
+ },
+ {
+  "slug": "bicycle-gears",
+  "title": "Bicycle gears",
+  "level": 0,
+  "kind": "manipulate",
+  "category": "energy",
+  "interaction": "Turn the pedals one full turn and count how many times the back wheel turns with the chain on each pair of sprockets. Then set a hill and pedal: a gauge shows how hard each push must be and a marker shows how far one push carries the bike. Shift while climbing to find the gear that is light enough to push and still gets you up.",
+  "takeaway": "A small sprocket in front and a big one at the back turn the wheel less per pedal turn, so each push is easier but carries you a shorter way; no gear gives you more for free.",
+  "prerequisites": [],
+  "related": [
+   "levers-and-scissors",
+   "pulleys-and-cranes",
+   "screws-and-screwdrivers",
+   "wind-up-toy"
+  ],
+  "needs": "",
+  "pitfall": "A low gear does not make the rider stronger or add energy: it trades distance for force, and the wheel turns less for every pedal turn.",
+  "why": "KS2 science, Year 5 Forces: pupils 'recognise that some mechanisms, including levers, pulleys and gears, allow a smaller force to have a greater effect' (statutory text quoted at https://www.stem.org.uk/node/12696); Bartosz Ciechanowski's 'Bicycle' explainer shows the demand for the adult version (https://waxy.org/2023/03/interactive-explainer-of-the-physics-of-a-bicycle).",
+  "overlapWith": "newtons-laws: that page pushes carts and launches projectiles with energy bars; this page is the gear ratio alone, counted in wheel turns per pedal turn and in how hard each push must be on a hill.",
+  "needsSource": "none",
+  "leadsTo": [
+   "newtons-laws"
+  ],
+  "everyday": true,
+  "origin": "home-mechanisms"
+ },
+ {
+  "slug": "bicycle-gears-hills",
+  "title": "Bicycle gears: why low gear gets you up the hill",
+  "level": 0,
+  "kind": "manipulate",
+  "category": "energy",
+  "interaction": "Pedal a bicycle along a road that rises into a hill and shift gears: in a high gear each pedal turn carries you far but the pedals go stiff on the slope and you grind to a halt; in a low gear the pedals spin easily and the bike climbs, slower. Counters show wheel turns per pedal turn and the push needed on the pedal, and a rider of the same strength tries each gear on the same hill.",
+  "takeaway": "Gears trade distance for push: a low gear turns the wheel less per pedal stroke but needs less force, which is what gets a rider up a hill.",
+  "prerequisites": [],
+  "related": [
+   "engine-pushes-to-spin",
+   "crane-counterweight",
+   "roller-coaster-feel"
+  ],
+  "needs": "",
+  "pitfall": "A low gear gives no extra energy and makes no hill shorter: you pedal more turns for the same climb. Gears do not make a bike faster on their own; at the same effort a high gear is faster only where the road is flat.",
+  "why": "Bartosz Ciechanowski's interactive 'Bicycle', https://ciechanow.ski/bicycle/ (curriculum: England KS2 Year 5, levers, pulleys and gears)",
+  "overlapWith": "newtons-laws: that page has carts on tracks with energy bars; this page is the chain, the sprockets and the hill, and the trade between force and distance.",
+  "needsSource": "none",
+  "leadsTo": [
+   "newtons-laws"
+  ],
+  "everyday": true,
+  "origin": "vehicles-and-big-machines"
+ },
+ {
+  "slug": "car-brakes",
+  "title": "Car brakes",
+  "level": 0,
+  "kind": "manipulate",
+  "category": "energy",
+  "interaction": "Press the brake pedal and follow the push: the pedal is a lever, the small piston it moves squeezes fluid that cannot be squashed into the big pistons at the wheels, and those press the pads onto the spinning discs, with gauges showing the force and the distance moved at each stage. Then drive at a chosen speed and brake: the discs glow with the car's motion turned into heat, and the stopping distance grows four times when the speed doubles; wet the road and the tyres skid before the brakes run out.",
+  "takeaway": "A light push on the pedal becomes a crushing squeeze at the wheels because fluid passes the push on to bigger pistons, the car's motion ends up as heat in the discs, and twice the speed needs four times the distance.",
+  "prerequisites": [],
+  "related": [
+   "levers-and-scissors",
+   "seatbelt-crash",
+   "water-taps-and-pipes"
+  ],
+  "needs": "",
+  "pitfall": "Brake fluid does not squash to absorb the push, and the brakes do not stop the car: they stop the wheels, and it is the tyres gripping the road that stops the car.",
+  "why": "KS3 physics, pressure in liquids and hydraulic machines, with the hydraulic jack and brakes as the set applications (STEM Learning KS3 collection 'Forces at a Distance: moments, balance, pressure, hydraulics and pendulums', https://www.stem.org.uk/node/15878; a school scheme at https://medenschool.co.uk/data/uploads/files/MTP_for_Pressure_Moments_and_Densitty.pdf).",
+  "overlapWith": "newtons-laws: that page collides carts and shows energy bars; this page follows one push from pedal to disc through a hydraulic machine and ends with stopping distance against speed.",
+  "needsSource": "none",
+  "leadsTo": [
+   "newtons-laws"
+  ],
+  "everyday": true,
+  "origin": "home-mechanisms"
+ },
+ {
+  "slug": "click-pen",
+  "title": "Click pen",
+  "level": 0,
+  "kind": "step",
+  "category": "energy",
+  "interaction": "Press the button of a retractable pen and step through what happens inside: the plunger's slanted teeth push the cam down and twist it part of a turn, the spring pushes it back up, and the cam lands either on a tooth, which holds the tip out, or slides into a slot, which lets it back in. Scrub the clicks back and forth with the barrel made transparent and count how many it takes for the cam to come round to where it started; then press the tip to paper and watch the ball roll a film of ink out of the tube.",
+  "takeaway": "Every click turns the cam one notch, so it lands alternately on a tooth and in a slot, which is why one press puts the tip out and the next brings it back.",
+  "prerequisites": [],
+  "related": [
+   "lock-and-key",
+   "clock-escapement",
+   "zipper"
+  ],
+  "needs": "",
+  "pitfall": "The pen has no switch that remembers: its memory is the cam's angle, and the ball does not squirt ink, it rolls it out like a tiny paint roller.",
+  "why": "Engineer Guy's 'How does a retractable pen work?' video and its write-up (https://makezine.com/article/craft/retractable-pen-work/); giant clicker-pen builds are a classroom staple (https://www.instructables.com/Giant-Clicker-Pen).",
+  "overlapWith": "logic-gates: that page builds a flip-flop as a circuit; the pen's cam is a mechanical toggle whose state is an angle, and the reader counts clicks, not bits.",
+  "needsSource": "none",
+  "leadsTo": [
+   "logic-gates"
+  ],
+  "everyday": true,
+  "origin": "home-mechanisms"
+ },
+ {
+  "slug": "clock-escapement",
+  "title": "Pendulum clocks & the escapement",
+  "level": 0,
+  "kind": "simulate",
+  "category": "energy",
+  "interaction": "Hang a weight on a cord that turns a toothed wheel and watch the wheel spin away in a blur; add the anchor that rocks with a pendulum, and the wheel can now advance only one tooth per swing, with a tick each time a tooth is caught and a tiny push back to the pendulum to keep it going. Lengthen or shorten the pendulum, or hang a heavier weight, and count ticks against a reference second hand to see which change alters the rate.",
+  "takeaway": "The weight drives the clock and the pendulum only meters it out, one tooth per swing, so the length of the pendulum sets the time and a heavier weight hardly changes the rate.",
+  "prerequisites": [],
+  "related": [
+   "wind-up-toy",
+   "playground-swing",
+   "click-pen"
+  ],
+  "needs": "",
+  "pitfall": "The pendulum does not power the clock, and a bigger swing does not tick faster: for small swings the length alone sets the period.",
+  "why": "Bartosz Ciechanowski's 'Mechanical Watch', the most-shared interactive explainer of a mainspring and escapement (https://pxlnv.com/linklog/mechanical-watch-movement/); KS3 physics collections pair pendulums with moments and pressure (https://www.stem.org.uk/node/15878).",
+  "overlapWith": "oscillations-resonance: that page sets a pendulum's length and plots its period; here the period is a given and the page is the catch-and-release that turns swings into ticks, and why the drive weight does not change the rate.",
+  "needsSource": "none",
+  "leadsTo": [
+   "oscillations-resonance"
+  ],
+  "everyday": true,
+  "origin": "home-mechanisms"
+ },
+ {
+  "slug": "crane-counterweight",
+  "title": "Tower cranes: why they don't fall over",
+  "level": 0,
+  "kind": "build",
+  "category": "energy",
+  "interaction": "Hang a load from a tower crane and slide the trolley out along the jib: the crane leans and tips unless the concrete blocks on the short arm balance it, and a gauge shows how close to tipping it is. Add or remove counterweights and move the load in and out to find the heaviest load the crane can carry at each reach; then rig the hook with two or four rope falls and watch the motor's pull shrink as the rope it must wind grows.",
+  "takeaway": "A crane stands because a heavy block near the tower balances a load far out on the jib, like a seesaw, and the farther out the load, the less it may weigh.",
+  "prerequisites": [],
+  "related": [
+   "hydraulics-digger-arm",
+   "skyscraper-sway-damper",
+   "bicycle-gears-hills"
+  ],
+  "needs": "",
+  "pitfall": "The counterweight is not there to outweigh the load: a small load far out can out-tip a big block close in, because distance counts as much as weight. The pulleys give no free lift: four falls quarter the pull but the motor winds four times the rope.",
+  "why": "England KS2 science, Year 5 forces: 'levers, pulleys and gears allow a smaller force to have a greater effect', https://www.gov.uk/government/publications/national-curriculum-in-england-science-programmes-of-study",
+  "overlapWith": "bridges-structures: that page carries a load to the ground through a frame; this page is the balance of a crane about its base, the load chart it gives, and the rope falls at its hook.",
+  "needsSource": "none",
+  "leadsTo": [
+   "newtons-laws",
+   "bridges-structures"
+  ],
+  "everyday": false,
+  "origin": "vehicles-and-big-machines"
+ },
+ {
+  "slug": "dam-water-height",
+  "title": "Dams and water wheels: the push is in the height",
+  "level": 0,
+  "kind": "manipulate",
+  "category": "energy",
+  "interaction": "Raise the water behind a dam and open its gate: water jets out faster from a deeper reservoir, spins the wheel harder and lights more houses. Move the wheel to the foot of a tall waterfall, then halfway up, and compare; close the gate when the reservoir runs low and wait for rain to refill it. A second stream with ten times the flow but a tenth of the drop lights the same number of houses.",
+  "takeaway": "A dam's power comes from how far the water falls and how much of it falls, so a small high stream can match a big low one.",
+  "prerequisites": [],
+  "related": [
+   "wind-turbine-wind-speed",
+   "power-station-kettle",
+   "geothermal-heat-below"
+  ],
+  "needs": "",
+  "pitfall": "The water at the bottom of a lake is not pushing harder because it is 'stronger': pressure grows with depth, and the same stream falling further carries more. A dam makes no energy of its own: it stores rain that fell on the hills, and with no rain the reservoir empties.",
+  "why": "USGS Water Science School, 'Hydroelectric power: how it works', https://www.usgs.gov/special-topics/water-science-school/science/hydroelectric-power-how-it-works (curriculum: NGSS 4-ESS3-1)",
+  "overlapWith": "power-grid: that page dispatches hydro as one source; this page is the water wheel itself and what height and flow do to it, and nothing about the grid.",
+  "needsSource": "none",
+  "leadsTo": [
+   "newtons-laws"
+  ],
+  "everyday": false,
+  "origin": "vehicles-and-big-machines"
+ },
+ {
+  "slug": "elevator",
+  "title": "Elevator",
+  "level": 0,
+  "kind": "manipulate",
+  "category": "energy",
+  "interaction": "Put people into the cab one at a time and watch the rope over the wheel at the top: a counterweight on the other side balances the empty cab plus about half a load, so the motor only lifts the difference, shown on a gauge that is lowest with the cab half full and highest going up full or down empty. Then arm the safety and cut the rope: the governor's flyweights throw the brake shoes into the rails before the cab has dropped far.",
+  "takeaway": "The motor of an elevator does not lift the whole cab, only the difference between the cab and its counterweight, and it is a speed-triggered brake, not the rope, that keeps a falling cab safe.",
+  "prerequisites": [
+   "pulleys-and-cranes"
+  ],
+  "related": [
+   "escalator",
+   "levers-and-scissors"
+  ],
+  "needs": "",
+  "pitfall": "A snapped rope does not mean a fall, and the motor never carries the full weight of a loaded cab; show the counterweight doing its share.",
+  "why": "'How do elevators work?' is a standing children's question (Wonderopolis, https://wonderopolis.org/wonder/how-do-elevators-work) with adult explainers alongside (https://explainthatstuff.com/how-elevators-work.html).",
+  "overlapWith": "newtons-laws: that page balances forces on carts and projectiles; here two weights hang over one wheel and the motor's job is counted in people.",
+  "needsSource": "none",
+  "leadsTo": [
+   "newtons-laws"
+  ],
+  "everyday": true,
+  "origin": "home-mechanisms"
+ },
+ {
+  "slug": "engine-pushes-to-spin",
+  "title": "Inside a car engine: from pushes to spinning",
+  "level": 0,
+  "kind": "build",
+  "category": "energy",
+  "interaction": "Start with one cylinder: a bang pushes the piston down, the crank turns that push into part of a turn, and a dial shows the shaft speeding up and slowing with every bang, so the car would lurch. Add a second, third and fourth cylinder that fire in turn, then a heavy flywheel, and watch the dial smooth out. Press the bang yourself to feel the timing, then let the engine run.",
+  "takeaway": "An engine turns a string of separate pushes into a steady spin, and cylinders firing in turn plus a heavy wheel are what make it smooth.",
+  "prerequisites": [],
+  "related": [
+   "bicycle-gears-hills",
+   "car-brakes-stopping-distance",
+   "heat-engines"
+  ],
+  "needs": "",
+  "pitfall": "The fuel does not explode the car forward: the burning gas only pushes a piston a few centimetres, and everything else is linkage. A four-stroke cylinder pushes on only one stroke in four, which is why a single cylinder runs so rough.",
+  "why": "Bartosz Ciechanowski's interactive 'Internal Combustion Engine', https://ciechanow.ski/internal-combustion-engine/",
+  "overlapWith": "heat-engines: that page traces the gas round a pressure-volume loop and the efficiency ceiling at level 2; this page is the crank, the firing order and the flywheel, and never draws the loop.",
+  "needsSource": "none (the cylinder's push over a stroke is a simplified pressure profile, stated as such on the page)",
+  "leadsTo": [
+   "newtons-laws"
+  ],
+  "everyday": true,
+  "origin": "vehicles-and-big-machines"
+ },
+ {
+  "slug": "escalator",
+  "title": "Escalator",
+  "level": 0,
+  "kind": "explore",
+  "category": "energy",
+  "interaction": "Scrub the chain of an escalator and follow one step round the loop: it rides on two pairs of wheels on two separate tracks, and because the tracks sit one step-height apart on the slope and level out at the ends, the step stays flat all the way up, sinks into a flat floor at the top and turns over underneath. Drag the two tracks closer together or further apart and watch the steps tilt; zoom into the landing to see why the comb has to mesh with grooves in the step.",
+  "takeaway": "The steps of an escalator do not fold; they are rigid, and it is the shape of the two tracks they ride on that keeps them level on the slope and flattens them at each end.",
+  "prerequisites": [],
+  "related": [
+   "elevator",
+   "bicycle-gears"
+  ],
+  "needs": "",
+  "pitfall": "Steps are not hinged flaps that fold flat, and the handrail is a separate belt driven to match the step speed, not part of the step chain.",
+  "why": "'How Escalators Work' (HowStuffWorks, https://science.howstuffworks.com/transport/engines-equipment/escalator.htm) is reused as a KS2 reading-comprehension text by primary schools (https://longton-st-oswalds.lancs.sch.uk/serve_file/971111).",
+  "overlapWith": "bridges-structures: that page is about forces in members; the escalator page is pure geometry, a rigid step on two tracks, with no forces at all.",
+  "needsSource": "none",
+  "leadsTo": [
+   "unit-circle"
+  ],
+  "everyday": true,
+  "origin": "home-mechanisms"
+ },
+ {
+  "slug": "hydraulics-digger-arm",
+  "title": "Diggers and hydraulics: a small push becomes a huge one",
+  "level": 0,
+  "kind": "manipulate",
+  "category": "energy",
+  "interaction": "Push a small piston and watch oil shove a much bigger piston at the digger's arm: the big one moves with many times the force but only a fraction of the distance, and a counter shows the two trade places exactly. Change the piston sizes and lift a car, then a boulder; let an air bubble into the pipe and the arm goes spongy. Drive the three cylinders of a digger's boom, arm and bucket to scoop and dump.",
+  "takeaway": "A liquid passes a push on undiminished, so a wide piston lifts many times what a narrow one is pushed with, paid for in distance.",
+  "prerequisites": [],
+  "related": [
+   "crane-counterweight",
+   "car-brakes-stopping-distance"
+  ],
+  "needs": "",
+  "pitfall": "Hydraulics make no energy: the work in equals the work out, the small piston simply travels much farther. A liquid does not squash, which is the whole point; a spongy brake pedal is air in the line.",
+  "why": "England KS3 science, forces: pressure in fluids and hydraulics, https://www.gov.uk/government/publications/national-curriculum-in-england-science-programmes-of-study (PhET 'Under Pressure' covers the same ground for middle school)",
+  "overlapWith": "bridges-structures: that page carries loads through members in tension and compression; this page is the fluid push inside a digger's cylinders and the force-for-distance trade.",
+  "needsSource": "none",
+  "leadsTo": [
+   "newtons-laws",
+   "bridges-structures"
+  ],
+  "everyday": false,
+  "origin": "vehicles-and-big-machines"
+ }
+]

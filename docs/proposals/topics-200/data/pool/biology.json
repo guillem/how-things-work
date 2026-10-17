@@ -494,5 +494,759 @@
    "photosynthesis"
   ],
   "origin": "living-things-and-body"
+ },
+ {
+  "slug": "bacterial-chemotaxis",
+  "title": "Bacterial chemotaxis",
+  "level": 3,
+  "kind": "simulate",
+  "category": "biology",
+  "interaction": "Release a few hundred E. coli into a dish with a drop of attractant and watch each one run straight, tumble, and run again; inside each cell a Barkai-Leibler receptor model sets the tumble rate, and the swarm drifts up the gradient. Move the drop, flood the dish with a uniform dose and watch the tumble rate dip then recover exactly (perfect adaptation), and change the adaptation time or the swim speed to see the biased random walk fail.",
+  "takeaway": "A bacterium is too small to sense a gradient across its body, so it compares now with a moment ago and tumbles less when things are getting better; that biased random walk is enough to climb a gradient.",
+  "prerequisites": [
+   "the-cell"
+  ],
+  "related": [
+   "quorum-sensing",
+   "feedback-control",
+   "homeostasis"
+  ],
+  "needs": "",
+  "pitfall": "The cell does not steer toward the attractant: it cannot tell direction, it only changes how often it tumbles, and the page must not draw it turning toward the source.",
+  "why": "CourseSource lesson on building and simulating a chemotaxis model in Cell Collective (QUBES): https://qubeshub.org/publications/5179/",
+  "overlapWith": "ecosystems: that page moves animals on a field by population rates; here each cell's movement follows an internal signalling model and the collective drift emerges from it.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "biology-l3"
+ },
+ {
+  "slug": "cell-cycle-switch",
+  "title": "Cell cycle control",
+  "level": 3,
+  "kind": "simulate",
+  "category": "biology",
+  "interaction": "Run the Novak-Tyson model of the cyclin-Cdk switch: cyclin accumulates, Cdk activity stays low until a threshold, then flips high through its positive feedback loops and the cell enters mitosis; the negative loop through the anaphase-promoting complex destroys cyclin and resets it. Raise and lower cyclin by hand to trace the hysteresis loop, change the cell's growth rate to see the period change, and apply a DNA-damage checkpoint that holds the switch off.",
+  "takeaway": "A cell divides when a bistable switch flips, not when a timer runs out: positive feedback makes the decision sharp and hard to reverse, and checkpoints work by holding the switch below its threshold.",
+  "prerequisites": [
+   "signalling-cascades",
+   "the-cell"
+  ],
+  "related": [
+   "cancer",
+   "meiosis-inheritance",
+   "circadian-clocks",
+   "oscillations-resonance"
+  ],
+  "needs": "Tyson 1991 cyclin-Cdc2 model (BioModels BIOMD0000000005, CC0) or the Novak-Tyson 1993 model as curated in BioModels (CC0).",
+  "pitfall": "The cycle is not a clock that ticks regardless of state; in the model it is a relaxation oscillator built on a bistable switch, and the page must show the switch flipping, not a smooth sine wave.",
+  "why": "Tyson & Novak, 'Cell Cycle Vignettes: Bistability and Oscillations' (Virginia Tech teaching note): https://www.biol.vt.edu/content/dam/biol_vt_edu/faculty/tyson/Bistability%20and%20Oscillations.pdf",
+  "overlapWith": "cancer: that page lets cells divide too often by mutation; this one shows the machinery that decides when a single cell divides, which cancer's mutations break.",
+  "needsSource": "BioModels curated models, CC0.",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "biology-l3"
+ },
+ {
+  "slug": "central-pattern-generators",
+  "title": "Central pattern generators",
+  "level": 3,
+  "kind": "simulate",
+  "category": "biology",
+  "interaction": "Connect two neuron models with mutual inhibition and give them a steady, unpatterned drive; they fall into alternating bursts, the half-centre oscillator. Change the drive to speed the rhythm, swap the burst-ending mechanism (adaptation versus post-inhibitory rebound), then chain twenty such pairs along a lamprey's spine with asymmetric coupling: a wave of contraction travels down the body and the fish swims; reverse the coupling bias and it swims backward.",
+  "takeaway": "Rhythmic movement does not need a rhythmic command: two cells that inhibit each other turn a constant signal into alternation, and a chain of them makes a travelling wave.",
+  "prerequisites": [
+   "neurons",
+   "oscillations-resonance"
+  ],
+  "related": [
+   "circadian-clocks",
+   "feedback-control",
+   "synaptic-plasticity"
+  ],
+  "needs": "",
+  "pitfall": "The half-centre model is a model: lamprey experiments show left-right phasing can survive midline lesions, so the page must present it as the classic mechanism, not the settled one.",
+  "why": "Model repository rather than a syllabus: lamprey swimming CPG reference implementation in the Nengo model zoo, https://zoo.nengo.ai/submissions/lamprey/index.html (no curriculum signal found in this round).",
+  "overlapWith": "neurons: that page fires one neuron and sums inputs on the next; this one wires neurons into a circuit whose output is a rhythm none of them has alone.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "biology-l3"
+ },
+ {
+  "slug": "circadian-clocks",
+  "title": "Circadian clocks",
+  "level": 3,
+  "kind": "simulate",
+  "category": "biology",
+  "interaction": "Run a clock gene that represses its own transcription through a delay (a Goodwin-type loop, with the Leloup-Goldbeter model for the real gene names) and watch mRNA and protein chase each other in a cycle close to 24 hours in constant darkness. Add a light input to the degradation term and the clock locks to the day; shift the light schedule by eight hours and count how many days the phase takes to catch up, eastward versus westward; shorten the delay and the rhythm stops.",
+  "takeaway": "A gene that switches itself off with a delay oscillates on its own, and daylight does not drive that rhythm but nudges it into step, which is why jet lag takes days to resolve.",
+  "prerequisites": [
+   "lac-operon",
+   "oscillations-resonance"
+  ],
+  "related": [
+   "cell-cycle-switch",
+   "homeostasis",
+   "feedback-control"
+  ],
+  "needs": "Leloup & Goldbeter circadian model as curated in BioModels (CC0); the Goodwin oscillator needs no data.",
+  "pitfall": "The rhythm persists without any external cue: the page must show free-running oscillation in constant darkness, and must not show the clock as a response to sunrise.",
+  "why": "MPI MiS course on mathematical modelling of circadian rhythms: https://www.mis.mpg.de/events/event/mathematical-modeling-of-circadian-rhythms",
+  "overlapWith": "oscillations-resonance: that page is a mass on a spring driven by a force; this is a limit-cycle oscillator made of a delayed negative feedback loop, entrained rather than driven.",
+  "needsSource": "BioModels curated models, CC0.",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "biology-l3"
+ },
+ {
+  "slug": "coalescent",
+  "title": "The coalescent",
+  "level": 3,
+  "kind": "step",
+  "category": "biology",
+  "interaction": "Sample ten gene copies from a population and step backwards one generation at a time: each copy picks a parent at random, two lineages that pick the same parent merge, and the genealogy grows down to a single ancestor with its branch lengths. Rerun to see how much the tree varies, change the population size and watch the time to the common ancestor scale with it, and sprinkle mutations on the branches to produce the sample's sequence differences. Squeeze the population through a bottleneck and see the genealogy and the diversity collapse.",
+  "takeaway": "The pattern of differences in a sample of DNA sequences is the shadow of a random genealogy, and reading that genealogy backwards tells you how large the population was and when it shrank.",
+  "prerequisites": [
+   "population-genetics",
+   "central-limit-theorem"
+  ],
+  "related": [
+   "phylogenetics",
+   "speciation",
+   "deep-time"
+  ],
+  "needs": "",
+  "pitfall": "The most recent common ancestor of a sample is not the first human or a single couple; different genes have different ancestors at different times, and the page should show two loci with different trees.",
+  "why": "coalesceR, a pedagogical R package for teaching the basics of coalescent theory: https://rdrr.io/rforge/coalesceR",
+  "overlapWith": "population-genetics: that page runs time forward for a whole population; this one runs it backward for a sample, which is how real sequence data are read.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "biology-l3"
+ },
+ {
+  "slug": "dna-sequencing",
+  "title": "DNA sequencing & genome assembly",
+  "level": 3,
+  "kind": "build",
+  "category": "biology",
+  "interaction": "Sequence a real virus: run a Sanger reaction and sort its fluorescent fragments by length into a chromatogram, then switch to shotgun reads of the whole phiX174 genome and assemble them yourself. Choose read length, coverage and k, watch the de Bruijn graph form from k-mers and collapse into contigs, see repeats tangle the graph and sequencing errors sprout dead ends, and compare the assembly with the true genome.",
+  "takeaway": "A genome is never read in one piece: it is read as many short overlapping fragments and recovered by a graph algorithm whose success depends on coverage, read length and the genome's repeats.",
+  "prerequisites": [
+   "dna-to-protein",
+   "graph-search"
+  ],
+  "related": [
+   "phylogenetics",
+   "error-correction",
+   "crispr"
+  ],
+  "needs": "The phiX174 genome (GenBank NC_001422, 5,386 bases; NCBI places no restrictions on reuse of GenBank records).",
+  "pitfall": "Sequencing does not read a chromosome end to end; the page must show that short reads lose information in repeats longer than a read, which no amount of coverage recovers.",
+  "why": "NUS CS4330 lecture 'Practical de Bruijn graph assembly' (a standard bioinformatics-course exercise is assembling phiX174): https://www.comp.nus.edu.sg/~wongls/courses/cs4330/2024/12-practical-dbg-assembly.pdf",
+  "overlapWith": "crispr: that page cuts DNA at a matched site; this one reads DNA, and its algorithmic core (graphs of overlapping k-mers) has no counterpart in the catalogue.",
+  "needsSource": "GenBank NC_001422, no reuse restrictions (NCBI policy).",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "biology-l3"
+ },
+ {
+  "slug": "epigenetic-memory",
+  "title": "Epigenetic memory",
+  "level": 3,
+  "kind": "simulate",
+  "category": "biology",
+  "interaction": "Run a row of nucleosomes that carry a silencing or an activating mark; each marked nucleosome recruits enzymes that convert others, including non-neighbours, and every cell division dilutes the marks by half. Set the recruitment strength and feedback range and watch the row lock into all-silent or all-active and hold that state through dozens of divisions; weaken the cooperativity and the memory decays; force the region silent with a transient pulse and see the state persist after the pulse is gone.",
+  "takeaway": "A cell can remember a decision without changing its DNA: marks on chromatin that recruit their own copiers form a bistable system that survives being halved at each division.",
+  "prerequisites": [
+   "dna-to-protein",
+   "the-cell"
+  ],
+  "related": [
+   "lac-operon",
+   "cell-cycle-switch",
+   "cancer",
+   "meiosis-inheritance"
+  ],
+  "needs": "",
+  "pitfall": "Most chromatin marks are reset between generations; the page must not slide from cellular memory into inheritance of acquired characteristics across organisms.",
+  "why": "Lecture video rather than a syllabus: math-institute lecture on the Dodd-Sneppen nucleosome-modification model of epigenetic memory, https://mathinstitutes.org/videos/4418 (no curriculum signal found in this round).",
+  "overlapWith": "dna-to-protein: that page reads a gene; this one decides whether the gene stays readable at all, through marks on the packaging rather than the sequence (model of Dodd et al. 2007).",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "biology-l3"
+ },
+ {
+  "slug": "evolutionary-games",
+  "title": "Evolutionary game theory",
+  "level": 3,
+  "kind": "simulate",
+  "category": "biology",
+  "interaction": "Set the payoffs of a hawk-dove contest and release a population of players; replicator dynamics pulls the share of hawks to the mixed equilibrium that neither strategy can invade, drawn as a flow on a line. Switch to the prisoner's dilemma and watch cooperators die out, then place the players on a grid where they meet neighbours and see clusters of cooperators survive; add relatedness between players and find the cost-to-benefit ratio at which helping kin pays, Hamilton's rule.",
+  "takeaway": "When fitness depends on what others do, the winning strategy is the one that cannot be invaded rather than the one that scores most, and cooperation survives only when cooperators meet each other more often than chance.",
+  "prerequisites": [
+   "evolution",
+   "population-genetics"
+  ],
+  "related": [
+   "ecosystems",
+   "speciation",
+   "reinforcement-learning"
+  ],
+  "needs": "",
+  "pitfall": "Evolutionary stability does not mean the population is at its best: hawks persist even though a population of doves would score higher, and the page must show that the equilibrium is not the optimum.",
+  "why": "ELTE course on evolutionary game theory (hawk-dove, replicator dynamics, ESS, altruism): https://neptun.elte.hu/MobilityCourses/Course/evojatsb22em",
+  "overlapWith": "evolution: that page's fitness is fixed by the environment; here fitness depends on what the rest of the population does, which produces equilibria that selection on a fixed landscape never does. It also covers the biological half of the Reserve item 'Game theory' (replicator dynamics, ESS), leaving classical game theory to a math lens.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "biology-l3"
+ },
+ {
+  "slug": "gene-expression-noise",
+  "title": "Noise in gene expression",
+  "level": 3,
+  "kind": "simulate",
+  "category": "biology",
+  "interaction": "Run a single gene with the Gillespie algorithm: the promoter flicks on and off, each on-period fires a burst of mRNAs, each mRNA a burst of proteins. Set the switching, transcription, translation and decay rates and watch the protein count jitter in one cell while a histogram across a thousand cells widens or narrows. Add a second identical reporter to the same cell and plot one against the other: scatter along the diagonal is shared, extrinsic noise; scatter across it is the gene's own, intrinsic noise.",
+  "takeaway": "Genetically identical cells in the same environment differ because their molecules are counted in tens and made in bursts, and a two-reporter scatter plot separates the randomness of the gene itself from the randomness of the cell around it.",
+  "prerequisites": [
+   "dna-to-protein",
+   "central-limit-theorem"
+  ],
+  "related": [
+   "lac-operon",
+   "genetic-circuits",
+   "luria-delbruck"
+  ],
+  "needs": "",
+  "pitfall": "Noise does not simply average out at higher expression: bursty expression keeps the Fano factor above one, so the model must produce bursts, not a Poisson stream of single proteins.",
+  "why": "LMU Munich 'Biophysics of Systems' lecture on stochastic gene expression (Elowitz 2002 two-reporter experiment): https://www2.physik.uni-muenchen.de/lehre/vorlesungen/wise_20_21/Biophysics_of_Systems/04b_StochasticGenes_2E.pdf",
+  "overlapWith": "central-limit-theorem: that page shows averages converging; here the counts are so small that the fluctuations are the biology, and bursts keep them from averaging out.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "biology-l3"
+ },
+ {
+  "slug": "genetic-circuits",
+  "title": "Synthetic gene circuits: toggle switch & repressilator",
+  "level": 3,
+  "kind": "build",
+  "category": "biology",
+  "interaction": "Wire promoters, repressors and a fluorescent reporter into a circuit on a plasmid, set repression strength, cooperativity and degradation rates, and run it. Two genes that repress each other make a switch that a pulse of inducer flips and that stays flipped; three in a ring make an oscillator whose fluorescence blinks, and the reader finds the parameter region where the blinking dies. A stochastic solver shows the same circuit jitter in a single cell.",
+  "takeaway": "Two genes that repress each other remember a state and three in a ring keep time, so the logic of a cell's control can be built from a handful of parts, and whether a circuit works depends on the numbers, not just the wiring.",
+  "prerequisites": [
+   "lac-operon",
+   "dna-to-protein"
+  ],
+  "related": [
+   "gene-expression-noise",
+   "logic-gates",
+   "oscillations-resonance",
+   "feedback-control"
+  ],
+  "needs": "Repressilator model of Elowitz & Leibler 2000 as curated in BioModels (BIOMD0000000012, CC0); toggle-switch equations and parameters from Gardner, Cantor & Collins 2000 (published values, no dataset).",
+  "pitfall": "Oscillation is not guaranteed by the ring: with weak repression or low cooperativity the repressilator settles to a steady state, so the page must show the dead region rather than a circuit that always blinks.",
+  "why": "Yale 'Biologic' module teaching the toggle switch and repressilator to biology and premedical students: https://arxiv.org/abs/1307.3126",
+  "overlapWith": "logic-gates: that page composes ideal digital gates; here each gate is a leaky, continuous repressor with a time constant, and the question is which wirings still switch or oscillate.",
+  "needsSource": "BioModels curated repressilator (CC0); toggle-switch parameters from the paper, no dataset needed.",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "biology-l3"
+ },
+ {
+  "slug": "genetic-code-error-tolerance",
+  "title": "The genetic code's error tolerance",
+  "level": 3,
+  "kind": "explore",
+  "category": "biology",
+  "interaction": "Hover any codon in the genetic-code table to see which amino acids one base change can reach, coloured by how different their chemistry is, and total a cost for the whole code. Then press shuffle: the page draws thousands of random codes that keep the same block structure, scores each one, and builds a histogram with the standard code marked; change the cost measure (polarity, volume, charge) or the mutation bias and watch where the standard code lands.",
+  "takeaway": "Most single-base errors in the real code swap an amino acid for a chemically similar one, and among random codes with the same structure only a tiny fraction do better, though how tiny depends on what you measure.",
+  "prerequisites": [
+   "dna-to-protein",
+   "protein-folding"
+  ],
+  "related": [
+   "population-genetics",
+   "quasispecies-error-threshold",
+   "error-correction"
+  ],
+  "needs": "Amino-acid polar requirement (Woese 1966) and other physico-chemical scales from the published literature; the standard code table (public domain).",
+  "pitfall": "The 'one in a million' figure holds only for polar requirement with a transition/transversion bias; with volume or charge the standard code is far less special, and the page must not present the code as uniquely optimal.",
+  "why": "Freeland & Hurst 1998 as a course reading in Swarthmore Phys 120: https://www.sccs.swarthmore.edu/users/08/bblonder/phys120/docs/freeland.pdf",
+  "overlapWith": "dna-to-protein: that page shows what one mutation does to one protein; this one scores the whole table against every alternative code.",
+  "needsSource": "Published amino-acid property scales (literature values); code table public domain.",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "biology-l3"
+ },
+ {
+  "slug": "lac-operon",
+  "title": "Gene regulation & the lac operon",
+  "level": 3,
+  "kind": "manipulate",
+  "category": "biology",
+  "interaction": "Set the lactose and glucose in a bacterium's medium and watch an ODE model of the lac operon respond: the repressor leaves the operator when an inducer is present, CAP recruits the polymerase only when glucose is low, and the permease the operon makes imports more inducer. Sweep the inducer up and then down to trace the hysteresis loop, and grow a culture on both sugars to see the diauxic pause when the glucose runs out.",
+  "takeaway": "A bacterium switches a set of genes on only when their product is useful and nothing better is around, and positive feedback through its own transporter turns that switch into a memory: the same inducer level can leave the operon on or off depending on where it came from.",
+  "prerequisites": [
+   "dna-to-protein",
+   "reaction-rates-equilibrium"
+  ],
+  "related": [
+   "gene-expression-noise",
+   "crispr"
+  ],
+  "needs": "",
+  "pitfall": "Bistability and hysteresis were measured with the gratuitous inducer TMG; with plain lactose the loop is weak or absent because lactose is also consumed, so the page must not present lactose itself as a memory switch.",
+  "why": "MIT OCW 7.01SC Fundamentals of Biology, module 'Gene Regulation and the Lac Operon': https://ocw.mit.edu/courses/7-01sc-fundamentals-of-biology-fall-2011/resources/molecbio_sess5",
+  "overlapWith": "dna-to-protein: that page reads one gene into a protein; this one is about when the gene is read at all, as a dynamical switch with feedback (model of Ozbudak et al. 2004).",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "biology-l3"
+ },
+ {
+  "slug": "luria-delbruck",
+  "title": "Luria-Delbruck: mutations before selection",
+  "level": 3,
+  "kind": "step",
+  "category": "biology",
+  "interaction": "Step through the 1943 experiment: grow twenty cultures from single cells for a chosen number of generations at a chosen mutation rate, plate them all on a phage lawn, and count the survivors. If mutations arose only on contact with the phage the counts would be Poisson and nearly equal; instead a few plates hold hundreds of mutants, the jackpots, because a mutation that happened early was inherited by a whole clone. Replay with mutations induced at plating to see the Poisson alternative, and estimate the mutation rate from the fraction of empty plates.",
+  "takeaway": "Mutations happen before and regardless of the challenge they will later face, and the wild spread between replicate cultures is the signature of that.",
+  "prerequisites": [
+   "evolution",
+   "central-limit-theorem"
+  ],
+  "related": [
+   "population-genetics",
+   "cancer",
+   "crispr",
+   "quasispecies-error-threshold"
+  ],
+  "needs": "",
+  "pitfall": "The jackpot distribution does not show that the environment induces mutations; it shows the opposite, and the page must make the Poisson alternative explicit so the reader sees it fail.",
+  "why": "'Fascination with Fluctuation: Luria and Delbruck's Legacy', on the experiment in undergraduate mathematics education (University of Delaware): https://udspace.udel.edu/items/2837763f-b87a-465a-9701-2b96405d98f5/full",
+  "overlapWith": "evolution: that page's pitfall says mutations do not arise because they are needed; this one is the experiment that proved it, run as a statistics-of-clones simulation.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "biology-l3"
+ },
+ {
+  "slug": "membrane-potential",
+  "title": "Membrane transport & the resting potential",
+  "level": 3,
+  "kind": "manipulate",
+  "category": "biology",
+  "interaction": "Drag the ion concentrations on each side of a membrane and the permeability of each channel type, and watch ions cross while the voltage settles: with only potassium channels open it sits at the Nernst potential, and as sodium leaks in it drifts toward the Goldman-Hodgkin-Katz value shown live. Switch the sodium-potassium pump off and watch the gradients, the voltage and the cell's volume decay over simulated hours; then dilute the outside solution and see water follow the ions.",
+  "takeaway": "A cell's voltage is a weighted average of each ion's equilibrium potential, weighted by how permeable the membrane is to it, and holding that voltage and the cell's volume costs a steady stream of ATP through the pump.",
+  "prerequisites": [
+   "neurons",
+   "the-cell"
+  ],
+  "related": [
+   "respiration-atp",
+   "electric-circuits",
+   "homeostasis"
+  ],
+  "needs": "",
+  "pitfall": "The pump's direct electrical contribution to the resting potential is a few millivolts; the voltage comes mostly from the potassium gradient the pump maintains, and the page must not show the pump charging the membrane like a battery.",
+  "why": "University of Kent LearnSci module on membrane potential, with Nernst and GHK calculation as learning outcomes: https://www.learnsci.com/resources/membrane-potential",
+  "overlapWith": "neurons: that page fires an action potential on top of a resting voltage it takes for granted; this one builds that resting voltage from gradients, permeabilities and the pump.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "biology-l3"
+ },
+ {
+  "slug": "metabolic-flux",
+  "title": "Metabolic networks & flux balance",
+  "level": 3,
+  "kind": "manipulate",
+  "category": "biology",
+  "interaction": "Open a map of central carbon metabolism (glycolysis, the pentose phosphate pathway, the TCA cycle, fermentation, respiration) with every reaction's stoichiometry, and choose what the cell maximises and what it may take up. A linear-programme solver in the browser finds the flux through every reaction, drawn as arrow widths; cut the oxygen supply and watch flux reroute to fermentation, knock out a gene and see whether growth survives by a detour, and sweep the glucose uptake to trace growth rate against it.",
+  "takeaway": "Knowing only which reactions exist and that nothing accumulates, a cell's best possible division of flux can be computed, and the network's detours are what make most single knockouts survivable.",
+  "prerequisites": [
+   "respiration-atp",
+   "enzyme-kinetics",
+   "linear-transformations"
+  ],
+  "related": [
+   "photosynthesis",
+   "rubisco-photorespiration",
+   "graph-search"
+  ],
+  "needs": "A documented core E. coli network. The BiGG e_coli_core model is free for educational and non-profit use but not openly licensed (UC Regents terms), so build the network from textbook stoichiometry with references, or from a CC0 BioModels-curated central-metabolism model.",
+  "pitfall": "FBA predicts a bound, not a measurement: it has no kinetics and no regulation, so the page must say that the optimum is a hypothesis about what the cell maximises and that real fluxes can differ.",
+  "why": "UCSD Systems Biology Research Group FBA tutorial with the core E. coli model: https://sbrg.ucsd.edu/node/61",
+  "overlapWith": "respiration-atp: that page follows one glucose through the pathways; this one treats the whole network at once and asks how flux divides among all routes.",
+  "needsSource": "BiGG e_coli_core is non-commercial only (weak); textbook stoichiometry needs no licence; BioModels is CC0.",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "biology-l3"
+ },
+ {
+  "slug": "microbiome-dynamics",
+  "title": "The microbiome as an ecosystem",
+  "level": 3,
+  "kind": "simulate",
+  "category": "biology",
+  "interaction": "Run a gut community of ten bacterial groups with the interaction matrix Stein et al. inferred from mouse data; it settles to a stable mix. Dose it with an antibiotic for a chosen number of days and watch some groups crash and others bloom; introduce C. difficile before, during and after the course and see it fail, invade, or take hold; stop the antibiotic and find that the community does not always return, then transplant a healthy community to push it back.",
+  "takeaway": "A gut community is a web of competition and support with more than one stable state, so a disturbance can tip it into a new one that persists after the disturbance is gone.",
+  "prerequisites": [
+   "ecosystems",
+   "the-cell"
+  ],
+  "related": [
+   "epidemics",
+   "immune-system",
+   "evolutionary-games"
+  ],
+  "needs": "Generalized Lotka-Volterra interaction matrix and antibiotic susceptibilities from Stein et al. 2013, PLOS Computational Biology (CC BY).",
+  "pitfall": "The parameters come from mice and one antibiotic, and gLV fits are uncertain; the page must say the model illustrates the dynamics and is not a prediction for a human gut.",
+  "why": "Demand: public coverage of ecological modelling of the gut microbiota (Gut Microbiota for Health): https://www.gutmicrobiotaforhealth.com/ecological-modeling-of-intestinal-microbiota/ ; model source is Stein et al. 2013, https://doi.org/10.1371/journal.pcbi.1003388 (no curriculum signal found in this round).",
+  "overlapWith": "ecosystems: that page has one predator, one prey and a small food web; here a ten-group community with alternative stable states, driven by real inferred interactions and perturbed by an antibiotic.",
+  "needsSource": "PLOS Computational Biology article and supplementary parameters, CC BY.",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "biology-l3"
+ },
+ {
+  "slug": "molecular-motors",
+  "title": "Molecular motors: how kinesin walks",
+  "level": 3,
+  "kind": "simulate",
+  "category": "biology",
+  "interaction": "Watch a kinesin dimer take 8 nm steps along a microtubule while a cargo bead trails it in a simulated optical trap; each step waits a random time set by ATP binding and hydrolysis, so the trace is a staircase with jittery dwells. Lower the ATP concentration and the dwells lengthen; raise the backward load and the motor slows, stalls near 7 pN and starts stepping backward; plot velocity against force and against ATP and compare the shapes with published single-molecule curves.",
+  "takeaway": "A molecular motor is not a tiny engine with a steady push: it takes random, thermally driven steps that ATP hydrolysis biases forward, and a load of a few piconewtons is enough to stop it.",
+  "prerequisites": [
+   "respiration-atp",
+   "newtons-laws"
+  ],
+  "related": [
+   "enzyme-kinetics",
+   "the-cell",
+   "heat-engines"
+  ],
+  "needs": "Discrete-state mechanochemical model and parameters from Fisher & Kolomeisky 2001 (PNAS, published values); a kinesin structure from the Protein Data Bank (CC0) for the illustration.",
+  "pitfall": "Do not draw the motor as pulled by a constant force or sliding smoothly; at this scale thermal motion dominates, and the forward bias comes from rectifying it with chemical energy.",
+  "why": "Workshop lecture notes rather than a syllabus: BIRS lecture on molecular-motor stepping citing Kolomeisky & Fisher as the standard model, https://stats.birs.ca/workshops/2018/18w5144/files/fricks.pdf (no curriculum signal found in this round).",
+  "overlapWith": "respiration-atp: that page makes ATP with a rotary motor; this one spends ATP to move along a track, with the stochastic stepping shown rather than a turning rotor.",
+  "needsSource": "Model parameters from the published paper; PDB structures are CC0.",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "biology-l3"
+ },
+ {
+  "slug": "morphogen-gradients",
+  "title": "Morphogen gradients & positional information",
+  "level": 3,
+  "kind": "manipulate",
+  "category": "biology",
+  "interaction": "Drag the production rate, diffusion constant and lifetime of a morphogen made at one end of an embryo and watch its concentration profile settle into an exponential whose length scale the page reports. Set two or three thresholds and the cells paint themselves in bands, Wolpert's French flag; double the embryo's length to see the bands fail to scale, then switch on a scaling mechanism and compare; add noise to see which boundaries are robust.",
+  "takeaway": "A cell can learn where it is from how much of one substance reaches it, and the shape of that gradient, set by diffusion and decay, decides where the boundaries fall.",
+  "prerequisites": [
+   "the-cell",
+   "dna-to-protein"
+  ],
+  "related": [],
+  "needs": "",
+  "pitfall": "The synthesis-diffusion-degradation model is a working hypothesis and the Bicoid gradient's formation is still debated; the page must present the exponential as what the model predicts and say where it is tested.",
+  "why": "Stanford course on morphogenesis listing morphogen gradients and Turing patterns: https://bulletin.stanford.edu/courses/2126934",
+  "overlapWith": "the-cell: that page zooms into one cell; this one shows how thousands of cells in a row find out which part of the body they are making.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "biology-l3"
+ },
+ {
+  "slug": "phylogenetics",
+  "title": "Phylogenetics: building the tree of life",
+  "level": 3,
+  "kind": "build",
+  "category": "biology",
+  "interaction": "Pick a handful of species, align their cytochrome b sequences and watch the page count differences into a distance matrix. Build the tree by UPGMA, merging the closest pair step by step, then rebuild it by neighbour joining and see where the two disagree; speed up one lineage's clock and watch UPGMA put it in the wrong place; switch to a parsimony score and drag branches to try to beat the algorithm.",
+  "takeaway": "A tree of life is not observed but computed from the differences between sequences, and a method's assumptions, such as a constant rate of change, decide which tree it finds.",
+  "prerequisites": [
+   "dna-to-protein",
+   "evolution",
+   "graph-search"
+  ],
+  "related": [
+   "coalescent",
+   "dna-sequencing",
+   "deep-time",
+   "sorting"
+  ],
+  "needs": "Mitochondrial cytochrome b (or 16S rRNA) sequences for a dozen species from GenBank (NCBI places no restrictions on reuse); the species' accepted relationships from the Open Tree of Life synthetic tree for comparison (reported CC0, to confirm on the project site).",
+  "pitfall": "Humans are not at the 'top' of the tree and no living species is the ancestor of another: the page must let the reader rotate nodes to show that only the branching order carries information.",
+  "why": "CUHK BMEG3102 Bioinformatics tutorial on molecular phylogenetics (UPGMA, NJ, parsimony, likelihood): https://webarchive.lib.cuhk.edu.hk/20210407143348mp_/http:/www.cse.cuhk.edu.hk/~qdou/bmeg3102/tutorials/BMEG3102_2021Spring_Tutorial06_MolecularPhylogenetics_CUHK.pdf",
+  "overlapWith": "deep-time: that page scrubs a dated timeline of life; this one computes the branching order from today's sequences and has no dates until a clock is assumed.",
+  "needsSource": "GenBank sequences, no reuse restrictions (load-bearing); Open Tree of Life reported CC0, to confirm.",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "biology-l3"
+ },
+ {
+  "slug": "population-genetics",
+  "title": "Population genetics: drift & selection",
+  "level": 3,
+  "kind": "simulate",
+  "category": "biology",
+  "interaction": "Run a hundred Wright-Fisher populations at once as allele-frequency traces: with no selection they wander and fix at random, faster in small populations; with a selection coefficient s they bend toward fixation, and a counter shows how often a new beneficial mutation is lost anyway, approaching Kimura's 2s. Set dominance to see recessive alleles hide from selection, and compare the Hardy-Weinberg genotype frequencies with the simulated ones each generation.",
+  "takeaway": "Allele frequencies change by chance as well as by selection, and in a small population chance wins: most beneficial mutations are lost before selection can act on them.",
+  "prerequisites": [
+   "meiosis-inheritance",
+   "evolution",
+   "central-limit-theorem"
+  ],
+  "related": [
+   "luria-delbruck",
+   "cancer"
+  ],
+  "needs": "",
+  "pitfall": "Hardy-Weinberg is not 'evolution stops': it is the one-generation baseline that shows which forces are absent, and drift is not selection by another name; the page must keep them separate.",
+  "why": "Cal State LA BIOL 415 Population Genetics syllabus (Hardy-Weinberg, drift, effective size, selection, coalescent): https://www.calstatela.edu/sites/default/files/syllabibiol415.pdf",
+  "overlapWith": "evolution: that page shifts a trait distribution with predators and food; this one tracks a single allele's frequency and separates chance from selection with explicit N and s.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "biology-l3"
+ },
+ {
+  "slug": "quasispecies-error-threshold",
+  "title": "Origin of life & the error threshold",
+  "level": 3,
+  "kind": "simulate",
+  "category": "biology",
+  "interaction": "Run a pool of self-copying RNA strings on a fitness peak with a chosen copying error rate per base and a chosen length: below a threshold the population clusters around the best sequence as a cloud of mutants, above it the information melts into random sequences. Lengthen the genome and watch the threshold fall, then let the strings evolve a copying enzyme with better fidelity and see the longest sustainable genome grow; close with parasites exploiting a shared replicase and compartments containing them.",
+  "takeaway": "A replicator can carry only as much information as its copying accuracy allows, so the first genomes had to be short, and getting longer required evolving better copiers first.",
+  "prerequisites": [
+   "dna-to-protein",
+   "population-genetics"
+  ],
+  "related": [
+   "genetic-code-error-tolerance",
+   "error-correction",
+   "luria-delbruck"
+  ],
+  "needs": "",
+  "pitfall": "The error threshold has no single agreed definition and the RNA world is a hypothesis; the page must not present the simulation as a reconstruction of how life began.",
+  "why": "Wikipedia, 'Error threshold (evolution)' (Eigen's paradox and the RNA world): https://en.wikipedia.org/wiki/Error_threshold_(evolution)",
+  "overlapWith": "error-correction: that page adds redundancy to a message to survive noise; here the message is a genome that must copy itself through noise, and the question is how long it can be.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "biology-l3"
+ },
+ {
+  "slug": "quorum-sensing",
+  "title": "Quorum sensing",
+  "level": 3,
+  "kind": "simulate",
+  "category": "biology",
+  "interaction": "Grow a colony of bacteria on a grid; each cell secretes an autoinducer that diffuses and decays, and once its receptor sees enough of it the LuxI/LuxR positive feedback switches the cell's light genes on. Watch the colony stay dark until a sharp density is reached and then light up together; shrink the chamber, slow the diffusion, or add an enzyme that destroys the signal, and find the population at which the switch flips.",
+  "takeaway": "Bacteria count themselves by releasing a molecule and listening for it, and positive feedback turns a gradual rise in signal into a collective, all-or-none switch at a threshold density.",
+  "prerequisites": [
+   "lac-operon",
+   "the-cell"
+  ],
+  "related": [
+   "bacterial-chemotaxis",
+   "genetic-circuits",
+   "epidemics"
+  ],
+  "needs": "",
+  "pitfall": "The signal measures confinement and diffusion as much as cell number: a single cell in a tiny sealed space can trigger its own switch, and the page must show that.",
+  "why": "iGEM Wageningen UR 2017 quorum-sensing model (LuxI/LuxR ODEs with positive feedback): https://2017.igem.org/Team:Wageningen_UR/Model/QS",
+  "overlapWith": "crispr: both are bacterial systems, but this page is about cells coordinating by diffusion and feedback rather than remembering viruses.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "biology-l3"
+ },
+ {
+  "slug": "rubisco-photorespiration",
+  "title": "Rubisco, photorespiration & C4 plants",
+  "level": 3,
+  "kind": "simulate",
+  "category": "biology",
+  "interaction": "Run the Farquhar-von Caemmerer-Berry model of a leaf: set CO2, oxygen, light and temperature and watch Rubisco split its time between fixing CO2 and wastefully grabbing O2, with the assimilation curve against CO2 drawn live and the limiting step marked. Raise the temperature and watch photorespiration eat the gain; then switch the leaf to a C4 anatomy that pumps CO2 into the bundle sheath, or to CAM that opens its stomata at night, and compare carbon gain and water loss across a hot day.",
+  "takeaway": "The enzyme at the base of nearly all food confuses oxygen with CO2, and C4 and CAM plants are two engineering fixes that concentrate CO2 around it or move its work to the night.",
+  "prerequisites": [
+   "photosynthesis",
+   "enzyme-kinetics"
+  ],
+  "related": [
+   "respiration-atp",
+   "carbon-cycle",
+   "atmosphere-weather"
+  ],
+  "needs": "Rubisco kinetic constants and their temperature dependence (von Caemmerer 2000; Bernacchi et al. 2001; published values).",
+  "pitfall": "C4 is not 'better' photosynthesis: at cool temperatures and low light its extra ATP cost makes it lose to C3, and the page must show the crossover.",
+  "why": "POGIL classroom activity 'C4 and CAM Photosynthesis' for upper-level plant physiology: https://pac.pogil.org/index.php/pac/article/view/557",
+  "overlapWith": "photosynthesis: that page follows photons to sugar in one chloroplast; this one is the enzyme kinetics of the carbon-fixing step and the leaf-level consequences of its oxygen mistake.",
+  "needsSource": "Published kinetic parameters only.",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "biology-l3"
+ },
+ {
+  "slug": "segmentation-clock",
+  "title": "The segmentation clock",
+  "level": 3,
+  "kind": "simulate",
+  "category": "biology",
+  "interaction": "Run a strip of cells along a growing embryo axis, each with a delayed negative-feedback oscillator (the her1/her7 model) and a wavefront that sweeps back as the tail grows and freezes each cell's phase when it passes. Watch waves of expression sweep forward and somites pinch off one per cycle; speed the clock or the wavefront and measure how somite size changes, then couple neighbouring oscillators through Notch and remove the coupling to see the stripes blur.",
+  "takeaway": "A body's segments are counted out by a clock: every cycle of an oscillator, a moving front freezes one more block of cells, so segment size equals clock period times front speed.",
+  "prerequisites": [
+   "circadian-clocks",
+   "morphogen-gradients"
+  ],
+  "related": [
+   "turing-patterns",
+   "oscillations-resonance"
+  ],
+  "needs": "",
+  "pitfall": "Somite size is not set by a prepattern of fixed stripes; the page must show that changing the clock period changes the size, which a prepattern could not.",
+  "why": "Teaching material rather than a syllabus: tutorial review 'Waves, patterns and bifurcations' on the vertebrate segmentation clock, https://arxiv.org/pdf/2403.00457 (no curriculum signal found in this round).",
+  "overlapWith": "turing-patterns: both make periodic stripes, but here the period is in time and is converted into space by a moving front, with a different model (Lewis 2003 delay oscillator) and a different control.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "biology-l3"
+ },
+ {
+  "slug": "signalling-cascades",
+  "title": "Cell signalling: cascades & ultrasensitivity",
+  "level": 3,
+  "kind": "simulate",
+  "category": "biology",
+  "interaction": "Apply a graded dose of signal to the top of a three-tier kinase cascade (the Huang-Ferrell MAPK model) and plot each tier's active fraction against dose: the first tier responds gently, the last switches almost all-or-none. Change the phosphatase levels, remove the second phosphorylation site, or close a feedback loop and watch the response steepen, flatten or become bistable; a sketch places the cascade between a receptor and the nucleus.",
+  "takeaway": "Stacking enzyme steps with double phosphorylation turns a gentle input into a sharp threshold, so a cell can make a decision from a graded signal without any single cooperative molecule.",
+  "prerequisites": [
+   "enzyme-kinetics",
+   "the-cell"
+  ],
+  "related": [
+   "lac-operon",
+   "homeostasis",
+   "feedback-control"
+  ],
+  "needs": "Huang & Ferrell 1996 MAPK cascade model as curated in BioModels (BIOMD0000000009, CC0).",
+  "pitfall": "The steep response is not cooperativity in hemoglobin's sense: no enzyme in the model is allosteric, and the page must attribute the Hill coefficient of four to five to the cascade's structure.",
+  "why": "BioModels/COPASI course tutorial built on the Huang-Ferrell model: https://www.ebi.ac.uk/biomodels/courses/20160706/tutorial_handout.pdf",
+  "overlapWith": "homeostasis: that page is whole-body hormone feedback; this one is the enzyme-level machinery inside one cell that turns a signal into a decision.",
+  "needsSource": "BioModels curated model, CC0.",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "biology-l3"
+ },
+ {
+  "slug": "speciation",
+  "title": "Speciation",
+  "level": 3,
+  "kind": "simulate",
+  "category": "biology",
+  "interaction": "Split a population in two with a barrier and let each half accumulate its own mutations in a set of interacting genes, each change neutral or useful at home. Lift the barrier after a chosen time and cross the two: hybrid fitness falls as pairs of alleles that never met prove incompatible (Dobzhansky-Muller), and a counter shows incompatibilities growing faster than linearly with time. Let gene flow leak through the barrier to see divergence stall, and add selection against hybrids to watch reinforcement finish the job.",
+  "takeaway": "Two populations become species not by one changing into something new but by each drifting along its own path until their genes no longer work together, and the barrier between them grows faster the longer they are apart.",
+  "prerequisites": [
+   "population-genetics",
+   "evolution"
+  ],
+  "related": [
+   "coalescent",
+   "phylogenetics",
+   "evolutionary-games"
+  ],
+  "needs": "",
+  "pitfall": "No single mutation makes a new species and no individual is 'the first' of one; incompatibilities arise between alleles that were each harmless where they evolved.",
+  "why": "MERLOT peer-reviewed classroom activity modelling the Dobzhansky-Muller process: https://awscbdev.merlot.org/merlot/viewMaterial.htm?id=851638",
+  "overlapWith": "evolution: that page adapts one population to its environment; this one follows two separated populations and measures the barrier that grows between them.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "biology-l3"
+ },
+ {
+  "slug": "synaptic-plasticity",
+  "title": "Synaptic plasticity: Hebbian learning & STDP",
+  "level": 3,
+  "kind": "simulate",
+  "category": "biology",
+  "interaction": "Pair a presynaptic and a postsynaptic spike at a chosen interval and watch the synapse's weight grow when the input leads by a few milliseconds and shrink when it lags, tracing the STDP window over sixty pairings. Then feed a neuron twenty inputs with different timings and let STDP run: the earliest reliable inputs win, the rest fade, and a pattern hidden in noise is picked out. Switch to a plain Hebbian rule without timing and watch the weights run away until a normalisation is added.",
+  "takeaway": "Synapses strengthen when the input helps cause the output and weaken when it arrives too late, so a neuron learns to respond to the earliest predictors of its own firing, with no teacher.",
+  "prerequisites": [
+   "neurons",
+   "neural-networks"
+  ],
+  "related": [
+   "central-pattern-generators",
+   "gradient-descent",
+   "reinforcement-learning"
+  ],
+  "needs": "STDP window shape and time constants from Bi & Poo 1998 (published values; the page uses the standard exponential rule, no dataset shipped).",
+  "pitfall": "'Cells that fire together wire together' is incomplete: order matters, and a rule with no depression or no bound makes every weight grow without limit; the page must show the depression side and the need for normalisation.",
+  "why": "HSE course 'Mathematical Models of Brain Neural Networks' listing Hodgkin-Huxley, synaptic plasticity and STDP: https://www.hse.ru/edu/courses/835249132",
+  "overlapWith": "neural-networks: that page adjusts weights by gradient descent against a target; here the weights change by a local rule from spike timing alone, with no error signal.",
+  "needsSource": "Published parameter values only.",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "biology-l3"
+ },
+ {
+  "slug": "turing-patterns",
+  "title": "Turing patterns",
+  "level": 3,
+  "kind": "simulate",
+  "category": "biology",
+  "interaction": "Run an activator-inhibitor reaction-diffusion system on a grid from near-uniform noise and watch spots or stripes crystallise. Change the ratio of the two diffusion rates and the pattern appears only once the inhibitor spreads much faster than the activator; change the reaction rates to move from spots to stripes to labyrinths; grow the domain and extra stripes insert themselves, and taper the grid into a tail to see spots become bands as it narrows.",
+  "takeaway": "Two chemicals, one that makes more of itself and a faster-spreading one that suppresses it, can turn a uniform field into regular spots or stripes with no blueprint, at a wavelength set by rates alone.",
+  "prerequisites": [
+   "morphogen-gradients",
+   "reaction-rates-equilibrium"
+  ],
+  "related": [
+   "chaos-fractals",
+   "segmentation-clock"
+  ],
+  "needs": "",
+  "pitfall": "Not every stripe in nature is a Turing pattern; the page should name where the mechanism is supported (digits, hair follicles, fish skin) and must not claim it for zebra stripes or fingerprints without saying that is contested.",
+  "why": "University of Manchester undergraduate brochure feature on the Turing pattern: https://www.scieng.manchester.ac.uk/undergraduate-brochures/2024/the-turing-pattern/",
+  "overlapWith": "chaos-fractals: that page grows patterns by iterating a map; here they grow from a PDE with a definite wavelength, and the control is the diffusion ratio.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "biology-l3"
+ },
+ {
+  "slug": "viral-dynamics",
+  "title": "Viral replication inside a host",
+  "level": 3,
+  "kind": "simulate",
+  "category": "biology",
+  "interaction": "Infect a host in the Perelson model: virus enters target cells, infected cells bud new virions and die, and viral load climbs to a plateau where production and clearance balance. Start a drug that blocks new infections and watch the load fall in two phases whose slopes give the half-lives of free virus (hours) and of infected cells (about a day); stop the drug early and it rebounds; let the virus mutate at a chosen rate and see a resistant strain take over under one drug but not under three.",
+  "takeaway": "A steady viral load is not a quiet infection but a furious balance of billions of virions made and cleared every day, which is why resistance evolves so fast and why combination therapy works.",
+  "prerequisites": [
+   "epidemics",
+   "immune-system"
+  ],
+  "related": [
+   "mrna-vaccines",
+   "population-genetics",
+   "cancer",
+   "crispr"
+  ],
+  "needs": "",
+  "pitfall": "The two-phase decay and its half-lives are estimates fitted to patients by Perelson et al.; the page must present them as fitted values, not as constants of the virus.",
+  "why": "q-bio Summer School 'Viral Dynamics' (Perelson's lecture 'How to model a viral infection within the host'): https://q-bio.org/wiki/The_Seventh_q-bio_Summer_School:_Viral_Dynamics",
+  "overlapWith": "epidemics: that page counts infected people; this one counts infected cells inside one person, where the same kind of equations give half-lives rather than reproduction numbers.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "biology-l3"
  }
 ]

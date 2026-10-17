@@ -518,5 +518,752 @@
    "homeostasis"
   ],
   "origin": "living-things-and-body"
+ },
+ {
+  "slug": "ageing-mortality",
+  "title": "Ageing & the mortality curve",
+  "level": 3,
+  "kind": "explore",
+  "category": "medicine",
+  "interaction": "Scrub through real life tables and watch the chance of dying in the next year climb exponentially from about age thirty, doubling roughly every eight years on a log scale, with the curve for each decade of the twentieth century shifting down but keeping its slope. Then run the evolutionary explanation: a population with mutations that act at different ages, where selection cannot see what happens after reproduction, and watch late-acting harm accumulate; add a damage model whose redundant parts fail at random and see the same straight line appear on its own.",
+  "takeaway": "The risk of dying doubles every eight years or so across adult life, and that straight line on a log scale is what a body of many redundant parts, shaped by selection that cannot see old age, would produce.",
+  "prerequisites": [
+   "evolution",
+   "central-limit-theorem"
+  ],
+  "related": [
+   "bone-remodelling",
+   "screening-overdiagnosis",
+   "deep-time"
+  ],
+  "needs": "Period life tables by age and year from the US National Center for Health Statistics (public domain); the Human Mortality Database (free with registration) for other countries.",
+  "needsSource": "CDC/NCHS United States Life Tables, public domain: https://www.cdc.gov/nchs/products/life_tables.htm",
+  "pitfall": "Ageing is not a programme that switches on; nothing in the model wants the body to die, and the curve falls out of what selection could and could not reach.",
+  "why": "The Gompertz–Makeham law of mortality is the standard description of adult mortality: https://en.wikipedia.org/wiki/Gompertz%E2%80%93Makeham_law_of_mortality",
+  "overlapWith": "evolution: that page adapts a trait to an environment; this page shows what evolution leaves alone, because it happens after reproduction.",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "medicine-l3"
+ },
+ {
+  "slug": "anaesthesia-infusion",
+  "title": "Anaesthesia: the sleeping dose",
+  "level": 3,
+  "kind": "simulate",
+  "category": "medicine",
+  "interaction": "Run a propofol infusion through the three-compartment model that real target-controlled infusion pumps use, with an effect-site compartment for the brain and a sigmoid dose–effect curve that turns concentration into the chance of being unconscious. Set a target and watch the pump overshoot the blood to reach the brain quickly; then stop the infusion after ten minutes or after eight hours and compare how long the patient takes to wake. Add a second drug that acts on the same curve and see the effect shift.",
+  "takeaway": "Waking from a short anaesthetic is mostly the drug draining out of the blood into muscle and fat, not the body breaking it down, so the longer the infusion has run, the fuller those stores are and the slower the wake-up.",
+  "prerequisites": [
+   "pharmacokinetics-dosing",
+   "neurons"
+  ],
+  "related": [
+   "pain-gate-control"
+  ],
+  "needs": "Parameters of the Schnider propofol model and its effect-site rate constant, published in Anesthesiology (1998–1999); numbers, not copyrightable.",
+  "needsSource": "Published model parameters; no dataset.",
+  "pitfall": "A drug's elimination half-life does not predict how fast a patient wakes; the context-sensitive half-time depends on how long the infusion ran.",
+  "why": "The Schnider model and the context-sensitive half-time are core pharmacokinetics content of the anaesthesia primary exam syllabus (CICM primary, pharmacokinetics chapter): https://derangedphysiology.com/main/cicm-primary-exam/pharmacokinetics/Chapter-323/context-sensitive-half-time",
+  "overlapWith": "neurons: that page opens ion channels on one neuron; this page never opens a channel, it tracks where the drug is and how likely the brain is to be switched off.",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "medicine-l3"
+ },
+ {
+  "slug": "antibiotic-dosing-resistance",
+  "title": "Antibiotic dosing & resistance",
+  "level": 3,
+  "kind": "simulate",
+  "category": "medicine",
+  "interaction": "Dose a bacterial infection with an antibiotic whose concentration follows a pharmacokinetic curve, and watch a population of sensitive cells and a rare resistant mutant through a kill curve whose rate depends on concentration: above the sensitive strain's minimum inhibitory concentration the sensitive cells die, and only above a higher one do the mutants. Change the dose, the interval, the course length and the mutation rate, spread the same drug across a plate with a concentration gradient as in the MEGA-plate experiment, and compare one drug with two given together.",
+  "takeaway": "Resistance is selected in the window of concentrations that kill the sensitive strain but not the mutant, so what matters is how much time the drug spends in that window, not whether a course was 'finished'.",
+  "prerequisites": [
+   "evolution",
+   "pharmacokinetics-dosing"
+  ],
+  "related": [
+   "cancer",
+   "epidemics",
+   "sepsis-inflammation"
+  ],
+  "needs": "",
+  "needsSource": "none",
+  "pitfall": "Longer courses are not automatically safer: a course that keeps the concentration in the selection window for longer can select more resistance, not less.",
+  "why": "The MEGA-plate experiment (Baym et al., Science 2016) made the spatial selection of resistance visible and widely watched: https://www.sciencedaily.com/releases/2016/09/160908150908.htm",
+  "overlapWith": "evolution: that page uses an antibiotic dose as one environment that shifts a trait; this page adds the drug's rise and fall in the body and shows that the dosing schedule, not the drug, decides whether resistance wins.",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "medicine-l3"
+ },
+ {
+  "slug": "artificial-pancreas",
+  "title": "The artificial pancreas",
+  "level": 3,
+  "kind": "simulate",
+  "category": "medicine",
+  "interaction": "Close the loop on a type-1 patient modelled with a published glucose–insulin model: a sensor reads glucose from under the skin with its lag, a pump delivers insulin under the skin that takes close to an hour to peak, and a controller the reader tunes decides the dose every five minutes. Serve a meal, announced or not, send the patient for a run, and watch an aggressive controller overshoot into hypoglycaemia hours later; replace reacting with predicting and see the difference.",
+  "takeaway": "Controlling blood glucose is hard not because the goal is complicated but because every measurement and every action is delayed by close to an hour, so a controller that reacts will overshoot and one that predicts can hold the line.",
+  "prerequisites": [
+   "homeostasis",
+   "feedback-control"
+  ],
+  "related": [
+   "pharmacokinetics-dosing"
+  ],
+  "needs": "Parameters of the Hovorka glucose–insulin model (Physiological Measurement 2004); numbers, not copyrightable.",
+  "needsSource": "Published model parameters (Hovorka et al. 2004); the absorption delay as the limiting factor is analysed in Boiroux et al., DYCOPS 2010: https://skoge.folk.ntnu.no/prost/proceedings/dycops-2010/Papers_DYCOPS2010/MoAT1-02.pdf",
+  "pitfall": "A closed loop is not a pancreas: it cannot deliver insulin into the portal vein or take back insulin already absorbed, so it must leave room for its own delay.",
+  "why": "Closed-loop insulin delivery is now a licensed treatment and a high-traffic reference topic: https://en.wikipedia.org/wiki/Artificial_pancreas",
+  "overlapWith": "homeostasis: that page lets the reader dose insulin by hand against a glucose loop; this page hands the job to a controller and shows the delays that make it fail.",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "medicine-l3"
+ },
+ {
+  "slug": "baroreflex-blood-pressure",
+  "title": "Blood pressure & the baroreflex",
+  "level": 3,
+  "kind": "simulate",
+  "category": "medicine",
+  "interaction": "Run a circulation in which pressure is cardiac output times resistance, and close the loop: stretch sensors in the neck read the pressure, and with a short delay the heart rate, the heart's strength and the vessel tone respond along a sigmoid curve. Stand the person up and watch pressure dip then recover; bleed them slowly and see the pressure hold while the heart rate climbs until the reserve runs out; perform a Valsalva manoeuvre and see its four phases; then move the set point up, as chronic hypertension does, and see the reflex defend the wrong pressure.",
+  "takeaway": "Blood pressure is held by a fast reflex that trades heart rate and vessel tone against pressure, which hides a haemorrhage until it is large and defends a high pressure once the set point has drifted.",
+  "prerequisites": [
+   "heart-circulation",
+   "feedback-control"
+  ],
+  "related": [
+   "ecg-arrhythmias",
+   "kidney-nephron",
+   "ige-crosslinking-allergy"
+  ],
+  "needs": "",
+  "needsSource": "none",
+  "pitfall": "A normal blood pressure does not mean no blood has been lost; the reflex hides the loss, and it defends the current set point, not a healthy one.",
+  "why": "The baroreceptor reflex is Cardiovascular-system content in the USMLE Step 1 outline and the answer to the staple 'why do I get dizzy when I stand up': https://en.wikipedia.org/wiki/Baroreflex",
+  "overlapWith": "heart-circulation: that page narrows the arteries and shows the pressure change; this page closes the loop that reacts to it.",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "medicine-l3"
+ },
+ {
+  "slug": "blood-acid-base",
+  "title": "Acid–base balance of blood",
+  "level": 3,
+  "kind": "manipulate",
+  "category": "medicine",
+  "interaction": "Drag a patient's point on the Davenport diagram, bicarbonate against pH with lines of constant carbon dioxide, and the lungs and kidneys answer: hold the breath or hyperventilate and the point slides along the buffer line within minutes, lose acid by vomiting or make it in diabetic ketoacidosis and the point jumps across the lines, and the kidneys drag it back over days. Each disturbance leaves its own trail, so a given reading can be traced back to what went wrong and how long ago.",
+  "takeaway": "Blood pH is held by one buffer whose two halves are controlled by two organs on different clocks, so the pattern of carbon dioxide and bicarbonate says which went wrong and how long ago.",
+  "prerequisites": [
+   "acids-bases",
+   "lung-gas-exchange",
+   "kidney-nephron"
+  ],
+  "related": [
+   "dialysis"
+  ],
+  "needs": "",
+  "needsSource": "none",
+  "pitfall": "Bicarbonate is a poor buffer at pH 7.4 in a closed flask (its pKa is 6.1); it works in the body only because the lungs blow off the carbon dioxide it makes.",
+  "why": "Arterial blood gas interpretation on the Davenport diagram is core content of medical physiology courses: https://en.wikipedia.org/wiki/Davenport_diagram",
+  "overlapWith": "acids-bases: that page titrates an acid in a beaker; this page titrates blood with two organs that keep moving the end point.",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "medicine-l3"
+ },
+ {
+  "slug": "bone-remodelling",
+  "title": "Bone remodelling",
+  "level": 3,
+  "kind": "simulate",
+  "category": "medicine",
+  "interaction": "Load a small two-dimensional block of bone and let it remodel: a coarse elastic grid of a few thousand elements computes the strain in each, bone is added where strain is high and removed where it is low or where damage builds, and a trabecular pattern emerges aligned with the load, the model's own rather than a picture. Change the direction of the load, remove it as in bed rest or spaceflight and watch the struts thin, and shift the balance of the bone-dissolving and bone-building cells as in osteoporosis.",
+  "takeaway": "Bone is continually dissolved and rebuilt, and because rebuilding follows strain, a bone grows the struts its load needs and loses them when the load goes away.",
+  "prerequisites": [
+   "bridges-structures",
+   "the-cell"
+  ],
+  "related": [
+   "wound-healing",
+   "ageing-mortality"
+  ],
+  "needs": "",
+  "needsSource": "none; the remodelling rule follows Huiskes et al., Nature 405, 704–706 (2000): https://ideas.repec.org/a/nat/nature/v405y2000i6787d10.1038_35015116.html",
+  "pitfall": "Bone is not a fixed scaffold that only wears out; adult bone is replaced roughly every decade, and loss in old age or weightlessness is remodelling with the balance tipped, which loading can partly tip back.",
+  "why": "Bone remodelling, osteoporosis and bone loss in spaceflight are first-year physiology content and a high-traffic reference topic: https://en.wikipedia.org/wiki/Bone_remodeling",
+  "overlapWith": "bridges-structures: that page loads a structure the reader builds; this page lets the structure rebuild itself to suit the load.",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "medicine-l3"
+ },
+ {
+  "slug": "cancer-immunotherapy",
+  "title": "Cancer immunotherapy",
+  "level": 3,
+  "kind": "simulate",
+  "category": "medicine",
+  "interaction": "Run a tumour against the immune cells that hunt it with the classic tumour–immune equations: the tumour grows, effector cells are recruited in proportion to it and are killed or exhausted by it. Set how visible the tumour is to the immune system and how strongly it suppresses the cells that reach it, and watch the three outcomes: elimination, a long standoff, or escape. Then release the brake, as a checkpoint inhibitor does, and see which tumours collapse and which barely notice; add engineered T cells and follow their expansion and the cytokine surge.",
+  "takeaway": "The immune system is already fighting most tumours; checkpoint drugs do not attack the cancer, they remove a brake on that fight, which is why they work dramatically on some tumours and not at all on others.",
+  "prerequisites": [
+   "cancer",
+   "immune-system"
+  ],
+  "related": [
+   "thymic-selection-tolerance",
+   "ecosystems"
+  ],
+  "needs": "",
+  "needsSource": "none",
+  "pitfall": "Immunotherapy does not 'boost' the immune system in general; it removes a specific brake, and the same brake removal causes autoimmune side effects.",
+  "why": "The 2018 Nobel Prize in Physiology or Medicine was awarded for cancer therapy by inhibition of negative immune regulation: https://www.nobelprize.org/prizes/medicine/2018/press-release/",
+  "overlapWith": "cancer: that page evolves a tumour under mutation and a drug that kills cells; this page adds the immune cells hunting it and shows what changes when their brake is released.",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "medicine-l3"
+ },
+ {
+  "slug": "cerebellum-motor-learning",
+  "title": "The cerebellum & motor learning",
+  "level": 3,
+  "kind": "manipulate",
+  "category": "medicine",
+  "interaction": "Move the mouse or a finger to targets while the cursor is secretly rotated by thirty degrees, and watch yourself miss, correct and adapt over a few dozen reaches; beside the hand, a two-rate error-driven model updates its prediction trial by trial and its curve sits over the reader's own. Remove the rotation and both show an aftereffect in the opposite direction; adapt again and both learn faster. The eye's reflex that keeps the world still when the head turns runs the same loop with magnifying or reversing spectacles.",
+  "takeaway": "The cerebellum learns from error, nudging a prediction a little after every miss, and the aftereffect when the world changes back shows the correction was learned, not reasoned.",
+  "prerequisites": [
+   "neurons",
+   "feedback-control"
+  ],
+  "related": [
+   "hippocampus-memory",
+   "gradient-descent",
+   "reinforcement-learning"
+  ],
+  "needs": "",
+  "needsSource": "none; the two-rate model is Smith, Ghazizadeh & Shadmehr, PLoS Biology 4(6): e179 (2006): https://pmc.ncbi.nlm.nih.gov/articles/PMC1463025",
+  "pitfall": "Adaptation is not the same as knowing a trick: the reader cannot cancel the aftereffect by being told the rotation is gone.",
+  "why": "Motor adaptation and the cerebellum are standard neuroscience-course content and a high-traffic reference topic: https://en.wikipedia.org/wiki/Motor_learning",
+  "overlapWith": "reinforcement-learning: that agent learns from reward alone; here the error itself is the teaching signal and the learner is the reader's own hand.",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "medicine-l3"
+ },
+ {
+  "slug": "clinical-trials",
+  "title": "Randomized trials & their statistics",
+  "level": 3,
+  "kind": "simulate",
+  "category": "medicine",
+  "interaction": "Set a treatment's true effect, the spread of outcomes between patients and the number enrolled, then run a trial: patients are drawn, allocated at random or by the doctor's choice (which lets sicker patients drift into one arm), and the result lands on a p-value scale. Run a thousand trials at once to see the power and the false-positive rate, add several outcome measures and stop early when one looks good, and watch how often a treatment that does nothing 'works'.",
+  "takeaway": "Randomization is what makes two groups comparable in everything, measured or not, and a trial too small for the effect it is hunting will usually miss it and, when it does find something, will overstate it.",
+  "prerequisites": [
+   "central-limit-theorem",
+   "bayes-theorem"
+  ],
+  "related": [
+   "placebo-expectation",
+   "screening-overdiagnosis",
+   "learning-from-data"
+  ],
+  "needs": "",
+  "needsSource": "none",
+  "pitfall": "A p-value is not the probability that the treatment does not work; it is how surprising the data would be if it did nothing.",
+  "why": "Hypothesis testing, power and the design of randomized experiments are units of MIT OCW 18.05 Introduction to Probability and Statistics: https://ocw.mit.edu/courses/18-05-introduction-to-probability-and-statistics-spring-2014/",
+  "overlapWith": "bayes-theorem: that page counts true and false positives of a test on a grid of people; this page builds the experiment that decides whether a treatment works and shows what randomization and sample size buy.",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "medicine-l3"
+ },
+ {
+  "slug": "coagulation-cascade",
+  "title": "Blood clotting",
+  "level": 3,
+  "kind": "step",
+  "category": "medicine",
+  "interaction": "Expose tissue factor at a cut and step through clotting as a chain of enzymes, each activating many copies of the next: initiation makes a trickle of thrombin, the trickle switches on the amplifying factors, and the burst follows, all driven by the published rate equations of the extrinsic pathway and its inhibitors. Remove factor VIII (haemophilia A), lower the vitamin-K factors as warfarin does, boost antithrombin as heparin does, and compare the thrombin curves. The platelet plug and the later dissolving of the clot are shown as stages, not computed, since the model stops at thrombin.",
+  "takeaway": "Clotting is a chain of enzymes each activating many of the next, so a tiny trigger becomes a burst of thrombin in minutes, and inhibitors keep the burst from spreading beyond the wound.",
+  "prerequisites": [
+   "reaction-rates-equilibrium",
+   "heart-circulation"
+  ],
+  "related": [
+   "sepsis-inflammation",
+   "wound-healing"
+  ],
+  "needs": "Rate constants and initial concentrations of the Hockin–Mann model of thrombin generation, as curated in BioModels (BIOMD0000000335, CC0).",
+  "needsSource": "BioModels BIOMD0000000335 (Hockin et al. 2002), CC0: https://www.ebi.ac.uk/biomodels/BIOMD0000000335",
+  "pitfall": "The 'intrinsic' and 'extrinsic' pathways of the textbook diagram are a laboratory artefact: in the body tissue factor starts clotting and factors VIII and IX amplify it, which is why haemophilia bleeds despite an intact extrinsic pathway.",
+  "why": "The coagulation cascade and its drugs (warfarin, heparin) are Hematologic-system content in the USMLE Step 1 content outline: https://www.usmle.org/pdfs/step-1/content_step1.pdf",
+  "overlapWith": "heart-circulation: that page shows blood moving; this page shows how it stops, as a cascade of reactions with the real kinetics.",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "medicine-l3"
+ },
+ {
+  "slug": "cochlea-hearing",
+  "title": "Hearing & the cochlea",
+  "level": 3,
+  "kind": "manipulate",
+  "category": "medicine",
+  "interaction": "Play a tone, a chord or a spoken word into a cochlea modelled as a chain of coupled resonators whose stiffness falls along the basilar membrane, and watch the travelling wave peak at a place that depends on frequency. Drag the frequency and the peak moves; switch on the outer hair cells' amplification and the peak sharpens; kill the hair cells near the base, as loud noise does, and the audiogram loses its high frequencies. Then replace the cochlea with a cochlear implant: split the sound into a few bands, drive one electrode per band, and hear the result.",
+  "takeaway": "The cochlea sorts sound by frequency along its length, so pitch is a place, and a cochlear implant works by stimulating those places with a handful of electrodes.",
+  "prerequisites": [
+   "waves-interference",
+   "fourier-transform",
+   "neurons"
+  ],
+  "related": [
+   "vision-color",
+   "compression"
+  ],
+  "needs": "A short openly licensed speech clip (CC0 or public domain) for the implant demonstration, or synthesized speech; the cochlear model itself is a standard one-dimensional transmission-line model with published parameters.",
+  "needsSource": "none beyond a CC0 speech clip",
+  "pitfall": "Noise damage does not simply turn the volume down: the lost hair cells remove the amplification, so soft sounds vanish while loud ones still hurt.",
+  "why": "Reserve item of the catalogue; the place theory of hearing is KS3/GCSE sound content and first-year physiology, and a high-traffic reference topic: https://en.wikipedia.org/wiki/Place_theory_(hearing)",
+  "overlapWith": "vision-color: that page builds an image and colour from three kinds of sensor; this page builds pitch from thousands of sensors in a row, each tuned by its position.",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "medicine-l3"
+ },
+ {
+  "slug": "dialysis",
+  "title": "Dialysis: a kidney from a membrane",
+  "level": 3,
+  "kind": "build",
+  "category": "medicine",
+  "interaction": "Assemble an artificial kidney: pick the membrane area and pore size, set the blood pump and the dialysate pump, and choose whether the two flows run the same way or opposite ways; a mass-transfer model shows the urea concentration along both sides of the membrane and the clearance it achieves. Then run a week of three four-hour sessions through a single-pool urea model and watch the sawtooth of urea in the patient, compared with a healthy kidney's flat line and with a slow continuous treatment.",
+  "takeaway": "Running blood and dialysate in opposite directions keeps a concentration difference along the whole membrane, which is what lets a machine clear in four hours what a kidney does continuously, and the patient's urea still swings between sessions.",
+  "prerequisites": [
+   "kidney-nephron"
+  ],
+  "related": [
+   "blood-acid-base"
+  ],
+  "needs": "",
+  "needsSource": "none",
+  "pitfall": "Dialysis does not 'clean' the blood of everything: it removes what diffuses through the membrane, so small molecules like urea go while protein-bound and large toxins stay.",
+  "why": "Dialysis adequacy is defined by Kt/V from urea kinetic modelling, the quantity this page computes: https://en.wikipedia.org/wiki/Kt/V",
+  "overlapWith": "heart-circulation: that page pumps blood round a body; this page puts a membrane in the circuit and shows what crosses it and how fast.",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "medicine-l3"
+ },
+ {
+  "slug": "ecg-arrhythmias",
+  "title": "The ECG & arrhythmias",
+  "level": 3,
+  "kind": "simulate",
+  "category": "medicine",
+  "interaction": "Run a sheet of heart muscle as an excitable medium (the Aliev–Panfilov equations on a grid) with a pacemaker, a conduction system and a slow atrioventricular node, and read the ECG off it as the projection of the tissue's net electrical vector onto the limb leads of Einthoven's triangle. Then break it: slow conduction in a patch, add a scar, fire an early beat into tissue that has only partly recovered and watch a spiral wave take over the ECG as tachycardia and then fibrillation; deliver a shock that resets every cell at once. Real recordings from the MIT-BIH database sit beside the simulated traces.",
+  "takeaway": "An ECG is the shadow of a wave of excitation crossing the heart, and the dangerous rhythms are not a faster pacemaker but a wave that finds a way to chase its own tail.",
+  "prerequisites": [
+   "heart-circulation",
+   "neurons"
+  ],
+  "related": [
+   "baroreflex-blood-pressure"
+  ],
+  "needs": "Annotated ECG records from the MIT-BIH Arrhythmia Database on PhysioNet (Open Data Commons Attribution License v1.0).",
+  "needsSource": "PhysioNet MIT-BIH Arrhythmia Database, ODC-By 1.0: https://physionet.org/content/mitdb/1.0.0/",
+  "pitfall": "A defibrillator does not restart a stopped heart; it stops a chaotic rhythm so the natural pacemaker can take over, and a flat line is not a shockable rhythm.",
+  "why": "Rhythm interpretation and the conduction system are Cardiovascular-system content in the USMLE Step 1 content outline: https://www.usmle.org/pdfs/step-1/content_step1.pdf",
+  "overlapWith": "heart-circulation: that page shows a healthy ECG synchronized with the beating pump; this page computes the ECG from a model of the tissue and lets the reader break the rhythm.",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "medicine-l3"
+ },
+ {
+  "slug": "fetal-circulation",
+  "title": "The first breath",
+  "level": 3,
+  "kind": "step",
+  "category": "medicine",
+  "interaction": "Trace blood through a fetal circulation modelled as a network of resistances with three shunts: the placenta supplying oxygen, the collapsed lungs with their high resistance, and the two openings that let blood skip them. Then step through birth: the lungs inflate and their resistance falls, the cord is clamped and the placenta's low resistance disappears, the pressures on the two sides of the heart cross over, and the flap between the atria shuts. Oxygen levels in each vessel update at every step, with fetal haemoglobin's steeper curve explaining how the fetus lives on so little.",
+  "takeaway": "Before birth the lungs are bypassed because their resistance is high, and the first breath drops that resistance enough to reverse the pressure difference that was holding the shunts open.",
+  "prerequisites": [
+   "heart-circulation",
+   "haemoglobin-oxygen"
+  ],
+  "related": [
+   "lung-gas-exchange",
+   "menstrual-cycle-hormones"
+  ],
+  "needs": "",
+  "needsSource": "none",
+  "pitfall": "The shunts do not close because they are no longer needed; they close because the pressures that held them open reverse, and if lung resistance stays high they stay open.",
+  "why": "Fetal circulation and its transition at birth are Cardiovascular-system content in the USMLE Step 1 outline and a staple 'how does a baby breathe before birth' question: https://en.wikipedia.org/wiki/Fetal_circulation",
+  "overlapWith": "heart-circulation: that page runs the two pumps in series as in an adult; this page runs them in parallel, as in a fetus, and shows the switch.",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "medicine-l3"
+ },
+ {
+  "slug": "gwas-polygenic-risk",
+  "title": "Genome-wide association & polygenic risk",
+  "level": 3,
+  "kind": "explore",
+  "category": "medicine",
+  "interaction": "Scrub the sample size of a simulated case–control study from a hundred people to a million and watch the Manhattan plot rise out of the noise (each variant's test statistic is drawn from its sampling distribution, set by its true effect and the sample size, so nobody is simulated one by one): a few of the thousands of variants that truly matter clear the genome-wide line first, the rest surface slowly, and a hidden ancestry difference between cases and controls paints false peaks across every chromosome until it is corrected for. Build a polygenic score from the hits and see how far it separates people's risk and how much is left unexplained; real summary statistics for one published trait from the GWAS Catalog are there to compare.",
+  "takeaway": "Common diseases are shaped by thousands of variants of tiny effect, so finding them takes enormous samples, and a polygenic score shifts a person's odds without ever predicting them.",
+  "prerequisites": [
+   "meiosis-inheritance",
+   "central-limit-theorem"
+  ],
+  "related": [
+   "cancer",
+   "learning-from-data"
+  ],
+  "needs": "Summary statistics for one well-studied trait from the NHGRI-EBI GWAS Catalog (most studies CC0 or EMBL-EBI terms of use; the per-study licence column must be checked for the chosen study).",
+  "needsSource": "NHGRI-EBI GWAS Catalog summary statistics, mostly CC0 with per-study exceptions: https://www.ebi.ac.uk/gwas/downloads/summary-statistics",
+  "pitfall": "There is no 'gene for' a common disease; a genome-wide significant variant usually changes risk by a few percent, and a score built from thousands of them still explains only part of the heritability.",
+  "why": "Genome-wide association studies and polygenic scores are standard content of university genetics courses and a high-traffic reference topic: https://en.wikipedia.org/wiki/Genome-wide_association_study",
+  "overlapWith": "meiosis-inheritance: that page follows single genes through Punnett squares; this page asks what inheritance looks like when a trait depends on thousands of them at once.",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "medicine-l3"
+ },
+ {
+  "slug": "haemoglobin-oxygen",
+  "title": "Oxygen & haemoglobin",
+  "level": 3,
+  "kind": "manipulate",
+  "category": "medicine",
+  "interaction": "Drag the oxygen pressure along haemoglobin's binding curve, computed from the four-site cooperative model, and read how much oxygen the blood carries and how much it gives up between lungs and muscle. Shift the curve with acidity and carbon dioxide (the Bohr effect), temperature and 2,3-BPG, compare it with myoglobin's hyperbola and fetal haemoglobin, and poison the blood with carbon monoxide to see why that is worse than losing the same amount of haemoglobin.",
+  "takeaway": "Haemoglobin's S-shaped curve is what lets it fill up in the lungs and dump most of its load in working muscle, and the body tunes delivery by shifting that curve.",
+  "prerequisites": [
+   "reaction-rates-equilibrium",
+   "chemical-bonds"
+  ],
+  "related": [
+   "respiration-atp",
+   "heart-circulation"
+  ],
+  "needs": "",
+  "needsSource": "none",
+  "pitfall": "Carbon monoxide is worse than anaemia with the same oxygen content, because it also shifts the curve so that what oxygen remains is not released.",
+  "why": "Oxygen transport, the dissociation curve and its shifts are Respiratory-system content in the USMLE Step 1 content outline: https://www.usmle.org/pdfs/step-1/content_step1.pdf",
+  "overlapWith": "respiration-atp: that page uses oxygen at the end of the electron transport chain; this page is how oxygen gets there, and why the carrier's curve has the shape it has.",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "medicine-l3"
+ },
+ {
+  "slug": "hippocampus-memory",
+  "title": "Memory & the hippocampus",
+  "level": 3,
+  "kind": "manipulate",
+  "category": "medicine",
+  "interaction": "Store a few drawn patterns in a network of neurons that strengthen the connections between cells that fire together, as the hippocampus's CA3 region is thought to, then give it a smudged or half-erased pattern and watch the cells settle into the whole. Store more patterns and watch recall start to blend them; switch on a separating stage, as the dentate gyrus does, and see similar inputs kept apart. Then replay the stored patterns slowly into a second, larger network and show that the hippocampal copy can be lost without losing the memory.",
+  "takeaway": "A memory is a pattern of strengthened connections that a partial cue can regrow into the whole, which is why remembering is reconstruction, why similar memories blur, and why the hippocampus can hand its copies on to the cortex.",
+  "prerequisites": [
+   "neurons"
+  ],
+  "related": [
+   "neural-networks",
+   "cerebellum-motor-learning"
+  ],
+  "needs": "",
+  "needsSource": "none",
+  "pitfall": "Memory is not a recording played back: recall is reconstruction, and each recall can alter the trace.",
+  "why": "The 2024 Nobel Prize in Physics went to Hopfield for the associative memory that stores and reconstructs patterns: https://www.nobelprize.org/prizes/physics/2024/press-release/",
+  "overlapWith": "neural-networks: that page trains a feed-forward network on examples; this page is a recurrent network whose only job is to complete what it has seen, read as a model of CA3 with the neurons page as its base.",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "medicine-l3"
+ },
+ {
+  "slug": "ige-crosslinking-allergy",
+  "title": "Allergy, IgE & anaphylaxis",
+  "level": 3,
+  "kind": "manipulate",
+  "category": "medicine",
+  "interaction": "Coat a mast cell with IgE and drag the allergen concentration: a bivalent allergen bridges pairs of antibodies, and the number of bridges, computed from the crosslinking equilibrium, rises and then falls again when there is so much allergen that each antibody holds its own molecule. Degranulation is taken to follow the number of bridges (a stated simplification: inhibitory signalling also shapes the falling side of the real curve); set the released histamine loose on a lumped circulation and watch vessels dilate, fluid leak out and blood pressure fall; inject adrenaline to reverse it, or desensitise by exposing the cell to tiny rising doses.",
+  "takeaway": "An allergic reaction is an armed trap, antibodies already sitting on mast cells, sprung when an allergen bridges two of them; anaphylaxis is that trap going off in every tissue at once.",
+  "prerequisites": [
+   "immune-system",
+   "heart-circulation"
+  ],
+  "related": [
+   "thymic-selection-tolerance",
+   "baroreflex-blood-pressure"
+  ],
+  "needs": "",
+  "needsSource": "none; the bell-shaped dose response and its signalling are reviewed in Huber, Cell Commun. Signal. 11, 7 (2013): https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3598417/",
+  "pitfall": "The first exposure to an allergen does not cause a reaction; it arms one, and the response is not strongest at the highest dose.",
+  "why": "Type I hypersensitivity and anaphylaxis are Immune-system content in the USMLE Step 1 outline and a high-traffic reference topic: https://en.wikipedia.org/wiki/Anaphylaxis",
+  "overlapWith": "immune-system: that page shows the adaptive response doing its job; this page shows one antibody class doing damage, from a single bridged receptor pair to a whole-body collapse.",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "medicine-l3"
+ },
+ {
+  "slug": "kidney-nephron",
+  "title": "The nephron: filter, then reclaim",
+  "level": 3,
+  "kind": "step",
+  "category": "medicine",
+  "interaction": "Follow one drop of filtrate along a nephron, segment by segment: the glomerulus filters by a pressure difference, the proximal tubule takes back most of the water and salt, and the loop of Henle builds the salty medulla one 'single effect' at a time, so the countercurrent multiplier can be stepped cycle by cycle while the gradient grows. Then set the antidiuretic hormone level and see the collecting duct release concentrated or dilute urine; raise the blood pressure, block the loop's pump as a diuretic does, or give an osmotic load such as glucose.",
+  "takeaway": "The kidney filters the whole plasma volume many times a day and reclaims nearly all of it, and it can make urine saltier than blood only because the loop of Henle multiplies a small difference along its length into a large one.",
+  "prerequisites": [
+   "homeostasis",
+   "the-cell"
+  ],
+  "related": [
+   "baroreflex-blood-pressure",
+   "liver-drug-metabolism"
+  ],
+  "needs": "",
+  "needsSource": "none",
+  "pitfall": "The kidney does not pick toxins out of the blood; it filters almost everything small and then chooses what to take back.",
+  "why": "Glomerular filtration and the countercurrent mechanism are Renal & Urinary system content in the USMLE Step 1 content outline: https://www.usmle.org/exam-resources/step-1-materials/step-1-content-outline-and-specifications",
+  "overlapWith": "homeostasis: that page keeps glucose steady with hormones; this page is one organ's plumbing, where a countercurrent loop, not a hormone, does the hard work.",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "medicine-l3"
+ },
+ {
+  "slug": "liver-drug-metabolism",
+  "title": "The liver & drug interactions",
+  "level": 3,
+  "kind": "manipulate",
+  "category": "medicine",
+  "interaction": "Send a drug through a liver modelled as a well-stirred compartment with the portal blood flow on one side and enzyme activity on the other: drag the enzyme's intrinsic clearance and see the extraction ratio and the fraction surviving first pass. Give the same dose by mouth and by vein for a drug the liver clears easily and one it clears slowly, then inhibit the enzyme as grapefruit juice does or induce it as St John's wort does, and compare how much the exposure changes for each. Finish with alcohol, whose enzyme saturates, so that its level falls at a fixed rate instead of halving.",
+  "takeaway": "For a drug the liver clears easily the blood flow is the bottleneck and an enzyme inhibitor barely matters, while for a drug it clears slowly enzyme activity sets the exposure and an inhibitor can multiply it several-fold.",
+  "prerequisites": [
+   "pharmacokinetics-dosing",
+   "reaction-rates-equilibrium"
+  ],
+  "related": [
+   "kidney-nephron"
+  ],
+  "needs": "",
+  "needsSource": "none",
+  "pitfall": "An inducer or inhibitor does not change every drug's exposure by the same amount; the difference between a tenfold change and almost none is the extraction ratio, not the dose.",
+  "why": "Drug metabolism and drug interaction are listed topics of MIT OCW HST.151 Principles of Pharmacology: https://ocw.mit.edu/courses/hst-151-principles-of-pharmacology-spring-2005/",
+  "overlapWith": "reaction-rates-equilibrium: that page's catalyst lowers a barrier in a beaker; here the enzyme sits in a flow, and whether it or the flow is the bottleneck is the whole story (pharmacokinetics-dosing, in this batch, treats clearance as one number).",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "medicine-l3"
+ },
+ {
+  "slug": "lung-gas-exchange",
+  "title": "The lungs & gas exchange",
+  "level": 3,
+  "kind": "manipulate",
+  "category": "medicine",
+  "interaction": "Set the breathing rate and depth, the oxygen fraction in the air and the altitude, and watch alveolar and arterial oxygen and carbon dioxide settle in a lung made of many units with different ventilation-to-blood-flow ratios, each unit's blood passing through the real oxygen and carbon dioxide dissociation curves before it mixes. Drag the distribution of ratios: widen it as in lung disease, add a shunt where blood bypasses ventilated alveoli or dead space where air reaches no blood, and see which problems extra oxygen fixes and which it cannot.",
+  "takeaway": "Arterial oxygen is set by the worst-matched parts of the lung, because well-ventilated units cannot carry extra oxygen to make up for blood that never met air.",
+  "prerequisites": [
+   "haemoglobin-oxygen",
+   "homeostasis"
+  ],
+  "related": [
+   "fetal-circulation",
+   "sepsis-inflammation"
+  ],
+  "needs": "",
+  "needsSource": "none",
+  "pitfall": "Giving more oxygen does not help every kind of low oxygen: blood passing through a true shunt comes out unchanged however rich the air is.",
+  "why": "Ventilation–perfusion matching, shunt and dead space are Respiratory-system content in the USMLE Step 1 content outline: https://www.usmle.org/exam-resources/step-1-materials/step-1-content-outline-and-specifications",
+  "overlapWith": "heart-circulation: that page shows blood picking up oxygen in the lungs as a colour change; this page computes how much it gets, unit by unit, and why the average lies.",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "medicine-l3"
+ },
+ {
+  "slug": "menstrual-cycle-hormones",
+  "title": "The menstrual cycle's hormone loops",
+  "level": 3,
+  "kind": "simulate",
+  "category": "medicine",
+  "interaction": "Run the published model of the cycle, thirteen delay equations linking the pituitary's two hormones, the ovary's follicles and corpus luteum, and estradiol, progesterone and inhibin, and watch a 28-day oscillation emerge with no clock inside it. Hover the moment estradiol's feedback flips from suppressing the pituitary to driving it and the LH surge fires; then give a combined pill as a steady level of both hormones and see the surge never come, remove it and watch the cycle restart, and deplete the follicles to see the oscillation die out as at menopause.",
+  "takeaway": "The cycle is an oscillator built from feedback: estrogen holds the pituitary back at low levels and flips to driving it at high ones, that sign change fires ovulation, and the pill works by never letting it flip.",
+  "prerequisites": [
+   "homeostasis",
+   "calculus"
+  ],
+  "related": [
+   "oscillations-resonance",
+   "fetal-circulation"
+  ],
+  "needs": "Parameters of the Harris Clark–Schlosser–Selgrade model of the human menstrual cycle (Bull. Math. Biol. 2003); the earlier Schlosser–Selgrade 2000 model is also on the Physiome Model Repository as CellML (licence to check).",
+  "needsSource": "Published model parameters (Harris Clark, Schlosser & Selgrade, Bull. Math. Biol. 2003: https://selgrade.math.ncsu.edu/BMB_Selgrade.pdf); CellML version of the 2000 model on the Physiome repository, licence to check: https://models.physiomeproject.org/exposure/a56c737c0317784d45a0189591c8b3af",
+  "pitfall": "The pill does not 'kill eggs' or hold back a pre-set clock; it removes the surge that would release one, and the cycle has no clock beyond its own feedback.",
+  "why": "The hormonal control of the menstrual cycle and how the pill suppresses ovulation are Reproductive-system content in the USMLE Step 1 outline and a high-traffic reference topic: https://en.wikipedia.org/wiki/Menstrual_cycle",
+  "overlapWith": "homeostasis: that page uses negative feedback to hold a level steady; this page shows feedback that flips sign and makes an oscillator instead.",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "medicine-l3"
+ },
+ {
+  "slug": "pain-gate-control",
+  "title": "Pain & the gate in the spinal cord",
+  "level": 3,
+  "kind": "build",
+  "category": "medicine",
+  "interaction": "Wire the dorsal horn from a palette of integrate-and-fire neurons: thick touch fibres, thin fast and slow pain fibres, an inhibitory interneuron and the projection cell that carries the signal to the brain, with a descending input from the brainstem. Then stimulate: a pinch alone drives the output, rubbing the skin at the same time quiets it, and a descending opioid-like signal quiets it further. Fire the slow fibres repeatedly and watch the projection cell's response grow with each volley until a touch alone hurts.",
+  "takeaway": "Pain is not a wire from injury to brain; the signal is gated in the spinal cord by other touch input and by the brain itself, and a gate held open long enough starts to let touch through as pain.",
+  "prerequisites": [
+   "neurons"
+  ],
+  "related": [
+   "anaesthesia-infusion",
+   "placebo-expectation"
+  ],
+  "needs": "",
+  "needsSource": "none",
+  "pitfall": "Pain intensity is not proportional to tissue damage; the same injury can hurt differently depending on what else the spinal cord and brain are doing.",
+  "why": "Gate control theory (Melzack & Wall, Science 1965) remains the standard teaching model of spinal pain modulation: https://en.wikipedia.org/wiki/Gate_control_theory",
+  "overlapWith": "neurons: that page fires one neuron and adds inputs at one synapse; this page wires a handful of them into the circuit that decides whether a signal counts as pain.",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "medicine-l3"
+ },
+ {
+  "slug": "pharmacokinetics-dosing",
+  "title": "Pharmacokinetics & dosing",
+  "level": 3,
+  "kind": "build",
+  "category": "medicine",
+  "interaction": "Place doses on a timeline from a palette (an intravenous bolus, an oral tablet, a constant infusion, a loading dose) and run them through a one- or two-compartment model whose clearance, volume of distribution and absorption rate are sliders; the plasma concentration is plotted against the drug's therapeutic window. Change the interval, miss a dose, halve the clearance to model a failing kidney or switch the drug to saturable elimination, and watch the level, the time to steady state and the peaks and troughs respond.",
+  "takeaway": "Repeated doses pile up until elimination balances intake, and that steady state arrives after about four or five half-lives whatever the dose, so the dose sets the level and the half-life sets how long it takes to get there.",
+  "prerequisites": [
+   "calculus"
+  ],
+  "related": [
+   "homeostasis",
+   "artificial-pancreas"
+  ],
+  "needs": "Clearance, volume of distribution and half-life for four or five example drugs, taken from their FDA prescribing information (US government work, public domain).",
+  "needsSource": "FDA prescribing information via DailyMed, public domain: https://dailymed.nlm.nih.gov/",
+  "pitfall": "Doubling the dose doubles the steady-state level but does not reach it any sooner; only a loading dose shortens the wait.",
+  "why": "MIT OCW HST.151 Principles of Pharmacology lists pharmacokinetics, dose–response and drug delivery as core topics: https://ocw.mit.edu/courses/hst-151-principles-of-pharmacology-spring-2005/",
+  "overlapWith": "homeostasis: that page doses insulin by hand against a glucose loop; this page models what happens to any drug's concentration after a dose, with no body response in the loop.",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "medicine-l3"
+ },
+ {
+  "slug": "placebo-expectation",
+  "title": "The placebo effect",
+  "level": 3,
+  "kind": "manipulate",
+  "category": "medicine",
+  "interaction": "Set the pain a stimulus actually produces and the pain a person expects, each with its own confidence, and watch the felt pain land between them, weighted toward whichever is more certain, as in the Bayesian account of placebo analgesia. Build the expectation by conditioning over trials, give the same painkiller openly or hidden to see the open one work better, then switch to a three-arm trial where no treatment, a placebo and the drug are compared, and separate getting better anyway and regression to the mean from the placebo effect proper.",
+  "takeaway": "What a person feels is a weighted mix of what the body reports and what the brain expects, so a credible expectation changes the experience, and in a trial that effect sits on top of recovery that would have happened anyway.",
+  "prerequisites": [
+   "bayes-theorem",
+   "neurons"
+  ],
+  "related": [
+   "clinical-trials",
+   "pain-gate-control"
+  ],
+  "needs": "",
+  "needsSource": "none; the expectation model follows the Bayesian account in Büchel et al., Neuron 81, 1223–1239 (2014): https://pubmed.ncbi.nlm.nih.gov/24656247/",
+  "pitfall": "The improvement in a trial's placebo arm is not all placebo effect: much of it is natural recovery and regression to the mean, and the Bayesian model here is a normative account of expectation, not a mechanism in the tissue.",
+  "why": "The placebo effect and why trials need a placebo arm are standard clinical-research teaching and a high-traffic reference topic: https://en.wikipedia.org/wiki/Placebo",
+  "overlapWith": "bayes-theorem: that page updates a probability with a test result; this page uses the same rule to combine an expectation with a sensation, and shows why the result feels real.",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "medicine-l3"
+ },
+ {
+  "slug": "screening-overdiagnosis",
+  "title": "Screening, lead time & overdiagnosis",
+  "level": 3,
+  "kind": "simulate",
+  "category": "medicine",
+  "interaction": "Grow a cohort of people in whom tumours start at random times and grow at random rates, some fast and many slow, and set the size at which a tumour causes symptoms and the size at which it kills. Switch on a screening programme with a chosen detection size and interval and watch which tumours it finds: mostly the slow ones, often years early. The five-year survival from diagnosis is plotted beside the death rate of the whole cohort, with and without screening, and with a treatment that works or does not.",
+  "takeaway": "Finding a disease earlier raises survival-from-diagnosis even when nobody lives a day longer, so only the death rate of the whole population can say whether a screening programme helps.",
+  "prerequisites": [
+   "bayes-theorem",
+   "cancer"
+  ],
+  "related": [
+   "clinical-trials",
+   "ageing-mortality"
+  ],
+  "needs": "",
+  "needsSource": "none",
+  "pitfall": "A rise in five-year survival after screening is introduced is not evidence that the screening works; lead time and the slow tumours it finds produce it on their own.",
+  "why": "Lead-time bias and overdiagnosis are the standard teaching cases of epidemiology courses on screening: https://en.wikipedia.org/wiki/Overdiagnosis",
+  "overlapWith": "bayes-theorem: that page shows that a positive test is often false when a disease is rare; this page shows that even a true positive can be a harm, because the disease it found would never have mattered.",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "medicine-l3"
+ },
+ {
+  "slug": "sepsis-inflammation",
+  "title": "Sepsis: when the response is the disease",
+  "level": 3,
+  "kind": "simulate",
+  "category": "medicine",
+  "interaction": "Infect a model body with the four-variable acute-inflammation model: pathogen, activated immune cells, tissue damage and an anti-inflammatory brake. Set the pathogen's growth rate and the initial dose and watch the four outcomes: a clean recovery, a persistent infection, death with the pathogen winning, and death from inflammation after the pathogen is already gone. Add antibiotics at different times, add or remove the anti-inflammatory brake, and close with the circulation: leaking vessels and falling pressure as in septic shock.",
+  "takeaway": "In sepsis the body's own inflammatory response, not the microbe, does the damage: the same response that clears a small infection runs away once the damage it causes feeds back into more inflammation.",
+  "prerequisites": [
+   "immune-system",
+   "heart-circulation"
+  ],
+  "related": [
+   "coagulation-cascade",
+   "lung-gas-exchange",
+   "antibiotic-dosing-resistance"
+  ],
+  "needs": "",
+  "needsSource": "none; the model is Reynolds et al., J. Theor. Biol. 242, 220–236 (2006): https://scholar.usuhs.edu/en/publications/a-reduced-mathematical-model-of-the-acute-inflammatory-response-i/",
+  "pitfall": "Sepsis is not 'blood poisoning' by a microbe's toxins; a patient can die of it after the microbe is gone, and suppressing inflammation blindly can kill by the other route.",
+  "why": "Sepsis and septic shock are Multisystem content in the USMLE Step 1 outline and a high-traffic reference topic: https://en.wikipedia.org/wiki/Sepsis",
+  "overlapWith": "immune-system: that page shows the response doing its job; this page shows what happens when the fast general response does not stop.",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "medicine-l3"
+ },
+ {
+  "slug": "thymic-selection-tolerance",
+  "title": "Self-tolerance & autoimmunity",
+  "level": 3,
+  "kind": "manipulate",
+  "category": "medicine",
+  "interaction": "Generate thousands of random T-cell receptors and test each against the body's own peptides in a model thymus: drag the lower affinity threshold below which a cell is useless and dies, and the upper threshold above which it is dangerous and dies, and watch what survives. Then challenge the survivors with a pathogen and with the body's own tissues: a strict upper threshold leaves few cells that can fight, a lax one lets self-reactive clones escape, and a peptide the thymus never displays leaves a hole in the pruning.",
+  "takeaway": "Tolerance is a threshold on a continuous scale of self-reactivity, so the immune system can only trade attacks on itself against failures to fight invaders, and some self-reactive cells always get through.",
+  "prerequisites": [
+   "immune-system"
+  ],
+  "related": [
+   "ige-crosslinking-allergy",
+   "cancer-immunotherapy"
+  ],
+  "needs": "",
+  "needsSource": "none",
+  "pitfall": "Autoimmunity is not the immune system 'getting confused' by a single mistake; it is the escape of cells that every repertoire contains, normally held in check by further layers.",
+  "why": "Central tolerance by positive and negative selection is a chapter of Janeway's Immunobiology, free on the NCBI Bookshelf: https://www.ncbi.nlm.nih.gov/books/NBK10757/",
+  "overlapWith": "immune-system: that page multiplies the clones that match an invader; this page shows how the repertoire is pruned against the body itself before it is ever used, and what happens when the pruning fails.",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "medicine-l3"
+ },
+ {
+  "slug": "wound-healing",
+  "title": "Wound healing",
+  "level": 3,
+  "kind": "simulate",
+  "category": "medicine",
+  "interaction": "Draw a wound of any shape in a sheet of skin and watch it close under the Sherratt–Murray equations: cells at the edge multiply and migrate, so the edge advances as a travelling wave at a speed set by the division and migration rates, and a chemical the wound releases speeds division nearby. Set the rates, then add an infection or starve the tissue of blood flow as in diabetes, each applied as a stated reduction of the division and migration rates since the model has no immune or vascular terms, and compare closure times; the stages of inflammation, proliferation and remodelling are marked on the clock.",
+  "takeaway": "A wound's edge advances at a constant speed set by how fast cells divide and move, so a wound twice as wide takes twice as long, and anything that stalls the cells, infection or poor blood supply, stalls the closure.",
+  "prerequisites": [
+   "the-cell"
+  ],
+  "related": [
+   "coagulation-cascade",
+   "bone-remodelling",
+   "cancer"
+  ],
+  "needs": "",
+  "needsSource": "none; the closure model is Sherratt & Murray, Proc. R. Soc. B 241, 29–36 (1990): https://researchportal.hw.ac.uk/en/publications/models-of-epidermal-wound-healing/",
+  "pitfall": "Wounds do not heal from the inside out by filling with new skin; the surface closes from the edges, and scar is collagen laid down fast, not skin regrown.",
+  "why": "The phases of wound healing are standard first-year physiology and pathology content and a high-traffic reference topic: https://en.wikipedia.org/wiki/Wound_healing",
+  "overlapWith": "cancer: that page lets cells divide without control; this page lets them divide and move exactly as far as needed, and stop.",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "medicine-l3"
  }
 ]

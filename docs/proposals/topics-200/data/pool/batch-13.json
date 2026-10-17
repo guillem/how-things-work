@@ -1,0 +1,639 @@
+[
+ {
+  "slug": "rock-to-sand",
+  "title": "Where sand comes from",
+  "level": 0,
+  "kind": "step",
+  "category": "earth",
+  "interaction": "Step a chunk of rock down a river: it breaks off a cliff, bangs along in a flood, and at each stop it is rounder and smaller as its corners knock off, faster for soft rock than hard. Where the river slows, the grains it carries settle by size, boulders first, then gravel, then sand, with mud going farthest; at the beach the waves finish the job. Scrub back and forth along the river to see where each size ends up.",
+  "takeaway": "Every grain of sand on a beach is a piece of a mountain that was knocked smaller and rounder on its way down, and the river sorts the grains by size as it slows.",
+  "prerequisites": [],
+  "related": [
+   "river-valleys",
+   "beach-waves",
+   "sand-dunes",
+   "fossil-layers",
+   "soil-in-a-jar"
+  ],
+  "needs": "",
+  "needsSource": "none (Sternberg's law of downstream abrasion with published coefficients for a few rock types, and settling speeds by grain size)",
+  "pitfall": "Sand is not all ground up by the sea, and not all sand is quartz: white tropical sand is broken shell and coral.",
+  "why": "England KS2 science, Year 3 Rocks: 'compare and group together different kinds of rocks on the basis of their appearance and simple physical properties' (https://www.gov.uk/government/publications/national-curriculum-in-england-science-programmes-of-study/national-curriculum-in-england-science-programmes-of-study); NGSS 4-ESS2-1.",
+  "overlapWith": "river-valleys: that page shows the land being cut; this one follows a single rock through the cutting and asks what becomes of it.",
+  "leadsTo": [
+   "deep-time",
+   "plate-tectonics"
+  ],
+  "everyday": false,
+  "origin": "earth-sky-weather"
+ },
+ {
+  "slug": "sand-dunes",
+  "title": "How dunes march",
+  "level": 0,
+  "kind": "simulate",
+  "category": "earth",
+  "interaction": "A flat bed of sand under a steady wind, drawn as little stacked slabs; press play and the wind lifts grains from the side facing it and drops them a little downwind, they pile until a slope gets too steep and slides, and out of a flat bed grows a field of dunes, each with a gentle face toward the wind and a steep slip face behind. The one control is the wind's direction, later its strength. Turn the wind and the dunes slowly rebuild to face it; everything creeps downwind.",
+  "takeaway": "Dunes are the wind moving sand uphill one grain at a time and the sand sliding down the back, so a whole dune walks downwind and always faces into the wind.",
+  "prerequisites": [],
+  "related": [
+   "rock-to-sand",
+   "beach-waves",
+   "sea-breeze"
+  ],
+  "needs": "",
+  "needsSource": "none (Werner's 1995 cellular dune model: sand slabs, wind shadows, avalanching at the angle of repose)",
+  "pitfall": "Deserts are not defined by sand or by heat but by dryness: most desert is rock and gravel, and some of it is cold.",
+  "why": "NGSS 4-ESS2-1, erosion by wind (https://www.nextgenscience.org/pe/4-ess2-1-earths-systems); US National Park Service, 'Aeolian (Dunes) Landforms' (https://www.nps.gov/subjects/geology/aeolian-landforms.htm).",
+  "overlapWith": "rock-to-sand makes the grains; this page is what the wind does with them, and no existing page shows a landform built by wind.",
+  "leadsTo": [
+   "deep-time"
+  ],
+  "everyday": false,
+  "origin": "earth-sky-weather"
+ },
+ {
+  "slug": "sea-breeze",
+  "title": "Where wind comes from: the sea breeze",
+  "level": 0,
+  "kind": "simulate",
+  "category": "earth",
+  "interaction": "A coast in cross-section, land on one side and sea on the other, filled with air drawn as drifting particles. Drag the Sun across the sky: by afternoon the land is warmer than the sea, the air over it rises, and air from the sea slides in underneath as a breeze that a flag on the beach shows. At night the land cools faster than the water and the breeze turns around and blows out to sea.",
+  "takeaway": "Wind is air moving from where it is cool and heavy toward where it is warm and rising, so uneven heating of land and water is enough to make a wind blow, and to turn it around at night.",
+  "prerequisites": [],
+  "related": [
+   "cloud-base",
+   "tornado-spin",
+   "a-year-of-weather",
+   "beach-waves"
+  ],
+  "needs": "",
+  "needsSource": "none (a small 2D buoyant-convection solver on a coarse grid, with the sea slower to warm than the land)",
+  "pitfall": "Warm air does not rise because heat goes up: it rises because it is lighter than the cooler air around it, which pushes it up.",
+  "why": "NOAA JetStream, 'The Sea Breeze' (https://www.noaa.gov/jetstream/ocean/sea-breeze); NGSS MS-ESS2-5 on air masses moving from high to low pressure.",
+  "overlapWith": "atmosphere-weather (level 2) heats a whole spinning globe into convection cells and winds with Coriolis; this page heats one beach and gets one wind, no rotation.",
+  "leadsTo": [
+   "states-of-matter"
+  ],
+  "everyday": false,
+  "origin": "earth-sky-weather"
+ },
+ {
+  "slug": "snowflake-growth",
+  "title": "Why snowflakes have six arms",
+  "level": 0,
+  "kind": "simulate",
+  "category": "earth",
+  "interaction": "Start from a speck in cold, moist air and watch a crystal grow on a honeycomb grid: water molecules arrive from all sides, the corners that stick out catch more of them, and six arms shoot out and branch. One control: the amount of moisture in the air, then the temperature. Low moisture grows flat plates and stubby prisms, high moisture grows branching stars, and a little randomness means no two crystals come out the same, though every one keeps its six-fold symmetry.",
+  "takeaway": "Six-fold symmetry comes from the way water molecules pack, and the shape of the arms comes from the air the crystal grew in, so every snowflake is a record of its own journey.",
+  "prerequisites": [],
+  "related": [
+   "dew-and-fog",
+   "how-rain-forms",
+   "glacier-flow"
+  ],
+  "needs": "",
+  "needsSource": "none (Reiter's 2005 hexagonal cellular automaton for snow crystal growth, or the Gravner-Griffeath 2008 model, checked against the Nakaya morphology diagram)",
+  "pitfall": "Snowflakes are not frozen raindrops; that is sleet. A snow crystal grows from vapour straight into ice.",
+  "why": "NOAA, 'How do snowflakes form? Get the science behind snow' (https://www.noaa.gov/stories/how-do-snowflakes-form-science-behind-snow); KS2 Year 4 states of matter.",
+  "overlapWith": "states-of-matter (level 1) shows water freezing into its open lattice; this page shows a single crystal growing from vapour and why its shape depends on the air.",
+  "leadsTo": [
+   "states-of-matter",
+   "chemical-bonds"
+  ],
+  "everyday": false,
+  "origin": "earth-sky-weather"
+ },
+ {
+  "slug": "soil-in-a-jar",
+  "title": "What soil is made of: the jar test",
+  "level": 0,
+  "kind": "step",
+  "category": "earth",
+  "everyday": true,
+  "interaction": "Scoop soil from a chosen place (a sandy garden, a clay field, a forest floor, a river bank) into a jar of water, shake it and step the clock: after a minute the sand has dropped to the bottom, after an hour the silt lies on top of it, and a day later the cloudy water has finally let its clay down, while bits of rotted leaf and root still float. A ruler reads the thickness of each layer and names the soil from the mix. A last step pours water on each soil: it runs straight through the sandy one and sits for hours on the clay.",
+  "takeaway": "Soil is rock ground into grains of three sizes plus the rotted remains of living things, and the mix decides whether water runs through it or stays.",
+  "prerequisites": [],
+  "related": [
+   "rock-to-sand",
+   "river-valleys",
+   "water-cycle",
+   "fossil-layers"
+  ],
+  "leadsTo": [
+   "ecosystems",
+   "plate-tectonics"
+  ],
+  "needs": "",
+  "needsSource": "none (settling speeds by grain size from Stokes' law, the sand, silt and clay size classes and the USDA soil texture triangle, US Department of Agriculture work, public domain)",
+  "pitfall": "Soil is not dirt that was always there and is not the same everywhere: a few centimetres take centuries to form, and the floating bits are as much a part of soil as the grains.",
+  "why": "England KS2 science, Year 3 Rocks: 'recognise that soils are made from rocks and organic matter' (https://www.gov.uk/government/publications/national-curriculum-in-england-science-programmes-of-study/national-curriculum-in-england-science-programmes-of-study); the jar test is a standard extension-service activity (https://hgic.clemson.edu/factsheet/soil-texture-analysis-the-jar-test/).",
+  "overlapWith": "rock-to-sand: that page sorts grains by size along a river; this one sorts them in a jar the reader can shake at home and adds the half of soil that was never rock.",
+  "origin": "earth-sky-weather"
+ },
+ {
+  "slug": "tornado-spin",
+  "title": "How a tornado spins up",
+  "level": 0,
+  "kind": "manipulate",
+  "category": "earth",
+  "interaction": "A wide, slowly turning column of air under a thunderstorm, drawn as rings of particles. Drag the storm's updraft to stretch the column taller and thinner: the particles keep their swing but have less room, so they whirl faster, like a skater pulling in her arms, and a funnel appears where the whirl is fast enough for the pressure drop at its heart to make a cloud. Let the column widen again and it slows and the funnel fades.",
+  "takeaway": "A spinning column of air spins faster when it is stretched thinner, and the funnel you see is just the place where the whirl is fast enough to make a cloud.",
+  "prerequisites": [],
+  "related": [
+   "sea-breeze",
+   "how-rain-forms",
+   "lightning-and-thunder"
+  ],
+  "needs": "",
+  "needsSource": "none (a Rankine-type vortex with angular momentum conserved under stretching, particle advection, and the pressure drop that condenses the funnel)",
+  "pitfall": "The visible funnel is not the whole tornado: the wind spins just as hard outside it before the cloud appears, which is why damage starts before the funnel seems to touch down.",
+  "why": "NGSS 3-ESS3-1, weather-related hazards (https://www.nextgenscience.org/pe/3-ess3-1-earth-and-human-activity); 'how do tornadoes form' is a standing how-does-it-work question.",
+  "overlapWith": "atmosphere-weather (level 2) grows a hurricane from a warm sea on a rotating globe; this page stretches one small vortex with no Coriolis effect at all.",
+  "leadsTo": [
+   "newtons-laws"
+  ],
+  "everyday": false,
+  "origin": "earth-sky-weather"
+ },
+ {
+  "slug": "volcano-eruptions",
+  "title": "Why some volcanoes explode and others ooze",
+  "level": 0,
+  "kind": "step",
+  "category": "earth",
+  "interaction": "Step magma up a pipe toward the surface with gas dissolved in it like a shaken fizzy drink: as the weight of rock above lessens, bubbles appear and grow. The one control is how runny or sticky the magma is: runny magma lets the bubbles float out, and lava fountains and flows spill gently down the slope, while sticky magma traps them until the froth bursts and the cone blows its top in ash. A second control adds more gas and makes the sticky case worse.",
+  "takeaway": "What makes an eruption explosive is not how hot the magma is but how hard it is for its gas to get out: runny magma fizzes, sticky magma bursts.",
+  "prerequisites": [],
+  "related": [
+   "rock-to-sand",
+   "fossil-layers"
+  ],
+  "needs": "",
+  "needsSource": "none (bubble growth as pressure falls, bubble rise speed set by the magma's viscosity, fragmentation above a gas fraction threshold)",
+  "pitfall": "Lava is not fire and a volcano is not a hole into a burning centre: magma is melted rock, and most of the Earth's inside is solid.",
+  "why": "USGS FAQ, 'How do volcanoes erupt?', runny magma that lets gas escape against sticky magma that traps it (https://www.usgs.gov/faqs/how-do-volcanoes-erupt); England KS2 geography, volcanoes and earthquakes.",
+  "overlapWith": "plate-tectonics (level 1) shows where volcanoes are and why; this page shows what happens inside one when it erupts, which that page does not.",
+  "leadsTo": [
+   "plate-tectonics",
+   "states-of-matter"
+  ],
+  "everyday": false,
+  "origin": "earth-sky-weather"
+ },
+ {
+  "slug": "water-cycle",
+  "title": "The water cycle",
+  "level": 0,
+  "kind": "simulate",
+  "category": "earth",
+  "interaction": "A sea, a mountain and the sky, with the water drawn as a few hundred dots that the page follows one by one. Turn the Sun up and more dots leave the sea as invisible vapour, rise, cool and gather into clouds that rain on the mountain, from where streams carry them back to the sea; turn it down and the air dries and the rivers shrink. A counter shows how many dots are in the sea, the air, the ice and the rivers at any moment, and the sea always holds almost all of them.",
+  "takeaway": "Water is never used up: the same water goes round and round between sea, air and land, lifted by the Sun's heat and brought back down by gravity.",
+  "prerequisites": [],
+  "related": [
+   "cloud-base",
+   "how-rain-forms",
+   "why-the-sea-is-salty",
+   "river-valleys"
+  ],
+  "needs": "",
+  "needsSource": "none (the share of water in each store from the USGS Water Science School, US Government work, public domain)",
+  "pitfall": "Evaporation does not need boiling: water leaves the sea at ordinary temperatures, faster when it is warmer. And the vapour is invisible; the white of a cloud is droplets.",
+  "why": "England KS2 science, Year 4 States of matter: 'identify the part played by evaporation and condensation in the water cycle' and 'associate the rate of evaporation with temperature' (https://www.gov.uk/government/publications/national-curriculum-in-england-science-programmes-of-study/national-curriculum-in-england-science-programmes-of-study); also NGSS MS-ESS2-4 (https://www.nextgenscience.org/pe/ms-ess2-4-earths-systems).",
+  "overlapWith": "carbon-cycle: the same idea of stores joined by flows, but for water, with every drop followed as a particle in a landscape instead of flows drawn to scale between boxes.",
+  "leadsTo": [
+   "carbon-cycle",
+   "states-of-matter"
+  ],
+  "everyday": false,
+  "origin": "earth-sky-weather"
+ },
+ {
+  "slug": "why-the-sea-is-salty",
+  "title": "Why the sea is salty",
+  "level": 0,
+  "kind": "simulate",
+  "category": "earth",
+  "interaction": "A lake fed by a river that carries a pinch of salt in every bucket of water; the Sun lifts pure water out and the salt stays. Open or close the lake's outlet: with an outlet the salt leaves as fast as it arrives and the lake stays fresh, close it and the salt count climbs year after year until crystals ring the shore, like the Dead Sea. Then the ocean: rivers in, evaporation out, and salt also leaving into the sea floor, so its saltiness holds steady at about two teaspoons of salt in every glass.",
+  "takeaway": "Rivers carry a little salt to the sea and the Sun takes only the water back, so salt collects wherever water can leave only by evaporating.",
+  "prerequisites": [],
+  "related": [
+   "water-cycle",
+   "rock-to-sand",
+   "dew-and-fog",
+   "how-caves-form"
+  ],
+  "needs": "",
+  "needsSource": "none (a salt mass-balance box model; seawater at about 35 g per kg and the average river at about 0.1 g per litre, from the USGS Water Science School, US Government work)",
+  "pitfall": "The ocean is not getting steadily saltier today: salt leaves into the sea floor about as fast as rivers bring it.",
+  "why": "USGS Water Science School, 'Why is the ocean salty?' (https://www.usgs.gov/special-topics/water-science-school/science/why-ocean-salty); 'why is the sea salty?' is among the questions UK parents say they cannot answer (https://www.stornowaygazette.co.uk/arts-and-culture/top-30-impossible-questions-that-children-ask-840687).",
+  "overlapWith": "ocean-currents (level 2) uses salinity to drive the deep circulation; this page asks where the salt came from and never mentions currents.",
+  "leadsTo": [
+   "states-of-matter",
+   "acids-bases"
+  ],
+  "everyday": false,
+  "origin": "earth-sky-weather"
+ },
+ {
+  "slug": "carbonate-silicate-thermostat",
+  "title": "The carbonate-silicate thermostat",
+  "level": 3,
+  "kind": "simulate",
+  "category": "earth",
+  "interaction": "A box model in which volcanoes outgas CO2, silicate weathering removes it at a rate that rises with temperature and rainfall (the Walker, Hays and Kasting feedback), and a one-layer energy balance sets the temperature. Dim the young Sun to seventy percent and run a million years: CO2 piles up until weathering catches up and the planet stays unfrozen. Freeze the planet to stop weathering and watch CO2 climb for millions of years until the ice gives way; move the planet outward or switch off the volcanoes to find where the thermostat fails.",
+  "takeaway": "Over millions of years rock weathering acts as a thermostat, because a warmer, wetter planet draws down CO2 faster, which is why Earth stayed habitable under a brightening Sun and how a Snowball Earth ends.",
+  "prerequisites": [
+   "carbon-cycle",
+   "greenhouse-effect"
+  ],
+  "related": [
+   "ocean-acidification",
+   "radiative-convective-column",
+   "deep-time",
+   "atmospheric-escape"
+  ],
+  "needs": "",
+  "pitfall": "This thermostat works over a million years and does nothing about fossil-fuel CO2 on human timescales; the fast carbon cycle and the slow one are different pages.",
+  "why": "University of Arizona PTYS 522 (Showman, Spring 2020), taught from Pierrehumbert's Principles of Planetary Climate; the carbonate-silicate week was not confirmed in the fetched excerpt: https://www.lpl.arizona.edu/sites/default/files/courses/PTYS_522_Showman_Spring_2020.pdf",
+  "overlapWith": "carbon-cycle: that page runs the fast cycle over decades with human emissions; this page runs the slow rock cycle over millions of years and shows the feedback that makes it a thermostat.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "earth-space-l3"
+ },
+ {
+  "slug": "earths-magnetic-field",
+  "title": "Earth's magnetic field & the geodynamo",
+  "level": 3,
+  "kind": "explore",
+  "category": "earth",
+  "interaction": "Scrub the years 1900 to 2025 while a globe draws the field computed from the IGRF Gauss coefficients: the magnetic poles wander, the field drifts westward and the South Atlantic Anomaly deepens. Switch the spherical-harmonic degrees on one at a time to split the field into its dipole and the smaller-scale parts that the fluid core stirs, and read the dipole's strength falling over the century. A second track scrubs the polarity record of the last 160 million years, where the reader can hunt for a regular period and fail to find one.",
+  "takeaway": "Earth's field is close to a dipole but not fixed: its pole wanders, its strength has fallen measurably since 1900, and the record of past reversals shows no regular clock.",
+  "prerequisites": [
+   "electromagnetism"
+  ],
+  "related": [
+   "earthquakes",
+   "plate-tectonics",
+   "mantle-convection"
+  ],
+  "needs": "IGRF-14 Gauss coefficients (IAGA V-MOD, distributed by NOAA NCEI as a US-government work; the accompanying software is stated public domain, the coefficient file itself carries no licence line) and the geomagnetic polarity time scale (published chron boundaries, retyped as a table).",
+  "pitfall": "The field is not a bar magnet inside the Earth: the core is far above its Curie temperature and the field comes from flow in the liquid outer core. A falling dipole does not mean a reversal is due.",
+  "why": "MIT OCW 12.201 Essentials of Geophysics, chapter 3 notes on the geodynamo, secular variation and reversals: https://ocw.mit.edu/courses/12-201-essentials-of-geophysics-fall-2004/resources/ch3pdf",
+  "overlapWith": "earthquakes: that page reveals the liquid outer core through S-wave shadows; this page shows what the liquid core does, the field it generates and how that field changes.",
+  "needsSource": "IGRF-14 coefficients from NOAA NCEI (US government work; software stated public domain, no licence line on the coefficient file); polarity chron boundaries from the published time scale (numbers, retyped).",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "earth-space-l3"
+ },
+ {
+  "slug": "groundwater-flow",
+  "title": "Groundwater & aquifers",
+  "level": 3,
+  "kind": "build",
+  "category": "earth",
+  "interaction": "Draw an aquifer in plan view with zones of different hydraulic conductivity, a river and a recharge rate, and the page solves the groundwater flow equation on a finite-difference grid. Place pumping wells and set their rates: cones of depression form in the water table, overlap, and can pull the river's water into a well; release a tracer and watch its path and travel time to each well, which draws the well's capture zone. Switch to transient mode and the cone keeps spreading for years after pumping starts.",
+  "takeaway": "Groundwater moves slowly down the slope of the water table, so a well's effect spreads for years and its catchment is a shape on the map, not a radius.",
+  "prerequisites": [
+   "calculus"
+  ],
+  "related": [
+   "river-meanders"
+  ],
+  "needs": "",
+  "pitfall": "Aquifers are not underground rivers or lakes but water in the pores of rock and sediment, and the sustainable yield is not the recharge rate alone, because pumping also takes water from rivers and springs.",
+  "why": "MIT OCW 1.72 Groundwater Hydrology syllabus (Darcy's equation, well hydraulics, numerical models): https://ocw.mit.edu/courses/1-72-groundwater-hydrology-fall-2005/pages/syllabus/",
+  "overlapWith": "carbon-cycle: the nearest reservoirs-and-flows page; nothing in the catalogue covers water underground, and this page solves a flow field rather than a box budget.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "earth-space-l3"
+ },
+ {
+  "slug": "hurricane-heat-engine",
+  "title": "Hurricanes as heat engines",
+  "level": 3,
+  "kind": "simulate",
+  "category": "earth",
+  "interaction": "Set the sea-surface temperature, the outflow temperature at the top of the storm and the humidity of the inflowing air, and the page computes Emanuel's potential intensity, the Carnot limit of an engine whose heat source is the ocean and whose sink is the upper troposphere, drawing the cycle on a temperature-entropy chart. Press run and a one-dimensional intensity model spins the storm up toward that limit over days; add vertical wind shear or let the storm cool the sea beneath it and watch it fall short of the ceiling.",
+  "takeaway": "A hurricane is a heat engine whose maximum wind is set by the temperature difference between the sea surface and the top of the storm, and most storms never reach that limit because shear and cold water cut them short.",
+  "prerequisites": [
+   "heat-engines",
+   "atmosphere-weather"
+  ],
+  "related": [
+   "entropy",
+   "ocean-currents",
+   "radiative-convective-column"
+  ],
+  "needs": "Optional: a monthly climatological sea-surface temperature field (NOAA; US government work, licence line not checked in this round) for a map of the limit.",
+  "pitfall": "The Carnot bound is an upper limit, not a forecast, and the storm's energy comes from evaporation off the warm sea, not from the Coriolis effect, which only sets the direction of spin.",
+  "why": "MIT OCW 12.811 Tropical Meteorology, lecture 4 on tropical cyclone energetics and potential intensity: https://ocw.mit.edu/courses/earth-atmospheric-and-planetary-sciences/12-811-tropical-meteorology-spring-2011/lecture-notes/MIT12_811S11_lecture_4.pdf",
+  "overlapWith": "atmosphere-weather: that page grows a hurricane by warming the sea surface; this page computes the thermodynamic ceiling on its winds and runs an intensity model against that ceiling.",
+  "needsSource": "none required; optional NOAA SST climatology (US government work; licence line not checked in this round).",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "earth-space-l3"
+ },
+ {
+  "slug": "isotope-dating-concordia",
+  "title": "Isotope dating: concordia & isochrons",
+  "level": 3,
+  "kind": "manipulate",
+  "category": "earth",
+  "interaction": "Crystallize a zircon at a chosen age and watch its two uranium-lead clocks tick along the concordia curve as the ratios of lead-206 to uranium-238 and lead-207 to uranium-235 grow at their own rates. Strike it with a metamorphic event that strips some lead and the point jumps onto a straight discordia whose two intercepts give both ages; several grains losing different amounts line up and the page fits the line. Switch to rubidium-strontium and tilt an isochron by ageing a rock whose minerals started with the same strontium ratio.",
+  "takeaway": "Two decay chains in one crystal give two ages that must agree, so when they do not, the mismatch itself dates the event that disturbed them.",
+  "prerequisites": [
+   "radioactivity"
+  ],
+  "related": [
+   "radiocarbon-calibration",
+   "deep-time"
+  ],
+  "needs": "",
+  "pitfall": "Radiometric ages are not circular with the fossil record; the concordia test is internal to the crystal, and a discordant point is information, not a failure of the method.",
+  "why": "UCL geochronology notes, chapter 5 on U-Pb concordia and discordia (Vermeesch): https://www.ucl.ac.uk/~ucfbpve/geotopes/indexch5.html",
+  "overlapWith": "deep-time: that page scrubs 4.5 billion years already dated; this page is how a single crystal yields a date and how the date survives a disturbance.",
+  "needsSource": "none beyond published decay constants",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "earth-space-l3"
+ },
+ {
+  "slug": "mantle-convection",
+  "title": "Mantle convection",
+  "level": 3,
+  "kind": "simulate",
+  "category": "earth",
+  "interaction": "Set the Rayleigh number and the viscosity contrast between hot and cold rock and run a two-dimensional convection box solved on a grid (infinite Prandtl number, Boussinesq, temperature-dependent viscosity). A low Rayleigh number gives a few sluggish cells; a high one gives thin plumes under a cold, stiff lid. Drag a probe to read local temperature and speed, watch the heat carried (the Nusselt number) climb with Rayleigh number on a log-log plot, and tune the lid until it either locks in place or founders in plate-like pieces.",
+  "takeaway": "Rock that is solid on human timescales flows over millions of years, and one number, the Rayleigh number, decides whether a planet's mantle sits still, rolls in slow cells, or sends narrow plumes up under a cold lid.",
+  "prerequisites": [
+   "plate-tectonics",
+   "states-of-matter"
+  ],
+  "related": [
+   "earths-magnetic-field",
+   "glacier-flow"
+  ],
+  "needs": "",
+  "pitfall": "The mantle is solid rock that creeps, not a sea of magma, and plates are the cold upper boundary layer of the convection, not rafts floating on it.",
+  "why": "MIT OCW 12.002 Physics and Chemistry of the Terrestrial Planets, problem set 5 on convection and the Rayleigh number: https://ocw.mit.edu/courses/12-002-physics-and-chemistry-of-the-terrestrial-planets-fall-2008/5c713900869468f1a4616e1345658265_MIT12_002f08_ps05.pdf",
+  "overlapWith": "plate-tectonics: that page moves plates by hand and builds the landforms; this page shows the convection underneath that moves them and why it takes the form of plumes and a stiff lid.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "earth-space-l3"
+ },
+ {
+  "slug": "ocean-acidification",
+  "title": "Ocean acidification & carbonate chemistry",
+  "level": 3,
+  "kind": "manipulate",
+  "category": "earth",
+  "interaction": "Slide atmospheric CO2 from the pre-industrial 280 ppm past 1,000 ppm while the page solves the seawater carbonate system (the dissociation constants of carbonic acid in seawater, with alkalinity held fixed): pH falls, dissolved CO2 and bicarbonate rise, carbonate ion falls, and the aragonite saturation state drops below one first in cold water. A Bjerrum plot shows the species shifting with pH, a temperature slider shows why polar seas get there first, and the Revelle factor shows why the ocean's uptake slows as it fills.",
+  "takeaway": "Adding CO2 to seawater does not just lower its pH, it consumes carbonate ions, the building block of shells, and cold water runs short of them first.",
+  "prerequisites": [
+   "acids-bases",
+   "carbon-cycle",
+   "reaction-rates-equilibrium"
+  ],
+  "related": [
+   "carbonate-silicate-thermostat",
+   "ocean-currents"
+  ],
+  "needs": "The seawater dissociation constants as functions of temperature and salinity (published empirical fits, as used by CO2SYS; numbers retyped from the literature).",
+  "pitfall": "The ocean is not becoming acid (its pH stays above 7); acidification means moving toward acid, and the harm is the loss of carbonate ion, not corrosive water.",
+  "why": "University of Texas MNS 193 Ocean and Estuarine Acidification, a course built around CO2SYS carbonate-chemistry calculations: https://hulab.utmsi.utexas.edu/OA_class/index.htm",
+  "overlapWith": "acids-bases: that page titrates a single acid and counts hydrogen ions; this page solves the coupled carbonate equilibria of seawater and reads off the carbonate ion and saturation state that acids-bases never reaches.",
+  "needsSource": "none beyond published equilibrium-constant fits",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "earth-space-l3"
+ },
+ {
+  "slug": "ocean-tides-amphidromes",
+  "title": "Tides in a real ocean",
+  "level": 3,
+  "kind": "simulate",
+  "category": "earth",
+  "interaction": "A rotating shallow-water model of an ocean basin forced by the Moon's twice-daily tidal potential (the Laplace tidal equations on a grid). Start with a boundless ocean and the bulge follows the Moon; close the basin and the tide becomes waves running around points of zero range, the amphidromic points, turning one way in the northern hemisphere and the other in the southern. Reshape the basin and change its depth to tune its natural period, so that a bay of the right length resonates and its range grows to the many meters of the Bay of Fundy, and compare the result with the harmonic constituents measured at a real port.",
+  "takeaway": "The ocean cannot keep up with the Moon's pull, so the real tide is a set of waves sloshing around each basin, with no tide at their centers and huge tides where a bay's natural period matches the Moon's.",
+  "prerequisites": [
+   "sun-earth-moon",
+   "waves-interference",
+   "oscillations-resonance"
+  ],
+  "related": [
+   "ocean-currents",
+   "rossby-waves",
+   "tidal-evolution-resonance"
+  ],
+  "needs": "Optional: tidal harmonic constituents for one or two ports from NOAA CO-OPS (US government work; licence line not checked in this round).",
+  "pitfall": "The two-bulge picture explains the forcing, not the tide people see, and the far-side bulge is not centrifugal force but the difference in the Moon's pull across the Earth.",
+  "why": "AMS Introduction to Ocean Sciences, chapter 10 on tides, which teaches amphidromic systems in undergraduate oceanography: https://www.ametsoc.org/ams/education-careers/education-program/undergraduate-curriculum/teaching-ocean-sciences/introduction-to-ocean-sciences-6th-edition-textbook/ocean-chapter-10/",
+  "overlapWith": "sun-earth-moon: that page shows the tides following the Moon and strengthening at alignment (the equilibrium tide); this page is the dynamic tide, with amphidromes, Kelvin waves and resonant bays that the geometry alone cannot show.",
+  "needsSource": "none required; optional NOAA CO-OPS harmonic constituents (US government work; licence line not checked in this round).",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "earth-space-l3"
+ },
+ {
+  "slug": "radiative-convective-column",
+  "title": "Radiative transfer & the climate column",
+  "level": 3,
+  "kind": "simulate",
+  "category": "earth",
+  "interaction": "A column of air from the surface to the stratosphere, solved with the two-stream radiative transfer equations for a grey gas plus an infrared window, with convection adjusting any layer steeper than the chosen lapse rate. Slide the infrared optical depth (the CO2 amount) and the lapse rate and watch the temperature profile, the tropopause and the emission height move, while a side panel shows which layer the escaping infrared leaves from. Switch convection off to see pure radiative equilibrium and its unstable lower layers.",
+  "takeaway": "Adding greenhouse gas raises the height from which the planet radiates to space, and because air is colder higher up the whole column below must warm to restore the balance, while the stratosphere above it cools.",
+  "prerequisites": [
+   "greenhouse-effect",
+   "atmosphere-weather"
+  ],
+  "related": [
+   "carbonate-silicate-thermostat",
+   "hurricane-heat-engine"
+  ],
+  "needs": "",
+  "pitfall": "Greenhouse gases do not trap heat like a blanket or reflect infrared; the column warms because the effective emission level rises into colder air. A band that is saturated at the surface still warms the planet, because emission from higher, thinner layers is what matters.",
+  "why": "Pierrehumbert's Principles of Planetary Climate courseware, chapter 4 grey radiative-convective equilibrium notebook: https://users.physics.ox.ac.uk/~pierrehumbert/PrinciplesPlanetaryClimate/Courseware/PlanetaryClimateCourseware2/ChapterScripts/Chapter4/Chapter4.html",
+  "overlapWith": "greenhouse-effect: that page balances sunlight in against infrared out with adjustable CO2 in a zero-dimensional budget; this page adds the vertical structure, which is where the emission height, the lapse rate and stratospheric cooling live.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "earth-space-l3"
+ },
+ {
+  "slug": "radiocarbon-calibration",
+  "title": "Radiocarbon calibration",
+  "level": 3,
+  "kind": "manipulate",
+  "category": "earth",
+  "interaction": "Enter a laboratory radiocarbon age with its error bar and the page maps it through the IntCal20 calibration curve into a calendar-date probability: a sharp bump where the curve is steep, a smear or several islands where it plateaus. Drag the age along the curve to find the plateaus (the Hallstatt plateau around 2,500 years ago) and the wiggles. Add a sequence of samples with known gaps between them, as in tree rings, and wiggle-match the whole set at once, which pins down a date the single sample could not.",
+  "takeaway": "A radiocarbon age is not a date: the amount of carbon-14 in the air has varied, so one measurement can map to several calendar ranges, and only the curve's wiggles, matched over a sequence, turn it into a date.",
+  "prerequisites": [
+   "radioactivity",
+   "bayes-theorem"
+  ],
+  "related": [
+   "isotope-dating-concordia",
+   "deep-time"
+  ],
+  "needs": "The IntCal20 calibration curve (Reimer et al. 2020, doi:10.1017/RDC.2020.68); shipped in the CRAN rintcal package under GPL (>= 2); the terms of the intcal.org files themselves were not checked.",
+  "pitfall": "A calibrated range is a probability distribution, not an error bar; the page must not present the single most likely year as the answer.",
+  "why": "UCL geochronology course notes (Vermeesch, Geotopes), the same course whose U-Pb chapter was fetched; the radiocarbon chapter itself was not fetched: https://www.ucl.ac.uk/~ucfbpve/geotopes/indexch5.html",
+  "overlapWith": "radioactivity: that page dates a sample from its remaining carbon-14; this page is the step it skips, from that raw age to a calendar range through the curve's wiggles and plateaus.",
+  "needsSource": "IntCal20 (Reimer et al. 2020); available in the rintcal R package under GPL (>= 2); intcal.org terms not confirmed.",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "earth-space-l3"
+ },
+ {
+  "slug": "river-meanders",
+  "title": "River meanders",
+  "level": 3,
+  "kind": "simulate",
+  "category": "earth",
+  "interaction": "A nearly straight river on a floodplain with one small kink; the page runs the Ikeda-Parker-Sawai bend model, in which the faster current on the outside of each bend erodes that bank in proportion to its excess speed while the inside bank builds a point bar. Set bank erodibility, channel width and discharge and watch bends grow, migrate downstream, swing and finally cut off, leaving oxbow lakes; a plot tracks sinuosity rising, dropping at each cutoff and hovering around a value. Scrub back through time to see the scroll bars the channel left behind.",
+  "takeaway": "A river meanders because a bend feeds itself, pushing fast water onto its outer bank, until bends meet and cut off, so sinuosity grows and resets around a steady value instead of running away.",
+  "prerequisites": [],
+  "related": [
+   "groundwater-flow"
+  ],
+  "needs": "",
+  "pitfall": "Meanders are not caused by obstacles or by the Coriolis effect; a uniform floodplain and a tiny initial wobble are enough.",
+  "why": "CSDMS teaching platform, manual of the Meander Centerline Migration Model built on the Ikeda-Parker-Sawai theory: https://csdms.colorado.edu/csdms_wiki/images/Manual_of_the_MCMM.pdf",
+  "overlapWith": "plate-tectonics: the nearest landscape-building page; nothing in the catalogue treats rivers, and this page is a channel evolving under its own flow law rather than crust built by hand.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "earth-space-l3"
+ },
+ {
+  "slug": "rossby-waves",
+  "title": "Jet streams & Rossby waves",
+  "level": 3,
+  "kind": "simulate",
+  "category": "earth",
+  "interaction": "A strip of the mid-latitude atmosphere solved with the barotropic vorticity equation on a beta plane. Drop a blob of spin into a westerly jet and it drifts west relative to the flow while its energy drifts east; set the jet speed and wavelength to find the waves that stand still over the ground. Raise a mountain range and a train of stationary waves forms downstream, as it does behind the Rockies; crank the amplitude until a wave breaks and a high-pressure block parks for days.",
+  "takeaway": "The jet stream's meanders are waves that exist because the Coriolis effect changes with latitude; the long ones drift west against the wind and can lock in place over mountains to hold a weather pattern for days.",
+  "prerequisites": [
+   "atmosphere-weather",
+   "waves-interference"
+  ],
+  "related": [
+   "ocean-currents",
+   "chaos-fractals",
+   "ocean-tides-amphidromes"
+  ],
+  "needs": "",
+  "pitfall": "The polar vortex and the jet stream are not the same thing, and the jet does not push weather along like a conveyor; the waves on it steer the highs and lows.",
+  "why": "MIT OCW 12.803 Quasi-Balanced Circulations, lecture 10 on Rossby wave propagation from the barotropic vorticity equation: https://ocw.mit.edu/courses/12-803-quasi-balanced-circulations-in-oceans-and-atmospheres-fall-2009/2fecfb67e4ae41a48d23ee1cd3f84013_MIT12_803F09_lec10.pdf",
+  "overlapWith": "atmosphere-weather: that page heats and spins a globe to produce the convection cells and prevailing winds; this page takes the resulting jet and shows the waves that run along it and why they stall.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "earth-space-l3"
+ },
+ {
+  "slug": "sea-level-fingerprints",
+  "title": "Sea-level fingerprints",
+  "level": 3,
+  "kind": "manipulate",
+  "category": "earth",
+  "interaction": "Melt a chosen amount of Greenland or West Antarctica with a slider and a globe shows the resulting change in sea level, solved from the sea-level equation: the ice sheet's gravitational pull on the ocean weakens, so the sea falls within about two thousand kilometers of it and rises by more than the global average far away. Melt both and compare the patterns, then pick a coastal city to read its share. The model is gravitational self-attraction on a rigid Earth, with the elastic and rotational terms stated as omitted.",
+  "takeaway": "Melting ice does not raise the sea evenly: the water pulls away from the vanishing ice sheet, so the coasts nearest the melt see the least rise and distant ones the most.",
+  "prerequisites": [
+   "newtons-laws"
+  ],
+  "related": [
+   "glacier-flow",
+   "ice-ages",
+   "ocean-currents"
+  ],
+  "needs": "A land-ocean mask with bathymetry (ETOPO global relief, NOAA NCEI, US government work; licence line not checked in this round) and ice-sheet outlines from published masks.",
+  "pitfall": "Sea-level rise is a pattern, not a bathtub filling evenly, and the fall near a melting ice sheet is real, not a sign that no water was added.",
+  "why": "WHOI Geophysical Fluid Dynamics program lecture notes by Mitrovica on sea-level fingerprints: https://geodynamicsprogram.whoi.edu/wp-content/uploads/sites/14/2018/10/PR0929-ESEP-Mitrovica_48713.pdf",
+  "overlapWith": "greenhouse-effect: that page runs emission scenarios to a global temperature; sea level appears nowhere in the catalogue, and this page shows that each melt source stamps its own geography on the rise.",
+  "needsSource": "ETOPO land-ocean mask (NOAA NCEI, US government work; licence line not checked in this round); ice-sheet outlines from published masks.",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "earth-space-l3"
+ },
+ {
+  "slug": "seismic-tomography",
+  "title": "Seismic tomography",
+  "level": 3,
+  "kind": "build",
+  "category": "earth",
+  "interaction": "Paint fast and slow patches into a cross-section of the mantle, place earthquakes and seismometers (stations can only go on land), and the page traces rays between every pair through a reference Earth and records their travel times. Press invert: a damped least-squares solution rebuilds an image from the times alone, and the reader compares it with what they painted. Replace the painting with a checkerboard to see which regions the ray coverage can resolve and which smear into streaks.",
+  "takeaway": "An image of Earth's interior is the smoothest model that explains thousands of arrival times, and it is sharp only where many rays cross.",
+  "prerequisites": [
+   "earthquakes",
+   "linear-transformations"
+  ],
+  "related": [
+   "medical-imaging",
+   "mantle-convection"
+  ],
+  "needs": "The PREM velocity table (Dziewonski & Anderson 1981; published table) for the reference Earth the rays bend through.",
+  "pitfall": "Blue and red in a tomogram are percent deviations from a reference, not absolute temperatures, and a smooth, featureless region may be unresolved rather than uniform.",
+  "why": "UNC Chapel Hill geophysics notes on travel-time tomography as a linear inverse problem: https://leesj.sites.oasis.unc.edu/FETCH/GRAB/Vignettes/invtomo.pdf",
+  "overlapWith": "medical-imaging: that page reconstructs a CT slice from evenly spaced projections it controls; here the sources are earthquakes nobody chose and the stations sit on land, so rays bend, coverage is uneven, and the inversion must be regularized and its resolution tested.",
+  "needsSource": "PREM velocity table (published in Dziewonski & Anderson 1981).",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "earth-space-l3"
+ },
+ {
+  "slug": "aurora-rings",
+  "title": "Auroras: the Sun's wind on Earth's magnet",
+  "level": 0,
+  "kind": "simulate",
+  "category": "space",
+  "interaction": "Earth with its magnetic field drawn as loops, in a stream of charged specks from the Sun; press play and the specks cannot cross the field lines, so they slide along them and spiral down into the air in two rings around the magnetic poles, where the sky glows green and, higher up, red. The one control is the strength of the solar wind. A gust squeezes the field and the glowing rings widen toward the equator, which is when people far from the poles get to see the lights.",
+  "takeaway": "Auroras happen in rings around the magnetic poles because Earth's magnetic field steers the Sun's charged particles there, and a stronger solar wind pushes the rings toward the equator.",
+  "prerequisites": [],
+  "related": [
+   "compass-and-magnetic-poles",
+   "comet-tails",
+   "twinkling-stars"
+  ],
+  "needs": "",
+  "needsSource": "none (charged particles integrated in a dipole field, the field's sunward edge pushed in by solar-wind pressure, glow colour by height; the page states the simplification that particles are shown guided straight down the field lines, where the real ones arrive by way of the night-side tail; the NOAA SWPC OVATION aurora forecast, public domain, can be shown for comparison)",
+  "pitfall": "Auroras are not sunlight reflected off polar ice, and they are not in the clouds: they glow a hundred kilometres up and higher.",
+  "why": "NASA Space Place, 'What Is an Aurora?' (https://spaceplace.nasa.gov/aurora/en/).",
+  "overlapWith": "electromagnetism (level 2) shows charges moving in fields in the abstract; this page shows it once, on a planet, with the pattern it makes in the sky.",
+  "leadsTo": [
+   "atoms-periodic-table"
+  ],
+  "everyday": false,
+  "origin": "earth-sky-weather"
+ },
+ {
+  "slug": "comet-tails",
+  "title": "Comets and their tails",
+  "level": 0,
+  "kind": "explore",
+  "category": "space",
+  "interaction": "Scrub a comet along its real stretched orbit, far out and frozen, then swinging in close to the Sun. As it warms, gas and dust stream off it, and the tail always points away from the Sun, whichever way the comet is going, so on the way out the comet flies tail-first. Two tails appear: a straight blue gas tail pushed by the solar wind and a curved dust tail of grains that lag along the orbit; zoom in to see the grains leave.",
+  "takeaway": "A comet's tail is blown by the Sun, not left behind by motion, so it always points away from the Sun and the comet travels tail-first when it leaves.",
+  "prerequisites": [],
+  "related": [
+   "shooting-stars",
+   "solar-system-to-scale",
+   "aurora-rings"
+  ],
+  "needs": "Orbital elements of one or two real comets (Halley, and a recent bright one) from the JPL Small-Body Database API (https://ssd-api.jpl.nasa.gov/doc/sbdb.html); NASA/JPL data with no separate licence text, free to use with the credit 'Courtesy NASA/JPL-Caltech' under JPL's use policy. Treat as open but confirm against the API's terms before shipping.",
+  "needsSource": "JPL Small-Body Database orbital elements (NASA/JPL, free with credit; no explicit data licence)",
+  "pitfall": "The tail does not trail behind like exhaust, and a comet is not a burning rock: it is ice and dust turning to gas in sunlight.",
+  "why": "NASA Space Place, 'What Is a Comet?' (https://spaceplace.nasa.gov/comets/en/); England KS2 Year 5, the movement of bodies relative to the Sun.",
+  "overlapWith": "orbits-kepler (level 1) launches bodies into ellipses; this page uses one real ellipse and asks only which way the tail points.",
+  "leadsTo": [
+   "orbits-kepler",
+   "states-of-matter"
+  ],
+  "everyday": false,
+  "origin": "earth-sky-weather"
+ }
+]

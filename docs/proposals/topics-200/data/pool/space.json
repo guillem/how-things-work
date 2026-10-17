@@ -312,5 +312,396 @@
   "why": "NGSS MS-ESS1-3: 'Analyze and interpret data to determine scale properties of objects in the solar system' (https://www.nextgenscience.org/pe/ms-ess1-3-earths-place-universe); 'would Saturn float on water' is a standing popular question (https://www.worldatlas.com/space/would-saturn-float-on-water.html).",
   "overlapWith": "earthquakes (level 1) finds Earth's iron core from seismic waves; this page finds it from weight and size alone, and no existing page says what the Moon or the giant planets are made of.",
   "origin": "earth-sky-weather"
+ },
+ {
+  "slug": "aperture-synthesis",
+  "title": "Interferometry & aperture synthesis",
+  "level": 3,
+  "kind": "build",
+  "category": "space",
+  "interaction": "Place radio dishes on a map and pick a model sky; every pair of dishes samples one point of the sky's Fourier transform, and as the Earth turns each pair traces an arc in the uv plane. Watch the dirty beam and the dirty image form from whatever the array has sampled: two dishes see only stripes, a dozen over six hours see the source. Run CLEAN step by step, subtracting the beam from the brightest point until the image emerges, and compare it with the truth; shrink the array to lose resolution, spread it to lose the extended emission.",
+  "takeaway": "An array of small telescopes can see as sharply as one dish as wide as the array, because what it measures is the sky's Fourier transform, and the Earth's rotation fills in the gaps.",
+  "prerequisites": [
+   "fourier-transform",
+   "waves-interference",
+   "light-optics"
+  ],
+  "related": [
+   "medical-imaging",
+   "black-holes",
+   "gravitational-waves"
+  ],
+  "needs": "",
+  "pitfall": "An interferometer does not gain the collecting area of a filled dish, only its resolution, and the dirty image is not a photograph of the sky but of what was sampled.",
+  "why": "NRAO Synthesis Imaging Workshop, the graduate course on aperture synthesis theory and technique: https://aas.org/events/2022-02/18th-synthesis-imaging-workshop",
+  "overlapWith": "light-optics: that page forms images with lenses; this page forms an image with no lens at all, from the correlations between separated telescopes.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "earth-space-l3"
+ },
+ {
+  "slug": "atmospheric-escape",
+  "title": "Planetary atmospheres & escape",
+  "level": 3,
+  "kind": "manipulate",
+  "category": "space",
+  "interaction": "Pick a body (Earth, Mars, Venus, Titan, the Moon, a hot Jupiter) or set mass, radius and exobase temperature, and pick a gas. The page draws the Maxwell-Boltzmann speed distribution against the escape speed and integrates the tail into the Jeans escape flux, then converts it into the time to lose the atmosphere. A chart of escape speed against temperature places every solar-system body and every gas on either side of the diagonal that separates kept from lost; push the Jeans parameter below about three and the escape turns hydrodynamic, with the whole atmosphere blowing off as a wind.",
+  "takeaway": "Whether a world keeps a gas depends on the race between its escape speed and the gas's thermal speed, which is why the Moon is bare, Mars lost its water's hydrogen, and Earth keeps nitrogen but leaks hydrogen.",
+  "prerequisites": [
+   "states-of-matter",
+   "orbits-kepler"
+  ],
+  "related": [
+   "exoplanets",
+   "carbonate-silicate-thermostat"
+  ],
+  "needs": "Planetary masses, radii and exobase temperatures (NASA planetary fact sheets, US government work; retyped numbers).",
+  "pitfall": "Thermal escape is molecule by molecule from the tail of the distribution, so a gas is never lost all at once; and Mars lost its air mainly because it is small, not only because it lost its magnetic field.",
+  "why": "University of Arizona PTYS 595B Escape of Planetary Atmospheres (Jeans, hydrodynamic and nonthermal escape): https://lpl.arizona.edu/node/3594",
+  "overlapWith": "exoplanets: that page places a planet in the habitable zone by its orbit; this page asks whether it can hold an atmosphere at all, which the zone alone does not decide.",
+  "needsSource": "NASA planetary fact-sheet values (US government work; retyped numbers).",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "earth-space-l3"
+ },
+ {
+  "slug": "cmb-power-spectrum",
+  "title": "The CMB power spectrum",
+  "level": 3,
+  "kind": "manipulate",
+  "category": "space",
+  "interaction": "Each wavelength of the early universe's photon-baryon fluid is a driven, damped oscillator in the tight-coupling approximation; the page integrates a few hundred of them through recombination and projects the result onto the sky to draw the angular power spectrum, with the Planck 2018 measurements as points. Slide the baryon density and the odd peaks rise against the even ones; slide the dark-matter density and the peaks shift and shrink; curve the universe and every peak slides in angle. The sound horizon and the angular-diameter distance are drawn as the two rulers behind the first peak.",
+  "takeaway": "The peaks in the CMB are the sound waves of the first 380,000 years frozen on the sky, and their positions and relative heights read off the universe's contents and geometry.",
+  "prerequisites": [
+   "big-bang",
+   "oscillations-resonance",
+   "fourier-transform"
+  ],
+  "related": [
+   "dark-energy-supernovae",
+   "inflation-horizon",
+   "cosmic-web-formation",
+   "dark-matter"
+  ],
+  "needs": "The Planck 2018 TT binned power spectrum from the ESA Planck Legacy Archive (publicly downloadable; the ESA Space Science Archives terms seen in this round are CC BY-NC 3.0 IGO, so the data are not openly licensed in the task's sense and the candidate is weaker for it).",
+  "pitfall": "The peaks are not harmonics of one note and the spectrum is not an ordinary Fourier transform of a sound; and the tight-coupling model is an approximation stated as such, not a replacement for a Boltzmann code.",
+  "why": "Wayne Hu's CMB tutorial on the acoustic peaks and baryon loading, the standard teaching reference: https://background.uchicago.edu/~whu/intermediate/intermediate.html",
+  "overlapWith": "big-bang: that page shows the CMB as a moment on the timeline; this page reads the cosmological parameters off its spectrum.",
+  "needsSource": "Planck 2018 TT spectrum from the ESA Planck Legacy Archive; the ESA archive terms seen were CC BY-NC 3.0 IGO (non-commercial), so not openly licensed in the task's sense.",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "earth-space-l3"
+ },
+ {
+  "slug": "cosmic-distance-ladder",
+  "title": "The cosmic distance ladder",
+  "level": 3,
+  "kind": "step",
+  "category": "space",
+  "interaction": "Climb the ladder one rung at a time. Measure a parallax with the reader's chosen baseline and precision and see how far it reaches; use those distances to calibrate the Cepheid period-luminosity relation from real Cepheids, and the Cepheids in a few nearby galaxies to calibrate the peak brightness of Type Ia supernovae; use the supernovae in the Hubble flow to read the Hubble constant. At each rung the reader sets the measurement error and watches it propagate up the ladder into the error bar on the expansion rate, and the last rung shows the gap between the ladder's value and the CMB's.",
+  "takeaway": "Every cosmic distance stands on a nearer one, so the uncertainty in the size of the universe is built, rung by rung, from the uncertainty of a parallax.",
+  "prerequisites": [
+   "stars",
+   "big-bang"
+  ],
+  "related": [
+   "dark-energy-supernovae",
+   "supernova-light-curves",
+   "cmb-power-spectrum"
+  ],
+  "needs": "Gaia DR3 parallaxes for nearby Cepheids (free to use with credit to ESA/Gaia/DPAC; not a Creative Commons licence), OGLE Magellanic Cloud Cepheids for the period-luminosity relation (public download; licence not confirmed), and the Pantheon+/SH0ES distance tables (public download; licence not confirmed).",
+  "pitfall": "The Hubble tension is a disagreement between two careful measurements, not a mistake in one of them; show both error bars.",
+  "why": "3Blue1Brown's two-part video with Terence Tao on the cosmic distance ladder (2025): https://3blue1brown.substack.com/p/the-cosmic-distance-ladder-with-terence",
+  "overlapWith": "big-bang: that page shows galaxies receding faster with distance; this page is how those distances are measured and how the errors stack up.",
+  "needsSource": "Gaia DR3 (free with credit, no CC licence); OGLE Cepheids (public download, licence not confirmed); Pantheon+/SH0ES tables (GitHub, licence not confirmed).",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "earth-space-l3"
+ },
+ {
+  "slug": "cosmic-ray-air-showers",
+  "title": "Cosmic rays & air showers",
+  "level": 3,
+  "kind": "step",
+  "category": "space",
+  "interaction": "Step a cosmic ray into the atmosphere generation by generation in the Heitler-Matthews model: each particle travels one interaction length and splits, neutral pions decay to photons, and the cascade doubles until the particles fall below the critical energy and stop multiplying. Set the primary's energy and type (proton, iron nucleus, photon) and watch the particle count and the depth of maximum: ten times the energy gives ten times the particles at maximum and pushes the maximum deeper by a fixed step, while an iron nucleus, 56 lighter showers at once, peaks higher in the sky. Compare the model's depth of maximum against the energy spectrum and composition trend in the Pierre Auger open data.",
+  "takeaway": "One particle with the energy of a thrown tennis ball becomes billions in the air, and the depth at which the shower peaks tells both how energetic it was and how heavy it was.",
+  "prerequisites": [
+   "standard-model",
+   "radioactivity"
+  ],
+  "related": [
+   "supernova-light-curves",
+   "pulsar-spin-down"
+  ],
+  "needs": "The Pierre Auger Observatory open data (a public release of ten percent of its events with documentation; licence not confirmed in this round).",
+  "pitfall": "Cosmic rays are particles, not rays, and the muons reaching the reader at sea level are shower products; the Heitler model is a toy that gets the scalings right and the numbers roughly, and the page says so.",
+  "why": "Matthews 2005, A Heitler model of extensive air showers, the standard teaching model of the cascade: https://inspirehep.net/literature/675329",
+  "overlapWith": "standard-model: that page builds particles and steps through one decay; this page runs a cascade of billions of them through the atmosphere.",
+  "needsSource": "Auger open data (public release; licence not confirmed).",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "earth-space-l3"
+ },
+ {
+  "slug": "cosmic-web-formation",
+  "title": "The cosmic web",
+  "level": 3,
+  "kind": "simulate",
+  "category": "space",
+  "interaction": "A box of dark matter solved as a two-dimensional particle-mesh N-body simulation in an expanding universe, starting from faint Gaussian ripples laid down by the Zel'dovich approximation. Press run and the ripples grow as the box expands: matter drains from voids into sheets, sheets into filaments, filaments into knots. Tilt the slope of the initial power spectrum to grow small or large structures first, change the matter density to speed or stall the growth, and compare the measured growth of the ripples against the linear growth factor until they outrun it.",
+  "takeaway": "Gravity amplifies tiny early ripples into a web of filaments and voids, so today's map of galaxies is the fingerprint of fluctuations that were one part in a hundred thousand.",
+  "prerequisites": [
+   "big-bang",
+   "dark-matter"
+  ],
+  "related": [
+   "cmb-power-spectrum",
+   "inflation-horizon",
+   "galaxy-collisions"
+  ],
+  "needs": "",
+  "pitfall": "Galaxies form where dark matter gathers; the web is not galaxies that attracted each other from a uniform start, and the box's expansion is space stretching, not motion through it.",
+  "why": "Ohio State Astronomy 8873 cosmology notes on N-body simulations from Zel'dovich initial conditions: https://www.astronomy.ohio-state.edu/weinberg.21/A8873/notes10.pdf",
+  "overlapWith": "dark-matter: that page infers a halo from one galaxy's rotation curve and lensing; this page grows the halos and the web between them from the initial ripples.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "earth-space-l3"
+ },
+ {
+  "slug": "dark-energy-supernovae",
+  "title": "Dark energy & the accelerating universe",
+  "level": 3,
+  "kind": "manipulate",
+  "category": "space",
+  "interaction": "The Hubble diagram of the Pantheon+ Type Ia supernovae, distance against redshift, with a model curve from the Friedmann equation. Slide the matter density, the dark-energy density and its equation of state and the curve bends; a residual panel and a chi-square readout show the fit, and a universe without dark energy misses the far supernovae, which are fainter than it allows. A second plot runs the scale factor forward and back for the chosen model, with deceleration giving way to acceleration about six billion years ago, and the age and fate of the universe update live.",
+  "takeaway": "Distant supernovae are fainter than any slowing universe allows, which means the expansion is speeding up and something that behaves like a cosmological constant makes up most of the universe.",
+  "prerequisites": [
+   "big-bang",
+   "cosmic-distance-ladder"
+  ],
+  "related": [
+   "cmb-power-spectrum",
+   "dark-matter",
+   "supernova-light-curves"
+  ],
+  "needs": "The Pantheon+ distance-modulus and covariance tables (GitHub DataRelease; public download, licence not confirmed).",
+  "pitfall": "Dark energy and dark matter are different unknowns, and the acceleration is of the expansion rate; galaxies are not pushed apart by a force acting through space.",
+  "why": "Curriculum or demand URL not fetched in this round; grounded in the Pantheon+ cosmological analysis the page reproduces (Brout et al. 2022): https://arxiv.org/abs/2112.03864",
+  "overlapWith": "big-bang: that page shows expansion and redshift qualitatively, while this page fits the real supernova data to the Friedmann equation and finds the acceleration; it stays apart from cosmic-distance-ladder, which ends at the Hubble constant from the low-redshift rungs, whereas this page uses the high-redshift shape to fit the contents.",
+  "needsSource": "Pantheon+ tables (GitHub DataRelease; public download, licence not confirmed).",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "earth-space-l3"
+ },
+ {
+  "slug": "galaxy-collisions",
+  "title": "Colliding galaxies",
+  "level": 3,
+  "kind": "simulate",
+  "category": "space",
+  "interaction": "Two galaxies, each a disc of thousands of massless stars orbiting a central mass, pass each other as in Toomre and Toomre's 1972 model. Set the closest approach, the mass ratio and whether each disc spins with or against the orbit, then run: a prograde pass throws out a long tidal tail and a bridge, a retrograde one barely stirs the disc. Match the Antennae or the Mice by trial, and scrub forward a billion years to see the pair fall back together.",
+  "takeaway": "Tides, not impacts, shape colliding galaxies, so a slow pass in the direction of a disc's spin throws its stars into long tails while the same pass against the spin leaves it almost untouched.",
+  "prerequisites": [
+   "orbits-kepler"
+  ],
+  "related": [
+   "dark-matter",
+   "cosmic-web-formation",
+   "lagrange-points-three-body"
+  ],
+  "needs": "",
+  "pitfall": "Stars do not collide in a galaxy collision; the gaps between them are too large, and the tails are stars pulled out by tides, not debris from impacts.",
+  "why": "UC San Diego Physics 141 midterm project, reproducing the Toomre and Toomre encounter with a student-written integrator: https://jduarte.physics.ucsd.edu/phys141/midterm_final/midterm_final.html",
+  "overlapWith": "dark-matter: that page spins a single galaxy to read its rotation curve; this page throws two together and shows the tidal tails.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "earth-space-l3"
+ },
+ {
+  "slug": "inflation-horizon",
+  "title": "Inflation & the horizon problem",
+  "level": 3,
+  "kind": "simulate",
+  "category": "space",
+  "interaction": "Run the scale factor from the Friedmann equation through the radiation, matter and dark-energy eras on a log-log plot of comoving scale against time, with the comoving Hubble radius drawn: today's observable universe is a line far above the Hubble radius at early times, so its patches never touched. Add an inflating phase driven by a slow-rolling scalar field on a potential the reader shapes, and the Hubble radius shrinks for sixty e-folds: the observable scales dive inside it, then re-emerge in the right order. A second plot shows the curvature parameter driven toward zero by the same phase.",
+  "takeaway": "A brief period of accelerating expansion lets the whole observable universe come from a patch that was once in causal contact.",
+  "prerequisites": [
+   "big-bang",
+   "calculus"
+  ],
+  "related": [
+   "cmb-power-spectrum",
+   "cosmic-web-formation"
+  ],
+  "needs": "",
+  "pitfall": "Inflation does not expand space faster than light in any local sense, and it is a hypothesis with evidence, not an established fact; show which observations it explains and which it does not predict.",
+  "why": "Baumann's TASI Lectures on Inflation, the standard open-access introduction, which opens with the horizon and flatness problems: https://arxiv.org/pdf/0907.5424",
+  "overlapWith": "big-bang: that page runs the expansion on a grid of galaxies; this page compares the expansion against the reach of light to show why the early universe should not have been uniform and how inflation fixes that.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "earth-space-l3"
+ },
+ {
+  "slug": "lagrange-points-three-body",
+  "title": "The three-body problem & Lagrange points",
+  "level": 3,
+  "kind": "manipulate",
+  "category": "space",
+  "interaction": "The circular restricted three-body problem drawn in the frame that rotates with the two large bodies. Set the mass ratio (Sun-Earth, Earth-Moon) and the five Lagrange points appear; set the probe's energy (the Jacobi constant) and the forbidden regions shade in, opening gates at L1 and L2 as the energy rises. Drop a probe at L1 or L2 and it drifts away within months, drop one at L4 and it wanders in a tadpole around the point for as long as the reader waits, as Jupiter's Trojans do, and nudge a starting position by a hair to run two probes side by side and watch their paths split.",
+  "takeaway": "With three bodies there is no formula for the motion, but there are five points where a small body can sit, three balanced on a knife edge and two stable, and an energy map says where it can and cannot go.",
+  "prerequisites": [
+   "orbits-kepler"
+  ],
+  "related": [
+   "rockets",
+   "chaos-fractals",
+   "galaxy-collisions",
+   "tidal-evolution-resonance"
+  ],
+  "needs": "",
+  "pitfall": "L1 and L2 are not places where gravity cancels; a spacecraft there orbits the Sun with Earth's period because the two pulls add to exactly the needed centripetal force, and it still needs station-keeping.",
+  "why": "MIT OCW 16.346 Astrodynamics, lecture 25 on the restricted problem of three bodies (Jacobi integral, surfaces of zero relative velocity): https://ocw.mit.edu/courses/16-346-astrodynamics-fall-2008/resources/lec_25",
+  "overlapWith": "orbits-kepler: that page adds a second planet to see two bodies disturb each other; this page moves to the rotating frame, where the forbidden regions and the stability of the five points become visible.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "earth-space-l3"
+ },
+ {
+  "slug": "pulsar-spin-down",
+  "title": "Neutron stars & pulsars",
+  "level": 3,
+  "kind": "explore",
+  "category": "space",
+  "interaction": "The period against spin-down rate of every known pulsar from the ATNF catalogue, drawn as the P-Pdot diagram: hover any dot to read its age, magnetic field and spin-down power as the magnetic-dipole model computes them, with lines of constant field and constant age across the plot and the magnetars sitting alone in the upper right. Set a newborn pulsar's period and field and run the dipole braking: it slides down and to the right along its track and crosses the death line where it should fall silent. Spin a dead one up by accretion in a binary and it reappears as a millisecond pulsar in the lower left.",
+  "takeaway": "A pulsar's position on one diagram tells its age, field and fate, because its slowing spin is a magnetic dipole radiating away the energy of a star-sized flywheel.",
+  "prerequisites": [
+   "stars",
+   "electromagnetism"
+  ],
+  "related": [
+   "gravitational-waves",
+   "supernova-light-curves",
+   "black-holes"
+  ],
+  "needs": "The ATNF Pulsar Catalogue (CSIRO; publicly downloadable and listed on data.gov; licence not confirmed).",
+  "pitfall": "Pulsars pulse because a lighthouse beam sweeps past us, not because the star pulsates, and the spin-down age assumes a birth spin much faster than today's.",
+  "why": "Curricular signal weak in this round; grounded in the catalogue paper, Manchester et al. 2005, The ATNF Pulsar Catalogue: https://arxiv.org/abs/astro-ph/0412641",
+  "overlapWith": "stars: that page ends a star as a neutron star; this page is what neutron stars look like as a population and how their spin reveals their age.",
+  "needsSource": "ATNF Pulsar Catalogue (CSIRO; public download, licence not confirmed).",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "earth-space-l3"
+ },
+ {
+  "slug": "stellar-nucleosynthesis",
+  "title": "Nuclear reaction networks in stars",
+  "level": 3,
+  "kind": "simulate",
+  "category": "space",
+  "interaction": "A small nuclear reaction network (the pp chains, the CNO cycle, triple-alpha and carbon burning) integrated as stiff rate equations at the temperature and density the reader sets. Slide the core temperature from the Sun's 15 million kelvin past 100 million: the plot of energy generation against temperature shows the pp chain give way to the CNO cycle and then helium burning switch on, while the flow diagram lights up the dominant path and the isotope abundances drift. Hold the Sun's core conditions and the hydrogen depletes over billions of simulated years.",
+  "takeaway": "Which reactions power a star depends so steeply on temperature that a few million degrees change the fuel, the path and the ash.",
+  "prerequisites": [
+   "stars",
+   "nuclear-fusion",
+   "atoms-periodic-table"
+  ],
+  "related": [
+   "supernova-light-curves",
+   "stellar-spectra-saha",
+   "radioactivity"
+  ],
+  "needs": "Thermonuclear reaction rates: the Caughlan & Fowler 1988 analytic fits (published formulas, retyped), or the JINA REACLIB library (publicly downloadable; licence not confirmed).",
+  "pitfall": "Stars do not burn in the chemical sense, and the Sun's core is not hot enough for the CNO cycle to dominate; the page must not show the Sun as a CNO star.",
+  "why": "UCSC Ay 112 Physics of Stars (Woosley) lecture notes, the course that runs from spectra to nuclear burning; adjacent lecture fetched, the burning lectures themselves were not: https://www.ucolick.org/~woosley/ay112-14/lectures/lecture3.4x.pdf",
+  "overlapWith": "stars: that page shows which element the core fuses at each stage; this page runs the reactions themselves and shows why the switch happens at a given temperature.",
+  "needsSource": "Caughlan & Fowler 1988 rate fits (published formulas) or JINA REACLIB (public download, licence not confirmed).",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "earth-space-l3"
+ },
+ {
+  "slug": "stellar-spectra-saha",
+  "title": "Stellar spectra & the Saha equation",
+  "level": 3,
+  "kind": "manipulate",
+  "category": "space",
+  "interaction": "Slide a star's surface temperature from 3,000 to 40,000 kelvin. The page draws the blackbody continuum and, on it, the strengths of the hydrogen Balmer lines, helium, ionized calcium and neutral metals, computed from the Boltzmann and Saha equations for the fraction of each atom in the right state to absorb. The Balmer lines grow, peak near 10,000 kelvin and fade as hydrogen ionizes, which is why the sequence OBAFGKM reads as it does; the real SDSS spectrum of each type is overlaid, and the reader classifies an unknown spectrum by sliding until it fits.",
+  "takeaway": "A star's spectral type is its temperature in disguise: hydrogen lines are strongest not in the hottest stars but in those warm enough to excite hydrogen and cool enough not to ionize it.",
+  "prerequisites": [
+   "stars",
+   "atoms-periodic-table",
+   "quantum-mechanics"
+  ],
+  "related": [
+   "stellar-nucleosynthesis",
+   "exoplanets"
+  ],
+  "needs": "SDSS stellar spectra, one per spectral type (SDSS states that its public data releases are in the public domain), and atomic energy levels and partition functions (NIST Atomic Spectra Database, US government work).",
+  "pitfall": "Line strength does not measure abundance alone: A stars are not hydrogen-rich and O stars hydrogen-poor; they differ in temperature.",
+  "why": "University of Sydney senior astrophysics lab asking students to show from the Saha and Boltzmann equations why hydrogen lines are strongest in A stars: https://www.physics.usyd.edu.au/~helenj/SeniorAstro/lab1.pdf",
+  "overlapWith": "stars: that page moves a star across the HR diagram by colour and brightness; this page is what the spectrum itself shows and why temperature, not composition, orders the types.",
+  "needsSource": "SDSS spectra (stated public domain by SDSS); NIST atomic data (US government work).",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "earth-space-l3"
+ },
+ {
+  "slug": "supernova-light-curves",
+  "title": "Supernova light curves",
+  "level": 3,
+  "kind": "simulate",
+  "category": "space",
+  "interaction": "Set the mass of nickel-56 made in an explosion and the mass and speed of the ejecta, and the page runs the Arnett model: nickel decays to cobalt and then iron on 8.8-day and 111-day timescales, the heat diffuses out through the expanding, thinning ejecta, and the bolometric light curve rises to a peak and falls onto the cobalt tail. More nickel raises the peak; heavier ejecta delay and broaden it. Overlay a measured Type Ia light curve and read its nickel mass, then try to make a faint, slow one or a bright, fast one and see why the width-brightness relation holds.",
+  "takeaway": "A supernova's light is radioactive afterglow: the peak measures how much nickel-56 the explosion made and the width how much mass it has to shine through.",
+  "prerequisites": [
+   "stars",
+   "radioactivity"
+  ],
+  "related": [
+   "stellar-nucleosynthesis",
+   "cosmic-distance-ladder",
+   "dark-energy-supernovae",
+   "cosmic-ray-air-showers"
+  ],
+  "needs": "One well-observed Type Ia light curve, e.g. from the Pantheon+ light-curve release (publicly downloadable from the collaboration's GitHub; licence not confirmed).",
+  "pitfall": "The light at peak is not the explosion's flash but weeks of radioactive heating, and Type Ia supernovae are standardizable candles, not standard ones.",
+  "why": "Curricular signal weak in this round; grounded in the Arnett-model literature, e.g. Chatzopoulos et al.'s analytic light-curve paper: https://arxiv.org/pdf/1301.3333",
+  "overlapWith": "stars: that page ends a massive star in an explosion as one frame; this page is the explosion's light curve and what it measures.",
+  "needsSource": "Pantheon+ light curves (GitHub DataRelease; public download, licence not confirmed).",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "earth-space-l3"
+ },
+ {
+  "slug": "tidal-evolution-resonance",
+  "title": "Tidal locking & orbital resonance",
+  "level": 3,
+  "kind": "simulate",
+  "category": "space",
+  "interaction": "A planet and a moon, each raising a tidal bulge on the other that lags by an amount the reader sets through the tidal quality factor. Run the secular equations: the moon's spin slows until it shows one face to the planet, the planet's day lengthens and the moon drifts outward, with the Moon's 3.8 centimeters a year drawn to scale. Add two more moons and let the inner one migrate: it catches the next in a 2:1 resonance and drags it along, then both catch the third, the chain Io, Europa and Ganymede sit in; the resonance pumps their eccentricity and the tidal heating that melts Io's interior is plotted.",
+  "takeaway": "Tides are not only a daily rise and fall: over millions of years they lock spins, push moons outward and herd them into resonant chains that keep squeezing them.",
+  "prerequisites": [
+   "sun-earth-moon",
+   "orbits-kepler"
+  ],
+  "related": [
+   "ocean-tides-amphidromes",
+   "lagrange-points-three-body",
+   "exoplanets"
+  ],
+  "needs": "",
+  "pitfall": "The Moon does rotate, once per orbit, and its far side is not its dark side.",
+  "why": "Tel Aviv University planetary geology lecture on the tidal evolution of close satellites and the Galilean resonance: https://www.tau.ac.il/~morris/03411203/chapter3/resonance2.htm",
+  "overlapWith": "sun-earth-moon: that page shows the tides a moon raises today; this page runs the tides for a billion years and shows what they do to spins and orbits.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "earth-space-l3"
  }
 ]

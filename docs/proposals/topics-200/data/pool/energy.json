@@ -790,5 +790,794 @@
   ],
   "everyday": true,
   "origin": "home-mechanisms"
+ },
+ {
+  "slug": "abs-brakes",
+  "title": "ABS & the tire's grip",
+  "level": 3,
+  "kind": "simulate",
+  "category": "energy",
+  "interaction": "Brake a car from highway speed on dry asphalt, wet road or ice: each wheel's spin follows its own equation of motion, the tire's braking force follows a friction-against-slip curve of measured shape that peaks at around ten to twenty percent slip and falls when the wheel locks, and the stopping distance is marked on the road. Brake too hard with ABS off and the wheel locks, the car slides further and no longer answers the steering; switch ABS on and watch the controller cycle the brake pressure to keep each wheel near the peak.",
+  "takeaway": "A tire grips best while still turning slightly slower than the road passes under it, a locked wheel brakes less and cannot steer, and ABS holds each wheel in that narrow band by releasing and reapplying the brake many times a second.",
+  "prerequisites": [
+   "newtons-laws",
+   "feedback-control"
+  ],
+  "related": [
+   "ev-drivetrains",
+   "bicycle-stability"
+  ],
+  "needs": "Tire friction-slip curves: Pacejka's 'magic formula' with coefficient sets for dry, wet and icy surfaces as published in the literature (published values; the textbook is paywalled).",
+  "pitfall": "ABS does not usually shorten the stop on dry road by much; its main job is to keep steering, and on loose gravel or snow a locked wheel can even stop shorter by building a wedge.",
+  "why": "Pacejka, Tire and Vehicle Dynamics (the standard reference for the slip curve and ABS target slip): https://shop.elsevier.com/books/tire-and-vehicle-dynamics/pacejka/978-0-08-097016-5 (from search results); the same search found ABS design papers using the magic formula to set the slip target.",
+  "overlapWith": "feedback-control: that page tunes a PID on generic plants; this one is the specific nonlinear plant whose slip curve is the whole point, and the controller is a bang-bang cycler, not a PID.",
+  "needsSource": "Pacejka magic-formula coefficients (published values).",
+  "leadsTo": [],
+  "everyday": true,
+  "origin": "energy-machines-l3"
+ },
+ {
+  "slug": "battery-degradation",
+  "title": "Why batteries wear out",
+  "level": 3,
+  "kind": "simulate",
+  "category": "energy",
+  "interaction": "Run a lithium-ion cell through years of use in minutes with a published semi-empirical ageing model: calendar ageing grows the solid-electrolyte interphase with the square root of time, faster at high state of charge and temperature, while each cycle adds wear that depends on its depth and current. Choose a usage pattern, a daily commute, a phone charged to 100 percent every night, a grid battery cycling once a day, and compare the capacity curves, including the knee where loss accelerates; overlay measured capacity fade from a public ageing dataset.",
+  "takeaway": "A battery ages even on the shelf, fastest when hot and full, and every cycle adds wear that grows with its depth, so the same cell lasts far longer cycled between 20 and 80 percent than between 0 and 100.",
+  "prerequisites": [
+   "redox-batteries",
+   "lithium-cell-dynamics",
+   "reaction-rates-equilibrium"
+  ],
+  "related": [
+   "ev-drivetrains",
+   "grid-storage-sizing"
+  ],
+  "needs": "A published semi-empirical ageing model with its fitted parameters (e.g. Schmalstieg et al. 2014, J. Power Sources, NMC 18650 cells; paper paywalled, parameters are published values), and measured capacity-fade curves from the NASA Ames PCoE Li-ion battery ageing datasets (US government data; licence field unstated on data.gov, to confirm).",
+  "pitfall": "Memory effect belongs to nickel-cadmium cells; lithium-ion cells have none, and their ageing is chemical, not a punishment for partial charging.",
+  "why": "NASA Ames PCoE Li-ion battery ageing datasets, cycled to 30 percent capacity fade under varied temperatures and loads: https://catalog.data.gov/dataset/li-ion-battery-aging-datasets (from search results); demand: Wikipedia, Lithium-ion battery, Degradation section, https://en.wikipedia.org/wiki/Lithium-ion_battery#Degradation.",
+  "overlapWith": "redox-batteries: that page charges and discharges a cell once and its capacity never changes; this page is the months-to-years chemistry that shrinks the capacity, and it sits above lithium-cell-dynamics (this batch), which is the seconds-to-hours physics of one discharge.",
+  "needsSource": "Schmalstieg et al. 2014 model parameters (published values; paper paywalled); NASA PCoE ageing data (US government; licence to confirm).",
+  "leadsTo": [],
+  "everyday": true,
+  "origin": "energy-machines-l3"
+ },
+ {
+  "slug": "bicycle-stability",
+  "title": "Why a bicycle balances itself",
+  "level": 3,
+  "kind": "simulate",
+  "category": "energy",
+  "interaction": "Push a riderless bicycle at a chosen speed and let its linearized equations of motion run: below a certain speed it slowly falls, in a middle band it wobbles and recovers on its own, and above it it slowly leans away. Drag the speed and watch the eigenvalues of lean and steer cross the stability boundary; change the trail, the head angle and the front-wheel mass, cancel the gyroscopic effect of the wheels and the trail in turn and see which bicycles still balance; then steer left and watch the bike first lean right.",
+  "takeaway": "A bicycle balances itself in a band of speeds because a fall makes its front wheel steer into the fall, and it still does so with the gyroscopic effect of its wheels cancelled.",
+  "prerequisites": [
+   "newtons-laws",
+   "oscillations-resonance",
+   "linear-transformations"
+  ],
+  "related": [
+   "feedback-control",
+   "abs-brakes"
+  ],
+  "needs": "The benchmark bicycle parameters and linearized equations of Meijaard, Papadopoulos, Ruina and Schwab (2007, Proc. R. Soc. A, doi:10.1098/rspa.2007.1857), published for exactly this kind of reuse and summarized openly at http://ruina.tam.cornell.edu/research/topics/bicycle_mechanics/",
+  "pitfall": "The gyroscopic effect of the wheels is not what keeps a bicycle up: a bicycle with its gyroscopic effect cancelled still balances, and the page must show it.",
+  "why": "Bartosz Ciechanowski, Bicycle (interactive explainer; demand signal): https://ciechanow.ski/bicycle/ (from search results; page reachable).",
+  "overlapWith": "feedback-control balances an inverted pendulum with a controller; this page balances with no controller at all, from the geometry's own eigenvalues.",
+  "needsSource": "Meijaard et al. 2007 benchmark (published values; paper paywalled, parameters openly reproduced on the Cornell page).",
+  "leadsTo": [],
+  "everyday": true,
+  "origin": "energy-machines-l3"
+ },
+ {
+  "slug": "carbon-capture",
+  "title": "Carbon capture",
+  "level": 3,
+  "kind": "step",
+  "category": "energy",
+  "interaction": "Step a stream of gas through an absorber where an amine solution takes up CO2 and a stripper where heat drives it back out, with the solvent's loading and the heat duty computed from the published equilibrium and the cycle's heat balance. Then slide the CO2 concentration of the source from a cement kiln's flue gas down to the air's 420 parts per million: the thermodynamic minimum work of separation climbs as the gas gets more dilute and the real process sits several times above it; connect the capture plant to a power-plant model and watch its output fall by the energy penalty.",
+  "takeaway": "The work needed to pull CO2 out of a gas climbs steeply as the gas gets more dilute, so capture from a chimney costs a fraction of capture from the air, and even at the chimney it takes a fifth or more of the plant's output.",
+  "prerequisites": [
+   "entropy",
+   "greenhouse-effect",
+   "acids-bases",
+   "reaction-rates-equilibrium"
+  ],
+  "related": [
+   "carbon-cycle",
+   "reverse-osmosis",
+   "exergy-analysis"
+  ],
+  "needs": "Vapor-liquid equilibrium of CO2 in aqueous monoethanolamine from published measurements or a published model (the Kent-Eisenberg correlation; parameters are published values).",
+  "pitfall": "Capture does not make a coal plant clean for free: the energy penalty is real and the page must show it; and direct air capture is not the same thing done to air, it faces a thermodynamic floor many times higher.",
+  "why": "National Academies, Negative Emissions Technologies and Reliable Sequestration (2019), direct air capture and its energy requirements: https://doi.org/10.17226/25259 (page reachable; content not reconfirmed, search budget exhausted).",
+  "overlapWith": "greenhouse-effect and carbon-cycle show what CO2 does and where it goes; this page is the machine that removes it and its thermodynamic cost.",
+  "needsSource": "Kent-Eisenberg CO2-MEA equilibrium parameters (published values).",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "energy-machines-l3"
+ },
+ {
+  "slug": "chip-cooling",
+  "title": "Keeping a chip cool",
+  "level": 3,
+  "kind": "simulate",
+  "category": "energy",
+  "interaction": "Set the power of each core of a processor die and watch a heat-diffusion model spread it through the silicon, the lid and the heat sink, with the temperature map on the die and the stack of thermal resistances drawn from junction to air. Change the fan speed, the thermal paste, the heat sink's fin count and the spreader material, then shrink the hot core and see its hotspot temperature rise at the same total power; let the chip throttle itself when it hits its limit and watch the clock speed fall.",
+  "takeaway": "Heat leaving a chip must cross several layers in series, each with its own thermal resistance, and the hottest spot depends less on the total power than on how concentrated it is.",
+  "prerequisites": [
+   "cpu",
+   "entropy"
+  ],
+  "related": [
+   "heat-pumps-refrigeration",
+   "semiconductors",
+   "transistors-chipmaking",
+   "gpu",
+   "thermoelectrics"
+  ],
+  "needs": "",
+  "pitfall": "Thermal paste is not a better conductor than metal; it is there to fill the microscopic air gaps that would be far worse, and a thick layer makes things worse, not better.",
+  "why": "MIT OCW 2.51 Intermediate Heat and Mass Transfer (conduction, fins, thermal resistance networks): https://ocw.mit.edu/courses/2-51-intermediate-heat-and-mass-transfer-fall-2008/ (course page reachable; content not reconfirmed, search budget exhausted).",
+  "overlapWith": "cpu covers what the chip computes and transistors-chipmaking how it is made; this page is how its heat gets out, which neither shows.",
+  "needsSource": "none; published thermal conductivities, and a representative die floorplan drawn on the page.",
+  "leadsTo": [],
+  "everyday": true,
+  "origin": "energy-machines-l3"
+ },
+ {
+  "slug": "decay-heat",
+  "title": "Decay heat & nuclear waste",
+  "level": 3,
+  "kind": "explore",
+  "category": "energy",
+  "interaction": "Scram a reactor and scrub time forward on a logarithmic axis from a second to a million years: the decay heat is computed by summing the decay chains of the fission products and actinides in the fuel, and the curve drops from seven percent of full power through the hours when a pool must keep cooling to the centuries when a cask stands in air. Hover any point to see which nuclides are producing the heat; change the burnup and the fuel type, and compare the radiotoxicity with that of the ore the uranium came from.",
+  "takeaway": "A reactor still produces about seven percent of its power the instant its chain reaction stops, and that decay heat falls quickly at first and then ever more slowly, carried by a different few nuclides at each timescale.",
+  "prerequisites": [
+   "nuclear-fission",
+   "radioactivity"
+  ],
+  "related": [
+   "deep-time",
+   "nuclear-fusion"
+  ],
+  "needs": "Fission-product yields and decay data (half-lives, decay energies, branching) from ENDF/B-VIII.0 at the NNDC (US government, public domain; https://www.nndc.bnl.gov/endf-b8.0/) or JEFF-3.3 (OECD NEA, openly distributed), reduced to the few hundred nuclides that matter; ingestion dose coefficients for the radiotoxicity comparison from ICRP Publication 119 (open access).",
+  "pitfall": "Fukushima's reactors were shut down by the earthquake; it was decay heat with no cooling, not a runaway chain reaction, that melted the cores.",
+  "why": "MIT OCW 22.06 Engineering of Nuclear Systems (decay heat, shutdown cooling, spent fuel): https://ocw.mit.edu/courses/22-06-engineering-of-nuclear-systems-fall-2010/ (course page reachable; content not reconfirmed, search budget exhausted); demand: Wikipedia, Decay heat https://en.wikipedia.org/wiki/Decay_heat.",
+  "overlapWith": "radioactivity shows single half-lives and nuclear-fission stops at holding the chain reaction; this page starts when the chain reaction stops and sums thousands of decay chains.",
+  "needsSource": "ENDF/B-VIII.0 decay and yield data (public domain) or JEFF-3.3 (openly distributed); ICRP 119 dose coefficients (open access).",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "energy-machines-l3"
+ },
+ {
+  "slug": "escapements",
+  "title": "Mechanical clocks & escapements",
+  "level": 3,
+  "kind": "step",
+  "category": "energy",
+  "interaction": "Step a pendulum or a balance wheel through one swing with an anchor or lever escapement: the escape wheel, driven by a weight or a mainspring, is released once per swing and gives the oscillator a small push on the way through. Then run the clock for days in seconds with the full nonlinear pendulum: change the drive force, the friction and the swing amplitude and watch the rate drift by the escapement error and the circular error, with the push timed early, late or at the center of the swing to see which keeps time.",
+  "takeaway": "A clock is an oscillator with a mechanism that counts its swings and tops them up, and it keeps time only when the push barely disturbs the swing, which a push at the center of the swing does best.",
+  "prerequisites": [
+   "oscillations-resonance",
+   "newtons-laws"
+  ],
+  "related": [
+   "involute-gears",
+   "feedback-control",
+   "tribology-lubrication"
+  ],
+  "needs": "",
+  "pitfall": "A pendulum is not exactly isochronous: large swings take longer, so a clock that lets its drive force change its amplitude drifts, and the escapement design has to defeat that.",
+  "why": "Bartosz Ciechanowski, Mechanical Watch (interactive explainer; demand signal): https://ciechanow.ski/mechanical-watch/ (from search results; page reachable).",
+  "overlapWith": "oscillations-resonance: a damped, sinusoidally driven oscillator; this page drives it with impulses from a mechanism that also counts, and asks when the impulse should come.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": true,
+  "origin": "energy-machines-l3"
+ },
+ {
+  "slug": "ev-drivetrains",
+  "title": "Electric vehicle drivetrains",
+  "level": 3,
+  "kind": "simulate",
+  "category": "energy",
+  "interaction": "Drive a modelled electric car through a standard test cycle or a speed profile you draw: the motor's torque-speed envelope with its constant-torque and field-weakening regions, the battery pack's voltage sag under load, and the road loads of rolling resistance, aerodynamic drag and grade are computed each instant. Toggle regenerative braking, change the mass, the drag coefficient, the gear ratio and the ambient temperature, and watch the energy flow between pack, motor and road, the state of charge and the range.",
+  "takeaway": "An electric car's range is set by drag at highway speed and by how much braking energy comes back in town, because the motor and battery themselves waste little.",
+  "prerequisites": [
+   "motors-generators",
+   "redox-batteries",
+   "newtons-laws"
+  ],
+  "related": [
+   "power-grid",
+   "lithium-cell-dynamics",
+   "abs-brakes",
+   "heat-pumps-refrigeration",
+   "involute-gears"
+  ],
+  "needs": "A standard drive cycle: the US EPA UDDS and HWFET dynamometer schedules (US government, public domain; https://www.epa.gov/vehicle-and-fuel-emissions-testing/dynamometer-drive-schedules) or the WLTP class 3 cycle (UNECE, openly published).",
+  "pitfall": "Regenerative braking does not make city driving free: it recovers kinetic energy minus two conversion passes and only what the friction brakes do not take, and it cannot touch the drag and rolling losses that dominate on the motorway.",
+  "why": "TU Delft on edX, Electric Cars: Technology (vehicle energy balance, motor, battery and regenerative braking): https://www.edx.org/learn/electric-cars/delft-university-of-technology-electric-cars-technology (page reachable; content not reconfirmed, search budget exhausted).",
+  "overlapWith": "motors-generators shows one coil in a field; power-grid dispatches plants; this page is the vehicle-level energy balance over a real drive cycle.",
+  "needsSource": "US EPA dynamometer drive schedules (public domain); WLTP cycle (UNECE, openly published).",
+  "leadsTo": [],
+  "everyday": true,
+  "origin": "energy-machines-l3"
+ },
+ {
+  "slug": "exergy-analysis",
+  "title": "Where the work goes: exergy",
+  "level": 3,
+  "kind": "explore",
+  "category": "energy",
+  "interaction": "Hover over each component of a modelled coal, gas or nuclear steam plant and see a Grassmann diagram: the flow of work potential, exergy, shrinking from fuel to electricity, with the part destroyed in each component drawn as a leak. Scrub the steam temperature, the condenser temperature and the flame temperature and watch which leaks grow; the largest one, in the boiler's heat transfer from flame to steam, dwarfs the condenser's.",
+  "takeaway": "Most of a steam plant's lost work potential is destroyed inside the boiler, where heat drops from flame temperature to steam temperature, not in the condenser where the energy is visibly thrown away.",
+  "prerequisites": [
+   "entropy",
+   "steam-power-cycles"
+  ],
+  "related": [
+   "heat-engines",
+   "gas-turbines-combined-cycle",
+   "carbon-capture"
+  ],
+  "needs": "IAPWS-IF97 steam properties as in steam-power-cycles; adiabatic flame temperatures from fuel composition via NASA Glenn thermodynamic polynomials (public domain).",
+  "pitfall": "Energy is not lost anywhere, so an energy Sankey diagram shows the condenser as the big loss and misleads; only exergy, the capacity to do work, is destroyed, and it is destroyed where heat crosses a large temperature gap.",
+  "why": "MIT OCW 2.60J Fundamentals of Advanced Energy Conversion (exergy and second-law analysis of energy conversion systems): https://ocw.mit.edu/courses/2-60j-fundamentals-of-advanced-energy-conversion-spring-2020/ (course page reachable; content not reconfirmed, search budget exhausted).",
+  "overlapWith": "heat-engines: that page shows the Carnot ceiling; this one shows where a real plant loses against it, component by component, with the boiler and not the condenser as the culprit.",
+  "needsSource": "IAPWS-IF97 (freely published); NASA Glenn polynomials (public domain).",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "energy-machines-l3"
+ },
+ {
+  "slug": "flywheels",
+  "title": "Flywheel energy storage",
+  "level": 3,
+  "kind": "manipulate",
+  "category": "energy",
+  "interaction": "Spin a flywheel faster with a slider and watch the stored energy grow with the square of the speed while the hoop and radial stresses, computed across the rotating disc or rim from the elasticity solution, grow with it; choose steel, aluminum or carbon-fiber composite and the rim bursts, drawn as a ring of fragments, at the speed where stress reaches the material's strength. A chart of energy per kilogram against strength over density shows why the light material wins; then let it coast with bearing friction and air drag at a chosen vacuum level and watch the self-discharge.",
+  "takeaway": "A flywheel's energy per kilogram is set by its material's strength divided by its density, so the lightest rim stores the most before it bursts, and only a vacuum and good bearings keep it stored.",
+  "prerequisites": [
+   "newtons-laws"
+  ],
+  "related": [
+   "grid-storage-sizing",
+   "motors-generators",
+   "tribology-lubrication"
+  ],
+  "needs": "",
+  "pitfall": "Heavier is not better: for a given material a bigger mass only stores more in proportion, while energy per kilogram is fixed by strength over density.",
+  "why": "Demand: Wikipedia, Flywheel energy storage https://en.wikipedia.org/wiki/Flywheel_energy_storage; reference: DOE/EPRI Electricity Storage Handbook (Sandia SAND2013-5131) https://www.sandia.gov/ess-ssl/publications/SAND2013-5131.pdf (pages reachable; content not reconfirmed, search budget exhausted).",
+  "overlapWith": "motors-generators: that page's coil spins but stores nothing; no existing page stores energy mechanically or shows a stress limit, and bridges-structures colours members by stress without rotation.",
+  "needsSource": "none; published material strengths and densities.",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "energy-machines-l3"
+ },
+ {
+  "slug": "fuel-cells-hydrogen",
+  "title": "Fuel cells & the hydrogen round trip",
+  "level": 3,
+  "kind": "manipulate",
+  "category": "energy",
+  "interaction": "Draw current from a proton-exchange-membrane fuel cell and watch its voltage fall along the polarization curve, with the three losses, activation at the electrodes, ohmic across the membrane and concentration at the gas channels, stacked under the Nernst voltage, and the power density peaking before the voltage collapses. Change the temperature, the pressure and the membrane humidity, then run the same cell as an electrolyzer and chain electrolysis, compression and fuel cell to see how much of the input electricity comes back.",
+  "takeaway": "A fuel cell's voltage falls as current rises through three kinds of loss, so it is most efficient when working least hard, and electricity stored as hydrogen comes back at about a third.",
+  "prerequisites": [
+   "redox-batteries",
+   "acids-bases",
+   "reaction-rates-equilibrium"
+  ],
+  "related": [
+   "lithium-cell-dynamics",
+   "power-grid",
+   "solar-cells",
+   "grid-storage-sizing"
+  ],
+  "needs": "A published semi-empirical PEM polarization model with its parameters (Amphlett et al. 1995 or the Larminie & Dicks textbook model; papers paywalled, parameters are published values); hydrogen thermodynamic data from NIST (US government, public).",
+  "pitfall": "Hydrogen is not an energy source but a carrier; the page must show where the hydrogen's energy came from and what the round trip costs.",
+  "why": "US DOE Hydrogen and Fuel Cell Technologies Office, Fuel Cells (PEM operation, polarization, efficiency): https://www.energy.gov/eere/fuelcells/fuel-cells (page reachable; content not reconfirmed, search budget exhausted).",
+  "overlapWith": "redox-batteries: a battery carries its reactants inside; here they flow through, and the graphic is the voltage-current curve with its three losses, which no existing page shows.",
+  "needsSource": "Published polarization-model parameters (papers paywalled; values published); NIST hydrogen data (public).",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "energy-machines-l3"
+ },
+ {
+  "slug": "gas-turbines-combined-cycle",
+  "title": "Gas turbines & combined cycle",
+  "level": 3,
+  "kind": "manipulate",
+  "category": "energy",
+  "interaction": "Drag the pressure ratio and the turbine inlet temperature of a gas turbine on a temperature-entropy diagram computed from the Brayton cycle with temperature-dependent gas properties, and set the compressor and turbine isentropic efficiencies. Net work, thermal efficiency and exhaust temperature update live, with the compressor's share of the turbine's work drawn as a bar; then bolt on a heat-recovery steam generator and a steam cycle and watch the combined efficiency pass 60 percent.",
+  "takeaway": "A gas turbine spends over half its turbine work driving its own compressor, and the hot exhaust it throws away is what a bottoming steam cycle turns into the extra efficiency of a combined-cycle plant.",
+  "prerequisites": [
+   "heat-engines",
+   "entropy"
+  ],
+  "related": [
+   "steam-power-cycles",
+   "jet-engines",
+   "power-grid"
+  ],
+  "needs": "Specific heats of air and combustion products as functions of temperature (NASA Glenn thermodynamic polynomial coefficients, US government, public domain); steam properties as in steam-power-cycles.",
+  "pitfall": "Raising the pressure ratio does not raise efficiency without limit once component losses are included: at a fixed inlet temperature the net work peaks and then falls, so real engines sit at a compromise.",
+  "why": "University energy-systems syllabus (Bologna, Energy Systems T): Brayton cycle plant, work and efficiency vs. compression ratio, polytropic efficiency and turbine inlet temperature, gas-steam combined cycles: https://www.unibo.it/en/teaching/course-unit-catalogue/course-unit/2022/432100 (from search results).",
+  "overlapWith": "heat-engines: that page's piston engine is a closed cycle with one efficiency ceiling; this one is the open-cycle turbine whose component efficiencies and inlet temperature decide the result, and whose exhaust feeds a second engine.",
+  "needsSource": "NASA Glenn thermodynamic polynomials (public domain); IAPWS-IF97 (freely published).",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "energy-machines-l3"
+ },
+ {
+  "slug": "geothermal-power",
+  "title": "Geothermal power",
+  "level": 3,
+  "kind": "simulate",
+  "category": "energy",
+  "interaction": "Drill an injection and a production well into hot rock and pump water around the loop: a two-dimensional heat-transport model in the rock shows the cold front advancing from the injector over years until it breaks through at the producer and the output temperature starts to drop. Set the well spacing, the flow rate and the rock temperature, and a binary power cycle at the surface converts the heat with the low efficiency that a 150 to 200 degree source allows.",
+  "takeaway": "A well pair mines heat from rock faster than conduction refills it, so its output temperature holds for years and then falls once the cold front breaks through, and the modest temperature caps the plant's efficiency near a tenth.",
+  "prerequisites": [
+   "heat-engines",
+   "entropy",
+   "plate-tectonics"
+  ],
+  "related": [
+   "steam-power-cycles",
+   "heat-pumps-refrigeration"
+  ],
+  "needs": "",
+  "pitfall": "'Renewable' does not mean a well lasts forever: the heat is renewed on the timescale of rock conduction, far slower than a plant draws it, so plants rest fields or drill new wells.",
+  "why": "Demand: Wikipedia, Enhanced geothermal system https://en.wikipedia.org/wiki/Enhanced_geothermal_system (the MIT report 'The Future of Geothermal Energy' at https://energy.mit.edu/research/future-geothermal-energy/ is the primary reference; it refused an automated check).",
+  "overlapWith": "plate-tectonics shows the planet's heat engine; steam-power-cycles the surface cycle; here the graphic is the reservoir itself running down.",
+  "needsSource": "none; published rock thermal conductivity, heat capacity and geothermal gradients.",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "energy-machines-l3"
+ },
+ {
+  "slug": "grid-storage-sizing",
+  "title": "Sizing grid storage",
+  "level": 3,
+  "kind": "explore",
+  "category": "energy",
+  "interaction": "Scrub through a year of real hourly demand, solar and wind output for a grid region, then add storage: set its power, its hours of energy and its round-trip efficiency, and a dispatch rule charges it when generation exceeds demand and discharges when it falls short. The graphic shows the duck curve flattening, the hours still uncovered and the energy curtailed, and a curve of unmet demand against storage size that flattens out.",
+  "takeaway": "Storage sized for the daily swing of solar flattens the duck curve cheaply, but the curve of unmet demand against storage size flattens too, so each further hour of reliability costs more storage than the last.",
+  "prerequisites": [
+   "power-grid"
+  ],
+  "related": [
+   "solar-cells",
+   "flywheels",
+   "hydro-turbines",
+   "battery-degradation",
+   "fuel-cells-hydrogen"
+  ],
+  "needs": "One year of hourly demand and generation by source for one balancing authority from the US EIA-930 Hourly Electric Grid Monitor (US government data, public domain per https://www.eia.gov/about/copyrights_reuse.php): https://www.eia.gov/electricity/gridmonitor/dashboard/electric_overview/US48/US48",
+  "pitfall": "Round-trip efficiency is not the main cost of storage; the energy it cannot absorb because it is already full, and the long gaps it cannot bridge, dominate.",
+  "why": "Demand: the duck curve, Wikipedia https://en.wikipedia.org/wiki/Duck_curve (NREL's 'Overgeneration from Solar Energy in California: A Field Guide to the Duck Chart' is the primary source; its PDF was unreachable at check time).",
+  "overlapWith": "power-grid: that page balances one synthetic day by hand with a battery among the plants; this one runs a year of real hourly data and sizes the battery, showing the size-versus-unmet-demand curve.",
+  "needsSource": "EIA-930 hourly grid data (US government, public domain).",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "energy-machines-l3"
+ },
+ {
+  "slug": "heat-pumps-refrigeration",
+  "title": "Heat pumps & refrigeration",
+  "level": 3,
+  "kind": "manipulate",
+  "category": "energy",
+  "interaction": "Drag the evaporator and condenser temperatures of a vapor-compression cycle on a pressure-enthalpy diagram drawn from real refrigerant properties and watch the four legs, compression, condensation, expansion and evaporation, move with them; the coefficient of performance, the compressor work and the heat delivered update live and are compared with the Carnot value for the same temperature lift. Set the compressor's isentropic efficiency, add subcooling and superheat, and switch the refrigerant between R-134a, propane and CO2, where the cycle goes transcritical.",
+  "takeaway": "A heat pump delivers several units of heat per unit of work by boiling and condensing a fluid at two pressures, and that ratio falls as the gap between the two temperatures widens.",
+  "prerequisites": [
+   "heat-engines",
+   "entropy",
+   "states-of-matter"
+  ],
+  "related": [
+   "steam-power-cycles",
+   "chip-cooling",
+   "geothermal-power",
+   "thermoelectrics"
+  ],
+  "needs": "Saturation and superheated-vapor properties of R-134a, R-290 and R-744 from CoolProp (MIT licence), tabulated or fitted for the browser.",
+  "pitfall": "A COP of 4 is not '400 percent efficiency' and breaks no law: most of the heat delivered is moved from outside, not made from the electricity, and the second law still caps the COP at the Carnot value for the lift.",
+  "why": "Purdue ME 200 Thermodynamics I homework: a four-component R-134a vapor-compression cycle with evaporator and condenser temperatures, compressor efficiency and COP: https://engineering.purdue.edu/ME200/files/homework/HW36/ME200-Spring2020-HW36-web.html (from search results); demand: IEA, The Future of Heat Pumps, https://www.iea.org/reports/the-future-of-heat-pumps.",
+  "overlapWith": "heat-engines: the same cycle run backward, but that page never runs it backward, has no real fluid, no phase change and no p-h diagram; this page is the Reserve item Heat pumps, promoted.",
+  "needsSource": "CoolProp refrigerant property library (MIT licence).",
+  "leadsTo": [],
+  "everyday": true,
+  "origin": "energy-machines-l3"
+ },
+ {
+  "slug": "hvdc-transmission",
+  "title": "Transmission lines, AC and DC",
+  "level": 3,
+  "kind": "manipulate",
+  "category": "energy",
+  "interaction": "Stretch a transmission line from a few kilometers to a few thousand, as an overhead line or a submarine cable, and send AC or DC through it: the phasor long-line equations compute the voltage and current along its length, and the graphic shows an AC cable's charging current eating its capacity until no power reaches the far end, the voltage rising at an open end, and the losses of each option. Set the converter stations' losses and cost and find the break-even distance where DC wins.",
+  "takeaway": "An AC line is also a capacitor and an inductor, and beyond a certain length its own charging current uses up its capacity, while a DC line carries power as far as its resistance allows.",
+  "prerequisites": [
+   "electromagnetism",
+   "power-grid",
+   "complex-numbers"
+  ],
+  "related": [
+   "motors-generators",
+   "wireless-signals",
+   "superconducting-magnets"
+  ],
+  "needs": "",
+  "pitfall": "Edison's DC did not lose the current war because DC is bad for transmission: it lost because DC could not be transformed to high voltage in 1890, and power electronics has since removed that obstacle.",
+  "why": "MIT OCW 6.061 Introduction to Electric Power Systems (transmission line models, reactive power, HVDC): https://ocw.mit.edu/courses/6-061-introduction-to-electric-power-systems-spring-2011/ (course page reachable; content not reconfirmed, search budget exhausted).",
+  "overlapWith": "power-grid: that page steps voltage up and down with transformers and shows only resistive loss along the line; this one adds the line's own capacitance and inductance, the length limit they impose on AC, and the DC alternative.",
+  "needsSource": "none; per-kilometer line constants from standard references.",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "energy-machines-l3"
+ },
+ {
+  "slug": "hydraulic-systems",
+  "title": "Hydraulic machines",
+  "level": 3,
+  "kind": "build",
+  "category": "energy",
+  "interaction": "Connect a pump, a relief valve, a proportional valve and a cylinder into a circuit and lift a load: flow through each valve follows the orifice equation, the pump's pressure follows the load, and the cylinder's speed follows the valve opening. Open the valve too fast and the fluid's compressibility and the load's mass ring the system at its hydraulic natural frequency; add a controller to position an excavator arm and watch the power lost across the throttling valve leave as heat.",
+  "takeaway": "Pressure, not speed, carries the power through a hydraulic pipe, every metering valve turns part of it into heat, and the oil's slight compressibility gives the axis a natural frequency that limits how fast it can respond.",
+  "prerequisites": [
+   "newtons-laws",
+   "feedback-control"
+  ],
+  "related": [
+   "robot-arm-kinematics",
+   "bridges-structures",
+   "hydro-turbines"
+  ],
+  "needs": "",
+  "pitfall": "Hydraulic oil is not incompressible: its bulk modulus, lowered further by dissolved air, is what gives a hydraulic axis its natural frequency and its limits on control.",
+  "why": "Demand: Wikipedia, Hydraulic machinery https://en.wikipedia.org/wiki/Hydraulic_machinery (the NSF Center for Compact and Efficient Fluid Power's education pages were unreachable at check time).",
+  "overlapWith": "feedback-control: that page controls generic plants; this one builds the hydraulic plant itself, whose orifice law and oil compressibility are what the controller has to live with.",
+  "needsSource": "none; published oil bulk modulus and viscosity values.",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "energy-machines-l3"
+ },
+ {
+  "slug": "hydro-turbines",
+  "title": "Hydroelectric turbines",
+  "level": 3,
+  "kind": "manipulate",
+  "category": "energy",
+  "interaction": "Set the head and flow of a dam and watch the velocity triangles at the inlet and outlet of a runner; the Euler turbomachine equation gives the torque and power as you spin the runner faster or slower, and a Pelton wheel's power peaks when its buckets run at half the jet speed. Slide across the specific-speed chart and the runner morphs from Pelton to Francis to Kaplan, each with its efficiency curve against load; then drive the Francis unit backward as a pump to fill the upper reservoir of a pumped-storage plant.",
+  "takeaway": "A water turbine makes power by changing the swirl of the water between its inlet and outlet, and the head and flow decide which runner shape, bucket, spiral or propeller, does that best.",
+  "prerequisites": [
+   "newtons-laws",
+   "motors-generators"
+  ],
+  "related": [
+   "wind-turbine-aerodynamics",
+   "power-grid",
+   "steam-power-cycles",
+   "grid-storage-sizing"
+  ],
+  "needs": "",
+  "pitfall": "Water does not push on the blades like a paddle in a stream: power comes from the change in angular momentum between inlet and outlet, so swirl left in the outlet water is power left on the table.",
+  "why": "US DOE Water Power Technologies Office, Types of Hydropower Turbines (impulse vs. reaction, selection by head and flow): https://www.energy.gov/eere/water/types-hydropower-turbines (page reachable; content not reconfirmed, search budget exhausted).",
+  "overlapWith": "power-grid: that page dispatches hydro as a block of power; this one is inside the turbine, where head, flow and runner shape decide the power.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "energy-machines-l3"
+ },
+ {
+  "slug": "involute-gears",
+  "title": "Gears & gear trains",
+  "level": 3,
+  "kind": "build",
+  "category": "energy",
+  "interaction": "Generate a gear tooth by unwinding a string from its base circle and mesh it with a second gear: the contact point slides along a straight line of action, and the ratio stays exactly constant even when the center distance is nudged. Change the pressure angle and the tooth count and see undercutting appear below 17 teeth and the contact ratio drop; then build a train with a planetary set and read its ratio from the Willis equation as you hold the sun, the ring or the carrier.",
+  "takeaway": "Involute teeth transmit an exactly constant ratio because their contact point travels along one fixed line, and a planetary set gives several ratios from the same gears by choosing which member stands still.",
+  "prerequisites": [
+   "unit-circle",
+   "newtons-laws"
+  ],
+  "related": [
+   "ev-drivetrains",
+   "escapements",
+   "tribology-lubrication"
+  ],
+  "needs": "",
+  "pitfall": "Gears do not multiply energy: torque rises exactly as speed falls, less friction, and the ratio comes from the tooth counts, not from the circles drawn.",
+  "why": "Bartosz Ciechanowski, Gears (interactive explainer; demand signal): https://ciechanow.ski/gears/ (from search results; page reachable).",
+  "overlapWith": "bridges-structures is the nearest mechanical page, static members under load; no existing page shows a mechanism in motion or a constant-ratio proof.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": true,
+  "origin": "energy-machines-l3"
+ },
+ {
+  "slug": "jet-engines",
+  "title": "Jet engines",
+  "level": 3,
+  "kind": "step",
+  "category": "energy",
+  "interaction": "Step through a turbofan station by station, inlet, fan, compressor, combustor, turbine and nozzles, with the gas state plotted on a temperature-entropy diagram and each station's pressure and temperature computed from the cycle. Then change the bypass ratio, the flight speed and the altitude: thrust, fuel burned per unit of thrust and the split between thermal and propulsive efficiency respond, with the fan's slow, massive jet and the core's fast one drawn to scale.",
+  "takeaway": "For the same thrust, pushing a lot of air a little faster burns less fuel than pushing a little air much faster, so a bigger fan around a smaller core wins.",
+  "prerequisites": [
+   "gas-turbines-combined-cycle",
+   "flight"
+  ],
+  "related": [
+   "rockets"
+  ],
+  "needs": "The standard atmosphere (ISA; published openly) for pressure and temperature against altitude.",
+  "pitfall": "A jet does not push against the surrounding air: thrust is the reaction to accelerating the gas that passes through the engine, which is why a rocket works in a vacuum.",
+  "why": "MIT OCW 16.50 Introduction to Propulsion Systems (turbofan cycle analysis, propulsive and thermal efficiency, bypass ratio): https://ocw.mit.edu/courses/16-50-introduction-to-propulsion-systems-spring-2012/ (course page reachable; content not reconfirmed, search budget exhausted).",
+  "overlapWith": "flight: that page is the wing and never the engine; rockets shares only the momentum idea, with no air to breathe and no compressor.",
+  "needsSource": "none beyond the ISA standard atmosphere (openly published).",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "energy-machines-l3"
+ },
+ {
+  "slug": "lithium-cell-dynamics",
+  "title": "Inside a lithium-ion cell under load",
+  "level": 3,
+  "kind": "simulate",
+  "category": "energy",
+  "interaction": "Pull current from a single-particle model of a lithium-ion cell: lithium diffuses out of a graphite particle and into a nickel-manganese-cobalt particle, with the concentration profile inside each particle drawn live and the terminal voltage built from the open-circuit curves, the reaction overpotentials and the electrolyte resistance. Raise the C-rate and watch the voltage sag and the surface concentration run ahead of the interior; then charge at constant current and constant voltage and lower the temperature until the anode's potential crosses the line where lithium plates instead of intercalating.",
+  "takeaway": "A cell's voltage under load is its resting voltage minus losses that grow with current, and because lithium must diffuse through solid particles the surface fills up long before the inside, which is what caps fast charging.",
+  "prerequisites": [
+   "redox-batteries",
+   "calculus"
+  ],
+  "related": [
+   "ev-drivetrains",
+   "battery-degradation",
+   "fuel-cells-hydrogen"
+  ],
+  "needs": "Open-circuit potential curves, particle radii and diffusivities for a graphite/NMC cell from the PyBaMM parameter sets (BSD-3-Clause licence; the Chen 2020 set): https://github.com/pybamm-team/PyBaMM",
+  "pitfall": "The C-rate limit is not a fixed property of the chemistry: it comes from diffusion and kinetics that depend strongly on temperature and particle size, which is why a cold battery charges slowly and a warm one fast.",
+  "why": "University of Colorado Boulder on Coursera, Algorithms for Battery Management Systems (equivalent-circuit and physics-based cell models): https://www.coursera.org/specializations/algorithms-for-battery-management-systems (page reachable; content not reconfirmed, search budget exhausted).",
+  "overlapWith": "redox-batteries: that page shows ions crossing in a cartoon cross-section with a fixed voltage; this one is the real electrochemical model where current, diffusion and temperature set the voltage.",
+  "needsSource": "PyBaMM parameter sets (BSD-3-Clause).",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "energy-machines-l3"
+ },
+ {
+  "slug": "maglev-trains",
+  "title": "Maglev trains",
+  "level": 3,
+  "kind": "simulate",
+  "category": "energy",
+  "interaction": "Run a magnet over a conducting track at adjustable speed: the induced currents in the sheet are drawn, and the lift rises with speed toward a limit while the magnetic drag peaks and then falls, so that the vehicle needs wheels until it is fast enough to float. Switch to the attractive design, an electromagnet pulled up toward an iron rail, and watch it crash or stick when the controller is off; turn the feedback on and tune it, then add a passenger load and a bump in the rail.",
+  "takeaway": "Repulsive levitation needs speed because its lift comes from currents the moving magnet induces, while attractive levitation is unstable by nature and hangs on a feedback loop correcting its gap.",
+  "prerequisites": [
+   "electromagnetism",
+   "feedback-control"
+  ],
+  "related": [
+   "superconducting-magnets",
+   "motors-generators"
+  ],
+  "needs": "",
+  "pitfall": "A permanent magnet cannot be held stably in mid-air by other static magnets (Earnshaw's theorem); every maglev scheme needs motion, feedback or a superconductor.",
+  "why": "Demand: Veritasium's electromagnetic levitation quadcopter video, covered at https://laughingsquid.com/an-electromagnetic-levitation-quadcopter-demonstrates-how-magnetic-levitation-works/ (from search results); the thin-sheet lift and drag model is Reitz 1970, J. Appl. Phys. (analytic, published).",
+  "overlapWith": "electromagnetism shows induction as a magnet moving through a coil, and motors-generators turns it into rotation; this page turns induction into levitation and adds the stability question.",
+  "needsSource": "none; the thin-sheet electrodynamic model is analytic (Reitz 1970, paper paywalled; formulas widely reproduced).",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "energy-machines-l3"
+ },
+ {
+  "slug": "reverse-osmosis",
+  "title": "Desalination by reverse osmosis",
+  "level": 3,
+  "kind": "manipulate",
+  "category": "energy",
+  "interaction": "Push seawater against a membrane with an adjustable pressure: water passes at a rate set by the pressure in excess of the osmotic pressure while salt stays behind, so the brine grows saltier and its osmotic pressure rises along the membrane until flow stops. Set the recovery, the membrane's water and salt permeabilities and the energy-recovery device, and the energy per cubic meter is compared with the thermodynamic minimum, which itself rises with recovery.",
+  "takeaway": "Desalting seawater has a floor of about one kilowatt-hour per cubic meter set by osmotic pressure, rising with recovery, and a good plant sits within a few times that floor.",
+  "prerequisites": [
+   "entropy",
+   "states-of-matter"
+  ],
+  "related": [
+   "carbon-capture",
+   "ocean-currents",
+   "the-cell"
+  ],
+  "needs": "Standard seawater composition for osmotic pressure (published openly); membrane water and salt permeability coefficients from published measurements.",
+  "pitfall": "Reverse osmosis does not sieve out salt: the membrane dissolves water preferentially and salt crosses by diffusion, so some salt always passes and the pressure must beat osmosis, not a pore size.",
+  "why": "MIT OCW 2.500 Desalination and Water Purification (least work of separation, reverse osmosis, energy recovery): https://ocw.mit.edu/courses/2-500-desalination-and-water-purification-spring-2009/ (course page reachable; content not reconfirmed, search budget exhausted).",
+  "overlapWith": "the-cell: osmosis appears there as water crossing a membrane into a cell; this page pushes water the other way under pressure and counts the energy, like carbon-capture (this batch) comparing a real process with the minimum work of separation; ocean-currents mentions salinity only as a driver of density.",
+  "needsSource": "none beyond published seawater composition and membrane coefficients.",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "energy-machines-l3"
+ },
+ {
+  "slug": "robot-arm-kinematics",
+  "title": "Robot arm kinematics",
+  "level": 3,
+  "kind": "manipulate",
+  "category": "energy",
+  "interaction": "Drag the hand of a six-joint industrial arm and a Jacobian-based inverse-kinematics solver moves the joints to follow it, with the manipulability ellipsoid showing which directions are easy. Approach a fully stretched or a wrist-aligned pose and watch the ellipsoid flatten, the joint speeds blow up and the solver stall at the singularity; add a seventh joint and move the elbow through the null space while the hand stays put.",
+  "takeaway": "The matrix linking joint speeds to hand speeds changes with the pose, and where it loses rank the arm cannot move in some direction no matter how fast its joints turn.",
+  "prerequisites": [
+   "linear-transformations",
+   "feedback-control"
+  ],
+  "related": [
+   "graphics-3d",
+   "hydraulic-systems"
+  ],
+  "needs": "Link lengths and joint offsets of a real arm: the Universal Robots UR5 Denavit-Hartenberg parameters, published by the manufacturer and in ROS description packages (BSD/Apache licences).",
+  "pitfall": "Inverse kinematics is not one lookup: the same hand pose usually has several joint solutions, and near a singularity small hand motions need huge joint motions, which is the geometry's doing, not the controller's.",
+  "why": "MIT OCW 2.12 Introduction to Robotics (kinematics, Jacobian, singularities, redundancy): https://ocw.mit.edu/courses/2-12-introduction-to-robotics-fall-2005/ (course page reachable; content not reconfirmed, search budget exhausted).",
+  "overlapWith": "feedback-control: its arm reaches a point as a closing example; this page is the geometry itself, with the Jacobian, singularities and redundancy that page never shows.",
+  "needsSource": "UR5 DH parameters (manufacturer-published; ROS packages under BSD/Apache).",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "energy-machines-l3"
+ },
+ {
+  "slug": "ship-stability",
+  "title": "Why ships stay upright",
+  "level": 3,
+  "kind": "manipulate",
+  "category": "energy",
+  "interaction": "Heel a ship's hull with a drag and the submerged cross-section is re-integrated each frame: the center of buoyancy shifts outboard, the righting arm is drawn, and its curve against heel angle fills in. Load cargo high or low to move the center of gravity, open a partly filled tank to see the free-surface effect shrink the righting arm, and push the heel past the angle of vanishing stability where the ship capsizes; then compare a narrow hull with a broad one.",
+  "takeaway": "A ship rights itself as long as its buoyancy shifts outboard faster than its weight leans, and the righting-arm curve shows both how stiff it is in small rolls and the angle beyond which it will not come back.",
+  "prerequisites": [
+   "newtons-laws",
+   "calculus"
+  ],
+  "related": [
+   "bridges-structures",
+   "feedback-control",
+   "flight"
+  ],
+  "needs": "A hull form: the analytic Wigley hull (a formula, no licence issue) or a parametric hull built on the page.",
+  "pitfall": "A ship is not stable because it is heavy at the bottom: a hull with a low centre of gravity still capsizes once its buoyancy stops shifting outboard, and a wide raft with its weight high is stable because it is wide.",
+  "why": "MIT OCW 2.019 Design of Ocean Systems (hydrostatics, stability, righting arm): https://ocw.mit.edu/courses/2-019-design-of-ocean-systems-spring-2011/ (course page reachable; content not reconfirmed, search budget exhausted).",
+  "overlapWith": "bridges-structures: static equilibrium of a built thing under load; no existing page covers buoyancy or a stability curve.",
+  "needsSource": "none; the Wigley hull is an analytic formula.",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "energy-machines-l3"
+ },
+ {
+  "slug": "steam-power-cycles",
+  "title": "Steam turbines & the Rankine cycle",
+  "level": 3,
+  "kind": "build",
+  "category": "energy",
+  "interaction": "Assemble a steam plant from a boiler, turbine stages, a condenser and a pump, with every state computed from the real steam property equations and traced on a temperature-entropy diagram. Add a superheater, a reheat stage and feedwater heaters one at a time and raise the boiler pressure toward supercritical; the efficiency, the net work per kilogram and the moisture at the turbine exit respond, and the last turbine blades show erosion when the steam gets too wet.",
+  "takeaway": "Each refinement of the steam cycle, superheat, reheat and feedwater heating, raises the average temperature at which heat enters and lifts the efficiency while keeping the turbine's exhaust dry.",
+  "prerequisites": [
+   "heat-engines",
+   "entropy"
+  ],
+  "related": [
+   "power-grid",
+   "gas-turbines-combined-cycle",
+   "exergy-analysis",
+   "geothermal-power"
+  ],
+  "needs": "Water and steam properties from the IAPWS-IF97 industrial formulation (equations published freely by IAPWS, https://www.iapws.org/relguide/IF97-Rev.html; open implementations exist, e.g. CoolProp, MIT licence), ported to the browser or tabulated.",
+  "pitfall": "The condenser is not where the plant carelessly 'wastes' two thirds of its heat: rejecting heat at the cold temperature is required by the second law, and the real shortfall against Carnot comes from heat entering at an average temperature far below the flame's.",
+  "why": "University energy-systems syllabus (Bologna, Energy Systems T): steam plants with reheat and regeneration, T-s diagrams, efficiency vs. pressure and temperature: https://www.unibo.it/en/study/course-units-transferable-skills-moocs/course-unit-catalogue/course-unit/2025/432100 (from search results).",
+  "overlapWith": "heat-engines: that page runs a closed-cylinder four-stroke gas cycle on a p-V chart; this one is the continuous steam plant with a real two-phase fluid, a T-s diagram and the cycle refinements that lift efficiency.",
+  "needsSource": "IAPWS-IF97 steam property equations (freely published by IAPWS; CoolProp implementation under the MIT licence).",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "energy-machines-l3"
+ },
+ {
+  "slug": "superconducting-magnets",
+  "title": "Superconducting magnets & quench",
+  "level": 3,
+  "kind": "simulate",
+  "category": "energy",
+  "interaction": "Ramp the current in a superconducting coil and watch its operating point climb inside the critical surface of temperature, field and current density for niobium-titanium, with the stored magnetic energy counted up. Deposit a small heat pulse somewhere in the winding: a one-dimensional heat model shows the normal zone either shrinking back or growing as Joule heating outruns cooling and racing along the conductor as a quench; fire the dump resistor in time and the energy leaves as heat in the resistor, or too late and the hot spot melts.",
+  "takeaway": "A magnet stays superconducting only inside a surface of temperature, field and current, and once one spot crosses it the stored energy must be dumped within seconds or that spot burns out.",
+  "prerequisites": [
+   "electromagnetism",
+   "entropy"
+  ],
+  "related": [
+   "nuclear-fusion",
+   "medical-imaging",
+   "maglev-trains",
+   "standard-model",
+   "hvdc-transmission"
+  ],
+  "needs": "A published critical-current parametrization for NbTi (Bottura's fit; published values) and low-temperature properties of copper and NbTi from the NIST cryogenic materials database (US government, public): https://trc.nist.gov/cryogenics/materials/materialproperties.htm",
+  "pitfall": "Superconductors do not carry unlimited current: the critical surface, not zero resistance alone, defines what the magnet can do, and the resistance-free coil still needs cooling power to hold its temperature.",
+  "why": "MIT OCW 22.68J Superconducting Magnets (critical surface, stability, quench and protection): https://ocw.mit.edu/courses/22-68j-superconducting-magnets-spring-2003/ (course page reachable; content not reconfirmed, search budget exhausted).",
+  "overlapWith": "nuclear-fusion confines plasma with a magnetic field taken as given, and medical-imaging uses one; this page is the magnet itself and what happens when it fails.",
+  "needsSource": "NbTi critical-current fit (published values); NIST cryogenic material properties (public).",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "energy-machines-l3"
+ },
+ {
+  "slug": "thermoelectrics",
+  "title": "Thermoelectric generators & coolers",
+  "level": 3,
+  "kind": "manipulate",
+  "category": "energy",
+  "interaction": "Hold one end of a thermoelectric leg hot and the other cold and draw current: the one-dimensional model with Seebeck, Peltier, Joule and conduction terms gives the voltage, the power and the efficiency, which peak at different currents. Change the material's Seebeck coefficient, electrical conductivity and thermal conductivity and watch the figure of merit ZT and the efficiency rise together toward the Carnot value; reverse the current and the same leg pumps heat as a cooler, with its coldest reachable temperature set by the same ZT.",
+  "takeaway": "A thermoelectric's efficiency is set by one material number, ZT, which pulls it toward the Carnot value only slowly, so near ZT of 1 it reaches about a fifth of Carnot.",
+  "prerequisites": [
+   "heat-engines",
+   "entropy",
+   "semiconductors"
+  ],
+  "related": [
+   "solar-cells",
+   "heat-pumps-refrigeration",
+   "chip-cooling"
+  ],
+  "needs": "Seebeck coefficient, electrical and thermal conductivity against temperature for bismuth telluride and a few other materials from published measurements (published values; papers may be paywalled).",
+  "pitfall": "Waste heat is not free energy: a thermoelectric on a car exhaust or a stove gives percents, not tens of percents, and the page must show why the three material properties fight each other.",
+  "why": "MIT OCW 2.60J Fundamentals of Advanced Energy Conversion (direct energy conversion including thermoelectrics): https://ocw.mit.edu/courses/2-60j-fundamentals-of-advanced-energy-conversion-spring-2020/ (course page reachable; content not reconfirmed, search budget exhausted).",
+  "overlapWith": "solar-cells converts photons in a semiconductor with a ceiling set by the band gap; this page converts heat in one with a ceiling set by ZT, and runs backward as a cooler.",
+  "needsSource": "Published thermoelectric material property measurements (values published; papers may be paywalled).",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "energy-machines-l3"
+ },
+ {
+  "slug": "tribology-lubrication",
+  "title": "Friction, bearings & lubrication",
+  "level": 3,
+  "kind": "manipulate",
+  "category": "energy",
+  "interaction": "Slide a shaft in a bearing with sliders for speed, load and oil viscosity: the one-dimensional Reynolds equation is solved for the oil film to show the pressure wedge that lifts the shaft, the film thickness and the friction torque. Sweep the speed and the friction traces the Stribeck curve, from metal-on-metal boundary friction at a crawl through the mixed regime to the thin-film hydrodynamic minimum and up again as viscous drag grows; thicken the oil, cool it or roughen the surfaces and watch the minimum move.",
+  "takeaway": "A lubricated shaft floats on a pressure wedge that its own motion builds, so friction falls as it spins up, bottoms out where the film just separates the surfaces, and rises again from stirring the oil.",
+  "prerequisites": [
+   "newtons-laws",
+   "states-of-matter"
+  ],
+  "related": [
+   "escapements",
+   "flywheels",
+   "involute-gears"
+  ],
+  "needs": "Viscosity against temperature for standard oil grades (ISO VG, published openly) and surface roughness values from the literature.",
+  "pitfall": "Oil does not work by being slippery: at speed the surfaces never touch, and the friction that remains is the oil's own viscosity, which is why thicker oil is not always better.",
+  "why": "MIT OCW 2.800 Tribology (Reynolds equation, hydrodynamic lubrication, Stribeck regimes): https://ocw.mit.edu/courses/2-800-tribology-fall-2004/ (course page reachable; content not reconfirmed, search budget exhausted).",
+  "overlapWith": "newtons-laws treats friction as a coefficient; this page replaces the coefficient with the physics of the oil film, and shows when the coefficient picture holds.",
+  "needsSource": "none; ISO VG oil viscosity data (openly published).",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "energy-machines-l3"
+ },
+ {
+  "slug": "wind-turbine-aerodynamics",
+  "title": "Wind turbines & the Betz limit",
+  "level": 3,
+  "kind": "manipulate",
+  "category": "energy",
+  "interaction": "Start with an actuator disc: drag how much the air slows through the rotor and watch the stream tube widen, the thrust and power change, and the power coefficient peak at 16/27. Then replace the disc with real blades: set the tip-speed ratio, the blade pitch and the twist, and a blade-element-momentum model with a measured airfoil polar computes the angle of attack along the blade, the power curve against wind speed, and the stall or pitch regulation that holds power steady above rated wind.",
+  "takeaway": "No rotor can take more than 59 percent of the wind's power because the air must keep moving to get out of the way, and real blades approach that only near one tip-speed ratio.",
+  "prerequisites": [
+   "flight"
+  ],
+  "related": [
+   "power-grid",
+   "hydro-turbines"
+  ],
+  "needs": "Lift and drag polars of a wind-turbine airfoil: NREL S809 wind-tunnel data or the NREL 5-MW reference turbine's airfoil tables (US government laboratory, openly published), or NACA airfoil data (public domain).",
+  "pitfall": "The Betz limit is not a design shortcoming of today's turbines; it applies to any device that takes energy from a free stream, so a rotor near 50 percent is close to perfect.",
+  "why": "Penn State AERSP 583 Wind Turbine Aerodynamics (actuator disc, Betz limit, blade element momentum theory): https://www.e-education.psu.edu/aersp583/ (from search results); also the OpenMDAO Betz-limit worked example https://openmdao.org/docs/latest/examples/betz_limit.html.",
+  "overlapWith": "flight: it reuses the airfoil polar, but the graphic is the whole rotor and the momentum balance of the stream through it; solar-cells is the only other page with a hard physical ceiling on efficiency.",
+  "needsSource": "NREL S809 / NREL 5-MW reference turbine airfoil data (openly published by a US government laboratory); NACA data (public domain).",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "energy-machines-l3"
  }
 ]

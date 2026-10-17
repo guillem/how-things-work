@@ -1,518 +1,640 @@
 [
  {
-  "slug": "hydraulics-digger-arm",
-  "title": "Diggers and hydraulics: a small push becomes a huge one",
-  "level": 0,
+  "slug": "ige-crosslinking-allergy",
+  "title": "Allergy, IgE & anaphylaxis",
+  "level": 3,
   "kind": "manipulate",
-  "category": "energy",
-  "interaction": "Push a small piston and watch oil shove a much bigger piston at the digger's arm: the big one moves with many times the force but only a fraction of the distance, and a counter shows the two trade places exactly. Change the piston sizes and lift a car, then a boulder; let an air bubble into the pipe and the arm goes spongy. Drive the three cylinders of a digger's boom, arm and bucket to scoop and dump.",
-  "takeaway": "A liquid passes a push on undiminished, so a wide piston lifts many times what a narrow one is pushed with, paid for in distance.",
-  "prerequisites": [],
-  "related": [
-   "crane-counterweight",
-   "car-brakes-stopping-distance"
-  ],
-  "needs": "",
-  "pitfall": "Hydraulics make no energy: the work in equals the work out, the small piston simply travels much farther. A liquid does not squash, which is the whole point; a spongy brake pedal is air in the line.",
-  "why": "England KS3 science, forces: pressure in fluids and hydraulics, https://www.gov.uk/government/publications/national-curriculum-in-england-science-programmes-of-study (PhET 'Under Pressure' covers the same ground for middle school)",
-  "overlapWith": "bridges-structures: that page carries loads through members in tension and compression; this page is the fluid push inside a digger's cylinders and the force-for-distance trade.",
-  "needsSource": "none",
-  "leadsTo": [
-   "newtons-laws",
-   "bridges-structures"
-  ],
-  "everyday": false,
-  "origin": "vehicles-and-big-machines"
- },
- {
-  "slug": "kettle",
-  "title": "Electric kettle",
-  "level": 0,
-  "kind": "simulate",
-  "category": "energy",
-  "interaction": "Fill the kettle with one, two or four cups, switch it on and watch the element warm the water next to it, which rises while cooler water sinks to take its place, with a thermometer climbing and a timer counting the seconds. At 100 °C the thermometer stops however long the kettle stays on, bubbles of steam leave the water, the steam climbs the tube to a strip that bends, and the switch clicks off. Compare the seconds to the boil for each filling.",
-  "takeaway": "Twice the water takes twice as long to boil, and once it boils the water stops getting hotter, so leaving the kettle on longer only turns water into steam.",
-  "prerequisites": [],
-  "related": [
-   "toaster",
-   "room-thermostat",
-   "thermos-flask"
-  ],
-  "needs": "",
-  "pitfall": "Boiling water does not keep getting hotter the longer it boils, and the bubbles are steam, not air.",
-  "why": "PhET 'Energy Forms and Changes' (CC BY) heats water and other materials and is the standard primary and middle-school simulation of heating (https://climate.gov/teaching/resources/energy-forms-and-changes-35754); NGSS 4-PS3-2, energy transferred by heat and electric currents (https://www.cpp.edu/respect/resources/documents_4th/gr4.et_ngss.pdf).",
-  "overlapWith": "states-of-matter: that page runs a molecular-dynamics box through melting and boiling; this page heats a real appliance's worth of water, counting cups and seconds, and ends at the automatic switch.",
-  "needsSource": "none",
-  "leadsTo": [
-   "states-of-matter",
-   "electric-circuits"
-  ],
-  "everyday": true,
-  "origin": "home-mechanisms"
- },
- {
-  "slug": "levers-and-scissors",
-  "title": "Levers, seesaws & scissors",
-  "level": 0,
-  "kind": "manipulate",
-  "category": "energy",
-  "interaction": "Put a child and an adult on a seesaw and drag the pivot until it balances, with each side's turning effect shown as weights times notches from the pivot. Then cut a card with scissors near the pivot and out at the tips, crack a nut with a nutcracker, open a tin with a can opener and pick up a crumb with tweezers, and see which end of each lever moves far and which pushes hard.",
-  "takeaway": "A lever trades distance for force: the end that moves farther pushes less, which is why a long handle and a short jaw crack the nut and why nothing is gained for free.",
-  "prerequisites": [],
-  "related": [
-   "pulleys-and-cranes",
-   "bicycle-gears",
-   "screws-and-screwdrivers",
-   "car-brakes"
-  ],
-  "needs": "",
-  "pitfall": "A lever does not create force or energy: the push times the distance moved is the same at both ends, and scissors cut better near the pivot because the force is larger there, not because the blades are sharper.",
-  "why": "KS2 science, Year 5 Forces (levers, pulleys and gears let a smaller force have a greater effect; https://www.stem.org.uk/node/12696); PhET's 'Balancing Act' teeter-totter is the standard primary simulation of the same idea (listed at https://phys.libretexts.org/Learning_Objects/Visualizations_and_Simulations/PhET_Simulations).",
-  "overlapWith": "bridges-structures: that page colours the members of a built structure by tension and compression under a rolling load; this page is the turning effect about a pivot, with the reader moving the pivot and the loads.",
-  "needsSource": "none",
-  "leadsTo": [
-   "newtons-laws",
-   "bridges-structures"
-  ],
-  "everyday": true,
-  "origin": "home-mechanisms"
- },
- {
-  "slug": "light-bulb-hot-wire",
-  "title": "Why a light bulb glows (and gets hot)",
-  "level": 0,
-  "kind": "manipulate",
-  "category": "energy",
-  "interaction": "Slide a dimmer and watch the thin wire inside an old-style bulb go from dark to dull red to orange to white as it heats, while a bar splits what the bulb takes into light you can see and heat you can feel. At full brightness the heat bar is many times the light bar; a hand held near the bulb feels it. Swap in an LED bulb giving the same light and the heat bar nearly vanishes.",
-  "takeaway": "An old bulb makes light by heating a wire until it glows white, and most of what it takes leaves as heat, while an LED makes the same light nearly cold.",
-  "prerequisites": [],
-  "related": [
-   "battery-runs-down",
-   "socket-to-power-station"
-  ],
-  "needs": "The CIE 1931 colour-matching functions and the photopic sensitivity curve, to turn the glowing wire's temperature into a colour on screen and a light-versus-heat split (CIE tables, freely distributed by the Colour & Vision Research Laboratory, cvrl.org); tungsten's emissivity from a physics reference if the colour is to be exact.",
-  "pitfall": "The wire does not burn: there is no oxygen inside the bulb, which is why a tungsten filament glows for a thousand hours. Brightness does not rise in step with the dimmer: a little more current makes the wire much hotter, much brighter and whiter, so the colour changes with the brightness.",
-  "why": "England KS2 science, Year 6 electricity: associate the brightness of a lamp with the cells in the circuit, https://www.gov.uk/government/publications/national-curriculum-in-england-science-programmes-of-study ('how does a light bulb work' is a perennial search question)",
-  "overlapWith": "electric-circuits: that page lights bulbs as circuit elements with current and voltage meters; this page is what happens inside the bulb's wire and where the energy ends up, with the LED as the comparison.",
-  "needsSource": "CIE 1931 colour-matching functions and V(lambda) via cvrl.org (freely distributed CIE tables).",
-  "leadsTo": [
-   "electric-circuits",
-   "light-optics"
-  ],
-  "everyday": true,
-  "origin": "vehicles-and-big-machines"
- },
- {
-  "slug": "lock-and-key",
-  "title": "Lock & key",
-  "level": 0,
-  "kind": "build",
-  "category": "energy",
-  "interaction": "Cut a key by setting the depth of each of its five notches, slide it into a pin-tumbler lock and watch each spring-loaded pin stack ride up its notch. Turn the key: the plug rotates only if every stack's split sits exactly at the gap between plug and housing. Then try a neighbour's key, file one notch too deep, or push the pins up one at a time with a pick to see why the plug jams or turns.",
-  "takeaway": "A key does not push the pins out of the way; it lifts each stack to exactly the height where its split lines up with the edge of the turning cylinder, and one wrong height is enough to block it.",
-  "prerequisites": [],
-  "related": [
-   "zipper",
-   "click-pen",
-   "cryptography"
-  ],
-  "needs": "",
-  "pitfall": "A notch cut too deep blocks the lock as surely as one too shallow: the pins must line up, not be moved aside, and picking works on small manufacturing gaps, not on magic.",
-  "why": "'How do pin tumbler locks work?' is a perennial everyday-engineering question (ScienceABC explainer, https://www.scienceabc.com/innovation/pick-door-locks-pin-tumbler-sherlock-doors-open.html; LockWiki 'Shear line', https://LockWiki.com/index.php/Shear_line).",
-  "overlapWith": "logic-gates: that page wires AND and OR gates into circuits; the lock is one mechanical AND of five pins, and the reader cuts a key rather than wiring.",
-  "needsSource": "none",
-  "leadsTo": [
-   "logic-gates"
-  ],
-  "everyday": true,
-  "origin": "home-mechanisms"
- },
- {
-  "slug": "power-station-kettle",
-  "title": "A power station is a giant kettle",
-  "level": 0,
-  "kind": "step",
-  "category": "energy",
-  "interaction": "Step through a power station from the fire to the wire: fuel heats water in a boiler, steam blasts through turbine blades and spins them, the spinning magnet makes electricity, and the spent steam is cooled back to water in the cooling tower. Choose the heat source (coal, gas, nuclear, geothermal, mirrors focusing the sun) and the chain stays the same, while a bar of buckets shows how much of the heat leaves as electricity and how much goes out through the cooling tower: about one bucket in three for coal and nuclear, nearer one in two for the best gas plants.",
-  "takeaway": "Most of the world's electricity is made by boiling water to spin a magnet, whatever the heat comes from, and more of the heat goes out the cooling tower than down the wire.",
-  "prerequisites": [],
-  "related": [
-   "socket-to-power-station",
-   "dam-water-height",
-   "geothermal-heat-below",
-   "heat-engines"
-  ],
-  "needs": "Average heat rates by fuel from the US EIA (Electric Power Annual, public domain), so the bar of buckets changes with the fuel chosen.",
-  "pitfall": "The cooling tower's white plume is water vapour, not smoke, and the tower is not the chimney. The turbine is spun by steam, not by the fire, and a nuclear plant boils water the same way as a coal one.",
-  "why": "US EIA Energy Explained, 'How electricity is generated', https://www.eia.gov/energyexplained/electricity/how-electricity-is-generated.php (curriculum: England KS3 science, 'fuels and energy resources')",
-  "overlapWith": "heat-engines: that page is a four-stroke piston engine and the efficiency law; this page is the steam chain of a power station, with the two-out-of-three loss shown as a count from real plant data, not derived.",
-  "needsSource": "EIA Electric Power Annual, average operating heat rates by energy source (public domain).",
-  "leadsTo": [
-   "electric-circuits",
-   "states-of-matter"
-  ],
-  "everyday": false,
-  "origin": "vehicles-and-big-machines"
- },
- {
-  "slug": "pulleys-and-cranes",
-  "title": "Pulleys & cranes",
-  "level": 0,
-  "kind": "build",
-  "category": "energy",
-  "interaction": "Hang a crate from a rope, add pulleys to the hook and to the beam one at a time, and pull the free end: a counter shows the rope you pulled in against the height the crate rose, and a gauge shows the pull it took. Then build a crane with a boom, a winch and a counterweight at the back, swing the crate out along the boom and find where it tips.",
-  "takeaway": "Each extra rope holding the crate divides the pull you need and multiplies the rope you must pull, and a crane stands as long as its counterweight's turning effect beats the load's.",
-  "prerequisites": [],
-  "related": [
-   "levers-and-scissors",
-   "bridges-structures"
-  ],
-  "needs": "",
-  "pitfall": "Pulleys give no free lifting: a single fixed pulley only changes the direction of the pull, and every halving of the force doubles the rope.",
-  "why": "KS2 science, Year 5 Forces (pulleys), and the STEM Learning primary collection 'Forces: Gears, pulleys, levers and springs' (https://stem.org.uk/node/12033); Year 5 design and technology projects build pulley or gear mechanisms (https://www.brattonstpeters.org.uk/media/53368/year-5-mechanical-systems-pulleys-or-gears.pdf).",
-  "overlapWith": "bridges-structures: that page is a static structure carrying a load to the ground; here a rope and wheels trade rope length for force, and the only structure is a boom that may tip.",
-  "needsSource": "none",
-  "leadsTo": [
-   "newtons-laws",
-   "bridges-structures"
-  ],
-  "everyday": true,
-  "origin": "home-mechanisms"
- },
- {
-  "slug": "refrigerator",
-  "title": "Refrigerator & freezer",
-  "level": 0,
-  "kind": "step",
-  "category": "energy",
-  "interaction": "Step or play one parcel of refrigerant round its loop: it boils in the cold pipes inside the box and soaks up heat, the compressor squeezes it until it is hotter than the kitchen, it gives that heat away through the warm coils at the back, and a narrow valve lets it expand and go cold again. Set the dial, open the door, put in a warm pot or move the fridge into a hot room and watch the thermometer and how long the compressor runs. Then try to cool the kitchen by leaving the door open and watch the room get warmer.",
-  "takeaway": "A fridge does not make cold; it carries heat from the inside to the coils on its back, and the work of carrying it also ends up as heat in the room.",
+  "category": "medicine",
+  "interaction": "Coat a mast cell with IgE and drag the allergen concentration: a bivalent allergen bridges pairs of antibodies, and the number of bridges, computed from the crosslinking equilibrium, rises and then falls again when there is so much allergen that each antibody holds its own molecule. Degranulation is taken to follow the number of bridges (a stated simplification: inhibitory signalling also shapes the falling side of the real curve); set the released histamine loose on a lumped circulation and watch vessels dilate, fluid leak out and blood pressure fall; inject adrenaline to reverse it, or desensitise by exposing the cell to tiny rising doses.",
+  "takeaway": "An allergic reaction is an armed trap, antibodies already sitting on mast cells, sprung when an allergen bridges two of them; anaphylaxis is that trap going off in every tissue at once.",
   "prerequisites": [
-   "thermos-flask"
+   "immune-system",
+   "heart-circulation"
   ],
   "related": [
-   "room-thermostat",
-   "kettle",
-   "heat-engines"
+   "thymic-selection-tolerance",
+   "baroreflex-blood-pressure"
   ],
   "needs": "",
-  "pitfall": "Cold is not a substance the fridge produces: an open fridge warms the kitchen, and the back of a fridge is always warmer than the room.",
-  "why": "Google's 2017 how-to data shows fridge repair as the top household how-to across warm-climate countries (https://www.engadget.com/2017-09-04-google-interactive-map-how-to-searches.html); 'How does a refrigerator work?' is a standing Q&A on physics sites (https://www.askamathematician.com/2009/10/q-how-does-a-refrigerator-work/). The catalogue's Reserve lists Heat pumps.",
-  "overlapWith": "heat-engines: that page steps a four-stroke engine round a pressure-volume loop at level 2; this page runs the same kind of loop backwards as a parcel of refrigerant, with heat counted as it leaves the box, and no chart or efficiency.",
-  "needsSource": "none",
-  "leadsTo": [
-   "states-of-matter"
-  ],
-  "everyday": true,
-  "origin": "home-mechanisms"
+  "needsSource": "none; the bell-shaped dose response and its signalling are reviewed in Huber, Cell Commun. Signal. 11, 7 (2013): https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3598417/",
+  "pitfall": "The first exposure to an allergen does not cause a reaction; it arms one, and the response is not strongest at the highest dose.",
+  "why": "Type I hypersensitivity and anaphylaxis are Immune-system content in the USMLE Step 1 outline and a high-traffic reference topic: https://en.wikipedia.org/wiki/Anaphylaxis",
+  "overlapWith": "immune-system: that page shows the adaptive response doing its job; this page shows one antibody class doing damage, from a single bridged receptor pair to a whole-body collapse.",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "medicine-l3"
  },
  {
-  "slug": "room-thermostat",
-  "title": "Thermostat",
-  "level": 0,
-  "kind": "simulate",
-  "category": "energy",
-  "interaction": "Turn the dial on a room thermostat and watch the heater switch on when the room drops below the setting and off when it rises above it, while heat leaks out through the walls and the room temperature wobbles in a band around the target. Open a window, change the heater's power or widen the switch's gap and see the wobble, the heater's on-time and the overshoot change; zoom into the bimetal strip bending toward and away from its contact.",
-  "takeaway": "A thermostat is a switch, not a tap: turning it up does not heat the room faster, it only moves the line where the heater turns off, and the room always wobbles a little around that line.",
-  "prerequisites": [],
+  "slug": "kidney-nephron",
+  "title": "The nephron: filter, then reclaim",
+  "level": 3,
+  "kind": "step",
+  "category": "medicine",
+  "interaction": "Follow one drop of filtrate along a nephron, segment by segment: the glomerulus filters by a pressure difference, the proximal tubule takes back most of the water and salt, and the loop of Henle builds the salty medulla one 'single effect' at a time, so the countercurrent multiplier can be stepped cycle by cycle while the gradient grows. Then set the antidiuretic hormone level and see the collecting duct release concentrated or dilute urine; raise the blood pressure, block the loop's pump as a diuretic does, or give an osmotic load such as glucose.",
+  "takeaway": "The kidney filters the whole plasma volume many times a day and reclaims nearly all of it, and it can make urine saltier than blood only because the loop of Henle multiplies a small difference along its length into a large one.",
+  "prerequisites": [
+   "homeostasis",
+   "the-cell"
+  ],
   "related": [
-   "refrigerator",
-   "kettle",
-   "feedback-control",
+   "baroreflex-blood-pressure",
+   "liver-drug-metabolism"
+  ],
+  "needs": "",
+  "needsSource": "none",
+  "pitfall": "The kidney does not pick toxins out of the blood; it filters almost everything small and then chooses what to take back.",
+  "why": "Glomerular filtration and the countercurrent mechanism are Renal & Urinary system content in the USMLE Step 1 content outline: https://www.usmle.org/exam-resources/step-1-materials/step-1-content-outline-and-specifications",
+  "overlapWith": "homeostasis: that page keeps glucose steady with hormones; this page is one organ's plumbing, where a countercurrent loop, not a hormone, does the hard work.",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "medicine-l3"
+ },
+ {
+  "slug": "liver-drug-metabolism",
+  "title": "The liver & drug interactions",
+  "level": 3,
+  "kind": "manipulate",
+  "category": "medicine",
+  "interaction": "Send a drug through a liver modelled as a well-stirred compartment with the portal blood flow on one side and enzyme activity on the other: drag the enzyme's intrinsic clearance and see the extraction ratio and the fraction surviving first pass. Give the same dose by mouth and by vein for a drug the liver clears easily and one it clears slowly, then inhibit the enzyme as grapefruit juice does or induce it as St John's wort does, and compare how much the exposure changes for each. Finish with alcohol, whose enzyme saturates, so that its level falls at a fixed rate instead of halving.",
+  "takeaway": "For a drug the liver clears easily the blood flow is the bottleneck and an enzyme inhibitor barely matters, while for a drug it clears slowly enzyme activity sets the exposure and an inhibitor can multiply it several-fold.",
+  "prerequisites": [
+   "pharmacokinetics-dosing",
+   "reaction-rates-equilibrium"
+  ],
+  "related": [
+   "kidney-nephron"
+  ],
+  "needs": "",
+  "needsSource": "none",
+  "pitfall": "An inducer or inhibitor does not change every drug's exposure by the same amount; the difference between a tenfold change and almost none is the extraction ratio, not the dose.",
+  "why": "Drug metabolism and drug interaction are listed topics of MIT OCW HST.151 Principles of Pharmacology: https://ocw.mit.edu/courses/hst-151-principles-of-pharmacology-spring-2005/",
+  "overlapWith": "reaction-rates-equilibrium: that page's catalyst lowers a barrier in a beaker; here the enzyme sits in a flow, and whether it or the flow is the bottleneck is the whole story (pharmacokinetics-dosing, in this batch, treats clearance as one number).",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "medicine-l3"
+ },
+ {
+  "slug": "lung-gas-exchange",
+  "title": "The lungs & gas exchange",
+  "level": 3,
+  "kind": "manipulate",
+  "category": "medicine",
+  "interaction": "Set the breathing rate and depth, the oxygen fraction in the air and the altitude, and watch alveolar and arterial oxygen and carbon dioxide settle in a lung made of many units with different ventilation-to-blood-flow ratios, each unit's blood passing through the real oxygen and carbon dioxide dissociation curves before it mixes. Drag the distribution of ratios: widen it as in lung disease, add a shunt where blood bypasses ventilated alveoli or dead space where air reaches no blood, and see which problems extra oxygen fixes and which it cannot.",
+  "takeaway": "Arterial oxygen is set by the worst-matched parts of the lung, because well-ventilated units cannot carry extra oxygen to make up for blood that never met air.",
+  "prerequisites": [
+   "haemoglobin-oxygen",
    "homeostasis"
   ],
-  "needs": "",
-  "pitfall": "Turning the dial higher does not make the heater hotter or the room warm faster; the heater is either on or off, and the setting only decides when it switches.",
-  "why": "'How do thermostats work?' explainers and classroom bimetal thermostat kits (Explain That Stuff, https://explainthatstuff.com/thermostats.html; Flinn Scientific thermostat model, https://www.flinnsci.com/thermostat-model/ap4735/).",
-  "overlapWith": "feedback-control: that page tunes the three gains of a PID controller at level 2 with response plots; this is a single on/off switch with one dial, and the reader watches the room wobble.",
-  "needsSource": "none",
-  "leadsTo": [
-   "homeostasis",
-   "electric-circuits"
-  ],
-  "everyday": true,
-  "origin": "home-mechanisms"
- },
- {
-  "slug": "screws-and-screwdrivers",
-  "title": "Screws, ramps & screwdrivers",
-  "level": 0,
-  "kind": "manipulate",
-  "category": "energy",
-  "interaction": "Push a crate up a ramp whose slope you set and watch the push needed fall as the ramp gets longer. Wrap the same ramp around a post to make a screw thread, turn it, and count the turns it takes to go in one finger's width with a coarse and with a fine thread. Then swap the screwdriver's handle for a fatter or a thinner one and see the twist you need change.",
-  "takeaway": "A ramp, a screw thread and a fat handle all let a small push do a heavy job by making it travel farther, and the finer the thread the more turns it costs.",
-  "prerequisites": [],
   "related": [
-   "levers-and-scissors",
-   "bicycle-gears",
-   "water-taps-and-pipes"
+   "fetal-circulation",
+   "sepsis-inflammation"
   ],
   "needs": "",
-  "pitfall": "The thread does not multiply work: the push times the distance is the same as lifting straight up, and a screw stays put because its thread is shallow enough for friction to hold it, not because the thread is shaped to grip.",
-  "why": "Nearest standard: KS2 science Year 5 Forces names levers, pulleys and gears as mechanisms that let a smaller force have a greater effect, and KS1 design and technology adds wheels and axles; ramps and screws are the simple machines those lists leave out (primary national curriculum, https://dera.ioe.ac.uk/18300/1/PRIMARY_national_curriculum.pdf). No page-specific signal was found before the search budget ran out.",
-  "overlapWith": "newtons-laws: that page sends a cart along an editable track with energy bars; this page compares a ramp, a thread and a handle by counting pushes and turns, with no energy bars.",
   "needsSource": "none",
-  "leadsTo": [
-   "newtons-laws"
-  ],
-  "everyday": true,
-  "origin": "home-mechanisms"
- },
- {
-  "slug": "skyscraper-sway-damper",
-  "title": "Skyscrapers in the wind",
-  "level": 0,
-  "kind": "simulate",
-  "category": "energy",
-  "interaction": "Blow gusty wind at a tall tower and watch its top sway a few metres back and forth; the sway builds when the gusts arrive in time with the tower's own rhythm. Hang a huge steel ball near the top on cables, tuned to swing at that same rhythm, and watch it swing the other way and cut the sway by nearly half; detune the ball, widen the tower's base, or try a short stubby building for comparison.",
-  "takeaway": "A tall building sways like a tree, and a giant pendulum hidden near the top swinging against it is what keeps the sway small.",
-  "prerequisites": [],
-  "related": [
-   "crane-counterweight",
-   "swing-pumping-alone"
-  ],
-  "needs": "",
-  "pitfall": "The ball does not hold the building still by being heavy; it works by swinging out of step, and a ball tuned to the wrong rhythm does almost nothing. Skyscrapers are meant to sway: a tower that could not bend would crack.",
-  "why": "Taipei 101's 660-tonne tuned mass damper, on public display and the subject of many explainers, https://www.amusingplanet.com/2014/08/the-728-ton-tuned-mass-damper-of-taipei.html",
-  "overlapWith": "bridges-structures: that page loads a still frame and colours members by stress; this page is a building moving in the wind and the machine that calms it. oscillations-resonance shows resonance with a mass on a spring; here it is the problem, and the damper the cure.",
-  "needsSource": "none",
-  "leadsTo": [
-   "oscillations-resonance",
-   "bridges-structures"
-  ],
+  "pitfall": "Giving more oxygen does not help every kind of low oxygen: blood passing through a true shunt comes out unchanged however rich the air is.",
+  "why": "Ventilation–perfusion matching, shunt and dead space are Respiratory-system content in the USMLE Step 1 content outline: https://www.usmle.org/exam-resources/step-1-materials/step-1-content-outline-and-specifications",
+  "overlapWith": "heart-circulation: that page shows blood picking up oxygen in the lungs as a colour change; this page computes how much it gets, unit by unit, and why the average lies.",
+  "leadsTo": [],
   "everyday": false,
-  "origin": "vehicles-and-big-machines"
+  "origin": "medicine-l3"
  },
  {
-  "slug": "socket-to-power-station",
-  "title": "Where the socket's electricity comes from",
+  "slug": "menstrual-cycle-hormones",
+  "title": "The menstrual cycle's hormone loops",
+  "level": 3,
+  "kind": "simulate",
+  "category": "medicine",
+  "interaction": "Run the published model of the cycle, thirteen delay equations linking the pituitary's two hormones, the ovary's follicles and corpus luteum, and estradiol, progesterone and inhibin, and watch a 28-day oscillation emerge with no clock inside it. Hover the moment estradiol's feedback flips from suppressing the pituitary to driving it and the LH surge fires; then give a combined pill as a steady level of both hormones and see the surge never come, remove it and watch the cycle restart, and deplete the follicles to see the oscillation die out as at menopause.",
+  "takeaway": "The cycle is an oscillator built from feedback: estrogen holds the pituitary back at low levels and flips to driving it at high ones, that sign change fires ovulation, and the pill works by never letting it flip.",
+  "prerequisites": [
+   "homeostasis",
+   "calculus"
+  ],
+  "related": [
+   "oscillations-resonance",
+   "fetal-circulation"
+  ],
+  "needs": "Parameters of the Harris Clark–Schlosser–Selgrade model of the human menstrual cycle (Bull. Math. Biol. 2003); the earlier Schlosser–Selgrade 2000 model is also on the Physiome Model Repository as CellML (licence to check).",
+  "needsSource": "Published model parameters (Harris Clark, Schlosser & Selgrade, Bull. Math. Biol. 2003: https://selgrade.math.ncsu.edu/BMB_Selgrade.pdf); CellML version of the 2000 model on the Physiome repository, licence to check: https://models.physiomeproject.org/exposure/a56c737c0317784d45a0189591c8b3af",
+  "pitfall": "The pill does not 'kill eggs' or hold back a pre-set clock; it removes the surge that would release one, and the cycle has no clock beyond its own feedback.",
+  "why": "The hormonal control of the menstrual cycle and how the pill suppresses ovulation are Reproductive-system content in the USMLE Step 1 outline and a high-traffic reference topic: https://en.wikipedia.org/wiki/Menstrual_cycle",
+  "overlapWith": "homeostasis: that page uses negative feedback to hold a level steady; this page shows feedback that flips sign and makes an oscillator instead.",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "medicine-l3"
+ },
+ {
+  "slug": "pain-gate-control",
+  "title": "Pain & the gate in the spinal cord",
+  "level": 3,
+  "kind": "build",
+  "category": "medicine",
+  "interaction": "Wire the dorsal horn from a palette of integrate-and-fire neurons: thick touch fibres, thin fast and slow pain fibres, an inhibitory interneuron and the projection cell that carries the signal to the brain, with a descending input from the brainstem. Then stimulate: a pinch alone drives the output, rubbing the skin at the same time quiets it, and a descending opioid-like signal quiets it further. Fire the slow fibres repeatedly and watch the projection cell's response grow with each volley until a touch alone hurts.",
+  "takeaway": "Pain is not a wire from injury to brain; the signal is gated in the spinal cord by other touch input and by the brain itself, and a gate held open long enough starts to let touch through as pain.",
+  "prerequisites": [
+   "neurons"
+  ],
+  "related": [
+   "anaesthesia-infusion",
+   "placebo-expectation"
+  ],
+  "needs": "",
+  "needsSource": "none",
+  "pitfall": "Pain intensity is not proportional to tissue damage; the same injury can hurt differently depending on what else the spinal cord and brain are doing.",
+  "why": "Gate control theory (Melzack & Wall, Science 1965) remains the standard teaching model of spinal pain modulation: https://en.wikipedia.org/wiki/Gate_control_theory",
+  "overlapWith": "neurons: that page fires one neuron and adds inputs at one synapse; this page wires a handful of them into the circuit that decides whether a signal counts as pain.",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "medicine-l3"
+ },
+ {
+  "slug": "pharmacokinetics-dosing",
+  "title": "Pharmacokinetics & dosing",
+  "level": 3,
+  "kind": "build",
+  "category": "medicine",
+  "interaction": "Place doses on a timeline from a palette (an intravenous bolus, an oral tablet, a constant infusion, a loading dose) and run them through a one- or two-compartment model whose clearance, volume of distribution and absorption rate are sliders; the plasma concentration is plotted against the drug's therapeutic window. Change the interval, miss a dose, halve the clearance to model a failing kidney or switch the drug to saturable elimination, and watch the level, the time to steady state and the peaks and troughs respond.",
+  "takeaway": "Repeated doses pile up until elimination balances intake, and that steady state arrives after about four or five half-lives whatever the dose, so the dose sets the level and the half-life sets how long it takes to get there.",
+  "prerequisites": [
+   "calculus"
+  ],
+  "related": [
+   "homeostasis",
+   "artificial-pancreas"
+  ],
+  "needs": "Clearance, volume of distribution and half-life for four or five example drugs, taken from their FDA prescribing information (US government work, public domain).",
+  "needsSource": "FDA prescribing information via DailyMed, public domain: https://dailymed.nlm.nih.gov/",
+  "pitfall": "Doubling the dose doubles the steady-state level but does not reach it any sooner; only a loading dose shortens the wait.",
+  "why": "MIT OCW HST.151 Principles of Pharmacology lists pharmacokinetics, dose–response and drug delivery as core topics: https://ocw.mit.edu/courses/hst-151-principles-of-pharmacology-spring-2005/",
+  "overlapWith": "homeostasis: that page doses insulin by hand against a glucose loop; this page models what happens to any drug's concentration after a dose, with no body response in the loop.",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "medicine-l3"
+ },
+ {
+  "slug": "placebo-expectation",
+  "title": "The placebo effect",
+  "level": 3,
+  "kind": "manipulate",
+  "category": "medicine",
+  "interaction": "Set the pain a stimulus actually produces and the pain a person expects, each with its own confidence, and watch the felt pain land between them, weighted toward whichever is more certain, as in the Bayesian account of placebo analgesia. Build the expectation by conditioning over trials, give the same painkiller openly or hidden to see the open one work better, then switch to a three-arm trial where no treatment, a placebo and the drug are compared, and separate getting better anyway and regression to the mean from the placebo effect proper.",
+  "takeaway": "What a person feels is a weighted mix of what the body reports and what the brain expects, so a credible expectation changes the experience, and in a trial that effect sits on top of recovery that would have happened anyway.",
+  "prerequisites": [
+   "bayes-theorem",
+   "neurons"
+  ],
+  "related": [
+   "clinical-trials",
+   "pain-gate-control"
+  ],
+  "needs": "",
+  "needsSource": "none; the expectation model follows the Bayesian account in Büchel et al., Neuron 81, 1223–1239 (2014): https://pubmed.ncbi.nlm.nih.gov/24656247/",
+  "pitfall": "The improvement in a trial's placebo arm is not all placebo effect: much of it is natural recovery and regression to the mean, and the Bayesian model here is a normative account of expectation, not a mechanism in the tissue.",
+  "why": "The placebo effect and why trials need a placebo arm are standard clinical-research teaching and a high-traffic reference topic: https://en.wikipedia.org/wiki/Placebo",
+  "overlapWith": "bayes-theorem: that page updates a probability with a test result; this page uses the same rule to combine an expectation with a sensation, and shows why the result feels real.",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "medicine-l3"
+ },
+ {
+  "slug": "screening-overdiagnosis",
+  "title": "Screening, lead time & overdiagnosis",
+  "level": 3,
+  "kind": "simulate",
+  "category": "medicine",
+  "interaction": "Grow a cohort of people in whom tumours start at random times and grow at random rates, some fast and many slow, and set the size at which a tumour causes symptoms and the size at which it kills. Switch on a screening programme with a chosen detection size and interval and watch which tumours it finds: mostly the slow ones, often years early. The five-year survival from diagnosis is plotted beside the death rate of the whole cohort, with and without screening, and with a treatment that works or does not.",
+  "takeaway": "Finding a disease earlier raises survival-from-diagnosis even when nobody lives a day longer, so only the death rate of the whole population can say whether a screening programme helps.",
+  "prerequisites": [
+   "bayes-theorem",
+   "cancer"
+  ],
+  "related": [
+   "clinical-trials",
+   "ageing-mortality"
+  ],
+  "needs": "",
+  "needsSource": "none",
+  "pitfall": "A rise in five-year survival after screening is introduced is not evidence that the screening works; lead time and the slow tumours it finds produce it on their own.",
+  "why": "Lead-time bias and overdiagnosis are the standard teaching cases of epidemiology courses on screening: https://en.wikipedia.org/wiki/Overdiagnosis",
+  "overlapWith": "bayes-theorem: that page shows that a positive test is often false when a disease is rare; this page shows that even a true positive can be a harm, because the disease it found would never have mattered.",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "medicine-l3"
+ },
+ {
+  "slug": "sepsis-inflammation",
+  "title": "Sepsis: when the response is the disease",
+  "level": 3,
+  "kind": "simulate",
+  "category": "medicine",
+  "interaction": "Infect a model body with the four-variable acute-inflammation model: pathogen, activated immune cells, tissue damage and an anti-inflammatory brake. Set the pathogen's growth rate and the initial dose and watch the four outcomes: a clean recovery, a persistent infection, death with the pathogen winning, and death from inflammation after the pathogen is already gone. Add antibiotics at different times, add or remove the anti-inflammatory brake, and close with the circulation: leaking vessels and falling pressure as in septic shock.",
+  "takeaway": "In sepsis the body's own inflammatory response, not the microbe, does the damage: the same response that clears a small infection runs away once the damage it causes feeds back into more inflammation.",
+  "prerequisites": [
+   "immune-system",
+   "heart-circulation"
+  ],
+  "related": [
+   "coagulation-cascade",
+   "lung-gas-exchange",
+   "antibiotic-dosing-resistance"
+  ],
+  "needs": "",
+  "needsSource": "none; the model is Reynolds et al., J. Theor. Biol. 242, 220–236 (2006): https://scholar.usuhs.edu/en/publications/a-reduced-mathematical-model-of-the-acute-inflammatory-response-i/",
+  "pitfall": "Sepsis is not 'blood poisoning' by a microbe's toxins; a patient can die of it after the microbe is gone, and suppressing inflammation blindly can kill by the other route.",
+  "why": "Sepsis and septic shock are Multisystem content in the USMLE Step 1 outline and a high-traffic reference topic: https://en.wikipedia.org/wiki/Sepsis",
+  "overlapWith": "immune-system: that page shows the response doing its job; this page shows what happens when the fast general response does not stop.",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "medicine-l3"
+ },
+ {
+  "slug": "thymic-selection-tolerance",
+  "title": "Self-tolerance & autoimmunity",
+  "level": 3,
+  "kind": "manipulate",
+  "category": "medicine",
+  "interaction": "Generate thousands of random T-cell receptors and test each against the body's own peptides in a model thymus: drag the lower affinity threshold below which a cell is useless and dies, and the upper threshold above which it is dangerous and dies, and watch what survives. Then challenge the survivors with a pathogen and with the body's own tissues: a strict upper threshold leaves few cells that can fight, a lax one lets self-reactive clones escape, and a peptide the thymus never displays leaves a hole in the pruning.",
+  "takeaway": "Tolerance is a threshold on a continuous scale of self-reactivity, so the immune system can only trade attacks on itself against failures to fight invaders, and some self-reactive cells always get through.",
+  "prerequisites": [
+   "immune-system"
+  ],
+  "related": [
+   "ige-crosslinking-allergy",
+   "cancer-immunotherapy"
+  ],
+  "needs": "",
+  "needsSource": "none",
+  "pitfall": "Autoimmunity is not the immune system 'getting confused' by a single mistake; it is the escape of cells that every repertoire contains, normally held in check by further layers.",
+  "why": "Central tolerance by positive and negative selection is a chapter of Janeway's Immunobiology, free on the NCBI Bookshelf: https://www.ncbi.nlm.nih.gov/books/NBK10757/",
+  "overlapWith": "immune-system: that page multiplies the clones that match an invader; this page shows how the repertoire is pruned against the body itself before it is ever used, and what happens when the pruning fails.",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "medicine-l3"
+ },
+ {
+  "slug": "wound-healing",
+  "title": "Wound healing",
+  "level": 3,
+  "kind": "simulate",
+  "category": "medicine",
+  "interaction": "Draw a wound of any shape in a sheet of skin and watch it close under the Sherratt–Murray equations: cells at the edge multiply and migrate, so the edge advances as a travelling wave at a speed set by the division and migration rates, and a chemical the wound releases speeds division nearby. Set the rates, then add an infection or starve the tissue of blood flow as in diabetes, each applied as a stated reduction of the division and migration rates since the model has no immune or vascular terms, and compare closure times; the stages of inflammation, proliferation and remodelling are marked on the clock.",
+  "takeaway": "A wound's edge advances at a constant speed set by how fast cells divide and move, so a wound twice as wide takes twice as long, and anything that stalls the cells, infection or poor blood supply, stalls the closure.",
+  "prerequisites": [
+   "the-cell"
+  ],
+  "related": [
+   "coagulation-cascade",
+   "bone-remodelling",
+   "cancer"
+  ],
+  "needs": "",
+  "needsSource": "none; the closure model is Sherratt & Murray, Proc. R. Soc. B 241, 29–36 (1990): https://researchportal.hw.ac.uk/en/publications/models-of-epidermal-wound-healing/",
+  "pitfall": "Wounds do not heal from the inside out by filling with new skin; the surface closes from the edges, and scar is collagen laid down fast, not skin regrown.",
+  "why": "The phases of wound healing are standard first-year physiology and pathology content and a high-traffic reference topic: https://en.wikipedia.org/wiki/Wound_healing",
+  "overlapWith": "cancer: that page lets cells divide without control; this page lets them divide and move exactly as far as needed, and stop.",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "medicine-l3"
+ },
+ {
+  "slug": "a-year-of-weather",
+  "title": "A year of weather, two places",
   "level": 0,
   "kind": "explore",
-  "category": "energy",
-  "interaction": "Switch on a lamp and follow its wire back out of the house, up the pole, through the transformer and along the pylons to the plants feeding the region, all drawn from one real region's hourly generation record. Scrub through a day and a year: the share from the sun rises and falls with daylight, wind comes and goes, and gas, coal, nuclear and hydro fill whatever is left, with the lamp's glow coloured in the same shares. Pick a cloudy day, a windy night, or summer against winter.",
-  "takeaway": "The electricity at a socket is being made at that very moment by a changing mix of plants, and the mix on a calm night is not the mix at a breezy noon.",
+  "category": "earth",
+  "interaction": "Scrub through one real year of daily weather at a chosen station: each day a bar from the night's low to the afternoon's high and a drop for the rain, the 365 days drawn in a ring. Pick a second place (a desert, a rainy tropical coast, the Arctic, a foggy coast, a snowy interior) and its ring appears beside the first. Flip to the next year: the days are different every time, but the shape of each ring, the climate, comes back.",
+  "takeaway": "Weather is what happens today and nobody can tell you a month ahead; climate is the shape of the whole year, different in each place and the same from year to year.",
   "prerequisites": [],
   "related": [
-   "wind-turbine-wind-speed",
-   "solar-panel-tilt-day",
-   "power-station-kettle",
-   "power-grid",
-   "light-bulb-hot-wire"
+   "sea-breeze",
+   "cloud-base",
+   "dew-and-fog",
+   "water-cycle"
   ],
-  "needs": "Hourly generation by fuel for one or two balancing regions over a full year from the US EIA Hourly Electric Grid Monitor (Form EIA-930; US government work, public domain), or a European region from the ENTSO-E transparency platform (free reuse with attribution).",
-  "pitfall": "Electricity is not stored in the wires and does not travel from one named plant to one named house: every plant feeds the same grid, so the lamp's share is the region's share. Nor do solar and wind 'run out' at night and leave the lamp dark; other plants take over, which the record shows.",
-  "why": "The US EIA built a public Hourly Electric Grid Monitor because people ask exactly this: https://www.eia.gov/electricity/gridmonitor/ (curriculum: NGSS 4-ESS3-1, energy and natural resources)",
-  "overlapWith": "power-grid: that page has the reader balance supply and demand with dispatch, transformers and frequency; this page asks nothing but a scrub through a real year and shows only where the electricity actually came from.",
-  "needsSource": "EIA-930 hourly generation by fuel type (public domain, https://www.eia.gov/electricity/gridmonitor/); alternative ENTSO-E transparency data (attribution required).",
+  "needs": "Daily high, low and rain for a handful of US stations in contrasting climates (Phoenix for desert, Hilo for wet tropics, Utqiagvik for the Arctic, San Francisco for a coast, Minneapolis for a continental interior) from NOAA GHCN-Daily (https://www.ncei.noaa.gov/products/land-based-station/global-historical-climatology-network-daily); US stations are US Government data, public domain. Non-US stations in GHCN-Daily carry no clear licence, so the page uses US stations only.",
+  "needsSource": "NOAA GHCN-Daily, US stations only (US Government data, public domain)",
+  "pitfall": "One cold week does not disprove a warming climate and one hot day does not prove it: the page compares whole years, never single days.",
+  "why": "NGSS 3-ESS2-1: 'Represent data in tables and graphical displays to describe typical weather conditions expected during a particular season' (https://www.nextgenscience.org/pe/3-ess2-1-earths-systems); England KS1 geography, seasonal and daily weather patterns.",
+  "overlapWith": "greenhouse-effect (level 1) runs emission scenarios to 2100; this page shows no trend and no model, only measured days, to separate weather from climate before any warming is discussed.",
   "leadsTo": [
-   "electric-circuits",
    "greenhouse-effect"
   ],
-  "everyday": true,
-  "origin": "vehicles-and-big-machines"
+  "everyday": false,
+  "origin": "earth-sky-weather"
  },
  {
-  "slug": "solar-panel-tilt-day",
-  "title": "A solar panel through the day",
+  "slug": "beach-waves",
+  "title": "Waves at the beach",
   "level": 0,
   "kind": "manipulate",
-  "category": "energy",
-  "interaction": "Tilt and turn a solar panel on a roof while the sun crosses the sky for the chosen date and place; a meter shows the panel's output, biggest when it faces the sun squarely and zero at night. Scrub the year: a panel set for summer loses out in winter, and a cloud passing over cuts the meter at once. Compare a flat panel, a tilted one and one that follows the sun as counts of homes lit over a year.",
-  "takeaway": "A solar panel makes most when it faces the sun squarely, so its tilt, the hour, the season and the clouds all show up in its output.",
+  "category": "earth",
+  "interaction": "A cross-section of sea from deep water to the sand, with a rubber duck floating on it. Watch a wave pass: the duck bobs round in a small circle and ends up where it started, so the water does not travel with the wave. Drag the sea floor to make the beach steeper or gentler: as the water gets shallow the waves slow down, bunch together, grow taller and finally topple and break, far out on a gentle beach and right at the shore on a steep one.",
+  "takeaway": "A wave carries its shape across the sea while the water only circles in place, and waves break where the water gets too shallow to carry them.",
   "prerequisites": [],
   "related": [
-   "wind-turbine-wind-speed",
-   "socket-to-power-station",
-   "solar-cells"
+   "rock-to-sand",
+   "sand-dunes",
+   "sea-breeze"
   ],
   "needs": "",
-  "pitfall": "A panel needs light, not heat: it makes less on a hot day, not more, and a cold bright winter noon beats a hot hazy afternoon. The sun is not overhead at noon outside the tropics, so a flat panel is never the best one.",
-  "why": "NGSS 4-ESS3-1, energy from renewable resources, https://www.nextgenscience.org/pe/4-ess3-1-earth-and-human-activity ('which way should solar panels face' is a common search question)",
-  "overlapWith": "solar-cells: that page is the p-n junction and the band-gap trade-off at level 2; this page treats the panel as a box and asks only how much sunlight reaches it. sun-earth-moon shows the angle of sunlight to explain seasons; here the control is the panel, not the planet.",
-  "needsSource": "none (sun position from NOAA's published solar-position equations, US government work, https://gml.noaa.gov/grad/solcalc/; clear-sky sunlight from a published clear-sky model such as Haurwitz)",
+  "needsSource": "none (water waves slowing with depth, growing as they slow, breaking when their height nears the depth; a tracer following the orbital motion)",
+  "pitfall": "Beach waves are not made by the tide: they are made by wind far out at sea, and the water only rushes forward in the surf, not on the way in.",
+  "why": "NOAA National Ocean Service, 'Why does the ocean have waves?' (https://oceanservice.noaa.gov/facts/wavesinocean.html); NGSS 4-PS4-1 and England KS3 geography, coasts.",
+  "overlapWith": "waves-interference (level 1) is a ripple tank of interference, harmonics and Doppler; this page has one wave, a sloping floor and a duck, and sun-earth-moon's tides are not waves.",
   "leadsTo": [
-   "sun-earth-moon",
-   "electric-circuits"
+   "waves-interference",
+   "oscillations-resonance"
   ],
-  "everyday": true,
-  "origin": "vehicles-and-big-machines"
+  "everyday": false,
+  "origin": "earth-sky-weather"
  },
  {
-  "slug": "toilet-flush",
-  "title": "Toilet flush & siphons",
-  "level": 0,
-  "kind": "simulate",
-  "category": "energy",
-  "interaction": "Press the lever: the flapper lifts, the tank pours into the bowl and the bowl's water climbs toward the top of the bend behind it. The moment it spills over, the whole bend fills and the bowl drains itself, fast, until air gets in and it gurgles to a stop. Then pour a bucket in slowly or quickly to find what starts the siphon, and watch the float rise with the refilling tank and shut its own valve.",
-  "takeaway": "The tank does not push anything down the drain; it only raises the bowl high enough to fill the bend, and from then on the siphon empties the bowl by itself until air breaks it.",
-  "prerequisites": [],
-  "related": [
-   "water-taps-and-pipes",
-   "drinking-straw",
-   "feedback-control"
-  ],
-  "needs": "",
-  "pitfall": "The flush is not a pump and not 'suction': the bowl drains because the water in the falling leg of the bend outweighs the water in the rising leg, and a slow pour that never fills the bend drains nothing.",
-  "why": "A university general-education course on everyday physics opens with a lecture chapter titled 'Toilet Science' (HKU PHYS0607, https://www.physics.hku.hk/~phys0607/lectures/chap02.html); Google's 2017 how-to data puts toilet repair at the top of North American searches (https://www.engadget.com/2017-09-04-google-interactive-map-how-to-searches.html).",
-  "overlapWith": "feedback-control: that page tunes PID gains on a pendulum, a drone and a car at level 2; here the float valve is only the last step, an on/off switch, and the page is the siphon, which no existing page shows.",
-  "needsSource": "none",
-  "leadsTo": [
-   "newtons-laws"
-  ],
-  "everyday": true,
-  "origin": "home-mechanisms"
- },
- {
-  "slug": "umbrella",
-  "title": "Umbrella",
+  "slug": "cloud-base",
+  "title": "Why clouds form, and why their bottoms are flat",
   "level": 0,
   "kind": "manipulate",
-  "category": "energy",
-  "interaction": "Slide the runner up the shaft and watch the short stretchers push the ribs outward until the canopy is taut and the runner clicks into its catch; slide it down and the ribs fold in. Then blow wind at the open umbrella from below with a slider: the ribs bend, and past a gust strength the canopy flips inside out, which a second slider for rib stiffness delays.",
-  "takeaway": "An umbrella opens because a sliding ring pushes short struts that lever the ribs outward, and it flips inside out when wind from below pushes the ribs past the point where they can push back.",
+  "category": "earth",
+  "interaction": "Drag a bubble of air up from the warm ground: it swells and its thermometer drops about one degree for every hundred metres, which is also why it is colder on a mountain, until the invisible water it carries turns to droplets and the bubble turns white. Every bubble released from the same ground turns white at the same height, so the clouds have flat bottoms; make the day more humid and the cloud base drops, dry the air and clouds form higher or not at all. A last step blows the bubble over a mountain: it rains on the side facing the wind and the air comes down the far side dry.",
+  "takeaway": "Rising air cools, and a cloud appears at exactly the height where the air gets cold enough for its water to condense, which is why cloud bottoms are flat and why mountains are cold.",
   "prerequisites": [],
   "related": [
-   "levers-and-scissors",
-   "flight",
-   "bridges-structures"
+   "water-cycle",
+   "dew-and-fog",
+   "how-rain-forms",
+   "sea-breeze"
   ],
   "needs": "",
-  "pitfall": "Wind does not pull the umbrella up: air from below pushes on the canopy, and it is the catch that holds the runner, not the ribs, that keeps it open.",
-  "why": "KS2 design and technology, mechanical systems including levers and linkages (STEM Learning KS2 'Mechanical systems' collection, https://stem.org.uk/node/466480; statutory text in the primary national curriculum, https://dera.ioe.ac.uk/18300/1/PRIMARY_national_curriculum.pdf).",
-  "overlapWith": "flight: that page is lift on a wing with streamlines and a pressure map at level 2; here the wind is only a load on a linkage the reader opens and closes with a runner.",
-  "needsSource": "none",
+  "needsSource": "none (dry-adiabatic cooling of a parcel and the Magnus saturation formula, the standard textbook model)",
+  "pitfall": "It is not colder on a mountain because it is farther from the Sun: a few kilometres make no difference to sunlight, and the air up there is cold because it has expanded. Clouds are not made of vapour and are not lighter than air: they are droplets falling so slowly that the rising air carries them.",
+  "why": "UCAR Center for Science Education, 'Clouds and How They Form' (https://scied.ucar.edu/learning-zone/clouds/how-clouds-form); NGSS MS-ESS2-4 on the changes of state in the water cycle.",
+  "overlapWith": "atmosphere-weather (level 2) shows global convection, pressure systems and fronts; this page follows one bubble of air and one cloud, with no Coriolis and no map.",
   "leadsTo": [
-   "bridges-structures"
+   "states-of-matter"
   ],
-  "everyday": true,
-  "origin": "home-mechanisms"
+  "everyday": false,
+  "origin": "earth-sky-weather"
  },
  {
-  "slug": "vacuum-cleaner",
-  "title": "Vacuum cleaner",
+  "slug": "compass-and-magnetic-poles",
+  "title": "The compass and Earth's magnetic poles",
   "level": 0,
-  "kind": "simulate",
-  "category": "energy",
-  "interaction": "Switch on the fan and watch it push air out of the body, so the air inside thins and the room's air pushes in through the nozzle, carrying dust grains along wherever the airflow past them is strong enough to lift them. Narrow the nozzle, lift it off the carpet, or let the bag fill with dust and watch the airflow and the lifting change; block the hose and the fan roars while nothing moves.",
-  "takeaway": "A vacuum cleaner does not pull: its fan empties the air inside, the room's air rushes in to fill the gap and carries the dust, and if the flow is blocked the fan can roar without lifting anything.",
-  "prerequisites": [
-   "drinking-straw"
-  ],
+  "kind": "manipulate",
+  "category": "earth",
+  "interaction": "A globe with a magnet buried inside, its field drawn as lines looping from pole to pole. Drag a compass anywhere on the surface and its needle swings to lie along the local line: near the equator it lies flat along the ground, and near a magnetic pole it tries to point straight down and becomes useless. The magnetic pole sits hundreds of kilometres from the geographic one and drifts year by year, so from most places the needle misses true north by an angle the page measures as you move.",
+  "takeaway": "A compass does not point at the North Pole: it lines up with Earth's magnetic field, which comes out of a magnetic pole hundreds of kilometres from the geographic one and dips into the ground as you go north.",
+  "prerequisites": [],
   "related": [
-   "water-taps-and-pipes",
-   "flight"
+   "earth-is-a-ball",
+   "aurora-rings",
+   "time-zones"
   ],
-  "needs": "",
-  "pitfall": "Suction is not a pull and more motor power is not more cleaning: a full bag or a blocked hose defeats the strongest fan, because it is the airflow that carries the dust.",
-  "why": "KS3 science, Year 8 pressure in fluids: gas pressure and atmospheric pressure as the push of air (scheme at https://flipeducation.ai/curriculum/gb/science/year-8/pressure-in-fluids); nearest standard, no page-specific signal was found before the search budget ran out.",
-  "overlapWith": "atmosphere-weather: that page lets pressure differences drive wind and weather over a map at level 2; here the pressure difference is made by a fan in a box and the wind is in a hose.",
-  "needsSource": "none",
+  "needs": "Earth's field from the World Magnetic Model WMM2025 coefficients, NOAA NCEI (https://www.ncei.noaa.gov/products/world-magnetic-model), US Government work stated as public domain; a tilted offset dipole is the documented fallback.",
+  "needsSource": "World Magnetic Model WMM2025 coefficients (NOAA NCEI, public domain)",
+  "pitfall": "The needle is not pulled toward the North Star or the geographic pole, and the magnetic pole is not a fixed place: it has moved hundreds of kilometres in a lifetime.",
+  "why": "England KS3 physics, Magnetism: 'Earth's magnetism, compass and navigation' and KS2 Year 3 'describe magnets as having 2 poles' (https://www.gov.uk/government/publications/national-curriculum-in-england-science-programmes-of-study/national-curriculum-in-england-science-programmes-of-study).",
+  "overlapWith": "electromagnetism (level 2) covers fields, induction and Maxwell; this page uses one magnet, one needle and a globe, and is the only one where a compass is navigated.",
   "leadsTo": [
-   "newtons-laws"
+   "earthquakes"
   ],
   "everyday": true,
-  "origin": "home-mechanisms"
+  "origin": "earth-sky-weather"
  },
  {
-  "slug": "water-taps-and-pipes",
-  "title": "Taps, pipes & water towers",
+  "slug": "dew-and-fog",
+  "title": "Dew, fog and the cold glass",
+  "level": 0,
+  "kind": "manipulate",
+  "category": "earth",
+  "interaction": "A glass of iced water stands in a room: drag its temperature down and watch the air touching it, nothing, nothing, then at one particular temperature, the dew point, the glass mists over. Switch to a field at night and drag the night's temperature down: the grass gets wet at the same dew point, keep going and the air itself turns to fog, and if the dew point is below freezing you get frost instead. Make the day more humid and the dew point rises, so the dew comes sooner.",
+  "takeaway": "Air carries an invisible amount of water, and the moment anything cools it past one particular temperature, the dew point, that water comes out as drops, mist or frost.",
+  "prerequisites": [],
+  "related": [
+   "cloud-base",
+   "water-cycle",
+   "snowflake-growth",
+   "how-rain-forms"
+  ],
+  "needs": "",
+  "needsSource": "none (saturation vapour pressure from the Magnus formula, relative humidity, frost point)",
+  "pitfall": "The water on a cold glass does not leak through the glass: it comes out of the air. Fog is a cloud sitting on the ground, not smoke or steam.",
+  "why": "England KS2 science, Year 4 States of matter: 'identify the part played by evaporation and condensation in the water cycle' (https://www.gov.uk/government/publications/national-curriculum-in-england-science-programmes-of-study/national-curriculum-in-england-science-programmes-of-study).",
+  "overlapWith": "states-of-matter (level 1) shows condensation in a box of molecules under temperature and pressure; this page shows it on a glass, on grass and in the air, at one temperature the reader finds by hand.",
+  "leadsTo": [
+   "states-of-matter"
+  ],
+  "everyday": true,
+  "origin": "earth-sky-weather"
+ },
+ {
+  "slug": "fossil-layers",
+  "title": "Fossils and rock layers",
   "level": 0,
   "kind": "build",
-  "category": "energy",
-  "interaction": "Fill a water tower, lay pipes from it to a house and open a tap: a gauge shows the push of the water growing with the tower's height, and the flow from the tap growing with that push and shrinking as the pipe gets longer or thinner. Open a second tap, run the shower upstairs and downstairs at once, or kink the garden hose, and watch the flows share out; raise the tower to fix a feeble upstairs shower.",
-  "takeaway": "What pushes water out of a tap is the height of the water above it, and every long or thin pipe on the way uses up part of that push, which is why the upstairs shower weakens when a downstairs tap opens.",
+  "category": "earth",
+  "interaction": "Drop a shell, a leaf or a fish onto a sea floor and let mud and sand rain down year after year; add another creature later, and another, and switch the sea for land for a while. The layers pile up, squeeze, harden into rock, and the buried creatures turn to stone. Then cut the cliff: the oldest things lie deepest, and the stretch that was land leaves leaves above shells.",
+  "takeaway": "Rock layers pile up from the bottom, so in an undisturbed cliff deeper means older, and the fossils in each layer are a snapshot of what lived there then.",
   "prerequisites": [],
   "related": [
-   "toilet-flush",
-   "drinking-straw",
-   "screws-and-screwdrivers",
-   "electric-circuits"
+   "rock-to-sand",
+   "river-valleys",
+   "why-the-sea-is-salty"
   ],
   "needs": "",
-  "pitfall": "A pump does not push water straight to each tap, and opening a tap wider does not raise the pressure: it lowers it, because more flow loses more push in the pipes.",
-  "why": "KS3 physics, pressure in liquids set by depth, with the pipe network as the familiar case (end points at https://files.schudio.com/oswaldtwistleschool/files/documents/KS3_Physics_End_Points.pdf; Year 8 scheme at https://flipeducation.ai/curriculum/gb/science/year-8/pressure-in-fluids).",
-  "overlapWith": "electric-circuits: that page wires batteries and bulbs and meters current and voltage; this page is the water version, a tower and pipes solved the same way, and it is the analogy that prepares for the circuit page rather than a copy of it.",
-  "needsSource": "none",
+  "needsSource": "none (sedimentation and compaction through time, relative dating by superposition; optionally real fossil occurrences from the Paleobiology Database, CC BY 4.0)",
+  "pitfall": "A fossil is not a bone that survived: it is rock that took the bone's place. And layers are not one per year like tree rings.",
+  "why": "NGSS 4-ESS1-1: 'Identify evidence from patterns in rock formations and fossils in rock layers to support an explanation for changes in a landscape over time' (https://www.nextgenscience.org/pe/4-ess1-1-earths-place-universe); England KS2 Year 3: 'describe in simple terms how fossils are formed when things that have lived are trapped within rock'.",
+  "overlapWith": "deep-time (level 1) scrubs a dated timeline of 4.5 billion years; this page has no dates at all, only the order of layers and what is buried in them.",
   "leadsTo": [
-   "electric-circuits"
+   "deep-time",
+   "evolution",
+   "radioactivity"
   ],
-  "everyday": true,
-  "origin": "home-mechanisms"
+  "everyday": false,
+  "origin": "earth-sky-weather"
  },
  {
-  "slug": "wind-turbine-wind-speed",
-  "title": "Wind turbines: a little more wind, a lot more power",
+  "slug": "geothermal-heat-below",
+  "title": "Heat from underground",
   "level": 0,
-  "kind": "manipulate",
-  "category": "energy",
-  "interaction": "Turn up the wind over a turbine and watch the blades spin faster while a row of houses lights up one by one; the count of lit houses climbs far faster than the wind does, and doubling the wind lights eight times as many. Lengthen the blades for more, then push the wind past the turbine's limit and watch it hold steady and finally feather its blades and stop. A real wind farm's measured power against wind speed is drawn under the toy's curve.",
-  "takeaway": "Doubling the wind speed gives a turbine about eight times the power, so where a turbine stands matters more than how big it is.",
+  "kind": "simulate",
+  "category": "earth",
+  "interaction": "Drill a well down from a field and read the thermometer as it goes: the rock gets warmer with every kilometre, warm enough for a bath a few kilometres down and for steam in volcanic ground. Pump water down and up to heat a town and watch the ground around the well cool over years, then rest it and watch the heat creep back; move the well to Iceland or beside a hot spring and compare. A map shows the heat measured flowing out of the ground around the world.",
+  "takeaway": "The ground gets hotter the deeper you go, so a deep enough well reaches heat that can warm a house or boil water, soonest where volcanoes are near.",
   "prerequisites": [],
   "related": [
-   "socket-to-power-station",
-   "solar-panel-tilt-day",
-   "dam-water-height",
-   "kite-string-wind",
-   "power-grid"
+   "power-station-kettle",
+   "dam-water-height"
   ],
-  "needs": "Measured ten-minute power and wind-speed records of a real wind farm as the reference curve: the Kelmarsh or Penmanshiel SCADA data on Zenodo (Cubico Sustainable Investments, CC BY 4.0).",
-  "pitfall": "More wind is not always more power: above its rated wind the turbine holds its output steady, and above cut-out it stops, so the eight-times rule holds only below rated power. The blades turn because the wind lifts them like a wing, not because it pushes them from behind.",
-  "why": "NGSS 4-ESS3-1, obtaining energy from natural resources, and the US DOE's much-visited 'How do wind turbines work' explainer: https://www.energy.gov/eere/wind/how-do-wind-turbines-work",
-  "overlapWith": "power-grid: that page dispatches wind as one source among many to hold the grid's frequency; this page is one turbine, the wind alone, and the cube law shown as a count of lit houses.",
-  "needsSource": "Kelmarsh (https://doi.org/10.5281/zenodo.5841834) and Penmanshiel (https://doi.org/10.5281/zenodo.5946808) wind farm SCADA datasets, CC BY 4.0.",
+  "needs": "Measured heat flow out of the ground around the world, for the map and the local gradient: the IHFC Global Heat Flow Database (CC BY 4.0).",
+  "pitfall": "Underground heat is not the Sun's heat stored in the ground: the Sun warms only the top few metres, and below that the warmth comes from the Earth itself. Nor is it endless at one spot: pump too fast and the rock around the well cools for decades.",
+  "why": "US DOE, 'Geothermal basics', https://www.energy.gov/eere/geothermal/geothermal-basics (curriculum: NGSS 4-ESS3-1, energy resources)",
+  "overlapWith": "plate-tectonics: that page shows where volcanoes are and why; this page follows the heat down a well anywhere, and what pumping it out does to the ground.",
+  "needsSource": "IHFC Global Heat Flow Database, https://ihfc-iugg.org/products/global-heat-flow-database (CC BY 4.0).",
   "leadsTo": [
-   "newtons-laws"
+   "plate-tectonics"
   ],
   "everyday": false,
   "origin": "vehicles-and-big-machines"
  },
  {
-  "slug": "wind-up-toy",
-  "title": "Wind-up toys",
+  "slug": "glacier-flow",
+  "title": "Glaciers: rivers of ice",
   "level": 0,
   "kind": "simulate",
-  "category": "energy",
-  "interaction": "Turn the key of a toy and watch its spiral spring coil tighter, with a counter of turns stored; let go and the spring unwinds through a train of gears into the legs, and the toy walks until the counter reaches zero. Swap the gear train for a faster or a slower one and see the toy run quickly for a short time or slowly for a long time from the same turns; add a spinning fan governor and watch it even out the speed.",
-  "takeaway": "Every turn you put into the spring comes back out through the gears, so a gear train that makes the toy slower makes it walk for longer, because the stored turns are all you have to spend.",
+  "category": "earth",
+  "interaction": "A mountain valley in cross-section, with snow falling on the high ground and melting on the low ground; press play and the snow that outlasts the summer packs into ice, and the ice, once thick enough, creeps downhill like very slow honey, dragging rocks that scrape the valley into a U. The one control is the climate: make it colder or snowier and the front advances, warmer and the front retreats. Flags frozen into the ice show that the ice itself still flows forward even while the front is retreating.",
+  "takeaway": "A glacier is a slow river of ice whose front moves forward or back depending on whether the snow it gains up high outpaces the melting at its toe, while the ice itself always flows downhill.",
   "prerequisites": [],
   "related": [
-   "bicycle-gears",
-   "clock-escapement",
-   "springs-and-scales"
+   "river-valleys",
+   "snowflake-growth",
+   "how-caves-form",
+   "a-year-of-weather"
   ],
   "needs": "",
-  "pitfall": "Winding faster stores nothing extra, and the spring does not run out all at once: its push weakens as it unwinds, which is why the toy slows at the end unless a governor evens it out.",
-  "why": "KS2 design and technology: pupils 'understand and use mechanical systems in their products, for example gears, pulleys, cams, levers and linkages' (primary national curriculum, https://dera.ioe.ac.uk/18300/1/PRIMARY_national_curriculum.pdf; teaching collection at https://planbee.com/collections/mechanisms-mechanical-systems).",
-  "overlapWith": "newtons-laws: that page shows energy bars on a track; here energy is stored as counted turns in a spring and spent through a gear train, which no existing page shows.",
-  "needsSource": "none",
+  "needsSource": "none (a one-dimensional shallow-ice flowline with Glen's flow law and a snowfall-minus-melt balance that depends on height; PhET's legacy Glaciers sim is the reference interaction)",
+  "pitfall": "A retreating glacier does not flow backward or uphill: it melts at its toe faster than it flows forward.",
+  "why": "England KS3 geography: 'glaciation, hydrology and coasts' (https://www.gov.uk/government/publications/national-curriculum-in-england-geography-programmes-of-study/national-curriculum-in-england-geography-programmes-of-study); PhET Glaciers (https://phet.colorado.edu/en/simulations/glaciers).",
+  "overlapWith": "ice-ages (level 2) explains when ice sheets grow from orbital cycles; this page shows how one glacier flows and why its front moves.",
   "leadsTo": [
-   "newtons-laws"
+   "deep-time"
   ],
-  "everyday": true,
-  "origin": "home-mechanisms"
+  "everyday": false,
+  "origin": "earth-sky-weather"
  },
  {
-  "slug": "zipper",
-  "title": "Zipper",
+  "slug": "how-caves-form",
+  "title": "How caves form",
   "level": 0,
-  "kind": "manipulate",
-  "category": "energy",
-  "interaction": "Drag the slider up and watch its Y-shaped channel bend the two tapes toward each other so that each tooth's hook drops into the hollow between the two teeth across from it; drag it down and the wedge inside prises them apart one at a time. Then pull the two sides of a closed stretch apart with a growing force and see every locked tooth take a share of it, and pull the same way on an open stretch.",
-  "takeaway": "A zip holds because each tooth is trapped by the two teeth across from it, and only the slider's wedge can free them, one at a time.",
+  "kind": "simulate",
+  "category": "earth",
+  "interaction": "A block of limestone threaded with hair-thin cracks, and slightly acid rainwater seeping in from the top; press play with the clock running thousands of years. Water flows where it can and dissolves a little rock as it goes, and every crack it widens carries more water and so widens faster, until one path wins and swells into a tunnel while the others stay cracks; the one control is how acid the rain is. Lower the water table and the tunnel drains into an air-filled cave where drips start building stalactites.",
+  "takeaway": "Caves are dissolved, not dug: the crack that carries the most water widens fastest, so a maze of hair-thin cracks turns into one big tunnel.",
   "prerequisites": [],
   "related": [
-   "lock-and-key",
-   "click-pen"
+   "why-the-sea-is-salty",
+   "river-valleys",
+   "glacier-flow",
+   "rock-to-sand"
   ],
   "needs": "",
-  "pitfall": "The slider does not stick or lock the teeth: it only bends the tapes so the staggered teeth can interleave, and once interleaved they hold each other.",
-  "why": "'How Zippers Work' is a long-running HowStuffWorks everyday-innovations explainer (https://science.howstuffworks.com/innovation/everyday-innovations/zipper.htm/printable).",
-  "overlapWith": "bridges-structures: that page loads a structure the reader built and colours members by tension and compression; a zip is a chain of identical hooks that the slider engages and frees one by one, and the pull test only shows that the chain shares a load.",
-  "needsSource": "none",
+  "needsSource": "none (a fracture-network karst model: flow through a crack growing with the cube of its width, dissolution from the standard calcite kinetics, a sped-up clock)",
+  "pitfall": "Most caves were not washed out by underground rivers or cracked open by earthquakes: the rock was dissolved, slowly, by water that was only slightly acid.",
+  "why": "England KS3 geography: 'rocks, weathering and soils' (https://www.gov.uk/government/publications/national-curriculum-in-england-geography-programmes-of-study/national-curriculum-in-england-geography-programmes-of-study); US National Park Service, Caves and Karst (https://www.nps.gov/subjects/caves/index.htm).",
+  "overlapWith": "acids-bases (level 1) shows acids reacting; this page is about a positive feedback in flow, and the acid is only the thing that does the dissolving.",
   "leadsTo": [
-   "bridges-structures"
+   "acids-bases",
+   "deep-time"
+  ],
+  "everyday": false,
+  "origin": "earth-sky-weather"
+ },
+ {
+  "slug": "how-rain-forms",
+  "title": "From cloud droplet to raindrop, or hailstone",
+  "level": 0,
+  "kind": "simulate",
+  "category": "earth",
+  "interaction": "A cloud of tiny droplets hangs in gently rising air, each falling slower than the air rises, so the cloud floats; press play and droplets bump and merge, and the bigger one gets the faster it falls and the more it sweeps up, until it outruns the updraft and drops out as rain, a size scale showing the drop is a hundred droplets across and took about a million of them. The one control is the updraft: turn it up and the drops grow larger before they fall, the difference between drizzle and a downpour. Turn it up to thunderstorm strength and the drops are carried above the freezing height, where each trip up adds a layer of ice until a hailstone too heavy for the wind drops out, and you can cut it open and count the rings.",
+  "takeaway": "A cloud droplet must merge with about a million others before it falls faster than the air that holds the cloud up, so rain is the end of a chain of collisions, and the stronger the rising air, the bigger what finally falls, up to hail.",
+  "prerequisites": [
+   "cloud-base"
+  ],
+  "related": [
+   "water-cycle",
+   "snowflake-growth",
+   "dew-and-fog",
+   "tornado-spin",
+   "lightning-and-thunder"
+  ],
+  "needs": "",
+  "needsSource": "none (collision-coalescence growth with terminal velocities from the standard published fall-speed relation for water drops, and an ice sphere's fall speed against the updraft for the hail step)",
+  "pitfall": "Raindrops are not tear-shaped: small ones are spheres and big ones flatten into buns. A cloud does not rain because it has become too heavy, and hail is not frozen rain and does not need a cold day: it falls from summer thunderstorms whose tops are far below freezing.",
+  "why": "NGSS MS-ESS2-4, whose clarification stresses 'the ways water changes its state as it moves through the multiple pathways of the hydrologic cycle' (https://www.nextgenscience.org/pe/ms-ess2-4-earths-systems); NGSS 3-ESS3-1 on weather-related hazards (https://www.nextgenscience.org/pe/3-ess3-1-earth-and-human-activity).",
+  "overlapWith": "cloud-base: that page ends where a cloud appears; this one asks why its droplets stay up and what has to happen before they come down.",
+  "leadsTo": [
+   "newtons-laws",
+   "states-of-matter"
+  ],
+  "everyday": false,
+  "origin": "earth-sky-weather"
+ },
+ {
+  "slug": "lighthouse-beam",
+  "title": "Lighthouses: how far a light can be seen",
+  "level": 0,
+  "kind": "manipulate",
+  "category": "earth",
+  "interaction": "Raise a lighthouse's lamp up its tower and watch the lit stretch of sea grow as the Earth's curve stops hiding it; a ship sails in from beyond the horizon and its lookout sees the flash first from the crow's nest, then from the deck. Spin the lamp's lens to send a beam round and set its rhythm of flashes from a real list of lights; the ship reads the rhythm to tell this lighthouse from the next one down the coast.",
+  "takeaway": "The Earth's curve hides a low light, so lighthouses are tall and lookouts climb high, and each light's rhythm of flashes is its name.",
+  "prerequisites": [],
+  "related": [
+   "satellite-sky-tracks"
+  ],
+  "needs": "Heights, ranges and flash characteristics of a few named lighthouses from the US Coast Guard Light List (US government work, public domain).",
+  "pitfall": "A light is not hidden by distance alone: on a flat Earth a bright enough lamp would be seen from anywhere. The lens does not make the lamp brighter; it gathers light that would be wasted upward and sideways into a beam, which is why the light flashes as the beam sweeps past.",
+  "why": "The US Coast Guard Light List, the real register of lights and their characteristics, https://www.navcen.uscg.gov/light-lists ('how far can you see a lighthouse' is a common search question)",
+  "overlapWith": "light-optics: that page traces rays through lenses on a bench; this page does not trace the lens at all, it uses the curve of the Earth and the rhythm of flashes.",
+  "needsSource": "USCG Light List (public domain), https://www.navcen.uscg.gov/light-lists",
+  "leadsTo": [
+   "light-optics",
+   "sun-earth-moon"
+  ],
+  "everyday": false,
+  "origin": "vehicles-and-big-machines"
+ },
+ {
+  "slug": "lightning-and-thunder",
+  "title": "Lightning and thunder: count the seconds",
+  "level": 0,
+  "kind": "build",
+  "category": "earth",
+  "interaction": "A storm scene: a charged cloud, open ground and a palette of things to place on it (a tree, a house, a tall rod, a person); press strike and a branching bolt grows down from the cloud step by step, landing on the tallest thing near its path more often than anywhere else. Then the flash reaches the viewer at once while the thunder's sound front crawls out at a third of a kilometre per second, a counter ticking off the seconds until it arrives. Drag the viewer farther away: more seconds, fainter rumble.",
+  "takeaway": "Thunder is the sound of the lightning you already saw: light arrives at once and sound takes about three seconds per kilometre, so counting the gap tells how far away the storm is, and the bolt favours the tallest path to the ground.",
+  "prerequisites": [],
+  "related": [
+   "how-rain-forms",
+   "sea-breeze",
+   "tornado-spin"
+  ],
+  "needs": "",
+  "needsSource": "none (the dielectric-breakdown model of Niemeyer, Pietronero and Wiesmann, 1984, grown on a grid with grounded objects; sound at 343 m/s)",
+  "pitfall": "Thunder is not clouds bumping together, and lightning does strike the same place twice: tall things get hit again and again.",
+  "why": "US National Weather Service, 'Understanding Lightning: Thunder', with the count-the-seconds rule (https://www.weather.gov/safety/lightning-science-thunder); KS2 Year 4 Sound: 'sounds get fainter as the distance from the sound source increases'.",
+  "overlapWith": "waves-interference (level 1) treats sound as a wave with speed and Doppler shift; this page uses only the fact that sound is slow and light is not, plus where a bolt goes.",
+  "leadsTo": [
+   "waves-interference",
+   "electric-circuits"
   ],
   "everyday": true,
-  "origin": "home-mechanisms"
+  "origin": "earth-sky-weather"
+ },
+ {
+  "slug": "river-valleys",
+  "title": "How rivers carve valleys",
+  "level": 0,
+  "kind": "simulate",
+  "category": "earth",
+  "interaction": "Rain falls on a bumpy block of land shown from above and in cross-section. Water runs downhill, joins into streams, picks up soil where it runs fast and drops it where it slows: the streams branch like a tree, cut valleys, and a fan of dropped mud grows where the river meets the sea. One control: how much it rains; a later step lifts the land to see the rivers cut faster.",
+  "takeaway": "Rivers do not just follow valleys, they make them: moving water carries the land downhill a grain at a time and drops it wherever it slows.",
+  "prerequisites": [],
+  "related": [
+   "rock-to-sand",
+   "water-cycle",
+   "glacier-flow",
+   "fossil-layers",
+   "soil-in-a-jar"
+  ],
+  "needs": "",
+  "needsSource": "none (a cellular hydraulic-erosion model: flow routing on a small grid, erosion by fast water with a carrying limit, deposition where it slows, hillslope creep; optionally a real hillside from USGS 3DEP elevation, public domain)",
+  "pitfall": "A valley is not a crack that opened: the river removed what used to fill it, and it took far longer than a lifetime.",
+  "why": "NGSS 4-ESS2-1: 'Make observations and/or measurements to provide evidence of the effects of weathering or the rate of erosion by water, ice, wind, or vegetation' (https://www.nextgenscience.org/pe/4-ess2-1-earths-systems); England KS2 geography, rivers.",
+  "overlapWith": "plate-tectonics (level 1) builds mountains; this page wears them down, and it is the only page where water shapes the land.",
+  "leadsTo": [
+   "plate-tectonics",
+   "deep-time"
+  ],
+  "everyday": false,
+  "origin": "earth-sky-weather"
  }
 ]

@@ -71,9 +71,9 @@ Last updated: 2026-10-17 UTC, after v1.0.0.
 asked for a researched proposal (no code yet): a new level 0 for beginners, the levels made more
 even (level 3 has 6 topics today), 100 new entries. The work, its data and how to resume it are
 in [`proposals/topics-200/README.md`](proposals/topics-200/README.md) (the self-handover for
-that piece). State at the time of writing: the generator runs are nearly done (10 of 19 lenses
-recovered, 295 candidates; the last 9 lenses in flight), judging and verification not started,
-`docs/TOPICS-PROPOSAL.md` not written. `TOPICS.md` is untouched.
+that piece). State at the time of writing (2026-10-18 00:05 UTC+2): 17 of the 19 generator lenses are
+done (499 candidates in `proposals/topics-200/data/pool.json`), the last two in flight; judging
+and verification not started, `docs/TOPICS-PROPOSAL.md` not written. `TOPICS.md` is untouched.
 
 **Released as v1.0.0 (2026-10-17): the backlog round (overnight) and the index work below.** Before
 releasing 1.0 the user asked to clear the backlog. One agent per package in a local worktree,

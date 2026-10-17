@@ -3,7 +3,7 @@
 The self-handover for this piece of work. Read it top to bottom before continuing; the
 "Resume" section at the end says exactly what to run next.
 
-Last updated: 2026-10-17 19:10 UTC+2 (phase A, the last generator run, still in flight; see
+Last updated: 2026-10-18 00:05 UTC+2 (run 4, the last two generator lenses, in flight; see
 "Where the runs stand").
 
 ## What the user asked for
@@ -76,22 +76,28 @@ prompt text, the 19 lens briefs, helpers).
 
 ## Where the runs stand
 
-- **Run 1 and run 2 (the single-run script)** both died on the user's usage limit: 5 generator
+- **Runs 1 and 2 (the single-run script)** both died on the user's usage limit: 5 generator
   lenses finished in run 1, 5 more in run 2 (the resume replayed nothing, see "Lessons"). Their
   results were recovered from the workflow journals into `data/generators-runs-1-2.json`
   (10 lenses: vehicles-and-big-machines, basic-physical-science, chemistry-and-cooking,
   physics-l3, math-l3, earth-sky-weather, numbers-shapes-computers, living-things-and-body,
-  home-mechanisms, everyday-technology): 295 candidates after exact-slug dedupe (235 at level 0,
-  2 at level 1, 58 at level 3).
-- **Run 3 (phase A, the 9 missing lenses: energy-machines-l3, earth-space-l3, ai-l3,
-  chemistry-l3, biology-l3, medicine-l3, computing-networks-l3, demand, holes-l1-l2)** was
-  launched at 18:5x after the limit reset and is in flight at the time of writing. Its result
-  goes to `data/generators-run-3.json` (see Resume). If the session was stopped before it
-  finished, its completed agents are still in its journal:
-  `~/.claude/projects/-Users-guillem-Development-how-things-work/6ab4727d-d0eb-4d1e-9581-9ca8ca472f63/subagents/workflows/wf_20dc808b-5c1/journal.jsonl`
-  (one `{"type":"result",...}` line per finished agent; `label` names the lens).
-- Phases B and C have not run. `data/pool.json` and `data/pool/` currently hold the 295
-  candidates of runs 1 and 2 only; re-run `prep-pool.mjs` once run 3's results are in.
+  home-mechanisms, everyday-technology).
+- **Run 3 (phase A)** ran the 9 missing lenses; 7 finished (chemistry-l3, biology-l3,
+  computing-networks-l3, ai-l3, medicine-l3, earth-space-l3, energy-machines-l3, 30 candidates
+  each) before the limit tripped again. Collected into `data/generators-run-3.json`.
+- **Run 4 (phase A)** runs the last two lenses, `demand` and `holes-l1-l2`, launched 2026-10-18
+  00:00 UTC+2. Its journal:
+  `~/.claude/projects/-Users-guillem-Development-how-things-work/6ab4727d-d0eb-4d1e-9581-9ca8ca472f63/subagents/workflows/wf_e9fab2d3-a1a/journal.jsonl`.
+  If it finished, its results are in `data/generators-run-4.json`; if that file is missing, the
+  session was stopped first: collect it from the journal (Resume, step 1) and re-run whatever is
+  still missing (step 2).
+- **The pool** (`data/pool.json`, `data/pool/`, `data/phase-b-args.json`) was last built from
+  runs 1 to 3: 499 candidates (235 at level 0, 2 at level 1, 262 at level 3; by category: math
+  51, physics 82, chemistry 56, biology 48, medicine 50, earth 36, space 27, computing 32,
+  networks 19, ai 37, energy 61). Rebuild it with run 4 included before phase B. The two missing
+  lenses are the only sources of level-1 and level-2 candidates (10 + 3 slots) and of the
+  demand-driven subjects, so phase B should not run without them.
+- Phases B and C have not run.
 
 ## Lessons from the failed runs (read before launching anything)
 
@@ -114,22 +120,21 @@ prompt text, the 19 lens briefs, helpers).
 
 From the repository root, after `npm install`:
 
-1. **Collect run 3.** If the phase-A workflow finished, its result is in the task output file the
-   notification named (`.../tasks/<task-id>.output`); otherwise read the journal above. Either
-   way, save the result array (one element per lens: `{lens, ok, count, candidates,
-reserveDisposition}`) as `docs/proposals/topics-200/data/generators-run-3.json`. From the
-   journal: take each `result` line whose `label` starts with `gen:` and wrap it as
-   `{lens: <label without "gen:">, ok: true, candidates: result.candidates,
-reserveDisposition: result.reserveDisposition}`.
+1. **Collect the latest run** from its journal (works whether the run finished or died):
+   `node docs/proposals/topics-200/scripts/collect-run.mjs <journal.jsonl above>
+docs/proposals/topics-200/data/generators-run-N.json` (N = 4 for run 4). It prints the
+   finished lenses and the failed ones.
 2. **Re-run any lens still missing** with phase A: pass `data/workflow-args.json` as `args`,
    plus `"scratch"` (any directory) and `"doneLenses"` (the lens keys already in
-   `generators-runs-1-2.json` and `generators-run-3.json`). `scriptPath` is
+   `generators-runs-1-2.json`, `generators-run-3.json` and later run files). `scriptPath` is
    `docs/proposals/topics-200/workflows/phase-a-generate.js`. Append its results to
    `generators-run-3.json` (or a `generators-run-4.json`; `prep-pool.mjs` takes any number of
    files).
 3. **Build the pool:** `node docs/proposals/topics-200/scripts/prep-pool.mjs
-docs/proposals/topics-200/data/generators-run-3.json` (plus any later run files). It prints the
-   pool size by level and category and writes `data/phase-b-args.json`.
+docs/proposals/topics-200/data/generators-run-3.json
+docs/proposals/topics-200/data/generators-run-4.json` (every run file after runs 1 and 2,
+   which prep-pool always includes). It prints the pool size by level and category and writes
+   `data/phase-b-args.json`.
 4. **Phase B:** launch `workflows/phase-b-judge.js` with `args` = the contents of
    `data/workflow-args.json` merged with `data/phase-b-args.json` (`rows`, `poolDir`,
    `batches`), plus `"scratch"`. Save its result as `data/phase-b.json` (it contains `selected`

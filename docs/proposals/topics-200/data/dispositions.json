@@ -117,5 +117,75 @@
   "slug": "refrigerator",
   "reason": "The household half of the reserve item (a loop that carries heat from cold to warm, and why the back of a fridge is warm) becomes the level-0 refrigerator page. A level-2 heat-pumps page (coefficient of performance against outdoor temperature, the reversing valve, heating a house) is a different page and stays open for the level-2/3 lens.",
   "lens": "home-mechanisms"
+ },
+ {
+  "item": "Embryo development & pattern formation",
+  "decision": "promote",
+  "slug": "morphogen-gradients",
+  "reason": "Promoted as a level-3 trio: morphogen-gradients (positional information, French flag, synthesis-diffusion-degradation model), turing-patterns (reaction-diffusion on a grid) and segmentation-clock (clock and wavefront). One page could not hold three different models, and each has its own observable takeaway.",
+  "lens": "biology-l3"
+ },
+ {
+  "item": "DNA sequencing",
+  "decision": "promote",
+  "slug": "dna-sequencing",
+  "reason": "Promoted at level 3 as Sanger chain termination plus shotgun assembly with a de Bruijn graph on the real phiX174 genome (GenBank, no reuse restrictions); the assembly algorithm is the honest model, and PCR is covered as the amplification step rather than as its own page.",
+  "lens": "biology-l3"
+ },
+ {
+  "item": "Operating systems",
+  "decision": "promote",
+  "slug": "os-scheduling",
+  "reason": "Too broad for one graphic; promoted as scheduling (the part with one clear model and plot), with virtual-memory and locks-deadlock proposed in the same batch as its companion pages. Together they cover what a CS162-style course spends most of its time on.",
+  "lens": "computing-networks-l3"
+ },
+ {
+  "item": "Compilers",
+  "decision": "promote",
+  "slug": "compilers",
+  "reason": "Honest at level 3 and buildable: a toy language, a real parser and a code generator that targets the minimal processor of the existing cpu page, so the output runs on the site. Anchored in Stanford CS143.",
+  "lens": "computing-networks-l3"
+ },
+ {
+  "item": "Cellular automata",
+  "decision": "promote",
+  "slug": "cellular-automata",
+  "reason": "Answer to 'honest level?': the Game of Life toy and the 256 elementary rules are level 0 to 1 and belong to the level-0 lens as a sibling page; the universality angle (gliders as signals, gates from collisions, why prediction is undecidable) is honest level 3 and is what this page is built around, with turing-machines and logic-gates as prerequisites.",
+  "lens": "computing-networks-l3"
+ },
+ {
+  "item": "Clustering & dimensionality reduction",
+  "decision": "promote",
+  "slug": "clustering-gaussian-mixtures",
+  "reason": "Split in two, one graphic each: the clustering half (k-means, EM on Gaussian mixtures, a density-based method) is honest level-3 CS229 material with no external data beyond a CC0 dataset.",
+  "lens": "ai-l3"
+ },
+ {
+  "item": "Clustering & dimensionality reduction",
+  "decision": "promote",
+  "slug": "dimensionality-reduction",
+  "reason": "The other half: PCA as a rotation of a 3-D cloud and t-SNE run live, which answers the pitfall the existing embeddings page can only state.",
+  "lens": "ai-l3"
+ },
+ {
+  "item": "Hearing & the cochlea",
+  "decision": "promote",
+  "slug": "cochlea-hearing",
+  "reason": "A one-dimensional transmission-line cochlea runs in the browser, its place-frequency map is the takeaway, and it ends in a cochlear implant, which makes it a level-3 medicine page rather than a physics-of-sound page; it needs only a CC0 speech clip.",
+  "lens": "medicine-l3"
+ },
+ {
+  "item": "Telescopes",
+  "decision": "promote",
+  "slug": "aperture-synthesis",
+  "reason": "Promoted narrowed to interferometric imaging at level 3: lenses, mirrors and diffraction-limited resolution already belong to light-optics, so the generic Telescopes page would duplicate it, while aperture synthesis (uv coverage, dirty beam, CLEAN) is a real algorithm that runs in the browser and has no overlap.",
+  "lens": "earth-space-l3"
+ },
+ {
+  "item": "Heat pumps",
+  "decision": "promote",
+  "slug": "heat-pumps-refrigeration",
+  "reason": "Promoted as a level-3 page built on a real vapor-compression cycle with CoolProp refrigerant properties on a p-h diagram, COP against temperature lift and the Carnot comparison; it is the inverse of heat-engines, which never runs the cycle backward, and the IEA's Future of Heat Pumps report and Purdue's thermodynamics homework show both demand and curriculum fit.",
+  "lens": "energy-machines-l3"
  }
 ]

@@ -1,656 +1,655 @@
 [
  {
-  "slug": "beach-waves",
-  "title": "Waves at the beach",
+  "slug": "milk-and-yogurt",
+  "title": "Milk, vinegar and yogurt",
   "level": 0,
-  "kind": "manipulate",
-  "category": "earth",
-  "interaction": "A cross-section of sea from deep water to the sand, with a rubber duck floating on it. Watch a wave pass: the duck bobs round in a small circle and ends up where it started, so the water does not travel with the wave. Drag the sea floor to make the beach steeper or gentler: as the water gets shallow the waves slow down, bunch together, grow taller and finally topple and break, far out on a gentle beach and right at the shore on a steep one.",
-  "takeaway": "A wave carries its shape across the sea while the water only circles in place, and waves break where the water gets too shallow to carry them.",
-  "prerequisites": [],
-  "related": [
-   "rock-to-sand",
-   "sand-dunes",
-   "sea-breeze"
-  ],
-  "needs": "",
-  "needsSource": "none (water waves slowing with depth, growing as they slow, breaking when their height nears the depth; a tracer following the orbital motion)",
-  "pitfall": "Beach waves are not made by the tide: they are made by wind far out at sea, and the water only rushes forward in the surf, not on the way in.",
-  "why": "NOAA National Ocean Service, 'Why does the ocean have waves?' (https://oceanservice.noaa.gov/facts/wavesinocean.html); NGSS 4-PS4-1 and England KS3 geography, coasts.",
-  "overlapWith": "waves-interference (level 1) is a ripple tank of interference, harmonics and Doppler; this page has one wave, a sloping floor and a duck, and sun-earth-moon's tides are not waves.",
-  "leadsTo": [
-   "waves-interference",
-   "oscillations-resonance"
-  ],
-  "everyday": false,
-  "origin": "earth-sky-weather"
- },
- {
-  "slug": "cloud-base",
-  "title": "Why clouds form, and why their bottoms are flat",
-  "level": 0,
-  "kind": "manipulate",
-  "category": "earth",
-  "interaction": "Drag a bubble of air up from the warm ground: it swells and its thermometer drops about one degree for every hundred metres, which is also why it is colder on a mountain, until the invisible water it carries turns to droplets and the bubble turns white. Every bubble released from the same ground turns white at the same height, so the clouds have flat bottoms; make the day more humid and the cloud base drops, dry the air and clouds form higher or not at all. A last step blows the bubble over a mountain: it rains on the side facing the wind and the air comes down the far side dry.",
-  "takeaway": "Rising air cools, and a cloud appears at exactly the height where the air gets cold enough for its water to condense, which is why cloud bottoms are flat and why mountains are cold.",
-  "prerequisites": [],
-  "related": [
-   "water-cycle",
-   "dew-and-fog",
-   "how-rain-forms",
-   "sea-breeze"
-  ],
-  "needs": "",
-  "needsSource": "none (dry-adiabatic cooling of a parcel and the Magnus saturation formula, the standard textbook model)",
-  "pitfall": "It is not colder on a mountain because it is farther from the Sun: a few kilometres make no difference to sunlight, and the air up there is cold because it has expanded. Clouds are not made of vapour and are not lighter than air: they are droplets falling so slowly that the rising air carries them.",
-  "why": "UCAR Center for Science Education, 'Clouds and How They Form' (https://scied.ucar.edu/learning-zone/clouds/how-clouds-form); NGSS MS-ESS2-4 on the changes of state in the water cycle.",
-  "overlapWith": "atmosphere-weather (level 2) shows global convection, pressure systems and fronts; this page follows one bubble of air and one cloud, with no Coriolis and no map.",
-  "leadsTo": [
-   "states-of-matter"
-  ],
-  "everyday": false,
-  "origin": "earth-sky-weather"
- },
- {
-  "slug": "compass-and-magnetic-poles",
-  "title": "The compass and Earth's magnetic poles",
-  "level": 0,
-  "kind": "manipulate",
-  "category": "earth",
-  "interaction": "A globe with a magnet buried inside, its field drawn as lines looping from pole to pole. Drag a compass anywhere on the surface and its needle swings to lie along the local line: near the equator it lies flat along the ground, and near a magnetic pole it tries to point straight down and becomes useless. The magnetic pole sits hundreds of kilometres from the geographic one and drifts year by year, so from most places the needle misses true north by an angle the page measures as you move.",
-  "takeaway": "A compass does not point at the North Pole: it lines up with Earth's magnetic field, which comes out of a magnetic pole hundreds of kilometres from the geographic one and dips into the ground as you go north.",
-  "prerequisites": [],
-  "related": [
-   "earth-is-a-ball",
-   "aurora-rings",
-   "time-zones"
-  ],
-  "needs": "Earth's field from the World Magnetic Model WMM2025 coefficients, NOAA NCEI (https://www.ncei.noaa.gov/products/world-magnetic-model), US Government work stated as public domain; a tilted offset dipole is the documented fallback.",
-  "needsSource": "World Magnetic Model WMM2025 coefficients (NOAA NCEI, public domain)",
-  "pitfall": "The needle is not pulled toward the North Star or the geographic pole, and the magnetic pole is not a fixed place: it has moved hundreds of kilometres in a lifetime.",
-  "why": "England KS3 physics, Magnetism: 'Earth's magnetism, compass and navigation' and KS2 Year 3 'describe magnets as having 2 poles' (https://www.gov.uk/government/publications/national-curriculum-in-england-science-programmes-of-study/national-curriculum-in-england-science-programmes-of-study).",
-  "overlapWith": "electromagnetism (level 2) covers fields, induction and Maxwell; this page uses one magnet, one needle and a globe, and is the only one where a compass is navigated.",
-  "leadsTo": [
-   "earthquakes"
-  ],
+  "kind": "simulate",
+  "category": "biology",
   "everyday": true,
-  "origin": "earth-sky-weather"
+  "interaction": "A glass of milk at particle scale: protein balls drifting apart because they all carry the same charge. One control at a time: a spoon of vinegar, and the acid takes the charge away so the balls clump into curds that sink under clear whey; a spoonful of live yogurt into warm milk, and bacteria eat the milk sugar and make the acid themselves, so the same clumping happens over hours into one smooth set. A thermometer shows the yogurt bacteria working only when warm, and heating the milk first gives a thicker set.",
+  "takeaway": "Milk is a cloud of tiny protein balls kept apart by their charge; acid, poured in or made by bacteria, lets them clump, which is curds in a minute or yogurt overnight.",
+  "prerequisites": [],
+  "related": [
+   "cooking-an-egg",
+   "bread-and-yeast",
+   "fridge-and-spoilage",
+   "jelly-and-pineapple",
+   "soap-and-grease"
+  ],
+  "needs": "",
+  "needsSource": "none; a charged-colloid clumping model with acid, plus a bacterial acid-production rate against temperature (a few published constants)",
+  "pitfall": "Milk curdling with vinegar is not milk 'going off', and the bacteria in yogurt are not the bacteria that spoil food: the same clumping is cheese, yogurt and sour milk.",
+  "why": "NGSS 5-PS1-4 names milk and vinegar as a mixing that makes a new substance: https://www.nextgenscience.org/dci-arrangement/5-ps1-matter-and-its-interactions; England KS2 Year 6 (micro-organisms, including useful ones).",
+  "overlapWith": "acids-bases: that page tracks pH on a logarithmic scale through a titration; here acid is only something that lets protein balls stick, and the reader never sees a pH number.",
+  "leadsTo": [
+   "the-cell",
+   "acids-bases"
+  ],
+  "origin": "chemistry-and-cooking"
  },
  {
-  "slug": "dew-and-fog",
-  "title": "Dew, fog and the cold glass",
+  "slug": "mould-on-bread",
+  "title": "Mould on bread",
+  "level": 0,
+  "kind": "explore",
+  "category": "biology",
+  "everyday": true,
+  "interaction": "A loaf in a bread bin. Scrub a week: a spore lands, and a network of threads spreads through the crumb, shown in an x-ray view the reader can toggle; the fuzzy spot on the surface appears days after the threads beneath it, and by the time it shows the threads reach well beyond it. Pan to a second loaf kept in the fridge (slower) and a third left to dry (barely any). One control: how moist the bread is. Cut off the fuzzy spot and the x-ray shows what was left behind.",
+  "takeaway": "The fuzzy spot is only the top of a mould whose threads have already spread far through the bread unseen, so cutting the spot off does not remove it; mould needs damp, and cold slows it.",
+  "prerequisites": [],
+  "related": [
+   "fridge-and-spoilage",
+   "ripening-fruit",
+   "bread-and-yeast"
+  ],
+  "needs": "",
+  "needsSource": "none; a thread-growth model on a grid with a moisture- and temperature-dependent extension rate, stated as a simplification",
+  "pitfall": "Mould is not dirt on the surface, and a spot cut off does not make the rest of a soft loaf clean; hard cheese is different because the threads cannot push through it.",
+  "why": "USDA FSIS 'Molds on Food: Are They Dangerous?' (why soft foods with a mould spot are discarded whole): https://www.fsis.usda.gov/food-safety/safe-food-handling-and-preparation/food-safety-basics/molds-food-are-they-dangerous (canonical page; not fetched this session, search budget exhausted); England KS2 Year 6 (micro-organisms).",
+  "overlapWith": "the-cell: that page shows animal, plant and bacterial cells; a mould's thread network is a different kind of body, and no existing page shows a fungus or anything growing through food.",
+  "leadsTo": [
+   "the-cell",
+   "ecosystems"
+  ],
+  "origin": "chemistry-and-cooking"
+ },
+ {
+  "slug": "onion-tears",
+  "title": "Why onions make you cry",
   "level": 0,
   "kind": "manipulate",
-  "category": "earth",
-  "interaction": "A glass of iced water stands in a room: drag its temperature down and watch the air touching it, nothing, nothing, then at one particular temperature, the dew point, the glass mists over. Switch to a field at night and drag the night's temperature down: the grass gets wet at the same dew point, keep going and the air itself turns to fog, and if the dew point is below freezing you get frost instead. Make the day more humid and the dew point rises, so the dew comes sooner.",
-  "takeaway": "Air carries an invisible amount of water, and the moment anything cools it past one particular temperature, the dew point, that water comes out as drops, mist or frost.",
+  "category": "biology",
+  "everyday": true,
+  "interaction": "An onion slice under a magnifier, its cells drawn as little boxes, each holding two ingredients kept in separate compartments. Drag a knife across: every cell the blade opens spills its two ingredients together, they react, and a puff of tear gas rises and drifts toward an eye whose tear count climbs. One control at a time: a sharper knife (fewer crushed cells), a chilled onion (less of the gas rises off a cold cut), cutting under running water (the gas dissolves), or a fan. Garlic in the same rig stings the nose and not the eyes.",
+  "takeaway": "An onion makes its tear gas only when a cell is cut open and two ingredients kept apart inside it finally meet, so fewer crushed cells, cold, or water in the way mean fewer tears.",
   "prerequisites": [],
   "related": [
-   "cloud-base",
-   "water-cycle",
-   "snowflake-growth",
-   "how-rain-forms"
+   "apple-browning",
+   "jelly-and-pineapple"
   ],
   "needs": "",
-  "needsSource": "none (saturation vapour pressure from the Magnus formula, relative humidity, frost point)",
-  "pitfall": "The water on a cold glass does not leak through the glass: it comes out of the air. Fog is a cloud sitting on the ground, not smoke or steam.",
-  "why": "England KS2 science, Year 4 States of matter: 'identify the part played by evaporation and condensation in the water cycle' (https://www.gov.uk/government/publications/national-curriculum-in-england-science-programmes-of-study/national-curriculum-in-england-science-programmes-of-study).",
-  "overlapWith": "states-of-matter (level 1) shows condensation in a box of molecules under temperature and pressure; this page shows it on a glass, on grass and in the air, at one temperature the reader finds by hand.",
+  "needsSource": "none; a cell-grid model with a temperature-dependent reaction and a drifting gas, the chemistry named only in the text",
+  "pitfall": "The gas is not stored in the onion waiting to escape; it is made at the moment of cutting. Chilling helps a little, and whether it slows the reaction itself is disputed, so the page must not claim it does.",
+  "why": "Demand: 'why do onions make you cry' (Discover): https://www.discovermagazine.com/health/why-do-onions-make-us-cry; England KS2 Year 6 / NGSS MS-LS1-2 (cells and their parts).",
+  "overlapWith": "the-cell: that page zooms through a cell's organelles; here cells are boxes that matter only because cutting them mixes what they keep apart.",
   "leadsTo": [
-   "states-of-matter"
+   "the-cell"
   ],
-  "everyday": true,
-  "origin": "earth-sky-weather"
+  "origin": "chemistry-and-cooking"
  },
  {
-  "slug": "fossil-layers",
-  "title": "Fossils and rock layers",
+  "slug": "ripening-fruit",
+  "title": "Ripening in a paper bag",
   "level": 0,
-  "kind": "build",
-  "category": "earth",
-  "interaction": "Drop a shell, a leaf or a fish onto a sea floor and let mud and sand rain down year after year; add another creature later, and another, and switch the sea for land for a while. The layers pile up, squeeze, harden into rock, and the buried creatures turn to stone. Then cut the cliff: the oldest things lie deepest, and the stretch that was land leaves leaves above shells.",
-  "takeaway": "Rock layers pile up from the bottom, so in an undisturbed cliff deeper means older, and the fossils in each layer are a snapshot of what lived there then.",
+  "kind": "simulate",
+  "category": "biology",
+  "everyday": true,
+  "interaction": "A bowl of hard green bananas and avocados. One control at a time: put them in a paper bag, add a ripe apple, or put them in the fridge. Each fruit gives off a ripening gas drawn as particles, more as it ripens, so a closed bag fills with gas and every fruit inside ripens faster, a ripe apple adds a burst, and the open bowl lets the gas drift away; cold slows everything. Scrub the days and watch the colours turn and a firmness meter fall, then overshoot into brown if left too long.",
+  "takeaway": "Ripening fruit gives off a gas that tells fruit nearby to ripen too, so a bag traps it and speeds things up, an open bowl lets it escape, and cold slows it all down.",
   "prerequisites": [],
   "related": [
-   "rock-to-sand",
-   "river-valleys",
-   "why-the-sea-is-salty"
+   "apple-browning",
+   "fridge-and-spoilage",
+   "mould-on-bread",
+   "bean-in-a-jar"
   ],
   "needs": "",
-  "needsSource": "none (sedimentation and compaction through time, relative dating by superposition; optionally real fossil occurrences from the Paleobiology Database, CC BY 4.0)",
-  "pitfall": "A fossil is not a bone that survived: it is rock that took the bone's place. And layers are not one per year like tree rings.",
-  "why": "NGSS 4-ESS1-1: 'Identify evidence from patterns in rock formations and fossils in rock layers to support an explanation for changes in a landscape over time' (https://www.nextgenscience.org/pe/4-ess1-1-earths-place-universe); England KS2 Year 3: 'describe in simple terms how fossils are formed when things that have lived are trapped within rock'.",
-  "overlapWith": "deep-time (level 1) scrubs a dated timeline of 4.5 billion years; this page has no dates at all, only the order of layers and what is buried in them.",
+  "needsSource": "none; a self-reinforcing ethylene production rate against ripeness and temperature, with constants from postharvest references, stated as a simplification",
+  "pitfall": "The bag does not work by keeping light out or keeping the fruit warm; it keeps the fruit's own gas in. And a ripe fruit ripens its neighbours, which is why one bad apple spoils the barrel.",
+  "why": "Demand: 'how to ripen avocados faster' is a top kitchen search; classroom version at education.com: https://www.education.com/activity/article/ripening-avocados",
+  "overlapWith": "homeostasis: that page's feedback loop is a person's blood sugar at level 1; here a fruit's gas feeds back on its own ripening and its neighbours', and no existing page touches fruit or ethylene.",
+  "leadsTo": [
+   "the-cell",
+   "homeostasis"
+  ],
+  "origin": "chemistry-and-cooking"
+ },
+ {
+  "slug": "seeds-and-germination",
+  "title": "How a seed wakes up",
+  "level": 0,
+  "kind": "simulate",
+  "category": "biology",
+  "everyday": true,
+  "interaction": "Plant a bean on wet paper and set one thing at a time, water, warmth or light: the seed swells, the root pokes out and turns down, the shoot turns up, on a day counter that runs faster when it is warm and wet. Keep it in the dark and it still sprouts, pale and tall, while the food packed inside it shrinks; its weight falls until the leaves open and only then starts to climb.",
+  "takeaway": "A seed needs water and warmth to wake up, not light or soil: it lives off the food packed inside it until its own leaves open.",
+  "prerequisites": [],
+  "related": [
+   "how-plants-drink",
+   "flowers-and-bees",
+   "why-leaves-change-colour"
+  ],
+  "needs": "",
+  "needsSource": "none: the hydrothermal-time germination model (Gummerson 1986; Bradford 2002) has no light term; the seedling's mass falls on its reserves and rises once leaves open; bean parameters stated on the page",
+  "pitfall": "Seeds are not dead and do not need soil; and the seedling gets lighter, not heavier, until it can make its own food. Light matters for growing, not for sprouting.",
+  "why": "NGSS 5-LS1-1, taught with bean seeds sprouting on a wet paper towel in a bag with no soil. https://thewonderofscience.com/5ls11",
+  "overlapWith": "photosynthesis: that page starts once there is a leaf in the light; this one is everything before the first leaf opens.",
+  "leadsTo": [
+   "photosynthesis"
+  ],
+  "origin": "living-things-and-body"
+ },
+ {
+  "slug": "tree-rings",
+  "title": "Tree rings",
+  "level": 0,
+  "kind": "explore",
+  "category": "biology",
+  "everyday": true,
+  "interaction": "Scrub the years of a real tree's life and watch it lay down one ring a year, wide in a good year and narrow in a dry one, drawn to the measured widths from a public archive; hover a ring for its year and its measured width, and the narrow ones are the hard years. Then try the detectives' trick: slide the ring pattern of an old beam along a living tree's record until the narrow years line up, and read off when the beam was cut.",
+  "takeaway": "A tree writes one ring a year, wide in good years and narrow in bad ones, so its rings are both a calendar and a weather diary that can be matched between trees.",
+  "prerequisites": [],
+  "related": [
+   "why-leaves-change-colour",
+   "how-plants-drink",
+   "deep-time",
+   "ice-ages"
+  ],
+  "needs": "Raw ring-width series (.rwl) from the International Tree-Ring Data Bank, NOAA NCEI World Data Service for Paleoclimatology: a US government archive, catalogued as CC0 by the Open Data Institute; each contributed series cites its authors.",
+  "needsSource": "ITRDB ring-width series, NOAA NCEI (US government archive, CC0 per the ODI certificate; data.gov lists no licence, so confirm on the study page)",
+  "pitfall": "Not every ring is a year everywhere: in a bad year a tree can skip a ring or add a false one, which is why the match uses a whole pattern of narrow years, never a single count.",
+  "why": "Demand and data: the ITRDB is the world's largest public archive of tree-ring measurements, catalogued on data.gov. https://catalog.data.gov/dataset/noaa-wds-paleoclimatology-the-international-tree-ring-data-bank-itrdb-revisited",
+  "overlapWith": "deep-time: that page scrubs Earth's whole record; this one scrubs one tree's rings, one per year, and teaches the matching trick that dates old wood.",
   "leadsTo": [
    "deep-time",
-   "evolution",
-   "radioactivity"
+   "carbon-cycle"
   ],
-  "everyday": false,
-  "origin": "earth-sky-weather"
+  "origin": "living-things-and-body"
  },
  {
-  "slug": "geothermal-heat-below",
-  "title": "Heat from underground",
-  "level": 0,
-  "kind": "simulate",
-  "category": "earth",
-  "interaction": "Drill a well down from a field and read the thermometer as it goes: the rock gets warmer with every kilometre, warm enough for a bath a few kilometres down and for steam in volcanic ground. Pump water down and up to heat a town and watch the ground around the well cool over years, then rest it and watch the heat creep back; move the well to Iceland or beside a hot spring and compare. A map shows the heat measured flowing out of the ground around the world.",
-  "takeaway": "The ground gets hotter the deeper you go, so a deep enough well reaches heat that can warm a house or boil water, soonest where volcanoes are near.",
-  "prerequisites": [],
-  "related": [
-   "power-station-kettle",
-   "dam-water-height"
-  ],
-  "needs": "Measured heat flow out of the ground around the world, for the map and the local gradient: the IHFC Global Heat Flow Database (CC BY 4.0).",
-  "pitfall": "Underground heat is not the Sun's heat stored in the ground: the Sun warms only the top few metres, and below that the warmth comes from the Earth itself. Nor is it endless at one spot: pump too fast and the rock around the well cools for decades.",
-  "why": "US DOE, 'Geothermal basics', https://www.energy.gov/eere/geothermal/geothermal-basics (curriculum: NGSS 4-ESS3-1, energy resources)",
-  "overlapWith": "plate-tectonics: that page shows where volcanoes are and why; this page follows the heat down a well anywhere, and what pumping it out does to the ground.",
-  "needsSource": "IHFC Global Heat Flow Database, https://ihfc-iugg.org/products/global-heat-flow-database (CC BY 4.0).",
-  "leadsTo": [
-   "plate-tectonics"
-  ],
-  "everyday": false,
-  "origin": "vehicles-and-big-machines"
- },
- {
-  "slug": "glacier-flow",
-  "title": "Glaciers: rivers of ice",
-  "level": 0,
-  "kind": "simulate",
-  "category": "earth",
-  "interaction": "A mountain valley in cross-section, with snow falling on the high ground and melting on the low ground; press play and the snow that outlasts the summer packs into ice, and the ice, once thick enough, creeps downhill like very slow honey, dragging rocks that scrape the valley into a U. The one control is the climate: make it colder or snowier and the front advances, warmer and the front retreats. Flags frozen into the ice show that the ice itself still flows forward even while the front is retreating.",
-  "takeaway": "A glacier is a slow river of ice whose front moves forward or back depending on whether the snow it gains up high outpaces the melting at its toe, while the ice itself always flows downhill.",
-  "prerequisites": [],
-  "related": [
-   "river-valleys",
-   "snowflake-growth",
-   "how-caves-form",
-   "a-year-of-weather"
-  ],
-  "needs": "",
-  "needsSource": "none (a one-dimensional shallow-ice flowline with Glen's flow law and a snowfall-minus-melt balance that depends on height; PhET's legacy Glaciers sim is the reference interaction)",
-  "pitfall": "A retreating glacier does not flow backward or uphill: it melts at its toe faster than it flows forward.",
-  "why": "England KS3 geography: 'glaciation, hydrology and coasts' (https://www.gov.uk/government/publications/national-curriculum-in-england-geography-programmes-of-study/national-curriculum-in-england-geography-programmes-of-study); PhET Glaciers (https://phet.colorado.edu/en/simulations/glaciers).",
-  "overlapWith": "ice-ages (level 2) explains when ice sheets grow from orbital cycles; this page shows how one glacier flows and why its front moves.",
-  "leadsTo": [
-   "deep-time"
-  ],
-  "everyday": false,
-  "origin": "earth-sky-weather"
- },
- {
-  "slug": "how-caves-form",
-  "title": "How caves form",
-  "level": 0,
-  "kind": "simulate",
-  "category": "earth",
-  "interaction": "A block of limestone threaded with hair-thin cracks, and slightly acid rainwater seeping in from the top; press play with the clock running thousands of years. Water flows where it can and dissolves a little rock as it goes, and every crack it widens carries more water and so widens faster, until one path wins and swells into a tunnel while the others stay cracks; the one control is how acid the rain is. Lower the water table and the tunnel drains into an air-filled cave where drips start building stalactites.",
-  "takeaway": "Caves are dissolved, not dug: the crack that carries the most water widens fastest, so a maze of hair-thin cracks turns into one big tunnel.",
-  "prerequisites": [],
-  "related": [
-   "why-the-sea-is-salty",
-   "river-valleys",
-   "glacier-flow",
-   "rock-to-sand"
-  ],
-  "needs": "",
-  "needsSource": "none (a fracture-network karst model: flow through a crack growing with the cube of its width, dissolution from the standard calcite kinetics, a sped-up clock)",
-  "pitfall": "Most caves were not washed out by underground rivers or cracked open by earthquakes: the rock was dissolved, slowly, by water that was only slightly acid.",
-  "why": "England KS3 geography: 'rocks, weathering and soils' (https://www.gov.uk/government/publications/national-curriculum-in-england-geography-programmes-of-study/national-curriculum-in-england-geography-programmes-of-study); US National Park Service, Caves and Karst (https://www.nps.gov/subjects/caves/index.htm).",
-  "overlapWith": "acids-bases (level 1) shows acids reacting; this page is about a positive feedback in flow, and the acid is only the thing that does the dissolving.",
-  "leadsTo": [
-   "acids-bases",
-   "deep-time"
-  ],
-  "everyday": false,
-  "origin": "earth-sky-weather"
- },
- {
-  "slug": "how-rain-forms",
-  "title": "From cloud droplet to raindrop, or hailstone",
-  "level": 0,
-  "kind": "simulate",
-  "category": "earth",
-  "interaction": "A cloud of tiny droplets hangs in gently rising air, each falling slower than the air rises, so the cloud floats; press play and droplets bump and merge, and the bigger one gets the faster it falls and the more it sweeps up, until it outruns the updraft and drops out as rain, a size scale showing the drop is a hundred droplets across and took about a million of them. The one control is the updraft: turn it up and the drops grow larger before they fall, the difference between drizzle and a downpour. Turn it up to thunderstorm strength and the drops are carried above the freezing height, where each trip up adds a layer of ice until a hailstone too heavy for the wind drops out, and you can cut it open and count the rings.",
-  "takeaway": "A cloud droplet must merge with about a million others before it falls faster than the air that holds the cloud up, so rain is the end of a chain of collisions, and the stronger the rising air, the bigger what finally falls, up to hail.",
-  "prerequisites": [
-   "cloud-base"
-  ],
-  "related": [
-   "water-cycle",
-   "snowflake-growth",
-   "dew-and-fog",
-   "tornado-spin",
-   "lightning-and-thunder"
-  ],
-  "needs": "",
-  "needsSource": "none (collision-coalescence growth with terminal velocities from the standard published fall-speed relation for water drops, and an ice sphere's fall speed against the updraft for the hail step)",
-  "pitfall": "Raindrops are not tear-shaped: small ones are spheres and big ones flatten into buns. A cloud does not rain because it has become too heavy, and hail is not frozen rain and does not need a cold day: it falls from summer thunderstorms whose tops are far below freezing.",
-  "why": "NGSS MS-ESS2-4, whose clarification stresses 'the ways water changes its state as it moves through the multiple pathways of the hydrologic cycle' (https://www.nextgenscience.org/pe/ms-ess2-4-earths-systems); NGSS 3-ESS3-1 on weather-related hazards (https://www.nextgenscience.org/pe/3-ess3-1-earth-and-human-activity).",
-  "overlapWith": "cloud-base: that page ends where a cloud appears; this one asks why its droplets stay up and what has to happen before they come down.",
-  "leadsTo": [
-   "newtons-laws",
-   "states-of-matter"
-  ],
-  "everyday": false,
-  "origin": "earth-sky-weather"
- },
- {
-  "slug": "lighthouse-beam",
-  "title": "Lighthouses: how far a light can be seen",
+  "slug": "why-big-birds-flap-slowly",
+  "title": "Why big birds flap slowly",
   "level": 0,
   "kind": "manipulate",
-  "category": "earth",
-  "interaction": "Raise a lighthouse's lamp up its tower and watch the lit stretch of sea grow as the Earth's curve stops hiding it; a ship sails in from beyond the horizon and its lookout sees the flash first from the crow's nest, then from the deck. Spin the lamp's lens to send a beam round and set its rhythm of flashes from a real list of lights; the ship reads the rhythm to tell this lighthouse from the next one down the coast.",
-  "takeaway": "The Earth's curve hides a low light, so lighthouses are tall and lookouts climb high, and each light's rhythm of flashes is its name.",
-  "prerequisites": [],
-  "related": [
-   "satellite-sky-tracks"
-  ],
-  "needs": "Heights, ranges and flash characteristics of a few named lighthouses from the US Coast Guard Light List (US government work, public domain).",
-  "pitfall": "A light is not hidden by distance alone: on a flat Earth a bright enough lamp would be seen from anywhere. The lens does not make the lamp brighter; it gathers light that would be wasted upward and sideways into a beam, which is why the light flashes as the beam sweeps past.",
-  "why": "The US Coast Guard Light List, the real register of lights and their characteristics, https://www.navcen.uscg.gov/light-lists ('how far can you see a lighthouse' is a common search question)",
-  "overlapWith": "light-optics: that page traces rays through lenses on a bench; this page does not trace the lens at all, it uses the curve of the Earth and the rhythm of flashes.",
-  "needsSource": "USCG Light List (public domain), https://www.navcen.uscg.gov/light-lists",
-  "leadsTo": [
-   "light-optics",
-   "sun-earth-moon"
-  ],
+  "category": "biology",
   "everyday": false,
-  "origin": "vehicles-and-big-machines"
- },
- {
-  "slug": "lightning-and-thunder",
-  "title": "Lightning and thunder: count the seconds",
-  "level": 0,
-  "kind": "build",
-  "category": "earth",
-  "interaction": "A storm scene: a charged cloud, open ground and a palette of things to place on it (a tree, a house, a tall rod, a person); press strike and a branching bolt grows down from the cloud step by step, landing on the tallest thing near its path more often than anywhere else. Then the flash reaches the viewer at once while the thunder's sound front crawls out at a third of a kilometre per second, a counter ticking off the seconds until it arrives. Drag the viewer farther away: more seconds, fainter rumble.",
-  "takeaway": "Thunder is the sound of the lightning you already saw: light arrives at once and sound takes about three seconds per kilometre, so counting the gap tells how far away the storm is, and the bolt favours the tallest path to the ground.",
+  "interaction": "Pick a real bird, from a hummingbird to a swan, and see it flap at its own rate and fly at the speed it needs to stay up; drag the size slider to blow a sparrow up to goose size and watch the flap rate fall and the needed speed climb. Past a certain size the sums no longer work for flapping, and the biggest flyers are shown soaring instead.",
+  "takeaway": "Bigger birds must fly faster and flap slower, and past a certain size flapping cannot keep them up, which is why the biggest flyers soar.",
   "prerequisites": [],
   "related": [
-   "how-rain-forms",
-   "sea-breeze",
-   "tornado-spin"
+   "inside-an-egg",
+   "flight",
+   "newtons-laws"
   ],
-  "needs": "",
-  "needsSource": "none (the dielectric-breakdown model of Niemeyer, Pietronero and Wiesmann, 1984, grown on a grid with grounded objects; sound at 343 m/s)",
-  "pitfall": "Thunder is not clouds bumping together, and lightning does strike the same place twice: tall things get hit again and again.",
-  "why": "US National Weather Service, 'Understanding Lightning: Thunder', with the count-the-seconds rule (https://www.weather.gov/safety/lightning-science-thunder); KS2 Year 4 Sound: 'sounds get fainter as the distance from the sound source increases'.",
-  "overlapWith": "waves-interference (level 1) treats sound as a wave with speed and Doppler shift; this page uses only the fact that sound is slow and light is not, plus where a bolt goes.",
-  "leadsTo": [
-   "waves-interference",
-   "electric-circuits"
-  ],
-  "everyday": true,
-  "origin": "earth-sky-weather"
- },
- {
-  "slug": "river-valleys",
-  "title": "How rivers carve valleys",
-  "level": 0,
-  "kind": "simulate",
-  "category": "earth",
-  "interaction": "Rain falls on a bumpy block of land shown from above and in cross-section. Water runs downhill, joins into streams, picks up soil where it runs fast and drops it where it slows: the streams branch like a tree, cut valleys, and a fan of dropped mud grows where the river meets the sea. One control: how much it rains; a later step lifts the land to see the rivers cut faster.",
-  "takeaway": "Rivers do not just follow valleys, they make them: moving water carries the land downhill a grain at a time and drops it wherever it slows.",
-  "prerequisites": [],
-  "related": [
-   "rock-to-sand",
-   "water-cycle",
-   "glacier-flow",
-   "fossil-layers",
-   "soil-in-a-jar"
-  ],
-  "needs": "",
-  "needsSource": "none (a cellular hydraulic-erosion model: flow routing on a small grid, erosion by fast water with a carrying limit, deposition where it slows, hillslope creep; optionally a real hillside from USGS 3DEP elevation, public domain)",
-  "pitfall": "A valley is not a crack that opened: the river removed what used to fill it, and it took far longer than a lifetime.",
-  "why": "NGSS 4-ESS2-1: 'Make observations and/or measurements to provide evidence of the effects of weathering or the rate of erosion by water, ice, wind, or vegetation' (https://www.nextgenscience.org/pe/4-ess2-1-earths-systems); England KS2 geography, rivers.",
-  "overlapWith": "plate-tectonics (level 1) builds mountains; this page wears them down, and it is the only page where water shapes the land.",
-  "leadsTo": [
-   "plate-tectonics",
-   "deep-time"
-  ],
-  "everyday": false,
-  "origin": "earth-sky-weather"
- },
- {
-  "slug": "rock-to-sand",
-  "title": "Where sand comes from",
-  "level": 0,
-  "kind": "step",
-  "category": "earth",
-  "interaction": "Step a chunk of rock down a river: it breaks off a cliff, bangs along in a flood, and at each stop it is rounder and smaller as its corners knock off, faster for soft rock than hard. Where the river slows, the grains it carries settle by size, boulders first, then gravel, then sand, with mud going farthest; at the beach the waves finish the job. Scrub back and forth along the river to see where each size ends up.",
-  "takeaway": "Every grain of sand on a beach is a piece of a mountain that was knocked smaller and rounder on its way down, and the river sorts the grains by size as it slows.",
-  "prerequisites": [],
-  "related": [
-   "river-valleys",
-   "beach-waves",
-   "sand-dunes",
-   "fossil-layers",
-   "soil-in-a-jar"
-  ],
-  "needs": "",
-  "needsSource": "none (Sternberg's law of downstream abrasion with published coefficients for a few rock types, and settling speeds by grain size)",
-  "pitfall": "Sand is not all ground up by the sea, and not all sand is quartz: white tropical sand is broken shell and coral.",
-  "why": "England KS2 science, Year 3 Rocks: 'compare and group together different kinds of rocks on the basis of their appearance and simple physical properties' (https://www.gov.uk/government/publications/national-curriculum-in-england-science-programmes-of-study/national-curriculum-in-england-science-programmes-of-study); NGSS 4-ESS2-1.",
-  "overlapWith": "river-valleys: that page shows the land being cut; this one follows a single rock through the cutting and asks what becomes of it.",
-  "leadsTo": [
-   "deep-time",
-   "plate-tectonics"
-  ],
-  "everyday": false,
-  "origin": "earth-sky-weather"
- },
- {
-  "slug": "sand-dunes",
-  "title": "How dunes march",
-  "level": 0,
-  "kind": "simulate",
-  "category": "earth",
-  "interaction": "A flat bed of sand under a steady wind, drawn as little stacked slabs; press play and the wind lifts grains from the side facing it and drops them a little downwind, they pile until a slope gets too steep and slides, and out of a flat bed grows a field of dunes, each with a gentle face toward the wind and a steep slip face behind. The one control is the wind's direction, later its strength. Turn the wind and the dunes slowly rebuild to face it; everything creeps downwind.",
-  "takeaway": "Dunes are the wind moving sand uphill one grain at a time and the sand sliding down the back, so a whole dune walks downwind and always faces into the wind.",
-  "prerequisites": [],
-  "related": [
-   "rock-to-sand",
-   "beach-waves",
-   "sea-breeze"
-  ],
-  "needs": "",
-  "needsSource": "none (Werner's 1995 cellular dune model: sand slabs, wind shadows, avalanching at the angle of repose)",
-  "pitfall": "Deserts are not defined by sand or by heat but by dryness: most desert is rock and gravel, and some of it is cold.",
-  "why": "NGSS 4-ESS2-1, erosion by wind (https://www.nextgenscience.org/pe/4-ess2-1-earths-systems); US National Park Service, 'Aeolian (Dunes) Landforms' (https://www.nps.gov/subjects/geology/aeolian-landforms.htm).",
-  "overlapWith": "rock-to-sand makes the grains; this page is what the wind does with them, and no existing page shows a landform built by wind.",
-  "leadsTo": [
-   "deep-time"
-  ],
-  "everyday": false,
-  "origin": "earth-sky-weather"
- },
- {
-  "slug": "sea-breeze",
-  "title": "Where wind comes from: the sea breeze",
-  "level": 0,
-  "kind": "simulate",
-  "category": "earth",
-  "interaction": "A coast in cross-section, land on one side and sea on the other, filled with air drawn as drifting particles. Drag the Sun across the sky: by afternoon the land is warmer than the sea, the air over it rises, and air from the sea slides in underneath as a breeze that a flag on the beach shows. At night the land cools faster than the water and the breeze turns around and blows out to sea.",
-  "takeaway": "Wind is air moving from where it is cool and heavy toward where it is warm and rising, so uneven heating of land and water is enough to make a wind blow, and to turn it around at night.",
-  "prerequisites": [],
-  "related": [
-   "cloud-base",
-   "tornado-spin",
-   "a-year-of-weather",
-   "beach-waves"
-  ],
-  "needs": "",
-  "needsSource": "none (a small 2D buoyant-convection solver on a coarse grid, with the sea slower to warm than the land)",
-  "pitfall": "Warm air does not rise because heat goes up: it rises because it is lighter than the cooler air around it, which pushes it up.",
-  "why": "NOAA JetStream, 'The Sea Breeze' (https://www.noaa.gov/jetstream/ocean/sea-breeze); NGSS MS-ESS2-5 on air masses moving from high to low pressure.",
-  "overlapWith": "atmosphere-weather (level 2) heats a whole spinning globe into convection cells and winds with Coriolis; this page heats one beach and gets one wind, no rotation.",
-  "leadsTo": [
-   "states-of-matter"
-  ],
-  "everyday": false,
-  "origin": "earth-sky-weather"
- },
- {
-  "slug": "snowflake-growth",
-  "title": "Why snowflakes have six arms",
-  "level": 0,
-  "kind": "simulate",
-  "category": "earth",
-  "interaction": "Start from a speck in cold, moist air and watch a crystal grow on a honeycomb grid: water molecules arrive from all sides, the corners that stick out catch more of them, and six arms shoot out and branch. One control: the amount of moisture in the air, then the temperature. Low moisture grows flat plates and stubby prisms, high moisture grows branching stars, and a little randomness means no two crystals come out the same, though every one keeps its six-fold symmetry.",
-  "takeaway": "Six-fold symmetry comes from the way water molecules pack, and the shape of the arms comes from the air the crystal grew in, so every snowflake is a record of its own journey.",
-  "prerequisites": [],
-  "related": [
-   "dew-and-fog",
-   "how-rain-forms",
-   "glacier-flow"
-  ],
-  "needs": "",
-  "needsSource": "none (Reiter's 2005 hexagonal cellular automaton for snow crystal growth, or the Gravner-Griffeath 2008 model, checked against the Nakaya morphology diagram)",
-  "pitfall": "Snowflakes are not frozen raindrops; that is sleet. A snow crystal grows from vapour straight into ice.",
-  "why": "NOAA, 'How do snowflakes form? Get the science behind snow' (https://www.noaa.gov/stories/how-do-snowflakes-form-science-behind-snow); KS2 Year 4 states of matter.",
-  "overlapWith": "states-of-matter (level 1) shows water freezing into its open lattice; this page shows a single crystal growing from vapour and why its shape depends on the air.",
-  "leadsTo": [
-   "states-of-matter",
-   "chemical-bonds"
-  ],
-  "everyday": false,
-  "origin": "earth-sky-weather"
- },
- {
-  "slug": "soil-in-a-jar",
-  "title": "What soil is made of: the jar test",
-  "level": 0,
-  "kind": "step",
-  "category": "earth",
-  "everyday": true,
-  "interaction": "Scoop soil from a chosen place (a sandy garden, a clay field, a forest floor, a river bank) into a jar of water, shake it and step the clock: after a minute the sand has dropped to the bottom, after an hour the silt lies on top of it, and a day later the cloudy water has finally let its clay down, while bits of rotted leaf and root still float. A ruler reads the thickness of each layer and names the soil from the mix. A last step pours water on each soil: it runs straight through the sandy one and sits for hours on the clay.",
-  "takeaway": "Soil is rock ground into grains of three sizes plus the rotted remains of living things, and the mix decides whether water runs through it or stays.",
-  "prerequisites": [],
-  "related": [
-   "rock-to-sand",
-   "river-valleys",
-   "water-cycle",
-   "fossil-layers"
-  ],
-  "leadsTo": [
-   "ecosystems",
-   "plate-tectonics"
-  ],
-  "needs": "",
-  "needsSource": "none (settling speeds by grain size from Stokes' law, the sand, silt and clay size classes and the USDA soil texture triangle, US Department of Agriculture work, public domain)",
-  "pitfall": "Soil is not dirt that was always there and is not the same everywhere: a few centimetres take centuries to form, and the floating bits are as much a part of soil as the grains.",
-  "why": "England KS2 science, Year 3 Rocks: 'recognise that soils are made from rocks and organic matter' (https://www.gov.uk/government/publications/national-curriculum-in-england-science-programmes-of-study/national-curriculum-in-england-science-programmes-of-study); the jar test is a standard extension-service activity (https://hgic.clemson.edu/factsheet/soil-texture-analysis-the-jar-test/).",
-  "overlapWith": "rock-to-sand: that page sorts grains by size along a river; this one sorts them in a jar the reader can shake at home and adds the half of soil that was never rock.",
-  "origin": "earth-sky-weather"
- },
- {
-  "slug": "tornado-spin",
-  "title": "How a tornado spins up",
-  "level": 0,
-  "kind": "manipulate",
-  "category": "earth",
-  "interaction": "A wide, slowly turning column of air under a thunderstorm, drawn as rings of particles. Drag the storm's updraft to stretch the column taller and thinner: the particles keep their swing but have less room, so they whirl faster, like a skater pulling in her arms, and a funnel appears where the whirl is fast enough for the pressure drop at its heart to make a cloud. Let the column widen again and it slows and the funnel fades.",
-  "takeaway": "A spinning column of air spins faster when it is stretched thinner, and the funnel you see is just the place where the whirl is fast enough to make a cloud.",
-  "prerequisites": [],
-  "related": [
-   "sea-breeze",
-   "how-rain-forms",
-   "lightning-and-thunder"
-  ],
-  "needs": "",
-  "needsSource": "none (a Rankine-type vortex with angular momentum conserved under stretching, particle advection, and the pressure drop that condenses the funnel)",
-  "pitfall": "The visible funnel is not the whole tornado: the wind spins just as hard outside it before the cloud appears, which is why damage starts before the funnel seems to touch down.",
-  "why": "NGSS 3-ESS3-1, weather-related hazards (https://www.nextgenscience.org/pe/3-ess3-1-earth-and-human-activity); 'how do tornadoes form' is a standing how-does-it-work question.",
-  "overlapWith": "atmosphere-weather (level 2) grows a hurricane from a warm sea on a rotating globe; this page stretches one small vortex with no Coriolis effect at all.",
+  "needs": "AVONET (Tobias et al. 2022, Ecology Letters, paper CC BY 4.0; the data files on Figshare, licence to confirm) for species mass, wing length and wing area; Pennycuick's wingbeat-frequency formula (J. Exp. Biol. 1990, revised 1996) and minimum flight speed from wing loading.",
+  "needsSource": "AVONET species measurements (paper CC BY 4.0, dataset licence to confirm on the repository); Pennycuick 1990/1996 published formulas",
+  "pitfall": "Do not explain lift here: flight owns it, and never with equal transit time. A bird's size does not scale evenly: weight grows faster than wing area, which is the whole point.",
+  "why": "Demand: the universal flapping-frequency equation made popular-science news in 2024. https://physicsworld.com/a/simple-equation-predicts-how-quickly-animals-flap-their-wings/",
+  "overlapWith": "flight: that page is lift and stall on a wing section at level 2; this one never looks at the wing's shape, only at how flap rate and speed change with a bird's size across real species.",
   "leadsTo": [
    "newtons-laws"
   ],
-  "everyday": false,
-  "origin": "earth-sky-weather"
+  "origin": "living-things-and-body"
  },
  {
-  "slug": "volcano-eruptions",
-  "title": "Why some volcanoes explode and others ooze",
-  "level": 0,
-  "kind": "step",
-  "category": "earth",
-  "interaction": "Step magma up a pipe toward the surface with gas dissolved in it like a shaken fizzy drink: as the weight of rock above lessens, bubbles appear and grow. The one control is how runny or sticky the magma is: runny magma lets the bubbles float out, and lava fountains and flows spill gently down the slope, while sticky magma traps them until the froth bursts and the cone blows its top in ash. A second control adds more gas and makes the sticky case worse.",
-  "takeaway": "What makes an eruption explosive is not how hot the magma is but how hard it is for its gas to get out: runny magma fizzes, sticky magma bursts.",
-  "prerequisites": [],
-  "related": [
-   "rock-to-sand",
-   "fossil-layers"
-  ],
-  "needs": "",
-  "needsSource": "none (bubble growth as pressure falls, bubble rise speed set by the magma's viscosity, fragmentation above a gas fraction threshold)",
-  "pitfall": "Lava is not fire and a volcano is not a hole into a burning centre: magma is melted rock, and most of the Earth's inside is solid.",
-  "why": "USGS FAQ, 'How do volcanoes erupt?', runny magma that lets gas escape against sticky magma that traps it (https://www.usgs.gov/faqs/how-do-volcanoes-erupt); England KS2 geography, volcanoes and earthquakes.",
-  "overlapWith": "plate-tectonics (level 1) shows where volcanoes are and why; this page shows what happens inside one when it erupts, which that page does not.",
-  "leadsTo": [
-   "plate-tectonics",
-   "states-of-matter"
-  ],
-  "everyday": false,
-  "origin": "earth-sky-weather"
- },
- {
-  "slug": "water-cycle",
-  "title": "The water cycle",
+  "slug": "why-leaves-change-colour",
+  "title": "Why leaves change colour",
   "level": 0,
   "kind": "simulate",
-  "category": "earth",
-  "interaction": "A sea, a mountain and the sky, with the water drawn as a few hundred dots that the page follows one by one. Turn the Sun up and more dots leave the sea as invisible vapour, rise, cool and gather into clouds that rain on the mountain, from where streams carry them back to the sea; turn it down and the air dries and the rivers shrink. A counter shows how many dots are in the sea, the air, the ice and the rivers at any moment, and the sea always holds almost all of them.",
-  "takeaway": "Water is never used up: the same water goes round and round between sea, air and land, lifted by the Sun's heat and brought back down by gravity.",
+  "category": "biology",
+  "everyday": false,
+  "interaction": "Watch one maple leaf from late summer into autumn on a calendar scrub: as the days shorten and the nights cool, the green pigment is broken down and pulled back into the tree, and the yellow and orange that were underneath all along show through; sunny days with cold nights brew red on top. Then force the weather: a warm, dull autumn gives yellow without red, and an early frost cuts the show short.",
+  "takeaway": "The yellow was in the leaf all summer, hidden under the green; the tree takes the green back before letting the leaf go.",
   "prerequisites": [],
   "related": [
-   "cloud-base",
-   "how-rain-forms",
-   "why-the-sea-is-salty",
-   "river-valleys"
+   "how-plants-drink",
+   "tree-rings",
+   "seeds-and-germination",
+   "photosynthesis"
   ],
   "needs": "",
-  "needsSource": "none (the share of water in each store from the USGS Water Science School, US Government work, public domain)",
-  "pitfall": "Evaporation does not need boiling: water leaves the sea at ordinary temperatures, faster when it is warmer. And the vapour is invisible; the white of a cloud is droplets.",
-  "why": "England KS2 science, Year 4 States of matter: 'identify the part played by evaporation and condensation in the water cycle' and 'associate the rate of evaporation with temperature' (https://www.gov.uk/government/publications/national-curriculum-in-england-science-programmes-of-study/national-curriculum-in-england-science-programmes-of-study); also NGSS MS-ESS2-4 (https://www.nextgenscience.org/pe/ms-ess2-4-earths-systems).",
-  "overlapWith": "carbon-cycle: the same idea of stores joined by flows, but for water, with every drop followed as a particle in a landscape instead of flows drawn to scale between boxes.",
+  "needsSource": "none for the model (green pigment broken down as days shorten and cool, yellow pigments constant, red made on bright cool days, leaf colour mixed from the pigments); if the colour is mixed from measured pigment spectra, PhotochemCAD's spectra are freely downloadable but their licence must be checked",
+  "pitfall": "Leaves do not make yellow in autumn: the yellow was already there, and only the red is made fresh. Cold does not cause the change by itself: the shortening days are the main trigger.",
+  "why": "England KS1 statutory requirement, Seasonal changes: observe changes across the four seasons; and the most-asked autumn question. https://www.gov.uk/government/publications/national-curriculum-in-england-science-programmes-of-study/national-curriculum-in-england-science-programmes-of-study",
+  "overlapWith": "photosynthesis: that page is the green pigment at work; this one is the green being dismantled and what it leaves behind.",
   "leadsTo": [
-   "carbon-cycle",
-   "states-of-matter"
+   "photosynthesis"
   ],
-  "everyday": false,
-  "origin": "earth-sky-weather"
+  "origin": "living-things-and-body"
  },
  {
-  "slug": "why-the-sea-is-salty",
-  "title": "Why the sea is salty",
-  "level": 0,
+  "slug": "bacterial-chemotaxis",
+  "title": "Bacterial chemotaxis",
+  "level": 3,
   "kind": "simulate",
-  "category": "earth",
-  "interaction": "A lake fed by a river that carries a pinch of salt in every bucket of water; the Sun lifts pure water out and the salt stays. Open or close the lake's outlet: with an outlet the salt leaves as fast as it arrives and the lake stays fresh, close it and the salt count climbs year after year until crystals ring the shore, like the Dead Sea. Then the ocean: rivers in, evaporation out, and salt also leaving into the sea floor, so its saltiness holds steady at about two teaspoons of salt in every glass.",
-  "takeaway": "Rivers carry a little salt to the sea and the Sun takes only the water back, so salt collects wherever water can leave only by evaporating.",
-  "prerequisites": [],
+  "category": "biology",
+  "interaction": "Release a few hundred E. coli into a dish with a drop of attractant and watch each one run straight, tumble, and run again; inside each cell a Barkai-Leibler receptor model sets the tumble rate, and the swarm drifts up the gradient. Move the drop, flood the dish with a uniform dose and watch the tumble rate dip then recover exactly (perfect adaptation), and change the adaptation time or the swim speed to see the biased random walk fail.",
+  "takeaway": "A bacterium is too small to sense a gradient across its body, so it compares now with a moment ago and tumbles less when things are getting better; that biased random walk is enough to climb a gradient.",
+  "prerequisites": [
+   "the-cell"
+  ],
   "related": [
-   "water-cycle",
-   "rock-to-sand",
-   "dew-and-fog",
-   "how-caves-form"
+   "quorum-sensing",
+   "feedback-control",
+   "homeostasis"
   ],
   "needs": "",
-  "needsSource": "none (a salt mass-balance box model; seawater at about 35 g per kg and the average river at about 0.1 g per litre, from the USGS Water Science School, US Government work)",
-  "pitfall": "The ocean is not getting steadily saltier today: salt leaves into the sea floor about as fast as rivers bring it.",
-  "why": "USGS Water Science School, 'Why is the ocean salty?' (https://www.usgs.gov/special-topics/water-science-school/science/why-ocean-salty); 'why is the sea salty?' is among the questions UK parents say they cannot answer (https://www.stornowaygazette.co.uk/arts-and-culture/top-30-impossible-questions-that-children-ask-840687).",
-  "overlapWith": "ocean-currents (level 2) uses salinity to drive the deep circulation; this page asks where the salt came from and never mentions currents.",
-  "leadsTo": [
-   "states-of-matter",
-   "acids-bases"
-  ],
-  "everyday": false,
-  "origin": "earth-sky-weather"
- },
- {
-  "slug": "aurora-rings",
-  "title": "Auroras: the Sun's wind on Earth's magnet",
-  "level": 0,
-  "kind": "simulate",
-  "category": "space",
-  "interaction": "Earth with its magnetic field drawn as loops, in a stream of charged specks from the Sun; press play and the specks cannot cross the field lines, so they slide along them and spiral down into the air in two rings around the magnetic poles, where the sky glows green and, higher up, red. The one control is the strength of the solar wind. A gust squeezes the field and the glowing rings widen toward the equator, which is when people far from the poles get to see the lights.",
-  "takeaway": "Auroras happen in rings around the magnetic poles because Earth's magnetic field steers the Sun's charged particles there, and a stronger solar wind pushes the rings toward the equator.",
-  "prerequisites": [],
-  "related": [
-   "compass-and-magnetic-poles",
-   "comet-tails",
-   "twinkling-stars"
-  ],
-  "needs": "",
-  "needsSource": "none (charged particles integrated in a dipole field, the field's sunward edge pushed in by solar-wind pressure, glow colour by height; the page states the simplification that particles are shown guided straight down the field lines, where the real ones arrive by way of the night-side tail; the NOAA SWPC OVATION aurora forecast, public domain, can be shown for comparison)",
-  "pitfall": "Auroras are not sunlight reflected off polar ice, and they are not in the clouds: they glow a hundred kilometres up and higher.",
-  "why": "NASA Space Place, 'What Is an Aurora?' (https://spaceplace.nasa.gov/aurora/en/).",
-  "overlapWith": "electromagnetism (level 2) shows charges moving in fields in the abstract; this page shows it once, on a planet, with the pattern it makes in the sky.",
-  "leadsTo": [
-   "atoms-periodic-table"
-  ],
-  "everyday": false,
-  "origin": "earth-sky-weather"
- },
- {
-  "slug": "comet-tails",
-  "title": "Comets and their tails",
-  "level": 0,
-  "kind": "explore",
-  "category": "space",
-  "interaction": "Scrub a comet along its real stretched orbit, far out and frozen, then swinging in close to the Sun. As it warms, gas and dust stream off it, and the tail always points away from the Sun, whichever way the comet is going, so on the way out the comet flies tail-first. Two tails appear: a straight blue gas tail pushed by the solar wind and a curved dust tail of grains that lag along the orbit; zoom in to see the grains leave.",
-  "takeaway": "A comet's tail is blown by the Sun, not left behind by motion, so it always points away from the Sun and the comet travels tail-first when it leaves.",
-  "prerequisites": [],
-  "related": [
-   "shooting-stars",
-   "solar-system-to-scale",
-   "aurora-rings"
-  ],
-  "needs": "Orbital elements of one or two real comets (Halley, and a recent bright one) from the JPL Small-Body Database API (https://ssd-api.jpl.nasa.gov/doc/sbdb.html); NASA/JPL data with no separate licence text, free to use with the credit 'Courtesy NASA/JPL-Caltech' under JPL's use policy. Treat as open but confirm against the API's terms before shipping.",
-  "needsSource": "JPL Small-Body Database orbital elements (NASA/JPL, free with credit; no explicit data licence)",
-  "pitfall": "The tail does not trail behind like exhaust, and a comet is not a burning rock: it is ice and dust turning to gas in sunlight.",
-  "why": "NASA Space Place, 'What Is a Comet?' (https://spaceplace.nasa.gov/comets/en/); England KS2 Year 5, the movement of bodies relative to the Sun.",
-  "overlapWith": "orbits-kepler (level 1) launches bodies into ellipses; this page uses one real ellipse and asks only which way the tail points.",
-  "leadsTo": [
-   "orbits-kepler",
-   "states-of-matter"
-  ],
-  "everyday": false,
-  "origin": "earth-sky-weather"
- },
- {
-  "slug": "dark-night-sky",
-  "title": "Why the sky is dark at night",
-  "level": 0,
-  "kind": "simulate",
-  "category": "space",
-  "everyday": false,
-  "interaction": "Stand in a forest drawn from above and widen it: with a few trees you see out between the trunks, but keep adding trees farther away and every line of sight ends on bark, so the forest closes into a wall. Then swap trees for stars scattered through space at their real sparseness and press play: light from the stars has been travelling only as long as the universe has existed, so only the stars within that distance can be seen, and a counter shows the sky is still almost entirely black. Drag the age of the universe up and watch the sky slowly fill; it would take an unimaginably longer time than the real one before the night sky glowed like the Sun's surface everywhere.",
-  "takeaway": "In an endless forest of stars shining forever, every direction would end on a star and the night sky would blaze; it is dark because the universe has an age, so the light from most of those stars has not arrived yet.",
-  "prerequisites": [],
-  "related": [
-   "sun-is-a-star",
-   "solar-system-to-scale",
-   "twinkling-stars",
-   "big-bang"
-  ],
+  "pitfall": "The cell does not steer toward the attractant: it cannot tell direction, it only changes how often it tumbles, and the page must not draw it turning toward the source.",
+  "why": "CourseSource lesson on building and simulating a chemotaxis model in Cell Collective (QUBES): https://qubeshub.org/publications/5179/",
+  "overlapWith": "ecosystems: that page moves animals on a field by population rates; here each cell's movement follows an internal signalling model and the collective drift emerges from it.",
+  "needsSource": "none",
   "leadsTo": [],
-  "needs": "",
-  "needsSource": "none (the fraction of the sky covered by stars of a given size scattered at a given density out to the light-travel distance, computed by counting lines of sight; the page states the simplification that it ignores the stretching of light by the expansion of space, which darkens the sky further)",
-  "pitfall": "The sky is not dark because stars are too far or too faint, or because dust hides them: with endless stars for endless time the faint ones would add up and the dust would glow too. It is dark because light has had only a limited time to travel.",
-  "why": "Olbers' paradox is a standing popular question: Scientific American, 'Why Is the Sky Dark at Night? You Can Thank the Big Bang' (https://www.scientificamerican.com/article/why-is-the-night-sky-dark-olbers); the MinutePhysics video 'Why is it dark at night?' (https://www.universetoday.com/97678/video-why-is-the-sky-dark-at-night).",
-  "overlapWith": "big-bang (level 2) runs the expansion and the timeline of the universe; this page uses only one consequence of the universe having an age, that light has had limited time to travel, and never mentions expansion on the stage.",
-  "origin": "earth-sky-weather"
+  "everyday": false,
+  "origin": "biology-l3"
  },
  {
-  "slug": "earth-is-a-ball",
-  "title": "Earth is a ball",
-  "level": 0,
-  "kind": "manipulate",
-  "category": "space",
-  "interaction": "Drag a ship out to sea and watch it from the shore: on a flat world it only shrinks, but on the round one its hull disappears before its sails as the sea bulges up between you and it, and climbing a cliff brings it back into view. Then walk a little figure around the globe: wherever it stands its feet point to the middle, and a dropped ball falls toward the middle too, so nobody on the far side falls off.",
-  "takeaway": "The world is a ball, so the sea itself hides the bottom of a distant ship, and 'down' means toward the middle wherever you stand.",
-  "prerequisites": [],
+  "slug": "cell-cycle-switch",
+  "title": "Cell cycle control",
+  "level": 3,
+  "kind": "simulate",
+  "category": "biology",
+  "interaction": "Run the Novak-Tyson model of the cyclin-Cdk switch: cyclin accumulates, Cdk activity stays low until a threshold, then flips high through its positive feedback loops and the cell enters mitosis; the negative loop through the anaphase-promoting complex destroys cyclin and resets it. Raise and lower cyclin by hand to trace the hysteresis loop, change the cell's growth rate to see the period change, and apply a DNA-damage checkpoint that holds the switch off.",
+  "takeaway": "A cell divides when a bistable switch flips, not when a timer runs out: positive feedback makes the decision sharp and hard to reverse, and checkpoints work by holding the switch below its threshold.",
+  "prerequisites": [
+   "signalling-cascades",
+   "the-cell"
+  ],
   "related": [
-   "time-zones",
-   "compass-and-magnetic-poles",
-   "solar-system-to-scale",
-   "what-planets-are-made-of"
+   "cancer",
+   "meiosis-inheritance",
+   "circadian-clocks",
+   "oscillations-resonance"
+  ],
+  "needs": "Tyson 1991 cyclin-Cdc2 model (BioModels BIOMD0000000005, CC0) or the Novak-Tyson 1993 model as curated in BioModels (CC0).",
+  "pitfall": "The cycle is not a clock that ticks regardless of state; in the model it is a relaxation oscillator built on a bistable switch, and the page must show the switch flipping, not a smooth sine wave.",
+  "why": "Tyson & Novak, 'Cell Cycle Vignettes: Bistability and Oscillations' (Virginia Tech teaching note): https://www.biol.vt.edu/content/dam/biol_vt_edu/faculty/tyson/Bistability%20and%20Oscillations.pdf",
+  "overlapWith": "cancer: that page lets cells divide too often by mutation; this one shows the machinery that decides when a single cell divides, which cancer's mutations break.",
+  "needsSource": "BioModels curated models, CC0.",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "biology-l3"
+ },
+ {
+  "slug": "central-pattern-generators",
+  "title": "Central pattern generators",
+  "level": 3,
+  "kind": "simulate",
+  "category": "biology",
+  "interaction": "Connect two neuron models with mutual inhibition and give them a steady, unpatterned drive; they fall into alternating bursts, the half-centre oscillator. Change the drive to speed the rhythm, swap the burst-ending mechanism (adaptation versus post-inhibitory rebound), then chain twenty such pairs along a lamprey's spine with asymmetric coupling: a wave of contraction travels down the body and the fish swims; reverse the coupling bias and it swims backward.",
+  "takeaway": "Rhythmic movement does not need a rhythmic command: two cells that inhibit each other turn a constant signal into alternation, and a chain of them makes a travelling wave.",
+  "prerequisites": [
+   "neurons",
+   "oscillations-resonance"
+  ],
+  "related": [
+   "circadian-clocks",
+   "feedback-control",
+   "synaptic-plasticity"
   ],
   "needs": "",
-  "needsSource": "none (the geometry of a sphere: horizon distance from eye height and the height hidden beyond it; gravity drawn toward the centre)",
-  "pitfall": "People on the far side are not upside down and do not have to hold on: the page draws no up arrow anywhere. And the ship does not vanish because it got too small.",
-  "why": "NGSS 5-PS2-1: 'Support an argument that the gravitational force exerted by Earth on objects is directed down', with 'down' pointing toward the center of the spherical Earth (https://www.nextgenscience.org/pe/5-ps2-1-motion-and-stability-forces-and-interactions); England KS2 Year 5: 'describe the sun, Earth and moon as approximately spherical bodies'.",
-  "overlapWith": "sun-earth-moon (level 1) tilts and orbits the Earth; this page never moves it, only shows that it is round and which way down is.",
-  "leadsTo": [
-   "sun-earth-moon",
-   "newtons-laws",
-   "orbits-kepler"
-  ],
+  "pitfall": "The half-centre model is a model: lamprey experiments show left-right phasing can survive midline lesions, so the page must present it as the classic mechanism, not the settled one.",
+  "why": "Model repository rather than a syllabus: lamprey swimming CPG reference implementation in the Nengo model zoo, https://zoo.nengo.ai/submissions/lamprey/index.html (no curriculum signal found in this round).",
+  "overlapWith": "neurons: that page fires one neuron and sums inputs on the next; this one wires neurons into a circuit whose output is a rhythm none of them has alone.",
+  "needsSource": "none",
+  "leadsTo": [],
   "everyday": false,
-  "origin": "earth-sky-weather"
+  "origin": "biology-l3"
+ },
+ {
+  "slug": "circadian-clocks",
+  "title": "Circadian clocks",
+  "level": 3,
+  "kind": "simulate",
+  "category": "biology",
+  "interaction": "Run a clock gene that represses its own transcription through a delay (a Goodwin-type loop, with the Leloup-Goldbeter model for the real gene names) and watch mRNA and protein chase each other in a cycle close to 24 hours in constant darkness. Add a light input to the degradation term and the clock locks to the day; shift the light schedule by eight hours and count how many days the phase takes to catch up, eastward versus westward; shorten the delay and the rhythm stops.",
+  "takeaway": "A gene that switches itself off with a delay oscillates on its own, and daylight does not drive that rhythm but nudges it into step, which is why jet lag takes days to resolve.",
+  "prerequisites": [
+   "lac-operon",
+   "oscillations-resonance"
+  ],
+  "related": [
+   "cell-cycle-switch",
+   "homeostasis",
+   "feedback-control"
+  ],
+  "needs": "Leloup & Goldbeter circadian model as curated in BioModels (CC0); the Goodwin oscillator needs no data.",
+  "pitfall": "The rhythm persists without any external cue: the page must show free-running oscillation in constant darkness, and must not show the clock as a response to sunrise.",
+  "why": "MPI MiS course on mathematical modelling of circadian rhythms: https://www.mis.mpg.de/events/event/mathematical-modeling-of-circadian-rhythms",
+  "overlapWith": "oscillations-resonance: that page is a mass on a spring driven by a force; this is a limit-cycle oscillator made of a delayed negative feedback loop, entrained rather than driven.",
+  "needsSource": "BioModels curated models, CC0.",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "biology-l3"
+ },
+ {
+  "slug": "coalescent",
+  "title": "The coalescent",
+  "level": 3,
+  "kind": "step",
+  "category": "biology",
+  "interaction": "Sample ten gene copies from a population and step backwards one generation at a time: each copy picks a parent at random, two lineages that pick the same parent merge, and the genealogy grows down to a single ancestor with its branch lengths. Rerun to see how much the tree varies, change the population size and watch the time to the common ancestor scale with it, and sprinkle mutations on the branches to produce the sample's sequence differences. Squeeze the population through a bottleneck and see the genealogy and the diversity collapse.",
+  "takeaway": "The pattern of differences in a sample of DNA sequences is the shadow of a random genealogy, and reading that genealogy backwards tells you how large the population was and when it shrank.",
+  "prerequisites": [
+   "population-genetics",
+   "central-limit-theorem"
+  ],
+  "related": [
+   "phylogenetics",
+   "speciation",
+   "deep-time"
+  ],
+  "needs": "",
+  "pitfall": "The most recent common ancestor of a sample is not the first human or a single couple; different genes have different ancestors at different times, and the page should show two loci with different trees.",
+  "why": "coalesceR, a pedagogical R package for teaching the basics of coalescent theory: https://rdrr.io/rforge/coalesceR",
+  "overlapWith": "population-genetics: that page runs time forward for a whole population; this one runs it backward for a sample, which is how real sequence data are read.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "biology-l3"
+ },
+ {
+  "slug": "dna-sequencing",
+  "title": "DNA sequencing & genome assembly",
+  "level": 3,
+  "kind": "build",
+  "category": "biology",
+  "interaction": "Sequence a real virus: run a Sanger reaction and sort its fluorescent fragments by length into a chromatogram, then switch to shotgun reads of the whole phiX174 genome and assemble them yourself. Choose read length, coverage and k, watch the de Bruijn graph form from k-mers and collapse into contigs, see repeats tangle the graph and sequencing errors sprout dead ends, and compare the assembly with the true genome.",
+  "takeaway": "A genome is never read in one piece: it is read as many short overlapping fragments and recovered by a graph algorithm whose success depends on coverage, read length and the genome's repeats.",
+  "prerequisites": [
+   "dna-to-protein",
+   "graph-search"
+  ],
+  "related": [
+   "phylogenetics",
+   "error-correction",
+   "crispr"
+  ],
+  "needs": "The phiX174 genome (GenBank NC_001422, 5,386 bases; NCBI places no restrictions on reuse of GenBank records).",
+  "pitfall": "Sequencing does not read a chromosome end to end; the page must show that short reads lose information in repeats longer than a read, which no amount of coverage recovers.",
+  "why": "NUS CS4330 lecture 'Practical de Bruijn graph assembly' (a standard bioinformatics-course exercise is assembling phiX174): https://www.comp.nus.edu.sg/~wongls/courses/cs4330/2024/12-practical-dbg-assembly.pdf",
+  "overlapWith": "crispr: that page cuts DNA at a matched site; this one reads DNA, and its algorithmic core (graphs of overlapping k-mers) has no counterpart in the catalogue.",
+  "needsSource": "GenBank NC_001422, no reuse restrictions (NCBI policy).",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "biology-l3"
+ },
+ {
+  "slug": "epigenetic-memory",
+  "title": "Epigenetic memory",
+  "level": 3,
+  "kind": "simulate",
+  "category": "biology",
+  "interaction": "Run a row of nucleosomes that carry a silencing or an activating mark; each marked nucleosome recruits enzymes that convert others, including non-neighbours, and every cell division dilutes the marks by half. Set the recruitment strength and feedback range and watch the row lock into all-silent or all-active and hold that state through dozens of divisions; weaken the cooperativity and the memory decays; force the region silent with a transient pulse and see the state persist after the pulse is gone.",
+  "takeaway": "A cell can remember a decision without changing its DNA: marks on chromatin that recruit their own copiers form a bistable system that survives being halved at each division.",
+  "prerequisites": [
+   "dna-to-protein",
+   "the-cell"
+  ],
+  "related": [
+   "lac-operon",
+   "cell-cycle-switch",
+   "cancer",
+   "meiosis-inheritance"
+  ],
+  "needs": "",
+  "pitfall": "Most chromatin marks are reset between generations; the page must not slide from cellular memory into inheritance of acquired characteristics across organisms.",
+  "why": "Lecture video rather than a syllabus: math-institute lecture on the Dodd-Sneppen nucleosome-modification model of epigenetic memory, https://mathinstitutes.org/videos/4418 (no curriculum signal found in this round).",
+  "overlapWith": "dna-to-protein: that page reads a gene; this one decides whether the gene stays readable at all, through marks on the packaging rather than the sequence (model of Dodd et al. 2007).",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "biology-l3"
+ },
+ {
+  "slug": "evolutionary-games",
+  "title": "Evolutionary game theory",
+  "level": 3,
+  "kind": "simulate",
+  "category": "biology",
+  "interaction": "Set the payoffs of a hawk-dove contest and release a population of players; replicator dynamics pulls the share of hawks to the mixed equilibrium that neither strategy can invade, drawn as a flow on a line. Switch to the prisoner's dilemma and watch cooperators die out, then place the players on a grid where they meet neighbours and see clusters of cooperators survive; add relatedness between players and find the cost-to-benefit ratio at which helping kin pays, Hamilton's rule.",
+  "takeaway": "When fitness depends on what others do, the winning strategy is the one that cannot be invaded rather than the one that scores most, and cooperation survives only when cooperators meet each other more often than chance.",
+  "prerequisites": [
+   "evolution",
+   "population-genetics"
+  ],
+  "related": [
+   "ecosystems",
+   "speciation",
+   "reinforcement-learning"
+  ],
+  "needs": "",
+  "pitfall": "Evolutionary stability does not mean the population is at its best: hawks persist even though a population of doves would score higher, and the page must show that the equilibrium is not the optimum.",
+  "why": "ELTE course on evolutionary game theory (hawk-dove, replicator dynamics, ESS, altruism): https://neptun.elte.hu/MobilityCourses/Course/evojatsb22em",
+  "overlapWith": "evolution: that page's fitness is fixed by the environment; here fitness depends on what the rest of the population does, which produces equilibria that selection on a fixed landscape never does. It also covers the biological half of the Reserve item 'Game theory' (replicator dynamics, ESS), leaving classical game theory to a math lens.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "biology-l3"
+ },
+ {
+  "slug": "gene-expression-noise",
+  "title": "Noise in gene expression",
+  "level": 3,
+  "kind": "simulate",
+  "category": "biology",
+  "interaction": "Run a single gene with the Gillespie algorithm: the promoter flicks on and off, each on-period fires a burst of mRNAs, each mRNA a burst of proteins. Set the switching, transcription, translation and decay rates and watch the protein count jitter in one cell while a histogram across a thousand cells widens or narrows. Add a second identical reporter to the same cell and plot one against the other: scatter along the diagonal is shared, extrinsic noise; scatter across it is the gene's own, intrinsic noise.",
+  "takeaway": "Genetically identical cells in the same environment differ because their molecules are counted in tens and made in bursts, and a two-reporter scatter plot separates the randomness of the gene itself from the randomness of the cell around it.",
+  "prerequisites": [
+   "dna-to-protein",
+   "central-limit-theorem"
+  ],
+  "related": [
+   "lac-operon",
+   "genetic-circuits",
+   "luria-delbruck"
+  ],
+  "needs": "",
+  "pitfall": "Noise does not simply average out at higher expression: bursty expression keeps the Fano factor above one, so the model must produce bursts, not a Poisson stream of single proteins.",
+  "why": "LMU Munich 'Biophysics of Systems' lecture on stochastic gene expression (Elowitz 2002 two-reporter experiment): https://www2.physik.uni-muenchen.de/lehre/vorlesungen/wise_20_21/Biophysics_of_Systems/04b_StochasticGenes_2E.pdf",
+  "overlapWith": "central-limit-theorem: that page shows averages converging; here the counts are so small that the fluctuations are the biology, and bursts keep them from averaging out.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "biology-l3"
+ },
+ {
+  "slug": "genetic-circuits",
+  "title": "Synthetic gene circuits: toggle switch & repressilator",
+  "level": 3,
+  "kind": "build",
+  "category": "biology",
+  "interaction": "Wire promoters, repressors and a fluorescent reporter into a circuit on a plasmid, set repression strength, cooperativity and degradation rates, and run it. Two genes that repress each other make a switch that a pulse of inducer flips and that stays flipped; three in a ring make an oscillator whose fluorescence blinks, and the reader finds the parameter region where the blinking dies. A stochastic solver shows the same circuit jitter in a single cell.",
+  "takeaway": "Two genes that repress each other remember a state and three in a ring keep time, so the logic of a cell's control can be built from a handful of parts, and whether a circuit works depends on the numbers, not just the wiring.",
+  "prerequisites": [
+   "lac-operon",
+   "dna-to-protein"
+  ],
+  "related": [
+   "gene-expression-noise",
+   "logic-gates",
+   "oscillations-resonance",
+   "feedback-control"
+  ],
+  "needs": "Repressilator model of Elowitz & Leibler 2000 as curated in BioModels (BIOMD0000000012, CC0); toggle-switch equations and parameters from Gardner, Cantor & Collins 2000 (published values, no dataset).",
+  "pitfall": "Oscillation is not guaranteed by the ring: with weak repression or low cooperativity the repressilator settles to a steady state, so the page must show the dead region rather than a circuit that always blinks.",
+  "why": "Yale 'Biologic' module teaching the toggle switch and repressilator to biology and premedical students: https://arxiv.org/abs/1307.3126",
+  "overlapWith": "logic-gates: that page composes ideal digital gates; here each gate is a leaky, continuous repressor with a time constant, and the question is which wirings still switch or oscillate.",
+  "needsSource": "BioModels curated repressilator (CC0); toggle-switch parameters from the paper, no dataset needed.",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "biology-l3"
+ },
+ {
+  "slug": "genetic-code-error-tolerance",
+  "title": "The genetic code's error tolerance",
+  "level": 3,
+  "kind": "explore",
+  "category": "biology",
+  "interaction": "Hover any codon in the genetic-code table to see which amino acids one base change can reach, coloured by how different their chemistry is, and total a cost for the whole code. Then press shuffle: the page draws thousands of random codes that keep the same block structure, scores each one, and builds a histogram with the standard code marked; change the cost measure (polarity, volume, charge) or the mutation bias and watch where the standard code lands.",
+  "takeaway": "Most single-base errors in the real code swap an amino acid for a chemically similar one, and among random codes with the same structure only a tiny fraction do better, though how tiny depends on what you measure.",
+  "prerequisites": [
+   "dna-to-protein",
+   "protein-folding"
+  ],
+  "related": [
+   "population-genetics",
+   "quasispecies-error-threshold",
+   "error-correction"
+  ],
+  "needs": "Amino-acid polar requirement (Woese 1966) and other physico-chemical scales from the published literature; the standard code table (public domain).",
+  "pitfall": "The 'one in a million' figure holds only for polar requirement with a transition/transversion bias; with volume or charge the standard code is far less special, and the page must not present the code as uniquely optimal.",
+  "why": "Freeland & Hurst 1998 as a course reading in Swarthmore Phys 120: https://www.sccs.swarthmore.edu/users/08/bblonder/phys120/docs/freeland.pdf",
+  "overlapWith": "dna-to-protein: that page shows what one mutation does to one protein; this one scores the whole table against every alternative code.",
+  "needsSource": "Published amino-acid property scales (literature values); code table public domain.",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "biology-l3"
+ },
+ {
+  "slug": "lac-operon",
+  "title": "Gene regulation & the lac operon",
+  "level": 3,
+  "kind": "manipulate",
+  "category": "biology",
+  "interaction": "Set the lactose and glucose in a bacterium's medium and watch an ODE model of the lac operon respond: the repressor leaves the operator when an inducer is present, CAP recruits the polymerase only when glucose is low, and the permease the operon makes imports more inducer. Sweep the inducer up and then down to trace the hysteresis loop, and grow a culture on both sugars to see the diauxic pause when the glucose runs out.",
+  "takeaway": "A bacterium switches a set of genes on only when their product is useful and nothing better is around, and positive feedback through its own transporter turns that switch into a memory: the same inducer level can leave the operon on or off depending on where it came from.",
+  "prerequisites": [
+   "dna-to-protein",
+   "reaction-rates-equilibrium"
+  ],
+  "related": [
+   "gene-expression-noise",
+   "crispr"
+  ],
+  "needs": "",
+  "pitfall": "Bistability and hysteresis were measured with the gratuitous inducer TMG; with plain lactose the loop is weak or absent because lactose is also consumed, so the page must not present lactose itself as a memory switch.",
+  "why": "MIT OCW 7.01SC Fundamentals of Biology, module 'Gene Regulation and the Lac Operon': https://ocw.mit.edu/courses/7-01sc-fundamentals-of-biology-fall-2011/resources/molecbio_sess5",
+  "overlapWith": "dna-to-protein: that page reads one gene into a protein; this one is about when the gene is read at all, as a dynamical switch with feedback (model of Ozbudak et al. 2004).",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "biology-l3"
+ },
+ {
+  "slug": "luria-delbruck",
+  "title": "Luria-Delbruck: mutations before selection",
+  "level": 3,
+  "kind": "step",
+  "category": "biology",
+  "interaction": "Step through the 1943 experiment: grow twenty cultures from single cells for a chosen number of generations at a chosen mutation rate, plate them all on a phage lawn, and count the survivors. If mutations arose only on contact with the phage the counts would be Poisson and nearly equal; instead a few plates hold hundreds of mutants, the jackpots, because a mutation that happened early was inherited by a whole clone. Replay with mutations induced at plating to see the Poisson alternative, and estimate the mutation rate from the fraction of empty plates.",
+  "takeaway": "Mutations happen before and regardless of the challenge they will later face, and the wild spread between replicate cultures is the signature of that.",
+  "prerequisites": [
+   "evolution",
+   "central-limit-theorem"
+  ],
+  "related": [
+   "population-genetics",
+   "cancer",
+   "crispr",
+   "quasispecies-error-threshold"
+  ],
+  "needs": "",
+  "pitfall": "The jackpot distribution does not show that the environment induces mutations; it shows the opposite, and the page must make the Poisson alternative explicit so the reader sees it fail.",
+  "why": "'Fascination with Fluctuation: Luria and Delbruck's Legacy', on the experiment in undergraduate mathematics education (University of Delaware): https://udspace.udel.edu/items/2837763f-b87a-465a-9701-2b96405d98f5/full",
+  "overlapWith": "evolution: that page's pitfall says mutations do not arise because they are needed; this one is the experiment that proved it, run as a statistics-of-clones simulation.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "biology-l3"
+ },
+ {
+  "slug": "membrane-potential",
+  "title": "Membrane transport & the resting potential",
+  "level": 3,
+  "kind": "manipulate",
+  "category": "biology",
+  "interaction": "Drag the ion concentrations on each side of a membrane and the permeability of each channel type, and watch ions cross while the voltage settles: with only potassium channels open it sits at the Nernst potential, and as sodium leaks in it drifts toward the Goldman-Hodgkin-Katz value shown live. Switch the sodium-potassium pump off and watch the gradients, the voltage and the cell's volume decay over simulated hours; then dilute the outside solution and see water follow the ions.",
+  "takeaway": "A cell's voltage is a weighted average of each ion's equilibrium potential, weighted by how permeable the membrane is to it, and holding that voltage and the cell's volume costs a steady stream of ATP through the pump.",
+  "prerequisites": [
+   "neurons",
+   "the-cell"
+  ],
+  "related": [
+   "respiration-atp",
+   "electric-circuits",
+   "homeostasis"
+  ],
+  "needs": "",
+  "pitfall": "The pump's direct electrical contribution to the resting potential is a few millivolts; the voltage comes mostly from the potassium gradient the pump maintains, and the page must not show the pump charging the membrane like a battery.",
+  "why": "University of Kent LearnSci module on membrane potential, with Nernst and GHK calculation as learning outcomes: https://www.learnsci.com/resources/membrane-potential",
+  "overlapWith": "neurons: that page fires an action potential on top of a resting voltage it takes for granted; this one builds that resting voltage from gradients, permeabilities and the pump.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "biology-l3"
+ },
+ {
+  "slug": "metabolic-flux",
+  "title": "Metabolic networks & flux balance",
+  "level": 3,
+  "kind": "manipulate",
+  "category": "biology",
+  "interaction": "Open a map of central carbon metabolism (glycolysis, the pentose phosphate pathway, the TCA cycle, fermentation, respiration) with every reaction's stoichiometry, and choose what the cell maximises and what it may take up. A linear-programme solver in the browser finds the flux through every reaction, drawn as arrow widths; cut the oxygen supply and watch flux reroute to fermentation, knock out a gene and see whether growth survives by a detour, and sweep the glucose uptake to trace growth rate against it.",
+  "takeaway": "Knowing only which reactions exist and that nothing accumulates, a cell's best possible division of flux can be computed, and the network's detours are what make most single knockouts survivable.",
+  "prerequisites": [
+   "respiration-atp",
+   "enzyme-kinetics",
+   "linear-transformations"
+  ],
+  "related": [
+   "photosynthesis",
+   "rubisco-photorespiration",
+   "graph-search"
+  ],
+  "needs": "A documented core E. coli network. The BiGG e_coli_core model is free for educational and non-profit use but not openly licensed (UC Regents terms), so build the network from textbook stoichiometry with references, or from a CC0 BioModels-curated central-metabolism model.",
+  "pitfall": "FBA predicts a bound, not a measurement: it has no kinetics and no regulation, so the page must say that the optimum is a hypothesis about what the cell maximises and that real fluxes can differ.",
+  "why": "UCSD Systems Biology Research Group FBA tutorial with the core E. coli model: https://sbrg.ucsd.edu/node/61",
+  "overlapWith": "respiration-atp: that page follows one glucose through the pathways; this one treats the whole network at once and asks how flux divides among all routes.",
+  "needsSource": "BiGG e_coli_core is non-commercial only (weak); textbook stoichiometry needs no licence; BioModels is CC0.",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "biology-l3"
+ },
+ {
+  "slug": "microbiome-dynamics",
+  "title": "The microbiome as an ecosystem",
+  "level": 3,
+  "kind": "simulate",
+  "category": "biology",
+  "interaction": "Run a gut community of ten bacterial groups with the interaction matrix Stein et al. inferred from mouse data; it settles to a stable mix. Dose it with an antibiotic for a chosen number of days and watch some groups crash and others bloom; introduce C. difficile before, during and after the course and see it fail, invade, or take hold; stop the antibiotic and find that the community does not always return, then transplant a healthy community to push it back.",
+  "takeaway": "A gut community is a web of competition and support with more than one stable state, so a disturbance can tip it into a new one that persists after the disturbance is gone.",
+  "prerequisites": [
+   "ecosystems",
+   "the-cell"
+  ],
+  "related": [
+   "epidemics",
+   "immune-system",
+   "evolutionary-games"
+  ],
+  "needs": "Generalized Lotka-Volterra interaction matrix and antibiotic susceptibilities from Stein et al. 2013, PLOS Computational Biology (CC BY).",
+  "pitfall": "The parameters come from mice and one antibiotic, and gLV fits are uncertain; the page must say the model illustrates the dynamics and is not a prediction for a human gut.",
+  "why": "Demand: public coverage of ecological modelling of the gut microbiota (Gut Microbiota for Health): https://www.gutmicrobiotaforhealth.com/ecological-modeling-of-intestinal-microbiota/ ; model source is Stein et al. 2013, https://doi.org/10.1371/journal.pcbi.1003388 (no curriculum signal found in this round).",
+  "overlapWith": "ecosystems: that page has one predator, one prey and a small food web; here a ten-group community with alternative stable states, driven by real inferred interactions and perturbed by an antibiotic.",
+  "needsSource": "PLOS Computational Biology article and supplementary parameters, CC BY.",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "biology-l3"
+ },
+ {
+  "slug": "molecular-motors",
+  "title": "Molecular motors: how kinesin walks",
+  "level": 3,
+  "kind": "simulate",
+  "category": "biology",
+  "interaction": "Watch a kinesin dimer take 8 nm steps along a microtubule while a cargo bead trails it in a simulated optical trap; each step waits a random time set by ATP binding and hydrolysis, so the trace is a staircase with jittery dwells. Lower the ATP concentration and the dwells lengthen; raise the backward load and the motor slows, stalls near 7 pN and starts stepping backward; plot velocity against force and against ATP and compare the shapes with published single-molecule curves.",
+  "takeaway": "A molecular motor is not a tiny engine with a steady push: it takes random, thermally driven steps that ATP hydrolysis biases forward, and a load of a few piconewtons is enough to stop it.",
+  "prerequisites": [
+   "respiration-atp",
+   "newtons-laws"
+  ],
+  "related": [
+   "enzyme-kinetics",
+   "the-cell",
+   "heat-engines"
+  ],
+  "needs": "Discrete-state mechanochemical model and parameters from Fisher & Kolomeisky 2001 (PNAS, published values); a kinesin structure from the Protein Data Bank (CC0) for the illustration.",
+  "pitfall": "Do not draw the motor as pulled by a constant force or sliding smoothly; at this scale thermal motion dominates, and the forward bias comes from rectifying it with chemical energy.",
+  "why": "Workshop lecture notes rather than a syllabus: BIRS lecture on molecular-motor stepping citing Kolomeisky & Fisher as the standard model, https://stats.birs.ca/workshops/2018/18w5144/files/fricks.pdf (no curriculum signal found in this round).",
+  "overlapWith": "respiration-atp: that page makes ATP with a rotary motor; this one spends ATP to move along a track, with the stochastic stepping shown rather than a turning rotor.",
+  "needsSource": "Model parameters from the published paper; PDB structures are CC0.",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "biology-l3"
  }
 ]

@@ -1,152 +1,571 @@
 [
  {
-  "slug": "seeds-and-germination",
-  "title": "How a seed wakes up",
+  "slug": "mass-spectrometry",
+  "title": "Mass spectrometry",
+  "level": 3,
+  "kind": "simulate",
+  "category": "chemistry",
+  "interaction": "Ionize a sample and send the ions down a quadrupole whose radio-frequency and DC voltages the reader sets; the page integrates each ion's equation of motion and shows which masses ride stably to the detector and which crash into the rods, with the stability diagram beside. Scan the voltages to sweep across masses and build the spectrum; pick an element or a small molecule and its isotope pattern (chlorine's 3:1 pair, bromine's 1:1 pair) is computed from natural abundances and set beside a measured spectrum.",
+  "takeaway": "A mass spectrometer sorts ions by mass-to-charge with electric fields, and only ions within a narrow window of mass ride the oscillating field stably, so sweeping the field reads out the sample one mass at a time.",
+  "prerequisites": [
+   "electromagnetism",
+   "oscillations-resonance",
+   "atoms-periodic-table"
+  ],
+  "related": [
+   "chromatography",
+   "radioactivity"
+  ],
+  "needs": "Isotopic abundances of the elements and a few reference spectra.",
+  "pitfall": "The axis is mass-to-charge, not mass: a doubly charged ion appears at half its mass, and the tallest peak is not necessarily the molecular ion.",
+  "why": "OCR A-level Chemistry A (H432) and AQA include mass spectrometry and isotope patterns: https://www.savemyexams.com/learning-hub/exam-specifications/a-level/chemistry/ocr/",
+  "overlapWith": "atoms-periodic-table: that page shows isotopes as neutron counts; this one measures them and shows how the instrument does it.",
+  "needsSource": "IUPAC/CIAAW isotopic abundances (freely available); MassBank of North America spectra (CC BY 4.0) for comparison.",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "chemistry-l3"
+ },
+ {
+  "slug": "nmr-spectroscopy",
+  "title": "NMR: spins, pulses & spectra",
+  "level": 3,
+  "kind": "simulate",
+  "category": "chemistry",
+  "interaction": "Put nuclear spins in a magnetic field, fire a 90° pulse and watch the net magnetization tip and precess while the detector records the decaying signal, then Fourier-transform it into a peak. Add a second spin with a scalar coupling and the peak splits into a doublet; set real chemical shifts for ethanol's three environments and watch the whole spectrum assemble, with linewidth following the decay rate.",
+  "takeaway": "An NMR spectrometer listens to nuclei precessing after a pulse, and each nucleus's note is shifted by its electron surroundings and split by its neighbours, so the spectrum reads out the molecule's structure.",
+  "prerequisites": [
+   "fourier-transform",
+   "electromagnetism"
+  ],
+  "related": [
+   "medical-imaging",
+   "quantum-mechanics"
+  ],
+  "needs": "Chemical shifts and coupling constants for a few molecules (ethanol, ethyl acetate).",
+  "pitfall": "The spectrum is not scanned one frequency at a time; it is the Fourier transform of one decaying signal, and 'spin' does not mean the nucleus is physically spinning like a top.",
+  "why": "OCR A-level Chemistry A (H432) module 6 includes proton and carbon-13 NMR with a chemical-shift data sheet: https://www.savemyexams.com/learning-hub/exam-specifications/a-level/chemistry/ocr/",
+  "overlapWith": "medical-imaging: that page closes with MRI in a sentence; this one simulates the spin physics behind the signal and reads chemistry from it.",
+  "needsSource": "nmrshiftdb2 (University of Cologne), published under an open-content licence as stated on its site (no named CC licence; confirm), or literature shift values.",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "chemistry-l3"
+ },
+ {
+  "slug": "nucleation-crystal-growth",
+  "title": "Nucleation & crystal growth",
+  "level": 3,
+  "kind": "simulate",
+  "category": "chemistry",
+  "interaction": "Cool a simulated liquid below its freezing point and watch small clusters form and dissolve until one passes the critical size and grows, while a plot of the free energy of a cluster against its radius shows the hill it had to climb; deepen the undercooling and the hill shrinks, more nuclei survive and the solid ends up as many small grains instead of a few large ones. Then run a phase-field model of a solidifying front on a grid and watch it break into dendrites whose arms thin as the undercooling rises.",
+  "takeaway": "A liquid below its freezing point does not freeze at once: a solid seed must first grow past a critical size against its own surface, so deeper undercooling means more seeds and finer grains, and a growing front splits into branches.",
+  "prerequisites": [
+   "states-of-matter",
+   "entropy"
+  ],
+  "related": [
+   "free-energy-of-mixing",
+   "glass-transition",
+   "atmosphere-weather",
+   "ice-ages"
+  ],
+  "needs": "",
+  "pitfall": "Freezing does not start everywhere at once when the freezing point is reached; pure water can be cooled well below 0 °C, and snowflakes branch because the front is unstable, not because the molecules know a shape.",
+  "why": "MIT OCW 3.205's calendar runs from diffusion to nucleation, solidification, spinodal decomposition and coarsening: https://ocw.mit.edu/courses/3-205-thermodynamics-and-kinetics-of-materials-fall-2006/pages/calendar",
+  "overlapWith": "states-of-matter: that page freezes a box at the freezing point; this one shows why it needs a seed, how far it can be undercooled and what shape the solid takes.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "chemistry-l3"
+ },
+ {
+  "slug": "photochemistry",
+  "title": "Fluorescence, phosphorescence & photochemistry",
+  "level": 3,
+  "kind": "simulate",
+  "category": "chemistry",
+  "interaction": "Shine a light pulse on a population of molecules shown on a Jablonski ladder and watch them climb and then leave the excited state by competing routes (fluorescence, internal conversion, intersystem crossing, phosphorescence), each with a rate constant on a slider. A plot of emitted light against time shows the lifetime and quantum yield; switch the lamp off to see the slow phosphorescent tail, and add a quencher to watch the Stern-Volmer line steepen.",
+  "takeaway": "After absorbing a photon a molecule has several exits with different speeds, and how bright and how long it glows is decided by that race.",
+  "prerequisites": [
+   "reaction-rates-equilibrium",
+   "atoms-periodic-table"
+  ],
+  "related": [
+   "vision-color",
+   "photosynthesis",
+   "solar-cells",
+   "quantum-dots"
+  ],
+  "needs": "Rate constants, lifetimes and quantum yields for a couple of real fluorophores.",
+  "pitfall": "Fluorescence is not reflection and not stored light: the emitted photon carries less energy than the absorbed one because some was lost as heat first (the Stokes shift).",
+  "why": "MIT OCW 5.61's syllabus ends with molecular spectroscopy and photochemistry: https://ocw.mit.edu/courses/chemistry/5-61-physical-chemistry-fall-2017/index.htm",
+  "overlapWith": "vision-color: that page mixes light in the eye; this one models what one molecule does with a photon after absorbing it.",
+  "needsSource": "Published lifetimes and quantum yields (e.g. fluorescein, anthracene) from the literature; numbers only, no licensed dataset.",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "chemistry-l3"
+ },
+ {
+  "slug": "quantum-dots",
+  "title": "Quantum dots: color from size",
+  "level": 3,
+  "kind": "manipulate",
+  "category": "chemistry",
+  "interaction": "Slide the radius of a semiconductor nanocrystal from 2 to 10 nm and the page solves the confinement energy of its electron and hole, adds the bulk band gap and shows the color it emits, next to a ladder of discrete levels that spreads as the dot shrinks. Switch the material and compare the computed emission with measured peak wavelengths of real dots; a density-of-states panel shows the smooth bulk band breaking into sharp levels as the box closes in.",
+  "takeaway": "Trap an electron in a box a few nanometres wide and the energy it gives back as light is set by the size of the box, so one material glows in every color depending on how small it is made.",
+  "prerequisites": [
+   "quantum-mechanics",
+   "semiconductors"
+  ],
+  "related": [
+   "solar-cells",
+   "vision-color",
+   "photochemistry"
+  ],
+  "needs": "Effective masses, bulk gaps and dielectric constants for CdSe, CdS and InP, and measured size-to-emission data.",
+  "pitfall": "The color is not a different chemical or a dye inside the dot: it is the confinement energy added to the same material's gap, and bigger dots are redder, not bluer.",
+  "why": "The 2023 Nobel Prize in Chemistry for the discovery and synthesis of quantum dots: https://www.bu.edu/nano-bu/?p=5287",
+  "overlapWith": "solar-cells: that page uses a bulk band gap; this one shows the gap itself depending on size once the crystal is nanometres wide.",
+  "needsSource": "Material parameters from the literature; size-to-wavelength calibration from Yu, Qu, Guo & Peng, Chem. Mater. 2003 (published numbers, no licensed dataset).",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "chemistry-l3"
+ },
+ {
+  "slug": "reaction-free-energy",
+  "title": "Free energy & the equilibrium constant",
+  "level": 3,
+  "kind": "manipulate",
+  "category": "chemistry",
+  "interaction": "Drag the extent of a reaction (N2O4 ⇌ 2 NO2, with real enthalpy and entropy) along a plot of the mixture's Gibbs energy and watch it fall to a minimum part-way, where the composition matches the equilibrium constant; switch off the mixing-entropy term that bends the curve to see why the reaction would otherwise run to completion. Change the temperature and the pressure and watch the minimum, K and the yield move.",
+  "takeaway": "A reaction runs downhill in free energy and stops at the bottom of a curve that lies at a mixture rather than at completion, because mixing itself lowers the free energy; the depth of that bottom is the equilibrium constant.",
+  "prerequisites": [
+   "reaction-rates-equilibrium",
+   "entropy"
+  ],
+  "related": [
+   "free-energy-of-mixing",
+   "electrode-kinetics",
+   "respiration-atp"
+  ],
+  "needs": "Standard enthalpies of formation and entropies for N2O4 and NO2.",
+  "pitfall": "A negative ΔG° does not mean the reaction goes to completion and a positive one does not mean it does not happen; the sign sets K, and the mixture always settles at a minimum between the two extremes.",
+  "why": "MIT OCW 5.60 Thermodynamics & Kinetics covers chemical equilibrium of gas- and solution-phase reactions through the Gibbs energy: https://ocw.mit.edu/courses/5-60-thermodynamics-kinetics-spring-2008",
+  "overlapWith": "reaction-rates-equilibrium: that page reaches equilibrium kinetically, as equal forward and reverse rates; this one locates it thermodynamically as the minimum of G and ties it to K and temperature.",
+  "needsSource": "NIST-JANAF thermochemical tables (NIST Standard Reference Data, free to use with citation; a few numbers).",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "chemistry-l3"
+ },
+ {
+  "slug": "rubber-elasticity",
+  "title": "Rubber & polymer chains: the entropic spring",
+  "level": 3,
+  "kind": "manipulate",
+  "category": "chemistry",
+  "interaction": "Grab the ends of a freely-jointed chain of a few hundred links and pull; the page samples the chain's random walks and shows the count of shapes that fit each end-to-end distance collapsing, with the restoring force computed from that count and the temperature. Turn up the temperature and the stretched chain pulls harder and shortens; cross-link many chains into a network and rubber's stress-strain curve appears beside Hooke's law, with the warming on stretching shown on a thermometer.",
+  "takeaway": "Rubber pulls back not because its bonds are stretched but because a stretched chain has fewer shapes to be in, so it pulls harder when hotter and warms when stretched, the opposite of a metal spring.",
+  "prerequisites": [
+   "carbon-polymers",
+   "entropy"
+  ],
+  "related": [
+   "glass-transition",
+   "bridges-structures",
+   "protein-folding"
+  ],
+  "needs": "",
+  "pitfall": "The force in rubber is entropic, not from stretched bonds: a rubber band heated under a weight contracts, which a steel spring never does.",
+  "why": "MIT OCW 3.064 Polymer Engineering lecture on chain conformation and the kinetic theory of rubber elasticity (and Feynman's much-shared rubber-band clip): https://ocw.mit.edu/courses/3-064-polymer-engineering-fall-2003/resources/lec_6",
+  "overlapWith": "carbon-polymers: that page links monomers and relates stiffness to chain length and cross-links; this one derives the restoring force from the statistics of a chain's shapes.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": true,
+  "origin": "chemistry-l3"
+ },
+ {
+  "slug": "sn1-sn2",
+  "title": "Substitution mechanisms: SN1 and SN2",
+  "level": 3,
+  "kind": "step",
+  "category": "chemistry",
+  "interaction": "Step a nucleophile toward a carbon bearing a leaving group across an energy surface built from two coupled bond curves (an empirical valence-bond model) plus an ionic state whose energy drops as the solvent-polarity slider rises: the surface shows either a single pass with the nucleophile arriving from the back or a two-step route through a flat carbocation. Change the substrate from methyl to tertiary, the nucleophile's strength and concentration, and watch the computed rate law and the stereochemical outcome (clean inversion versus a racemic mix) change.",
+  "takeaway": "A substitution either happens in one step from the back, inverting the molecule, or in two steps through a flat ion that either side can attack, and only the second is indifferent to how much nucleophile is present.",
+  "prerequisites": [
+   "carbon-polymers",
+   "transition-state-theory"
+  ],
+  "related": [
+   "reaction-rates-equilibrium",
+   "enzyme-kinetics"
+  ],
+  "needs": "Relative rate constants for the methyl-to-tertiary series and for solvent changes, to calibrate the model.",
+  "pitfall": "The 1 and 2 count the molecules in the rate-determining step, not the number of steps, and SN1 versus SN2 is not a property of the substrate alone: solvent and nucleophile shift the balance.",
+  "why": "MIT OCW 5.12 Organic Chemistry I emphasizes substitution and elimination, with a dedicated SN2/SN1 handout: https://live.ocw.mit.edu/courses/5-12-organic-chemistry-i-spring-2005/resources/sn2sn1",
+  "overlapWith": "transition-state-theory (proposed): that page runs trajectories on an atom-exchange surface; this one applies the idea to the organic reaction where two competing paths explain the rate law and the stereochemistry.",
+  "needsSource": "Published relative rates (the classic Hughes-Ingold and Streitwieser compilations; textbook numbers). The valence-bond parameters are fitted to these, which the page must state.",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "chemistry-l3"
+ },
+ {
+  "slug": "surface-catalysis",
+  "title": "Catalysis on a surface",
+  "level": 3,
+  "kind": "simulate",
+  "category": "chemistry",
+  "interaction": "Run CO oxidation on a lattice of catalyst sites: CO lands on one empty site, O2 splits onto two neighbouring sites, and adjacent CO and O react into CO2 and leave (the Ziff-Gulari-Barshad model). Slide the CO fraction in the gas and watch the CO2 rate rise, peak and collapse as the surface smothers in CO, with the coverages plotted beside a Langmuir isotherm; raise the temperature to let CO desorb and the dead surface recover.",
+  "takeaway": "A catalyst works by holding the reactants next to each other on its surface, and too much of one reactant can cover every site and stop the reaction entirely.",
+  "prerequisites": [
+   "reaction-rates-equilibrium"
+  ],
+  "related": [
+   "enzyme-kinetics",
+   "transition-state-theory"
+  ],
+  "needs": "",
+  "pitfall": "A catalyst is not consumed, but it is not inert either: its activity depends on what covers it, and a poisoned surface is a catalyst that has stopped working.",
+  "why": "MIT OCW 10.37 Chemical and Biological Reaction Engineering covers heterogeneous catalysis and Langmuir-Hinshelwood kinetics: https://ocw.mit.edu/courses/10-37-chemical-and-biological-reaction-engineering-spring-2007/pages/lecture-notes",
+  "overlapWith": "reaction-rates-equilibrium: that page's catalyst only lowers a barrier; this one models the surface sites, their coverage and the poisoning that follows.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "chemistry-l3"
+ },
+ {
+  "slug": "surfactants-micelles",
+  "title": "Soap: surfactants & micelles",
+  "level": 3,
+  "kind": "simulate",
+  "category": "chemistry",
+  "interaction": "Drop amphiphiles, each a water-loving head on a water-fearing tail, into a box of simulated water and oil and watch them gather at the interface, then, as the reader adds more, begin forming micelles: the plot of free amphiphiles against the total shows the kink at the critical micelle concentration. Add a drop of oil and watch micelles swallow it; change the tail length and head size and see the threshold shift and the aggregates change from spheres to bilayers.",
+  "takeaway": "Molecules with a water-loving head and a water-fearing tail arrange themselves to hide their tails, and above a threshold concentration they do it by forming clusters that can carry grease away.",
+  "prerequisites": [
+   "chemical-bonds",
+   "entropy"
+  ],
+  "related": [
+   "colloids-dlvo",
+   "the-cell",
+   "mrna-vaccines",
+   "dispersion-forces"
+  ],
+  "needs": "",
+  "pitfall": "Soap does not break or dissolve oil molecules; it wraps them in micelles that water can carry, and the driving force is water's preference for itself, not an attraction between the tails.",
+  "why": "University of Genoa soft-matter course covers the hydrophobic interaction, surface tension and self-assembly: https://corsi.unige.it/en/node/221635",
+  "overlapWith": "the-cell: that page shows the membrane as a bilayer; this one models why amphiphiles assemble at all and the concentration at which they start.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": true,
+  "origin": "chemistry-l3"
+ },
+ {
+  "slug": "transition-state-theory",
+  "title": "Reaction trajectories & the transition state",
+  "level": 3,
+  "kind": "simulate",
+  "category": "chemistry",
+  "interaction": "Fire a classical trajectory of A + BC → AB + C across a potential-energy surface (LEPS model of H + H2 and F + H2) drawn as a contour map, choosing how much energy goes into translation and how much into vibration, and see whether it crosses the saddle or turns back. Sweep the temperature to watch the Eyring rate climb, move the barrier early or late along the path to see which kind of energy gets molecules over it, and swap H for D to watch the zero-point energy and the rate change.",
+  "takeaway": "A reaction is a journey over a mountain pass on an energy landscape; the pass's height sets how often molecules make it and its position sets which kind of energy gets them over.",
+  "prerequisites": [
+   "reaction-rates-equilibrium",
+   "newtons-laws"
+  ],
+  "related": [
+   "enzyme-kinetics",
+   "surface-catalysis",
+   "sn1-sn2"
+  ],
+  "needs": "LEPS (Sato) parameters for the H3 and FH2 surfaces.",
+  "pitfall": "The transition state is not an intermediate that can be isolated; it is the top of the pass, crossed in a single vibration, and a catalyst lowers the pass rather than pushing molecules over it.",
+  "why": "MIT OCW 5.60 covers rates of chemical reactions and transition-state theory (Lectures 33-35): https://ocw.mit.edu/courses/5-60-thermodynamics-kinetics-spring-2008/resources/lec33_th",
+  "overlapWith": "reaction-rates-equilibrium: that page draws a 1D energy profile beside colliding balls; this one computes the 2D surface and real trajectories over it, with the isotope effect as a bonus.",
+  "needsSource": "Published LEPS/Sato parameters for H + H2 and F + H2 (journal numbers; no licensed dataset).",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "chemistry-l3"
+ },
+ {
+  "slug": "van-der-waals-fluid",
+  "title": "The critical point & supercritical fluids",
+  "level": 3,
+  "kind": "manipulate",
+  "category": "chemistry",
+  "interaction": "Drag the temperature of a van der Waals gas (real constants for CO2 and water) and watch its isotherm on a pressure-volume plot: below a critical temperature it develops a loop that the page replaces with the flat line of the equal-area rule, which marks boiling, and the ends of all those lines trace the liquid-gas dome. Push past the critical point and the loop vanishes: compress the fluid and it goes from gas-like to liquid-like with no boiling, while a particle box beside the plot shows the meniscus disappearing.",
+  "takeaway": "Above the critical temperature there is no boiling because liquid and gas have become the same phase, and a fluid there has the density of a liquid with the mobility of a gas.",
+  "prerequisites": [
+   "states-of-matter",
+   "entropy"
+  ],
+  "related": [
+   "heat-engines",
+   "free-energy-of-mixing"
+  ],
+  "needs": "Critical temperature and pressure of CO2 and water.",
+  "pitfall": "The loop in the van der Waals isotherm is not what a real fluid does; the flat coexistence line is, and a supercritical fluid is not a fourth state of matter.",
+  "why": "MIT OCW 5.60 Thermodynamics & Kinetics (equations of state and phase equilibria lectures): https://ocw.mit.edu/courses/5-60-thermodynamics-kinetics-spring-2008/resources/",
+  "overlapWith": "states-of-matter: that page tracks a substance across its phase diagram; this one explains where the liquid-gas line ends and what lies beyond it.",
+  "needsSource": "Critical constants of CO2 and water from the NIST Chemistry WebBook (free to use with citation; a handful of numbers).",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "chemistry-l3"
+ },
+ {
+  "slug": "vibrational-spectroscopy",
+  "title": "Molecular vibrations: IR & Raman",
+  "level": 3,
+  "kind": "build",
+  "category": "chemistry",
+  "interaction": "Assemble a small molecule (HCl, CO2, H2O, CH4) from atoms and bond springs with real force constants; the page diagonalizes the Hessian and animates each normal mode. For each mode it tests whether the vibration changes the molecule's dipole or its polarizability and draws the predicted IR and Raman stick spectra next to measured line positions; swap an atom for a heavier isotope and the peaks shift.",
+  "takeaway": "A molecule's IR spectrum is the set of its vibration frequencies, fixed by bond stiffness and atom masses, and a vibration appears in IR only if it moves charge and in Raman only if it changes polarizability, so CO2's symmetric stretch is silent in one and bright in the other.",
+  "prerequisites": [
+   "chemical-bonds",
+   "oscillations-resonance"
+  ],
+  "related": [
+   "greenhouse-effect",
+   "light-optics"
+  ],
+  "needs": "Harmonic force constants for the molecules (Herzberg's tabulations) and measured band positions for comparison.",
+  "pitfall": "CO2 is a greenhouse gas because its bend and asymmetric stretch change its dipole, not because it is a gas that traps heat; N2 and O2 vibrate too but stay invisible in IR.",
+  "why": "MIT OCW 5.61 covers molecular spectroscopy, and OCR/AQA A-level chemistry assess IR spectra with an absorption data sheet: https://ocw.mit.edu/courses/5-61-physical-chemistry-fall-2017/",
+  "overlapWith": "greenhouse-effect: that page takes absorption as an input; this one computes which vibrations absorb and why from the molecule's own mechanics.",
+  "needsSource": "HITRAN line lists for CO2, H2O, HCl and CH4 (free with citation per hitran.org; the 1986 edition mirror at NCAR is CC BY 4.0). NIST WebBook IR spectra are free to view but their redistribution terms are not clearly open, so the page should rely on HITRAN.",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "chemistry-l3"
+ },
+ {
+  "slug": "x-ray-diffraction",
+  "title": "X-ray diffraction: reading a crystal",
+  "level": 3,
+  "kind": "manipulate",
+  "category": "chemistry",
+  "interaction": "Pick a real crystal structure (NaCl, CsCl, diamond, copper, silicon) and the page computes its structure factors and draws the powder pattern against angle from Bragg's law and the atomic scattering factors; rotate a single crystal to see the spots of its reciprocal lattice pass through the Ewald sphere. Edit the cell by swapping an atom, deleting one or changing the lattice type, and watch peaks appear, vanish or shift; change the X-ray wavelength and the whole pattern rescales.",
+  "takeaway": "A diffraction pattern is the crystal's Fourier transform: peak positions come from the spacing of the lattice and peak intensities from where the atoms sit in the cell, so the missing peaks are as telling as the present ones.",
+  "prerequisites": [
+   "waves-interference",
+   "fourier-transform",
+   "semiconductors"
+  ],
+  "related": [
+   "medical-imaging",
+   "protein-folding",
+   "dislocations-alloys"
+  ],
+  "needs": "CIF files for the structures and atomic scattering-factor coefficients.",
+  "pitfall": "Bragg 'reflection' is not a mirror bouncing a beam off a plane: every atom scatters in all directions and the peaks are where those waves add up, which is why intensities depend on the atoms and not only on the planes.",
+  "why": "MIT OCW 3.091 Fall 2018 runs through crystallography and x-rays: https://ocw.mit.edu/courses/3-091-introduction-to-solid-state-chemistry-fall-2018/pages/syllabus/",
+  "overlapWith": "semiconductors: that page shows lattices beside their bands; this one computes what X-rays see in a lattice and how structures are solved from it.",
+  "needsSource": "Crystallography Open Database entries (COD states they are free to download, reuse and redistribute; confirm its public-domain statement on crystallography.net); scattering factors from the Waasmaier-Kirfel or Cromer-Mann parameterisations as redistributed in BSD-licensed xraylib (the International Tables themselves are copyrighted).",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "chemistry-l3"
+ },
+ {
+  "slug": "apple-browning",
+  "title": "Why a cut apple goes brown",
+  "level": 0,
+  "kind": "manipulate",
+  "category": "biology",
+  "everyday": true,
+  "interaction": "A cut apple face, drawn as a sheet of cells. Scrub the minutes and brown spreads in from wherever air touches the cut, because an enzyme freed by the cut meets the air, while a brownness meter climbs. One control at a time: paint a region with lemon juice (the enzyme stops in acid), press cling film over a region (no air), move the apple into the fridge (slower), or dip a slice in boiling water (the enzyme is destroyed). Each region browns at its own pace side by side.",
+  "takeaway": "An apple browns because a cut lets one of its own enzymes meet the air, so keeping air off, chilling it, or lemon juice each slow the browning, and heat stops it for good.",
+  "prerequisites": [],
+  "related": [
+   "onion-tears",
+   "toast-and-browning",
+   "ripening-fruit",
+   "fridge-and-spoilage"
+  ],
+  "needs": "",
+  "needsSource": "none; a cut-surface grid with air diffusing in and an enzyme rate that depends on acidity and temperature (constants from the polyphenol-oxidase references)",
+  "pitfall": "Browning is not rotting and not the apple going bad: a brown apple slice is safe. And lemon juice does not 'seal' the surface; it stops the enzyme.",
+  "why": "Science Buddies 'Enzymatic Browning' activity (apple and banana, lemon juice): https://www.sciencebuddies.org/stem-activities/enzymatic-browning",
+  "overlapWith": "the-cell: this page's cells are only the containers a cut breaks open, and the-cell never shows an enzyme at work; its browning is also unrelated to the dry-heat browning of toast.",
+  "leadsTo": [
+   "the-cell"
+  ],
+  "origin": "chemistry-and-cooking"
+ },
+ {
+  "slug": "bean-in-a-jar",
+  "title": "A bean in a jar",
   "level": 0,
   "kind": "simulate",
   "category": "biology",
   "everyday": true,
-  "interaction": "Plant a bean on wet paper and set one thing at a time, water, warmth or light: the seed swells, the root pokes out and turns down, the shoot turns up, on a day counter that runs faster when it is warm and wet. Keep it in the dark and it still sprouts, pale and tall, while the food packed inside it shrinks; its weight falls until the leaves open and only then starts to climb.",
-  "takeaway": "A seed needs water and warmth to wake up, not light or soil: it lives off the food packed inside it until its own leaves open.",
+  "interaction": "A bean seed pressed against the glass of a jar with a wet paper towel. One control at a time: water or none, warm or cold, light or a dark cupboard. Scrub the days and the seed swells, splits, sends a root down and a shoot up while a growth ruler follows. No water and nothing happens; cold and it takes weeks; in the dark it sprouts just as well but the seedling grows pale and leggy, then stops once its stored food is used up, while the one in the light turns green and keeps going. Turn the jar on its side and the root bends down again.",
+  "takeaway": "A seed needs water and warmth, not light, to sprout, because it lives on food stored inside it, and only once that runs out does the seedling need light to make its own.",
   "prerequisites": [],
   "related": [
-   "how-plants-drink",
-   "flowers-and-bees",
-   "why-leaves-change-colour"
+   "sponge-and-paper-towel",
+   "ripening-fruit"
   ],
   "needs": "",
-  "needsSource": "none: the hydrothermal-time germination model (Gummerson 1986; Bradford 2002) has no light term; the seedling's mass falls on its reserves and rises once leaves open; bean parameters stated on the page",
-  "pitfall": "Seeds are not dead and do not need soil; and the seedling gets lighter, not heavier, until it can make its own food. Light matters for growing, not for sprouting.",
-  "why": "NGSS 5-LS1-1, taught with bean seeds sprouting on a wet paper towel in a bag with no soil. https://thewonderofscience.com/5ls11",
-  "overlapWith": "photosynthesis: that page starts once there is a leaf in the light; this one is everything before the first leaf opens.",
+  "needsSource": "none; a germination and growth rate against temperature and water with a stored-food budget, constants from published bean germination studies",
+  "pitfall": "Seeds do not need light or soil to germinate, and a seedling in the dark grows taller, not shorter, at first; that is not healthy growth but stored food running out.",
+  "why": "England KS2 Year 3 'Plants' (requirements for life and growth) and NGSS 3-LS1-1 (life cycles): https://www.gov.uk/government/publications/national-curriculum-in-england-science-programmes-of-study (curriculum page; not fetched this session, search budget exhausted)",
+  "overlapWith": "photosynthesis: that page runs the chloroplast with light and CO2 at level 1; here light matters only after the seed's stored food is gone, and the controls are water, warmth and a dark cupboard.",
   "leadsTo": [
-   "photosynthesis"
+   "photosynthesis",
+   "the-cell"
+  ],
+  "origin": "chemistry-and-cooking"
+ },
+ {
+  "slug": "bread-and-yeast",
+  "title": "Bread and yeast",
+  "level": 0,
+  "kind": "simulate",
+  "category": "biology",
+  "everyday": true,
+  "interaction": "A ball of dough in a bowl, with a window into it: yeast cells drawn as dots eat sugar particles and give off gas particles that collect in bubbles, so the dough swells and a ruler follows it. One control: the temperature of the room. Cold and the yeast barely move; warm and the dough doubles in an hour; too hot and the yeast die and the rise stops for good. A second run bakes the dough: the oven swells the bubbles once more and then sets the crumb, and the baked slice shows its holes.",
+  "takeaway": "Dough rises because living yeast eat sugar and breathe out gas that gets trapped in the dough, fastest when it is warm but not hot, and the holes in bread are those bubbles.",
+  "prerequisites": [],
+  "related": [
+   "baking-soda-and-vinegar",
+   "cake-rising",
+   "milk-and-yogurt",
+   "fridge-and-spoilage",
+   "mould-on-bread"
+  ],
+  "needs": "Rate of gas production by baker's yeast against temperature, from a published fermentation study (a cardinal-temperature curve with a few fitted constants); no dataset.",
+  "needsSource": "A few fitted constants from a published yeast fermentation-rate study; facts, no dataset",
+  "pitfall": "Yeast is alive and does not simply 'activate': too much heat kills it, and the holes in bread are not air mixed in by kneading.",
+  "why": "Demand: 'why does yeast make bread rise' (BBC Science Focus): https://www.sciencefocus.com/nature/why-does-yeast-make-bread-rise/; England KS2 Year 6 'Living things' (micro-organisms) and NGSS MS-LS1-1.",
+  "overlapWith": "respiration-atp: that page follows glucose through the cell at level 2; here the yeast is a dot that eats sugar and makes a bubble, and the only control is warmth.",
+  "leadsTo": [
+   "the-cell"
+  ],
+  "origin": "chemistry-and-cooking"
+ },
+ {
+  "slug": "caterpillar-to-butterfly",
+  "title": "Caterpillar to butterfly",
+  "level": 0,
+  "kind": "step",
+  "category": "biology",
+  "everyday": false,
+  "interaction": "Step a monarch from egg to butterfly on a day counter: the caterpillar eats and swells until its skin, which cannot stretch, splits and is shed, five times over, growing about two thousand times heavier in two weeks; then it hangs, sheds once more into a chrysalis, and a cutaway shows most of its insides dissolved and rebuilt into wings, legs and a drinking straw while the stored fat drains. Warm the days and every stage runs faster.",
+  "takeaway": "A caterpillar is an eating machine that must shed its skin to grow, and inside the chrysalis it is largely taken apart and rebuilt into a flying one.",
+  "prerequisites": [],
+  "related": [
+   "inside-an-egg",
+   "flowers-and-bees",
+   "growing-up"
+  ],
+  "needs": "",
+  "needsSource": "none: growth across five instars with a moult whenever the body outgrows its skin, a mass budget in the pupa, and stage lengths versus temperature from the monarch literature (Monarch Joint Venture; Zalucki 1982), stated on the page",
+  "pitfall": "The caterpillar does not turn to soup: its nervous system, some muscles and the small clusters of cells that become the wings survive and build the adult, and the butterfly is the same individual, not a new one.",
+  "why": "England KS2 Year 5 statutory requirement: describe the differences in the life cycles of a mammal, an amphibian, an insect and a bird. https://www.ase.org.uk/sites/default/files/PLAN%20Examples%20of%20Work%20Y5%20Living%20things%20and%20their%20habitats%20Melissa.pdf",
+  "overlapWith": "the-cell: that page shows what a cell contains; this one follows one animal's body being rebuilt, as masses and moults, with no cell biology.",
+  "leadsTo": [
+   "the-cell",
+   "dna-to-protein"
   ],
   "origin": "living-things-and-body"
  },
  {
-  "slug": "tree-rings",
-  "title": "Tree rings",
+  "slug": "flowers-and-bees",
+  "title": "Flowers and bees",
   "level": 0,
-  "kind": "explore",
+  "kind": "simulate",
   "category": "biology",
-  "everyday": true,
-  "interaction": "Scrub the years of a real tree's life and watch it lay down one ring a year, wide in a good year and narrow in a dry one, drawn to the measured widths from a public archive; hover a ring for its year and its measured width, and the narrow ones are the hard years. Then try the detectives' trick: slide the ring pattern of an old beam along a living tree's record until the narrow years line up, and read off when the beam was cut.",
-  "takeaway": "A tree writes one ring a year, wide in good years and narrow in bad ones, so its rings are both a calendar and a weather diary that can be matched between trees.",
+  "everyday": false,
+  "interaction": "Watch bees work a meadow of flowers: each visit leaves pollen from the last flower and picks up new, and a flower only sets seed once pollen from another of its kind has arrived; count the seed heads at the end of the day. Take the bees away, paint the flowers dull, or thin the meadow, and count again.",
+  "takeaway": "A flower cannot move, so it pays bees in sugar to carry its pollen, and without the bees most of the seeds never form.",
   "prerequisites": [],
   "related": [
-   "why-leaves-change-colour",
-   "how-plants-drink",
-   "deep-time",
-   "ice-ages"
+   "seeds-and-germination",
+   "food-chains",
+   "caterpillar-to-butterfly",
+   "ecosystems"
   ],
-  "needs": "Raw ring-width series (.rwl) from the International Tree-Ring Data Bank, NOAA NCEI World Data Service for Paleoclimatology: a US government archive, catalogued as CC0 by the Open Data Institute; each contributed series cites its authors.",
-  "needsSource": "ITRDB ring-width series, NOAA NCEI (US government archive, CC0 per the ODI certificate; data.gov lists no licence, so confirm on the study page)",
-  "pitfall": "Not every ring is a year everywhere: in a bad year a tree can skip a ring or add a false one, which is why the match uses a whole pattern of narrow years, never a single count.",
-  "why": "Demand and data: the ITRDB is the world's largest public archive of tree-ring measurements, catalogued on data.gov. https://catalog.data.gov/dataset/noaa-wds-paleoclimatology-the-international-tree-ring-data-bank-itrdb-revisited",
-  "overlapWith": "deep-time: that page scrubs Earth's whole record; this one scrubs one tree's rings, one per year, and teaches the matching trick that dates old wood.",
+  "needs": "",
+  "needsSource": "none: an agent simulation of bees drawn to colour and scent, carrying pollen that is deposited and diluted at each visit, with seed set requiring pollen of the right kind and nectar that refills over time",
+  "pitfall": "Bees are not helping on purpose and flowers are not for people: each is feeding, and the pollen hitches a ride. Not every flower needs a bee: grasses and many trees use the wind.",
+  "why": "England KS2 Year 3 statutory requirement: explore the part that flowers play in the life cycle of flowering plants, including pollination, seed formation and seed dispersal. https://www.gov.uk/government/publications/national-curriculum-in-england-science-programmes-of-study/national-curriculum-in-england-science-programmes-of-study",
+  "overlapWith": "ecosystems: that page couples a predator and its prey; this one couples two species that trade, counted in seeds, with no population cycles.",
   "leadsTo": [
-   "deep-time",
+   "meiosis-inheritance",
+   "ecosystems"
+  ],
+  "origin": "living-things-and-body"
+ },
+ {
+  "slug": "food-chains",
+  "title": "Who eats whom",
+  "level": 0,
+  "kind": "build",
+  "category": "biology",
+  "everyday": false,
+  "interaction": "Drag plants and animals from a shelf into a chain, grass to grasshopper to frog to hawk, and the arrows point the way the food goes; then feed it: a thousand plants feed about a hundred grasshoppers, ten frogs and one hawk, and the pyramid of counts builds itself. Cross two chains into a web, remove the grass or add a second hawk, and watch how many of each the field can feed.",
+  "takeaway": "Each step up a food chain feeds about ten times fewer animals, which is why a field holds a thousand grass plants, a hundred grasshoppers, ten frogs and one hawk.",
+  "prerequisites": [],
+  "related": [
+   "flowers-and-bees",
+   "ecosystems",
+   "carbon-cycle"
+  ],
+  "needs": "",
+  "needsSource": "none: an energy-budget pyramid with a transfer fraction of about one tenth per link (Lindeman 1942, a rule of thumb stated as such) and example daily intakes from textbook ecology",
+  "pitfall": "Arrows point from the food to the eater, the direction the energy goes, not from the eater to the eaten. And the one-tenth is a rule of thumb, not a law: the page says about.",
+  "why": "NGSS 5-LS2-1: develop a model to describe the movement of matter among plants, animals, decomposers and the environment; also England KS2 Year 4 food chains. https://keslerscience.com/ngss-5-ls2-1-cycling-of-matter",
+  "overlapWith": "ecosystems: that page runs predator and prey through time and removes species from a web; this one has no time at all, only arrows and counts, the door to that page.",
+  "leadsTo": [
+   "ecosystems",
    "carbon-cycle"
   ],
   "origin": "living-things-and-body"
  },
  {
-  "slug": "why-big-birds-flap-slowly",
-  "title": "Why big birds flap slowly",
+  "slug": "fridge-and-spoilage",
+  "title": "How a fridge keeps food fresh",
+  "level": 0,
+  "kind": "simulate",
+  "category": "biology",
+  "everyday": true,
+  "interaction": "A plate of food with a count of germs on it, starting at a handful. One control: where the plate sits (a warm kitchen, a cool room, the fridge, the freezer), set by dragging the plate. Scrub the hours and days: on the counter the count doubles every half hour or so and passes the 'unsafe' line in hours; in the fridge each doubling takes many hours and the line is reached in days; in the freezer the count stands still. Move a plate from the freezer back to the counter and the doubling resumes from where it stopped.",
+  "takeaway": "Cold does not kill the germs on food; it slows how often they double, so the same food lasts hours on the counter, days in the fridge, and months in the freezer.",
+  "prerequisites": [],
+  "related": [
+   "mould-on-bread",
+   "bread-and-yeast",
+   "kitchen-thermometer",
+   "apple-browning",
+   "ripening-fruit"
+  ],
+  "needs": "Bacterial growth rate against temperature for a common spoilage bacterium (the Ratkowsky square-root model and its fitted constants; Ratkowsky et al., J. Bacteriol. 1982 and 1983, free to read on PMC), plus the USDA FSIS 'danger zone' limits (public domain).",
+  "needsSource": "Fitted constants from Ratkowsky et al. 1982/1983 (free on PMC; a few numbers, not a dataset) and USDA FSIS limits (public domain)",
+  "pitfall": "Freezing does not kill bacteria and the fridge does not 'clean' food: thawed food carries every germ it froze with, and cooking is what kills them.",
+  "why": "USDA FSIS 'Danger Zone' guidance (bacteria double in as little as 20 minutes between 40 and 140 °F): https://www.fsis.usda.gov/news-events/news-press-releases/usda-urges-consumers-keep-clear-danger-zone-summer",
+  "overlapWith": "epidemics: that page spreads infection between people at level 1; here germs multiply on one plate and the only control is its temperature, with nothing spreading between people.",
+  "leadsTo": [
+   "the-cell",
+   "epidemics"
+  ],
+  "origin": "chemistry-and-cooking"
+ },
+ {
+  "slug": "how-fish-breathe",
+  "title": "How fish breathe",
   "level": 0,
   "kind": "manipulate",
   "category": "biology",
   "everyday": false,
-  "interaction": "Pick a real bird, from a hummingbird to a swan, and see it flap at its own rate and fly at the speed it needs to stay up; drag the size slider to blow a sparrow up to goose size and watch the flap rate fall and the needed speed climb. Past a certain size the sums no longer work for flapping, and the biggest flyers are shown soaring instead.",
-  "takeaway": "Bigger birds must fly faster and flap slower, and past a certain size flapping cannot keep them up, which is why the biggest flyers soar.",
+  "interaction": "Push water over a gill with a slider while blood runs through it the other way, and count the oxygen dots that cross from water to blood; flip a switch to make the blood run the same way as the water and the dots that cross fall to about half. Lift the fish out of the water and the feathery gill folds collapse onto each other and dry, and the dots stop crossing.",
+  "takeaway": "A fish gets oxygen by running its blood against the water flow, so the blood always meets water fresher than itself.",
   "prerequisites": [],
   "related": [
-   "inside-an-egg",
-   "flight",
-   "newtons-laws"
-  ],
-  "needs": "AVONET (Tobias et al. 2022, Ecology Letters, paper CC BY 4.0; the data files on Figshare, licence to confirm) for species mass, wing length and wing area; Pennycuick's wingbeat-frequency formula (J. Exp. Biol. 1990, revised 1996) and minimum flight speed from wing loading.",
-  "needsSource": "AVONET species measurements (paper CC BY 4.0, dataset licence to confirm on the repository); Pennycuick 1990/1996 published formulas",
-  "pitfall": "Do not explain lift here: flight owns it, and never with equal transit time. A bird's size does not scale evenly: weight grows faster than wing area, which is the whole point.",
-  "why": "Demand: the universal flapping-frequency equation made popular-science news in 2024. https://physicsworld.com/a/simple-equation-predicts-how-quickly-animals-flap-their-wings/",
-  "overlapWith": "flight: that page is lift and stall on a wing section at level 2; this one never looks at the wing's shape, only at how flap rate and speed change with a bird's size across real species.",
-  "leadsTo": [
-   "newtons-laws"
-  ],
-  "origin": "living-things-and-body"
- },
- {
-  "slug": "why-leaves-change-colour",
-  "title": "Why leaves change colour",
-  "level": 0,
-  "kind": "simulate",
-  "category": "biology",
-  "everyday": false,
-  "interaction": "Watch one maple leaf from late summer into autumn on a calendar scrub: as the days shorten and the nights cool, the green pigment is broken down and pulled back into the tree, and the yellow and orange that were underneath all along show through; sunny days with cold nights brew red on top. Then force the weather: a warm, dull autumn gives yellow without red, and an early frost cuts the show short.",
-  "takeaway": "The yellow was in the leaf all summer, hidden under the green; the tree takes the green back before letting the leaf go.",
-  "prerequisites": [],
-  "related": [
-   "how-plants-drink",
-   "tree-rings",
-   "seeds-and-germination",
-   "photosynthesis"
-  ],
-  "needs": "",
-  "needsSource": "none for the model (green pigment broken down as days shorten and cool, yellow pigments constant, red made on bright cool days, leaf colour mixed from the pigments); if the colour is mixed from measured pigment spectra, PhotochemCAD's spectra are freely downloadable but their licence must be checked",
-  "pitfall": "Leaves do not make yellow in autumn: the yellow was already there, and only the red is made fresh. Cold does not cause the change by itself: the shortening days are the main trigger.",
-  "why": "England KS1 statutory requirement, Seasonal changes: observe changes across the four seasons; and the most-asked autumn question. https://www.gov.uk/government/publications/national-curriculum-in-england-science-programmes-of-study/national-curriculum-in-england-science-programmes-of-study",
-  "overlapWith": "photosynthesis: that page is the green pigment at work; this one is the green being dismantled and what it leaves behind.",
-  "leadsTo": [
-   "photosynthesis"
-  ],
-  "origin": "living-things-and-body"
- },
- {
-  "slug": "body-thermostat",
-  "title": "Why you shiver and sweat",
-  "level": 0,
-  "kind": "simulate",
-  "category": "medicine",
-  "everyday": false,
-  "interaction": "Put a person in weather from snowy to scorching, resting or running, and watch a heat budget: the body makes heat all the time and loses it through the skin, and a thermostat in the brain keeps the core at one temperature by turning the skin pale or flushed, then shivering, then sweating. Push the weather past what sweat can carry away and the core creeps up.",
-  "takeaway": "You are a heater set to one temperature: shivering turns the heat up and sweating carries it away, and the colour of your skin shows which way the thermostat is pushing.",
-  "prerequisites": [],
-  "related": [
-   "hunger-and-fullness",
-   "why-you-get-sleepy",
-   "homeostasis"
-  ],
-  "needs": "",
-  "needsSource": "none: a one-node heat balance with resting heat near a hundred watts, shivering up to several times that, skin blood flow, and sweat cooling by evaporation up to a stated maximum, from textbook physiology",
-  "pitfall": "Sweat only cools when it evaporates, so sweat dripping off on a humid day has done nothing yet. And feeling cold is not the core being cold: the skin reports first, which is what the thermostat acts on.",
-  "why": "NGSS MS-LS1-8: skin receptors respond to temperature and send messages to the brain for immediate behaviour. https://nyssls.info/index.php/MS-LS1-8",
-  "overlapWith": "homeostasis: that page holds blood sugar steady with insulin; this one holds temperature steady with shivering and sweat, the same feedback idea with no hormones and one control at a time.",
-  "leadsTo": [
-   "homeostasis"
-  ],
-  "origin": "living-things-and-body"
- },
- {
-  "slug": "breathing-and-lungs",
-  "title": "How you breathe",
-  "level": 0,
-  "kind": "manipulate",
-  "category": "medicine",
-  "everyday": false,
-  "interaction": "Drag the diaphragm down and up on a cutaway chest and watch the ribs lift, the lungs swell and air flow in through a counter, with a bell jar and balloon beside it doing the same thing. Let go and set a slider for sleeping, walking or sprinting to see breaths per minute and the size of each breath change; then hold the breath and watch the carbon-dioxide bar climb until the urge to breathe wins.",
-  "takeaway": "The lungs cannot suck: the diaphragm makes the chest bigger, which lowers the pressure inside, and the outside air pushes itself in.",
-  "prerequisites": [],
-  "related": [
-   "how-fish-breathe",
-   "heartbeat-and-pulse",
+   "breathing-and-lungs",
+   "why-big-birds-flap-slowly",
    "heart-circulation"
   ],
   "needs": "",
-  "needsSource": "none: chest volume to pressure by Boyle's law, airflow proportional to the pressure difference, and breathing rates by activity from textbook physiology, all stated on the page",
-  "pitfall": "Breathed-out air is not carbon dioxide: it still holds most of the oxygen that went in, which is why rescue breaths work. And the lungs are not muscles; the diaphragm and the rib muscles do the work.",
-  "why": "England KS3 programme of study: the mechanism of breathing to move air in and out of the lungs, using a pressure model to explain the movement of gases. https://www.gov.uk/government/publications/national-curriculum-in-england-science-programmes-of-study/national-curriculum-in-england-science-programmes-of-study",
-  "overlapWith": "heart-circulation: that page shows oxygen levels in the blood as the heart pumps; this one is the pump for air, with nothing about the blood.",
+  "needsSource": "none: a one-dimensional counter-current exchanger with diffusion between two flows; water holds about thirty times less oxygen per litre than air, from textbook physiology",
+  "pitfall": "Fish out of water are not short of oxygen (air has more): the gill folds stick together and dry out so nothing can cross. And gills are not lungs that happen to be outside: the water flows through, it is never held.",
+  "why": "NGSS 4-LS1-1: internal structures that support survival, with gills among the standard classroom examples. https://www2.cde.ca.gov/cacs/id/web/29023",
+  "overlapWith": "heart-circulation: that page has one loop for the lungs; this is the gill itself as an exchanger you can run backwards, with no heart.",
   "leadsTo": [
    "heart-circulation",
    "states-of-matter"
@@ -154,498 +573,80 @@
   "origin": "living-things-and-body"
  },
  {
-  "slug": "digestion-journey",
-  "title": "Where your food goes",
-  "level": 0,
-  "kind": "step",
-  "category": "medicine",
-  "everyday": false,
-  "interaction": "Pick a mouthful (bread, apple, cheese or a sweet) and push it through the tube on a scrub bar: the mouth, stomach, small intestine and large intestine each take their real time on a clock, and the mouthful breaks into ever smaller pieces only where the right juices are. Watch nutrient dots cross into the blood all along the coiled small intestine and what is left become waste; swap the food to see fat linger in the stomach and fibre pass through untouched.",
-  "takeaway": "Food does not just fall through you: each part of the tube takes its own time and does its own job, and almost everything useful is taken out in the long, coiled small intestine.",
-  "prerequisites": [],
-  "related": [
-   "hunger-and-fullness",
-   "sugar-and-tooth-decay",
-   "homeostasis"
-  ],
-  "needs": "",
-  "needsSource": "none: transit times and which juices act where are textbook physiology; the compartment model with first-order breakdown of starch, protein and fat is a stated simplification",
-  "pitfall": "The stomach does not do most of digestion: it is a mixing bag of acid, and most breakdown and nearly all absorption happen in the small intestine. Food does not drop by gravity either; muscles squeeze it along, which is why you can swallow upside down.",
-  "why": "England KS2 Year 4 statutory requirement: describe the simple functions of the basic parts of the digestive system in humans. https://www-legacy.stem.org.uk/resources/community/collection/12365/year-4-animals-including-humans",
-  "overlapWith": "homeostasis: homeostasis plots blood sugar after a meal has been absorbed; this page is the tube itself, what happens to the mouthful before anything reaches the blood.",
-  "leadsTo": [
-   "homeostasis",
-   "the-cell"
-  ],
-  "origin": "living-things-and-body"
- },
- {
-  "slug": "fever",
-  "title": "What a fever is",
-  "level": 0,
-  "kind": "step",
-  "category": "medicine",
-  "everyday": false,
-  "interaction": "Catch a germ and step through a fever: the brain turns the thermostat up to 39 degrees, so a body at its normal temperature now reads as too cold, shivers and curls under a blanket until it reaches the new setting; when the germ is beaten the setting drops back and the same body reads as too hot and sweats. Drag the thermostat yourself to see the chills come from raising it and the sweats from lowering it.",
-  "takeaway": "A fever is not the body overheating: the brain raises its own thermostat, which is why you shiver on the way up and sweat on the way down.",
-  "prerequisites": [
-   "body-thermostat"
-  ],
-  "related": [
-   "why-shots-protect-you",
-   "germs-and-hand-washing",
-   "homeostasis"
-  ],
-  "needs": "",
-  "needsSource": "none: the body-thermostat heat model with a moving set point",
-  "pitfall": "A fever is a setting the body chooses, not a fault in its heating; a fever-reducing medicine lowers the setting, it does not cool the body. The page does not claim that the heat kills germs.",
-  "why": "NGSS MS-LS1-8: skin receptors respond to temperature; the fever page is the thermostat page's own example and the most-asked question about being ill. https://nyssls.info/index.php/MS-LS1-8",
-  "overlapWith": "homeostasis: that page breaks a feedback loop to model diabetes; this one moves the loop's target on purpose and watches the body chase it.",
-  "leadsTo": [
-   "homeostasis",
-   "epidemics"
-  ],
-  "origin": "living-things-and-body"
- },
- {
-  "slug": "germs-and-hand-washing",
-  "title": "Germs and hand washing",
+  "slug": "how-plants-drink",
+  "title": "How plants drink",
   "level": 0,
   "kind": "simulate",
-  "category": "medicine",
-  "everyday": false,
-  "interaction": "Watch a classroom through a morning under germ light: one child's hands glow, every door handle, pencil and hand they touch takes a share, and the next hand to touch the handle takes a share of that, the counts shrinking with each hop and as germs die on dry surfaces. Choose who washes and when, with soap for a proper count or a quick rinse, and see how far the glow has got by lunchtime.",
-  "takeaway": "Germs travel hand to thing to hand, losing a share at each hop, and one good wash cuts the chain.",
+  "category": "biology",
+  "everyday": true,
+  "interaction": "Stand a stick of celery or a white flower in coloured water and watch the dye climb; set the day to sunny, windy, humid or dark and the climb speeds up or stalls, because the pull comes from water leaving the leaves. Zoom to the leaf's pores opening and closing, then scale up to a tree on a hot day and count the buckets it lifts.",
+  "takeaway": "A plant has no pump: the leaves let water escape into the air, and that pulls a chain of water up from the roots.",
   "prerequisites": [],
   "related": [
-   "why-shots-protect-you",
-   "sugar-and-tooth-decay",
-   "epidemics"
+   "seeds-and-germination",
+   "why-leaves-change-colour",
+   "tree-rings"
   ],
   "needs": "",
-  "needsSource": "Transfer fractions per touch and surface die-off rates from published fomite-transmission studies (e.g. Rusin, Maxwell and Gerba 2002) stated on the page; no dataset shipped",
-  "pitfall": "Germs on a dry doorknob do not multiply, they slowly die; the danger is the hop to a hand and from the hand to a mouth. Soap works mostly by lifting germs off so the water can carry them away, which is why the time spent rubbing matters.",
-  "why": "England statutory RSHE and health education guidance, primary health education: personal hygiene and germs including bacteria, viruses, how they are spread and treated, and the importance of handwashing. https://www.gov.uk/government/publications/relationships-education-relationships-and-sex-education-rse-and-health-education",
-  "overlapWith": "epidemics: that page spreads an infection through a moving crowd and plots the curves; this one is one classroom's hands and surfaces, counted, with no curves and no immunity.",
+  "needsSource": "none: cohesion-tension with a simple evaporative-demand term (light, wind, humidity, pore opening) sets the flow, and the dye front follows it; a tree's daily water use quoted from textbook plant physiology",
+  "pitfall": "Roots do not push water up a tree (root pressure is tiny), and plants do not eat soil: the soil supplies water and a little mineral salt, and the plant's bulk comes from the air.",
+  "why": "NGSS 5-LS1-1: plants acquire their material for growth chiefly from air and water. https://www2.cde.ca.gov/cacs/id/web/29040",
+  "overlapWith": "photosynthesis: that page opens the stomata for carbon dioxide; this one follows the water those same pores let out, and nothing is made.",
   "leadsTo": [
-   "epidemics",
-   "the-cell"
+   "photosynthesis",
+   "states-of-matter"
   ],
   "origin": "living-things-and-body"
  },
  {
-  "slug": "growing-up",
-  "title": "How you grow",
+  "slug": "inside-an-egg",
+  "title": "Inside an egg",
   "level": 0,
   "kind": "explore",
-  "category": "medicine",
-  "everyday": false,
-  "interaction": "Slide a child's age from birth to twenty along real growth curves and watch the figure grow, with the typical range of heights shaded so that a tall nine-year-old and a short twelve-year-old are both normal; a second curve shows how much is added each year: a lot in the first year, a slow plateau, one last spurt, then nothing. Switch between girls and boys to see the spurt land at different ages.",
-  "takeaway": "You do not grow steadily: fastest as a baby, slowly through childhood, one last spurt, and then growing stops for good.",
+  "category": "biology",
+  "everyday": true,
+  "interaction": "Scrub the 21 days of a hen's egg in a warm incubator: candle it to watch the embryo grow, the yolk shrink and the air pocket at the blunt end widen as water seeps out through the shell's tiny holes. Turn the incubator's humidity up or down and the pocket grows too slowly or too fast; at day 21 the chick breaks into that pocket for its first breath and then through the shell.",
+  "takeaway": "An egg is a packed lunch with a breathing shell: the chick eats the yolk, breathes through thousands of tiny holes, and the air pocket it needs at the end is made by the water those holes let out.",
   "prerequisites": [],
   "related": [
-   "how-a-bone-heals",
-   "why-you-get-sleepy",
-   "inside-an-egg",
-   "caterpillar-to-butterfly"
-  ],
-  "needs": "CDC Growth Charts data files (stature-for-age and weight-for-age percentiles, 2000; a US government work, public domain): https://www.cdc.gov/growthcharts/cdc-data-files.htm. Growth per year is derived by differencing the chart.",
-  "needsSource": "CDC Growth Charts data files, US government work (public domain)",
-  "pitfall": "Being below or above the middle line is not behind or ahead: the shaded band is normal, and the spurt's timing varies by years between children. The charts describe typical children, not a target.",
-  "why": "England KS2 Year 5 statutory requirement: describe the changes as humans develop to old age. https://www.gov.uk/government/publications/national-curriculum-in-england-science-programmes-of-study/national-curriculum-in-england-science-programmes-of-study",
-  "overlapWith": "homeostasis: that page plots hours of one person's blood sugar; this one scrubs years of the typical child's height from a real dataset, the way deep-time scrubs its record.",
-  "leadsTo": [
-   "the-cell",
-   "homeostasis"
-  ],
-  "origin": "living-things-and-body"
- },
- {
-  "slug": "hearing-and-the-ear",
-  "title": "How your ear hears",
-  "level": 0,
-  "kind": "manipulate",
-  "category": "medicine",
-  "everyday": false,
-  "interaction": "Slide a tone from low to high and watch it shake the eardrum, three tiny bones lever the shake into the fluid of the snail-shaped cochlea, and a ripple run along its ribbon until it peaks at one spot; each pitch peaks somewhere else, high notes near the entrance and low notes at the far end. Play two notes at once and see two bumps; turn the loudness up and the bumps grow.",
-  "takeaway": "The ear sorts sounds by pitch before the brain hears them: each note makes a different place along the spiral wiggle.",
-  "prerequisites": [],
-  "related": [
-   "why-spinning-makes-you-dizzy",
-   "smell-and-taste",
-   "vision-color"
-  ],
-  "needs": "",
-  "needsSource": "none: the Greenwood (1961) frequency-to-place function for the human cochlea, a middle-ear lever ratio, and a passive bank of tuned filters for the ribbon, stated as a simplification",
-  "pitfall": "The cochlea is not a microphone with one signal: it is thousands of sensors each listening at its own spot. And loud is not the same as high: loudness grows the bump, pitch moves it.",
-  "why": "NGSS MS-LS1-8: sensory receptors respond to stimuli, with ear receptors reacting to vibrations. https://nyssls.info/index.php/MS-LS1-8",
-  "overlapWith": "waves-interference: that page is the wave in the air; this one is the receiver, from eardrum to the place-by-pitch map. The reserve item Hearing and the cochlea merges here at level 0; the cochlea's own mechanics (travelling wave, active amplifier) stay open for a level-3 page.",
-  "leadsTo": [
-   "waves-interference",
-   "oscillations-resonance"
-  ],
-  "origin": "living-things-and-body"
- },
- {
-  "slug": "heartbeat-and-pulse",
-  "title": "Your pulse",
-  "level": 0,
-  "kind": "manipulate",
-  "category": "medicine",
-  "everyday": false,
-  "interaction": "Put two fingers on your own wrist and count along with a pulse the page beats for you: a stopwatch counts fifteen seconds and multiplies by four. Then slide the figure from resting to walking to sprinting and watch the beat speed up and the push of each beat travel down the arm to the wrist; stop, and the rate drifts back down over a minute or two, faster for a fit heart.",
-  "takeaway": "Your pulse is the heart's push arriving at your wrist, and it speeds up with effort because working muscles need more blood.",
-  "prerequisites": [],
-  "related": [
-   "breathing-and-lungs",
-   "muscles-pull-in-pairs",
-   "why-bruises-change-colour",
-   "heart-circulation"
-  ],
-  "needs": "",
-  "needsSource": "none: heart rate rising with effort toward a maximum near 220 minus age, recovery as an exponential with a fitness-dependent time, and the pulse as a pressure wave travelling far faster than the blood, from textbook physiology",
-  "pitfall": "The pulse is not the blood arriving: the push travels along the artery many times faster than the blood itself moves. And a slower resting pulse usually means a stronger heart, not a weaker one.",
-  "why": "England KS2 Year 6: the circulatory system and the effect of exercise, taught by measuring the pulse before and after two minutes of exercise. https://www-legacy.stem.org.uk/resources/community/collection/13109/year-6-animals-including-humans",
-  "overlapWith": "heart-circulation: that page is inside the heart, with valves, an ECG and a pressure curve; this one never opens the heart: it is the beat you can feel and how exercise changes it.",
-  "leadsTo": [
-   "heart-circulation"
-  ],
-  "origin": "living-things-and-body"
- },
- {
-  "slug": "how-a-bone-heals",
-  "title": "How a broken bone mends",
-  "level": 0,
-  "kind": "simulate",
-  "category": "medicine",
-  "everyday": false,
-  "interaction": "Break a bone in a cutaway leg, choose whether it is held still in a cast or keeps moving, and run the weeks: blood pools at the break, a soft rubbery callus bridges it, bone fills the callus in, and over months the lump is trimmed back toward the old shape. With too much movement the bridge never forms; with no load at all during the trimming the bone stays thin.",
-  "takeaway": "A broken bone mends itself by first growing a bigger lump of new bone than it needs and then slowly trimming it back; the cast only holds the pieces still while it does.",
-  "prerequisites": [],
-  "related": [
-   "how-cuts-heal",
-   "joints-and-skeleton",
+   "caterpillar-to-butterfly",
+   "why-big-birds-flap-slowly",
    "growing-up"
   ],
-  "needs": "",
-  "needsSource": "none: the stages and typical timings are textbook orthopaedics (Marsell and Einhorn 2011 review); the grid model of callus that turns to bone where it is held still, and is removed where it carries no load, is a stated simplification",
-  "pitfall": "The cast does not heal anything, and bone does not mend like a glued stick: the repair is living tissue that keeps being reshaped for months, which is why a healed bone can end up as strong as before.",
-  "why": "England KS3 programme of study: the structure and functions of the human skeleton. https://www.gov.uk/government/publications/national-curriculum-in-england-science-programmes-of-study/national-curriculum-in-england-science-programmes-of-study",
-  "overlapWith": "bridges-structures: that page loads a structure until a member fails; this one starts from the failure and watches a living member rebuild itself.",
+  "needs": "A published day-by-day table of chick embryo mass (e.g. Romanoff 1960, The Avian Embryo) transcribed with citation, not yet confirmed open; the 12 percent water-loss target by day 18 comes from hatchery guides (Pas Reform, Cobb) that are published but not openly licensed; candling views drawn in-house.",
+  "needsSource": "weak until a source is confirmed: the daily embryo mass curve needs a citable table (Romanoff 1960 or a poultry-science paper); water-loss targets from hatchery guides, published but not openly licensed",
+  "pitfall": "A supermarket egg has no chick in it and never will: it is unfertilised. And the shell is not sealed: it breathes, which is why the air pocket grows and why a dirty or waxed egg can suffocate a chick.",
+  "why": "Classroom hatching programmes (4-H embryology) with candling lessons, taught in primary schools across the US; the Year 5 bird life cycle in England. https://afs.ca.uky.edu/sites/afs.ca.uky.edu/files/Embryology%20-%20Lesson%206%20-%20Candling.pdf",
+  "overlapWith": "the-cell: that page zooms into a finished cell; this one watches one cell's descendants become a chick, as masses and an air pocket, with no cell biology.",
   "leadsTo": [
    "the-cell",
-   "bridges-structures"
+   "meiosis-inheritance"
   ],
   "origin": "living-things-and-body"
  },
  {
-  "slug": "how-cuts-heal",
-  "title": "How a cut heals",
-  "level": 0,
-  "kind": "step",
-  "category": "medicine",
-  "everyday": false,
-  "interaction": "Make a cut of chosen depth in a slice of skin and scrub the days: blood cells pour out, platelets stick to the torn edge and to each other, and a net of fibres traps cells until the flow stops; a scab hardens on top while new skin cells creep across underneath. Make the cut wider and the plug takes longer; pick the scab early and the gap reopens.",
-  "takeaway": "Bleeding stops because sticky cells pile up from the edges of the hole until they plug it, and the scab is that plug dried out while new skin grows under it.",
-  "prerequisites": [],
-  "related": [
-   "why-bruises-change-colour",
-   "how-a-bone-heals",
-   "germs-and-hand-washing"
-  ],
-  "needs": "",
-  "needsSource": "none: a particle simulation of flow through a hole with sticking rules for platelets and a fibre net, then a grid of skin cells migrating across the gap; timings from textbook wound healing, stated as a simplification",
-  "pitfall": "A scab is not the new skin and the body does not heal from the outside in: the new skin grows underneath, from the edges, and the scab falls off when it is done.",
-  "why": "NGSS 4-LS1-1: plants and animals have internal and external structures that function to support survival, with skin named as an example structure. https://www2.cde.ca.gov/cacs/id/web/29023",
-  "overlapWith": "heart-circulation: that page keeps the blood inside the vessels; this one is what blood does when it leaks out.",
-  "leadsTo": [
-   "the-cell",
-   "heart-circulation"
-  ],
-  "origin": "living-things-and-body"
- },
- {
-  "slug": "hunger-and-fullness",
-  "title": "Why you feel full",
+  "slug": "jelly-and-pineapple",
+  "title": "Jelly and the pineapple problem",
   "level": 0,
   "kind": "simulate",
-  "category": "medicine",
-  "everyday": false,
-  "interaction": "Eat something, a glass of water, an apple, a bowl of porridge or a bag of crisps, and watch the stomach stretch and a fullness gauge rise; then let the clock run as the stomach squeezes its contents out into the gut, fast for water and slow for fat, and the gauge falls toward hungry. Compare a small snack with a big bowl of soup holding the same energy: the soup fills you more and for longer.",
-  "takeaway": "You feel full when your stomach is stretched and hungry when it empties, so foods with the same energy can keep you full for very different times.",
+  "category": "biology",
+  "everyday": true,
+  "interaction": "A bowl of hot jelly at particle scale: long strands drifting free. Scrub it cooling in the fridge and the strands tangle into a net that holds the water still, so the bowl stops sloshing. One control: what fruit goes in. Tinned pineapple, strawberries or oranges change nothing; fresh pineapple (or kiwi) brings an enzyme that snips strands wherever it meets them, and the net never joins up however long it cools. Heat the fresh pineapple first and the enzyme is wrecked and the jelly sets.",
+  "takeaway": "Jelly sets when long strands tangle into a net, and fresh pineapple carries an enzyme that cuts the strands faster than they can tangle, which cooking the pineapple stops.",
   "prerequisites": [],
   "related": [
-   "digestion-journey",
-   "body-thermostat",
-   "smell-and-taste",
-   "homeostasis"
+   "cooking-an-egg",
+   "onion-tears",
+   "milk-and-yogurt"
   ],
   "needs": "",
-  "needsSource": "Gastric-emptying half-times by food type (liquids in tens of minutes, solid meals in a couple of hours, fat slower) from published meal studies stated on the page; fullness from stomach volume plus a slow signal from the gut; no dataset shipped",
-  "pitfall": "Fullness is not a calorie counter: the stomach measures stretch and the gut reports slowly, which is why a bag of crisps can leave you hungry and a bowl of soup does not. The page calls no food bad.",
-  "why": "England KS2 Year 3 statutory requirement: identify that animals, including humans, need the right types and amount of nutrition. https://www.gov.uk/government/publications/national-curriculum-in-england-science-programmes-of-study/national-curriculum-in-england-science-programmes-of-study",
-  "overlapWith": "homeostasis: that page plots blood sugar and insulin after a meal; this one stops at the stomach and never looks at the blood.",
+  "needsSource": "none; a strand-network model (percolation) with a cutting enzyme that heat destroys",
+  "pitfall": "The pineapple does not 'melt' the jelly or add water; it cuts the strands. And tinned pineapple works because it was cooked, not because it was sweetened.",
+  "why": "A standard home experiment: 'Fruit enzymes gelatin experiment' (which fruits stop jelly setting, and why cooked pineapple does not): https://teachbesideme.com/fruit-enzymes-gelatin-experiment/; England KS3 biology (enzymes in digestion).",
+  "overlapWith": "protein-folding: that page folds a chain against an energy score at level 2; here strands only tangle or get cut, and the reader's control is the fruit.",
   "leadsTo": [
-   "homeostasis"
-  ],
-  "origin": "living-things-and-body"
- },
- {
-  "slug": "joints-and-skeleton",
-  "title": "Build a joint",
-  "level": 0,
-  "kind": "build",
-  "category": "medicine",
-  "everyday": false,
-  "interaction": "Build an arm, then a leg, by choosing a joint for each junction from a palette of hinge, pivot, ball-and-socket and fixed; then try to touch your nose, scratch your back and turn a key. The skeleton moves exactly as far as its joints allow, so a hinge at the shoulder leaves the hand stuck in one plane and a ball at the knee buckles under the body.",
-  "takeaway": "Joints come in a few shapes, hinges, pivots and ball-and-sockets, and the body uses the shape that fits each job.",
-  "prerequisites": [],
-  "related": [
-   "muscles-pull-in-pairs",
-   "how-a-bone-heals",
-   "bridges-structures"
-  ],
-  "needs": "",
-  "needsSource": "none: forward kinematics with each joint type's degrees of freedom and textbook ranges of motion",
-  "pitfall": "The elbow is not the only joint in the forearm: turning your palm over is a separate pivot joint below it, so a hinge alone cannot explain what an arm does. Fixed joints (the skull) are joints too.",
-  "why": "England KS2 Year 3 statutory requirement: identify that humans and some other animals have skeletons and muscles for support, protection and movement. https://www.gov.uk/government/publications/national-curriculum-in-england-science-programmes-of-study/national-curriculum-in-england-science-programmes-of-study",
-  "overlapWith": "bridges-structures: the only existing build page; it assembles a structure to carry loads, while this one assembles joints to reach places, with no forces.",
-  "leadsTo": [
-   "bridges-structures",
-   "newtons-laws"
-  ],
-  "origin": "living-things-and-body"
- },
- {
-  "slug": "muscles-pull-in-pairs",
-  "title": "Muscles pull in pairs",
-  "level": 0,
-  "kind": "manipulate",
-  "category": "medicine",
-  "everyday": false,
-  "interaction": "Drag the hand of a cutaway arm up and down: the biceps shortens and bulges to lift it and the triceps to lower it, and tugging either muscle alone shows it can only pull, never push. Hang a bag of shopping from the hand and watch how hard the biceps must pull, many times the bag's weight, because it grips the forearm so close to the elbow.",
-  "takeaway": "A muscle can only pull, so every joint needs a pair that take turns, and the one that grips near the elbow must pull far harder than the weight in your hand.",
-  "prerequisites": [],
-  "related": [
-   "joints-and-skeleton",
-   "heartbeat-and-pulse",
-   "bridges-structures"
-  ],
-  "needs": "",
-  "needsSource": "none: a two-link lever with real attachment distances (biceps a few centimetres from the elbow, the hand some thirty-five centimetres away) gives the force ratio",
-  "pitfall": "Muscles never push; the opposite movement is always another muscle pulling. And a bigger muscle does not change the lever: it still pulls from the same place.",
-  "why": "England KS3 programme of study: the function of muscles and examples of antagonistic muscles. https://www.gov.uk/government/publications/national-curriculum-in-england-science-programmes-of-study/national-curriculum-in-england-science-programmes-of-study",
-  "overlapWith": "bridges-structures: that page colours beams by tension and compression under a load; this one is a living lever with two pullers, and the load is a shopping bag.",
-  "leadsTo": [
-   "newtons-laws",
-   "bridges-structures"
-  ],
-  "origin": "living-things-and-body"
- },
- {
-  "slug": "reflexes",
-  "title": "Reflexes",
-  "level": 0,
-  "kind": "simulate",
-  "category": "medicine",
-  "everyday": false,
-  "interaction": "Touch a hot pan on screen and watch two signals race along the body's wiring: one takes the short loop to the spinal cord and straight back to the arm muscle, the other carries on up to the brain; the hand is away before the ouch arrives, with both times on a clock. Then take the page's own reaction test, click when the colour changes, and see your time land far above the reflex's.",
-  "takeaway": "A reflex is a shortcut through the spinal cord, which is why your hand is off the hot pan before you feel the pain.",
-  "prerequisites": [],
-  "related": [
-   "heartbeat-and-pulse",
-   "why-spinning-makes-you-dizzy",
-   "neurons"
-  ],
-  "needs": "",
-  "needsSource": "none: path lengths times textbook nerve conduction speeds (tens of metres per second for the fast fibres, with a short delay at each junction), and a reaction-time test measured in the browser",
-  "pitfall": "The brain does not decide to pull the hand away; it finds out afterwards. And the reflex is not faster because its signal travels faster: it is faster because its path is shorter.",
-  "why": "NGSS MS-LS1-8: sensory receptors send messages that result in immediate behaviour or memories, with the hot-handle example. https://nyssls.info/index.php/MS-LS1-8",
-  "overlapWith": "neurons: that page is the spike itself, ions and myelin at level 2; this one shows no voltage, only paths and timings, and the reader's own reaction time.",
-  "leadsTo": [
-   "the-cell",
-   "electric-circuits"
-  ],
-  "origin": "living-things-and-body"
- },
- {
-  "slug": "smell-and-taste",
-  "title": "Smell and taste",
-  "level": 0,
-  "kind": "build",
-  "category": "medicine",
-  "everyday": false,
-  "interaction": "Build a smell: drag a molecule across a row of a dozen receptor locks and see which ones it fits, lighting a pattern; a different molecule lights a different pattern, and two together light a new one, so the nose tells smells apart by the pattern rather than by one lock each. Then eat a strawberry with the nose pinched and watch only the tongue's five basic tastes light up: most of what you call flavour vanishes.",
-  "takeaway": "There is no sensor for each smell: a smell is the pattern of many sensors lit at once, and most of what you taste is really smell.",
-  "prerequisites": [],
-  "related": [
-   "hearing-and-the-ear",
-   "hunger-and-fullness",
-   "vision-color"
-  ],
-  "needs": "",
-  "needsSource": "The receptor matrix is a stated toy with real counts (about four hundred human odorant-receptor types, five basic tastes), after the combinatorial-code result of Malnic, Hirono, Sato and Buck (1999, Cell 96:713); if an open odorant-receptor response dataset is used to fill it, its licence must be checked",
-  "pitfall": "The tongue map (sweet at the tip, bitter at the back) is a myth: every taste is sensed all over the tongue. And flavour is not a sixth taste; it is smell arriving through the back of the mouth.",
-  "why": "NGSS MS-LS1-8: sensory receptors respond to stimuli, with tongue and nose receptors reacting to specific chemicals. https://thewonderofscience.com/msls18",
-  "overlapWith": "vision-color: that page builds colour from three cone types; this one builds a smell from hundreds of receptors, the same pattern idea with a different sense and a pinched-nose test.",
-  "leadsTo": [
-   "vision-color",
    "the-cell"
   ],
-  "origin": "living-things-and-body"
- },
- {
-  "slug": "sugar-and-tooth-decay",
-  "title": "Sugar and your teeth",
-  "level": 0,
-  "kind": "simulate",
-  "category": "medicine",
-  "everyday": true,
-  "interaction": "Place snacks and drinks on a day's timeline and run it: each sugary bite drops the mouth's acid meter into the red for about half an hour, and the enamel on a close-up tooth wears away only while the meter is there. Try one big bag of sweets at once against the same sweets spread through the day, then add brushing with fluoride toothpaste and watch the meter recover faster.",
-  "takeaway": "Teeth are damaged by how often sugar arrives, not by how much: the same sweets spread through the day keep the mouth acid for hours.",
-  "prerequisites": [],
-  "related": [
-   "germs-and-hand-washing",
-   "digestion-journey",
-   "acids-bases"
-  ],
-  "needs": "",
-  "needsSource": "Stephan curve: the published plaque pH-after-sugar curve (Stephan 1944, Journal of Dental Research; summarised at https://www.dentalcare.com/en-us/ce-courses/ce713/stephan-curve) is used as the model's shape; no dataset is shipped",
-  "pitfall": "Sugar does not dissolve teeth: the bacteria in plaque turn it into acid, and the acid does the damage below a mouth pH of about 5.5. Sugar-free does not mean acid-free: fizzy drinks are acid on their own.",
-  "why": "England KS2 Year 4 statutory requirement: identify the different types of teeth in humans and their simple functions, taught with tooth-decay investigations. https://www-legacy.stem.org.uk/resources/community/collection/12365/year-4-animals-including-humans",
-  "overlapWith": "acids-bases: that page is the chemistry of acids; this one is one acid attack you can schedule, on a tooth, with no chemistry shown.",
-  "leadsTo": [
-   "acids-bases"
-  ],
-  "origin": "living-things-and-body"
- },
- {
-  "slug": "why-bruises-change-colour",
-  "title": "Why bruises change colour",
-  "level": 0,
-  "kind": "step",
-  "category": "medicine",
-  "everyday": false,
-  "interaction": "Bump a shin, lightly or hard, and watch blood leak from tiny broken vessels and pool under the skin; then scrub the days: the pool darkens as its oxygen goes, turns green as the red pigment is taken apart, then yellow, then fades as the pieces are carried off. A harder bump makes a bigger pool that takes longer to clear, and a colour key under the scrubber tells you roughly how old a bruise is.",
-  "takeaway": "A bruise is blood trapped under the skin, and its changing colours are the body taking that blood apart piece by piece.",
-  "prerequisites": [],
-  "related": [
-   "how-cuts-heal",
-   "heartbeat-and-pulse",
-   "heart-circulation"
-  ],
-  "needs": "",
-  "needsSource": "none: haemoglobin to biliverdin to bilirubin as first-order conversions in a spreading pool, with the colour mixed from the three pigments; timings stated as ranges, since bruise ageing varies with size and person",
-  "pitfall": "Bruises are not blood going bad, and the green and yellow are not signs of infection: the yellow is the same pigment that colours jaundice, and it is the normal end of the clean-up.",
-  "why": "Demand: a standing reader question in the Ask Discover column. https://www.discovermagazine.com/ask-discover-39543",
-  "overlapWith": "heart-circulation: that page keeps blood in the vessels; this one follows blood that got out, day by day, with no pump.",
-  "leadsTo": [
-   "heart-circulation"
-  ],
-  "origin": "living-things-and-body"
- },
- {
-  "slug": "why-shots-protect-you",
-  "title": "Why a shot protects you",
-  "level": 0,
-  "kind": "simulate",
-  "category": "medicine",
-  "everyday": false,
-  "interaction": "Let a germ into a body and watch a race of counts: the germ doubles every few hours while the body's matching defenders start from a handful and take about a week to multiply, so you are ill before they win. Give the same body a shot first, a harmless lookalike of the germ, and run the race again: the defenders start in their thousands and the germ never gets going; add a second shot and see the head start grow.",
-  "takeaway": "A shot is a practice run: the defenders are already made, so the real germ loses the race before it can multiply enough to make you ill.",
-  "prerequisites": [],
-  "related": [
-   "germs-and-hand-washing",
-   "fever",
-   "immune-system",
-   "mrna-vaccines",
-   "epidemics"
-  ],
-  "needs": "",
-  "needsSource": "none: two growth curves with textbook timescales (a first response taking about a week, a second taking days; germ doubling times stated), after the standard primary and secondary antibody curves",
-  "pitfall": "The shot does not contain the illness and does not make you a little sick to teach you: it is a lookalike, and feeling sore or warm afterward is the practice run itself.",
-  "why": "England statutory RSHE and health education guidance, primary health education: the facts and scientific evidence relating to vaccination and immunisation, introduced when vaccinations are offered to pupils. https://www.gov.uk/government/publications/relationships-education-relationships-and-sex-education-rse-and-health-education",
-  "overlapWith": "mrna-vaccines: that page follows the mRNA into a cell at level 2, and immune-system selects the matching cells; this one shows no cells, only the race of counts with and without a head start.",
-  "leadsTo": [
-   "epidemics"
-  ],
-  "origin": "living-things-and-body"
- },
- {
-  "slug": "why-spinning-makes-you-dizzy",
-  "title": "Why spinning makes you dizzy",
-  "level": 0,
-  "kind": "manipulate",
-  "category": "medicine",
-  "everyday": false,
-  "interaction": "Spin a head on a chair with a slider and watch the fluid in the ear's three rings lag behind, bending the little flap that tells the brain turning; keep spinning at a steady speed and the fluid catches up, so the feeling fades. Stop suddenly and the fluid keeps going, the flap bends the other way, and the brain reports turning in the opposite direction while the room stands still: that is dizzy.",
-  "takeaway": "Your ears sense turning with a ring of fluid, and when you stop spinning the fluid keeps going, so you feel you are turning the other way.",
-  "prerequisites": [],
-  "related": [
-   "hearing-and-the-ear",
-   "reflexes",
-   "oscillations-resonance"
-  ],
-  "needs": "",
-  "needsSource": "none: the torsion-pendulum model of the semicircular canal (fluid lag with a time constant of a few seconds, plus the brain's longer velocity storage), driven by the slider's turning speed",
-  "pitfall": "Dizziness after spinning is not blood sloshing or the brain being overwhelmed by speed: the sensor is faithfully reporting a real movement of fluid that is no longer the head's movement.",
-  "why": "Demand: a standing Life's Little Mysteries question. https://www.livescience.com/33828-spinning-dizzy.html",
-  "overlapWith": "oscillations-resonance: that page drives a spring; this one is a sensor's lag, with the same inner ear as hearing-and-the-ear but a different organ in it.",
-  "leadsTo": [
-   "oscillations-resonance",
-   "newtons-laws"
-  ],
-  "origin": "living-things-and-body"
- },
- {
-  "slug": "why-you-get-sleepy",
-  "title": "Why you get sleepy",
-  "level": 0,
-  "kind": "simulate",
-  "category": "medicine",
-  "everyday": false,
-  "interaction": "Set a bedtime and a wake-up time and run three days: a sleep-pressure tank fills while you are awake and drains while you sleep, and a body clock sets the hours when sleep comes easily; sleepiness is the gap between them. Skip a night and watch the tank overflow; nap in the afternoon and see tonight's sleep come later; a strip under the plot shows the night's cycles of light and deep sleep.",
-  "takeaway": "Sleepiness is a pressure that builds all day and drains at night, gated by a clock that opens a window for it; when the two disagree you lie awake tired or nod off at noon.",
-  "prerequisites": [],
-  "related": [
-   "body-thermostat",
-   "growing-up",
-   "homeostasis"
-  ],
-  "needs": "",
-  "needsSource": "none: the two-process model (Borbely 1982; retrospective at https://www.ncbi.nlm.nih.gov/pmc/articles/PMC9540767/) is an exponential sleep pressure and a daily rhythm with two thresholds; the night stages follow the standard ninety-minute cycle",
-  "pitfall": "The page explains when you get sleepy, not why animals sleep at all, which is still an open question. And a weekend lie-in drains the tank but does not move the clock, which is why Monday feels like jet lag.",
-  "why": "England statutory RSHE and health education guidance, primary health education: the importance of sufficient good quality sleep for health, the amount of sleep recommended for their age, and practical steps for improving sleep. https://www.gov.uk/government/publications/relationships-education-relationships-and-sex-education-rse-and-health-education",
-  "overlapWith": "homeostasis: that page is a feedback loop around blood sugar over hours; this one is a pressure and a clock over days, with no hormones shown.",
-  "leadsTo": [
-   "homeostasis"
-  ],
-  "origin": "living-things-and-body"
- },
- {
-  "slug": "a-year-of-weather",
-  "title": "A year of weather, two places",
-  "level": 0,
-  "kind": "explore",
-  "category": "earth",
-  "interaction": "Scrub through one real year of daily weather at a chosen station: each day a bar from the night's low to the afternoon's high and a drop for the rain, the 365 days drawn in a ring. Pick a second place (a desert, a rainy tropical coast, the Arctic, a foggy coast, a snowy interior) and its ring appears beside the first. Flip to the next year: the days are different every time, but the shape of each ring, the climate, comes back.",
-  "takeaway": "Weather is what happens today and nobody can tell you a month ahead; climate is the shape of the whole year, different in each place and the same from year to year.",
-  "prerequisites": [],
-  "related": [
-   "sea-breeze",
-   "cloud-base",
-   "dew-and-fog",
-   "water-cycle"
-  ],
-  "needs": "Daily high, low and rain for a handful of US stations in contrasting climates (Phoenix for desert, Hilo for wet tropics, Utqiagvik for the Arctic, San Francisco for a coast, Minneapolis for a continental interior) from NOAA GHCN-Daily (https://www.ncei.noaa.gov/products/land-based-station/global-historical-climatology-network-daily); US stations are US Government data, public domain. Non-US stations in GHCN-Daily carry no clear licence, so the page uses US stations only.",
-  "needsSource": "NOAA GHCN-Daily, US stations only (US Government data, public domain)",
-  "pitfall": "One cold week does not disprove a warming climate and one hot day does not prove it: the page compares whole years, never single days.",
-  "why": "NGSS 3-ESS2-1: 'Represent data in tables and graphical displays to describe typical weather conditions expected during a particular season' (https://www.nextgenscience.org/pe/3-ess2-1-earths-systems); England KS1 geography, seasonal and daily weather patterns.",
-  "overlapWith": "greenhouse-effect (level 1) runs emission scenarios to 2100; this page shows no trend and no model, only measured days, to separate weather from climate before any warming is discussed.",
-  "leadsTo": [
-   "greenhouse-effect"
-  ],
-  "everyday": false,
-  "origin": "earth-sky-weather"
+  "origin": "chemistry-and-cooking"
  }
 ]

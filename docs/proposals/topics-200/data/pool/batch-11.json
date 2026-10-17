@@ -1,635 +1,632 @@
 [
  {
-  "slug": "cell-towers-handover",
-  "title": "How your phone finds a tower",
+  "slug": "reflexes",
+  "title": "Reflexes",
   "level": 0,
   "kind": "simulate",
-  "category": "networks",
-  "everyday": true,
-  "interaction": "Drag a phone across a town map dotted with towers; each tower's reach is drawn as a fading patch, the bars on the phone follow the nearest strong tower, and a line shows which tower the phone is talking to. Start a call and walk a route: as one tower fades and the next grows, the line jumps over without the call dropping. Drive into a valley or a thick building and watch the bars fall; put a stadium crowd in one patch and watch its calls queue because the tower has only so many lines.",
-  "takeaway": "Your phone only ever talks to the nearest tower with a clear signal, and towers pass you along as you move, so coverage means a tower close enough, not a satellite overhead.",
+  "category": "medicine",
+  "everyday": false,
+  "interaction": "Touch a hot pan on screen and watch two signals race along the body's wiring: one takes the short loop to the spinal cord and straight back to the arm muscle, the other carries on up to the brain; the hand is away before the ouch arrives, with both times on a clock. Then take the page's own reaction test, click when the colour changes, and see your time land far above the reflex's.",
+  "takeaway": "A reflex is a shortcut through the spinal cord, which is why your hand is off the hot pan before you feel the pain.",
   "prerequisites": [],
   "related": [
-   "wifi-and-walls",
-   "radio-tuning"
+   "heartbeat-and-pulse",
+   "why-spinning-makes-you-dizzy",
+   "neurons"
   ],
   "needs": "",
-  "needsSource": "none; signal strength from a standard distance-and-obstacle path-loss model, handover to the stronger tower with a margin, and a fixed number of channels per tower. Real tower positions could come from OpenCelliD (CC BY-SA 4.0) but are not needed.",
-  "pitfall": "Ordinary phones do not talk to satellites, and a text does not go phone to phone: it goes to a tower, into the network and out of another tower. Bars measure the link to the tower, not the distance to the person you are calling.",
-  "why": "England KS2 computing: 'understand computer networks, including the internet; how they can provide multiple services' (https://www.gov.uk/government/publications/national-curriculum-in-england-computing-programmes-of-study/national-curriculum-in-england-computing-programmes-of-study); 'Cellular network' averaged about 12,400 views a month on English Wikipedia in 2025.",
-  "overlapWith": "internet (level 1): that page follows packets through routers; this one stays at the first hop, the radio link between a phone and a tower and the handover, and never shows a packet. wireless-signals (level 2) is how bits ride the wave.",
+  "needsSource": "none: path lengths times textbook nerve conduction speeds (tens of metres per second for the fast fibres, with a short delay at each junction), and a reaction-time test measured in the browser",
+  "pitfall": "The brain does not decide to pull the hand away; it finds out afterwards. And the reflex is not faster because its signal travels faster: it is faster because its path is shorter.",
+  "why": "NGSS MS-LS1-8: sensory receptors send messages that result in immediate behaviour or memories, with the hot-handle example. https://nyssls.info/index.php/MS-LS1-8",
+  "overlapWith": "neurons: that page is the spike itself, ions and myelin at level 2; this one shows no voltage, only paths and timings, and the reader's own reaction time.",
   "leadsTo": [
-   "internet",
-   "waves-interference"
-  ],
-  "origin": "everyday-technology"
- },
- {
-  "slug": "password-guessing",
-  "title": "How a password gets guessed",
-  "level": 0,
-  "kind": "simulate",
-  "category": "networks",
-  "everyday": true,
-  "interaction": "Type a password (or pick one) and release a guessing machine against it. It tries the hundred thousand most common passwords first and finds '123456' or 'liverpool1' in a blink, then starts counting through every combination: a counter shows how many guesses are left and how long that takes at a million guesses a second. Make the password one letter longer and the count multiplies; swap letters for symbols and it barely moves; type three unrelated words and the counter runs off the chart.",
-  "takeaway": "Each extra character multiplies the guesses needed, so a long password of ordinary words beats a short one full of symbols, unless it is on the list of common ones that every guesser tries first.",
-  "prerequisites": [],
-  "related": [
-   "fingerprint-match",
-   "face-unlock-depth",
-   "contactless-cards"
-  ],
-  "needs": "The NCSC and Have I Been Pwned list of the 100,000 most common breached passwords (2019): the NCSC pages quote the top counts but state no licence for the file (NCSC content is usually under the Open Government Licence v3; unconfirmed). Fallback: the top entries and counts quoted in the NCSC announcement plus a permissively licensed word list (SCOWL).",
-  "needsSource": "NCSC top-100k password list, licence unconfirmed; the counting model itself needs no data.",
-  "pitfall": "Guessing at the login screen is slow and gets locked out; the fast guessing happens against stolen scrambled copies, which is why strength still matters. Symbol substitutions such as 'p@ssw0rd' are on the lists. The count assumes the guesser does not know your recipe: real guessers also try combinations of common words, so the words must be genuinely unrelated, and the page should say so. Do not show the scrambling itself; hashing is cryptography, level 2.",
-  "why": "England KS3 computing: 'use technology safely, respectfully, responsibly and securely, including protecting their online identity and privacy' (https://www.gov.uk/government/publications/national-curriculum-in-england-computing-programmes-of-study/national-curriculum-in-england-computing-programmes-of-study); NCSC's 2019 analysis of the 100,000 most common breached passwords (https://www.ncsc.gov.uk/news/most-hacked-passwords-revealed-as-uk-cyber-survey-exposes-gaps-in-online-security).",
-  "overlapWith": "cryptography (level 2) hashes and signs, and primes-modular-arithmetic shows easy-forward, hard-back; this page is only counting guesses, with the common-password list as the twist.",
-  "leadsTo": [
-   "primes-modular-arithmetic",
-   "binary"
-  ],
-  "origin": "everyday-technology"
- },
- {
-  "slug": "qr-codes",
-  "title": "QR codes",
-  "level": 0,
-  "kind": "build",
-  "category": "networks",
-  "everyday": true,
-  "interaction": "Type a short message and watch it become a square of black and white cells, built the real way: the three big corner squares that tell a camera where the code is and which way up, then the message as cells, then spare cells computed from the message. Point a drawn camera at it from any angle and it reads. Now paint over cells with a brush: the message still comes out, and a counter shows how many cells are damaged; keep painting and find the moment it fails, then paint over a corner square instead, which fails at once.",
-  "takeaway": "A QR code carries its message plus spare cells computed from it, so a scratched or half-covered code still reads, until too much is gone or the corner finders are hidden.",
-  "prerequisites": [],
-  "related": [
-   "barcode-stripes",
-   "emoji-and-text-as-numbers"
-  ],
-  "needs": "None to ship; the page runs a real encoder and decoder (open-source implementations of the QR standard exist under MIT and Apache 2.0, e.g. qrcode-generator and jsQR).",
-  "needsSource": "none; an in-browser QR encoder and decoder (Reed-Solomon) under MIT/Apache 2.0.",
-  "pitfall": "The three corner squares hold no message; they are for finding and orienting. The code is not read in a spiral or line by line, and the spare cells are not a copy of the message, so do not say the data is duplicated.",
-  "why": "NGSS 4-PS4-3: 'using a grid of 1's and 0's representing black and white to send information about a picture' (https://www.nextgenscience.org/pe/4-ps4-3-waves-and-their-applications-technologies-information-transfer); 'QR code' averaged about 388,000 views a month on English Wikipedia in 2025.",
-  "overlapWith": "error-correction (level 2): that page shows a Hamming code's parity checks on bits; this one is the object, with damage painted on and a count of cells survivable, and no arithmetic shown. barcode-stripes in this batch is the one-dimensional cousin with only a check digit.",
-  "leadsTo": [
-   "binary"
-  ],
-  "origin": "everyday-technology"
- },
- {
-  "slug": "radio-tuning",
-  "title": "Tuning a radio",
-  "level": 0,
-  "kind": "manipulate",
-  "category": "networks",
-  "everyday": true,
-  "interaction": "Several stations broadcast at once and the antenna wire picks up all of them as one tangled wiggle. Turn the tuning knob: a swing inside the radio that likes one rhythm builds up only for the station whose rhythm matches, and the others fall away; between stations the swing stays small and you hear hiss. Then look at one station's wave up close: the music rides on it as changes in height (AM) or in rhythm (FM); pick which and hear why FM survives a lightning crackle better.",
-  "takeaway": "Every station reaches the antenna at the same time, and tuning means choosing which rhythm the radio swings along with.",
-  "prerequisites": [],
-  "related": [
-   "cell-towers-handover",
-   "speakers-and-microphones"
-  ],
-  "needs": "",
-  "needsSource": "none; a sum of carrier waves through a tuned resonant filter whose centre follows the knob, then envelope or frequency detection, synthesised to audio.",
-  "pitfall": "Radio waves are not sound waves: nothing in the air is playing the music, and the station is not caught alone; selection happens inside the set by resonance. Tuning does not make the other stations leave the wire.",
-  "why": "'Radio' averaged about 25,200 views a month on English Wikipedia in 2025 (https://wikimedia.org/api/rest_v1/metrics/pageviews/per-article/en.wikipedia/all-access/user/Radio/monthly/2025010100/2025123100).",
-  "overlapWith": "oscillations-resonance (level 1) shows one oscillator building up when pushed at its natural frequency, and wireless-signals (level 2) shows modulation; what is new here is many stations on one wire at once and selection by the swing, with sound as the output.",
-  "leadsTo": [
-   "oscillations-resonance",
-   "waves-interference"
-  ],
-  "origin": "everyday-technology"
- },
- {
-  "slug": "remote-control-blinks",
-  "title": "What a remote control says",
-  "level": 0,
-  "kind": "step",
-  "category": "networks",
-  "everyday": true,
-  "interaction": "Press a button on a drawn remote and a lamp on its nose blinks in invisible light; the page shows the blinks slowed a thousand times: a long opening flash, then a string of short flashes with short and long gaps that spell the button's number, then the same string inverted as a check. Hold the button and a short 'still pressed' pattern repeats. Point the remote at the wall and the blinks bounce to the TV; put a hand in front and nothing arrives; look through a phone camera (a front camera especially; many rear ones filter infrared out) and the blinks become visible.",
-  "takeaway": "A remote talks in fast blinks of invisible light, each button its own pattern of long and short gaps, which is why it needs a clear line, or a wall to bounce off, and many phone cameras can see it.",
-  "prerequisites": [],
-  "related": [
-   "wifi-and-walls",
-   "barcode-stripes",
-   "digital-clock-counting"
-  ],
-  "needs": "",
-  "needsSource": "none; the pattern follows the widely documented NEC infrared protocol (38 kHz carrier, 9 ms leader, short and long gaps for 0 and 1, inverted copy of the command, repeat code), with brightness falling with distance and reflection.",
-  "pitfall": "The remote is not sending heat rays or radio: most TV remotes use infrared light pulses (some newer ones use radio and work through walls; say so). The TV does not see steady light: it listens for flashes at one fast rhythm, which is why sunlight does not change the channel.",
-  "why": "NGSS 4-PS4-3: 'generate and compare multiple solutions that use patterns to transfer information' (https://www.nextgenscience.org/pe/4-ps4-3-waves-and-their-applications-technologies-information-transfer).",
-  "overlapWith": "wireless-signals (level 2) modulates a carrier and binary reads bits; this page is the everyday object, with the pattern shown as long and short gaps and a line-of-sight model.",
-  "leadsTo": [
-   "binary",
-   "light-optics"
-  ],
-  "origin": "everyday-technology"
- },
- {
-  "slug": "wifi-and-walls",
-  "title": "Wi-Fi around the house",
-  "level": 0,
-  "kind": "build",
-  "category": "networks",
-  "everyday": true,
-  "interaction": "Place a router on a floor plan and the rooms fill with a signal map; drag the laptop around and its speed gauge follows the colour. Add walls, a brick one, a fridge, a fish tank, and watch each cut a shadow in the map and the gauge drop, as the link slows down to be heard through the loss. Switch the router to the faster, shorter-reach band and compare; then add a neighbour's router on the same channel and watch the two take turns.",
-  "takeaway": "Wi-Fi is radio: walls and water eat it, the link slows down rather than breaking as the signal fades, and two networks on one channel must take turns.",
-  "prerequisites": [],
-  "related": [
-   "cell-towers-handover",
-   "remote-control-blinks"
-  ],
-  "needs": "",
-  "needsSource": "none beyond published indoor loss figures (ITU-R P.1238 indoor propagation model and typical wall losses).",
-  "pitfall": "Wi-Fi is not the internet; a full signal to the router says nothing about the line out of the house. Distance does not reduce the router's 'speed': the devices slow their sending so that the weaker signal can still be read.",
-  "why": "NGSS MS-PS4-2: 'waves are reflected, absorbed, or transmitted through various materials' (https://www.nextgenscience.org/pe/ms-ps4-2-waves-and-their-applications-technologies-information-transfer); 'Wi-Fi' averaged about 73,900 views a month on English Wikipedia in 2025 (https://wikimedia.org/api/rest_v1/metrics/pageviews/per-article/en.wikipedia/all-access/user/Wi-Fi/monthly/2025010100/2025123100).",
-  "overlapWith": "wireless-signals (level 2): that page packs bits onto a carrier against noise; this one is where to put the router, computed from a wall-by-wall loss model, with speed shown as a gauge and no waveform.",
-  "leadsTo": [
-   "internet",
-   "waves-interference"
-  ],
-  "origin": "everyday-technology"
- },
- {
-  "slug": "autocomplete-spellcheck",
-  "title": "How your phone guesses your word",
-  "level": 0,
-  "kind": "manipulate",
-  "category": "ai",
-  "everyday": true,
-  "interaction": "Type a word with a slip in it and watch the phone's two counts: which real words are one or two changes away, and how often each of those is used in a huge pile of books. The suggestion is the common one that is close; type a rare name and watch it 'corrected' into a common word. Then type the start of a sentence and see the next-word guesses, which are nothing but a count of which word most often followed the last one in the pile; change the last word and the counts change.",
-  "takeaway": "A phone guesses your word by counting: which real words are nearest to what you typed and which are used most, so it is confidently wrong whenever you are unusual.",
-  "prerequisites": [],
-  "related": [
-   "spam-filter-word-counts",
-   "emoji-and-text-as-numbers",
-   "voice-assistant-wake-word"
-  ],
-  "needs": "Word and word-pair counts: a subset of the Google Books Ngram data (1-grams and 2-grams, CC BY 3.0, https://storage.googleapis.com/books/ngrams/books/datasetsv3.html), or counts the page builds itself from a Project Gutenberg text (public domain).",
-  "needsSource": "Google Books Ngram (CC BY 3.0) and/or a public-domain book; Norvig's count_1w and count_2w files derive from the Google Web Trillion Word corpus with no stated data terms, so not those.",
-  "pitfall": "The phone does not understand the sentence and is not reading your mind; it also learns your own words by counting them. Do not call the next-word counts a language model with a network: here it is a table of counts, and language-models is where the network comes in.",
-  "why": "AI4K12 Big Idea 4, Natural Interaction, in the AAAI/CSTA K-12 AI guidelines (https://ai4k12.org/); the nearest existing page is level 2.",
-  "overlapWith": "language-models (level 2): that page shows a real network's next-token probabilities and sampling; this one has no network, only edit distance and counted word pairs, and the suggestions can be checked by hand.",
-  "leadsTo": [
-   "learning-from-data",
-   "bayes-theorem"
-  ],
-  "origin": "everyday-technology"
- },
- {
-  "slug": "face-unlock-depth",
-  "title": "Why a photo cannot unlock your phone",
-  "level": 0,
-  "kind": "manipulate",
-  "category": "ai",
-  "everyday": true,
-  "interaction": "Turn a head in front of a drawn phone: the phone sprays a pattern of thousands of invisible dots onto it, a second camera sees where each dot lands, and the page shows the depth map they measure, nose nearest, ears farthest. Enrol the head, then present it again turned, smiling or with glasses: the map differs a little and the match bar stays above the line. Hold up a flat photo of the same face and every dot lands at the same depth, so the bar collapses; present a twin's head with the same shape and the bar stays up.",
-  "takeaway": "Face unlock measures the shape of your face in depth from where a pattern of dots lands, so a flat photo fails while a face with the same shape, a twin, can pass.",
-  "prerequisites": [],
-  "related": [
-   "fingerprint-match",
-   "password-guessing",
-   "digital-camera-sensor"
-  ],
-  "needs": "A head to measure: a simple parametric head drawn on the page (no external data), or a scanned head if one under an open licence is confirmed.",
-  "needsSource": "none; depth is computed by triangulating projected dots against the head's surface on the page.",
-  "pitfall": "It is not reading your eyes or your DNA, and a match is a score above a line, never certainty; the phone follows gradual changes such as a beard by updating the stored map. Name the depth method as one kind (structured light) and say that other phones use other depth tricks.",
-  "why": "AI4K12 Big Idea 1, Perception (https://ai4k12.org/); 'Face ID' averaged about 14,500 views a month on English Wikipedia in 2025 (https://wikimedia.org/api/rest_v1/metrics/pageviews/per-article/en.wikipedia/all-access/user/Face_ID/monthly/2025010100/2025123100).",
-  "overlapWith": "fingerprint-match in this batch: the same enough-points-agree rule on ridges; light-optics (level 1) has the ray model. medical-imaging reconstructs a slice from many shadows; here depth comes from where projected dots land.",
-  "leadsTo": [
-   "light-optics",
-   "learning-from-data"
-  ],
-  "origin": "everyday-technology"
- },
- {
-  "slug": "fingerprint-match",
-  "title": "How a phone knows your finger",
-  "level": 0,
-  "kind": "manipulate",
-  "category": "ai",
-  "everyday": true,
-  "interaction": "Press a finger on a drawn sensor and see what it sees: a small patch of ridges, not the whole print, with the ridge ends and forks marked as dots, which are all the phone keeps. Press again, sliding and turning the finger or pressing only a corner, and watch the match count, how many dots line up, rise or fall past the 'enough' line. Wet the finger or put a cut across it and lose a few dots; press a different finger and watch almost none line up.",
-  "takeaway": "A phone stores a map of where your ridges end and fork, not a picture, and unlocks when enough of those points line up, never all of them.",
-  "prerequisites": [],
-  "related": [
-   "face-unlock-depth",
-   "password-guessing",
-   "touchscreens",
-   "teach-a-machine"
-  ],
-  "needs": "Fingerprint images generated on the page with a published synthetic-fingerprint model (an orientation field with cores and deltas filtered into ridges, as in SFinGe, Cappelli et al. 2000), stated on the page as synthetic; the FVC benchmark databases are research-use only and are not shipped.",
-  "needsSource": "none shipped; synthetic ridges from a published model, with the minutiae extracted by thinning. Real fingerprint databases (FVC, NIST SD) are not openly licensed.",
-  "pitfall": "The match is never total: a threshold decides, so a dirty or cut finger can fail and, rarely, a stranger can pass. The phone keeps no image of the print, and the sensor reads a patch, which is why enrolment asks for many presses.",
-  "why": "AI4K12 Big Idea 1, Perception (https://ai4k12.org/); 'Fingerprint' averaged about 17,700 views a month on English Wikipedia in 2025 (https://wikimedia.org/api/rest_v1/metrics/pageviews/per-article/en.wikipedia/all-access/user/Fingerprint/monthly/2025010100/2025123100).",
-  "overlapWith": "face-unlock-depth in this batch: the same decision rule, enough points agree, on a different measurement; cryptography (level 2) is how the secret is kept. Nothing existing shows a biometric match.",
-  "leadsTo": [
-   "learning-from-data"
-  ],
-  "origin": "everyday-technology"
- },
- {
-  "slug": "spam-filter-word-counts",
-  "title": "How a spam filter decides",
-  "level": 0,
-  "kind": "build",
-  "category": "ai",
-  "everyday": true,
-  "interaction": "A pile of real text messages arrives, each already marked spam or not; pick any word, 'free', 'win', 'tonight', 'mum', and see two counts, how many spam messages contain it and how many ordinary ones. Build the filter by letting it count every word, then write a message of your own and watch the words vote: each nudges the score toward spam or not according to its two counts. Try to sneak past with 'fr33' and watch the vote change; mark your message and see the counts update.",
-  "takeaway": "A spam filter has no idea what a message means: it counts which words turned up more in past spam, which is why spammers misspell and why your 'report spam' clicks teach it.",
-  "prerequisites": [],
-  "related": [
-   "autocomplete-spellcheck",
-   "teach-a-machine",
-   "you-might-also-like"
-  ],
-  "needs": "The SMS Spam Collection (Almeida and Hidalgo, UCI Machine Learning Repository, 5,574 messages, CC BY 4.0), or a subset.",
-  "needsSource": "UCI SMS Spam Collection, CC BY 4.0 (https://archive.ics.uci.edu/dataset/228/sms+spam+collection).",
-  "pitfall": "No word is bad: 'free' is only commoner in spam. The filter can be fooled both ways, and how much spam exists overall matters, so a rare kind of message needs stronger evidence; keep that as counts, not Bayes' formula.",
-  "why": "AI4K12 Big Idea 3, Learning, in the AAAI/CSTA K-12 AI guidelines (https://ai4k12.org/).",
-  "overlapWith": "bayes-theorem (level 1) counts true and false positives in a grid of 1,000 people and learning-from-data fits a curve; this page builds the simplest real classifier on a real corpus, with word counts the reader can check.",
-  "leadsTo": [
-   "bayes-theorem",
-   "learning-from-data"
-  ],
-  "origin": "everyday-technology"
- },
- {
-  "slug": "step-counter",
-  "title": "How a phone counts your steps",
-  "level": 0,
-  "kind": "simulate",
-  "category": "ai",
-  "everyday": true,
-  "interaction": "Play a real recording from a phone on someone's waist as they walk, climb stairs, sit and stand, with the stretches labelled: a line jiggles with every stride. Set the 'that was a step' line and watch the counter: too low and the fidgets during the sitting stretches count as steps, too high and the gentle strolling stretches are missed. Then shake the phone in a drawn car on a bumpy road and watch the counter climb without anyone walking.",
-  "takeaway": "A step counter counts jolts of a shaking sensor, so it needs a line between a stride and a fidget, and a bumpy ride can count as a walk.",
-  "prerequisites": [],
-  "related": [
-   "teach-a-machine"
-  ],
-  "needs": "Continuous raw accelerometer traces at 50 samples a second, with activity labels, from the Smartphone-Based Recognition of Human Activities and Postural Transitions dataset (UCI, CC BY 4.0).",
-  "needsSource": "UCI HAPT dataset, CC BY 4.0 (https://archive.ics.uci.edu/dataset/341/smartphone+based+recognition+of+human+activities+and+postural+transitions). It labels activity stretches but records no step counts, so there is no step ground truth: false counts are steps counted while sitting or standing, and the walking count is judged against the strides visible in the trace. The bumpy-car trace is synthesised and said to be.",
-  "pitfall": "The phone does not sense feet or use GPS to count steps; it counts jolts. Show the misses and the false counts, not a perfect counter.",
-  "why": "AI4K12 Big Idea 1, Perception: 'computers perceive the world using sensors' (https://ai4k12.org/); 'Pedometer' averaged about 3,800 views a month on English Wikipedia in 2025.",
-  "overlapWith": "newtons-laws (level 1) is forces and motion and feedback-control reads sensors into a controller; nothing existing counts events in a real sensor trace.",
-  "leadsTo": [
-   "learning-from-data",
-   "newtons-laws"
-  ],
-  "origin": "everyday-technology"
- },
- {
-  "slug": "teach-a-machine",
-  "title": "Teach a machine to tell things apart",
-  "level": 0,
-  "kind": "build",
-  "category": "ai",
-  "everyday": true,
-  "interaction": "Draw a few cats and a few houses (or pull examples from a pile of other people's doodles), label them, and draw a new one: the machine shrinks every drawing to a small grid of squares, finds the stored drawings most like the new one square by square, and the labels of those neighbours vote. Watch it get the first guesses wrong, add more examples and watch the votes firm up. Then teach it a trap: every cat drawn in the top corner, every house at the bottom, and see it decide by position instead of shape.",
-  "takeaway": "A machine learns to sort things by comparing new examples with the ones it was shown, so more and more varied examples make it better, and a lazy pattern in the examples teaches it the wrong thing.",
-  "prerequisites": [],
-  "related": [
-   "spam-filter-word-counts",
-   "you-might-also-like",
-   "voice-assistant-wake-word",
-   "fingerprint-match",
-   "step-counter"
-  ],
-  "needs": "Optional: doodles from the Quick, Draw! dataset (Google, CC BY 4.0) as a ready pile of examples; the reader's own drawings need nothing.",
-  "needsSource": "Quick, Draw! dataset, CC BY 4.0 (https://github.com/googlecreativelab/quickdraw-dataset), optional.",
-  "pitfall": "The machine does not know what a cat is; it compares squares. Do not call the neighbour vote a neural network; neural-networks comes later. The trap where every wolf photo had snow is real and belongs on the page.",
-  "why": "AI4K12 Big Idea 3, Learning, in the AAAI/CSTA K-12 AI guidelines (https://ai4k12.org/).",
-  "overlapWith": "learning-from-data (level 1): that page fits a curve to points and shows overfitting with a test set; this one classifies drawings by nearest neighbours with no curve and no error plot, and leads into it.",
-  "leadsTo": [
-   "learning-from-data"
-  ],
-  "origin": "everyday-technology"
- },
- {
-  "slug": "voice-assistant-wake-word",
-  "title": "How a speaker hears its name",
-  "level": 0,
-  "kind": "step",
-  "category": "ai",
-  "everyday": true,
-  "interaction": "Say 'go' or 'stop' into the microphone (or pick one of the shipped recordings of other people saying it) and step through what the speaker does: the sound becomes a picture, time left to right and pitch bottom to top, with the loud parts bright; a small trained network that has looked at thousands of such pictures lights a confidence bar for each word it knows. Whisper, add kitchen noise or say a word it never learned, and watch the bars fall or the 'unknown' bar rise. The page says which words the network knows and that everything after the wake word goes to a bigger computer.",
-  "takeaway": "A voice assistant turns sound into a picture of pitches over time, and a small network that has seen thousands of people say the word recognises the shape, which is why noise and unfamiliar voices trip it.",
-  "prerequisites": [],
-  "related": [
-   "sound-as-numbers",
-   "autocomplete-spellcheck",
-   "teach-a-machine"
-  ],
-  "needs": "A small keyword-spotting model that runs in the browser: the TensorFlow.js speech-commands model (Apache 2.0), trained on the Speech Commands dataset (CC BY 4.0), whose vocabulary is the digits plus up, down, left, right, go, stop, yes and no; plus a handful of shipped clips from that dataset for readers who decline the microphone.",
-  "needsSource": "TensorFlow.js speech-commands model (Apache 2.0, https://github.com/tensorflow/tfjs-models/tree/master/speech-commands) and Speech Commands v2 (CC BY 4.0).",
-  "pitfall": "The wake-word listener does not understand words and does not send everything it hears: the small network runs on the device and knows only a few words, and the rest is sent only after it fires. It is not matching against one recording of the owner.",
-  "why": "AI4K12 Big Idea 1, Perception (https://ai4k12.org/); 'Virtual assistant' averaged about 7,400 views a month on English Wikipedia in 2025 (https://wikimedia.org/api/rest_v1/metrics/pageviews/per-article/en.wikipedia/all-access/user/Virtual_assistant/monthly/2025010100/2025123100).",
-  "overlapWith": "convolution-vision (level 2) inspects a trained image classifier layer by layer on drawn digits; here the input is sound, the picture is the spectrogram the reader watches being made, and the network is a box with confidence bars. language-models is what runs after the wake word.",
-  "leadsTo": [
-   "waves-interference",
-   "learning-from-data"
-  ],
-  "origin": "everyday-technology"
- },
- {
-  "slug": "you-might-also-like",
-  "title": "Why the app says 'you might also like'",
-  "level": 0,
-  "kind": "explore",
-  "category": "ai",
-  "everyday": true,
-  "interaction": "Start on any article in a small web of real Wikipedia pages and see where its readers went next, as arrows whose thickness is a count; the 'you might also like' box is just the thickest arrows. Pick a different starting page and the box changes; follow a few arrows yourself and watch the suggestions drift toward the most-visited pages, which turn up in nearly everyone's box. Then add a brand-new page with no visits and see that nothing can recommend it yet.",
-  "takeaway": "'You might also like' is a count of where other people went after the same thing you are looking at, so it pulls everyone toward the popular and has nothing to say about anything new.",
-  "prerequisites": [],
-  "related": [
-   "spam-filter-word-counts",
-   "teach-a-machine"
-  ],
-  "needs": "A small subset of the Wikipedia Clickstream (monthly referer-to-article counts, CC0), e.g. the neighbourhood of a few dozen articles.",
-  "needsSource": "Wikimedia Clickstream, CC0 (https://dumps.wikimedia.org/other/clickstream/). No open user-by-film ratings set was found (MovieLens is research-use only), so 'people like you' from ratings is not built here; the page is item-to-item counts.",
-  "pitfall": "The app does not know you; it knows counts of other people's paths, or in shops their purchases. Do not present the suggestion as taste or understanding, and show the pull toward the popular and the empty box for a new item rather than hiding them.",
-  "why": "AI4K12 Big Idea 3, Learning (https://ai4k12.org/); 'Recommender system' averaged about 7,700 views a month on English Wikipedia in 2025 (https://wikimedia.org/api/rest_v1/metrics/pageviews/per-article/en.wikipedia/all-access/user/Recommender_system/monthly/2025010100/2025123100).",
-  "overlapWith": "pagerank (level 2): that page ranks pages by who links to whom with a random surfer; this one uses counts of actual reader paths from one page to the next, and the output is a 'next' list, not a ranking of the whole web. learning-from-data fits a model; here there is only counting.",
-  "leadsTo": [
-   "learning-from-data",
-   "graph-search"
-  ],
-  "origin": "everyday-technology"
- },
- {
-  "slug": "battery-runs-down",
-  "title": "A battery is a bucket of pushes",
-  "level": 0,
-  "kind": "simulate",
-  "category": "energy",
-  "interaction": "Put a battery in a torch, switch it on and let the clock run: a gauge shows the store draining and the beam dimming over hours. Fit a bigger bulb and the store empties faster; add a second battery end to end and the bulb is brighter but the pair runs down sooner; put the two side by side and the bulb is as before but lasts twice as long. A counter records the hours each arrangement gives.",
-  "takeaway": "A battery holds a fixed store, so a brighter lamp means a shorter life, and two batteries can be stacked for more push or paired for more hours.",
-  "prerequisites": [],
-  "related": [
-   "light-bulb-hot-wire",
-   "redox-batteries"
-  ],
-  "needs": "",
-  "pitfall": "A battery does not store electricity or electrons: it stores a chemical push, and the electrons that flow were in the wire all along. The bulb does not use current up: the same current leaves the battery as returns to it, and what the bulb takes is the store.",
-  "why": "England KS2 science, Year 6 electricity: 'associate the brightness of a lamp or the volume of a buzzer with the number and voltage of cells used in the circuit', https://www.gov.uk/government/publications/national-curriculum-in-england-science-programmes-of-study",
-  "overlapWith": "electric-circuits: that page wires series and parallel circuits with meters; this page watches one torch over hours and is about the store running out, not the circuit. redox-batteries, at level 2, is the chemistry inside.",
-  "needsSource": "none (a typical AA cell's capacity and discharge shape quoted from a published manufacturer datasheet, cited on the page)",
-  "leadsTo": [
+   "the-cell",
    "electric-circuits"
   ],
-  "everyday": true,
-  "origin": "vehicles-and-big-machines"
+  "origin": "living-things-and-body"
  },
  {
-  "slug": "bicycle-gears",
-  "title": "Bicycle gears",
+  "slug": "smell-and-taste",
+  "title": "Smell and taste",
   "level": 0,
-  "kind": "manipulate",
-  "category": "energy",
-  "interaction": "Turn the pedals one full turn and count how many times the back wheel turns with the chain on each pair of sprockets. Then set a hill and pedal: a gauge shows how hard each push must be and a marker shows how far one push carries the bike. Shift while climbing to find the gear that is light enough to push and still gets you up.",
-  "takeaway": "A small sprocket in front and a big one at the back turn the wheel less per pedal turn, so each push is easier but carries you a shorter way; no gear gives you more for free.",
+  "kind": "build",
+  "category": "medicine",
+  "everyday": false,
+  "interaction": "Build a smell: drag a molecule across a row of a dozen receptor locks and see which ones it fits, lighting a pattern; a different molecule lights a different pattern, and two together light a new one, so the nose tells smells apart by the pattern rather than by one lock each. Then eat a strawberry with the nose pinched and watch only the tongue's five basic tastes light up: most of what you call flavour vanishes.",
+  "takeaway": "There is no sensor for each smell: a smell is the pattern of many sensors lit at once, and most of what you taste is really smell.",
   "prerequisites": [],
   "related": [
-   "levers-and-scissors",
-   "pulleys-and-cranes",
-   "screws-and-screwdrivers",
-   "wind-up-toy"
+   "hearing-and-the-ear",
+   "hunger-and-fullness",
+   "vision-color"
   ],
   "needs": "",
-  "pitfall": "A low gear does not make the rider stronger or add energy: it trades distance for force, and the wheel turns less for every pedal turn.",
-  "why": "KS2 science, Year 5 Forces: pupils 'recognise that some mechanisms, including levers, pulleys and gears, allow a smaller force to have a greater effect' (statutory text quoted at https://www.stem.org.uk/node/12696); Bartosz Ciechanowski's 'Bicycle' explainer shows the demand for the adult version (https://waxy.org/2023/03/interactive-explainer-of-the-physics-of-a-bicycle).",
-  "overlapWith": "newtons-laws: that page pushes carts and launches projectiles with energy bars; this page is the gear ratio alone, counted in wheel turns per pedal turn and in how hard each push must be on a hill.",
-  "needsSource": "none",
+  "needsSource": "The receptor matrix is a stated toy with real counts (about four hundred human odorant-receptor types, five basic tastes), after the combinatorial-code result of Malnic, Hirono, Sato and Buck (1999, Cell 96:713); if an open odorant-receptor response dataset is used to fill it, its licence must be checked",
+  "pitfall": "The tongue map (sweet at the tip, bitter at the back) is a myth: every taste is sensed all over the tongue. And flavour is not a sixth taste; it is smell arriving through the back of the mouth.",
+  "why": "NGSS MS-LS1-8: sensory receptors respond to stimuli, with tongue and nose receptors reacting to specific chemicals. https://thewonderofscience.com/msls18",
+  "overlapWith": "vision-color: that page builds colour from three cone types; this one builds a smell from hundreds of receptors, the same pattern idea with a different sense and a pinched-nose test.",
   "leadsTo": [
-   "newtons-laws"
+   "vision-color",
+   "the-cell"
   ],
-  "everyday": true,
-  "origin": "home-mechanisms"
+  "origin": "living-things-and-body"
  },
  {
-  "slug": "bicycle-gears-hills",
-  "title": "Bicycle gears: why low gear gets you up the hill",
-  "level": 0,
-  "kind": "manipulate",
-  "category": "energy",
-  "interaction": "Pedal a bicycle along a road that rises into a hill and shift gears: in a high gear each pedal turn carries you far but the pedals go stiff on the slope and you grind to a halt; in a low gear the pedals spin easily and the bike climbs, slower. Counters show wheel turns per pedal turn and the push needed on the pedal, and a rider of the same strength tries each gear on the same hill.",
-  "takeaway": "Gears trade distance for push: a low gear turns the wheel less per pedal stroke but needs less force, which is what gets a rider up a hill.",
-  "prerequisites": [],
-  "related": [
-   "engine-pushes-to-spin",
-   "crane-counterweight",
-   "roller-coaster-feel"
-  ],
-  "needs": "",
-  "pitfall": "A low gear gives no extra energy and makes no hill shorter: you pedal more turns for the same climb. Gears do not make a bike faster on their own; at the same effort a high gear is faster only where the road is flat.",
-  "why": "Bartosz Ciechanowski's interactive 'Bicycle', https://ciechanow.ski/bicycle/ (curriculum: England KS2 Year 5, levers, pulleys and gears)",
-  "overlapWith": "newtons-laws: that page has carts on tracks with energy bars; this page is the chain, the sprockets and the hill, and the trade between force and distance.",
-  "needsSource": "none",
-  "leadsTo": [
-   "newtons-laws"
-  ],
-  "everyday": true,
-  "origin": "vehicles-and-big-machines"
- },
- {
-  "slug": "car-brakes",
-  "title": "Car brakes",
-  "level": 0,
-  "kind": "manipulate",
-  "category": "energy",
-  "interaction": "Press the brake pedal and follow the push: the pedal is a lever, the small piston it moves squeezes fluid that cannot be squashed into the big pistons at the wheels, and those press the pads onto the spinning discs, with gauges showing the force and the distance moved at each stage. Then drive at a chosen speed and brake: the discs glow with the car's motion turned into heat, and the stopping distance grows four times when the speed doubles; wet the road and the tyres skid before the brakes run out.",
-  "takeaway": "A light push on the pedal becomes a crushing squeeze at the wheels because fluid passes the push on to bigger pistons, the car's motion ends up as heat in the discs, and twice the speed needs four times the distance.",
-  "prerequisites": [],
-  "related": [
-   "levers-and-scissors",
-   "seatbelt-crash",
-   "water-taps-and-pipes"
-  ],
-  "needs": "",
-  "pitfall": "Brake fluid does not squash to absorb the push, and the brakes do not stop the car: they stop the wheels, and it is the tyres gripping the road that stops the car.",
-  "why": "KS3 physics, pressure in liquids and hydraulic machines, with the hydraulic jack and brakes as the set applications (STEM Learning KS3 collection 'Forces at a Distance: moments, balance, pressure, hydraulics and pendulums', https://www.stem.org.uk/node/15878; a school scheme at https://medenschool.co.uk/data/uploads/files/MTP_for_Pressure_Moments_and_Densitty.pdf).",
-  "overlapWith": "newtons-laws: that page collides carts and shows energy bars; this page follows one push from pedal to disc through a hydraulic machine and ends with stopping distance against speed.",
-  "needsSource": "none",
-  "leadsTo": [
-   "newtons-laws"
-  ],
-  "everyday": true,
-  "origin": "home-mechanisms"
- },
- {
-  "slug": "click-pen",
-  "title": "Click pen",
-  "level": 0,
-  "kind": "step",
-  "category": "energy",
-  "interaction": "Press the button of a retractable pen and step through what happens inside: the plunger's slanted teeth push the cam down and twist it part of a turn, the spring pushes it back up, and the cam lands either on a tooth, which holds the tip out, or slides into a slot, which lets it back in. Scrub the clicks back and forth with the barrel made transparent and count how many it takes for the cam to come round to where it started; then press the tip to paper and watch the ball roll a film of ink out of the tube.",
-  "takeaway": "Every click turns the cam one notch, so it lands alternately on a tooth and in a slot, which is why one press puts the tip out and the next brings it back.",
-  "prerequisites": [],
-  "related": [
-   "lock-and-key",
-   "clock-escapement",
-   "zipper"
-  ],
-  "needs": "",
-  "pitfall": "The pen has no switch that remembers: its memory is the cam's angle, and the ball does not squirt ink, it rolls it out like a tiny paint roller.",
-  "why": "Engineer Guy's 'How does a retractable pen work?' video and its write-up (https://makezine.com/article/craft/retractable-pen-work/); giant clicker-pen builds are a classroom staple (https://www.instructables.com/Giant-Clicker-Pen).",
-  "overlapWith": "logic-gates: that page builds a flip-flop as a circuit; the pen's cam is a mechanical toggle whose state is an angle, and the reader counts clicks, not bits.",
-  "needsSource": "none",
-  "leadsTo": [
-   "logic-gates"
-  ],
-  "everyday": true,
-  "origin": "home-mechanisms"
- },
- {
-  "slug": "clock-escapement",
-  "title": "Pendulum clocks & the escapement",
+  "slug": "sugar-and-tooth-decay",
+  "title": "Sugar and your teeth",
   "level": 0,
   "kind": "simulate",
-  "category": "energy",
-  "interaction": "Hang a weight on a cord that turns a toothed wheel and watch the wheel spin away in a blur; add the anchor that rocks with a pendulum, and the wheel can now advance only one tooth per swing, with a tick each time a tooth is caught and a tiny push back to the pendulum to keep it going. Lengthen or shorten the pendulum, or hang a heavier weight, and count ticks against a reference second hand to see which change alters the rate.",
-  "takeaway": "The weight drives the clock and the pendulum only meters it out, one tooth per swing, so the length of the pendulum sets the time and a heavier weight hardly changes the rate.",
+  "category": "medicine",
+  "everyday": true,
+  "interaction": "Place snacks and drinks on a day's timeline and run it: each sugary bite drops the mouth's acid meter into the red for about half an hour, and the enamel on a close-up tooth wears away only while the meter is there. Try one big bag of sweets at once against the same sweets spread through the day, then add brushing with fluoride toothpaste and watch the meter recover faster.",
+  "takeaway": "Teeth are damaged by how often sugar arrives, not by how much: the same sweets spread through the day keep the mouth acid for hours.",
   "prerequisites": [],
   "related": [
-   "wind-up-toy",
-   "playground-swing",
-   "click-pen"
+   "germs-and-hand-washing",
+   "digestion-journey",
+   "acids-bases"
   ],
   "needs": "",
-  "pitfall": "The pendulum does not power the clock, and a bigger swing does not tick faster: for small swings the length alone sets the period.",
-  "why": "Bartosz Ciechanowski's 'Mechanical Watch', the most-shared interactive explainer of a mainspring and escapement (https://pxlnv.com/linklog/mechanical-watch-movement/); KS3 physics collections pair pendulums with moments and pressure (https://www.stem.org.uk/node/15878).",
-  "overlapWith": "oscillations-resonance: that page sets a pendulum's length and plots its period; here the period is a given and the page is the catch-and-release that turns swings into ticks, and why the drive weight does not change the rate.",
-  "needsSource": "none",
+  "needsSource": "Stephan curve: the published plaque pH-after-sugar curve (Stephan 1944, Journal of Dental Research; summarised at https://www.dentalcare.com/en-us/ce-courses/ce713/stephan-curve) is used as the model's shape; no dataset is shipped",
+  "pitfall": "Sugar does not dissolve teeth: the bacteria in plaque turn it into acid, and the acid does the damage below a mouth pH of about 5.5. Sugar-free does not mean acid-free: fizzy drinks are acid on their own.",
+  "why": "England KS2 Year 4 statutory requirement: identify the different types of teeth in humans and their simple functions, taught with tooth-decay investigations. https://www-legacy.stem.org.uk/resources/community/collection/12365/year-4-animals-including-humans",
+  "overlapWith": "acids-bases: that page is the chemistry of acids; this one is one acid attack you can schedule, on a tooth, with no chemistry shown.",
   "leadsTo": [
+   "acids-bases"
+  ],
+  "origin": "living-things-and-body"
+ },
+ {
+  "slug": "why-bruises-change-colour",
+  "title": "Why bruises change colour",
+  "level": 0,
+  "kind": "step",
+  "category": "medicine",
+  "everyday": false,
+  "interaction": "Bump a shin, lightly or hard, and watch blood leak from tiny broken vessels and pool under the skin; then scrub the days: the pool darkens as its oxygen goes, turns green as the red pigment is taken apart, then yellow, then fades as the pieces are carried off. A harder bump makes a bigger pool that takes longer to clear, and a colour key under the scrubber tells you roughly how old a bruise is.",
+  "takeaway": "A bruise is blood trapped under the skin, and its changing colours are the body taking that blood apart piece by piece.",
+  "prerequisites": [],
+  "related": [
+   "how-cuts-heal",
+   "heartbeat-and-pulse",
+   "heart-circulation"
+  ],
+  "needs": "",
+  "needsSource": "none: haemoglobin to biliverdin to bilirubin as first-order conversions in a spreading pool, with the colour mixed from the three pigments; timings stated as ranges, since bruise ageing varies with size and person",
+  "pitfall": "Bruises are not blood going bad, and the green and yellow are not signs of infection: the yellow is the same pigment that colours jaundice, and it is the normal end of the clean-up.",
+  "why": "Demand: a standing reader question in the Ask Discover column. https://www.discovermagazine.com/ask-discover-39543",
+  "overlapWith": "heart-circulation: that page keeps blood in the vessels; this one follows blood that got out, day by day, with no pump.",
+  "leadsTo": [
+   "heart-circulation"
+  ],
+  "origin": "living-things-and-body"
+ },
+ {
+  "slug": "why-shots-protect-you",
+  "title": "Why a shot protects you",
+  "level": 0,
+  "kind": "simulate",
+  "category": "medicine",
+  "everyday": false,
+  "interaction": "Let a germ into a body and watch a race of counts: the germ doubles every few hours while the body's matching defenders start from a handful and take about a week to multiply, so you are ill before they win. Give the same body a shot first, a harmless lookalike of the germ, and run the race again: the defenders start in their thousands and the germ never gets going; add a second shot and see the head start grow.",
+  "takeaway": "A shot is a practice run: the defenders are already made, so the real germ loses the race before it can multiply enough to make you ill.",
+  "prerequisites": [],
+  "related": [
+   "germs-and-hand-washing",
+   "fever",
+   "immune-system",
+   "mrna-vaccines",
+   "epidemics"
+  ],
+  "needs": "",
+  "needsSource": "none: two growth curves with textbook timescales (a first response taking about a week, a second taking days; germ doubling times stated), after the standard primary and secondary antibody curves",
+  "pitfall": "The shot does not contain the illness and does not make you a little sick to teach you: it is a lookalike, and feeling sore or warm afterward is the practice run itself.",
+  "why": "England statutory RSHE and health education guidance, primary health education: the facts and scientific evidence relating to vaccination and immunisation, introduced when vaccinations are offered to pupils. https://www.gov.uk/government/publications/relationships-education-relationships-and-sex-education-rse-and-health-education",
+  "overlapWith": "mrna-vaccines: that page follows the mRNA into a cell at level 2, and immune-system selects the matching cells; this one shows no cells, only the race of counts with and without a head start.",
+  "leadsTo": [
+   "epidemics"
+  ],
+  "origin": "living-things-and-body"
+ },
+ {
+  "slug": "why-spinning-makes-you-dizzy",
+  "title": "Why spinning makes you dizzy",
+  "level": 0,
+  "kind": "manipulate",
+  "category": "medicine",
+  "everyday": false,
+  "interaction": "Spin a head on a chair with a slider and watch the fluid in the ear's three rings lag behind, bending the little flap that tells the brain turning; keep spinning at a steady speed and the fluid catches up, so the feeling fades. Stop suddenly and the fluid keeps going, the flap bends the other way, and the brain reports turning in the opposite direction while the room stands still: that is dizzy.",
+  "takeaway": "Your ears sense turning with a ring of fluid, and when you stop spinning the fluid keeps going, so you feel you are turning the other way.",
+  "prerequisites": [],
+  "related": [
+   "hearing-and-the-ear",
+   "reflexes",
    "oscillations-resonance"
   ],
-  "everyday": true,
-  "origin": "home-mechanisms"
+  "needs": "",
+  "needsSource": "none: the torsion-pendulum model of the semicircular canal (fluid lag with a time constant of a few seconds, plus the brain's longer velocity storage), driven by the slider's turning speed",
+  "pitfall": "Dizziness after spinning is not blood sloshing or the brain being overwhelmed by speed: the sensor is faithfully reporting a real movement of fluid that is no longer the head's movement.",
+  "why": "Demand: a standing Life's Little Mysteries question. https://www.livescience.com/33828-spinning-dizzy.html",
+  "overlapWith": "oscillations-resonance: that page drives a spring; this one is a sensor's lag, with the same inner ear as hearing-and-the-ear but a different organ in it.",
+  "leadsTo": [
+   "oscillations-resonance",
+   "newtons-laws"
+  ],
+  "origin": "living-things-and-body"
  },
  {
-  "slug": "crane-counterweight",
-  "title": "Tower cranes: why they don't fall over",
+  "slug": "why-you-get-sleepy",
+  "title": "Why you get sleepy",
   "level": 0,
-  "kind": "build",
-  "category": "energy",
-  "interaction": "Hang a load from a tower crane and slide the trolley out along the jib: the crane leans and tips unless the concrete blocks on the short arm balance it, and a gauge shows how close to tipping it is. Add or remove counterweights and move the load in and out to find the heaviest load the crane can carry at each reach; then rig the hook with two or four rope falls and watch the motor's pull shrink as the rope it must wind grows.",
-  "takeaway": "A crane stands because a heavy block near the tower balances a load far out on the jib, like a seesaw, and the farther out the load, the less it may weigh.",
-  "prerequisites": [],
-  "related": [
-   "hydraulics-digger-arm",
-   "skyscraper-sway-damper",
-   "bicycle-gears-hills"
-  ],
-  "needs": "",
-  "pitfall": "The counterweight is not there to outweigh the load: a small load far out can out-tip a big block close in, because distance counts as much as weight. The pulleys give no free lift: four falls quarter the pull but the motor winds four times the rope.",
-  "why": "England KS2 science, Year 5 forces: 'levers, pulleys and gears allow a smaller force to have a greater effect', https://www.gov.uk/government/publications/national-curriculum-in-england-science-programmes-of-study",
-  "overlapWith": "bridges-structures: that page carries a load to the ground through a frame; this page is the balance of a crane about its base, the load chart it gives, and the rope falls at its hook.",
-  "needsSource": "none",
-  "leadsTo": [
-   "newtons-laws",
-   "bridges-structures"
-  ],
+  "kind": "simulate",
+  "category": "medicine",
   "everyday": false,
-  "origin": "vehicles-and-big-machines"
- },
- {
-  "slug": "dam-water-height",
-  "title": "Dams and water wheels: the push is in the height",
-  "level": 0,
-  "kind": "manipulate",
-  "category": "energy",
-  "interaction": "Raise the water behind a dam and open its gate: water jets out faster from a deeper reservoir, spins the wheel harder and lights more houses. Move the wheel to the foot of a tall waterfall, then halfway up, and compare; close the gate when the reservoir runs low and wait for rain to refill it. A second stream with ten times the flow but a tenth of the drop lights the same number of houses.",
-  "takeaway": "A dam's power comes from how far the water falls and how much of it falls, so a small high stream can match a big low one.",
+  "interaction": "Set a bedtime and a wake-up time and run three days: a sleep-pressure tank fills while you are awake and drains while you sleep, and a body clock sets the hours when sleep comes easily; sleepiness is the gap between them. Skip a night and watch the tank overflow; nap in the afternoon and see tonight's sleep come later; a strip under the plot shows the night's cycles of light and deep sleep.",
+  "takeaway": "Sleepiness is a pressure that builds all day and drains at night, gated by a clock that opens a window for it; when the two disagree you lie awake tired or nod off at noon.",
   "prerequisites": [],
   "related": [
-   "wind-turbine-wind-speed",
-   "power-station-kettle",
-   "geothermal-heat-below"
+   "body-thermostat",
+   "growing-up",
+   "homeostasis"
   ],
   "needs": "",
-  "pitfall": "The water at the bottom of a lake is not pushing harder because it is 'stronger': pressure grows with depth, and the same stream falling further carries more. A dam makes no energy of its own: it stores rain that fell on the hills, and with no rain the reservoir empties.",
-  "why": "USGS Water Science School, 'Hydroelectric power: how it works', https://www.usgs.gov/special-topics/water-science-school/science/hydroelectric-power-how-it-works (curriculum: NGSS 4-ESS3-1)",
-  "overlapWith": "power-grid: that page dispatches hydro as one source; this page is the water wheel itself and what height and flow do to it, and nothing about the grid.",
-  "needsSource": "none",
+  "needsSource": "none: the two-process model (Borbely 1982; retrospective at https://www.ncbi.nlm.nih.gov/pmc/articles/PMC9540767/) is an exponential sleep pressure and a daily rhythm with two thresholds; the night stages follow the standard ninety-minute cycle",
+  "pitfall": "The page explains when you get sleepy, not why animals sleep at all, which is still an open question. And a weekend lie-in drains the tank but does not move the clock, which is why Monday feels like jet lag.",
+  "why": "England statutory RSHE and health education guidance, primary health education: the importance of sufficient good quality sleep for health, the amount of sleep recommended for their age, and practical steps for improving sleep. https://www.gov.uk/government/publications/relationships-education-relationships-and-sex-education-rse-and-health-education",
+  "overlapWith": "homeostasis: that page is a feedback loop around blood sugar over hours; this one is a pressure and a clock over days, with no hormones shown.",
   "leadsTo": [
-   "newtons-laws"
+   "homeostasis"
   ],
-  "everyday": false,
-  "origin": "vehicles-and-big-machines"
+  "origin": "living-things-and-body"
  },
  {
-  "slug": "elevator",
-  "title": "Elevator",
-  "level": 0,
-  "kind": "manipulate",
-  "category": "energy",
-  "interaction": "Put people into the cab one at a time and watch the rope over the wheel at the top: a counterweight on the other side balances the empty cab plus about half a load, so the motor only lifts the difference, shown on a gauge that is lowest with the cab half full and highest going up full or down empty. Then arm the safety and cut the rope: the governor's flyweights throw the brake shoes into the rails before the cab has dropped far.",
-  "takeaway": "The motor of an elevator does not lift the whole cab, only the difference between the cab and its counterweight, and it is a speed-triggered brake, not the rope, that keeps a falling cab safe.",
-  "prerequisites": [
-   "pulleys-and-cranes"
-  ],
-  "related": [
-   "escalator",
-   "levers-and-scissors"
-  ],
-  "needs": "",
-  "pitfall": "A snapped rope does not mean a fall, and the motor never carries the full weight of a loaded cab; show the counterweight doing its share.",
-  "why": "'How do elevators work?' is a standing children's question (Wonderopolis, https://wonderopolis.org/wonder/how-do-elevators-work) with adult explainers alongside (https://explainthatstuff.com/how-elevators-work.html).",
-  "overlapWith": "newtons-laws: that page balances forces on carts and projectiles; here two weights hang over one wheel and the motor's job is counted in people.",
-  "needsSource": "none",
-  "leadsTo": [
-   "newtons-laws"
-  ],
-  "everyday": true,
-  "origin": "home-mechanisms"
- },
- {
-  "slug": "engine-pushes-to-spin",
-  "title": "Inside a car engine: from pushes to spinning",
-  "level": 0,
-  "kind": "build",
-  "category": "energy",
-  "interaction": "Start with one cylinder: a bang pushes the piston down, the crank turns that push into part of a turn, and a dial shows the shaft speeding up and slowing with every bang, so the car would lurch. Add a second, third and fourth cylinder that fire in turn, then a heavy flywheel, and watch the dial smooth out. Press the bang yourself to feel the timing, then let the engine run.",
-  "takeaway": "An engine turns a string of separate pushes into a steady spin, and cylinders firing in turn plus a heavy wheel are what make it smooth.",
-  "prerequisites": [],
-  "related": [
-   "bicycle-gears-hills",
-   "car-brakes-stopping-distance",
-   "heat-engines"
-  ],
-  "needs": "",
-  "pitfall": "The fuel does not explode the car forward: the burning gas only pushes a piston a few centimetres, and everything else is linkage. A four-stroke cylinder pushes on only one stroke in four, which is why a single cylinder runs so rough.",
-  "why": "Bartosz Ciechanowski's interactive 'Internal Combustion Engine', https://ciechanow.ski/internal-combustion-engine/",
-  "overlapWith": "heat-engines: that page traces the gas round a pressure-volume loop and the efficiency ceiling at level 2; this page is the crank, the firing order and the flywheel, and never draws the loop.",
-  "needsSource": "none (the cylinder's push over a stroke is a simplified pressure profile, stated as such on the page)",
-  "leadsTo": [
-   "newtons-laws"
-  ],
-  "everyday": true,
-  "origin": "vehicles-and-big-machines"
- },
- {
-  "slug": "escalator",
-  "title": "Escalator",
-  "level": 0,
+  "slug": "ageing-mortality",
+  "title": "Ageing & the mortality curve",
+  "level": 3,
   "kind": "explore",
-  "category": "energy",
-  "interaction": "Scrub the chain of an escalator and follow one step round the loop: it rides on two pairs of wheels on two separate tracks, and because the tracks sit one step-height apart on the slope and level out at the ends, the step stays flat all the way up, sinks into a flat floor at the top and turns over underneath. Drag the two tracks closer together or further apart and watch the steps tilt; zoom into the landing to see why the comb has to mesh with grooves in the step.",
-  "takeaway": "The steps of an escalator do not fold; they are rigid, and it is the shape of the two tracks they ride on that keeps them level on the slope and flattens them at each end.",
-  "prerequisites": [],
+  "category": "medicine",
+  "interaction": "Scrub through real life tables and watch the chance of dying in the next year climb exponentially from about age thirty, doubling roughly every eight years on a log scale, with the curve for each decade of the twentieth century shifting down but keeping its slope. Then run the evolutionary explanation: a population with mutations that act at different ages, where selection cannot see what happens after reproduction, and watch late-acting harm accumulate; add a damage model whose redundant parts fail at random and see the same straight line appear on its own.",
+  "takeaway": "The risk of dying doubles every eight years or so across adult life, and that straight line on a log scale is what a body of many redundant parts, shaped by selection that cannot see old age, would produce.",
+  "prerequisites": [
+   "evolution",
+   "central-limit-theorem"
+  ],
   "related": [
-   "elevator",
-   "bicycle-gears"
+   "bone-remodelling",
+   "screening-overdiagnosis",
+   "deep-time"
+  ],
+  "needs": "Period life tables by age and year from the US National Center for Health Statistics (public domain); the Human Mortality Database (free with registration) for other countries.",
+  "needsSource": "CDC/NCHS United States Life Tables, public domain: https://www.cdc.gov/nchs/products/life_tables.htm",
+  "pitfall": "Ageing is not a programme that switches on; nothing in the model wants the body to die, and the curve falls out of what selection could and could not reach.",
+  "why": "The Gompertz–Makeham law of mortality is the standard description of adult mortality: https://en.wikipedia.org/wiki/Gompertz%E2%80%93Makeham_law_of_mortality",
+  "overlapWith": "evolution: that page adapts a trait to an environment; this page shows what evolution leaves alone, because it happens after reproduction.",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "medicine-l3"
+ },
+ {
+  "slug": "anaesthesia-infusion",
+  "title": "Anaesthesia: the sleeping dose",
+  "level": 3,
+  "kind": "simulate",
+  "category": "medicine",
+  "interaction": "Run a propofol infusion through the three-compartment model that real target-controlled infusion pumps use, with an effect-site compartment for the brain and a sigmoid dose–effect curve that turns concentration into the chance of being unconscious. Set a target and watch the pump overshoot the blood to reach the brain quickly; then stop the infusion after ten minutes or after eight hours and compare how long the patient takes to wake. Add a second drug that acts on the same curve and see the effect shift.",
+  "takeaway": "Waking from a short anaesthetic is mostly the drug draining out of the blood into muscle and fat, not the body breaking it down, so the longer the infusion has run, the fuller those stores are and the slower the wake-up.",
+  "prerequisites": [
+   "pharmacokinetics-dosing",
+   "neurons"
+  ],
+  "related": [
+   "pain-gate-control"
+  ],
+  "needs": "Parameters of the Schnider propofol model and its effect-site rate constant, published in Anesthesiology (1998–1999); numbers, not copyrightable.",
+  "needsSource": "Published model parameters; no dataset.",
+  "pitfall": "A drug's elimination half-life does not predict how fast a patient wakes; the context-sensitive half-time depends on how long the infusion ran.",
+  "why": "The Schnider model and the context-sensitive half-time are core pharmacokinetics content of the anaesthesia primary exam syllabus (CICM primary, pharmacokinetics chapter): https://derangedphysiology.com/main/cicm-primary-exam/pharmacokinetics/Chapter-323/context-sensitive-half-time",
+  "overlapWith": "neurons: that page opens ion channels on one neuron; this page never opens a channel, it tracks where the drug is and how likely the brain is to be switched off.",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "medicine-l3"
+ },
+ {
+  "slug": "antibiotic-dosing-resistance",
+  "title": "Antibiotic dosing & resistance",
+  "level": 3,
+  "kind": "simulate",
+  "category": "medicine",
+  "interaction": "Dose a bacterial infection with an antibiotic whose concentration follows a pharmacokinetic curve, and watch a population of sensitive cells and a rare resistant mutant through a kill curve whose rate depends on concentration: above the sensitive strain's minimum inhibitory concentration the sensitive cells die, and only above a higher one do the mutants. Change the dose, the interval, the course length and the mutation rate, spread the same drug across a plate with a concentration gradient as in the MEGA-plate experiment, and compare one drug with two given together.",
+  "takeaway": "Resistance is selected in the window of concentrations that kill the sensitive strain but not the mutant, so what matters is how much time the drug spends in that window, not whether a course was 'finished'.",
+  "prerequisites": [
+   "evolution",
+   "pharmacokinetics-dosing"
+  ],
+  "related": [
+   "cancer",
+   "epidemics",
+   "sepsis-inflammation"
   ],
   "needs": "",
-  "pitfall": "Steps are not hinged flaps that fold flat, and the handrail is a separate belt driven to match the step speed, not part of the step chain.",
-  "why": "'How Escalators Work' (HowStuffWorks, https://science.howstuffworks.com/transport/engines-equipment/escalator.htm) is reused as a KS2 reading-comprehension text by primary schools (https://longton-st-oswalds.lancs.sch.uk/serve_file/971111).",
-  "overlapWith": "bridges-structures: that page is about forces in members; the escalator page is pure geometry, a rigid step on two tracks, with no forces at all.",
   "needsSource": "none",
-  "leadsTo": [
-   "unit-circle"
+  "pitfall": "Longer courses are not automatically safer: a course that keeps the concentration in the selection window for longer can select more resistance, not less.",
+  "why": "The MEGA-plate experiment (Baym et al., Science 2016) made the spatial selection of resistance visible and widely watched: https://www.sciencedaily.com/releases/2016/09/160908150908.htm",
+  "overlapWith": "evolution: that page uses an antibiotic dose as one environment that shifts a trait; this page adds the drug's rise and fall in the body and shows that the dosing schedule, not the drug, decides whether resistance wins.",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "medicine-l3"
+ },
+ {
+  "slug": "artificial-pancreas",
+  "title": "The artificial pancreas",
+  "level": 3,
+  "kind": "simulate",
+  "category": "medicine",
+  "interaction": "Close the loop on a type-1 patient modelled with a published glucose–insulin model: a sensor reads glucose from under the skin with its lag, a pump delivers insulin under the skin that takes close to an hour to peak, and a controller the reader tunes decides the dose every five minutes. Serve a meal, announced or not, send the patient for a run, and watch an aggressive controller overshoot into hypoglycaemia hours later; replace reacting with predicting and see the difference.",
+  "takeaway": "Controlling blood glucose is hard not because the goal is complicated but because every measurement and every action is delayed by close to an hour, so a controller that reacts will overshoot and one that predicts can hold the line.",
+  "prerequisites": [
+   "homeostasis",
+   "feedback-control"
   ],
-  "everyday": true,
-  "origin": "home-mechanisms"
+  "related": [
+   "pharmacokinetics-dosing"
+  ],
+  "needs": "Parameters of the Hovorka glucose–insulin model (Physiological Measurement 2004); numbers, not copyrightable.",
+  "needsSource": "Published model parameters (Hovorka et al. 2004); the absorption delay as the limiting factor is analysed in Boiroux et al., DYCOPS 2010: https://skoge.folk.ntnu.no/prost/proceedings/dycops-2010/Papers_DYCOPS2010/MoAT1-02.pdf",
+  "pitfall": "A closed loop is not a pancreas: it cannot deliver insulin into the portal vein or take back insulin already absorbed, so it must leave room for its own delay.",
+  "why": "Closed-loop insulin delivery is now a licensed treatment and a high-traffic reference topic: https://en.wikipedia.org/wiki/Artificial_pancreas",
+  "overlapWith": "homeostasis: that page lets the reader dose insulin by hand against a glucose loop; this page hands the job to a controller and shows the delays that make it fail.",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "medicine-l3"
+ },
+ {
+  "slug": "baroreflex-blood-pressure",
+  "title": "Blood pressure & the baroreflex",
+  "level": 3,
+  "kind": "simulate",
+  "category": "medicine",
+  "interaction": "Run a circulation in which pressure is cardiac output times resistance, and close the loop: stretch sensors in the neck read the pressure, and with a short delay the heart rate, the heart's strength and the vessel tone respond along a sigmoid curve. Stand the person up and watch pressure dip then recover; bleed them slowly and see the pressure hold while the heart rate climbs until the reserve runs out; perform a Valsalva manoeuvre and see its four phases; then move the set point up, as chronic hypertension does, and see the reflex defend the wrong pressure.",
+  "takeaway": "Blood pressure is held by a fast reflex that trades heart rate and vessel tone against pressure, which hides a haemorrhage until it is large and defends a high pressure once the set point has drifted.",
+  "prerequisites": [
+   "heart-circulation",
+   "feedback-control"
+  ],
+  "related": [
+   "ecg-arrhythmias",
+   "kidney-nephron",
+   "ige-crosslinking-allergy"
+  ],
+  "needs": "",
+  "needsSource": "none",
+  "pitfall": "A normal blood pressure does not mean no blood has been lost; the reflex hides the loss, and it defends the current set point, not a healthy one.",
+  "why": "The baroreceptor reflex is Cardiovascular-system content in the USMLE Step 1 outline and the answer to the staple 'why do I get dizzy when I stand up': https://en.wikipedia.org/wiki/Baroreflex",
+  "overlapWith": "heart-circulation: that page narrows the arteries and shows the pressure change; this page closes the loop that reacts to it.",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "medicine-l3"
+ },
+ {
+  "slug": "blood-acid-base",
+  "title": "Acid–base balance of blood",
+  "level": 3,
+  "kind": "manipulate",
+  "category": "medicine",
+  "interaction": "Drag a patient's point on the Davenport diagram, bicarbonate against pH with lines of constant carbon dioxide, and the lungs and kidneys answer: hold the breath or hyperventilate and the point slides along the buffer line within minutes, lose acid by vomiting or make it in diabetic ketoacidosis and the point jumps across the lines, and the kidneys drag it back over days. Each disturbance leaves its own trail, so a given reading can be traced back to what went wrong and how long ago.",
+  "takeaway": "Blood pH is held by one buffer whose two halves are controlled by two organs on different clocks, so the pattern of carbon dioxide and bicarbonate says which went wrong and how long ago.",
+  "prerequisites": [
+   "acids-bases",
+   "lung-gas-exchange",
+   "kidney-nephron"
+  ],
+  "related": [
+   "dialysis"
+  ],
+  "needs": "",
+  "needsSource": "none",
+  "pitfall": "Bicarbonate is a poor buffer at pH 7.4 in a closed flask (its pKa is 6.1); it works in the body only because the lungs blow off the carbon dioxide it makes.",
+  "why": "Arterial blood gas interpretation on the Davenport diagram is core content of medical physiology courses: https://en.wikipedia.org/wiki/Davenport_diagram",
+  "overlapWith": "acids-bases: that page titrates an acid in a beaker; this page titrates blood with two organs that keep moving the end point.",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "medicine-l3"
+ },
+ {
+  "slug": "bone-remodelling",
+  "title": "Bone remodelling",
+  "level": 3,
+  "kind": "simulate",
+  "category": "medicine",
+  "interaction": "Load a small two-dimensional block of bone and let it remodel: a coarse elastic grid of a few thousand elements computes the strain in each, bone is added where strain is high and removed where it is low or where damage builds, and a trabecular pattern emerges aligned with the load, the model's own rather than a picture. Change the direction of the load, remove it as in bed rest or spaceflight and watch the struts thin, and shift the balance of the bone-dissolving and bone-building cells as in osteoporosis.",
+  "takeaway": "Bone is continually dissolved and rebuilt, and because rebuilding follows strain, a bone grows the struts its load needs and loses them when the load goes away.",
+  "prerequisites": [
+   "bridges-structures",
+   "the-cell"
+  ],
+  "related": [
+   "wound-healing",
+   "ageing-mortality"
+  ],
+  "needs": "",
+  "needsSource": "none; the remodelling rule follows Huiskes et al., Nature 405, 704–706 (2000): https://ideas.repec.org/a/nat/nature/v405y2000i6787d10.1038_35015116.html",
+  "pitfall": "Bone is not a fixed scaffold that only wears out; adult bone is replaced roughly every decade, and loss in old age or weightlessness is remodelling with the balance tipped, which loading can partly tip back.",
+  "why": "Bone remodelling, osteoporosis and bone loss in spaceflight are first-year physiology content and a high-traffic reference topic: https://en.wikipedia.org/wiki/Bone_remodeling",
+  "overlapWith": "bridges-structures: that page loads a structure the reader builds; this page lets the structure rebuild itself to suit the load.",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "medicine-l3"
+ },
+ {
+  "slug": "cancer-immunotherapy",
+  "title": "Cancer immunotherapy",
+  "level": 3,
+  "kind": "simulate",
+  "category": "medicine",
+  "interaction": "Run a tumour against the immune cells that hunt it with the classic tumour–immune equations: the tumour grows, effector cells are recruited in proportion to it and are killed or exhausted by it. Set how visible the tumour is to the immune system and how strongly it suppresses the cells that reach it, and watch the three outcomes: elimination, a long standoff, or escape. Then release the brake, as a checkpoint inhibitor does, and see which tumours collapse and which barely notice; add engineered T cells and follow their expansion and the cytokine surge.",
+  "takeaway": "The immune system is already fighting most tumours; checkpoint drugs do not attack the cancer, they remove a brake on that fight, which is why they work dramatically on some tumours and not at all on others.",
+  "prerequisites": [
+   "cancer",
+   "immune-system"
+  ],
+  "related": [
+   "thymic-selection-tolerance",
+   "ecosystems"
+  ],
+  "needs": "",
+  "needsSource": "none",
+  "pitfall": "Immunotherapy does not 'boost' the immune system in general; it removes a specific brake, and the same brake removal causes autoimmune side effects.",
+  "why": "The 2018 Nobel Prize in Physiology or Medicine was awarded for cancer therapy by inhibition of negative immune regulation: https://www.nobelprize.org/prizes/medicine/2018/press-release/",
+  "overlapWith": "cancer: that page evolves a tumour under mutation and a drug that kills cells; this page adds the immune cells hunting it and shows what changes when their brake is released.",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "medicine-l3"
+ },
+ {
+  "slug": "cerebellum-motor-learning",
+  "title": "The cerebellum & motor learning",
+  "level": 3,
+  "kind": "manipulate",
+  "category": "medicine",
+  "interaction": "Move the mouse or a finger to targets while the cursor is secretly rotated by thirty degrees, and watch yourself miss, correct and adapt over a few dozen reaches; beside the hand, a two-rate error-driven model updates its prediction trial by trial and its curve sits over the reader's own. Remove the rotation and both show an aftereffect in the opposite direction; adapt again and both learn faster. The eye's reflex that keeps the world still when the head turns runs the same loop with magnifying or reversing spectacles.",
+  "takeaway": "The cerebellum learns from error, nudging a prediction a little after every miss, and the aftereffect when the world changes back shows the correction was learned, not reasoned.",
+  "prerequisites": [
+   "neurons",
+   "feedback-control"
+  ],
+  "related": [
+   "hippocampus-memory",
+   "gradient-descent",
+   "reinforcement-learning"
+  ],
+  "needs": "",
+  "needsSource": "none; the two-rate model is Smith, Ghazizadeh & Shadmehr, PLoS Biology 4(6): e179 (2006): https://pmc.ncbi.nlm.nih.gov/articles/PMC1463025",
+  "pitfall": "Adaptation is not the same as knowing a trick: the reader cannot cancel the aftereffect by being told the rotation is gone.",
+  "why": "Motor adaptation and the cerebellum are standard neuroscience-course content and a high-traffic reference topic: https://en.wikipedia.org/wiki/Motor_learning",
+  "overlapWith": "reinforcement-learning: that agent learns from reward alone; here the error itself is the teaching signal and the learner is the reader's own hand.",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "medicine-l3"
+ },
+ {
+  "slug": "clinical-trials",
+  "title": "Randomized trials & their statistics",
+  "level": 3,
+  "kind": "simulate",
+  "category": "medicine",
+  "interaction": "Set a treatment's true effect, the spread of outcomes between patients and the number enrolled, then run a trial: patients are drawn, allocated at random or by the doctor's choice (which lets sicker patients drift into one arm), and the result lands on a p-value scale. Run a thousand trials at once to see the power and the false-positive rate, add several outcome measures and stop early when one looks good, and watch how often a treatment that does nothing 'works'.",
+  "takeaway": "Randomization is what makes two groups comparable in everything, measured or not, and a trial too small for the effect it is hunting will usually miss it and, when it does find something, will overstate it.",
+  "prerequisites": [
+   "central-limit-theorem",
+   "bayes-theorem"
+  ],
+  "related": [
+   "placebo-expectation",
+   "screening-overdiagnosis",
+   "learning-from-data"
+  ],
+  "needs": "",
+  "needsSource": "none",
+  "pitfall": "A p-value is not the probability that the treatment does not work; it is how surprising the data would be if it did nothing.",
+  "why": "Hypothesis testing, power and the design of randomized experiments are units of MIT OCW 18.05 Introduction to Probability and Statistics: https://ocw.mit.edu/courses/18-05-introduction-to-probability-and-statistics-spring-2014/",
+  "overlapWith": "bayes-theorem: that page counts true and false positives of a test on a grid of people; this page builds the experiment that decides whether a treatment works and shows what randomization and sample size buy.",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "medicine-l3"
+ },
+ {
+  "slug": "coagulation-cascade",
+  "title": "Blood clotting",
+  "level": 3,
+  "kind": "step",
+  "category": "medicine",
+  "interaction": "Expose tissue factor at a cut and step through clotting as a chain of enzymes, each activating many copies of the next: initiation makes a trickle of thrombin, the trickle switches on the amplifying factors, and the burst follows, all driven by the published rate equations of the extrinsic pathway and its inhibitors. Remove factor VIII (haemophilia A), lower the vitamin-K factors as warfarin does, boost antithrombin as heparin does, and compare the thrombin curves. The platelet plug and the later dissolving of the clot are shown as stages, not computed, since the model stops at thrombin.",
+  "takeaway": "Clotting is a chain of enzymes each activating many of the next, so a tiny trigger becomes a burst of thrombin in minutes, and inhibitors keep the burst from spreading beyond the wound.",
+  "prerequisites": [
+   "reaction-rates-equilibrium",
+   "heart-circulation"
+  ],
+  "related": [
+   "sepsis-inflammation",
+   "wound-healing"
+  ],
+  "needs": "Rate constants and initial concentrations of the Hockin–Mann model of thrombin generation, as curated in BioModels (BIOMD0000000335, CC0).",
+  "needsSource": "BioModels BIOMD0000000335 (Hockin et al. 2002), CC0: https://www.ebi.ac.uk/biomodels/BIOMD0000000335",
+  "pitfall": "The 'intrinsic' and 'extrinsic' pathways of the textbook diagram are a laboratory artefact: in the body tissue factor starts clotting and factors VIII and IX amplify it, which is why haemophilia bleeds despite an intact extrinsic pathway.",
+  "why": "The coagulation cascade and its drugs (warfarin, heparin) are Hematologic-system content in the USMLE Step 1 content outline: https://www.usmle.org/pdfs/step-1/content_step1.pdf",
+  "overlapWith": "heart-circulation: that page shows blood moving; this page shows how it stops, as a cascade of reactions with the real kinetics.",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "medicine-l3"
+ },
+ {
+  "slug": "cochlea-hearing",
+  "title": "Hearing & the cochlea",
+  "level": 3,
+  "kind": "manipulate",
+  "category": "medicine",
+  "interaction": "Play a tone, a chord or a spoken word into a cochlea modelled as a chain of coupled resonators whose stiffness falls along the basilar membrane, and watch the travelling wave peak at a place that depends on frequency. Drag the frequency and the peak moves; switch on the outer hair cells' amplification and the peak sharpens; kill the hair cells near the base, as loud noise does, and the audiogram loses its high frequencies. Then replace the cochlea with a cochlear implant: split the sound into a few bands, drive one electrode per band, and hear the result.",
+  "takeaway": "The cochlea sorts sound by frequency along its length, so pitch is a place, and a cochlear implant works by stimulating those places with a handful of electrodes.",
+  "prerequisites": [
+   "waves-interference",
+   "fourier-transform",
+   "neurons"
+  ],
+  "related": [
+   "vision-color",
+   "compression"
+  ],
+  "needs": "A short openly licensed speech clip (CC0 or public domain) for the implant demonstration, or synthesized speech; the cochlear model itself is a standard one-dimensional transmission-line model with published parameters.",
+  "needsSource": "none beyond a CC0 speech clip",
+  "pitfall": "Noise damage does not simply turn the volume down: the lost hair cells remove the amplification, so soft sounds vanish while loud ones still hurt.",
+  "why": "Reserve item of the catalogue; the place theory of hearing is KS3/GCSE sound content and first-year physiology, and a high-traffic reference topic: https://en.wikipedia.org/wiki/Place_theory_(hearing)",
+  "overlapWith": "vision-color: that page builds an image and colour from three kinds of sensor; this page builds pitch from thousands of sensors in a row, each tuned by its position.",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "medicine-l3"
+ },
+ {
+  "slug": "dialysis",
+  "title": "Dialysis: a kidney from a membrane",
+  "level": 3,
+  "kind": "build",
+  "category": "medicine",
+  "interaction": "Assemble an artificial kidney: pick the membrane area and pore size, set the blood pump and the dialysate pump, and choose whether the two flows run the same way or opposite ways; a mass-transfer model shows the urea concentration along both sides of the membrane and the clearance it achieves. Then run a week of three four-hour sessions through a single-pool urea model and watch the sawtooth of urea in the patient, compared with a healthy kidney's flat line and with a slow continuous treatment.",
+  "takeaway": "Running blood and dialysate in opposite directions keeps a concentration difference along the whole membrane, which is what lets a machine clear in four hours what a kidney does continuously, and the patient's urea still swings between sessions.",
+  "prerequisites": [
+   "kidney-nephron"
+  ],
+  "related": [
+   "blood-acid-base"
+  ],
+  "needs": "",
+  "needsSource": "none",
+  "pitfall": "Dialysis does not 'clean' the blood of everything: it removes what diffuses through the membrane, so small molecules like urea go while protein-bound and large toxins stay.",
+  "why": "Dialysis adequacy is defined by Kt/V from urea kinetic modelling, the quantity this page computes: https://en.wikipedia.org/wiki/Kt/V",
+  "overlapWith": "heart-circulation: that page pumps blood round a body; this page puts a membrane in the circuit and shows what crosses it and how fast.",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "medicine-l3"
+ },
+ {
+  "slug": "ecg-arrhythmias",
+  "title": "The ECG & arrhythmias",
+  "level": 3,
+  "kind": "simulate",
+  "category": "medicine",
+  "interaction": "Run a sheet of heart muscle as an excitable medium (the Aliev–Panfilov equations on a grid) with a pacemaker, a conduction system and a slow atrioventricular node, and read the ECG off it as the projection of the tissue's net electrical vector onto the limb leads of Einthoven's triangle. Then break it: slow conduction in a patch, add a scar, fire an early beat into tissue that has only partly recovered and watch a spiral wave take over the ECG as tachycardia and then fibrillation; deliver a shock that resets every cell at once. Real recordings from the MIT-BIH database sit beside the simulated traces.",
+  "takeaway": "An ECG is the shadow of a wave of excitation crossing the heart, and the dangerous rhythms are not a faster pacemaker but a wave that finds a way to chase its own tail.",
+  "prerequisites": [
+   "heart-circulation",
+   "neurons"
+  ],
+  "related": [
+   "baroreflex-blood-pressure"
+  ],
+  "needs": "Annotated ECG records from the MIT-BIH Arrhythmia Database on PhysioNet (Open Data Commons Attribution License v1.0).",
+  "needsSource": "PhysioNet MIT-BIH Arrhythmia Database, ODC-By 1.0: https://physionet.org/content/mitdb/1.0.0/",
+  "pitfall": "A defibrillator does not restart a stopped heart; it stops a chaotic rhythm so the natural pacemaker can take over, and a flat line is not a shockable rhythm.",
+  "why": "Rhythm interpretation and the conduction system are Cardiovascular-system content in the USMLE Step 1 content outline: https://www.usmle.org/pdfs/step-1/content_step1.pdf",
+  "overlapWith": "heart-circulation: that page shows a healthy ECG synchronized with the beating pump; this page computes the ECG from a model of the tissue and lets the reader break the rhythm.",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "medicine-l3"
+ },
+ {
+  "slug": "fetal-circulation",
+  "title": "The first breath",
+  "level": 3,
+  "kind": "step",
+  "category": "medicine",
+  "interaction": "Trace blood through a fetal circulation modelled as a network of resistances with three shunts: the placenta supplying oxygen, the collapsed lungs with their high resistance, and the two openings that let blood skip them. Then step through birth: the lungs inflate and their resistance falls, the cord is clamped and the placenta's low resistance disappears, the pressures on the two sides of the heart cross over, and the flap between the atria shuts. Oxygen levels in each vessel update at every step, with fetal haemoglobin's steeper curve explaining how the fetus lives on so little.",
+  "takeaway": "Before birth the lungs are bypassed because their resistance is high, and the first breath drops that resistance enough to reverse the pressure difference that was holding the shunts open.",
+  "prerequisites": [
+   "heart-circulation",
+   "haemoglobin-oxygen"
+  ],
+  "related": [
+   "lung-gas-exchange",
+   "menstrual-cycle-hormones"
+  ],
+  "needs": "",
+  "needsSource": "none",
+  "pitfall": "The shunts do not close because they are no longer needed; they close because the pressures that held them open reverse, and if lung resistance stays high they stay open.",
+  "why": "Fetal circulation and its transition at birth are Cardiovascular-system content in the USMLE Step 1 outline and a staple 'how does a baby breathe before birth' question: https://en.wikipedia.org/wiki/Fetal_circulation",
+  "overlapWith": "heart-circulation: that page runs the two pumps in series as in an adult; this page runs them in parallel, as in a fetus, and shows the switch.",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "medicine-l3"
+ },
+ {
+  "slug": "gwas-polygenic-risk",
+  "title": "Genome-wide association & polygenic risk",
+  "level": 3,
+  "kind": "explore",
+  "category": "medicine",
+  "interaction": "Scrub the sample size of a simulated case–control study from a hundred people to a million and watch the Manhattan plot rise out of the noise (each variant's test statistic is drawn from its sampling distribution, set by its true effect and the sample size, so nobody is simulated one by one): a few of the thousands of variants that truly matter clear the genome-wide line first, the rest surface slowly, and a hidden ancestry difference between cases and controls paints false peaks across every chromosome until it is corrected for. Build a polygenic score from the hits and see how far it separates people's risk and how much is left unexplained; real summary statistics for one published trait from the GWAS Catalog are there to compare.",
+  "takeaway": "Common diseases are shaped by thousands of variants of tiny effect, so finding them takes enormous samples, and a polygenic score shifts a person's odds without ever predicting them.",
+  "prerequisites": [
+   "meiosis-inheritance",
+   "central-limit-theorem"
+  ],
+  "related": [
+   "cancer",
+   "learning-from-data"
+  ],
+  "needs": "Summary statistics for one well-studied trait from the NHGRI-EBI GWAS Catalog (most studies CC0 or EMBL-EBI terms of use; the per-study licence column must be checked for the chosen study).",
+  "needsSource": "NHGRI-EBI GWAS Catalog summary statistics, mostly CC0 with per-study exceptions: https://www.ebi.ac.uk/gwas/downloads/summary-statistics",
+  "pitfall": "There is no 'gene for' a common disease; a genome-wide significant variant usually changes risk by a few percent, and a score built from thousands of them still explains only part of the heritability.",
+  "why": "Genome-wide association studies and polygenic scores are standard content of university genetics courses and a high-traffic reference topic: https://en.wikipedia.org/wiki/Genome-wide_association_study",
+  "overlapWith": "meiosis-inheritance: that page follows single genes through Punnett squares; this page asks what inheritance looks like when a trait depends on thousands of them at once.",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "medicine-l3"
+ },
+ {
+  "slug": "haemoglobin-oxygen",
+  "title": "Oxygen & haemoglobin",
+  "level": 3,
+  "kind": "manipulate",
+  "category": "medicine",
+  "interaction": "Drag the oxygen pressure along haemoglobin's binding curve, computed from the four-site cooperative model, and read how much oxygen the blood carries and how much it gives up between lungs and muscle. Shift the curve with acidity and carbon dioxide (the Bohr effect), temperature and 2,3-BPG, compare it with myoglobin's hyperbola and fetal haemoglobin, and poison the blood with carbon monoxide to see why that is worse than losing the same amount of haemoglobin.",
+  "takeaway": "Haemoglobin's S-shaped curve is what lets it fill up in the lungs and dump most of its load in working muscle, and the body tunes delivery by shifting that curve.",
+  "prerequisites": [
+   "reaction-rates-equilibrium",
+   "chemical-bonds"
+  ],
+  "related": [
+   "respiration-atp",
+   "heart-circulation"
+  ],
+  "needs": "",
+  "needsSource": "none",
+  "pitfall": "Carbon monoxide is worse than anaemia with the same oxygen content, because it also shifts the curve so that what oxygen remains is not released.",
+  "why": "Oxygen transport, the dissociation curve and its shifts are Respiratory-system content in the USMLE Step 1 content outline: https://www.usmle.org/pdfs/step-1/content_step1.pdf",
+  "overlapWith": "respiration-atp: that page uses oxygen at the end of the electron transport chain; this page is how oxygen gets there, and why the carrier's curve has the shape it has.",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "medicine-l3"
+ },
+ {
+  "slug": "hippocampus-memory",
+  "title": "Memory & the hippocampus",
+  "level": 3,
+  "kind": "manipulate",
+  "category": "medicine",
+  "interaction": "Store a few drawn patterns in a network of neurons that strengthen the connections between cells that fire together, as the hippocampus's CA3 region is thought to, then give it a smudged or half-erased pattern and watch the cells settle into the whole. Store more patterns and watch recall start to blend them; switch on a separating stage, as the dentate gyrus does, and see similar inputs kept apart. Then replay the stored patterns slowly into a second, larger network and show that the hippocampal copy can be lost without losing the memory.",
+  "takeaway": "A memory is a pattern of strengthened connections that a partial cue can regrow into the whole, which is why remembering is reconstruction, why similar memories blur, and why the hippocampus can hand its copies on to the cortex.",
+  "prerequisites": [
+   "neurons"
+  ],
+  "related": [
+   "neural-networks",
+   "cerebellum-motor-learning"
+  ],
+  "needs": "",
+  "needsSource": "none",
+  "pitfall": "Memory is not a recording played back: recall is reconstruction, and each recall can alter the trace.",
+  "why": "The 2024 Nobel Prize in Physics went to Hopfield for the associative memory that stores and reconstructs patterns: https://www.nobelprize.org/prizes/physics/2024/press-release/",
+  "overlapWith": "neural-networks: that page trains a feed-forward network on examples; this page is a recurrent network whose only job is to complete what it has seen, read as a model of CA3 with the neurons page as its base.",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "medicine-l3"
  }
 ]

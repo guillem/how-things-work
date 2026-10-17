@@ -1,640 +1,651 @@
 [
  {
-  "slug": "rocket-throws-mass",
-  "title": "Rockets: going up by throwing things down",
-  "level": 0,
-  "kind": "simulate",
-  "category": "space",
-  "interaction": "Stand on a skateboard and throw a ball: you roll the other way, and the harder or heavier the throw the faster you roll; throw a bag of balls one after another and you keep speeding up. Then pump up a bottle rocket on the lawn: water is thrown out of the neck and the bottle shoots up, and sliding the water fill from empty to full finds the amount that goes highest. Launch the same rocket in a vacuum chamber and on the Moon and it still goes.",
-  "takeaway": "A rocket climbs by throwing something out of its back as fast as it can, and it needs nothing to push against, so it works just as well in empty space.",
-  "prerequisites": [],
-  "related": [
-   "helicopter-rotor",
-   "fireworks-shell-burst",
-   "satellite-sky-tracks",
-   "rockets"
-  ],
-  "needs": "",
-  "pitfall": "A rocket does not push against the air or the ground: it pushes against what it throws out, which is why it works in a vacuum. A full bottle is not best: too much water leaves no room for the air that pushes it out, and too little gives nothing to throw.",
-  "why": "NASA, 'Activity four: optimize a water rocket engine' (grades 5 to 8, aligned to MS-PS2-2), https://www.nasa.gov/wp-content/uploads/2021/11/sls-activity-four-optimize-a-water-rocket.pdf",
-  "overlapWith": "rockets: that page is the velocity budget, staging and transfer orbits at level 2; this page is only the throwing itself, on a skateboard and in a bottle, and which water fill lifts a bottle highest.",
-  "needsSource": "none",
-  "leadsTo": [
-   "newtons-laws",
-   "orbits-kepler"
-  ],
-  "everyday": true,
-  "origin": "vehicles-and-big-machines"
- },
- {
-  "slug": "satellite-sky-tracks",
-  "title": "Satellites: the ones that race and the one that stays",
-  "level": 0,
-  "kind": "explore",
-  "category": "space",
-  "interaction": "Scrub a day and watch the Space Station lap the Earth sixteen times in a band of tracks that shifts each lap as the Earth turns beneath it, while a TV satellite far higher hangs over one spot and a weather satellite in between keeps its own count. Stand in your town and the sky view shows when the Station crosses overhead and why it is seen only just after dusk or before dawn: it must be in sunlight while you are in shadow. Drag a satellite higher and watch it slow and take longer round.",
-  "takeaway": "Low satellites race round the Earth many times a day while one special height keeps pace with the turning ground, and a satellite is seen only when the Sun lights it while you are in the dark.",
-  "prerequisites": [],
-  "related": [
-   "rocket-throws-mass",
-   "lighthouse-beam",
-   "gps"
-  ],
-  "needs": "The Space Station's orbital elements from NASA (public domain, e.g. the ISS trajectory data behind Spot the Station) and the altitudes of a named weather and TV satellite from their operators' public pages. CelesTrak two-line elements would be convenient but their redistribution terms are not clearly open, so the page must not depend on them.",
-  "pitfall": "Satellites do not stay up because there is no gravity in space: the Station is falling all the time and only misses the ground because it is moving sideways so fast. A satellite that seems to hang still is not stopped; it is racing round once a day, exactly as fast as the ground beneath it turns.",
-  "why": "NASA Spot the Station, a service built around the public's question of when the Station can be seen, https://spotthestation.nasa.gov/ (curriculum: NGSS MS-ESS1-2, gravity and orbits)",
-  "overlapWith": "orbits-kepler: that page launches a body and derives Kepler's laws; this page launches nothing, it scrubs real satellites by height and the geometry of seeing them. gps, at level 2, is what one constellation is for.",
-  "needsSource": "NASA ISS trajectory data (public domain, https://spotthestation.nasa.gov/); operator pages for a GOES-class weather satellite and a geostationary TV satellite.",
-  "leadsTo": [
-   "orbits-kepler",
-   "sun-earth-moon"
-  ],
-  "everyday": false,
-  "origin": "vehicles-and-big-machines"
- },
- {
-  "slug": "shooting-stars",
-  "title": "Shooting stars: what burns up and what gets through",
-  "level": 0,
-  "kind": "simulate",
-  "category": "space",
-  "interaction": "Drop a space pebble into the top of the air at twenty kilometres a second and watch: it rams the air so hard that the air in front glows and the pebble boils away, a streak a hundred kilometres up that lasts a second. The one control is the size of the rock: a sand grain vanishes in a flash, a fist-sized rock makes a fireball that lasts longer and reaches lower, and a boulder keeps a cold middle all the way down and lands as a meteorite, with a bar showing how much of it is left. A second control changes the speed.",
-  "takeaway": "A shooting star is a grain of dust heating the air by hitting it so fast that the air glows, a hundred kilometres up; only a rock big enough to keep a cold middle reaches the ground.",
-  "prerequisites": [],
-  "related": [
-   "comet-tails",
-   "solar-system-to-scale",
-   "what-planets-are-made-of"
-  ],
-  "needs": "",
-  "needsSource": "none (the single-body meteoroid equations: drag, mass loss and glow through the US Standard Atmosphere 1976, public domain, the same atmosphere the rockets and flight pages already use)",
-  "pitfall": "A meteor is not heated by friction rubbing on the air but by the air it squeezes in front of it, and a meteorite is not hot when it lands. A shooting star is not a star.",
-  "why": "NASA Space Place, 'Asteroid or Meteor: What's the Difference?' (https://spaceplace.nasa.gov/asteroid-or-meteor/en/) and 'What Is a Meteor Shower?' (https://spaceplace.nasa.gov/meteor-shower/en/).",
-  "overlapWith": "rockets (level 2) flies up through the same atmosphere model; this page falls through it, and no existing page shows anything burning up on entry.",
-  "leadsTo": [
-   "newtons-laws",
-   "orbits-kepler"
-  ],
-  "everyday": false,
-  "origin": "earth-sky-weather"
- },
- {
-  "slug": "solar-system-to-scale",
-  "title": "The solar system to scale",
-  "level": 0,
-  "kind": "explore",
-  "category": "space",
-  "interaction": "Start with Earth as a marble and zoom out along a line drawn to one true scale, sizes and distances alike: the Moon is a pea thirty marbles away, the Sun is a ball as tall as a child a hundred and fifty metres down the street, and the outer planets are specks far beyond. Press play to send a flash of light from the Sun and watch the clock: it passes Mercury after three minutes, reaches Earth after eight, Jupiter after forty-three, and Neptune after four hours. Zoom all the way out and the planets vanish into the emptiness.",
-  "takeaway": "The solar system is almost entirely empty space: with Earth a marble, the Sun is a ball as tall as a child far down the street, and even light takes hours to cross the planets.",
-  "prerequisites": [],
-  "related": [
-   "sun-is-a-star",
-   "comet-tails",
-   "earth-is-a-ball",
-   "shooting-stars",
-   "what-planets-are-made-of",
-   "dark-night-sky"
-  ],
-  "needs": "Planet and Moon diameters, mean distances from the Sun and orbital periods from the NASA NSSDC Planetary Fact Sheet (https://nssdc.gsfc.nasa.gov/planetary/factsheet/), US Government work, public domain.",
-  "needsSource": "NASA NSSDC Planetary Fact Sheet (public domain)",
-  "pitfall": "No drawing that fits the planets on one page can show both their sizes and their distances; this page never breaks scale, so at most zooms the planets are too small to see, and it says so.",
-  "why": "NGSS MS-ESS1-3: 'Analyze and interpret data to determine scale properties of objects in the solar system' (https://www.nextgenscience.org/pe/ms-ess1-3-earths-place-universe); NASA Space Place, 'What Is a Light-Year?' (https://spaceplace.nasa.gov/light-year/en/).",
-  "overlapWith": "sun-earth-moon (level 1) moves three bodies on a diagram that is not to scale; this page is only scale and light time, with nothing orbiting.",
-  "leadsTo": [
-   "sun-earth-moon",
-   "orbits-kepler"
-  ],
-  "everyday": false,
-  "origin": "earth-sky-weather"
- },
- {
-  "slug": "sun-is-a-star",
-  "title": "The Sun is a star",
-  "level": 0,
+  "slug": "morphogen-gradients",
+  "title": "Morphogen gradients & positional information",
+  "level": 3,
   "kind": "manipulate",
-  "category": "space",
-  "interaction": "The Sun hangs in a black sky; drag it away. As it recedes it shrinks and dims by the same rule as a torch across a field (twice as far, a quarter as bright), until at the distance of the nearest star it is one faint dot among the others. Then the other way: pick a star from the night sky (Sirius, Betelgeuse, Proxima) and drag it in to the Sun's distance, where it is a glaring disc bigger or smaller than ours.",
-  "takeaway": "The Sun looks nothing like the stars only because it is close: dragged far enough it becomes one of them, and some of them, brought close, would outshine it.",
-  "prerequisites": [],
-  "related": [
-   "solar-system-to-scale",
-   "twinkling-stars",
-   "dark-night-sky"
-  ],
-  "needs": "Distances, brightness and colour for a few dozen named stars from the Yale Bright Star Catalogue, 5th edition (BSC5), as hosted by NASA HEASARC (https://heasarc.gsfc.nasa.gov/W3Browse/star-catalog/bsc5p.html), whose documentation states it is in the public domain; the HYG database v4.2 (https://astronexus.com/hyg, CC BY-SA 4.0) is a share-alike alternative and is not needed.",
-  "needsSource": "Yale Bright Star Catalogue BSC5 via NASA HEASARC (public domain)",
-  "pitfall": "The Sun is not a huge or unusual star, and the stars are not small lights: each is a sun. Brightness falls with the square of distance, not in step with it.",
-  "why": "NGSS 5-ESS1-1: 'Support an argument that the apparent brightness of the sun and stars is due to their relative distances from the Earth' (https://www.nextgenscience.org/pe/5-ess1-1-earths-place-universe); NASA Space Place, 'How Does Our Sun Compare With Other Stars?' (https://spaceplace.nasa.gov/sun-compare/en/).",
-  "overlapWith": "stars (level 2) runs a star's life on the Hertzsprung-Russell diagram; this page never changes a star, only its distance.",
-  "leadsTo": [
-   "exoplanets",
-   "sun-earth-moon"
-  ],
-  "everyday": false,
-  "origin": "earth-sky-weather"
- },
- {
-  "slug": "time-zones",
-  "title": "Day, night and time zones",
-  "level": 0,
-  "kind": "manipulate",
-  "category": "space",
-  "interaction": "A globe lit from one side. Spin it and watch cities pass from night into dawn, noon, dusk and night again; each city has a clock, and the clocks disagree: when it is noon in London it is already evening in Tokyo and still early morning in New York. Drag the hour and the day-night line sweeps round the world once per turn; cross the date line and the calendar flips.",
-  "takeaway": "There is no single 'now' on the clock: the Sun is overhead at different places at different moments, so clocks are set by how far east or west you live, in strips that go round with the spinning Earth.",
-  "prerequisites": [],
-  "related": [
-   "earth-is-a-ball",
-   "compass-and-magnetic-poles",
-   "a-year-of-weather"
-  ],
-  "needs": "Zone offsets from the IANA tz database (https://www.iana.org/time-zones, public domain) and city positions from Natural Earth populated places (https://www.naturalearthdata.com/downloads/10m-cultural-vectors/, public domain). Zone boundaries, if drawn, from timezone-boundary-builder (https://github.com/evansiroky/timezone-boundary-builder, ODbL, share-alike, since Natural Earth's own time-zone layer is believed withdrawn and could not be confirmed); the documented fallback is to draw no boundaries and colour each city by its offset.",
-  "needsSource": "IANA tz database and Natural Earth populated places (public domain); zone boundaries optional, timezone-boundary-builder (ODbL)",
-  "pitfall": "The Sun does not go round the Earth, and night is not the Sun switching off: it is the Earth's own shadowed side.",
-  "why": "England KS2 science, Year 5 Earth and space: 'use the idea of the Earth's rotation to explain day and night and the apparent movement of the sun across the sky' (https://www.gov.uk/government/publications/national-curriculum-in-england-science-programmes-of-study/national-curriculum-in-england-science-programmes-of-study).",
-  "overlapWith": "sun-earth-moon (level 1) gives day length by latitude and season; this page keeps the tilt out and adds clocks, zones and the date line, which that page does not have.",
-  "leadsTo": [
-   "sun-earth-moon"
-  ],
-  "everyday": true,
-  "origin": "earth-sky-weather"
- },
- {
-  "slug": "twinkling-stars",
-  "title": "Why stars twinkle (and planets don't)",
-  "level": 0,
-  "kind": "manipulate",
-  "category": "space",
-  "interaction": "Starlight drawn as a thin beam crossing layers of air that drift and wobble, each bending the beam a little, while at the bottom an eye sees the star brighten, fade and jump about. The one control is the star's height above the horizon: low down, the beam crosses far more wobbling air and the twinkling grows wild, and straight overhead it almost stops. Swap the point of light for a small disc, a planet, and the many beams from across the disc average out, so it shines steadily.",
-  "takeaway": "Stars twinkle because moving air bends their light differently every instant, worst near the horizon, and planets twinkle much less because they are little discs whose many beams average out.",
-  "prerequisites": [],
-  "related": [
-   "sun-is-a-star",
-   "aurora-rings",
-   "dark-night-sky"
-  ],
-  "needs": "",
-  "needsSource": "none (a stack of drifting random refractive-index layers, ray bending, brightness on a small aperture, the path through air growing as the star nears the horizon)",
-  "pitfall": "Stars do not flicker themselves, and twinkling says nothing about distance: the same star barely twinkles overhead on a calm night and dances near the horizon.",
-  "why": "'Why do stars twinkle' is a standing how-does-it-work question; the Wikipedia article 'Twinkling' explains the turbulence, the horizon effect and why planets twinkle less (https://en.wikipedia.org/wiki/Twinkling); England KS3 physics, 'our sun as a star, other stars in our galaxy'.",
-  "overlapWith": "light-optics (level 1) refracts rays through lenses and prisms with a fixed index; this page has air whose index wobbles in time, which that bench cannot show.",
-  "leadsTo": [
-   "light-optics"
-  ],
-  "everyday": false,
-  "origin": "earth-sky-weather"
- },
- {
-  "slug": "what-planets-are-made-of",
-  "title": "What the Moon and the planets are made of",
-  "level": 0,
-  "kind": "build",
-  "category": "space",
-  "everyday": false,
-  "interaction": "Pick a world (the Moon, Earth, Mars, Jupiter, Saturn) and the page shows how big it is and how heavy, measured from its pull on the things that orbit it. Fill a ball of its size with layers from a palette of rock, iron, ice and squashed gas until the scale reads right: the Moon fills with rock almost alone, Earth will not get heavy enough without a lump of iron in the middle, Jupiter is nearly all gas squeezed hard, and Saturn comes out lighter than the same ball of water. A last step compares a glass of each world's stuff on a kitchen scale.",
-  "takeaway": "Weighing a world and measuring its size tells what it is made of without going there: the Moon weighs like rock, Earth is too heavy to be rock alone and must hold iron inside, and Saturn is lighter than water.",
-  "prerequisites": [],
-  "related": [
-   "solar-system-to-scale",
-   "earth-is-a-ball",
-   "sun-is-a-star",
-   "shooting-stars"
-  ],
-  "leadsTo": [
-   "earthquakes",
-   "sun-earth-moon"
-  ],
-  "needs": "Mass, radius and mean density of the Moon and planets from the NASA NSSDC Planetary Fact Sheet (https://nssdc.gsfc.nasa.gov/planetary/factsheet/), US Government work, public domain; densities of rock, iron, ice and water from any standard table.",
-  "needsSource": "NASA NSSDC Planetary Fact Sheet (public domain)",
-  "pitfall": "Saturn 'floating' is a comparison of density only, not something that could happen; and the Moon is not weightless or hollow: it is a ball of rock whose pull is a sixth of Earth's because it is smaller. The page states that deep inside a giant planet gas is squeezed to the density of water, which is why 'gas' fills Jupiter.",
-  "why": "NGSS MS-ESS1-3: 'Analyze and interpret data to determine scale properties of objects in the solar system' (https://www.nextgenscience.org/pe/ms-ess1-3-earths-place-universe); 'would Saturn float on water' is a standing popular question (https://www.worldatlas.com/space/would-saturn-float-on-water.html).",
-  "overlapWith": "earthquakes (level 1) finds Earth's iron core from seismic waves; this page finds it from weight and size alone, and no existing page says what the Moon or the giant planets are made of.",
-  "origin": "earth-sky-weather"
- },
- {
-  "slug": "computer-coin-flip",
-  "title": "How a computer flips a coin",
-  "level": 0,
-  "kind": "simulate",
-  "category": "computing",
-  "interaction": "Pick a starting number and press next: a fixed rule (multiply, add, keep the last two digits) spins a wheel to the next number, and the numbers land on a board looking as scattered as coin flips. Keep pressing and the wheel comes back to where it started and the sequence repeats, sooner for a small wheel. Reset with the same start and the same 'random' flips come out again, which is how a game replays the same level; pick a bigger wheel and count how long it takes to repeat.",
-  "takeaway": "A computer makes its 'random' numbers by a fixed rule from a starting number, so the same start replays the same sequence, and every rule on a wheel eventually comes round to the beginning.",
+  "category": "biology",
+  "interaction": "Drag the production rate, diffusion constant and lifetime of a morphogen made at one end of an embryo and watch its concentration profile settle into an exponential whose length scale the page reports. Set two or three thresholds and the cells paint themselves in bands, Wolpert's French flag; double the embryo's length to see the bands fail to scale, then switch on a scaling mechanism and compare; add noise to see which boundaries are robust.",
+  "takeaway": "A cell can learn where it is from how much of one substance reaches it, and the shape of that gradient, set by diffusion and decay, decides where the boundaries fall.",
   "prerequisites": [
-   "coin-streaks"
+   "the-cell",
+   "dna-to-protein"
   ],
-  "related": [
-   "life-on-a-grid",
-   "secret-codes"
-  ],
+  "related": [],
   "needs": "",
-  "pitfall": "'Eventually repeats' is true of any rule on a finite wheel, but real generators take longer than the age of the universe: show the small wheel repeating and say the real ones are bigger, not different in kind. And do not claim computers can never be random: dice-like hardware sources exist.",
-  "why": "Wikipedia, 'Pseudorandom number generator': the sequence is 'completely determined by an initial value' (the seed) and reproducible; the everyday question is 'how do computers generate random numbers'. https://en.wikipedia.org/wiki/Pseudorandom_number_generator",
-  "overlapWith": "cryptography (level 2) relies on randomness but never shows where its random numbers come from; coin-streaks (this batch) is about a real coin, while this page is about the rule a computer uses instead of one.",
+  "pitfall": "The synthesis-diffusion-degradation model is a working hypothesis and the Bicoid gradient's formation is still debated; the page must present the exponential as what the model predicts and say where it is tested.",
+  "why": "Stanford course on morphogenesis listing morphogen gradients and Turing patterns: https://bulletin.stanford.edu/courses/2126934",
+  "overlapWith": "the-cell: that page zooms into one cell; this one shows how thousands of cells in a row find out which part of the body they are making.",
   "needsSource": "none",
-  "leadsTo": [
-   "epidemics"
-  ],
+  "leadsTo": [],
   "everyday": false,
-  "origin": "numbers-shapes-computers"
+  "origin": "biology-l3"
  },
  {
-  "slug": "digital-clock-counting",
-  "title": "How a digital clock keeps time",
-  "level": 0,
-  "kind": "simulate",
-  "category": "computing",
-  "everyday": true,
-  "interaction": "Switch on a tiny quartz tuning fork, kept shaking by the battery and a small circuit, and it shakes 32,768 times a second, far too fast to see; the page slows it down and feeds its shakes into a chain of halvers, where each box passes on one tick for every two it gets, and after fifteen boxes one tick a second comes out and the seconds digit advances. Then run the clock for a month against a reference clock while warming or cooling the fork: a shake that is off by a hair becomes seconds of drift by the end of the month.",
-  "takeaway": "A digital clock is a very fast, very steady shake counted down by halving, and a shake that is off by a tiny fraction adds up to seconds a month.",
-  "prerequisites": [],
-  "related": [
-   "remote-control-blinks"
-  ],
-  "needs": "",
-  "needsSource": "none beyond published figures: 32,768-per-second tuning-fork crystals halved fifteen times, and a parabolic temperature drift of about -0.035 parts per million per degree squared away from the turnover point (manufacturers' datasheets, as quoted on Wikipedia's Quartz clock page).",
-  "pitfall": "The crystal does not 'know' time and does not shake once a second; the slow ticks come from counting. The clock on a mains-powered oven counts the grid's alternations instead, a different reference; say so rather than lumping the two together.",
-  "why": "'Quartz clock' averaged about 12,500 views a month on English Wikipedia in 2025 (https://wikimedia.org/api/rest_v1/metrics/pageviews/per-article/en.wikipedia/all-access/user/Quartz_clock/monthly/2025010100/2025123100).",
-  "overlapWith": "oscillations-resonance: that page shows why a resonator has a natural frequency; this one takes the steady shake as given and shows the counting chain and the drift, with no spring or pendulum model. The household lens's clock-escapement candidate is the mechanical clock.",
-  "leadsTo": [
-   "binary",
-   "oscillations-resonance"
-  ],
-  "origin": "everyday-technology"
- },
- {
-  "slug": "elevator-chooses-floors",
-  "title": "How an elevator chooses its next floor",
-  "level": 0,
-  "kind": "simulate",
-  "category": "computing",
-  "everyday": true,
-  "interaction": "Press call buttons on the floors of a ten-storey building and inside the car, in any order, and watch the car run: it keeps going the way it is going, stops at every call ahead of it, then turns round, while a stopwatch on each waiting person adds up. Flip the rule to 'answer calls in the order they were pressed' and replay the same calls: the car zigzags and the stopwatches run much longer. Add a second car and watch the two share the calls.",
-  "takeaway": "An elevator does not answer calls in the order they were pressed: it sweeps up, then down, serving everything on the way, and that simple rule makes everyone wait less.",
-  "prerequisites": [],
-  "related": [
-   "traffic-light-controller"
-  ],
-  "needs": "",
-  "needsSource": "none; a discrete-event simulation of the up-then-down rule (a car keeps answering calls in its direction until none remain, then reverses, as described on Wikipedia's Elevator page) against first-come-first-served.",
-  "pitfall": "Pressing the button again does not call the car faster: a call is registered once. Do not promise that the sweep is the best possible rule, only that it beats first-come-first-served; real buildings add further rules for parking and peak times.",
-  "why": "'Elevator' averaged about 14,700 views a month on English Wikipedia in 2025 (https://wikimedia.org/api/rest_v1/metrics/pageviews/per-article/en.wikipedia/all-access/user/Elevator/monthly/2025010100/2025123100).",
-  "overlapWith": "sorting: the nearest existing page on comparing rules by their cost; nothing existing has a scheduling rule. The household lens's elevator-counterweight candidate is the rope and the motor; this page is the decision rule, and the two can link.",
-  "leadsTo": [
-   "sorting",
+  "slug": "phylogenetics",
+  "title": "Phylogenetics: building the tree of life",
+  "level": 3,
+  "kind": "build",
+  "category": "biology",
+  "interaction": "Pick a handful of species, align their cytochrome b sequences and watch the page count differences into a distance matrix. Build the tree by UPGMA, merging the closest pair step by step, then rebuild it by neighbour joining and see where the two disagree; speed up one lineage's clock and watch UPGMA put it in the wrong place; switch to a parsimony score and drag branches to try to beat the algorithm.",
+  "takeaway": "A tree of life is not observed but computed from the differences between sequences, and a method's assumptions, such as a constant rate of change, decide which tree it finds.",
+  "prerequisites": [
+   "dna-to-protein",
+   "evolution",
    "graph-search"
   ],
-  "origin": "everyday-technology"
- },
- {
-  "slug": "emoji-and-text-as-numbers",
-  "title": "Emoji and text as numbers",
-  "level": 0,
-  "kind": "manipulate",
-  "category": "computing",
-  "everyday": true,
-  "interaction": "Type a message and watch it travel as a row of numbers, one per letter, space or emoji, taken from an agreed list that every phone owns a copy of. Switch the receiving phone to an older model that has no picture for one of the numbers: that emoji arrives as an empty box while the letters are fine. Then watch the message counter: 160 plain letters fit in one text, and adding a single emoji drops the room to 70, because every character now has to be sent as a bigger number.",
-  "takeaway": "Letters and emoji travel as numbers from a shared list, and the picture is drawn by the phone that receives them, so a number it does not know shows as a box.",
-  "prerequisites": [],
   "related": [
-   "screens-and-pixels",
-   "keyboard-rows-and-columns",
-   "qr-codes"
-  ],
-  "needs": "The Unicode character and emoji lists (Unicode Character Database and emoji-test.txt) under the Unicode licence, which allows copying and redistribution with the notice; the text-message rules (GSM 7-bit alphabet, 160 characters; UCS-2, 70 characters) from the published GSM 03.38 specification.",
-  "needsSource": "Unicode data files (Unicode licence v3, permissive with notice); GSM 03.38 alphabet, a published standard.",
-  "pitfall": "An emoji is not a picture that is sent: the same number is drawn differently by each phone maker, and some emoji (skin tones, families, flags) are several numbers joined, which the page should show rather than hide. Characters are not all the same size on the wire, so 'one character is one byte' is wrong; show the byte count, not a formula.",
-  "why": "England KS3 computing: data of various types 'including text, sounds and pictures' represented in binary (https://www.gov.uk/government/publications/national-curriculum-in-england-computing-programmes-of-study/national-curriculum-in-england-computing-programmes-of-study); 'Emoji' averaged about 62,200 views a month on English Wikipedia in 2025.",
-  "overlapWith": "binary: that page reads one byte as a number, a character and a colour; this one works on whole messages at the everyday layer: the shared list of numbers, the drawing done by the receiver, and the text-message counter.",
-  "leadsTo": [
-   "binary"
-  ],
-  "origin": "everyday-technology"
- },
- {
-  "slug": "keyboard-rows-and-columns",
-  "title": "Inside a keyboard",
-  "level": 0,
-  "kind": "manipulate",
-  "category": "computing",
-  "everyday": true,
-  "interaction": "Press keys on a drawn keyboard with its lid off: under the keys there is no wire per key, only a few row wires crossing a few column wires, and a scanner that runs along the rows many times a second and lights the crossing where a pressed key connects. Hold three keys that make three corners of a rectangle and watch a fourth key light up that nobody pressed. Switch the layout from QWERTY to AZERTY and press the same key: the keyboard sends the same crossing, and the computer's table turns it into a different letter.",
-  "takeaway": "A keyboard does not send letters: it reports which row and column met, and the computer looks the letter up, which is why one keyboard can type any alphabet and some key combinations confuse it.",
-  "prerequisites": [],
-  "related": [
-   "emoji-and-text-as-numbers",
-   "touchscreens"
-  ],
-  "needs": "",
-  "needsSource": "none; a scanned row-and-column matrix with the ghost path traced through three closed switches.",
-  "pitfall": "Two different failures: ghosting is a phantom fourth key when three corners of a rectangle are held (cured by a diode at each key), and blocking is a cheap keyboard refusing a third key to avoid it. Do not present them as one thing, and do not say a key 'sends a letter'.",
-  "why": "'Computer keyboard' averaged about 24,800 views a month on English Wikipedia in 2025 (https://wikimedia.org/api/rest_v1/metrics/pageviews/per-article/en.wikipedia/all-access/user/Computer_keyboard/monthly/2025010100/2025123100).",
-  "overlapWith": "logic-gates: that page wires gates and reads a truth table; here the only logic is a scan of crossings, and the point is the lookup from a position to a character.",
-  "leadsTo": [
-   "binary",
-   "logic-gates",
-   "electric-circuits"
-  ],
-  "origin": "everyday-technology"
- },
- {
-  "slug": "life-on-a-grid",
-  "title": "Life on a grid",
-  "level": 0,
-  "kind": "simulate",
-  "category": "computing",
-  "interaction": "Paint a few squares on a grid and press step: every square counts its live neighbours at once, and the three rules (lonely dies, crowded dies, exactly three neighbours gives birth) show as the counts on each square. Press play and find the shapes that blink, the ones that sit still and the glider that walks across the board. Change one number in a rule and watch the same seed grow, freeze or die.",
-  "takeaway": "A rule about counting neighbours, applied to every square at once, makes things that blink, walk and grow that nobody drew.",
-  "prerequisites": [],
-  "related": [
-   "growing-patterns",
-   "computer-coin-flip",
-   "repeat-loops"
-  ],
-  "needs": "",
-  "pitfall": "All squares update together from the previous picture, not one after another; a page that updates in place gets wrong patterns. And do not call Life 'random': the same seed gives the same future every time.",
-  "why": "Numberphile, 'Inventing Game of Life (John Conway)' (title confirmed; YouTube does not render view counts in fetch); promotes the Reserve item 'Cellular automata' at level 0. https://www.youtube.com/watch?v=R9Plq-D1gEk",
-  "overlapWith": "chaos-fractals (level 2) shows simple rules making unpredictable paths; this page's rule is three neighbour counts on a grid the reader paints, and the reader can edit the rule.",
-  "needsSource": "none",
-  "leadsTo": [
-   "ecosystems"
-  ],
-  "everyday": false,
-  "origin": "numbers-shapes-computers"
- },
- {
-  "slug": "pixels-and-pictures",
-  "title": "A picture is a grid of numbers",
-  "level": 0,
-  "kind": "manipulate",
-  "category": "computing",
-  "interaction": "Pinch into a photograph until it breaks into squares, then into one square: a single colour, kept as three counts. Paint a tiny picture on a grid of lights that are only on or off and read the row of numbers that describes it; switch to four shades of grey, then to colour, and the row of numbers grows. Double the grid's size and watch the picture sharpen while the number count jumps fourfold.",
-  "takeaway": "A picture in a computer is a grid of squares each kept as a few numbers, so more squares mean a sharper picture and four times as many numbers for each doubling.",
-  "prerequisites": [],
-  "related": [
-   "zoom-by-tens",
-   "twenty-questions"
-  ],
-  "needs": "One small photograph, CC0 from Wikimedia Commons or taken in-house.",
-  "pitfall": "Zooming in does not add detail: a blurry photo enlarged stays blurry, which the page shows instead of the TV trope of 'enhance'. Keep to counts; no bits, bytes or hex.",
-  "why": "England KS3 computing: 'how data of various types (including text, sounds and pictures) can be represented and manipulated digitally'; CS Unplugged's Image Representation ('Colour by Numbers') activity. https://classic.csunplugged.org/activities/image-representation/",
-  "overlapWith": "binary (level 1) reads one byte as a colour among other conventions; this page never shows a bit, only the grid, the shade counts and the resolution.",
-  "needsSource": "A CC0 photograph from Wikimedia Commons, or an in-house photo; no model or dataset.",
-  "leadsTo": [
-   "binary",
-   "vision-color"
-  ],
-  "everyday": true,
-  "origin": "numbers-shapes-computers"
- },
- {
-  "slug": "repeat-loops",
-  "title": "Repeat: loops",
-  "level": 0,
-  "kind": "build",
-  "category": "computing",
-  "interaction": "Draw a square by giving a pen-robot eight cards, then wrap 'forward, turn' in a repeat card set to 4 and get the same square from two cards; the page counts cards written against steps taken. Change the repeat count and the turn and the square becomes a triangle, a hexagon, a star. Put a repeat inside a repeat and a few cards draw a flower of forty squares.",
-  "takeaway": "A loop does the same few steps many times, so a handful of cards can draw a picture of thousands of steps, and changing one number changes the whole picture.",
-  "prerequisites": [
-   "robot-instructions",
-   "angles-as-turns"
-  ],
-  "related": [
-   "sunflower-spirals",
-   "life-on-a-grid"
-  ],
-  "needs": "",
-  "pitfall": "The turn for a star is the robot's own turn, not the star's inside angle; let the reader see a wrong count fail to close the shape rather than correcting it.",
-  "why": "England KS2 computing: 'use sequence, selection, and repetition in programs; work with variables and various forms of input and output'. https://www.gov.uk/government/publications/national-curriculum-in-england-computing-programmes-of-study/national-curriculum-in-england-computing-programmes-of-study",
-  "overlapWith": "cpu (level 2) runs a loop as a conditional jump over machine instructions; here the loop is a card that wraps other cards, with no counters or jumps shown.",
-  "needsSource": "none",
-  "leadsTo": [
+   "coalescent",
+   "dna-sequencing",
+   "deep-time",
    "sorting"
   ],
+  "needs": "Mitochondrial cytochrome b (or 16S rRNA) sequences for a dozen species from GenBank (NCBI places no restrictions on reuse); the species' accepted relationships from the Open Tree of Life synthetic tree for comparison (reported CC0, to confirm on the project site).",
+  "pitfall": "Humans are not at the 'top' of the tree and no living species is the ancestor of another: the page must let the reader rotate nodes to show that only the branching order carries information.",
+  "why": "CUHK BMEG3102 Bioinformatics tutorial on molecular phylogenetics (UPGMA, NJ, parsimony, likelihood): https://webarchive.lib.cuhk.edu.hk/20210407143348mp_/http:/www.cse.cuhk.edu.hk/~qdou/bmeg3102/tutorials/BMEG3102_2021Spring_Tutorial06_MolecularPhylogenetics_CUHK.pdf",
+  "overlapWith": "deep-time: that page scrubs a dated timeline of life; this one computes the branching order from today's sequences and has no dates until a clock is assumed.",
+  "needsSource": "GenBank sequences, no reuse restrictions (load-bearing); Open Tree of Life reported CC0, to confirm.",
+  "leadsTo": [],
   "everyday": false,
-  "origin": "numbers-shapes-computers"
+  "origin": "biology-l3"
  },
  {
-  "slug": "robot-instructions",
-  "title": "A robot follows instructions",
-  "level": 0,
-  "kind": "build",
-  "category": "computing",
-  "interaction": "Drag instruction cards (forward, turn left, turn right, pick up) into a list and press run: a robot on a floor grid does exactly what the cards say, in order, and walks into the wall if that is what they say. Fix the list until it reaches the flag, then try the 'make a sandwich' list with a step missing and watch the robot butter the air. Hand the same list to a second robot standing somewhere else and see where it ends up.",
-  "takeaway": "A robot does exactly what its list says, in order, nothing more and nothing less, so a missing or swapped card changes the whole result.",
-  "prerequisites": [],
+  "slug": "population-genetics",
+  "title": "Population genetics: drift & selection",
+  "level": 3,
+  "kind": "simulate",
+  "category": "biology",
+  "interaction": "Run a hundred Wright-Fisher populations at once as allele-frequency traces: with no selection they wander and fix at random, faster in small populations; with a selection coefficient s they bend toward fixation, and a counter shows how often a new beneficial mutation is lost anyway, approaching Kimura's 2s. Set dominance to see recessive alleles hide from selection, and compare the Hardy-Weinberg genotype frequencies with the simulated ones each generation.",
+  "takeaway": "Allele frequencies change by chance as well as by selection, and in a small population chance wins: most beneficial mutations are lost before selection can act on them.",
+  "prerequisites": [
+   "meiosis-inheritance",
+   "evolution",
+   "central-limit-theorem"
+  ],
   "related": [
-   "solving-a-maze",
-   "sorting-network"
+   "luria-delbruck",
+   "cancer"
   ],
   "needs": "",
-  "pitfall": "The computer does not 'understand' the goal: a list that nearly works gets no credit, and the page must never auto-correct the reader's list. Also, left and right are the robot's, not the viewer's.",
-  "why": "England KS1 computing: 'programs execute by following precise and unambiguous instructions'; CS Unplugged Kidbots (ages 5 to 10). https://www.csunplugged.org/en/topics/kidbots/",
-  "overlapWith": "cpu (level 2) steps a real processor through fetch, decode and execute with registers and memory; this page has a robot and cards, no memory or arithmetic, and is the first idea of a program.",
+  "pitfall": "Hardy-Weinberg is not 'evolution stops': it is the one-generation baseline that shows which forces are absent, and drift is not selection by another name; the page must keep them separate.",
+  "why": "Cal State LA BIOL 415 Population Genetics syllabus (Hardy-Weinberg, drift, effective size, selection, coalescent): https://www.calstatela.edu/sites/default/files/syllabibiol415.pdf",
+  "overlapWith": "evolution: that page shifts a trait distribution with predators and food; this one tracks a single allele's frequency and separates chance from selection with explicit N and s.",
   "needsSource": "none",
-  "leadsTo": [
-   "sorting",
-   "graph-search"
-  ],
-  "everyday": true,
-  "origin": "numbers-shapes-computers"
- },
- {
-  "slug": "screens-and-pixels",
-  "title": "Screens and pixels",
-  "level": 0,
-  "kind": "explore",
-  "category": "computing",
-  "everyday": true,
-  "interaction": "Pinch into a photo until the picture falls apart into a grid of squares, then further, until each square turns out to be three tiny lights, red, green and blue, side by side. Pick one square and slide its three lights up and down: from a distance the square turns yellow, pink, white or black, with no yellow or white light anywhere in it. Then take pixels away from the whole picture, by halves, and watch a face become blocks.",
-  "takeaway": "A screen picture is a grid of tiny red, green and blue lights, and every colour you see on it is those three lights at different brightnesses, blurred together by your eye.",
-  "prerequisites": [],
-  "related": [
-   "digital-camera-sensor",
-   "e-reader-ink",
-   "emoji-and-text-as-numbers"
-  ],
-  "needs": "One photograph under CC0 (Wikimedia Commons), shown at its real pixel grid.",
-  "needsSource": "none beyond a CC0 photograph; the subpixel drawing and the mixing are computed from the pixel values.",
-  "pitfall": "There is no yellow or white light on the screen: white is all three lights on. A black pixel is lights off, or on an LCD a backlight blocked by a shutter; say which kind of screen is drawn rather than presenting one as how all screens work.",
-  "why": "England KS3 computing: 'understand how data of various types (including text, sounds and pictures) can be represented and manipulated digitally, in the form of binary digits' (https://www.gov.uk/government/publications/national-curriculum-in-england-computing-programmes-of-study/national-curriculum-in-england-computing-programmes-of-study).",
-  "overlapWith": "vision-color: that page mixes red, green and blue light to match a colour and shows the cone responses; this one starts from the object, the screen, and shows that the mixing is done by three tiny lights per pixel and the grid they make, with no eye model.",
-  "leadsTo": [
-   "binary",
-   "vision-color"
-  ],
-  "origin": "everyday-technology"
- },
- {
-  "slug": "secret-codes",
-  "title": "Secret codes & code-breaking",
-  "level": 0,
-  "kind": "step",
-  "category": "computing",
-  "interaction": "Turn the inner ring of a code wheel and type a message: each letter steps along the alphabet by the same amount, and your friend turns the ring back to read it. A spy who does not know the turn tries all 25 turns at once and the one that reads as words jumps out. Scramble the alphabet instead of turning it; now the spy counts the letters in the secret message, lines its tallest bar up with the tallest bar of ordinary English, and the message comes out letter by letter.",
-  "takeaway": "A code that shifts every letter the same way falls to trying all 25 shifts, and a code that scrambles the alphabet falls to counting letters, because E stays the most common letter however it is disguised.",
-  "prerequisites": [],
-  "related": [
-   "twenty-questions",
-   "computer-coin-flip"
-  ],
-  "needs": "English letter frequencies counted at build time by a script from a public-domain text, e.g. Project Gutenberg's Alice's Adventures in Wonderland (public domain), not typed in from memory.",
-  "pitfall": "A short message has too few letters for counting to work: show the counting fail on a one-line note and succeed on a paragraph, rather than pretending frequency analysis always works.",
-  "why": "The National Cipher Challenge, the University of Southampton's codebreaking competition for school teams, starts every year with ciphers of this kind. https://www.cipherchallenge.org/",
-  "overlapWith": "cryptography (level 2) covers key exchange, hashing and signatures with modular arithmetic; this page is pen-and-paper ciphers and the two ways they break, with no keys shared over a channel.",
-  "needsSource": "A Project Gutenberg public-domain English text for the letter counts.",
-  "leadsTo": [
-   "primes-modular-arithmetic"
-  ],
+  "leadsTo": [],
   "everyday": false,
-  "origin": "numbers-shapes-computers"
+  "origin": "biology-l3"
  },
  {
-  "slug": "solving-a-maze",
-  "title": "Solving a maze",
+  "slug": "quasispecies-error-threshold",
+  "title": "Origin of life & the error threshold",
+  "level": 3,
+  "kind": "simulate",
+  "category": "biology",
+  "interaction": "Run a pool of self-copying RNA strings on a fitness peak with a chosen copying error rate per base and a chosen length: below a threshold the population clusters around the best sequence as a cloud of mutants, above it the information melts into random sequences. Lengthen the genome and watch the threshold fall, then let the strings evolve a copying enzyme with better fidelity and see the longest sustainable genome grow; close with parasites exploiting a shared replicase and compartments containing them.",
+  "takeaway": "A replicator can carry only as much information as its copying accuracy allows, so the first genomes had to be short, and getting longer required evolving better copiers first.",
+  "prerequisites": [
+   "dna-to-protein",
+   "population-genetics"
+  ],
+  "related": [
+   "genetic-code-error-tolerance",
+   "error-correction",
+   "luria-delbruck"
+  ],
+  "needs": "",
+  "pitfall": "The error threshold has no single agreed definition and the RNA world is a hypothesis; the page must not present the simulation as a reconstruction of how life began.",
+  "why": "Wikipedia, 'Error threshold (evolution)' (Eigen's paradox and the RNA world): https://en.wikipedia.org/wiki/Error_threshold_(evolution)",
+  "overlapWith": "error-correction: that page adds redundancy to a message to survive noise; here the message is a genome that must copy itself through noise, and the question is how long it can be.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "biology-l3"
+ },
+ {
+  "slug": "quorum-sensing",
+  "title": "Quorum sensing",
+  "level": 3,
+  "kind": "simulate",
+  "category": "biology",
+  "interaction": "Grow a colony of bacteria on a grid; each cell secretes an autoinducer that diffuses and decays, and once its receptor sees enough of it the LuxI/LuxR positive feedback switches the cell's light genes on. Watch the colony stay dark until a sharp density is reached and then light up together; shrink the chamber, slow the diffusion, or add an enzyme that destroys the signal, and find the population at which the switch flips.",
+  "takeaway": "Bacteria count themselves by releasing a molecule and listening for it, and positive feedback turns a gradual rise in signal into a collective, all-or-none switch at a threshold density.",
+  "prerequisites": [
+   "lac-operon",
+   "the-cell"
+  ],
+  "related": [
+   "bacterial-chemotaxis",
+   "genetic-circuits",
+   "epidemics"
+  ],
+  "needs": "",
+  "pitfall": "The signal measures confinement and diffusion as much as cell number: a single cell in a tiny sealed space can trigger its own switch, and the page must show that.",
+  "why": "iGEM Wageningen UR 2017 quorum-sensing model (LuxI/LuxR ODEs with positive feedback): https://2017.igem.org/Team:Wageningen_UR/Model/QS",
+  "overlapWith": "crispr: both are bacterial systems, but this page is about cells coordinating by diffusion and feedback rather than remembering viruses.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "biology-l3"
+ },
+ {
+  "slug": "rubisco-photorespiration",
+  "title": "Rubisco, photorespiration & C4 plants",
+  "level": 3,
+  "kind": "simulate",
+  "category": "biology",
+  "interaction": "Run the Farquhar-von Caemmerer-Berry model of a leaf: set CO2, oxygen, light and temperature and watch Rubisco split its time between fixing CO2 and wastefully grabbing O2, with the assimilation curve against CO2 drawn live and the limiting step marked. Raise the temperature and watch photorespiration eat the gain; then switch the leaf to a C4 anatomy that pumps CO2 into the bundle sheath, or to CAM that opens its stomata at night, and compare carbon gain and water loss across a hot day.",
+  "takeaway": "The enzyme at the base of nearly all food confuses oxygen with CO2, and C4 and CAM plants are two engineering fixes that concentrate CO2 around it or move its work to the night.",
+  "prerequisites": [
+   "photosynthesis",
+   "enzyme-kinetics"
+  ],
+  "related": [
+   "respiration-atp",
+   "carbon-cycle",
+   "atmosphere-weather"
+  ],
+  "needs": "Rubisco kinetic constants and their temperature dependence (von Caemmerer 2000; Bernacchi et al. 2001; published values).",
+  "pitfall": "C4 is not 'better' photosynthesis: at cool temperatures and low light its extra ATP cost makes it lose to C3, and the page must show the crossover.",
+  "why": "POGIL classroom activity 'C4 and CAM Photosynthesis' for upper-level plant physiology: https://pac.pogil.org/index.php/pac/article/view/557",
+  "overlapWith": "photosynthesis: that page follows photons to sugar in one chloroplast; this one is the enzyme kinetics of the carbon-fixing step and the leaf-level consequences of its oxygen mistake.",
+  "needsSource": "Published kinetic parameters only.",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "biology-l3"
+ },
+ {
+  "slug": "segmentation-clock",
+  "title": "The segmentation clock",
+  "level": 3,
+  "kind": "simulate",
+  "category": "biology",
+  "interaction": "Run a strip of cells along a growing embryo axis, each with a delayed negative-feedback oscillator (the her1/her7 model) and a wavefront that sweeps back as the tail grows and freezes each cell's phase when it passes. Watch waves of expression sweep forward and somites pinch off one per cycle; speed the clock or the wavefront and measure how somite size changes, then couple neighbouring oscillators through Notch and remove the coupling to see the stripes blur.",
+  "takeaway": "A body's segments are counted out by a clock: every cycle of an oscillator, a moving front freezes one more block of cells, so segment size equals clock period times front speed.",
+  "prerequisites": [
+   "circadian-clocks",
+   "morphogen-gradients"
+  ],
+  "related": [
+   "turing-patterns",
+   "oscillations-resonance"
+  ],
+  "needs": "",
+  "pitfall": "Somite size is not set by a prepattern of fixed stripes; the page must show that changing the clock period changes the size, which a prepattern could not.",
+  "why": "Teaching material rather than a syllabus: tutorial review 'Waves, patterns and bifurcations' on the vertebrate segmentation clock, https://arxiv.org/pdf/2403.00457 (no curriculum signal found in this round).",
+  "overlapWith": "turing-patterns: both make periodic stripes, but here the period is in time and is converted into space by a moving front, with a different model (Lewis 2003 delay oscillator) and a different control.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "biology-l3"
+ },
+ {
+  "slug": "signalling-cascades",
+  "title": "Cell signalling: cascades & ultrasensitivity",
+  "level": 3,
+  "kind": "simulate",
+  "category": "biology",
+  "interaction": "Apply a graded dose of signal to the top of a three-tier kinase cascade (the Huang-Ferrell MAPK model) and plot each tier's active fraction against dose: the first tier responds gently, the last switches almost all-or-none. Change the phosphatase levels, remove the second phosphorylation site, or close a feedback loop and watch the response steepen, flatten or become bistable; a sketch places the cascade between a receptor and the nucleus.",
+  "takeaway": "Stacking enzyme steps with double phosphorylation turns a gentle input into a sharp threshold, so a cell can make a decision from a graded signal without any single cooperative molecule.",
+  "prerequisites": [
+   "enzyme-kinetics",
+   "the-cell"
+  ],
+  "related": [
+   "lac-operon",
+   "homeostasis",
+   "feedback-control"
+  ],
+  "needs": "Huang & Ferrell 1996 MAPK cascade model as curated in BioModels (BIOMD0000000009, CC0).",
+  "pitfall": "The steep response is not cooperativity in hemoglobin's sense: no enzyme in the model is allosteric, and the page must attribute the Hill coefficient of four to five to the cascade's structure.",
+  "why": "BioModels/COPASI course tutorial built on the Huang-Ferrell model: https://www.ebi.ac.uk/biomodels/courses/20160706/tutorial_handout.pdf",
+  "overlapWith": "homeostasis: that page is whole-body hormone feedback; this one is the enzyme-level machinery inside one cell that turns a signal into a decision.",
+  "needsSource": "BioModels curated model, CC0.",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "biology-l3"
+ },
+ {
+  "slug": "speciation",
+  "title": "Speciation",
+  "level": 3,
+  "kind": "simulate",
+  "category": "biology",
+  "interaction": "Split a population in two with a barrier and let each half accumulate its own mutations in a set of interacting genes, each change neutral or useful at home. Lift the barrier after a chosen time and cross the two: hybrid fitness falls as pairs of alleles that never met prove incompatible (Dobzhansky-Muller), and a counter shows incompatibilities growing faster than linearly with time. Let gene flow leak through the barrier to see divergence stall, and add selection against hybrids to watch reinforcement finish the job.",
+  "takeaway": "Two populations become species not by one changing into something new but by each drifting along its own path until their genes no longer work together, and the barrier between them grows faster the longer they are apart.",
+  "prerequisites": [
+   "population-genetics",
+   "evolution"
+  ],
+  "related": [
+   "coalescent",
+   "phylogenetics",
+   "evolutionary-games"
+  ],
+  "needs": "",
+  "pitfall": "No single mutation makes a new species and no individual is 'the first' of one; incompatibilities arise between alleles that were each harmless where they evolved.",
+  "why": "MERLOT peer-reviewed classroom activity modelling the Dobzhansky-Muller process: https://awscbdev.merlot.org/merlot/viewMaterial.htm?id=851638",
+  "overlapWith": "evolution: that page adapts one population to its environment; this one follows two separated populations and measures the barrier that grows between them.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "biology-l3"
+ },
+ {
+  "slug": "synaptic-plasticity",
+  "title": "Synaptic plasticity: Hebbian learning & STDP",
+  "level": 3,
+  "kind": "simulate",
+  "category": "biology",
+  "interaction": "Pair a presynaptic and a postsynaptic spike at a chosen interval and watch the synapse's weight grow when the input leads by a few milliseconds and shrink when it lags, tracing the STDP window over sixty pairings. Then feed a neuron twenty inputs with different timings and let STDP run: the earliest reliable inputs win, the rest fade, and a pattern hidden in noise is picked out. Switch to a plain Hebbian rule without timing and watch the weights run away until a normalisation is added.",
+  "takeaway": "Synapses strengthen when the input helps cause the output and weaken when it arrives too late, so a neuron learns to respond to the earliest predictors of its own firing, with no teacher.",
+  "prerequisites": [
+   "neurons",
+   "neural-networks"
+  ],
+  "related": [
+   "central-pattern-generators",
+   "gradient-descent",
+   "reinforcement-learning"
+  ],
+  "needs": "STDP window shape and time constants from Bi & Poo 1998 (published values; the page uses the standard exponential rule, no dataset shipped).",
+  "pitfall": "'Cells that fire together wire together' is incomplete: order matters, and a rule with no depression or no bound makes every weight grow without limit; the page must show the depression side and the need for normalisation.",
+  "why": "HSE course 'Mathematical Models of Brain Neural Networks' listing Hodgkin-Huxley, synaptic plasticity and STDP: https://www.hse.ru/edu/courses/835249132",
+  "overlapWith": "neural-networks: that page adjusts weights by gradient descent against a target; here the weights change by a local rule from spike timing alone, with no error signal.",
+  "needsSource": "Published parameter values only.",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "biology-l3"
+ },
+ {
+  "slug": "turing-patterns",
+  "title": "Turing patterns",
+  "level": 3,
+  "kind": "simulate",
+  "category": "biology",
+  "interaction": "Run an activator-inhibitor reaction-diffusion system on a grid from near-uniform noise and watch spots or stripes crystallise. Change the ratio of the two diffusion rates and the pattern appears only once the inhibitor spreads much faster than the activator; change the reaction rates to move from spots to stripes to labyrinths; grow the domain and extra stripes insert themselves, and taper the grid into a tail to see spots become bands as it narrows.",
+  "takeaway": "Two chemicals, one that makes more of itself and a faster-spreading one that suppresses it, can turn a uniform field into regular spots or stripes with no blueprint, at a wavelength set by rates alone.",
+  "prerequisites": [
+   "morphogen-gradients",
+   "reaction-rates-equilibrium"
+  ],
+  "related": [
+   "chaos-fractals",
+   "segmentation-clock"
+  ],
+  "needs": "",
+  "pitfall": "Not every stripe in nature is a Turing pattern; the page should name where the mechanism is supported (digits, hair follicles, fish skin) and must not claim it for zebra stripes or fingerprints without saying that is contested.",
+  "why": "University of Manchester undergraduate brochure feature on the Turing pattern: https://www.scieng.manchester.ac.uk/undergraduate-brochures/2024/the-turing-pattern/",
+  "overlapWith": "chaos-fractals: that page grows patterns by iterating a map; here they grow from a PDE with a definite wavelength, and the control is the diffusion ratio.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "biology-l3"
+ },
+ {
+  "slug": "viral-dynamics",
+  "title": "Viral replication inside a host",
+  "level": 3,
+  "kind": "simulate",
+  "category": "biology",
+  "interaction": "Infect a host in the Perelson model: virus enters target cells, infected cells bud new virions and die, and viral load climbs to a plateau where production and clearance balance. Start a drug that blocks new infections and watch the load fall in two phases whose slopes give the half-lives of free virus (hours) and of infected cells (about a day); stop the drug early and it rebounds; let the virus mutate at a chosen rate and see a resistant strain take over under one drug but not under three.",
+  "takeaway": "A steady viral load is not a quiet infection but a furious balance of billions of virions made and cleared every day, which is why resistance evolves so fast and why combination therapy works.",
+  "prerequisites": [
+   "epidemics",
+   "immune-system"
+  ],
+  "related": [
+   "mrna-vaccines",
+   "population-genetics",
+   "cancer",
+   "crispr"
+  ],
+  "needs": "",
+  "pitfall": "The two-phase decay and its half-lives are estimates fitted to patients by Perelson et al.; the page must present them as fitted values, not as constants of the virus.",
+  "why": "q-bio Summer School 'Viral Dynamics' (Perelson's lecture 'How to model a viral infection within the host'): https://q-bio.org/wiki/The_Seventh_q-bio_Summer_School:_Viral_Dynamics",
+  "overlapWith": "epidemics: that page counts infected people; this one counts infected cells inside one person, where the same kind of equations give half-lives rather than reproduction numbers.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "biology-l3"
+ },
+ {
+  "slug": "body-thermostat",
+  "title": "Why you shiver and sweat",
   "level": 0,
   "kind": "simulate",
-  "category": "computing",
-  "interaction": "Press 'new maze' and the page draws one; put your explorer's hand on the right-hand wall and press walk: it traces every dead end and comes out at the exit. Switch to a maze with an island in it and watch the same explorer circle the island forever. Give it chalk to mark every passage it enters and it finds the way out of any maze; then compare its chalk marks with the shortest route.",
-  "takeaway": "Keeping one hand on the wall gets you out of a maze without loops but circles forever when there is an island, while an explorer that marks where it has been always gets out.",
-  "prerequisites": [],
-  "related": [
-   "robot-instructions",
-   "treasure-map-coordinates"
-  ],
-  "needs": "",
-  "pitfall": "The wall-follower fails on mazes that are not simply connected (loops, islands) and when started from inside; the marking explorer finds an exit but not necessarily the shortest route: show both limits.",
-  "why": "Wikipedia, 'Maze-solving algorithm' (wall follower; Trémaux's algorithm, which 'is not guaranteed to find the shortest route'). https://en.wikipedia.org/wiki/Maze-solving_algorithm",
-  "overlapWith": "graph-search (level 1) expands breadth-first and A* frontiers on a grid with costs; this page sends one explorer with one rule and never shows a frontier or a cost.",
-  "needsSource": "none",
-  "leadsTo": [
-   "graph-search"
-  ],
-  "everyday": true,
-  "origin": "numbers-shapes-computers"
- },
- {
-  "slug": "sorting-network",
-  "title": "A sorting machine",
-  "level": 0,
-  "kind": "build",
-  "category": "computing",
-  "interaction": "Six numbered balls roll down a board of tracks; where two tracks meet, the smaller ball goes left and the larger right, and the balls arrive at the bottom in order. Rebuild the board yourself by placing meeting points, drop a shuffled set of balls and see whether they come out sorted; press 'try every order' and the page drops all 720 shuffles and reports any that fail. Then count how many meeting points fire at the same moment: the board sorts in rounds, not one swap at a time.",
-  "takeaway": "A fixed board of pairwise swaps sorts any shuffle of the balls, and several swaps happen at once, so the board finishes in fewer rounds than it has swaps.",
-  "prerequisites": [],
-  "related": [
-   "twenty-questions",
-   "robot-instructions"
-  ],
-  "needs": "",
-  "pitfall": "A board that sorts the examples you tried may still fail on another order; the page must test all orders, not a few. And this is not how most software sorts: say it is how hardware and parallel sorters do it.",
-  "why": "CS Unplugged Sorting Networks, with lessons for ages 5 to 7, 8 to 10 and 11 to 14 (site content CC BY-SA 4.0; reuse the idea, not the worksheets). https://www.csunplugged.org/en/topics/sorting-networks/",
-  "overlapWith": "sorting (level 1) steps bubble, insertion, merge and quick sort one comparison at a time and plots Big-O; this page is a fixed, parallel board of swaps the reader builds and verifies, with no growth curves.",
-  "needsSource": "none",
-  "leadsTo": [
-   "sorting",
-   "logic-gates"
-  ],
+  "category": "medicine",
   "everyday": false,
-  "origin": "numbers-shapes-computers"
+  "interaction": "Put a person in weather from snowy to scorching, resting or running, and watch a heat budget: the body makes heat all the time and loses it through the skin, and a thermostat in the brain keeps the core at one temperature by turning the skin pale or flushed, then shivering, then sweating. Push the weather past what sweat can carry away and the core creeps up.",
+  "takeaway": "You are a heater set to one temperature: shivering turns the heat up and sweating carries it away, and the colour of your skin shows which way the thermostat is pushing.",
+  "prerequisites": [],
+  "related": [
+   "hunger-and-fullness",
+   "why-you-get-sleepy",
+   "homeostasis"
+  ],
+  "needs": "",
+  "needsSource": "none: a one-node heat balance with resting heat near a hundred watts, shivering up to several times that, skin blood flow, and sweat cooling by evaporation up to a stated maximum, from textbook physiology",
+  "pitfall": "Sweat only cools when it evaporates, so sweat dripping off on a humid day has done nothing yet. And feeling cold is not the core being cold: the skin reports first, which is what the thermostat acts on.",
+  "why": "NGSS MS-LS1-8: skin receptors respond to temperature and send messages to the brain for immediate behaviour. https://nyssls.info/index.php/MS-LS1-8",
+  "overlapWith": "homeostasis: that page holds blood sugar steady with insulin; this one holds temperature steady with shivering and sweat, the same feedback idea with no hormones and one control at a time.",
+  "leadsTo": [
+   "homeostasis"
+  ],
+  "origin": "living-things-and-body"
  },
  {
-  "slug": "sound-as-numbers",
-  "title": "Sound as a list of numbers",
+  "slug": "breathing-and-lungs",
+  "title": "How you breathe",
   "level": 0,
   "kind": "manipulate",
-  "category": "computing",
-  "everyday": true,
-  "interaction": "Record a clap or a word (or pick a shipped clip) and see it as a wiggly line; a slider sets how many times a second the computer measures the line, from tens of thousands down to a few hundred, and the measurements appear as dots that join into a new line. Play the dots back: the sound stays itself until the dots get too sparse, then the high parts go first and voices turn muffled and wrong. A second slider sets how many different heights a measurement may take, from thousands down to four, and the sound turns grainy.",
-  "takeaway": "A recording is a long list of measurements of the air's push taken thousands of times a second, and the sound survives as long as the measurements are frequent and fine enough.",
+  "category": "medicine",
+  "everyday": false,
+  "interaction": "Drag the diaphragm down and up on a cutaway chest and watch the ribs lift, the lungs swell and air flow in through a counter, with a bell jar and balloon beside it doing the same thing. Let go and set a slider for sleeping, walking or sprinting to see breaths per minute and the size of each breath change; then hold the breath and watch the carbon-dioxide bar climb until the urge to breathe wins.",
+  "takeaway": "The lungs cannot suck: the diaphragm makes the chest bigger, which lowers the pressure inside, and the outside air pushes itself in.",
   "prerequisites": [],
   "related": [
-   "speakers-and-microphones",
-   "voice-assistant-wake-word",
-   "screens-and-pixels"
+   "how-fish-breathe",
+   "heartbeat-and-pulse",
+   "heart-circulation"
   ],
-  "needs": "A short sound clip under CC0 (Freesound) for readers who decline the microphone; the microphone path uses the browser's own audio input.",
-  "needsSource": "none beyond a CC0 clip; sampling and requantising are computed on the page.",
-  "pitfall": "More measurements per second do not make a sound louder or longer, only truer; the wiggly line is a graph of pressure against time, not a picture of air moving sideways. Do not invoke the sampling theorem by name; show the point where the dots fail.",
-  "why": "England KS3 computing: data of various types 'including text, sounds and pictures' represented in binary (https://www.gov.uk/government/publications/national-curriculum-in-england-computing-programmes-of-study/national-curriculum-in-england-computing-programmes-of-study); NGSS MS-PS4-3 on digitized signals (https://www.nextgenscience.org/pe/ms-ps4-3-waves-and-their-applications-technologies-information-transfer).",
-  "overlapWith": "compression (level 2) uses frequency content to drop detail and fourier-transform decomposes signals; this page stops at measurements, how often and how finely, listened to.",
+  "needs": "",
+  "needsSource": "none: chest volume to pressure by Boyle's law, airflow proportional to the pressure difference, and breathing rates by activity from textbook physiology, all stated on the page",
+  "pitfall": "Breathed-out air is not carbon dioxide: it still holds most of the oxygen that went in, which is why rescue breaths work. And the lungs are not muscles; the diaphragm and the rib muscles do the work.",
+  "why": "England KS3 programme of study: the mechanism of breathing to move air in and out of the lungs, using a pressure model to explain the movement of gases. https://www.gov.uk/government/publications/national-curriculum-in-england-science-programmes-of-study/national-curriculum-in-england-science-programmes-of-study",
+  "overlapWith": "heart-circulation: that page shows oxygen levels in the blood as the heart pumps; this one is the pump for air, with nothing about the blood.",
   "leadsTo": [
-   "binary",
-   "waves-interference"
+   "heart-circulation",
+   "states-of-matter"
   ],
-  "origin": "everyday-technology"
+  "origin": "living-things-and-body"
  },
  {
-  "slug": "traffic-light-controller",
-  "title": "Traffic lights that know you are there",
+  "slug": "digestion-journey",
+  "title": "Where your food goes",
+  "level": 0,
+  "kind": "step",
+  "category": "medicine",
+  "everyday": false,
+  "interaction": "Pick a mouthful (bread, apple, cheese or a sweet) and push it through the tube on a scrub bar: the mouth, stomach, small intestine and large intestine each take their real time on a clock, and the mouthful breaks into ever smaller pieces only where the right juices are. Watch nutrient dots cross into the blood all along the coiled small intestine and what is left become waste; swap the food to see fat linger in the stomach and fibre pass through untouched.",
+  "takeaway": "Food does not just fall through you: each part of the tube takes its own time and does its own job, and almost everything useful is taken out in the long, coiled small intestine.",
+  "prerequisites": [],
+  "related": [
+   "hunger-and-fullness",
+   "sugar-and-tooth-decay",
+   "homeostasis"
+  ],
+  "needs": "",
+  "needsSource": "none: transit times and which juices act where are textbook physiology; the compartment model with first-order breakdown of starch, protein and fat is a stated simplification",
+  "pitfall": "The stomach does not do most of digestion: it is a mixing bag of acid, and most breakdown and nearly all absorption happen in the small intestine. Food does not drop by gravity either; muscles squeeze it along, which is why you can swallow upside down.",
+  "why": "England KS2 Year 4 statutory requirement: describe the simple functions of the basic parts of the digestive system in humans. https://www-legacy.stem.org.uk/resources/community/collection/12365/year-4-animals-including-humans",
+  "overlapWith": "homeostasis: homeostasis plots blood sugar after a meal has been absorbed; this page is the tube itself, what happens to the mouthful before anything reaches the blood.",
+  "leadsTo": [
+   "homeostasis",
+   "the-cell"
+  ],
+  "origin": "living-things-and-body"
+ },
+ {
+  "slug": "fever",
+  "title": "What a fever is",
+  "level": 0,
+  "kind": "step",
+  "category": "medicine",
+  "everyday": false,
+  "interaction": "Catch a germ and step through a fever: the brain turns the thermostat up to 39 degrees, so a body at its normal temperature now reads as too cold, shivers and curls under a blanket until it reaches the new setting; when the germ is beaten the setting drops back and the same body reads as too hot and sweats. Drag the thermostat yourself to see the chills come from raising it and the sweats from lowering it.",
+  "takeaway": "A fever is not the body overheating: the brain raises its own thermostat, which is why you shiver on the way up and sweat on the way down.",
+  "prerequisites": [
+   "body-thermostat"
+  ],
+  "related": [
+   "why-shots-protect-you",
+   "germs-and-hand-washing",
+   "homeostasis"
+  ],
+  "needs": "",
+  "needsSource": "none: the body-thermostat heat model with a moving set point",
+  "pitfall": "A fever is a setting the body chooses, not a fault in its heating; a fever-reducing medicine lowers the setting, it does not cool the body. The page does not claim that the heat kills germs.",
+  "why": "NGSS MS-LS1-8: skin receptors respond to temperature; the fever page is the thermostat page's own example and the most-asked question about being ill. https://nyssls.info/index.php/MS-LS1-8",
+  "overlapWith": "homeostasis: that page breaks a feedback loop to model diabetes; this one moves the loop's target on purpose and watches the body chase it.",
+  "leadsTo": [
+   "homeostasis",
+   "epidemics"
+  ],
+  "origin": "living-things-and-body"
+ },
+ {
+  "slug": "germs-and-hand-washing",
+  "title": "Germs and hand washing",
+  "level": 0,
+  "kind": "simulate",
+  "category": "medicine",
+  "everyday": false,
+  "interaction": "Watch a classroom through a morning under germ light: one child's hands glow, every door handle, pencil and hand they touch takes a share, and the next hand to touch the handle takes a share of that, the counts shrinking with each hop and as germs die on dry surfaces. Choose who washes and when, with soap for a proper count or a quick rinse, and see how far the glow has got by lunchtime.",
+  "takeaway": "Germs travel hand to thing to hand, losing a share at each hop, and one good wash cuts the chain.",
+  "prerequisites": [],
+  "related": [
+   "why-shots-protect-you",
+   "sugar-and-tooth-decay",
+   "epidemics"
+  ],
+  "needs": "",
+  "needsSource": "Transfer fractions per touch and surface die-off rates from published fomite-transmission studies (e.g. Rusin, Maxwell and Gerba 2002) stated on the page; no dataset shipped",
+  "pitfall": "Germs on a dry doorknob do not multiply, they slowly die; the danger is the hop to a hand and from the hand to a mouth. Soap works mostly by lifting germs off so the water can carry them away, which is why the time spent rubbing matters.",
+  "why": "England statutory RSHE and health education guidance, primary health education: personal hygiene and germs including bacteria, viruses, how they are spread and treated, and the importance of handwashing. https://www.gov.uk/government/publications/relationships-education-relationships-and-sex-education-rse-and-health-education",
+  "overlapWith": "epidemics: that page spreads an infection through a moving crowd and plots the curves; this one is one classroom's hands and surfaces, counted, with no curves and no immunity.",
+  "leadsTo": [
+   "epidemics",
+   "the-cell"
+  ],
+  "origin": "living-things-and-body"
+ },
+ {
+  "slug": "growing-up",
+  "title": "How you grow",
+  "level": 0,
+  "kind": "explore",
+  "category": "medicine",
+  "everyday": false,
+  "interaction": "Slide a child's age from birth to twenty along real growth curves and watch the figure grow, with the typical range of heights shaded so that a tall nine-year-old and a short twelve-year-old are both normal; a second curve shows how much is added each year: a lot in the first year, a slow plateau, one last spurt, then nothing. Switch between girls and boys to see the spurt land at different ages.",
+  "takeaway": "You do not grow steadily: fastest as a baby, slowly through childhood, one last spurt, and then growing stops for good.",
+  "prerequisites": [],
+  "related": [
+   "how-a-bone-heals",
+   "why-you-get-sleepy",
+   "inside-an-egg",
+   "caterpillar-to-butterfly"
+  ],
+  "needs": "CDC Growth Charts data files (stature-for-age and weight-for-age percentiles, 2000; a US government work, public domain): https://www.cdc.gov/growthcharts/cdc-data-files.htm. Growth per year is derived by differencing the chart.",
+  "needsSource": "CDC Growth Charts data files, US government work (public domain)",
+  "pitfall": "Being below or above the middle line is not behind or ahead: the shaded band is normal, and the spurt's timing varies by years between children. The charts describe typical children, not a target.",
+  "why": "England KS2 Year 5 statutory requirement: describe the changes as humans develop to old age. https://www.gov.uk/government/publications/national-curriculum-in-england-science-programmes-of-study/national-curriculum-in-england-science-programmes-of-study",
+  "overlapWith": "homeostasis: that page plots hours of one person's blood sugar; this one scrubs years of the typical child's height from a real dataset, the way deep-time scrubs its record.",
+  "leadsTo": [
+   "the-cell",
+   "homeostasis"
+  ],
+  "origin": "living-things-and-body"
+ },
+ {
+  "slug": "hearing-and-the-ear",
+  "title": "How your ear hears",
+  "level": 0,
+  "kind": "manipulate",
+  "category": "medicine",
+  "everyday": false,
+  "interaction": "Slide a tone from low to high and watch it shake the eardrum, three tiny bones lever the shake into the fluid of the snail-shaped cochlea, and a ripple run along its ribbon until it peaks at one spot; each pitch peaks somewhere else, high notes near the entrance and low notes at the far end. Play two notes at once and see two bumps; turn the loudness up and the bumps grow.",
+  "takeaway": "The ear sorts sounds by pitch before the brain hears them: each note makes a different place along the spiral wiggle.",
+  "prerequisites": [],
+  "related": [
+   "why-spinning-makes-you-dizzy",
+   "smell-and-taste",
+   "vision-color"
+  ],
+  "needs": "",
+  "needsSource": "none: the Greenwood (1961) frequency-to-place function for the human cochlea, a middle-ear lever ratio, and a passive bank of tuned filters for the ribbon, stated as a simplification",
+  "pitfall": "The cochlea is not a microphone with one signal: it is thousands of sensors each listening at its own spot. And loud is not the same as high: loudness grows the bump, pitch moves it.",
+  "why": "NGSS MS-LS1-8: sensory receptors respond to stimuli, with ear receptors reacting to vibrations. https://nyssls.info/index.php/MS-LS1-8",
+  "overlapWith": "waves-interference: that page is the wave in the air; this one is the receiver, from eardrum to the place-by-pitch map. The reserve item Hearing and the cochlea merges here at level 0; the cochlea's own mechanics (travelling wave, active amplifier) stay open for a level-3 page.",
+  "leadsTo": [
+   "waves-interference",
+   "oscillations-resonance"
+  ],
+  "origin": "living-things-and-body"
+ },
+ {
+  "slug": "heartbeat-and-pulse",
+  "title": "Your pulse",
+  "level": 0,
+  "kind": "manipulate",
+  "category": "medicine",
+  "everyday": false,
+  "interaction": "Put two fingers on your own wrist and count along with a pulse the page beats for you: a stopwatch counts fifteen seconds and multiplies by four. Then slide the figure from resting to walking to sprinting and watch the beat speed up and the push of each beat travel down the arm to the wrist; stop, and the rate drifts back down over a minute or two, faster for a fit heart.",
+  "takeaway": "Your pulse is the heart's push arriving at your wrist, and it speeds up with effort because working muscles need more blood.",
+  "prerequisites": [],
+  "related": [
+   "breathing-and-lungs",
+   "muscles-pull-in-pairs",
+   "why-bruises-change-colour",
+   "heart-circulation"
+  ],
+  "needs": "",
+  "needsSource": "none: heart rate rising with effort toward a maximum near 220 minus age, recovery as an exponential with a fitness-dependent time, and the pulse as a pressure wave travelling far faster than the blood, from textbook physiology",
+  "pitfall": "The pulse is not the blood arriving: the push travels along the artery many times faster than the blood itself moves. And a slower resting pulse usually means a stronger heart, not a weaker one.",
+  "why": "England KS2 Year 6: the circulatory system and the effect of exercise, taught by measuring the pulse before and after two minutes of exercise. https://www-legacy.stem.org.uk/resources/community/collection/13109/year-6-animals-including-humans",
+  "overlapWith": "heart-circulation: that page is inside the heart, with valves, an ECG and a pressure curve; this one never opens the heart: it is the beat you can feel and how exercise changes it.",
+  "leadsTo": [
+   "heart-circulation"
+  ],
+  "origin": "living-things-and-body"
+ },
+ {
+  "slug": "how-a-bone-heals",
+  "title": "How a broken bone mends",
+  "level": 0,
+  "kind": "simulate",
+  "category": "medicine",
+  "everyday": false,
+  "interaction": "Break a bone in a cutaway leg, choose whether it is held still in a cast or keeps moving, and run the weeks: blood pools at the break, a soft rubbery callus bridges it, bone fills the callus in, and over months the lump is trimmed back toward the old shape. With too much movement the bridge never forms; with no load at all during the trimming the bone stays thin.",
+  "takeaway": "A broken bone mends itself by first growing a bigger lump of new bone than it needs and then slowly trimming it back; the cast only holds the pieces still while it does.",
+  "prerequisites": [],
+  "related": [
+   "how-cuts-heal",
+   "joints-and-skeleton",
+   "growing-up"
+  ],
+  "needs": "",
+  "needsSource": "none: the stages and typical timings are textbook orthopaedics (Marsell and Einhorn 2011 review); the grid model of callus that turns to bone where it is held still, and is removed where it carries no load, is a stated simplification",
+  "pitfall": "The cast does not heal anything, and bone does not mend like a glued stick: the repair is living tissue that keeps being reshaped for months, which is why a healed bone can end up as strong as before.",
+  "why": "England KS3 programme of study: the structure and functions of the human skeleton. https://www.gov.uk/government/publications/national-curriculum-in-england-science-programmes-of-study/national-curriculum-in-england-science-programmes-of-study",
+  "overlapWith": "bridges-structures: that page loads a structure until a member fails; this one starts from the failure and watches a living member rebuild itself.",
+  "leadsTo": [
+   "the-cell",
+   "bridges-structures"
+  ],
+  "origin": "living-things-and-body"
+ },
+ {
+  "slug": "how-cuts-heal",
+  "title": "How a cut heals",
+  "level": 0,
+  "kind": "step",
+  "category": "medicine",
+  "everyday": false,
+  "interaction": "Make a cut of chosen depth in a slice of skin and scrub the days: blood cells pour out, platelets stick to the torn edge and to each other, and a net of fibres traps cells until the flow stops; a scab hardens on top while new skin cells creep across underneath. Make the cut wider and the plug takes longer; pick the scab early and the gap reopens.",
+  "takeaway": "Bleeding stops because sticky cells pile up from the edges of the hole until they plug it, and the scab is that plug dried out while new skin grows under it.",
+  "prerequisites": [],
+  "related": [
+   "why-bruises-change-colour",
+   "how-a-bone-heals",
+   "germs-and-hand-washing"
+  ],
+  "needs": "",
+  "needsSource": "none: a particle simulation of flow through a hole with sticking rules for platelets and a fibre net, then a grid of skin cells migrating across the gap; timings from textbook wound healing, stated as a simplification",
+  "pitfall": "A scab is not the new skin and the body does not heal from the outside in: the new skin grows underneath, from the edges, and the scab falls off when it is done.",
+  "why": "NGSS 4-LS1-1: plants and animals have internal and external structures that function to support survival, with skin named as an example structure. https://www2.cde.ca.gov/cacs/id/web/29023",
+  "overlapWith": "heart-circulation: that page keeps the blood inside the vessels; this one is what blood does when it leaks out.",
+  "leadsTo": [
+   "the-cell",
+   "heart-circulation"
+  ],
+  "origin": "living-things-and-body"
+ },
+ {
+  "slug": "hunger-and-fullness",
+  "title": "Why you feel full",
+  "level": 0,
+  "kind": "simulate",
+  "category": "medicine",
+  "everyday": false,
+  "interaction": "Eat something, a glass of water, an apple, a bowl of porridge or a bag of crisps, and watch the stomach stretch and a fullness gauge rise; then let the clock run as the stomach squeezes its contents out into the gut, fast for water and slow for fat, and the gauge falls toward hungry. Compare a small snack with a big bowl of soup holding the same energy: the soup fills you more and for longer.",
+  "takeaway": "You feel full when your stomach is stretched and hungry when it empties, so foods with the same energy can keep you full for very different times.",
+  "prerequisites": [],
+  "related": [
+   "digestion-journey",
+   "body-thermostat",
+   "smell-and-taste",
+   "homeostasis"
+  ],
+  "needs": "",
+  "needsSource": "Gastric-emptying half-times by food type (liquids in tens of minutes, solid meals in a couple of hours, fat slower) from published meal studies stated on the page; fullness from stomach volume plus a slow signal from the gut; no dataset shipped",
+  "pitfall": "Fullness is not a calorie counter: the stomach measures stretch and the gut reports slowly, which is why a bag of crisps can leave you hungry and a bowl of soup does not. The page calls no food bad.",
+  "why": "England KS2 Year 3 statutory requirement: identify that animals, including humans, need the right types and amount of nutrition. https://www.gov.uk/government/publications/national-curriculum-in-england-science-programmes-of-study/national-curriculum-in-england-science-programmes-of-study",
+  "overlapWith": "homeostasis: that page plots blood sugar and insulin after a meal; this one stops at the stomach and never looks at the blood.",
+  "leadsTo": [
+   "homeostasis"
+  ],
+  "origin": "living-things-and-body"
+ },
+ {
+  "slug": "joints-and-skeleton",
+  "title": "Build a joint",
   "level": 0,
   "kind": "build",
-  "category": "computing",
-  "everyday": true,
-  "interaction": "Cars arrive at a crossroads from four directions while a timer runs the lights through a fixed cycle; queues grow on the busy road while the empty road gets its green anyway. Bury a sensor loop in each lane and switch the controller to 'skip a green nobody is waiting for': the queues shrink. Then set the busy road's green longer and shorter and find which choice keeps the total queue smallest.",
-  "takeaway": "A traffic light is a small counting program, and giving it a sensor so that it can skip empty roads makes the whole crossroads wait less.",
+  "category": "medicine",
+  "everyday": false,
+  "interaction": "Build an arm, then a leg, by choosing a joint for each junction from a palette of hinge, pivot, ball-and-socket and fixed; then try to touch your nose, scratch your back and turn a key. The skeleton moves exactly as far as its joints allow, so a hinge at the shoulder leaves the hand stuck in one plane and a ball at the knee buckles under the body.",
+  "takeaway": "Joints come in a few shapes, hinges, pivots and ball-and-sockets, and the body uses the shape that fits each job.",
   "prerequisites": [],
   "related": [
-   "elevator-chooses-floors",
-   "metal-detector"
+   "muscles-pull-in-pairs",
+   "how-a-bone-heals",
+   "bridges-structures"
   ],
   "needs": "",
-  "needsSource": "none; cars arrive at random at set rates and queue, and the loop detector follows the published inductive-loop principle (a metal mass above the loop lowers its inductance and trips the controller).",
-  "pitfall": "The loop in the road is not a pressure plate: it senses metal, which is why a bicycle may fail to trigger it. Pressing a pedestrian button again does not shorten the wait; the request is registered once.",
-  "why": "England KS2 computing: 'design, write and debug programs that accomplish specific goals, including controlling or simulating physical systems' (https://www.gov.uk/government/publications/national-curriculum-in-england-computing-programmes-of-study/national-curriculum-in-england-computing-programmes-of-study); traffic lights are the standard project of the Teach Computing Year 5 physical-computing unit (https://teachcomputing.org/curriculum/key-stage-2/programming-a-selection-in-physical-computing/connecting-crumbles).",
-  "overlapWith": "feedback-control (level 2) tunes a continuous controller; this one is a rule with a sensor and a timer, with a queue of cars as the cost. graph-search routes one car across a map; this page runs one crossing.",
+  "needsSource": "none: forward kinematics with each joint type's degrees of freedom and textbook ranges of motion",
+  "pitfall": "The elbow is not the only joint in the forearm: turning your palm over is a separate pivot joint below it, so a hinge alone cannot explain what an arm does. Fixed joints (the skull) are joints too.",
+  "why": "England KS2 Year 3 statutory requirement: identify that humans and some other animals have skeletons and muscles for support, protection and movement. https://www.gov.uk/government/publications/national-curriculum-in-england-science-programmes-of-study/national-curriculum-in-england-science-programmes-of-study",
+  "overlapWith": "bridges-structures: the only existing build page; it assembles a structure to carry loads, while this one assembles joints to reach places, with no forces.",
   "leadsTo": [
-   "logic-gates",
-   "graph-search"
+   "bridges-structures",
+   "newtons-laws"
   ],
-  "origin": "everyday-technology"
+  "origin": "living-things-and-body"
  },
  {
-  "slug": "twenty-questions",
-  "title": "Twenty questions: halving the haystack",
+  "slug": "muscles-pull-in-pairs",
+  "title": "Muscles pull in pairs",
   "level": 0,
-  "kind": "step",
-  "category": "computing",
-  "interaction": "Think of a number from 1 to 100 and answer the page's 'higher or lower' questions: a bar of candidates shrinks by half each answer and the counter stops at seven. Now find a word in a thousand-page dictionary by opening it in the middle, then in the middle of the right half, counting the opens, against a search that flips through every page. Then play animal twenty questions: each yes/no question hides half of the hundred animals on the board until one is left.",
-  "takeaway": "A question that splits what is left in half finds the answer in a handful of steps, where checking one at a time takes hundreds.",
+  "kind": "manipulate",
+  "category": "medicine",
+  "everyday": false,
+  "interaction": "Drag the hand of a cutaway arm up and down: the biceps shortens and bulges to lift it and the triceps to lower it, and tugging either muscle alone shows it can only pull, never push. Hang a bag of shopping from the hand and watch how hard the biceps must pull, many times the bag's weight, because it grips the forearm so close to the elbow.",
+  "takeaway": "A muscle can only pull, so every joint needs a pair that take turns, and the one that grips near the elbow must pull far harder than the weight in your hand.",
   "prerequisites": [],
   "related": [
-   "secret-codes",
-   "pixels-and-pictures",
-   "sorting-network"
-  ],
-  "needs": "The animal board: the UCI Zoo dataset (101 animals, 16 yes/no and count features), CC BY 4.0.",
-  "pitfall": "Halving only works on a sorted list or on questions that really split the pile: show 'is it a penguin?' barely shrinking the board, and the dictionary trick failing on an unsorted pile of pages.",
-  "why": "England KS3 computing: 'several key algorithms that reflect computational thinking [for example, ones for sorting and searching]'; CS Unplugged Searching Algorithms ('How many guesses?', 'Divide and conquer', ages 5 to 10). https://www.csunplugged.org/en/topics/searching-algorithms/",
-  "overlapWith": "sorting (level 1) shows how the cost of sorting grows with input size; nothing in the catalogue shows searching. This page shows halving against one-by-one on counts alone, without growth curves.",
-  "needsSource": "UCI Machine Learning Repository, Zoo dataset, CC BY 4.0.",
-  "leadsTo": [
-   "sorting",
-   "learning-from-data"
-  ],
-  "everyday": true,
-  "origin": "numbers-shapes-computers"
- },
- {
-  "slug": "barcode-stripes",
-  "title": "Barcodes at the checkout",
-  "level": 0,
-  "kind": "step",
-  "category": "networks",
-  "everyday": true,
-  "interaction": "Drag a scanner's red line across a barcode and watch what it sees, a trace of dark and light over time, then step through it: a start mark, six groups of stripes, a middle mark, six more and an end mark, each group of four widths one digit. Scan slowly, fast, at an angle or upside down and the widths all stretch together, so the digits come out the same. Smudge one stripe and the last digit, a check digit, says the number is wrong.",
-  "takeaway": "A barcode is a number written as stripe widths, read as proportions so that speed and angle do not matter, with a last digit that catches a misread; the price is looked up afterwards.",
-  "prerequisites": [],
-  "related": [
-   "qr-codes",
-   "remote-control-blinks"
+   "joints-and-skeleton",
+   "heartbeat-and-pulse",
+   "bridges-structures"
   ],
   "needs": "",
-  "needsSource": "none; the EAN-13 layout (95 modules, 7 per digit, L/G/R patterns, weighted check digit) from the published GS1 specification.",
-  "pitfall": "The barcode does not contain the price or the product name; it is a number the till looks up. The scanner reads ratios of widths, not absolute sizes, which is why the code can be printed at any size.",
-  "why": "'Barcode' averaged about 29,200 views a month on English Wikipedia in 2025 (https://wikimedia.org/api/rest_v1/metrics/pageviews/per-article/en.wikipedia/all-access/user/Barcode/monthly/2025010100/2025123100).",
-  "overlapWith": "qr-codes in this batch: the two-dimensional cousin with error correction; this page is one row of widths, a check digit and no repair. binary reads bits; here a digit is a pattern of four widths.",
+  "needsSource": "none: a two-link lever with real attachment distances (biceps a few centimetres from the elbow, the hand some thirty-five centimetres away) gives the force ratio",
+  "pitfall": "Muscles never push; the opposite movement is always another muscle pulling. And a bigger muscle does not change the lever: it still pulls from the same place.",
+  "why": "England KS3 programme of study: the function of muscles and examples of antagonistic muscles. https://www.gov.uk/government/publications/national-curriculum-in-england-science-programmes-of-study/national-curriculum-in-england-science-programmes-of-study",
+  "overlapWith": "bridges-structures: that page colours beams by tension and compression under a load; this one is a living lever with two pullers, and the load is a shopping bag.",
   "leadsTo": [
-   "binary"
+   "newtons-laws",
+   "bridges-structures"
   ],
-  "origin": "everyday-technology"
+  "origin": "living-things-and-body"
  }
 ]
