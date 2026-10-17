@@ -70,7 +70,7 @@
 		const tt = (i / 40) * tOff;
 		return { t: tt, p: Math.exp(promptRate * tt) };
 	});
-	const DX0 = 110;
+	const DX0 = 130;
 	const DX1 = 900;
 	const DY0 = 130;
 	const DY1 = 440;
@@ -245,10 +245,10 @@
 <g opacity={fadeIn}>
 	{#if view === 'delayed'}
 		<Readout id="d-title">
-			<text x={DX0 - 50} y={70} font-size="16" font-weight="600"
+			<text x={DX0 - 70} y={70} font-size="16" font-weight="600"
 				>Power after k goes up by 0.1% (k = 1.001)</text
 			>
-			<text x={DX0 - 50} y={90} class="muted">relative to the power before, log scale</text>
+			<text x={DX0 - 70} y={90} class="muted">relative to the power before, log scale</text>
 		</Readout>
 		<Axes
 			sx={dsx}
@@ -300,7 +300,7 @@
 			color={delayedOn ? 'var(--fi-crit)' : 'var(--fi-super)'}
 		>
 			<text
-				x={DX0 - 50}
+				x={DX0 - 70}
 				y={500}
 				font-size="17"
 				font-weight="700"
@@ -316,7 +316,7 @@
 				? `×${fmt(pAt(1), 2)}; ×e every ${fmt(periodDelayed)} s`
 				: `×${fmt(Math.exp(promptRate))}; ×e every ${fmt(1 / promptRate, 1)} s`}
 		>
-			<text x={DX0 - 50} y={526} style:font-variant-numeric="tabular-nums"
+			<text x={DX0 - 70} y={526} style:font-variant-numeric="tabular-nums"
 				>{delayedOn
 					? `after 1 s: ×${fmt(pAt(1), 2)} (the prompt jump), then ×e (2.7) every ${fmt(periodDelayed)} s`
 					: `after 1 s: ×${fmt(Math.exp(promptRate))}, ×e every ${fmt(1 / promptRate, 1)} s — far too fast to steer`}</text
