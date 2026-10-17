@@ -25,7 +25,7 @@
 	import { Tween } from 'svelte/motion';
 	import { cubicInOut } from 'svelte/easing';
 	import { smoothstep } from '#lib/draw/index.ts';
-	import type { StageProps } from '#lib/explainer/index.ts';
+	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import {
 		BASIN,
 		BASIN_HEIGHT,
@@ -328,7 +328,9 @@
 	</defs>
 
 	<!-- ===== wind panel ===== -->
-	{@render txt(WX, BYN - 14, 'the winds', 13, { anchor: 'middle', weight: 600 })}
+	<Readout id="winds-title">
+		{@render txt(WX, BYN - 14, 'the winds', 13, { anchor: 'middle', weight: 600 })}
+	</Readout>
 	<line
 		x1={WX}
 		x2={WX}
@@ -360,19 +362,25 @@
 			/>
 		{/if}
 	{/each}
-	{@render txt(WX + 8, latPx(19) + 4, 'trade winds', 12, {
-		weight: 600,
-		color: 'var(--oc-wind)'
-	})}
-	{@render txt(WX - 8, latPx(49) + 4, 'westerlies', 12, {
-		anchor: 'end',
-		weight: 600,
-		color: 'var(--oc-wind)'
-	})}
-	{@render txt(WX, BYS + 22, '← from the east · from the west →', 11, {
-		anchor: 'middle',
-		muted: true
-	})}
+	<Readout id="trades" order={10} label="Trade winds" marker={1} at={[WX + 32, latPx(19)]}>
+		{@render txt(WX + 8, latPx(19) + 4, 'trade winds', 12, {
+			weight: 600,
+			color: 'var(--oc-wind)'
+		})}
+	</Readout>
+	<Readout id="westerlies" order={11} label="Westerlies" marker={2} at={[WX - 32, latPx(49)]}>
+		{@render txt(WX - 8, latPx(49) + 4, 'westerlies', 12, {
+			anchor: 'end',
+			weight: 600,
+			color: 'var(--oc-wind)'
+		})}
+	</Readout>
+	<Readout id="winds-axis">
+		{@render txt(WX, BYS + 22, '← from the east · from the west →', 11, {
+			anchor: 'middle',
+			muted: true
+		})}
+	</Readout>
 
 	<!-- ===== basin ===== -->
 	<rect
@@ -393,16 +401,18 @@
 		fill="var(--oc-land)"
 		stroke="var(--oc-land-edge)"
 	/>
-	{@render txt(BX0 - 7, (BYN + BYS) / 2, 'America', 11, {
-		anchor: 'middle',
-		muted: true,
-		rotate: -90
-	})}
-	{@render txt(BX1 + 15, (BYN + BYS) / 2, 'Europe · Africa', 11, {
-		anchor: 'middle',
-		muted: true,
-		rotate: 90
-	})}
+	<Readout id="coasts">
+		{@render txt(BX0 - 7, (BYN + BYS) / 2, 'America', 11, {
+			anchor: 'middle',
+			muted: true,
+			rotate: -90
+		})}
+		{@render txt(BX1 + 15, (BYN + BYS) / 2, 'Europe · Africa', 11, {
+			anchor: 'middle',
+			muted: true,
+			rotate: 90
+		})}
+	</Readout>
 	<rect
 		x={BX0}
 		y={BYN}
@@ -422,7 +432,9 @@
 		/>
 		{@render txt(BX1 + 30, latPx(lat) + 4, `${lat}°N`, 11, { muted: true })}
 	{/each}
-	{@render txt((BX0 + BX1) / 2, BYS + 22, '6,000 km', 11, { anchor: 'middle', muted: true })}
+	<Readout id="width">
+		{@render txt((BX0 + BX1) / 2, BYS + 22, '6,000 km', 11, { anchor: 'middle', muted: true })}
+	</Readout>
 
 	<g clip-path="url(#gyre-basin)">
 		<!-- the hill (and dip) of the sea surface: nested streamlines, filled -->
@@ -473,67 +485,103 @@
 	<!-- labels on the basin -->
 	{#if phase === 'ekman'}
 		<g opacity={ekmanOn.current}>
-			{#if hasWarm && hill > 0.3}
-				{@render txt(warmCentre.x + 14, warmCentre.y - 8, 'water piles up:', 13, {
-					weight: 600,
-					opacity: hill
-				})}
-				{@render txt(warmCentre.x + 14, warmCentre.y + 8, 'a low hill', 13, {
-					weight: 600,
-					opacity: hill
-				})}
-			{/if}
-			{#if hasCold && hill > 0.3}
-				{@render txt(coldCentre.x + 14, coldCentre.y + 4, 'and a dip', 12, {
-					muted: true,
-					opacity: hill
-				})}
-			{/if}
-			<g transform="translate({CARD.x + 12} {CARD.y + 3 * 74 + 36})">
-				<rect
-					x="-12"
-					y="-20"
-					width={CARD.w}
-					height="64"
-					rx="12"
-					fill="var(--surface)"
-					stroke="var(--border)"
-				/>
-				{@render arrow(4, -4, 30, -4, 'var(--oc-wind)', 2)}
-				{@render txt(38, 0, 'wind', 12)}
-				{@render arrow(17, 30, 17, 8, 'var(--oc-ekman)', 2.5)}
-				{@render txt(38, 24, 'drift of the water', 12)}
-			</g>
+			<!-- the hill is the card's "water piles up at" on phones -->
+			<Readout id="hill">
+				{#if hasWarm && hill > 0.3}
+					{@render txt(warmCentre.x + 14, warmCentre.y - 8, 'water piles up:', 13, {
+						weight: 600,
+						opacity: hill
+					})}
+					{@render txt(warmCentre.x + 14, warmCentre.y + 8, 'a low hill', 13, {
+						weight: 600,
+						opacity: hill
+					})}
+				{/if}
+				{#if hasCold && hill > 0.3}
+					{@render txt(coldCentre.x + 14, coldCentre.y + 4, 'and a dip', 12, {
+						muted: true,
+						opacity: hill
+					})}
+				{/if}
+			</Readout>
+			<Readout id="key-wind" order={12} label="Wind" color="var(--oc-wind)" />
+			<Readout id="key-drift" order={13} label="Drift of the water" color="var(--oc-ekman)" />
+			<Readout id="key">
+				<g transform="translate({CARD.x + 12} {CARD.y + 3 * 74 + 36})">
+					<rect
+						x="-12"
+						y="-20"
+						width={CARD.w}
+						height="64"
+						rx="12"
+						fill="var(--surface)"
+						stroke="var(--border)"
+					/>
+					{@render arrow(4, -4, 30, -4, 'var(--oc-wind)', 2)}
+					{@render txt(38, 0, 'wind', 12)}
+					{@render arrow(17, 30, 17, 8, 'var(--oc-ekman)', 2.5)}
+					{@render txt(38, 24, 'drift of the water', 12)}
+				</g>
+			</Readout>
 		</g>
 	{:else}
 		<g opacity={flowOn.current}>
 			{#if hasWarm}
-				{@render txt(Math.max(warmCentre.x + 10, BX0 + 150), warmCentre.y + 4, 'warm gyre ↻', 13, {
-					weight: 600,
-					color: 'var(--oc-warm)'
-				})}
+				{@const lx = Math.max(warmCentre.x + 10, BX0 + 150)}
+				<Readout
+					id="warm-gyre"
+					order={14}
+					label="Warm gyre ↻"
+					marker={3}
+					at={[lx + 22, warmCentre.y]}
+				>
+					{@render txt(lx, warmCentre.y + 4, 'warm gyre ↻', 13, {
+						weight: 600,
+						color: 'var(--oc-warm)'
+					})}
+				</Readout>
 			{/if}
 			{#if hasCold}
-				{@render txt(Math.max(coldCentre.x + 10, BX0 + 150), coldCentre.y + 4, 'cold gyre ↺', 13, {
-					weight: 600,
-					color: 'var(--oc-cold)'
-				})}
+				{@const lx = Math.max(coldCentre.x + 10, BX0 + 150)}
+				<Readout
+					id="cold-gyre"
+					order={15}
+					label="Cold gyre ↺"
+					marker={4}
+					at={[lx + 22, coldCentre.y]}
+				>
+					{@render txt(lx, coldCentre.y + 4, 'cold gyre ↺', 13, {
+						weight: 600,
+						color: 'var(--oc-cold)'
+					})}
+				</Readout>
 			{/if}
 		</g>
 		{#if labelsOn.current > 0.01 && hasWarm}
 			<g opacity={labelsOn.current}>
 				{#if beta}
-					{@render txt(BX0 + 34, latPx(29), 'Gulf Stream:', 13, { weight: 700 })}
-					{@render txt(BX0 + 34, latPx(29) + 16, 'narrow and fast', 12, { muted: true })}
+					<Readout
+						id="gulf"
+						order={16}
+						label="Gulf Stream"
+						marker={5}
+						at={[BX0 + 58, latPx(29) + 4]}
+					>
+						{@render txt(BX0 + 34, latPx(29), 'Gulf Stream:', 13, { weight: 700 })}
+						{@render txt(BX0 + 34, latPx(29) + 16, 'narrow and fast', 12, { muted: true })}
+					</Readout>
 					{@render arrow(BX0 + 30, latPx(24), BX0 + 30, latPx(31.5), 'var(--stage-ink)', 2)}
 				{/if}
-				{@render txt(
-					BX0 + 0.62 * (BX1 - BX0),
-					latPx(21),
-					beta ? 'slow drift south' : 'the same on both sides',
-					12,
-					{ anchor: 'middle', weight: 600 }
-				)}
+				<!-- the card's "west vs open ocean" says it on phones -->
+				<Readout id="drift">
+					{@render txt(
+						BX0 + 0.62 * (BX1 - BX0),
+						latPx(21),
+						beta ? 'slow drift south' : 'the same on both sides',
+						12,
+						{ anchor: 'middle', weight: 600 }
+					)}
+				</Readout>
 				{#if beta}
 					{@render arrow(
 						BX0 + 0.62 * (BX1 - BX0),
@@ -548,5 +596,5 @@
 		{/if}
 	{/if}
 
-	<Card x={CARD.x} y={CARD.y} w={CARD.w} {cells} />
+	<Card id="gyre" x={CARD.x} y={CARD.y} w={CARD.w} {cells} />
 </g>

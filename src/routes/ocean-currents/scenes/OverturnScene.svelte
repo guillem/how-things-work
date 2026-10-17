@@ -21,7 +21,7 @@
 	import { Tween } from 'svelte/motion';
 	import { cubicInOut } from 'svelte/easing';
 	import { cycle, scale, type Scale } from '#lib/draw/index.ts';
-	import type { StageProps } from '#lib/explainer/index.ts';
+	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import {
 		BOX,
 		SV,
@@ -426,12 +426,14 @@
 		fill="var(--oc-land)"
 		stroke="var(--oc-land-edge)"
 	/>
-	{@render txt(SX0 + 4, FLOOR + 22, 'equator', 11, { muted: true })}
-	{@render txt(SX1, FLOOR + 22, '65°N', 11, { anchor: 'end', muted: true })}
-	{@render txt(MID, FLOOR + 22, 'a slice through the Atlantic, 4 km deep', 11, {
-		anchor: 'middle',
-		muted: true
-	})}
+	<Readout id="slice-axis">
+		{@render txt(SX0 + 4, FLOOR + 22, 'equator', 11, { muted: true })}
+		{@render txt(SX1, FLOOR + 22, '65°N', 11, { anchor: 'end', muted: true })}
+		{@render txt(MID, FLOOR + 22, 'a slice through the Atlantic, 4 km deep', 11, {
+			anchor: 'middle',
+			muted: true
+		})}
+	</Readout>
 
 	<!-- the overturning loop -->
 	<path
@@ -460,50 +462,77 @@
 
 	<!-- box readouts -->
 	{#each boxes as b (b.id)}
-		{@render txt(b.x, 268, b.name, 14, { anchor: 'middle', weight: 700 })}
-		{@render txt(b.x, 292, `${b.T.toFixed(1)} °C`, 13, {
-			anchor: 'middle',
-			weight: 600,
-			color: b.color
-		})}
-		{@render txt(b.x, 311, `salinity ${b.S.toFixed(2)}`, 12, { anchor: 'middle' })}
-		{@render txt(b.x, 336, `${b.rho.toFixed(1)} kg/m³`, 13, { anchor: 'middle', weight: 600 })}
-		{@render txt(b.x, 352, 'density (straight-line fit)', 11, { anchor: 'middle', muted: true })}
+		<!-- the tropics stay at 25 °C: on the tipping step their row gives way to the weather -->
+		<Readout
+			id="box-{b.id}"
+			order={5 + (b.id === 'eq' ? 0 : 1)}
+			label={b.name === 'tropics' ? 'Tropics' : 'Far north'}
+			value="{b.rho.toFixed(1)} kg/m³"
+			note="{b.T.toFixed(1)} °C, salinity {b.S.toFixed(2)}"
+			color={b.color}
+			opacity={b.id === 'eq' && phase === 'tipping' ? 0 : 1}
+		>
+			{#snippet narrow()}
+				<!-- on phones only the name stays, large enough to read -->
+				{@render txt(b.x, 322, b.name, 34, { anchor: 'middle', weight: 700 })}
+			{/snippet}
+			{@render txt(b.x, 268, b.name, 14, { anchor: 'middle', weight: 700 })}
+			{@render txt(b.x, 292, `${b.T.toFixed(1)} °C`, 13, {
+				anchor: 'middle',
+				weight: 600,
+				color: b.color
+			})}
+			{@render txt(b.x, 311, `salinity ${b.S.toFixed(2)}`, 12, { anchor: 'middle' })}
+			{@render txt(b.x, 336, `${b.rho.toFixed(1)} kg/m³`, 13, { anchor: 'middle', weight: 600 })}
+			{@render txt(b.x, 352, 'density (straight-line fit)', 11, { anchor: 'middle', muted: true })}
+		</Readout>
 	{/each}
 	{#if phase === 'tipping' && q < 0.5 * SV}
 		<!-- the far-away weather a stalled overturning brings, tied to the heat readout -->
-		{@render txt(boxes[1].x, 392, 'less heat for the North Atlantic:', 12, {
-			anchor: 'middle',
-			weight: 600,
-			color: 'var(--oc-cold)'
-		})}
-		{@render txt(boxes[1].x, 408, 'colder winters around it', 12, {
-			anchor: 'middle',
-			weight: 600,
-			color: 'var(--oc-cold)'
-		})}
+		<Readout
+			id="weather"
+			order={7}
+			label="North Atlantic"
+			value="colder winters"
+			note="less heat brought north"
+			color="var(--oc-cold)"
+		>
+			{@render txt(boxes[1].x, 392, 'less heat for the North Atlantic:', 12, {
+				anchor: 'middle',
+				weight: 600,
+				color: 'var(--oc-cold)'
+			})}
+			{@render txt(boxes[1].x, 408, 'colder winters around it', 12, {
+				anchor: 'middle',
+				weight: 600,
+				color: 'var(--oc-cold)'
+			})}
+		</Readout>
 	{/if}
-	{#if q > 0.5 * SV}
-		{@render txt(TRACK.x1 - 22, 420, 'sinks', 12, {
-			anchor: 'end',
-			weight: 600,
-			color: 'var(--oc-cold)'
-		})}
-	{/if}
-	{@render txt(
-		(TRACK.x0 + TRACK.x1) / 2,
-		TRACK.top - 14,
-		q >= 0 ? 'warm water flows north →' : '← surface water flows south',
-		12,
-		{ anchor: 'middle', weight: 600 }
-	)}
-	{@render txt(
-		(TRACK.x0 + TRACK.x1) / 2,
-		TRACK.bottom + 26,
-		q >= 0 ? '← cold deep water creeps south' : 'deep water creeps north →',
-		12,
-		{ anchor: 'middle', weight: 600 }
-	)}
+	<!-- the direction of the loop: the chevrons and the overturning row say it on phones -->
+	<Readout id="loop">
+		{#if q > 0.5 * SV}
+			{@render txt(TRACK.x1 - 22, 420, 'sinks', 12, {
+				anchor: 'end',
+				weight: 600,
+				color: 'var(--oc-cold)'
+			})}
+		{/if}
+		{@render txt(
+			(TRACK.x0 + TRACK.x1) / 2,
+			TRACK.top - 14,
+			q >= 0 ? 'warm water flows north →' : '← surface water flows south',
+			12,
+			{ anchor: 'middle', weight: 600 }
+		)}
+		{@render txt(
+			(TRACK.x0 + TRACK.x1) / 2,
+			TRACK.bottom + 26,
+			q >= 0 ? '← cold deep water creeps south' : 'deep water creeps north →',
+			12,
+			{ anchor: 'middle', weight: 600 }
+		)}
+	</Readout>
 
 	<!-- sky: evaporation in the tropics, fresh water on the north -->
 	<circle cx="76" cy="74" r="16" fill="var(--oc-hill)" />
@@ -530,8 +559,10 @@
 			opacity={Math.sin(Math.PI * u) * 0.9}
 		/>
 	{/each}
-	{@render txt(118, 52, 'evaporation leaves', 11, { muted: true })}
-	{@render txt(118, 66, 'the salt behind', 11, { muted: true })}
+	<Readout id="evaporation">
+		{@render txt(118, 52, 'evaporation leaves', 11, { muted: true })}
+		{@render txt(118, 66, 'the salt behind', 11, { muted: true })}
+	</Readout>
 	<g>
 		<ellipse cx="482" cy="70" rx="64" ry="16" fill="var(--oc-cloud)" />
 		<ellipse cx="452" cy="62" rx="30" ry="17" fill="var(--oc-cloud)" />
@@ -549,22 +580,34 @@
 			opacity={d.o}
 		/>
 	{/each}
-	{@render txt(
-		480,
-		28,
-		`fresh water: ${fresh === 1 ? "today's" : `${fresh.toFixed(2)} × today's`}`,
-		12,
-		{ anchor: 'middle', weight: 600, color: 'var(--oc-fresh)' }
-	)}
+	<Readout id="fresh">
+		{@render txt(
+			480,
+			28,
+			`fresh water: ${fresh === 1 ? "today's" : `${fresh.toFixed(2)} × today's`}`,
+			12,
+			{ anchor: 'middle', weight: 600, color: 'var(--oc-fresh)' }
+		)}
+	</Readout>
 
 	<!-- ===== right column ===== -->
-	<Card x={PX0 - 56} y={16} w={PX1 - PX0 + 72} {cells} row cellH={78} />
+	<Card id="ov" x={PX0 - 56} y={16} w={PX1 - PX0 + 72} {cells} row cellH={78} />
 
-	{@render txt(PX0 - 56, TP.top - 14, 'overturning (Sv)', 12, { muted: true })}
-	{@render txt(PX1, TP.top - 14, `year ${Math.round(clock.years)} · 25 years a second`, 11, {
-		anchor: 'end',
-		muted: true
-	})}
+	<Readout
+		id="time-plot"
+		order={10}
+		label="Overturning (Sv) over the years"
+		marker={1}
+		at={[PX0 - 34, TP.top - 18]}
+	>
+		{@render txt(PX0 - 56, TP.top - 14, 'overturning (Sv)', 12, { muted: true })}
+	</Readout>
+	<Readout id="year">
+		{@render txt(PX1, TP.top - 14, `year ${Math.round(clock.years)} · 25 years a second`, 11, {
+			anchor: 'end',
+			muted: true
+		})}
+	</Readout>
 	{@render frame(
 		tx,
 		ty,
@@ -573,7 +616,9 @@
 		(v) => `${Math.round(v)}`,
 		(v) => `${v}`
 	)}
-	{@render txt(PX1, TP.bottom + 32, 'years', 11, { anchor: 'end', muted: true })}
+	<Readout id="years">
+		{@render txt(PX1, TP.bottom + 32, 'years', 11, { anchor: 'end', muted: true })}
+	</Readout>
 	<line
 		x1={PX0}
 		x2={PX1}
@@ -582,7 +627,9 @@
 		stroke="var(--stage-ink-muted)"
 		stroke-dasharray="3 4"
 	/>
-	{@render txt(PX1 - 2, ty(17) - 5, "today's 17", 10, { anchor: 'end', muted: true })}
+	<Readout id="today">
+		{@render txt(PX1 - 2, ty(17) - 5, "today's 17", 10, { anchor: 'end', muted: true })}
+	</Readout>
 	<g clip-path="url(#overturn-time)">
 		<path
 			d={trace}
@@ -603,7 +650,15 @@
 
 	{#if lowerTS.current > 0.01}
 		<g opacity={lowerTS.current}>
-			{@render txt(PX0 - 56, LP.top - 14, 'temperature against salinity', 12, { muted: true })}
+			<Readout
+				id="ts-plot"
+				order={11}
+				label="Temperature against salinity"
+				marker={2}
+				at={[PX0 - 34, LP.top - 18]}
+			>
+				{@render txt(PX0 - 56, LP.top - 14, 'temperature against salinity', 12, { muted: true })}
+			</Readout>
 			{@render frame(
 				sxS,
 				syT,
@@ -623,9 +678,11 @@
 					/>
 				{/each}
 			</g>
-			{@render txt(PX1, LP.top - 14, 'dotted: equal density', 10, { anchor: 'end', muted: true })}
-			{@render txt(PX1 - 4, LP.bottom - 8, 'denser ↘', 11, { anchor: 'end', weight: 600 })}
-			{@render txt(PX1, LP.bottom + 32, 'salinity', 11, { anchor: 'end', muted: true })}
+			<Readout id="ts-notes">
+				{@render txt(PX1, LP.top - 14, 'dotted: equal density', 10, { anchor: 'end', muted: true })}
+				{@render txt(PX1 - 4, LP.bottom - 8, 'denser ↘', 11, { anchor: 'end', weight: 600 })}
+				{@render txt(PX1, LP.bottom + 32, 'salinity', 11, { anchor: 'end', muted: true })}
+			</Readout>
 			<circle
 				cx={tsEq.x}
 				cy={tsEq.y}
@@ -634,7 +691,9 @@
 				stroke="var(--stage-bg)"
 				stroke-width="2"
 			/>
-			{@render txt(tsEq.x - 12, tsEq.y + 4, 'tropics', 12, { anchor: 'end', weight: 600 })}
+			<Readout id="ts-eq">
+				{@render txt(tsEq.x - 12, tsEq.y + 4, 'tropics', 12, { anchor: 'end', weight: 600 })}
+			</Readout>
 			<circle
 				cx={tsPole.x}
 				cy={tsPole.y}
@@ -643,17 +702,27 @@
 				stroke="var(--stage-bg)"
 				stroke-width="2"
 			/>
-			{@render txt(tsPole.x + (tsPole.x < PX0 + 80 ? 12 : -12), tsPole.y + 4, 'far north', 12, {
-				anchor: tsPole.x < PX0 + 80 ? 'start' : 'end',
-				weight: 600
-			})}
+			<Readout id="ts-pole">
+				{@render txt(tsPole.x + (tsPole.x < PX0 + 80 ? 12 : -12), tsPole.y + 4, 'far north', 12, {
+					anchor: tsPole.x < PX0 + 80 ? 'start' : 'end',
+					weight: 600
+				})}
+			</Readout>
 		</g>
 	{/if}
 	{#if lowerTS.current < 0.99}
 		<g opacity={1 - lowerTS.current}>
-			{@render txt(PX0 - 56, LP.top - 14, 'steady overturning (Sv) against fresh water', 12, {
-				muted: true
-			})}
+			<Readout
+				id="steady-plot"
+				order={12}
+				label="Steady overturning (Sv) against fresh water"
+				marker={2}
+				at={[PX0 - 34, LP.top - 18]}
+			>
+				{@render txt(PX0 - 56, LP.top - 14, 'steady overturning (Sv) against fresh water', 12, {
+					muted: true
+				})}
+			</Readout>
 			{#if band.b > band.a}
 				<rect
 					x={band.a}
@@ -663,10 +732,12 @@
 					fill="var(--oc-hill)"
 					opacity="0.14"
 				/>
-				{@render txt((band.a + band.b) / 2, by(26), 'two possible states', 11, {
-					anchor: 'middle',
-					weight: 600
-				})}
+				<Readout id="two-states">
+					{@render txt((band.a + band.b) / 2, by(26), 'two possible states', 11, {
+						anchor: 'middle',
+						weight: 600
+					})}
+				</Readout>
 			{/if}
 			{@render frame(
 				bx,
@@ -676,10 +747,12 @@
 				(v) => (v === 2.5 ? '2.5×' : `${v}`),
 				(v) => `${v}`
 			)}
-			{@render txt(PX1, LP.bottom + 32, "× today's fresh water", 11, {
-				anchor: 'end',
-				muted: true
-			})}
+			<Readout id="fresh-axis">
+				{@render txt(PX1, LP.bottom + 32, "× today's fresh water", 11, {
+					anchor: 'end',
+					muted: true
+				})}
+			</Readout>
 			<path d={branches.strong} fill="none" stroke="var(--oc-flow)" stroke-width="2.5" />
 			<path d={branches.reversed} fill="none" stroke="var(--oc-flow)" stroke-width="2.5" />
 			<path
@@ -690,7 +763,9 @@
 				stroke-dasharray="4 4"
 			/>
 			{#if fUp <= 2.5}
-				{@render txt(bx(fUp) + 6, by(clampQ(tipQ / SV)) - 8, 'tips', 11, { weight: 700 })}
+				<Readout id="tips">
+					{@render txt(bx(fUp) + 6, by(clampQ(tipQ / SV)) - 8, 'tips', 11, { weight: 700 })}
+				</Readout>
 			{/if}
 			<circle
 				cx={now.x}
@@ -700,17 +775,19 @@
 				stroke="var(--stage-bg)"
 				stroke-width="2"
 			/>
-			{@render txt(
-				now.x + (now.x > PX1 - 40 ? -10 : 10),
-				now.y + (q > 22 * SV ? 20 : -10),
-				'now',
-				11,
-				{
-					anchor: now.x > PX1 - 40 ? 'end' : 'start',
-					weight: 700,
-					color: 'var(--oc-warm)'
-				}
-			)}
+			<Readout id="now">
+				{@render txt(
+					now.x + (now.x > PX1 - 40 ? -10 : 10),
+					now.y + (q > 22 * SV ? 20 : -10),
+					'now',
+					11,
+					{
+						anchor: now.x > PX1 - 40 ? 'end' : 'start',
+						weight: 700,
+						color: 'var(--oc-warm)'
+					}
+				)}
+			</Readout>
 		</g>
 	{/if}
 </g>

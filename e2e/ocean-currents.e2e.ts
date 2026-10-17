@@ -57,3 +57,41 @@ test('without the Bjerknes feedback the lull brings only a brief warm spell, not
 	await expect(stage(page)).toContainText('brief warm spell');
 	await expect(stage(page)).not.toContainText('drought, bushfires');
 });
+
+// Phone readouts (<Readout>): on screens ≤ 640 px the readout cards leave the drawing and are
+// listed as text under the stage (see e2e/phone-readouts.e2e.ts).
+test.describe('on a phone', () => {
+	test.use({ viewport: { width: 390, height: 844 }, hasTouch: true, reducedMotion: 'reduce' });
+	const readouts = (page: Page) => page.getByRole('group', { name: 'Readouts' });
+	const drawing = (page: Page) => page.locator('.stage svg');
+
+	test('the gyre readouts are text under the stage and follow the wind', async ({ page }) => {
+		await page.goto('./ocean-currents/#gyres');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/Warm gyre carries\s*20 Sv/);
+		await expect(panel).toContainText('Westerlies');
+		await expect(drawing(page)).not.toContainText('warm gyre carries');
+		// Below the stage, not over it.
+		const stageBox = (await page.locator('.stage').boundingBox())!;
+		const panelBox = (await panel.boundingBox())!;
+		expect(panelBox.y).toBeGreaterThanOrEqual(stageBox.y + stageBox.height - 1);
+
+		await range(page, 'trades').fill('0');
+		await range(page, 'westerlies').fill('0');
+		await expect(panel).toContainText('no wind to drive it');
+	});
+
+	test('the Pacific readouts follow the trade winds, and El Niño names the weather far away', async ({
+		page
+	}) => {
+		await page.goto('./ocean-currents/#pacific');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/Thermocline depth\s*193 → 47 m/);
+		await expect(drawing(page)).not.toContainText('193 → 47 m');
+		await range(page, 'pacTrades').fill('0');
+		await expect(panel).toContainText('120 → 120 m');
+		await page.goto('./ocean-currents/#el-nino');
+		await expect(panel).toContainText(/Weather far away\s*Indonesia: drought, bushfires/);
+		await expect(drawing(page)).not.toContainText('drought, bushfires');
+	});
+});
