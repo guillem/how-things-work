@@ -11,10 +11,12 @@
 	 *   entangle — H on A, CNOT, X on B on their own list of gates; "100 pairs" measures
 	 *              fresh copies (seeded by the press number) and adds to the 00/01/10/11
 	 *              counts while the circuit stays the same.
-	 *   bell     — the pair (|00⟩ + |11⟩)/√2, A measured along z, B along an axis at the
-	 *              chosen angle in the x–z plane: pairs are measured at 25 a second (seeded),
-	 *              the agreement is plotted on the cos²(angle/2) curve, and the CHSH number
-	 *              S is estimated from 2000 simulated pairs at each of the four settings.
+	 *   bell     — the pair (|00⟩ + |11⟩)/√2, A measured along z or x (0° or 90°), B along
+	 *              an axis at the chosen angle from z in the x–z plane: pairs are measured
+	 *              at 25 a second (seeded), the agreement is plotted against the angle
+	 *              between the axes on the cos²(angle/2) curve, and the CHSH number S is
+	 *              estimated from 2000 simulated pairs at each of the four settings, whose
+	 *              correlations are listed with the one being measured picked out.
 	 *
 	 * Animation: the amplitudes and Bloch arrows glide to a new state (Tween, 600 ms); on
 	 * the Bell step the pairs keep coming. Reduced motion: 1000 pairs at once.
@@ -157,20 +159,27 @@
 
 	// ---- Bell ------------------------------------------------------------------------------------
 	const DEG = Math.PI / 180;
-	const bDeg = $derived(clamp(Number(params.bobAxis ?? 0), 0, 180));
+	const aDeg = $derived(String(params.aliceAxis ?? '0') === '90' ? 90 : 0);
+	const a = $derived(aDeg * DEG);
+	const bDeg = $derived(clamp(Number(params.bobAxis ?? 0), -90, 180));
 	const b = $derived(bDeg * DEG);
+	/** The angle between the two axes, 0–180°. */
+	const between = $derived.by(() => {
+		const d = Math.abs(bDeg - aDeg) % 360;
+		return d > 180 ? 360 - d : d;
+	});
 	const RATE = 25;
 	const MAX_PAIRS = 2000;
-	// pairs restart when the angle changes: the start time is set when B's axis turns (not
-	// on the first angle seen), and drops back to 0 when the clock is scrubbed before it
+	// pairs restart when an axis turns: the start time is set when A's or B's axis changes
+	// (not on the first setting seen), and drops back to 0 when the clock is scrubbed before it
 	let t0 = $state(0);
-	let seenB: number | null = null;
+	let seenAxes: string | null = null;
 	$effect(() => {
-		const deg = bDeg;
+		const axes = `${aDeg}|${bDeg}`;
 		if (!isBell) return;
 		untrack(() => {
-			if (seenB !== null && seenB !== deg) t0 = t;
-			seenB = deg;
+			if (seenAxes !== null && seenAxes !== axes) t0 = t;
+			seenAxes = axes;
 		});
 	});
 	$effect(() => {
@@ -180,8 +189,8 @@
 	const nPairs = $derived(reduced ? 1000 : Math.min(MAX_PAIRS, Math.floor(elapsed * RATE)));
 	const bellPairs = $derived.by(() => {
 		if (!isBell) return [] as number[];
-		const p = pairOutcomes(bellPair(), 0, b);
-		const r = rng(1000 + bDeg);
+		const p = pairOutcomes(bellPair(), a, b);
+		const r = rng(1000 + bDeg + 1000 * aDeg);
 		const out: number[] = [];
 		for (let i = 0; i < MAX_PAIRS; i++) out.push(pick(p, r()));
 		return out;
@@ -189,8 +198,20 @@
 	const shownPairs = $derived(bellPairs.slice(0, nPairs));
 	const agreeN = $derived(shownPairs.filter((k) => k === 0 || k === 3).length);
 	const aliceZero = $derived(shownPairs.filter((k) => k < 2).length);
-	const agreeExact = $derived((1 + correlation(bellPair(), 0, b)) / 2);
+	const agreeExact = $derived((1 + correlation(bellPair(), a, b)) / 2);
 	const S = $derived(isBell ? chsh(bellPair(), 2000, 42) : { S: 0, E: [0, 0, 0, 0] });
+	// The four CHSH settings, in the order of S = E(a,b) + E(a,b′) + E(a′,b) − E(a′,b′), and
+	// which one (if any) the axes are set to now.
+	const SETTINGS = [
+		{ a: 0, b: 45 },
+		{ a: 0, b: -45 },
+		{ a: 90, b: 45 },
+		{ a: 90, b: -45 }
+	];
+	const current = $derived(SETTINGS.findIndex((st) => st.a === aDeg && st.b === bDeg));
+	const deg = (v: number) => `${v < 0 ? '−' : ''}${Math.abs(Math.round(v))}°`;
+	const signed = (v: number) => `${v < 0 ? '−' : '+'}${Math.abs(v).toFixed(2)}`;
+	const eNow = $derived(nPairs ? (2 * agreeN - nPairs) / nPairs : 0);
 	const SExact = 2 * Math.SQRT2;
 
 	// plot of agreement against angle
@@ -488,7 +509,7 @@
 		{#each [0, 1] as q (q)}
 			{@const cx = 120 + q * 250}
 			{@const cy = 170}
-			{@const ang = q === 0 ? 0 : b}
+			{@const ang = q === 0 ? a : b}
 			{@const col = q === 0 ? 'var(--qc-a)' : 'var(--qc-b)'}
 			<circle
 				{cx}
@@ -513,7 +534,9 @@
 			<Label
 				x={cx}
 				y={cy - 114}
-				text={q === 0 ? 'A measures along z' : `B measures at ${Math.round(bDeg)}°`}
+				text={q === 0
+					? `A measures at ${aDeg}° (${aDeg ? 'x' : 'z'})`
+					: `B measures at ${deg(bDeg)}`}
 				size={13}
 				weight={700}
 				anchor="middle"
@@ -598,9 +621,16 @@
 			label="Agreed"
 			value="{nPairs ? pct(agreeN / nPairs) : '–'} of {nPairs} pairs (cos²(angle/2) = {pct(
 				agreeExact
-			)})"
+			)}), E = {nPairs ? signed(eNow) : '–'}"
 		>
-			<Label anchor="start" x={30} y={430} text="pairs measured: {nPairs}" size={13} muted />
+			<Label
+				anchor="start"
+				x={30}
+				y={430}
+				text="pairs measured: {nPairs} · correlation E = {nPairs ? signed(eNow) : '–'}"
+				size={13}
+				muted
+			/>
 			<Label
 				anchor="start"
 				x={30}
@@ -614,7 +644,7 @@
 				anchor="start"
 				x={30}
 				y={488}
-				text="quantum prediction cos²({Math.round(bDeg)}°/2) = {pct(agreeExact)}"
+				text="quantum prediction cos²({Math.round(between)}°/2) = {pct(agreeExact)}"
 				size={13}
 			/>
 		</Readout>
@@ -670,8 +700,8 @@
 		</Readout>
 		<path d={curve} fill="none" stroke="var(--qc-state)" stroke-width="2.5" />
 		<line
-			x1={px(bDeg)}
-			x2={px(bDeg)}
+			x1={px(between)}
+			x2={px(between)}
 			y1={PL.y0}
 			y2={PL.y1}
 			stroke="var(--qc-b)"
@@ -680,7 +710,7 @@
 		/>
 		{#if nPairs > 0}
 			<circle
-				cx={px(bDeg)}
+				cx={px(between)}
 				cy={py(agreeN / nPairs)}
 				r="6"
 				fill="var(--qc-b)"
@@ -705,31 +735,63 @@
 			order={3}
 			label="Bell–CHSH number S"
 			value="{S.S.toFixed(2)} (pre-agreed answers: at most 2; quantum: {SExact.toFixed(2)})"
+			note="E at A 0°, B 45°: {signed(S.E[0])}; A 0°, B −45°: {signed(
+				S.E[1]
+			)}; A 90°, B 45°: {signed(S.E[2])}; A 90°, B −45°: {signed(S.E[3])}"
 		>
 			<Label
 				anchor="start"
 				x={560}
-				y={388}
-				text="Bell's test (CHSH), 2000 pairs at each of four settings:"
+				y={350}
+				text="Bell's test (CHSH): correlation E from 2000 pairs at each setting"
 				size={12}
 				muted
 			/>
+			<Label x={720} y={374} text="B at 45°" size={12} anchor="middle" muted />
+			<Label x={840} y={374} text="B at −45°" size={12} anchor="middle" muted />
+			{#each SETTINGS as st, k (k)}
+				{@const cxk = st.b > 0 ? 720 : 840}
+				{@const cyk = st.a ? 428 : 400}
+				{#if k === current}
+					<rect
+						x={cxk - 52}
+						y={cyk - 17}
+						width="104"
+						height="24"
+						rx="5"
+						fill="none"
+						stroke="var(--qc-b)"
+						stroke-width="2"
+					/>
+				{/if}
+				<Label
+					x={cxk}
+					y={cyk}
+					text="E = {signed(S.E[k])}"
+					size={13}
+					weight={k === current ? 700 : 500}
+					anchor="middle"
+					tabular
+				/>
+			{/each}
+			<Label anchor="start" x={560} y={400} text="A at 0°" size={12} muted />
+			<Label anchor="start" x={560} y={428} text="A at 90°" size={12} muted />
 			<Label
 				anchor="start"
 				x={560}
-				y={414}
-				text="A at 0° or 90°, B at 45° or −45°"
-				size={12}
-				muted
-			/>
-			<Label
-				anchor="start"
-				x={560}
-				y={460}
+				y={472}
 				text="S = {S.S.toFixed(2)}"
 				size={24}
 				weight={700}
 				color="var(--qc-state)"
+			/>
+			<Label
+				anchor="start"
+				x={680}
+				y={468}
+				text="= the first three E − the last (A 90°, B −45°)"
+				size={12}
+				muted
 			/>
 			<rect
 				x={SBAR.x0}

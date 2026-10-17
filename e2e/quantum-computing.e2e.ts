@@ -136,6 +136,24 @@ test("Bell's test: agreement follows the angle, and S beats the limit of 2", asy
 	expect(S).toBeLessThan(3);
 });
 
+test("Bell's test: turning A's axis too visits the four CHSH settings", async ({ page }) => {
+	await open(page, './quantum-computing/#bell');
+	await page.locator('button[data-control=aliceAxis][data-value="90"]').click();
+	await expect(stage(page)).toContainText('A measures at 90° (x)');
+	// B along z is now 90° from A: they agree half the time
+	await expect(stage(page)).toContainText('cos²(90°/2) = 50%');
+	await range(page, 'bobAxis').fill('90');
+	await expect(stage(page)).toContainText('results agreed: 100%');
+	// the one setting of the four with a negative correlation: 135° apart
+	await range(page, 'bobAxis').fill('-45');
+	await expect(stage(page)).toContainText('B measures at −45°');
+	await expect(stage(page)).toContainText('cos²(135°/2) = 15%');
+	await expect(stage(page)).toContainText(/correlation E = −0\.[67]\d/);
+	const E = await stage(page).locator('text', { hasText: /^E = / }).allTextContents();
+	expect(E.filter((e) => e.startsWith('E = +'))).toHaveLength(3);
+	expect(E.filter((e) => e.startsWith('E = −'))).toHaveLength(1);
+});
+
 test('the oracle changes no probability; diffusion grows the right answer, then overshoots', async ({
 	page
 }) => {
