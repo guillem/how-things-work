@@ -101,6 +101,12 @@ local worktree, merged into `main`) cleared almost everything that was open; wha
 November); the last ten fact-checks were done in-house by an agent that reviews with web search
 and then applies the fixes.
 
+## Next topics (after v1.0.0)
+
+A level 0 and 100 new topics are being researched and proposed, not built: see
+[`proposals/topics-200/README.md`](proposals/topics-200/README.md) for the state and how to
+resume. Nothing is built until the user promotes entries from the proposal into `TOPICS.md`.
+
 ## Site and framework work
 
 - **Index search and filters — done (2026-10-17).** Adding a reader level later (elementary,

@@ -1,0 +1,208 @@
+[
+ {
+  "slug": "autocomplete-spellcheck",
+  "title": "How your phone guesses your word",
+  "level": 0,
+  "kind": "manipulate",
+  "category": "ai",
+  "everyday": true,
+  "interaction": "Type a word with a slip in it and watch the phone's two counts: which real words are one or two changes away, and how often each of those is used in a huge pile of books. The suggestion is the common one that is close; type a rare name and watch it 'corrected' into a common word. Then type the start of a sentence and see the next-word guesses, which are nothing but a count of which word most often followed the last one in the pile; change the last word and the counts change.",
+  "takeaway": "A phone guesses your word by counting: which real words are nearest to what you typed and which are used most, so it is confidently wrong whenever you are unusual.",
+  "prerequisites": [],
+  "related": [
+   "spam-filter-word-counts",
+   "emoji-and-text-as-numbers",
+   "voice-assistant-wake-word"
+  ],
+  "needs": "Word and word-pair counts: a subset of the Google Books Ngram data (1-grams and 2-grams, CC BY 3.0, https://storage.googleapis.com/books/ngrams/books/datasetsv3.html), or counts the page builds itself from a Project Gutenberg text (public domain).",
+  "needsSource": "Google Books Ngram (CC BY 3.0) and/or a public-domain book; Norvig's count_1w and count_2w files derive from the Google Web Trillion Word corpus with no stated data terms, so not those.",
+  "pitfall": "The phone does not understand the sentence and is not reading your mind; it also learns your own words by counting them. Do not call the next-word counts a language model with a network: here it is a table of counts, and language-models is where the network comes in.",
+  "why": "AI4K12 Big Idea 4, Natural Interaction, in the AAAI/CSTA K-12 AI guidelines (https://ai4k12.org/); the nearest existing page is level 2.",
+  "overlapWith": "language-models (level 2): that page shows a real network's next-token probabilities and sampling; this one has no network, only edit distance and counted word pairs, and the suggestions can be checked by hand.",
+  "leadsTo": [
+   "learning-from-data",
+   "bayes-theorem"
+  ],
+  "origin": "everyday-technology"
+ },
+ {
+  "slug": "face-unlock-depth",
+  "title": "Why a photo cannot unlock your phone",
+  "level": 0,
+  "kind": "manipulate",
+  "category": "ai",
+  "everyday": true,
+  "interaction": "Turn a head in front of a drawn phone: the phone sprays a pattern of thousands of invisible dots onto it, a second camera sees where each dot lands, and the page shows the depth map they measure, nose nearest, ears farthest. Enrol the head, then present it again turned, smiling or with glasses: the map differs a little and the match bar stays above the line. Hold up a flat photo of the same face and every dot lands at the same depth, so the bar collapses; present a twin's head with the same shape and the bar stays up.",
+  "takeaway": "Face unlock measures the shape of your face in depth from where a pattern of dots lands, so a flat photo fails while a face with the same shape, a twin, can pass.",
+  "prerequisites": [],
+  "related": [
+   "fingerprint-match",
+   "password-guessing",
+   "digital-camera-sensor"
+  ],
+  "needs": "A head to measure: a simple parametric head drawn on the page (no external data), or a scanned head if one under an open licence is confirmed.",
+  "needsSource": "none; depth is computed by triangulating projected dots against the head's surface on the page.",
+  "pitfall": "It is not reading your eyes or your DNA, and a match is a score above a line, never certainty; the phone follows gradual changes such as a beard by updating the stored map. Name the depth method as one kind (structured light) and say that other phones use other depth tricks.",
+  "why": "AI4K12 Big Idea 1, Perception (https://ai4k12.org/); 'Face ID' averaged about 14,500 views a month on English Wikipedia in 2025 (https://wikimedia.org/api/rest_v1/metrics/pageviews/per-article/en.wikipedia/all-access/user/Face_ID/monthly/2025010100/2025123100).",
+  "overlapWith": "fingerprint-match in this batch: the same enough-points-agree rule on ridges; light-optics (level 1) has the ray model. medical-imaging reconstructs a slice from many shadows; here depth comes from where projected dots land.",
+  "leadsTo": [
+   "light-optics",
+   "learning-from-data"
+  ],
+  "origin": "everyday-technology"
+ },
+ {
+  "slug": "fingerprint-match",
+  "title": "How a phone knows your finger",
+  "level": 0,
+  "kind": "manipulate",
+  "category": "ai",
+  "everyday": true,
+  "interaction": "Press a finger on a drawn sensor and see what it sees: a small patch of ridges, not the whole print, with the ridge ends and forks marked as dots, which are all the phone keeps. Press again, sliding and turning the finger or pressing only a corner, and watch the match count, how many dots line up, rise or fall past the 'enough' line. Wet the finger or put a cut across it and lose a few dots; press a different finger and watch almost none line up.",
+  "takeaway": "A phone stores a map of where your ridges end and fork, not a picture, and unlocks when enough of those points line up, never all of them.",
+  "prerequisites": [],
+  "related": [
+   "face-unlock-depth",
+   "password-guessing",
+   "touchscreens",
+   "teach-a-machine"
+  ],
+  "needs": "Fingerprint images generated on the page with a published synthetic-fingerprint model (an orientation field with cores and deltas filtered into ridges, as in SFinGe, Cappelli et al. 2000), stated on the page as synthetic; the FVC benchmark databases are research-use only and are not shipped.",
+  "needsSource": "none shipped; synthetic ridges from a published model, with the minutiae extracted by thinning. Real fingerprint databases (FVC, NIST SD) are not openly licensed.",
+  "pitfall": "The match is never total: a threshold decides, so a dirty or cut finger can fail and, rarely, a stranger can pass. The phone keeps no image of the print, and the sensor reads a patch, which is why enrolment asks for many presses.",
+  "why": "AI4K12 Big Idea 1, Perception (https://ai4k12.org/); 'Fingerprint' averaged about 17,700 views a month on English Wikipedia in 2025 (https://wikimedia.org/api/rest_v1/metrics/pageviews/per-article/en.wikipedia/all-access/user/Fingerprint/monthly/2025010100/2025123100).",
+  "overlapWith": "face-unlock-depth in this batch: the same decision rule, enough points agree, on a different measurement; cryptography (level 2) is how the secret is kept. Nothing existing shows a biometric match.",
+  "leadsTo": [
+   "learning-from-data"
+  ],
+  "origin": "everyday-technology"
+ },
+ {
+  "slug": "spam-filter-word-counts",
+  "title": "How a spam filter decides",
+  "level": 0,
+  "kind": "build",
+  "category": "ai",
+  "everyday": true,
+  "interaction": "A pile of real text messages arrives, each already marked spam or not; pick any word, 'free', 'win', 'tonight', 'mum', and see two counts, how many spam messages contain it and how many ordinary ones. Build the filter by letting it count every word, then write a message of your own and watch the words vote: each nudges the score toward spam or not according to its two counts. Try to sneak past with 'fr33' and watch the vote change; mark your message and see the counts update.",
+  "takeaway": "A spam filter has no idea what a message means: it counts which words turned up more in past spam, which is why spammers misspell and why your 'report spam' clicks teach it.",
+  "prerequisites": [],
+  "related": [
+   "autocomplete-spellcheck",
+   "teach-a-machine",
+   "you-might-also-like"
+  ],
+  "needs": "The SMS Spam Collection (Almeida and Hidalgo, UCI Machine Learning Repository, 5,574 messages, CC BY 4.0), or a subset.",
+  "needsSource": "UCI SMS Spam Collection, CC BY 4.0 (https://archive.ics.uci.edu/dataset/228/sms+spam+collection).",
+  "pitfall": "No word is bad: 'free' is only commoner in spam. The filter can be fooled both ways, and how much spam exists overall matters, so a rare kind of message needs stronger evidence; keep that as counts, not Bayes' formula.",
+  "why": "AI4K12 Big Idea 3, Learning, in the AAAI/CSTA K-12 AI guidelines (https://ai4k12.org/).",
+  "overlapWith": "bayes-theorem (level 1) counts true and false positives in a grid of 1,000 people and learning-from-data fits a curve; this page builds the simplest real classifier on a real corpus, with word counts the reader can check.",
+  "leadsTo": [
+   "bayes-theorem",
+   "learning-from-data"
+  ],
+  "origin": "everyday-technology"
+ },
+ {
+  "slug": "step-counter",
+  "title": "How a phone counts your steps",
+  "level": 0,
+  "kind": "simulate",
+  "category": "ai",
+  "everyday": true,
+  "interaction": "Play a real recording from a phone on someone's waist as they walk, climb stairs, sit and stand, with the stretches labelled: a line jiggles with every stride. Set the 'that was a step' line and watch the counter: too low and the fidgets during the sitting stretches count as steps, too high and the gentle strolling stretches are missed. Then shake the phone in a drawn car on a bumpy road and watch the counter climb without anyone walking.",
+  "takeaway": "A step counter counts jolts of a shaking sensor, so it needs a line between a stride and a fidget, and a bumpy ride can count as a walk.",
+  "prerequisites": [],
+  "related": [
+   "teach-a-machine"
+  ],
+  "needs": "Continuous raw accelerometer traces at 50 samples a second, with activity labels, from the Smartphone-Based Recognition of Human Activities and Postural Transitions dataset (UCI, CC BY 4.0).",
+  "needsSource": "UCI HAPT dataset, CC BY 4.0 (https://archive.ics.uci.edu/dataset/341/smartphone+based+recognition+of+human+activities+and+postural+transitions). It labels activity stretches but records no step counts, so there is no step ground truth: false counts are steps counted while sitting or standing, and the walking count is judged against the strides visible in the trace. The bumpy-car trace is synthesised and said to be.",
+  "pitfall": "The phone does not sense feet or use GPS to count steps; it counts jolts. Show the misses and the false counts, not a perfect counter.",
+  "why": "AI4K12 Big Idea 1, Perception: 'computers perceive the world using sensors' (https://ai4k12.org/); 'Pedometer' averaged about 3,800 views a month on English Wikipedia in 2025.",
+  "overlapWith": "newtons-laws (level 1) is forces and motion and feedback-control reads sensors into a controller; nothing existing counts events in a real sensor trace.",
+  "leadsTo": [
+   "learning-from-data",
+   "newtons-laws"
+  ],
+  "origin": "everyday-technology"
+ },
+ {
+  "slug": "teach-a-machine",
+  "title": "Teach a machine to tell things apart",
+  "level": 0,
+  "kind": "build",
+  "category": "ai",
+  "everyday": true,
+  "interaction": "Draw a few cats and a few houses (or pull examples from a pile of other people's doodles), label them, and draw a new one: the machine shrinks every drawing to a small grid of squares, finds the stored drawings most like the new one square by square, and the labels of those neighbours vote. Watch it get the first guesses wrong, add more examples and watch the votes firm up. Then teach it a trap: every cat drawn in the top corner, every house at the bottom, and see it decide by position instead of shape.",
+  "takeaway": "A machine learns to sort things by comparing new examples with the ones it was shown, so more and more varied examples make it better, and a lazy pattern in the examples teaches it the wrong thing.",
+  "prerequisites": [],
+  "related": [
+   "spam-filter-word-counts",
+   "you-might-also-like",
+   "voice-assistant-wake-word",
+   "fingerprint-match",
+   "step-counter"
+  ],
+  "needs": "Optional: doodles from the Quick, Draw! dataset (Google, CC BY 4.0) as a ready pile of examples; the reader's own drawings need nothing.",
+  "needsSource": "Quick, Draw! dataset, CC BY 4.0 (https://github.com/googlecreativelab/quickdraw-dataset), optional.",
+  "pitfall": "The machine does not know what a cat is; it compares squares. Do not call the neighbour vote a neural network; neural-networks comes later. The trap where every wolf photo had snow is real and belongs on the page.",
+  "why": "AI4K12 Big Idea 3, Learning, in the AAAI/CSTA K-12 AI guidelines (https://ai4k12.org/).",
+  "overlapWith": "learning-from-data (level 1): that page fits a curve to points and shows overfitting with a test set; this one classifies drawings by nearest neighbours with no curve and no error plot, and leads into it.",
+  "leadsTo": [
+   "learning-from-data"
+  ],
+  "origin": "everyday-technology"
+ },
+ {
+  "slug": "voice-assistant-wake-word",
+  "title": "How a speaker hears its name",
+  "level": 0,
+  "kind": "step",
+  "category": "ai",
+  "everyday": true,
+  "interaction": "Say 'go' or 'stop' into the microphone (or pick one of the shipped recordings of other people saying it) and step through what the speaker does: the sound becomes a picture, time left to right and pitch bottom to top, with the loud parts bright; a small trained network that has looked at thousands of such pictures lights a confidence bar for each word it knows. Whisper, add kitchen noise or say a word it never learned, and watch the bars fall or the 'unknown' bar rise. The page says which words the network knows and that everything after the wake word goes to a bigger computer.",
+  "takeaway": "A voice assistant turns sound into a picture of pitches over time, and a small network that has seen thousands of people say the word recognises the shape, which is why noise and unfamiliar voices trip it.",
+  "prerequisites": [],
+  "related": [
+   "sound-as-numbers",
+   "autocomplete-spellcheck",
+   "teach-a-machine"
+  ],
+  "needs": "A small keyword-spotting model that runs in the browser: the TensorFlow.js speech-commands model (Apache 2.0), trained on the Speech Commands dataset (CC BY 4.0), whose vocabulary is the digits plus up, down, left, right, go, stop, yes and no; plus a handful of shipped clips from that dataset for readers who decline the microphone.",
+  "needsSource": "TensorFlow.js speech-commands model (Apache 2.0, https://github.com/tensorflow/tfjs-models/tree/master/speech-commands) and Speech Commands v2 (CC BY 4.0).",
+  "pitfall": "The wake-word listener does not understand words and does not send everything it hears: the small network runs on the device and knows only a few words, and the rest is sent only after it fires. It is not matching against one recording of the owner.",
+  "why": "AI4K12 Big Idea 1, Perception (https://ai4k12.org/); 'Virtual assistant' averaged about 7,400 views a month on English Wikipedia in 2025 (https://wikimedia.org/api/rest_v1/metrics/pageviews/per-article/en.wikipedia/all-access/user/Virtual_assistant/monthly/2025010100/2025123100).",
+  "overlapWith": "convolution-vision (level 2) inspects a trained image classifier layer by layer on drawn digits; here the input is sound, the picture is the spectrogram the reader watches being made, and the network is a box with confidence bars. language-models is what runs after the wake word.",
+  "leadsTo": [
+   "waves-interference",
+   "learning-from-data"
+  ],
+  "origin": "everyday-technology"
+ },
+ {
+  "slug": "you-might-also-like",
+  "title": "Why the app says 'you might also like'",
+  "level": 0,
+  "kind": "explore",
+  "category": "ai",
+  "everyday": true,
+  "interaction": "Start on any article in a small web of real Wikipedia pages and see where its readers went next, as arrows whose thickness is a count; the 'you might also like' box is just the thickest arrows. Pick a different starting page and the box changes; follow a few arrows yourself and watch the suggestions drift toward the most-visited pages, which turn up in nearly everyone's box. Then add a brand-new page with no visits and see that nothing can recommend it yet.",
+  "takeaway": "'You might also like' is a count of where other people went after the same thing you are looking at, so it pulls everyone toward the popular and has nothing to say about anything new.",
+  "prerequisites": [],
+  "related": [
+   "spam-filter-word-counts",
+   "teach-a-machine"
+  ],
+  "needs": "A small subset of the Wikipedia Clickstream (monthly referer-to-article counts, CC0), e.g. the neighbourhood of a few dozen articles.",
+  "needsSource": "Wikimedia Clickstream, CC0 (https://dumps.wikimedia.org/other/clickstream/). No open user-by-film ratings set was found (MovieLens is research-use only), so 'people like you' from ratings is not built here; the page is item-to-item counts.",
+  "pitfall": "The app does not know you; it knows counts of other people's paths, or in shops their purchases. Do not present the suggestion as taste or understanding, and show the pull toward the popular and the empty box for a new item rather than hiding them.",
+  "why": "AI4K12 Big Idea 3, Learning (https://ai4k12.org/); 'Recommender system' averaged about 7,700 views a month on English Wikipedia in 2025 (https://wikimedia.org/api/rest_v1/metrics/pageviews/per-article/en.wikipedia/all-access/user/Recommender_system/monthly/2025010100/2025123100).",
+  "overlapWith": "pagerank (level 2): that page ranks pages by who links to whom with a random surfer; this one uses counts of actual reader paths from one page to the next, and the output is a 'next' list, not a ranking of the whole web. learning-from-data fits a model; here there is only counting.",
+  "leadsTo": [
+   "learning-from-data",
+   "graph-search"
+  ],
+  "origin": "everyday-technology"
+ }
+]

@@ -1,0 +1,626 @@
+[
+ {
+  "slug": "angles-as-turns",
+  "title": "Angles are turns",
+  "level": 0,
+  "kind": "manipulate",
+  "category": "math",
+  "interaction": "Turn a dial and a robot on the floor turns with it, its turn drawn as a pie slice that grows toward a full circle. Walk the robot around a triangle, a square and a star, pressing 'turn' at each corner: the slices stack on one pie and always close it exactly once. Then change how many steps a full turn is cut into (100, 360, 12) and watch which simple fractions of a turn (a half, a third, a quarter, a fifth) land on whole steps.",
+  "takeaway": "An angle is an amount of turn, walking round any shape turns you exactly one full circle, and 360 steps per turn lands halves, thirds, quarters, fifths and sixths on whole numbers where 100 does not.",
+  "prerequisites": [],
+  "related": [
+   "rolling-wheel-pi",
+   "repeat-loops"
+  ],
+  "needs": "",
+  "pitfall": "The size of an angle has nothing to do with the length of its arms; draw the pie at a fixed radius so a wide angle on short arms is seen to equal the same angle on long ones.",
+  "why": "England KS2 maths, Year 5: 'angles at a point and 1 whole turn (total 360°)', and drawing and measuring angles in degrees. https://www.gov.uk/government/publications/national-curriculum-in-england-mathematics-programmes-of-study/national-curriculum-in-england-mathematics-programmes-of-study",
+  "overlapWith": "unit-circle (level 1) measures angles in degrees and radians and reads off sine and cosine; this page has only turns and pie slices, no coordinates, and is the step before it.",
+  "needsSource": "none",
+  "leadsTo": [
+   "unit-circle"
+  ],
+  "everyday": true,
+  "origin": "numbers-shapes-computers"
+ },
+ {
+  "slug": "area-and-volume",
+  "title": "Area & volume: covering and filling",
+  "level": 0,
+  "kind": "manipulate",
+  "category": "math",
+  "interaction": "Drag the corner of a floor and unit tiles flood it, counted as rows of columns; stretch it long and thin and the tile count changes while the fence around it may not. Drag the corner of a box and unit cubes fill it layer by layer, counted as you go. Then press 'double it' on a toy animal: its skin needs four times the tiles and its insides eight times the cubes.",
+  "takeaway": "Area is a count of squares and volume a count of cubes, so doubling a shape's size needs four times the tiles for its skin and eight times the cubes for its insides.",
+  "prerequisites": [],
+  "related": [
+   "why-triangles-are-stiff",
+   "rolling-wheel-pi",
+   "shapes-that-tile"
+  ],
+  "needs": "",
+  "pitfall": "Perimeter and area are different things: shapes with the same fence can have very different floors. And 'twice as big' is ambiguous: say which (edge, skin or insides) doubles.",
+  "why": "England KS2 maths, Year 4: 'find the area of rectilinear shapes by counting squares'; Year 6: 'calculate, estimate and compare volume of cubes and cuboids'; PhET's Area Builder sim. https://phet.colorado.edu/en/simulations/area-builder",
+  "overlapWith": "linear-transformations (level 2) shows the determinant scaling areas; this page counts tiles and cubes directly and shows the square-cube pattern on a toy, with no matrices.",
+  "needsSource": "none",
+  "leadsTo": [
+   "the-cell",
+   "bridges-structures"
+  ],
+  "everyday": true,
+  "origin": "numbers-shapes-computers"
+ },
+ {
+  "slug": "coin-streaks",
+  "title": "Coin flips & streaks",
+  "level": 0,
+  "kind": "simulate",
+  "category": "math",
+  "interaction": "Flip a coin ten times and the flips line up as a row of heads and tails with a counter for the share of heads. Keep flipping to a hundred, then a thousand: the share settles toward a half while the longest streak keeps growing and the gap between the heads count and the tails count does not shrink. Then write a 'random' row of a hundred flips yourself and let the page compare your longest streak with the coin's.",
+  "takeaway": "A fair coin's share of heads settles near a half as the flips pile up, yet long streaks keep appearing, and the next flip is not pulled toward tails to even things out.",
+  "prerequisites": [],
+  "related": [
+   "two-dice",
+   "what-an-average-hides"
+  ],
+  "needs": "",
+  "pitfall": "The gambler's fallacy: after five heads the next flip is not 'due' tails. And what evens out is the share of heads, not the heads-minus-tails count, which keeps wandering; do not draw the count converging.",
+  "why": "Common Core 7.SP.C.6: 'Approximate the probability of a chance event by collecting data on the chance process that produces it and observing its long-run relative frequency'. https://www.thecorestandards.org/Math/Content/7/SP/",
+  "overlapWith": "central-limit-theorem (level 2) draws the distribution of averages; this page follows one running sequence of flips, and unlike two-dice (this batch), which counts the ways an outcome can happen, it is about the long-run share and the streaks a fair coin produces.",
+  "needsSource": "none",
+  "leadsTo": [
+   "bayes-theorem",
+   "radioactivity"
+  ],
+  "everyday": true,
+  "origin": "numbers-shapes-computers"
+ },
+ {
+  "slug": "counting-wheels",
+  "title": "Counting wheels: place value & carrying",
+  "level": 0,
+  "kind": "manipulate",
+  "category": "math",
+  "interaction": "Turn the right-hand wheel of a car's distance counter one click at a time; at 9 it rolls to 0 and nudges the wheel to its left, and a carry can ripple across every wheel at once. Change how many symbols each wheel carries: with only 0 and 1 the same pile of beans needs a longer row of wheels, and with 60 the counter is a clock. Then add two numbers the way Pascal's machine did, by turning each wheel on by the second number's digit and letting the carries do the rest.",
+  "takeaway": "A counter needs only a few symbols on each wheel plus a carry to the next, and changing how many symbols a wheel holds changes the writing of a count, not the count.",
+  "prerequisites": [],
+  "related": [
+   "infinite-hotel",
+   "growing-patterns"
+  ],
+  "needs": "",
+  "pitfall": "Binary is not 'a different kind of number': the same beans are counted either way. And the carry is one click of the next wheel, not a 'borrowed' digit; keep the mechanism visible.",
+  "why": "Common Core 4.NBT.A.1: 'a digit in one place represents ten times what it represents in the place to its right'; the adding mechanism is Pascal's calculator (Wikipedia). https://www.thecorestandards.org/Math/Content/4/NBT/",
+  "overlapWith": "binary (level 1) toggles bits and reads them under several conventions; this page has no conventions, only wheels that carry, and binary is just the two-symbol setting of the same counter.",
+  "needsSource": "none",
+  "leadsTo": [
+   "binary",
+   "logic-gates"
+  ],
+  "everyday": true,
+  "origin": "numbers-shapes-computers"
+ },
+ {
+  "slug": "estimating-a-crowd",
+  "title": "Estimating: count a little, multiply",
+  "level": 0,
+  "kind": "explore",
+  "category": "math",
+  "interaction": "A jar fills with sweets, each dropped into a real pile, far too many to count. Drag a small window over the jar, count the sweets inside it, and multiply by how many windows cover the jar; the page then reveals the true count and how close you came. Make the window bigger or move it to a sparse corner and watch the guess get better or worse, then try the same trick on a stadium crowd.",
+  "takeaway": "Counting a small patch and multiplying gets close to the real total, closer with a bigger patch from a typical spot, and never exactly right.",
+  "prerequisites": [],
+  "related": [
+   "zoom-by-tens",
+   "what-an-average-hides",
+   "two-dice"
+  ],
+  "needs": "",
+  "pitfall": "A patch from the densest or the emptiest corner gives a bad estimate; the page must let the reader pick a bad patch and see it, not choose the patch for them.",
+  "why": "PhET's Estimation sim (CC BY), listed in PhET's elementary school guide. https://phet.colorado.edu/en/simulations/estimation",
+  "overlapWith": "central-limit-theorem (level 2) samples formally; this page is the everyday version: one patch, one multiplication, and a comparison with the true count the page knows.",
+  "needsSource": "none",
+  "leadsTo": [
+   "ecosystems"
+  ],
+  "everyday": true,
+  "origin": "numbers-shapes-computers"
+ },
+ {
+  "slug": "fractions-fair-shares",
+  "title": "Fractions: fair shares",
+  "level": 0,
+  "kind": "manipulate",
+  "category": "math",
+  "interaction": "Slide to cut a chocolate bar into equal pieces and take some: the piece count and the fraction read together. Drag one bar over another to see that one half and three sixths cover exactly the same chocolate, and that a bar cut into more pieces has smaller pieces. Then share three bars among four friends and watch every friend end up with the same pile.",
+  "takeaway": "A fraction is a count of equal pieces, so cutting into more pieces makes each piece smaller, and different fractions can cover exactly the same amount.",
+  "prerequisites": [],
+  "related": [
+   "scaling-a-recipe",
+   "rectangles-and-primes"
+  ],
+  "needs": "",
+  "pitfall": "'Bigger bottom number, bigger fraction' is the classic error; and pieces must be equal: a bar cut unevenly into three is not thirds.",
+  "why": "England KS2 maths, Year 3: 'recognise and show, using diagrams, equivalent fractions with small denominators'; PhET's Fractions: Intro sim covers the same ground. https://phet.colorado.edu/en/simulations/fractions-intro",
+  "overlapWith": "bayes-theorem (level 1) reads a chance off a grid of 1,000 people, a fraction in disguise; this page is about the pieces themselves (equal cutting, equivalence, sharing) with no probability.",
+  "needsSource": "none",
+  "leadsTo": [
+   "bayes-theorem"
+  ],
+  "everyday": true,
+  "origin": "numbers-shapes-computers"
+ },
+ {
+  "slug": "growing-patterns",
+  "title": "Growing patterns & doubling",
+  "level": 0,
+  "kind": "build",
+  "category": "math",
+  "interaction": "Lay tiles to build the next step of a staircase pattern and the page counts them, then carries the rule on for twenty more steps while a chart grows. Switch to a rule that doubles (a grain of rice on the first chessboard square, two on the next) and press the same twenty steps: the chart leaves the screen and the counter needs a wider box every few presses. Fold a sheet of paper in half, and again, and watch the layer count race the staircase.",
+  "takeaway": "A pattern that adds the same each time climbs in a straight line, while one that doubles explodes past anything countable within a few dozen steps.",
+  "prerequisites": [],
+  "related": [
+   "zoom-by-tens",
+   "percent-off",
+   "life-on-a-grid"
+  ],
+  "needs": "",
+  "pitfall": "Do not plot the doubling on a squashed (logarithmic) axis without saying so, since that hides exactly the explosion the page is about; and real paper stops folding after about seven folds: say so.",
+  "why": "Common Core 4.OA.C.5: 'Generate a number or shape pattern that follows a given rule.' https://www.thecorestandards.org/Math/Content/4/OA/",
+  "overlapWith": "epidemics (level 1) shows doubling as a simulation of infections; this page shows the rule itself on tiles and rice, side by side with an add-the-same rule, with no model of spreading.",
+  "needsSource": "none",
+  "leadsTo": [
+   "epidemics",
+   "sorting",
+   "radioactivity"
+  ],
+  "everyday": true,
+  "origin": "numbers-shapes-computers"
+ },
+ {
+  "slug": "infinite-hotel",
+  "title": "The infinite hotel",
+  "level": 0,
+  "kind": "step",
+  "category": "math",
+  "interaction": "A hotel with rooms numbered 1, 2, 3 and on past the edge of the screen is full. Pick a rule for the guests ('everyone move up one', 'everyone move to double your number') and the page applies it to every room you can scroll to: a free room appears, or endlessly many do, and no two guests ever share. Then pair the whole numbers off against the even numbers, and against the fractions laid out in a grid, and scroll as far as you like looking for one left out.",
+  "takeaway": "A hotel with no last room can always take more guests, and the whole numbers can be paired off one-to-one with just the even ones, which no finite row of rooms can do.",
+  "prerequisites": [],
+  "related": [
+   "growing-patterns",
+   "counting-wheels"
+  ],
+  "needs": "",
+  "pitfall": "Do not present this as arithmetic on infinity ('infinity plus one is infinity'): the page shows rules that pair rooms with guests, and the finite hotel next to it, where moving up one leaves someone outside, must be shown too.",
+  "why": "TED-Ed, 'The Infinite Hotel Paradox' (Jeff Dekofsky): 25.4 million views. https://ed.ted.com/lessons/the-infinite-hotel-paradox-jeff-dekofsky",
+  "overlapWith": "primes-modular-arithmetic (level 1) walks a finite clock face; no existing page touches infinity, and this one walks a row with no end and the pairing rules that come with it.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "numbers-shapes-computers"
+ },
+ {
+  "slug": "mirror-symmetry",
+  "title": "Mirrors & turns: symmetry",
+  "level": 0,
+  "kind": "manipulate",
+  "category": "math",
+  "interaction": "Draw on one side of a mirror line and the page draws the reflection on the other; drag the line to tilt it and the reflection follows. Swap the mirror for a turntable and set how many copies go around the centre to make a snowflake or a pinwheel. Drop in letters and shapes and the page tries every flip and turn, counting the ones that land the shape exactly on itself.",
+  "takeaway": "A shape is symmetric when a flip or a turn lands it exactly on itself, and the count shows that some shapes have several such moves and some have none.",
+  "prerequisites": [],
+  "related": [
+   "shapes-that-tile",
+   "sunflower-spirals"
+  ],
+  "needs": "",
+  "pitfall": "A shape can have turn symmetry with no mirror line (an S, a pinwheel), and a rectangle's diagonal is not a mirror line; show both, since both are common wrong answers.",
+  "why": "England KS2 maths, Year 4: 'identify lines of symmetry in 2-D shapes presented in different orientations' (Year 2 already has 'line symmetry in a vertical line'). https://www.gov.uk/government/publications/national-curriculum-in-england-mathematics-programmes-of-study/national-curriculum-in-england-mathematics-programmes-of-study",
+  "overlapWith": "linear-transformations (level 2) treats a reflection as a matrix acting on a grid; this page only asks whether a flip or a turn leaves a drawing unchanged, with no coordinates or numbers.",
+  "needsSource": "none",
+  "leadsTo": [
+   "unit-circle"
+  ],
+  "everyday": true,
+  "origin": "numbers-shapes-computers"
+ },
+ {
+  "slug": "percent-off",
+  "title": "Per cent: out of a hundred",
+  "level": 0,
+  "kind": "manipulate",
+  "category": "math",
+  "interaction": "A price tag and a hundred-square sit side by side; turn the discount dial and squares grey out as the price falls, the same number of squares whatever the price. Then set two different prices and apply the same per cent: the bars lose different amounts. Finally take 50% off and then add 50% back and watch the bar fail to return to where it started.",
+  "takeaway": "Per cent counts out of a hundred of whatever you start with, so the same per cent takes a bigger bite from a bigger price, and a cut and a matching rise do not cancel.",
+  "prerequisites": [
+   "fractions-fair-shares"
+  ],
+  "related": [
+   "scaling-a-recipe",
+   "growing-patterns"
+  ],
+  "needs": "",
+  "pitfall": "A 50% drop followed by a 50% rise is not a return to the start, and '20% off then 10% off' is not 30% off; show both rather than treating per cents as plain numbers that add.",
+  "why": "England KS2 maths, Year 5: 'recognise the per cent symbol (%) and understand that per cent relates to \"number of parts per 100\"'. https://www.gov.uk/government/publications/national-curriculum-in-england-mathematics-programmes-of-study/national-curriculum-in-england-mathematics-programmes-of-study",
+  "overlapWith": "bayes-theorem (level 1) reads percentages off a fixed 1,000-person grid; this page is about the base changing under the per cent, which that page never does.",
+  "needsSource": "none",
+  "leadsTo": [
+   "bayes-theorem"
+  ],
+  "everyday": true,
+  "origin": "numbers-shapes-computers"
+ },
+ {
+  "slug": "rectangles-and-primes",
+  "title": "Rectangles & primes",
+  "level": 0,
+  "kind": "manipulate",
+  "category": "math",
+  "interaction": "Slide the number of chairs and the page tries to set them out in equal rows: 12 chairs make a 1 by 12, a 2 by 6 and a 3 by 4 room, 13 chairs make only one long line. Walk the slider up to a hundred and every count that makes nothing but a line lights up on a hundred-square. Then build a count by snapping rectangles together and see which counts come out square.",
+  "takeaway": "Some counts of chairs can be set out as a rectangle in several ways and some only as a single line, and those single-line counts, the primes, are scattered across the hundred-square with no even spacing.",
+  "prerequisites": [],
+  "related": [
+   "fractions-fair-shares",
+   "area-and-volume"
+  ],
+  "needs": "",
+  "pitfall": "1 is not a prime (its only arrangement is a line, but it is excluded by convention: say so), and 2 is a prime even though it is even.",
+  "why": "England KS2 maths, Year 5: 'establish whether a number up to 100 is prime and recall prime numbers up to 19'. https://www.gov.uk/government/publications/national-curriculum-in-england-mathematics-programmes-of-study/national-curriculum-in-england-mathematics-programmes-of-study",
+  "overlapWith": "primes-modular-arithmetic (level 1) sieves the primes and does clock arithmetic; this page finds them by trying rectangles, one count at a time, and stops there.",
+  "needsSource": "none",
+  "leadsTo": [
+   "primes-modular-arithmetic"
+  ],
+  "everyday": true,
+  "origin": "numbers-shapes-computers"
+ },
+ {
+  "slug": "rolling-wheel-pi",
+  "title": "Rolling a wheel: pi",
+  "level": 0,
+  "kind": "manipulate",
+  "category": "math",
+  "interaction": "Drag a wheel along a ruler and a paint mark on its rim leaves a dot each time it comes round; the gap between dots is a bit more than three wheel-widths. Swap in a bigger or a smaller wheel and drag again: the number of widths is always the same bit-more-than-three. Then slice a circle into wedges, set how many, and drag them into a row that gets closer and closer to a rectangle as the count goes up.",
+  "takeaway": "Every wheel rolls out a little more than three of its widths per turn, whatever its size, and the same number appears when the circle's wedges are laid out as a near-rectangle.",
+  "prerequisites": [],
+  "related": [
+   "angles-as-turns",
+   "area-and-volume"
+  ],
+  "needs": "",
+  "pitfall": "Pi is not 3.14 or 22/7 exactly: show the ruler reading as 'a bit over 3' and say its digits never end. And the wedge rectangle is approached, never reached: show the count going up.",
+  "why": "England KS2 maths, Year 6: 'illustrate and name parts of circles, including radius, diameter and circumference'; Common Core 7.G.B.4 asks for an informal derivation of the circumference-area link. https://www.gov.uk/government/publications/national-curriculum-in-england-mathematics-programmes-of-study/national-curriculum-in-england-mathematics-programmes-of-study",
+  "overlapWith": "unit-circle (level 1) reads sine and cosine from a point going round; this page measures only the rim and the area, with no angles or coordinates.",
+  "needsSource": "none",
+  "leadsTo": [
+   "unit-circle"
+  ],
+  "everyday": true,
+  "origin": "numbers-shapes-computers"
+ },
+ {
+  "slug": "scaling-a-recipe",
+  "title": "Scaling a recipe",
+  "level": 0,
+  "kind": "manipulate",
+  "category": "math",
+  "interaction": "A pancake recipe for four sits beside a dial for the number of eaters; turn it and every ingredient's bar grows or shrinks together, with the counts read off. Then mix orange squash: add cups of concentrate and the glass darkens, add cups of water and it pales, and two glasses with the same ratio come out the same colour whatever their size. Add one cup of each to both glasses and watch their colours split apart.",
+  "takeaway": "Scaling a recipe multiplies every ingredient by the same number, and the colour of the squash depends on the ratio of concentrate to water, not on how much is in the glass.",
+  "prerequisites": [],
+  "related": [
+   "fractions-fair-shares",
+   "percent-off",
+   "speed-distance-time"
+  ],
+  "needs": "",
+  "pitfall": "Adding the same amount to both parts is not scaling: the page must show the additive error (one more cup of each) changing the colour, since that is the most common ratio mistake.",
+  "why": "PhET's Ratio and Proportion sim (Ratios, Proportional Reasoning); England KS2 maths, Year 6: 'solve problems involving the relative sizes of 2 quantities'. https://phet.colorado.edu/en/simulations/ratio-and-proportion",
+  "overlapWith": "linear-transformations (level 2) scales whole grids with a matrix; this page scales a recipe's counts and tests a ratio by colour, with no coordinates.",
+  "needsSource": "none",
+  "leadsTo": [
+   "acids-bases"
+  ],
+  "everyday": true,
+  "origin": "numbers-shapes-computers"
+ },
+ {
+  "slug": "shapes-that-tile",
+  "title": "Shapes that tile a floor",
+  "level": 0,
+  "kind": "build",
+  "category": "math",
+  "interaction": "Pick a shape from the tray (triangle, square, pentagon, hexagon, octagon) and tap a corner: the page fits copies of the shape around that corner one at a time until it closes the turn, leaves a gap or overlaps. A shape that closes the turn exactly floods the floor with copies; one that does not leaves holes. Then take a square tile and bend one edge: the opposite edge bends to match and the floor still fills, Escher-style.",
+  "takeaway": "A shape tiles a floor when its corners fit together into exactly one full turn, which triangles, squares and hexagons do and regular pentagons and octagons do not.",
+  "prerequisites": [
+   "angles-as-turns"
+  ],
+  "related": [
+   "mirror-symmetry",
+   "area-and-volume"
+  ],
+  "needs": "",
+  "pitfall": "Regular pentagons do not tile, but some irregular pentagons do (fifteen kinds are known), so the page must say 'this pentagon', never 'pentagons'.",
+  "why": "England KS2 maths, Year 5: 'angles at a point and 1 whole turn (total 360°)' is the fact the page rests on; Wikipedia's Tessellation article (regular tilings: only the triangle, square and hexagon, because 3π/5 is not a divisor of 2π) is the demand side. https://en.wikipedia.org/wiki/Tessellation",
+  "overlapWith": "chaos-fractals (level 2) is the nearest page about repeating structure; it repeats across scales, while this page repeats one shape across a flat floor and asks only whether its corners close a full turn.",
+  "needsSource": "none",
+  "leadsTo": [
+   "states-of-matter"
+  ],
+  "everyday": true,
+  "origin": "numbers-shapes-computers"
+ },
+ {
+  "slug": "speed-distance-time",
+  "title": "Speed: how far each second",
+  "level": 0,
+  "kind": "simulate",
+  "category": "math",
+  "interaction": "Set one runner's speed as paces per second and press go: a clock ticks, the runner moves, and a line climbs on a distance-time chart, one point per tick. Add a second runner with a different speed and the two lines show who is ahead at any tick and where they cross. Make a runner stop to tie a shoelace and watch the line go flat, then put the tortoise and the hare on the track.",
+  "takeaway": "Speed is how far you get in each tick of the clock, which on a distance-time chart is the steepness of the line: steeper is faster, flat is standing still.",
+  "prerequisites": [],
+  "related": [
+   "scaling-a-recipe",
+   "growing-patterns"
+  ],
+  "needs": "",
+  "pitfall": "Height on the chart is distance, not speed: a runner who is ahead is not necessarily faster; and the hare's rest is a flat stretch, not a dip (the line only goes down if the runner turns back).",
+  "why": "Common Core 6.RP.A.3.b: 'Solve unit rate problems including those involving unit pricing and constant speed.' https://www.thecorestandards.org/Math/Content/6/RP/",
+  "overlapWith": "newtons-laws (level 1) launches projectiles and tracks forces and energy; this page has no forces, only two runners at steady speeds and the chart their positions draw.",
+  "needsSource": "none",
+  "leadsTo": [
+   "newtons-laws"
+  ],
+  "everyday": true,
+  "origin": "numbers-shapes-computers"
+ },
+ {
+  "slug": "sunflower-spirals",
+  "title": "Sunflower spirals",
+  "level": 0,
+  "kind": "manipulate",
+  "category": "math",
+  "interaction": "A flower head grows one seed at a time, each placed a fixed turn after the last and pushed outward; a dial sets that turn. At a quarter turn or a third the seeds line up in spokes with wasted gaps; near the 'golden' turn, a bit more than a third, the head fills evenly and families of spirals appear. Tap a spiral and the page counts the spirals running each way (21 and 34, say), then count them yourself on a photograph of a real sunflower.",
+  "takeaway": "A plant that turns the same odd fraction of a turn between seeds fills its head without gaps, and that one angle produces the spiral counts you can count on a real sunflower.",
+  "prerequisites": [
+   "angles-as-turns"
+  ],
+  "related": [
+   "mirror-symmetry",
+   "shapes-that-tile",
+   "repeat-loops"
+  ],
+  "needs": "A photograph of a sunflower head for the counting step: Wikimedia Commons, CC0 or CC BY. The seed-placement model (Vogel's) needs no data.",
+  "pitfall": "Do not repeat the myths: nautilus shells are not golden spirals and there is no evidence people prefer golden rectangles. The page's claim is only about seed packing, which it demonstrates.",
+  "why": "Vi Hart, 'Doodling in Math: Spirals, Fibonacci, and Being a Plant' https://www.youtube.com/watch?v=ahXIMUkSXX0 (YouTube did not render in fetch; title from memory). Wikipedia's Phyllotaxis article confirms the sunflower's criss-crossing spirals come in Fibonacci counts. https://en.wikipedia.org/wiki/Phyllotaxis",
+  "overlapWith": "chaos-fractals (level 2) zooms into self-similar structure; this page grows one head from one rule and the reader's only control is the turn between seeds.",
+  "needsSource": "A CC0 or CC BY sunflower photograph from Wikimedia Commons; no dataset or model.",
+  "leadsTo": [
+   "unit-circle"
+  ],
+  "everyday": true,
+  "origin": "numbers-shapes-computers"
+ },
+ {
+  "slug": "treasure-map-coordinates",
+  "title": "Treasure maps: coordinates & scale",
+  "level": 0,
+  "kind": "manipulate",
+  "category": "math",
+  "interaction": "Hide a treasure on a gridded island and the page reads out two numbers; a friend's pin lands where your numbers say, and swapping them lands it somewhere else. Then draw a route on the map and the page walks it, adding up real paces from the scale bar as it goes. Change the map's scale: the drawing shrinks, the scale bar shrinks with it, and the pace count comes out the same.",
+  "takeaway": "Two numbers in a fixed order pin one spot on a grid, and the scale bar turns a route drawn on paper into real paces, whatever size the map is printed at.",
+  "prerequisites": [],
+  "related": [
+   "zoom-by-tens",
+   "solving-a-maze"
+  ],
+  "needs": "",
+  "pitfall": "The order of the two numbers matters (across first, then up), and a route's map length changes with scale while its real length does not; both must be seen, not stated.",
+  "why": "England KS2 maths, Year 4: 'describe positions on a 2-D grid as coordinates in the first quadrant'; Year 6: 'solve problems involving similar shapes where the scale factor is known or can be found'. https://www.gov.uk/government/publications/national-curriculum-in-england-mathematics-programmes-of-study/national-curriculum-in-england-mathematics-programmes-of-study",
+  "overlapWith": "graph-search (level 1) finds routes on a grid; this page has no search, only naming a spot with two numbers and measuring a drawn route at scale.",
+  "needsSource": "none",
+  "leadsTo": [
+   "graph-search",
+   "unit-circle"
+  ],
+  "everyday": true,
+  "origin": "numbers-shapes-computers"
+ },
+ {
+  "slug": "two-dice",
+  "title": "Two dice",
+  "level": 0,
+  "kind": "simulate",
+  "category": "math",
+  "interaction": "Pick the total you would bet on, then roll two dice; each roll adds a block to its total's column. Roll ten at a time, then a hundred, and the columns grow into the same triangle every time, with 7 on top. Flip the board over to see the 36 ways two dice can land, coloured by total, and count the ways to make 7 against the ways to make 2.",
+  "takeaway": "Rolling two dice, 7 comes up most and 2 and 12 least, and the grid of 36 ways shows why: six pairs make 7 and only one makes 2.",
+  "prerequisites": [],
+  "related": [
+   "coin-streaks",
+   "estimating-a-crowd"
+  ],
+  "needs": "",
+  "pitfall": "Totals are not equally likely even though faces are, and a few rolls can look nothing like the triangle: show the small-count mess before the large-count shape, not only the clean result.",
+  "why": "Common Core 7.SP.C.8: 'Find probabilities of compound events using organized lists, tables, tree diagrams, and simulation.' https://www.thecorestandards.org/Math/Content/7/SP/",
+  "overlapWith": "central-limit-theorem (level 2) drops balls through a Galton board to show sums of many random steps piling into a bell; this page counts the ways two dice can land and shows the columns settle into that count, with no theorem.",
+  "needsSource": "none",
+  "leadsTo": [
+   "bayes-theorem"
+  ],
+  "everyday": true,
+  "origin": "numbers-shapes-computers"
+ },
+ {
+  "slug": "what-an-average-hides",
+  "title": "What an average hides",
+  "level": 0,
+  "kind": "manipulate",
+  "category": "math",
+  "interaction": "Ten friends' weekly pocket money sits as coin stacks on a plank; drag any stack along it and the plank tips until a pointer finds the one place it balances, the mean, while a second marker stands at the middle stack, the median. Drag one friend's stack far to the right (a generous uncle) and watch the balance point slide after it while the middle marker barely moves. Then compare two classes with the same balance point but very different spreads.",
+  "takeaway": "The mean is where the data balances, so one far-off value drags it along, while the median stays with the middle of the crowd.",
+  "prerequisites": [],
+  "related": [
+   "estimating-a-crowd",
+   "coin-streaks"
+  ],
+  "needs": "",
+  "pitfall": "'Average' does not mean 'typical' or 'most': with one big outlier most people are below the mean, and the tallest bar of a chart (the mode) is a third thing again.",
+  "why": "England KS2 maths, Year 6: 'calculate and interpret the mean as an average'; Common Core 6.SP.A.3: a measure of center 'summarizes all of its values with a single number'. https://www.thecorestandards.org/Math/Content/6/SP/",
+  "overlapWith": "central-limit-theorem (level 2) builds histograms of sample means; this page has one small data set on a balance plank and no sampling.",
+  "needsSource": "none",
+  "leadsTo": [
+   "learning-from-data"
+  ],
+  "everyday": true,
+  "origin": "numbers-shapes-computers"
+ },
+ {
+  "slug": "why-triangles-are-stiff",
+  "title": "Why triangles are stiff",
+  "level": 0,
+  "kind": "build",
+  "category": "math",
+  "interaction": "Snap sticks together at their ends with pins to make a square, then push on a corner: it leans over into a diamond. Make a triangle and push: nothing moves. Add one diagonal stick to the square and push again; then build a tall tower and a garden gate and find the fewest sticks that stop them wobbling.",
+  "takeaway": "A triangle is the one shape whose sides fix its corners, so a floppy frame goes stiff the moment a diagonal cuts it into triangles.",
+  "prerequisites": [],
+  "related": [
+   "shapes-that-tile",
+   "area-and-volume"
+  ],
+  "needs": "",
+  "pitfall": "Stiff is not strong: the page is about shapes holding their angles, not about how much load a stick can carry; do not colour sticks by force or claim triangles 'spread the load'.",
+  "why": "England KS2 design and technology: 'apply their understanding of how to strengthen, stiffen and reinforce more complex structures' (KS1: 'build structures, exploring how they can be made stronger, stiffer and more stable'). https://www.gov.uk/government/publications/national-curriculum-in-england-design-and-technology-programmes-of-study/national-curriculum-in-england-design-and-technology-programmes-of-study",
+  "overlapWith": "bridges-structures (level 1) loads a bridge and colours members by tension and compression; this page has no loads or forces, only a pin-jointed frame that either keeps its shape or folds.",
+  "needsSource": "none",
+  "leadsTo": [
+   "bridges-structures"
+  ],
+  "everyday": true,
+  "origin": "numbers-shapes-computers"
+ },
+ {
+  "slug": "zoom-by-tens",
+  "title": "Zoom by tens",
+  "level": 0,
+  "kind": "explore",
+  "category": "math",
+  "interaction": "Start with a grain of rice drawn life-size and turn the dial one click: everything is redrawn ten times bigger or ten times smaller, and the page counts how many of the old thing fit across the new one. Pick any two things from the shelf (a hair, a coin, a bus, the Earth) and the page draws the smaller inside the larger at true scale, filling it with copies while they can still be counted and switching to 'ten more clicks' once the copies are too small to see.",
+  "takeaway": "Each click of the dial multiplies the size by ten, and about nine clicks take a grain of rice to the width of the Earth, so a few clicks cover more than any amount of counting.",
+  "prerequisites": [],
+  "related": [
+   "estimating-a-crowd",
+   "growing-patterns"
+  ],
+  "needs": "A table of about forty typical sizes with a source per row: planets, the Moon and the Sun from NASA's NSSDC Planetary Fact Sheet (US government, public domain); everyday objects and cells from standard references cited row by row; silhouettes drawn in-house.",
+  "pitfall": "Sizes of living things and everyday objects vary, so the table carries a typical value with its source and the page shows it as 'about'; and the drawing must never fake scale by squashing the big steps.",
+  "why": "Charles and Ray Eames' 'Powers of Ten' (1977), selected for the US National Film Registry; the classroom standard is Common Core 5.NBT.A.2 (patterns when multiplying by powers of 10). https://en.wikipedia.org/wiki/Powers_of_Ten_(film)",
+  "overlapWith": "deep-time (level 1) compresses time (4.5 billion years onto a calendar) by scrubbing a dataset; this page does it for size, and its model is a sizes table that drives true-scale drawing and the fit counts.",
+  "needsSource": "NASA NSSDC Planetary Fact Sheet (public domain) for astronomical sizes; a cited in-house table for everyday and microscopic sizes (facts, no licence; source listed per row).",
+  "leadsTo": [
+   "deep-time",
+   "atoms-periodic-table",
+   "the-cell"
+  ],
+  "everyday": true,
+  "origin": "numbers-shapes-computers"
+ },
+ {
+  "slug": "cellular-automata",
+  "title": "Cellular automata",
+  "level": 1,
+  "kind": "simulate",
+  "category": "math",
+  "interaction": "Paint cells on a grid and run Conway's Game of Life with its four rules written beside it and a step button; drop in a glider, a blinker and a glider gun from a palette and watch them. Then set the eight bits of a one-dimensional rule by clicking its lookup table and run it from a single cell: rule 90 draws a Sierpinski triangle, rule 30 looks random and rule 110 carries moving structures, with a count of live cells over time to compare rules.",
+  "takeaway": "A few local rules applied everywhere at once can produce patterns that move, grow and look random, none of which were written into the rules.",
+  "prerequisites": [],
+  "related": [
+   "chaos-fractals",
+   "turing-machines",
+   "logic-gates",
+   "evolution"
+  ],
+  "needs": "",
+  "pitfall": "A glider is not an object that moves: every cell only looks at its neighbors. Let the reader step one generation at a time and see that no cell travels.",
+  "why": "Wikipedia, Conway's Game of Life (one of the most visited mathematics articles): https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life",
+  "overlapWith": "chaos-fractals: that page shows complexity from simple deterministic rules in continuous systems; this page does it on a grid with the rules fully visible and editable.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "math-l3"
+ },
+ {
+  "slug": "exponentials-logarithms",
+  "title": "Exponentials & logarithms",
+  "level": 1,
+  "kind": "manipulate",
+  "category": "math",
+  "interaction": "Fold a strip of paper, breed bacteria or compound interest: a slider sets the growth factor, a counter of doublings runs and the curve shoots off the chart; switch the vertical axis to a log scale and the curve becomes a straight line whose slope is the growth rate. Compare 'add the same amount each step' with 'multiply by the same factor each step' on one chart, read a logarithm as the number of doublings needed, and build a slide rule that multiplies by adding lengths.",
+  "takeaway": "Growing by a fixed factor each step outruns growing by a fixed amount, and a logarithm just counts how many of those steps it took.",
+  "prerequisites": [],
+  "related": [
+   "radioactivity",
+   "epidemics",
+   "acids-bases",
+   "earthquakes",
+   "sorting"
+  ],
+  "needs": "",
+  "pitfall": "Exponential does not mean fast: with a factor just above 1 it starts slowly. And a log-scale line that looks tame is not growth slowing down; say that the rate stays the same.",
+  "why": "Common Core HSF-LE, Linear, Quadratic and Exponential Models: https://www.thecorestandards.org/Math/Content/HSF/LE/",
+  "overlapWith": "radioactivity: that page shows exponential decay through half-lives and epidemics shows cases doubling; this page isolates the rule itself, puts growth and decay on one log axis, and defines the logarithm as a count of steps.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": true,
+  "origin": "math-l3"
+ },
+ {
+  "slug": "calculus-of-variations",
+  "title": "The brachistochrone & calculus of variations",
+  "level": 3,
+  "kind": "manipulate",
+  "category": "math",
+  "interaction": "Drag the control points of a ramp between two fixed points and a bead slides down it under gravity, its descent time computed by integrating along the curve; race the straight line, a circular arc and your curve. Press optimize and the curve relaxes step by step toward the cycloid as the page descends the gradient of the time functional, while a panel shows the Euler–Lagrange residual along the curve going to zero; a second example finds the hanging-chain shape.",
+  "takeaway": "The fastest slide is a curve, not a straight line, and the curve that beats all its neighbors is the one along which the Euler–Lagrange equation holds everywhere.",
+  "prerequisites": [
+   "calculus",
+   "newtons-laws"
+  ],
+  "related": [
+   "light-optics",
+   "gradient-descent",
+   "convex-duality",
+   "orbits-kepler"
+  ],
+  "needs": "",
+  "pitfall": "The best curve can dip below the end point and still win, and the straight line is not 'almost as good': show it losing to the cycloid by a measured margin.",
+  "why": "myPhysicsLab brachistochrone simulation (demand: the canonical interactive version of the problem): https://www.myphysicslab.com/roller/brachistochrone-en.html",
+  "overlapWith": "newtons-laws: that page sends a cart along an editable track with energy bars; this page asks which track is best and finds it by varying the whole curve.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": true,
+  "origin": "math-l3"
+ },
+ {
+  "slug": "channel-capacity",
+  "title": "Information theory & channel capacity",
+  "level": 3,
+  "kind": "manipulate",
+  "category": "math",
+  "interaction": "Send bits through a binary symmetric channel: drag the flip probability and the input bias and watch the mutual information between sent and received, with its maximum over inputs marked as the capacity 1 − H(p). Then race codes against the channel, repetition codes of growing length and random block codes decoded by nearest codeword: a code with rate below capacity drives its error rate toward zero as blocks lengthen, one above capacity never does, and the Shannon limit is drawn on the plot.",
+  "takeaway": "Every noisy channel has a capacity: below it, coding can make errors as rare as you like; above it, no code can.",
+  "prerequisites": [
+   "compression",
+   "error-correction",
+   "bayes-theorem"
+  ],
+  "related": [
+   "wireless-signals",
+   "entropy",
+   "sampling-theorem"
+  ],
+  "needs": "",
+  "pitfall": "Capacity is not the number of bits that arrive uncorrupted: a channel that flips every bit has capacity 1 and one that flips half of them has capacity 0. Show both cases.",
+  "why": "Stanford EE376A Information Theory, course outline (entropy, mutual information, channel capacity, coding theorem): https://web.stanford.edu/class/ee376a/outline.html",
+  "overlapWith": "compression: that page measures a source's entropy and builds a Huffman code, and error-correction repairs single flips with a Hamming code; this page measures what a channel lets through and shows the limit both of those are pushing toward.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "math-l3"
+ }
+]

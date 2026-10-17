@@ -1,0 +1,637 @@
+[
+ {
+  "slug": "winding-numbers",
+  "title": "Winding numbers & the fundamental theorem of algebra",
+  "level": 3,
+  "kind": "manipulate",
+  "category": "math",
+  "interaction": "Drag a closed loop around the plane while a counter integrates how many times it winds around a marked point; move the point across the loop and the count jumps by one. Then apply a polynomial to a circle: the image loop winds around zero as many times as the degree when the circle is large and not at all when it is small, so shrinking the circle must pass through a root; drag the radius and watch the image cross the origin exactly at the roots. The same count on a vector field finds its zeros.",
+  "takeaway": "How many times a loop winds around a point cannot change unless the loop crosses the point, and that one fact forces every polynomial to have a root.",
+  "prerequisites": [
+   "complex-numbers"
+  ],
+  "related": [
+   "galois-theory",
+   "knot-invariants",
+   "fixed-point-iteration"
+  ],
+  "needs": "",
+  "pitfall": "The winding number is defined only for loops that avoid the point: show the jump happening at the crossing, never a gradual change.",
+  "why": "UCL topology course notes, 1.01 Winding numbers and the fundamental theorem of algebra: https://www.homepages.ucl.ac.uk/~ucahjde/tg/html/pi1-01.html",
+  "overlapWith": "complex-numbers: that page shows multiplication as rotation; this page uses that rotation to count turns and proves a theorem no existing page proves.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "math-l3"
+ },
+ {
+  "slug": "air-pressure-and-straws",
+  "title": "Air pressure, straws & syringes",
+  "level": 0,
+  "kind": "manipulate",
+  "category": "physics",
+  "everyday": true,
+  "interaction": "A clear box of air particles bounces against its walls and a counter tallies their hits: that tally is the push of the air. Pull the plunger of a syringe standing in a glass of juice and the particles inside spread thinner, fewer hit the juice from above, and the untouched air outside pushes the juice up the tube; suck on a straw and the same happens. Cap the top of a full straw with a finger to hold the juice in, press a suction cup onto a tile, or heat a sealed can and then cool it to crush it.",
+  "takeaway": "The air pushes on everything all the time; a straw, a syringe and a suction cup work by taking some of that push away on one side.",
+  "prerequisites": [],
+  "related": [
+   "water-pressure-and-hydraulics",
+   "floating-sinking-and-boats",
+   "fizzy-drinks"
+  ],
+  "needs": "",
+  "pitfall": "Suction does not pull. Nothing reaches down the straw to lift the drink; the outside air pushes it up because the push inside the straw has been lowered.",
+  "why": "KS3 physics 'Pressure in fluids' (atmospheric pressure, decreases with increase of height as weight of air above decreases with height) and KS3 chemistry 'The particulate nature of matter' (the states of matter in terms of the particle model, including gas pressure) https://www.gov.uk/government/publications/national-curriculum-in-england-science-programmes-of-study/national-curriculum-in-england-science-programmes-of-study",
+  "overlapWith": "states-of-matter: that page uses pressure as a knob on a phase diagram; this one shows what pressure is (particles hitting a surface) and how a straw, a syringe and a suction cup use it.",
+  "needsSource": "none; kinetic particle box (elastic collisions give the pressure) coupled to a liquid column whose height balances the pressure difference.",
+  "leadsTo": [
+   "states-of-matter"
+  ],
+  "origin": "basic-physical-science"
+ },
+ {
+  "slug": "balance-and-tipping",
+  "title": "Balance & tipping",
+  "level": 0,
+  "kind": "manipulate",
+  "category": "physics",
+  "everyday": true,
+  "interaction": "Seat children and bags on a seesaw and slide them along the plank until it balances: a heavier child must sit closer to the middle. Stack blocks into a leaning tower, or tilt a bus, a lorry or a tall glass, while a mark shows where the whole thing's weight is centred; the moment that mark passes beyond the base, it tips. Widen the base or move the load lower to make it harder to tip.",
+  "takeaway": "A thing balances while the centre of its weight sits above its support and tips the moment that centre crosses the edge of the base.",
+  "prerequisites": [],
+  "related": [
+   "spinning-tops",
+   "bridges-structures",
+   "newtons-laws"
+  ],
+  "needs": "",
+  "pitfall": "The balance point is not the middle of the object but the centre of its weight; and a thing tips not because it leans 'too much' in general, but exactly when its weight's centre moves outside its base.",
+  "why": "PhET 'Balancing Act' listed in the PhET middle-school guide https://phet.colorado.edu/files/guides/MiddleSchool_en.pdf ; KS3 physics 'Forces' (balanced forces; moment as the turning effect of a force) https://www.gov.uk/government/publications/national-curriculum-in-england-science-programmes-of-study/national-curriculum-in-england-science-programmes-of-study",
+  "overlapWith": "bridges-structures: that page carries a load to the ground through members in tension and compression; this one has no members, only where the weight is centred over a base, and whether it balances or tips.",
+  "needsSource": "none; turning effects about the pivot, the centre of mass of a stack, and the tipping condition against the base.",
+  "leadsTo": [
+   "bridges-structures",
+   "newtons-laws"
+  ],
+  "origin": "basic-physical-science"
+ },
+ {
+  "slug": "balloons-and-static",
+  "title": "Balloons & static electricity",
+  "level": 0,
+  "kind": "manipulate",
+  "category": "physics",
+  "everyday": true,
+  "interaction": "Rub a balloon against a wool jumper: each stroke moves a few charges from the wool to the balloon, counted on both. Carry the charged balloon toward a head of hair, drawn as strands that swing like tiny pendulums, and the strands rise toward it; the force on each is computed from the charges. Hold it against a wall or over scraps of paper, which have no charge of their own, and watch them shift their charge inside and cling; touch a doorknob to let the charge jump across as a spark.",
+  "takeaway": "Rubbing moves charge from one thing to another, and a charged balloon pulls on hair, paper and walls that have no charge of their own.",
+  "prerequisites": [],
+  "related": [
+   "magnets-and-poles",
+   "electric-circuits"
+  ],
+  "needs": "",
+  "pitfall": "Rubbing does not create charge, it moves charge that was already there; and the wall is not charged before the balloon arrives, it is the balloon that rearranges the wall's charge.",
+  "why": "PhET 'Balloons and Static Electricity' (topics: static electricity, electric charges, electric force) https://phet.colorado.edu/en/simulations/balloons-and-static-electricity ; KS3 physics 'Static electricity' (separation of charges when objects are rubbed together; forces between charged objects) https://www.gov.uk/government/publications/national-curriculum-in-england-science-programmes-of-study/national-curriculum-in-england-science-programmes-of-study",
+  "overlapWith": "electromagnetism: that page shows the field of placed charges and the force on a test charge; this one stays with the balloon and the jumper, rubbing, counting the moved charges and the cling of uncharged things.",
+  "needsSource": "none; Coulomb forces between point charges, hair strands as pendulums, the wall as a polarisable surface (image charge).",
+  "leadsTo": [
+   "electric-circuits"
+  ],
+  "origin": "basic-physical-science"
+ },
+ {
+  "slug": "blue-sky-red-sunset",
+  "title": "Why the sky is blue & sunsets red",
+  "level": 0,
+  "kind": "explore",
+  "category": "physics",
+  "everyday": false,
+  "interaction": "Scrub the Sun across a day's sky: a patch of sky overhead and the Sun's own disc take the colours that come out when sunlight scatters off air along its path, worked out colour by colour from the real sunlight spectrum and shown as screen colours. Thicken the air or add smoke and the sunset deepens to orange and the daytime sky goes paler. Pump the air away altogether and the sky turns black around a white Sun, as on the Moon.",
+  "takeaway": "Air scatters blue light out of sunlight far more than red, so the sky overhead is blue and the Sun turns red when its light has crossed a lot of air near the horizon.",
+  "prerequisites": [],
+  "related": [
+   "glowing-hot",
+   "paints-and-lights",
+   "light-optics"
+  ],
+  "needs": "The ASTM G173-03 sunlight spectrum outside the atmosphere (the 'Etr', AM0 column of ASTMG173.csv from NLR/NREL): the same file solar-cells already builds from, but a different column, since the shipped `spectrum.ts` keeps only the 'Global tilt' column, which is sunlight after passing through the atmosphere and cannot be scattered again; licence recorded as unconfirmed in docs/DATA-SOURCES.md. Plus the CIE 2012 colour-matching functions already shipped by vision-color (`cone-data.ts`, from CVRL; no licence stated at source).",
+  "pitfall": "The sky is not blue because it reflects the sea, nor because of ozone; and the sky is not violet, although violet scatters even more, because sunlight carries less violet and the eye is less sensitive to it.",
+  "why": "'Why is the sky blue?' is the most-googled science question in Glimpse's ranking https://meetglimpse.com/insights/most-searched-questions/ ; Royal Observatory Greenwich explainer on Rayleigh scattering https://www.rmg.co.uk/stories/space-astronomy/why-sky-blue",
+  "overlapWith": "light-optics: that page splits white light with a prism and bends rays; this one scatters it off air, following the Sun through a day, and never bends a ray.",
+  "needsSource": "Two spectra from one model: the Sun's disc is the top-of-atmosphere sunlight attenuated by Rayleigh scattering (fourth power of wavelength) along the air path for the Sun's height; the sky patch is the light scattered into the line of sight along that path and attenuated on its way to the eye (single scattering), with optional haze of weak colour dependence; both converted to colour with the shipped CMFs. Data: the AM0 'Etr' column of ASTM G173-03 (NLR/NREL ASTMG173.csv; the solar-cells build script reads this file already, licence unconfirmed, cited on the page) and CMFs from vision-color/cone-data.ts (CVRL, no licence stated, credited on the page).",
+  "leadsTo": [
+   "light-optics",
+   "greenhouse-effect"
+  ],
+  "origin": "basic-physical-science"
+ },
+ {
+  "slug": "bouncing-ball",
+  "title": "Where a bouncing ball's energy goes",
+  "level": 0,
+  "kind": "simulate",
+  "category": "physics",
+  "everyday": true,
+  "interaction": "Drop a ball and watch it bounce lower each time while three bars track its energy: height, speed, and the share that has turned into heat and sound; a thermometer on the ball creeps up and each bounce makes a click. Pick a different ball (a basketball, a tennis ball, a super ball, a lump of clay) or a different floor (concrete, carpet, sand) and see how many bounces are left. Drop it from higher and it bounces higher, but never back to where it started.",
+  "takeaway": "Each bounce turns some of the ball's energy into heat and sound, so it never gets back to the height it fell from.",
+  "prerequisites": [],
+  "related": [
+   "falling-and-parachutes",
+   "crashes-and-seatbelts",
+   "swings-and-pendulums",
+   "newtons-laws"
+  ],
+  "needs": "",
+  "pitfall": "The missing height is not energy that vanished; it is now heat in the ball and the floor and sound in the air. And at the top of a bounce the ball is not 'free of gravity'; it is just momentarily still.",
+  "why": "NGSS 4-PS3-3: ask questions and predict outcomes about the changes in energy that occur when objects collide (emphasis on the change in energy due to the change in speed) https://www.nextgenscience.org/pe/4-ps3-3-energy ; PhET 'Energy Skate Park: Basics' listed in the PhET middle-school guide https://phet.colorado.edu/files/guides/MiddleSchool_en.pdf",
+  "overlapWith": "newtons-laws: that page shows kinetic, potential and dissipated bars for a cart on an editable track; this one has no track and one ball, and makes the lost share the point, with the heat and the click to show where it went.",
+  "needsSource": "none; free fall with a springy, damped contact on the floor (a bounciness setting per ball and floor), the lost energy accounted as heat and sound.",
+  "leadsTo": [
+   "newtons-laws",
+   "oscillations-resonance"
+  ],
+  "origin": "basic-physical-science"
+ },
+ {
+  "slug": "car-brakes-stopping-distance",
+  "title": "Stopping a car: twice the speed, four times the skid",
+  "level": 0,
+  "kind": "simulate",
+  "category": "physics",
+  "interaction": "Drive a car toward a ball that rolls into the road and hit the brake: a strip along the road marks the distance covered while you react and the distance of the braking itself, and the car stops short of the ball or not. Double the speed and the thinking part doubles while the braking part grows four times; make the road wet or icy and the braking part stretches again. The official stopping distances from the Highway Code are drawn alongside for comparison.",
+  "takeaway": "Stopping takes two distances, one while you think and one while you brake, and doubling the speed doubles the first but quadruples the second.",
+  "prerequisites": [],
+  "related": [
+   "car-steering-corners",
+   "engine-pushes-to-spin",
+   "hydraulics-digger-arm",
+   "ice-skates-glide-and-grip"
+  ],
+  "needs": "Typical stopping distances from the UK Highway Code, rule 126 (Crown copyright, Open Government Licence v3), as the reference strip.",
+  "pitfall": "A heavier car does not need a longer braking distance on a dry road: the grip grows with the weight, so the distance depends on speed and surface. Brakes stop the wheels; it is the tyres' grip on the road that stops the car, which is why braking on ice is long however hard you press.",
+  "why": "The UK Highway Code, rule 126, typical stopping distances, https://www.gov.uk/guidance/the-highway-code/general-rules-techniques-and-advice-for-all-drivers-and-riders-103-to-158",
+  "overlapWith": "newtons-laws: that page shows forces changing motion with carts and energy bars; this page is one car, one brake and the two distances every learner driver has to know.",
+  "needsSource": "UK Highway Code rule 126 (Open Government Licence v3).",
+  "leadsTo": [
+   "newtons-laws"
+  ],
+  "everyday": true,
+  "origin": "vehicles-and-big-machines"
+ },
+ {
+  "slug": "car-steering-corners",
+  "title": "Going round a bend: steering and grip",
+  "level": 0,
+  "kind": "manipulate",
+  "category": "physics",
+  "interaction": "Turn a car's steering wheel and watch the circle it drives shrink, with the inside front wheel turned more sharply than the outside one so that both roll round the same centre without scrubbing. Then speed up on the same bend: the tyres must push the car sideways harder and harder, until on a wet or icy road they cannot and the car slides straight on; a gauge shows how much of the tyres' grip the bend is using.",
+  "takeaway": "Going round a bend needs a sideways push from the tyres that grows with speed and with how tight the bend is, and when the road cannot supply it the car goes straight on.",
+  "prerequisites": [],
+  "related": [
+   "car-brakes-stopping-distance",
+   "train-wheel-cones",
+   "roller-coaster-feel",
+   "ice-skates-glide-and-grip"
+  ],
+  "needs": "",
+  "pitfall": "Nothing throws a car outward on a bend: the car is trying to go straight and the tyres pull it round. Braking hard mid-corner does not help: grip spent on stopping is grip not available for turning.",
+  "why": "England KS3 science, forces: 'forces being needed to cause objects to stop or start moving, or to change their speed or direction of motion', https://www.gov.uk/government/publications/national-curriculum-in-england-science-programmes-of-study",
+  "overlapWith": "newtons-laws: that page changes motion in straight lines and with projectiles; this page is a car's path curving because the tyres push sideways, and the limit of that push.",
+  "needsSource": "none",
+  "leadsTo": [
+   "newtons-laws",
+   "orbits-kepler"
+  ],
+  "everyday": true,
+  "origin": "vehicles-and-big-machines"
+ },
+ {
+  "slug": "contactless-cards",
+  "title": "Tap to pay",
+  "level": 0,
+  "kind": "manipulate",
+  "category": "physics",
+  "everyday": true,
+  "interaction": "Drag a bank card toward a reader: the reader's coil throws out a pulsing magnetism, the card's own coil, a loop of wire around its edge, catches some of it, and a meter on the card's chip fills as it gets closer. At a few centimetres the meter reaches 'awake' and the chip, which has no battery, switches on and answers by sipping the reader's power in a pattern the reader can feel. Pull back and it falls asleep; slide a metal sheet between and nothing gets through; stack two cards and the reader cannot tell them apart.",
+  "takeaway": "A contactless card has no battery: the reader's pulsing magnetism powers it through the air for a few centimetres, and the card replies by drinking that power in a pattern.",
+  "prerequisites": [],
+  "related": [
+   "metal-detector",
+   "password-guessing"
+  ],
+  "needs": "",
+  "needsSource": "none; coupled coils with coupling falling steeply with distance, a wake-up threshold, and load modulation as the reply.",
+  "pitfall": "The card is silent until a reader powers it, and the reach is centimetres: it does not broadcast your details across a room. The pulsing field is the same kind as a metal detector's; what differs is a chip that answers.",
+  "why": "NGSS 3-PS2-3 on electric or magnetic interactions between objects not in contact (https://www.nextgenscience.org/pe/3-ps2-3-motion-and-stability-forces-and-interactions); 'Near-field communication' averaged about 18,900 views a month on English Wikipedia in 2025 (https://wikimedia.org/api/rest_v1/metrics/pageviews/per-article/en.wikipedia/all-access/user/Near-field_communication/monthly/2025010100/2025123100).",
+  "overlapWith": "metal-detector in this batch: the same coupled coils, but any metal echoes there while here a chip answers on purpose. electromagnetism (level 2) has induction with field lines; this page has only how much power reaches the card against distance.",
+  "leadsTo": [
+   "electric-circuits"
+  ],
+  "origin": "everyday-technology"
+ },
+ {
+  "slug": "crashes-and-seatbelts",
+  "title": "Crashes, seatbelts & the tablecloth trick",
+  "level": 0,
+  "kind": "step",
+  "category": "physics",
+  "everyday": true,
+  "interaction": "Scrub frame by frame through a toy car hitting a wall with a passenger inside: the car stops, but the passenger carries on at the old speed until something stops them too. Add a seatbelt, then a crumple zone, then an airbag, and watch the passenger's stop stretch over more frames while the force meter on them shrinks. Finally yank a tablecloth from under the plates, slowly and then fast, and see when the plates come along and when they stay.",
+  "takeaway": "A moving thing keeps moving until a force stops it, and spreading the stop over more time makes the force gentler.",
+  "prerequisites": [],
+  "related": [
+   "friction-and-grip",
+   "bouncing-ball",
+   "newtons-laws"
+  ],
+  "needs": "",
+  "pitfall": "Nothing throws the passenger forward in a crash; they simply keep going while the car stops. 'Inertia' is not a force, and a seatbelt does not make the stop smaller, only longer.",
+  "why": "NGSS MS-PS2-1: apply Newton's third law to design a solution to a problem involving the motion of two colliding objects (clarification: collisions between two cars, between a car and stationary objects) https://www.nextgenscience.org/pe/ms-ps2-1-motion-and-stability-forces-and-interactions",
+  "overlapWith": "newtons-laws: that page collides carts and tracks momentum and energy from outside; this one rides inside the car, frame by frame, and asks only what stops the passenger and how long the stop takes.",
+  "needsSource": "none; first and second laws with a spring-and-damper crumple zone, the passenger as a separate body, and a friction impulse for the tablecloth.",
+  "leadsTo": [
+   "newtons-laws"
+  ],
+  "origin": "basic-physical-science"
+ },
+ {
+  "slug": "digital-camera-sensor",
+  "title": "What a camera's sensor counts",
+  "level": 0,
+  "kind": "simulate",
+  "category": "physics",
+  "everyday": true,
+  "interaction": "Open the shutter on a drawn camera pointed at a scene and watch light arrive as specks landing in a grid of tiny buckets, each bucket counting its specks; the picture forms from the counts, and a slider sets how long the shutter stays open. Close it early and the counts are small and uneven, so the picture is dark and grainy; leave it open and the bright buckets overflow to white. Then lift the colour sieve off the grid: each bucket sees only red, green or blue, and the missing two colours of every pixel are guessed from its neighbours.",
+  "takeaway": "A photo is a grid of counts of light specks, so a short or dark exposure gives a grainy picture, and the sensor is colour-blind: each bucket counts one colour and the camera guesses the rest.",
+  "prerequisites": [],
+  "related": [
+   "screens-and-pixels",
+   "face-unlock-depth"
+  ],
+  "needs": "One photograph under CC0 (Wikimedia Commons) as the scene; light specks are drawn at random in proportion to each pixel's brightness.",
+  "needsSource": "none beyond a CC0 photograph; Poisson counting per photosite, a Bayer mosaic and neighbour-averaging demosaic.",
+  "pitfall": "More megapixels do not mean a better picture: smaller buckets collect fewer specks and get noisier. The sensor does not see colour, and the graininess at night is the randomness of counting, not a faulty camera.",
+  "why": "Bartosz Ciechanowski, 'Cameras and Lenses' (https://ciechanow.ski/cameras-and-lenses/): photosites counting photons, exposure and the Bayer mosaic; England KS3 physics names 'photosensitive material in the retina and in cameras'.",
+  "overlapWith": "light-optics (level 1) bends rays through the lens and vision-color (level 1) makes the eye a camera and mixes RGB; this page starts at the sensor, counting, noise and the colour sieve, with the lens taken as given.",
+  "leadsTo": [
+   "light-optics",
+   "vision-color",
+   "binary"
+  ],
+  "origin": "everyday-technology"
+ },
+ {
+  "slug": "drinking-straw",
+  "title": "Straws & suction cups",
+  "level": 0,
+  "kind": "manipulate",
+  "category": "physics",
+  "interaction": "Suck on a straw with a slider that thins the air in your mouth and watch the air pressing on the drink push it up the straw, higher the more you thin it; then lengthen the straw until, at about ten metres, no sucking at all can lift the drink any further. Press a suction cup onto a tile, squeeze the air out and hang weights on it until it lets go; poke a pinhole in the straw or the cup and watch both fail.",
+  "takeaway": "Nothing pulls a drink up a straw: the air pressing down on the drink pushes it up into the space you made, and since air can only push so hard, no one can drink through a straw taller than about ten metres.",
+  "prerequisites": [],
+  "related": [
+   "toilet-flush",
+   "water-taps-and-pipes"
+  ],
+  "needs": "",
+  "pitfall": "Suction is not a pull and a vacuum does not suck: the air outside does the pushing, which is why a pinhole, which lets air in, breaks both the straw and the cup.",
+  "why": "KS3 science, Year 8 pressure in fluids: atmospheric pressure as the weight of the air above (scheme at https://flipeducation.ai/curriculum/gb/science/year-8/pressure-in-fluids); PhET's 'Fluid Pressure and Flow' covers the same ground for older readers (listed at https://elmirador.edu.co/contenidos/phet/en/simulations/category/physics/motion/index.html).",
+  "overlapWith": "atmosphere-weather: that page uses pressure to drive wind and weather at level 2; here pressure is a push the reader makes with their mouth, and the ten-metre limit is the thing to see.",
+  "needsSource": "none",
+  "leadsTo": [
+   "newtons-laws"
+  ],
+  "everyday": true,
+  "origin": "home-mechanisms"
+ },
+ {
+  "slug": "e-reader-ink",
+  "title": "Why an e-reader looks like paper",
+  "level": 0,
+  "kind": "step",
+  "category": "physics",
+  "everyday": true,
+  "interaction": "Step into one dot of an e-reader page: a capsule thinner than a hair, full of clear oil with white specks carrying one kind of charge and black specks the other. Apply a push across the capsule and the white specks swim to the top while the black ones sink, push the other way and they swap, turn the push off and they stay where they are. Then turn a page, and only the dots that change get a push while a battery meter barely moves; turn the room light down and the page goes dark like paper, while the phone beside it keeps glowing.",
+  "takeaway": "An e-reader page is made of specks that are pushed up or down by electricity and then stay put, so it costs power only when the page changes and is read by room light, like paper.",
+  "prerequisites": [],
+  "related": [
+   "screens-and-pixels"
+  ],
+  "needs": "",
+  "needsSource": "none; oppositely charged black and white particles drifting in a viscous fluid under an applied field, in capsules about 0.04 mm across (the two-pigment system of current E Ink displays; Wikipedia's Electronic paper page describes the older one-pigment version with dyed oil, and the page says which it draws).",
+  "pitfall": "It is not a dim or slow LCD: there is no backlight (some models add a front light) and nothing glows. The slow page turn and the faint ghost of the old page are specks that have not all moved, not a slow processor.",
+  "why": "'Electronic paper' averaged about 5,400 views a month on English Wikipedia in 2025 (https://wikimedia.org/api/rest_v1/metrics/pageviews/per-article/en.wikipedia/all-access/user/Electronic_paper/monthly/2025010100/2025123100).",
+  "overlapWith": "screens-and-pixels in this batch: that page's pixels are lights; here a pixel is a capsule that reflects light. electric-circuits has charge moving in wires; here charged specks move in oil.",
+  "leadsTo": [
+   "light-optics",
+   "electric-circuits"
+  ],
+  "origin": "everyday-technology"
+ },
+ {
+  "slug": "echoes-and-thunder",
+  "title": "Echoes & thunder",
+  "level": 0,
+  "kind": "simulate",
+  "category": "physics",
+  "everyday": false,
+  "interaction": "Clap in front of a cliff on a map: a ring of sound spreads out at the speed of sound, hits the cliff, and comes back to the clapper while a stopwatch times the round trip. Drag the cliff further away and the echo arrives later; count the beats. Then start a thunderstorm: the flash is seen at once, the rumble arrives about three seconds later for every kilometre, so counting the seconds tells how far the storm is; a bat and a ship's sonar do the same sum.",
+  "takeaway": "Sound takes time to travel, so the delay of an echo or of thunder tells you how far away the wall or the storm is.",
+  "prerequisites": [
+   "vibrations-and-sound"
+  ],
+  "related": [
+   "waves-interference"
+  ],
+  "needs": "",
+  "pitfall": "The thunder is not a different event from the lightning; it is the same flash heard late because sound is slow and light is almost instant. An echo keeps the pitch of the original sound.",
+  "why": "KS3 physics 'Sound waves' (echoes, reflection and absorption of sound; sound needs a medium to travel) https://www.gov.uk/government/publications/national-curriculum-in-england-science-programmes-of-study/national-curriculum-in-england-science-programmes-of-study",
+  "overlapWith": "waves-interference: that page overlaps two sources to make bands of reinforcement and cancellation; this one follows a single pulse out and back, with timing turned into distance, and never overlaps two.",
+  "needsSource": "none; the wave equation on a small grid (or ray pulses) with reflecting and absorbing walls and the speed of sound in air as a constant.",
+  "leadsTo": [
+   "waves-interference"
+  ],
+  "origin": "basic-physical-science"
+ },
+ {
+  "slug": "falling-and-parachutes",
+  "title": "Falling & parachutes",
+  "level": 0,
+  "kind": "simulate",
+  "category": "physics",
+  "everyday": true,
+  "interaction": "Drop a hammer and a feather side by side in air: the feather drifts down long after the hammer has landed. Pump the air out of the chamber and drop them again: they land together, as on the Moon. Then open a parachute under a toy: widen it, or hang a heavier toy from it, and watch the speed climb and then stop climbing at a steady falling speed set by the air pushing back; drop a flat sheet of paper and the same sheet crumpled.",
+  "takeaway": "Gravity pulls everything down at the same rate; it is the air pushing back that makes light, wide things fall slower.",
+  "prerequisites": [],
+  "related": [
+   "bouncing-ball",
+   "newtons-laws",
+   "orbits-kepler"
+  ],
+  "needs": "",
+  "pitfall": "Heavier things do not fall faster in themselves; the feather lags only because of the air. And gravity does not switch off in space or on the Moon; the Moon's hammer and feather fall together, just more slowly.",
+  "why": "KS2 Year 5 'Forces' (unsupported objects fall towards the Earth because of gravity; air resistance) https://www.gov.uk/government/publications/national-curriculum-in-england-science-programmes-of-study/national-curriculum-in-england-science-programmes-of-study ; NASA NSSDCA, the Apollo 15 hammer-feather drop https://nssdc.gsfc.nasa.gov/planetary/lunar/apollo_15_feather_drop.html",
+  "overlapWith": "newtons-laws: that page launches projectiles with an air-resistance slider among many controls; this one drops things straight down, one at a time, with air on or off, and builds a parachute to find a steady falling speed.",
+  "needsSource": "none; weight against air drag growing with speed and area, integrated through time, with an air-off switch; the Apollo 15 drop as the reference demonstration.",
+  "leadsTo": [
+   "newtons-laws",
+   "orbits-kepler"
+  ],
+  "origin": "basic-physical-science"
+ },
+ {
+  "slug": "fireworks-shell-burst",
+  "title": "Fireworks: a bag of sparks thrown in every direction",
+  "level": 0,
+  "kind": "step",
+  "category": "physics",
+  "interaction": "Step a firework from the mortar to the sky: the lift charge throws the shell up, the fuse burns as it climbs, and at the top the burst flings the stars out at the same speed in every direction, so they draw a growing sphere that drifts down and slows as the air drags on them. Cut the fuse short or long to burst too low or too high, pack the stars in a ring to get a ring seen edge-on, and pick the metal mixed into the stars to pick the colour.",
+  "takeaway": "A firework's shape is a sphere because every star leaves the burst at the same speed, and gravity and air then carry the whole sphere down together.",
+  "prerequisites": [],
+  "related": [
+   "rocket-throws-mass",
+   "parachute-terminal-speed"
+  ],
+  "needs": "A short cited table of which metal gives which colour (sodium yellow, strontium red, barium green, copper blue) from a chemistry reference; optionally sodium's lines from the NIST Atomic Spectra Database (SRD 78, free with citation) for a spectrum strip.",
+  "pitfall": "The stars are not shot out by the lift charge: that only throws the shell, and a second charge bursts it at the top, with the fuse setting when. The colours are not paint: they come from the metal in each star, and copper's blue is made by copper chloride molecules, not copper atoms, so the page shows a cited colour table, not a computed spectrum.",
+  "why": "Compound Interest, 'The chemistry of fireworks', one of the most shared chemistry infographics, https://www.compoundchem.com/2013/12/30/the-chemistry-of-fireworks/ ('how do fireworks work' peaks in search every July and New Year)",
+  "overlapWith": "newtons-laws: that page launches one projectile with air resistance; this page launches a shell and then hundreds of stars at once, and the shape they make together is the point.",
+  "needsSource": "Colour table from a cited pyrotechnics reference; optional spectrum strip from the NIST Atomic Spectra Database (SRD 78, free to use with citation, https://www.nist.gov/pml/atomic-spectra-database).",
+  "leadsTo": [
+   "newtons-laws",
+   "atoms-periodic-table"
+  ],
+  "everyday": false,
+  "origin": "vehicles-and-big-machines"
+ },
+ {
+  "slug": "floating-sinking-and-boats",
+  "title": "Floating, sinking & boats",
+  "level": 0,
+  "kind": "manipulate",
+  "category": "physics",
+  "everyday": true,
+  "interaction": "Drop objects into a tank (a stone, an apple, a wooden block, a steel ball, a ball of modelling clay) and each sinks or settles where the water it pushes aside weighs as much as it does; a scale under the tank shows the pushed-aside water. Reshape the clay from a ball into a bowl and the same lump floats; load it with marbles until it goes under. Change the water to salt water or to oil and see who floats now; finally warm the air inside a balloon and watch it rise through the surrounding air the same way.",
+  "takeaway": "A thing floats when it pushes aside more than its own weight of water or air, so shape decides as much as heaviness.",
+  "prerequisites": [],
+  "related": [
+   "water-pressure-and-hydraulics",
+   "air-pressure-and-straws",
+   "states-of-matter"
+  ],
+  "needs": "A handful of handbook densities (water, sea water, oil, ice, wood, steel, air).",
+  "pitfall": "Heavy things do not simply sink and light things float: a steel ship floats and a grain of sand sinks; what matters is the weight compared with the weight of the water pushed aside.",
+  "why": "Bartosz Ciechanowski, 'Naval Architecture' (interactive explainer on why ships float) https://ciechanow.ski/naval-architecture/ ; KS3 physics 'Pressure in fluids' (upthrust effects, floating and sinking) https://www.gov.uk/government/publications/national-curriculum-in-england-science-programmes-of-study/national-curriculum-in-england-science-programmes-of-study ; PhET 'Density' listed in the PhET middle-school guide https://phet.colorado.edu/files/guides/MiddleSchool_en.pdf and 'Buoyancy: Basics' on PhET's fluids search page https://phet.colorado.edu/en/search?q=fluids",
+  "overlapWith": "states-of-matter: that page shows ice being less dense than water inside a molecular box; this one is about whole objects in a tank, the water they push aside and why a bowl of clay floats when a ball of it sinks.",
+  "needsSource": "Archimedes' principle with the submerged area of a draggable hull computed from the water line; densities from a handbook table (Wikipedia's density tables, CC BY-SA 4.0, or a physics textbook; the few values are not copyrightable facts).",
+  "leadsTo": [
+   "states-of-matter",
+   "newtons-laws"
+  ],
+  "origin": "basic-physical-science"
+ },
+ {
+  "slug": "friction-and-grip",
+  "title": "Friction & grip",
+  "level": 0,
+  "kind": "manipulate",
+  "category": "physics",
+  "everyday": true,
+  "interaction": "Pull a crate across different floors (rubber, wood, ice, oiled steel) with a force meter: the crate stays put until the pull beats the grip, then slides, and a zoomed inset shows the bumps of the two surfaces catching on each other and warming up. Tilt the floor until the crate lets go, and tilt it less on rubber than on ice. Rub two hands together and watch the thermometer climb; put the crate on ice and try to push off and walk.",
+  "takeaway": "Friction is the grip between two touching surfaces: it holds things still until the push is big enough, and it warms them as they slide.",
+  "prerequisites": [],
+  "related": [
+   "crashes-and-seatbelts",
+   "bouncing-ball",
+   "newtons-laws"
+  ],
+  "needs": "A few friction coefficients for named surface pairs (handbook values), or surfaces labelled only as grippy or slippery.",
+  "pitfall": "Do not say ice is slippery because the skater's pressure melts it; at everyday pressures that effect is far too small, and the real reason (a thin water-like layer on the ice's surface, plus heating as it slides) is still being studied. And friction is not the enemy: without it nothing could walk, roll or stop.",
+  "why": "KS2 Year 5 'Forces' (identify the effects of air resistance, water resistance and friction) https://www.gov.uk/government/publications/national-curriculum-in-england-science-programmes-of-study/national-curriculum-in-england-science-programmes-of-study ; PhET 'Friction' listed in the PhET middle-school guide https://phet.colorado.edu/files/guides/MiddleSchool_en.pdf ; UCAR on the ice question https://scied.ucar.edu/learning-zone/storms/why-ice-slippery",
+  "overlapWith": "newtons-laws: that page has air resistance on a projectile and carts colliding; this one is the grip between surfaces, sticking before sliding, the tilt at which things let go, and the heat of rubbing.",
+  "needsSource": "Static and sliding friction with the normal force, on the flat and on a slope, and the work of sliding turned into heat. Coefficients, if quoted, from Wikipedia's friction table (CC BY-SA 4.0) or a textbook; otherwise none.",
+  "leadsTo": [
+   "newtons-laws"
+  ],
+  "origin": "basic-physical-science"
+ },
+ {
+  "slug": "glowing-hot",
+  "title": "Why hot things glow",
+  "level": 0,
+  "kind": "manipulate",
+  "category": "physics",
+  "everyday": true,
+  "interaction": "Slide the temperature of an iron bar from a warm room up through a toaster element, a candle flame, a light-bulb filament and the surface of the Sun: its glow is worked out from the real law for hot bodies and turned into the colour you would see, nothing, then dull red, orange, yellow, white, blue-white. Switch to a thermal camera and see that the bar was glowing in infrared all along, even at room temperature. Line up a candle, a bulb and the Sun to read their temperatures from their colours.",
+  "takeaway": "Hot things glow with a colour set by their temperature, red-hot is cooler than white-hot, and even things too cool to see are glowing in infrared.",
+  "prerequisites": [],
+  "related": [
+   "temperature-and-touch",
+   "blue-sky-red-sunset",
+   "stars"
+  ],
+  "needs": "The CIE 2012 colour-matching functions already shipped by vision-color (`cone-data.ts`, CVRL) and its `blackBody` routine, which stars already reuses.",
+  "pitfall": "The tap colour code is backwards for glowing things: blue-white is hotter than red. And nothing has to be 'on fire' to glow; a toaster element and a bulb filament simply get hot.",
+  "why": "PhET 'Blackbody Spectrum' https://phet.colorado.edu/en/simulations/blackbody-spectrum ; KS3 physics 'Energy' (energy transfer by radiation) https://www.gov.uk/government/publications/national-curriculum-in-england-science-programmes-of-study/national-curriculum-in-england-science-programmes-of-study",
+  "overlapWith": "stars: that page colours a star by its surface temperature on the Hertzsprung-Russell diagram as one detail of a life story; this one makes the colour-temperature link the whole page, with a toaster and a bulb, and adds the infrared the eye cannot see.",
+  "needsSource": "Planck's law converted to screen colour with the shipped CMFs (vision-color/colour.ts `blackBody` and `cssColour`); no new data.",
+  "leadsTo": [
+   "greenhouse-effect",
+   "light-optics"
+  ],
+  "origin": "basic-physical-science"
+ },
+ {
+  "slug": "helicopter-rotor",
+  "title": "Helicopters: a spinning wing",
+  "level": 0,
+  "kind": "simulate",
+  "category": "physics",
+  "interaction": "Spin up a helicopter's rotor and lift off: the blades are wings going round, and the faster they spin or the more they tilt, the harder they throw air down and the more the helicopter is pushed up. Tilt the whole rotor disc to slide forward, backward or sideways; then switch off the tail rotor and watch the body spin the opposite way to the blades, and turn it back on to point where you like.",
+  "takeaway": "A helicopter rises by throwing air down with wings that go round, moves by tilting the whole rotor, and needs its tail rotor to stop the body spinning the other way.",
+  "prerequisites": [],
+  "related": [
+   "paper-plane-glide",
+   "kite-string-wind",
+   "rocket-throws-mass",
+   "flight"
+  ],
+  "needs": "",
+  "pitfall": "The rotor does not screw into the air like a propeller into wood; it lifts like a wing. Without the tail rotor the helicopter does not simply stop turning: the engine turning the blades one way turns the body the other, and the tail rotor's push is the only thing that cancels it.",
+  "why": "Smithsonian National Air and Space Museum, 'How Things Fly', https://howthingsfly.si.edu/ ('how do helicopters fly' is a perennial search question)",
+  "overlapWith": "flight: that page is a fixed wing section at level 2; this page's wing goes round, and the new ideas are the tilted disc and the body spinning the other way.",
+  "needsSource": "none (rotor thrust from momentum theory)",
+  "leadsTo": [
+   "newtons-laws"
+  ],
+  "everyday": false,
+  "origin": "vehicles-and-big-machines"
+ },
+ {
+  "slug": "hot-air-balloon-lift",
+  "title": "Hot-air balloons: a bag of lighter air",
+  "level": 0,
+  "kind": "simulate",
+  "category": "physics",
+  "interaction": "Fire the burner under a balloon and watch the air inside warm, spread out and grow lighter than the cold air around it, until the bag, basket and passengers weigh less than the air they push aside and the whole thing lifts. Let it cool and it sinks; pull the vent to drop faster; add passengers and see how much hotter the air must be. Climb high and watch the lift fade as the outside air thins.",
+  "takeaway": "A hot-air balloon floats because the warm air inside is lighter than the cool air outside, and the burner is the only control a pilot has for up and down.",
+  "prerequisites": [],
+  "related": [
+   "submarine-ballast-tanks",
+   "parachute-terminal-speed"
+  ],
+  "needs": "",
+  "pitfall": "Hot air does not rise because 'heat rises': the warm air is pushed up by the heavier cold air around it, the same reason a cork comes up in water. The balloon is not sealed or pressurised; it is open at the bottom, and warm air spilling out is normal.",
+  "why": "England KS3 science, the particle model: changes of density with temperature, https://www.gov.uk/government/publications/national-curriculum-in-england-science-programmes-of-study ('how do hot air balloons work' is a common search question)",
+  "overlapWith": "states-of-matter: that page heats particles in a box to change state; this page heats air inside a bag and asks only whether the bag is lighter than the air outside it.",
+  "needsSource": "none (air density from the ideal-gas law and a standard atmosphere)",
+  "leadsTo": [
+   "states-of-matter",
+   "newtons-laws"
+  ],
+  "everyday": false,
+  "origin": "vehicles-and-big-machines"
+ },
+ {
+  "slug": "ice-skates-glide-and-grip",
+  "title": "Ice skates: glide forward, grip sideways",
+  "level": 0,
+  "kind": "manipulate",
+  "category": "physics",
+  "interaction": "Give a sled one shove on grass, on a wooden floor, on concrete and on ice and count how far it slides on each; ice is in a class of its own. Then put on skates: a blade glides along its length but bites sideways, so pushing off at an angle sends you forward, and leaning onto an edge carves a curve, while a skater who pushes straight back goes nowhere. A zoom shows the thin wet layer on the ice that makes the gliding possible.",
+  "takeaway": "Skating works because ice is uncommonly slippery along the blade while the blade's edge still grips sideways, and every push is made against that sideways grip.",
+  "prerequisites": [],
+  "related": [
+   "train-wheel-cones",
+   "car-brakes-stopping-distance",
+   "car-steering-corners"
+  ],
+  "needs": "Measured sliding-friction coefficients for ice, wood, concrete and grass from a cited physics reference (textbook values, no dataset).",
+  "pitfall": "The blade does not melt the ice by pressure: the melting-point drop under a skater is a few hundredths of a degree. Ice is slippery because its surface carries a thin liquid-like layer and rubbing warms it further, which is why flat shoes slip too.",
+  "why": "Robert Rosenberg, 'Why is ice slippery?', Physics Today (2005), the standard correction of the pressure-melting story, https://physicstoday.aip.org/features/why-is-ice-slippery",
+  "overlapWith": "newtons-laws: that page treats friction as a slider on a cart; this page is a surface comparison and the odd sideways grip of a blade, and it corrects the pressure-melting story.",
+  "needsSource": "none (friction coefficients quoted from a cited reference)",
+  "leadsTo": [
+   "newtons-laws",
+   "states-of-matter"
+  ],
+  "everyday": true,
+  "origin": "vehicles-and-big-machines"
+ },
+ {
+  "slug": "keeping-things-warm",
+  "title": "Keeping things warm (and cold)",
+  "level": 0,
+  "kind": "build",
+  "category": "physics",
+  "everyday": true,
+  "interaction": "Build a container for hot tea from layers in a palette (paper, metal, foam, wool, an air gap, a vacuum gap, a lid or no lid) and start the clock: a thermometer in the tea and a plot show it cooling toward the room's temperature, fast or slow depending on the walls. Swap the tea for an ice cube and the same walls keep the cold in just as well. Compare a paper cup, a mug, a vacuum flask and a sleeping bag side by side.",
+  "takeaway": "A good insulator makes no heat of its own; it slows heat on its way out, or in, so the temperature curve bends more slowly.",
+  "prerequisites": [],
+  "related": [
+   "temperature-and-touch",
+   "drying-and-evaporation",
+   "greenhouse-effect"
+  ],
+  "needs": "Thermal conductivity and heat capacity for a handful of materials (handbook values).",
+  "pitfall": "A coat or a blanket does not make warmth and cold is not a substance that gets in; both just slow the heat flowing between the inside and the outside, which is why a vacuum flask keeps iced water cold too.",
+  "why": "NGSS MS-PS3-3: design, construct and test a device that minimises or maximises thermal energy transfer (clarification: an insulated box, a Styrofoam cup) https://learninglab.si.edu/standards/MS-PS3-3/1924 ; KS3 physics 'Energy' (energy transfer from the hotter to the cooler object; use of insulators) and KS2 Year 5 'Properties and changes of materials' (conductivity, electrical and thermal) https://www.gov.uk/government/publications/national-curriculum-in-england-science-programmes-of-study/national-curriculum-in-england-science-programmes-of-study",
+  "overlapWith": "greenhouse-effect: that page balances sunlight in against infrared out for a planet; this one balances a hot drink against a room through walls the reader builds, with no sunlight and no gases.",
+  "needsSource": "Lumped thermal model (heat capacities joined by the conductances of each layer, Newton's cooling at the surface). Material values from a handbook table (Wikipedia's thermal conductivity list, CC BY-SA 4.0, or a textbook); a few values only.",
+  "leadsTo": [
+   "greenhouse-effect",
+   "homeostasis"
+  ],
+  "origin": "basic-physical-science"
+ },
+ {
+  "slug": "kite-string-wind",
+  "title": "Kites: how a string holds you to the wind",
+  "level": 0,
+  "kind": "manipulate",
+  "category": "physics",
+  "interaction": "Fly a kite on a line and change the wind: the kite climbs to the angle where the wind's push, its weight and the pull of the string balance, and a gauge shows the tug in your hand. Move the knot where the string joins the kite to tilt it more or less into the wind, add a tail, and find the settings that make it fly steady, nose over, or refuse to lift; cut the string and it tumbles away downwind.",
+  "takeaway": "A kite flies because the wind pushes on a tilted surface and the string turns that push into lift, so no wind or no string means no kite.",
+  "prerequisites": [],
+  "related": [
+   "sailing-into-wind",
+   "paper-plane-glide",
+   "parachute-terminal-speed",
+   "wind-turbine-wind-speed",
+   "flight",
+   "helicopter-rotor"
+  ],
+  "needs": "",
+  "pitfall": "The kite does not rise because the wind blows upward: the wind is level, and the tilt of the kite turns part of its push upward. Running with a kite works only because running makes wind.",
+  "why": "NASA Glenn Research Center, Beginner's Guide to Aeronautics, 'Kites', https://www.grc.nasa.gov/www/k-12/airplane/kite1.html",
+  "overlapWith": "flight: that page is a wing section at level 2 with streamlines, a pressure map and stall; this page is a flat kite on a string with one control, trimmed by hand, and prepares the reader for it.",
+  "needsSource": "none",
+  "leadsTo": [
+   "newtons-laws"
+  ],
+  "everyday": true,
+  "origin": "vehicles-and-big-machines"
+ },
+ {
+  "slug": "magnets-and-poles",
+  "title": "Magnets & poles",
+  "level": 0,
+  "kind": "manipulate",
+  "category": "physics",
+  "everyday": true,
+  "interaction": "Drag two bar magnets about on a board: arrows show the pull or push between them, computed from their poles, and a compass needle and a sprinkle of iron filings line up along the field. Flip one magnet end for end and the pull turns into a push. Slide a steel paper clip toward a magnet to see it become a magnet of its own and pick up a chain of clips, then cut a magnet in half and find that each half still has two ends.",
+  "takeaway": "A magnet always has two ends; like ends push apart and unlike ends pull together, and the pull fades quickly with distance.",
+  "prerequisites": [],
+  "related": [
+   "balloons-and-static",
+   "electromagnetism"
+  ],
+  "needs": "",
+  "pitfall": "A magnet does not attract all metals, only iron, steel, nickel and cobalt; and cutting a magnet never separates its poles, each piece has two.",
+  "why": "NGSS 3-PS2-3 (electric or magnetic interactions between objects not in contact; the clarification names paper clips and magnets) https://www2.cde.ca.gov/cacs/id/web/29018 ; KS2 Year 3 'Forces and magnets' (magnets have two poles; predict whether two magnets attract or repel) https://www.gov.uk/government/publications/national-curriculum-in-england-science-programmes-of-study/national-curriculum-in-england-science-programmes-of-study",
+  "overlapWith": "electromagnetism: that page (level 2) places charges, draws field lines and induces currents with coils; this one has no electricity at all, only permanent magnets, their two poles, what they attract and how a clip becomes a temporary magnet.",
+  "needsSource": "none; the model is the two-pole (Gilbert) bar magnet with inverse-square pole forces and an induced pole pair for steel.",
+  "leadsTo": [],
+  "origin": "basic-physical-science"
+ }
+]

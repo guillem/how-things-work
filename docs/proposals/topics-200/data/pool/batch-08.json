@@ -1,0 +1,651 @@
+[
+ {
+  "slug": "seeds-and-germination",
+  "title": "How a seed wakes up",
+  "level": 0,
+  "kind": "simulate",
+  "category": "biology",
+  "everyday": true,
+  "interaction": "Plant a bean on wet paper and set one thing at a time, water, warmth or light: the seed swells, the root pokes out and turns down, the shoot turns up, on a day counter that runs faster when it is warm and wet. Keep it in the dark and it still sprouts, pale and tall, while the food packed inside it shrinks; its weight falls until the leaves open and only then starts to climb.",
+  "takeaway": "A seed needs water and warmth to wake up, not light or soil: it lives off the food packed inside it until its own leaves open.",
+  "prerequisites": [],
+  "related": [
+   "how-plants-drink",
+   "flowers-and-bees",
+   "why-leaves-change-colour"
+  ],
+  "needs": "",
+  "needsSource": "none: the hydrothermal-time germination model (Gummerson 1986; Bradford 2002) has no light term; the seedling's mass falls on its reserves and rises once leaves open; bean parameters stated on the page",
+  "pitfall": "Seeds are not dead and do not need soil; and the seedling gets lighter, not heavier, until it can make its own food. Light matters for growing, not for sprouting.",
+  "why": "NGSS 5-LS1-1, taught with bean seeds sprouting on a wet paper towel in a bag with no soil. https://thewonderofscience.com/5ls11",
+  "overlapWith": "photosynthesis: that page starts once there is a leaf in the light; this one is everything before the first leaf opens.",
+  "leadsTo": [
+   "photosynthesis"
+  ],
+  "origin": "living-things-and-body"
+ },
+ {
+  "slug": "tree-rings",
+  "title": "Tree rings",
+  "level": 0,
+  "kind": "explore",
+  "category": "biology",
+  "everyday": true,
+  "interaction": "Scrub the years of a real tree's life and watch it lay down one ring a year, wide in a good year and narrow in a dry one, drawn to the measured widths from a public archive; hover a ring for its year and its measured width, and the narrow ones are the hard years. Then try the detectives' trick: slide the ring pattern of an old beam along a living tree's record until the narrow years line up, and read off when the beam was cut.",
+  "takeaway": "A tree writes one ring a year, wide in good years and narrow in bad ones, so its rings are both a calendar and a weather diary that can be matched between trees.",
+  "prerequisites": [],
+  "related": [
+   "why-leaves-change-colour",
+   "how-plants-drink",
+   "deep-time",
+   "ice-ages"
+  ],
+  "needs": "Raw ring-width series (.rwl) from the International Tree-Ring Data Bank, NOAA NCEI World Data Service for Paleoclimatology: a US government archive, catalogued as CC0 by the Open Data Institute; each contributed series cites its authors.",
+  "needsSource": "ITRDB ring-width series, NOAA NCEI (US government archive, CC0 per the ODI certificate; data.gov lists no licence, so confirm on the study page)",
+  "pitfall": "Not every ring is a year everywhere: in a bad year a tree can skip a ring or add a false one, which is why the match uses a whole pattern of narrow years, never a single count.",
+  "why": "Demand and data: the ITRDB is the world's largest public archive of tree-ring measurements, catalogued on data.gov. https://catalog.data.gov/dataset/noaa-wds-paleoclimatology-the-international-tree-ring-data-bank-itrdb-revisited",
+  "overlapWith": "deep-time: that page scrubs Earth's whole record; this one scrubs one tree's rings, one per year, and teaches the matching trick that dates old wood.",
+  "leadsTo": [
+   "deep-time",
+   "carbon-cycle"
+  ],
+  "origin": "living-things-and-body"
+ },
+ {
+  "slug": "why-big-birds-flap-slowly",
+  "title": "Why big birds flap slowly",
+  "level": 0,
+  "kind": "manipulate",
+  "category": "biology",
+  "everyday": false,
+  "interaction": "Pick a real bird, from a hummingbird to a swan, and see it flap at its own rate and fly at the speed it needs to stay up; drag the size slider to blow a sparrow up to goose size and watch the flap rate fall and the needed speed climb. Past a certain size the sums no longer work for flapping, and the biggest flyers are shown soaring instead.",
+  "takeaway": "Bigger birds must fly faster and flap slower, and past a certain size flapping cannot keep them up, which is why the biggest flyers soar.",
+  "prerequisites": [],
+  "related": [
+   "inside-an-egg",
+   "flight",
+   "newtons-laws"
+  ],
+  "needs": "AVONET (Tobias et al. 2022, Ecology Letters, paper CC BY 4.0; the data files on Figshare, licence to confirm) for species mass, wing length and wing area; Pennycuick's wingbeat-frequency formula (J. Exp. Biol. 1990, revised 1996) and minimum flight speed from wing loading.",
+  "needsSource": "AVONET species measurements (paper CC BY 4.0, dataset licence to confirm on the repository); Pennycuick 1990/1996 published formulas",
+  "pitfall": "Do not explain lift here: flight owns it, and never with equal transit time. A bird's size does not scale evenly: weight grows faster than wing area, which is the whole point.",
+  "why": "Demand: the universal flapping-frequency equation made popular-science news in 2024. https://physicsworld.com/a/simple-equation-predicts-how-quickly-animals-flap-their-wings/",
+  "overlapWith": "flight: that page is lift and stall on a wing section at level 2; this one never looks at the wing's shape, only at how flap rate and speed change with a bird's size across real species.",
+  "leadsTo": [
+   "newtons-laws"
+  ],
+  "origin": "living-things-and-body"
+ },
+ {
+  "slug": "why-leaves-change-colour",
+  "title": "Why leaves change colour",
+  "level": 0,
+  "kind": "simulate",
+  "category": "biology",
+  "everyday": false,
+  "interaction": "Watch one maple leaf from late summer into autumn on a calendar scrub: as the days shorten and the nights cool, the green pigment is broken down and pulled back into the tree, and the yellow and orange that were underneath all along show through; sunny days with cold nights brew red on top. Then force the weather: a warm, dull autumn gives yellow without red, and an early frost cuts the show short.",
+  "takeaway": "The yellow was in the leaf all summer, hidden under the green; the tree takes the green back before letting the leaf go.",
+  "prerequisites": [],
+  "related": [
+   "how-plants-drink",
+   "tree-rings",
+   "seeds-and-germination",
+   "photosynthesis"
+  ],
+  "needs": "",
+  "needsSource": "none for the model (green pigment broken down as days shorten and cool, yellow pigments constant, red made on bright cool days, leaf colour mixed from the pigments); if the colour is mixed from measured pigment spectra, PhotochemCAD's spectra are freely downloadable but their licence must be checked",
+  "pitfall": "Leaves do not make yellow in autumn: the yellow was already there, and only the red is made fresh. Cold does not cause the change by itself: the shortening days are the main trigger.",
+  "why": "England KS1 statutory requirement, Seasonal changes: observe changes across the four seasons; and the most-asked autumn question. https://www.gov.uk/government/publications/national-curriculum-in-england-science-programmes-of-study/national-curriculum-in-england-science-programmes-of-study",
+  "overlapWith": "photosynthesis: that page is the green pigment at work; this one is the green being dismantled and what it leaves behind.",
+  "leadsTo": [
+   "photosynthesis"
+  ],
+  "origin": "living-things-and-body"
+ },
+ {
+  "slug": "body-thermostat",
+  "title": "Why you shiver and sweat",
+  "level": 0,
+  "kind": "simulate",
+  "category": "medicine",
+  "everyday": false,
+  "interaction": "Put a person in weather from snowy to scorching, resting or running, and watch a heat budget: the body makes heat all the time and loses it through the skin, and a thermostat in the brain keeps the core at one temperature by turning the skin pale or flushed, then shivering, then sweating. Push the weather past what sweat can carry away and the core creeps up.",
+  "takeaway": "You are a heater set to one temperature: shivering turns the heat up and sweating carries it away, and the colour of your skin shows which way the thermostat is pushing.",
+  "prerequisites": [],
+  "related": [
+   "hunger-and-fullness",
+   "why-you-get-sleepy",
+   "homeostasis"
+  ],
+  "needs": "",
+  "needsSource": "none: a one-node heat balance with resting heat near a hundred watts, shivering up to several times that, skin blood flow, and sweat cooling by evaporation up to a stated maximum, from textbook physiology",
+  "pitfall": "Sweat only cools when it evaporates, so sweat dripping off on a humid day has done nothing yet. And feeling cold is not the core being cold: the skin reports first, which is what the thermostat acts on.",
+  "why": "NGSS MS-LS1-8: skin receptors respond to temperature and send messages to the brain for immediate behaviour. https://nyssls.info/index.php/MS-LS1-8",
+  "overlapWith": "homeostasis: that page holds blood sugar steady with insulin; this one holds temperature steady with shivering and sweat, the same feedback idea with no hormones and one control at a time.",
+  "leadsTo": [
+   "homeostasis"
+  ],
+  "origin": "living-things-and-body"
+ },
+ {
+  "slug": "breathing-and-lungs",
+  "title": "How you breathe",
+  "level": 0,
+  "kind": "manipulate",
+  "category": "medicine",
+  "everyday": false,
+  "interaction": "Drag the diaphragm down and up on a cutaway chest and watch the ribs lift, the lungs swell and air flow in through a counter, with a bell jar and balloon beside it doing the same thing. Let go and set a slider for sleeping, walking or sprinting to see breaths per minute and the size of each breath change; then hold the breath and watch the carbon-dioxide bar climb until the urge to breathe wins.",
+  "takeaway": "The lungs cannot suck: the diaphragm makes the chest bigger, which lowers the pressure inside, and the outside air pushes itself in.",
+  "prerequisites": [],
+  "related": [
+   "how-fish-breathe",
+   "heartbeat-and-pulse",
+   "heart-circulation"
+  ],
+  "needs": "",
+  "needsSource": "none: chest volume to pressure by Boyle's law, airflow proportional to the pressure difference, and breathing rates by activity from textbook physiology, all stated on the page",
+  "pitfall": "Breathed-out air is not carbon dioxide: it still holds most of the oxygen that went in, which is why rescue breaths work. And the lungs are not muscles; the diaphragm and the rib muscles do the work.",
+  "why": "England KS3 programme of study: the mechanism of breathing to move air in and out of the lungs, using a pressure model to explain the movement of gases. https://www.gov.uk/government/publications/national-curriculum-in-england-science-programmes-of-study/national-curriculum-in-england-science-programmes-of-study",
+  "overlapWith": "heart-circulation: that page shows oxygen levels in the blood as the heart pumps; this one is the pump for air, with nothing about the blood.",
+  "leadsTo": [
+   "heart-circulation",
+   "states-of-matter"
+  ],
+  "origin": "living-things-and-body"
+ },
+ {
+  "slug": "digestion-journey",
+  "title": "Where your food goes",
+  "level": 0,
+  "kind": "step",
+  "category": "medicine",
+  "everyday": false,
+  "interaction": "Pick a mouthful (bread, apple, cheese or a sweet) and push it through the tube on a scrub bar: the mouth, stomach, small intestine and large intestine each take their real time on a clock, and the mouthful breaks into ever smaller pieces only where the right juices are. Watch nutrient dots cross into the blood all along the coiled small intestine and what is left become waste; swap the food to see fat linger in the stomach and fibre pass through untouched.",
+  "takeaway": "Food does not just fall through you: each part of the tube takes its own time and does its own job, and almost everything useful is taken out in the long, coiled small intestine.",
+  "prerequisites": [],
+  "related": [
+   "hunger-and-fullness",
+   "sugar-and-tooth-decay",
+   "homeostasis"
+  ],
+  "needs": "",
+  "needsSource": "none: transit times and which juices act where are textbook physiology; the compartment model with first-order breakdown of starch, protein and fat is a stated simplification",
+  "pitfall": "The stomach does not do most of digestion: it is a mixing bag of acid, and most breakdown and nearly all absorption happen in the small intestine. Food does not drop by gravity either; muscles squeeze it along, which is why you can swallow upside down.",
+  "why": "England KS2 Year 4 statutory requirement: describe the simple functions of the basic parts of the digestive system in humans. https://www-legacy.stem.org.uk/resources/community/collection/12365/year-4-animals-including-humans",
+  "overlapWith": "homeostasis: homeostasis plots blood sugar after a meal has been absorbed; this page is the tube itself, what happens to the mouthful before anything reaches the blood.",
+  "leadsTo": [
+   "homeostasis",
+   "the-cell"
+  ],
+  "origin": "living-things-and-body"
+ },
+ {
+  "slug": "fever",
+  "title": "What a fever is",
+  "level": 0,
+  "kind": "step",
+  "category": "medicine",
+  "everyday": false,
+  "interaction": "Catch a germ and step through a fever: the brain turns the thermostat up to 39 degrees, so a body at its normal temperature now reads as too cold, shivers and curls under a blanket until it reaches the new setting; when the germ is beaten the setting drops back and the same body reads as too hot and sweats. Drag the thermostat yourself to see the chills come from raising it and the sweats from lowering it.",
+  "takeaway": "A fever is not the body overheating: the brain raises its own thermostat, which is why you shiver on the way up and sweat on the way down.",
+  "prerequisites": [
+   "body-thermostat"
+  ],
+  "related": [
+   "why-shots-protect-you",
+   "germs-and-hand-washing",
+   "homeostasis"
+  ],
+  "needs": "",
+  "needsSource": "none: the body-thermostat heat model with a moving set point",
+  "pitfall": "A fever is a setting the body chooses, not a fault in its heating; a fever-reducing medicine lowers the setting, it does not cool the body. The page does not claim that the heat kills germs.",
+  "why": "NGSS MS-LS1-8: skin receptors respond to temperature; the fever page is the thermostat page's own example and the most-asked question about being ill. https://nyssls.info/index.php/MS-LS1-8",
+  "overlapWith": "homeostasis: that page breaks a feedback loop to model diabetes; this one moves the loop's target on purpose and watches the body chase it.",
+  "leadsTo": [
+   "homeostasis",
+   "epidemics"
+  ],
+  "origin": "living-things-and-body"
+ },
+ {
+  "slug": "germs-and-hand-washing",
+  "title": "Germs and hand washing",
+  "level": 0,
+  "kind": "simulate",
+  "category": "medicine",
+  "everyday": false,
+  "interaction": "Watch a classroom through a morning under germ light: one child's hands glow, every door handle, pencil and hand they touch takes a share, and the next hand to touch the handle takes a share of that, the counts shrinking with each hop and as germs die on dry surfaces. Choose who washes and when, with soap for a proper count or a quick rinse, and see how far the glow has got by lunchtime.",
+  "takeaway": "Germs travel hand to thing to hand, losing a share at each hop, and one good wash cuts the chain.",
+  "prerequisites": [],
+  "related": [
+   "why-shots-protect-you",
+   "sugar-and-tooth-decay",
+   "epidemics"
+  ],
+  "needs": "",
+  "needsSource": "Transfer fractions per touch and surface die-off rates from published fomite-transmission studies (e.g. Rusin, Maxwell and Gerba 2002) stated on the page; no dataset shipped",
+  "pitfall": "Germs on a dry doorknob do not multiply, they slowly die; the danger is the hop to a hand and from the hand to a mouth. Soap works mostly by lifting germs off so the water can carry them away, which is why the time spent rubbing matters.",
+  "why": "England statutory RSHE and health education guidance, primary health education: personal hygiene and germs including bacteria, viruses, how they are spread and treated, and the importance of handwashing. https://www.gov.uk/government/publications/relationships-education-relationships-and-sex-education-rse-and-health-education",
+  "overlapWith": "epidemics: that page spreads an infection through a moving crowd and plots the curves; this one is one classroom's hands and surfaces, counted, with no curves and no immunity.",
+  "leadsTo": [
+   "epidemics",
+   "the-cell"
+  ],
+  "origin": "living-things-and-body"
+ },
+ {
+  "slug": "growing-up",
+  "title": "How you grow",
+  "level": 0,
+  "kind": "explore",
+  "category": "medicine",
+  "everyday": false,
+  "interaction": "Slide a child's age from birth to twenty along real growth curves and watch the figure grow, with the typical range of heights shaded so that a tall nine-year-old and a short twelve-year-old are both normal; a second curve shows how much is added each year: a lot in the first year, a slow plateau, one last spurt, then nothing. Switch between girls and boys to see the spurt land at different ages.",
+  "takeaway": "You do not grow steadily: fastest as a baby, slowly through childhood, one last spurt, and then growing stops for good.",
+  "prerequisites": [],
+  "related": [
+   "how-a-bone-heals",
+   "why-you-get-sleepy",
+   "inside-an-egg",
+   "caterpillar-to-butterfly"
+  ],
+  "needs": "CDC Growth Charts data files (stature-for-age and weight-for-age percentiles, 2000; a US government work, public domain): https://www.cdc.gov/growthcharts/cdc-data-files.htm. Growth per year is derived by differencing the chart.",
+  "needsSource": "CDC Growth Charts data files, US government work (public domain)",
+  "pitfall": "Being below or above the middle line is not behind or ahead: the shaded band is normal, and the spurt's timing varies by years between children. The charts describe typical children, not a target.",
+  "why": "England KS2 Year 5 statutory requirement: describe the changes as humans develop to old age. https://www.gov.uk/government/publications/national-curriculum-in-england-science-programmes-of-study/national-curriculum-in-england-science-programmes-of-study",
+  "overlapWith": "homeostasis: that page plots hours of one person's blood sugar; this one scrubs years of the typical child's height from a real dataset, the way deep-time scrubs its record.",
+  "leadsTo": [
+   "the-cell",
+   "homeostasis"
+  ],
+  "origin": "living-things-and-body"
+ },
+ {
+  "slug": "hearing-and-the-ear",
+  "title": "How your ear hears",
+  "level": 0,
+  "kind": "manipulate",
+  "category": "medicine",
+  "everyday": false,
+  "interaction": "Slide a tone from low to high and watch it shake the eardrum, three tiny bones lever the shake into the fluid of the snail-shaped cochlea, and a ripple run along its ribbon until it peaks at one spot; each pitch peaks somewhere else, high notes near the entrance and low notes at the far end. Play two notes at once and see two bumps; turn the loudness up and the bumps grow.",
+  "takeaway": "The ear sorts sounds by pitch before the brain hears them: each note makes a different place along the spiral wiggle.",
+  "prerequisites": [],
+  "related": [
+   "why-spinning-makes-you-dizzy",
+   "smell-and-taste",
+   "vision-color"
+  ],
+  "needs": "",
+  "needsSource": "none: the Greenwood (1961) frequency-to-place function for the human cochlea, a middle-ear lever ratio, and a passive bank of tuned filters for the ribbon, stated as a simplification",
+  "pitfall": "The cochlea is not a microphone with one signal: it is thousands of sensors each listening at its own spot. And loud is not the same as high: loudness grows the bump, pitch moves it.",
+  "why": "NGSS MS-LS1-8: sensory receptors respond to stimuli, with ear receptors reacting to vibrations. https://nyssls.info/index.php/MS-LS1-8",
+  "overlapWith": "waves-interference: that page is the wave in the air; this one is the receiver, from eardrum to the place-by-pitch map. The reserve item Hearing and the cochlea merges here at level 0; the cochlea's own mechanics (travelling wave, active amplifier) stay open for a level-3 page.",
+  "leadsTo": [
+   "waves-interference",
+   "oscillations-resonance"
+  ],
+  "origin": "living-things-and-body"
+ },
+ {
+  "slug": "heartbeat-and-pulse",
+  "title": "Your pulse",
+  "level": 0,
+  "kind": "manipulate",
+  "category": "medicine",
+  "everyday": false,
+  "interaction": "Put two fingers on your own wrist and count along with a pulse the page beats for you: a stopwatch counts fifteen seconds and multiplies by four. Then slide the figure from resting to walking to sprinting and watch the beat speed up and the push of each beat travel down the arm to the wrist; stop, and the rate drifts back down over a minute or two, faster for a fit heart.",
+  "takeaway": "Your pulse is the heart's push arriving at your wrist, and it speeds up with effort because working muscles need more blood.",
+  "prerequisites": [],
+  "related": [
+   "breathing-and-lungs",
+   "muscles-pull-in-pairs",
+   "why-bruises-change-colour",
+   "heart-circulation"
+  ],
+  "needs": "",
+  "needsSource": "none: heart rate rising with effort toward a maximum near 220 minus age, recovery as an exponential with a fitness-dependent time, and the pulse as a pressure wave travelling far faster than the blood, from textbook physiology",
+  "pitfall": "The pulse is not the blood arriving: the push travels along the artery many times faster than the blood itself moves. And a slower resting pulse usually means a stronger heart, not a weaker one.",
+  "why": "England KS2 Year 6: the circulatory system and the effect of exercise, taught by measuring the pulse before and after two minutes of exercise. https://www-legacy.stem.org.uk/resources/community/collection/13109/year-6-animals-including-humans",
+  "overlapWith": "heart-circulation: that page is inside the heart, with valves, an ECG and a pressure curve; this one never opens the heart: it is the beat you can feel and how exercise changes it.",
+  "leadsTo": [
+   "heart-circulation"
+  ],
+  "origin": "living-things-and-body"
+ },
+ {
+  "slug": "how-a-bone-heals",
+  "title": "How a broken bone mends",
+  "level": 0,
+  "kind": "simulate",
+  "category": "medicine",
+  "everyday": false,
+  "interaction": "Break a bone in a cutaway leg, choose whether it is held still in a cast or keeps moving, and run the weeks: blood pools at the break, a soft rubbery callus bridges it, bone fills the callus in, and over months the lump is trimmed back toward the old shape. With too much movement the bridge never forms; with no load at all during the trimming the bone stays thin.",
+  "takeaway": "A broken bone mends itself by first growing a bigger lump of new bone than it needs and then slowly trimming it back; the cast only holds the pieces still while it does.",
+  "prerequisites": [],
+  "related": [
+   "how-cuts-heal",
+   "joints-and-skeleton",
+   "growing-up"
+  ],
+  "needs": "",
+  "needsSource": "none: the stages and typical timings are textbook orthopaedics (Marsell and Einhorn 2011 review); the grid model of callus that turns to bone where it is held still, and is removed where it carries no load, is a stated simplification",
+  "pitfall": "The cast does not heal anything, and bone does not mend like a glued stick: the repair is living tissue that keeps being reshaped for months, which is why a healed bone can end up as strong as before.",
+  "why": "England KS3 programme of study: the structure and functions of the human skeleton. https://www.gov.uk/government/publications/national-curriculum-in-england-science-programmes-of-study/national-curriculum-in-england-science-programmes-of-study",
+  "overlapWith": "bridges-structures: that page loads a structure until a member fails; this one starts from the failure and watches a living member rebuild itself.",
+  "leadsTo": [
+   "the-cell",
+   "bridges-structures"
+  ],
+  "origin": "living-things-and-body"
+ },
+ {
+  "slug": "how-cuts-heal",
+  "title": "How a cut heals",
+  "level": 0,
+  "kind": "step",
+  "category": "medicine",
+  "everyday": false,
+  "interaction": "Make a cut of chosen depth in a slice of skin and scrub the days: blood cells pour out, platelets stick to the torn edge and to each other, and a net of fibres traps cells until the flow stops; a scab hardens on top while new skin cells creep across underneath. Make the cut wider and the plug takes longer; pick the scab early and the gap reopens.",
+  "takeaway": "Bleeding stops because sticky cells pile up from the edges of the hole until they plug it, and the scab is that plug dried out while new skin grows under it.",
+  "prerequisites": [],
+  "related": [
+   "why-bruises-change-colour",
+   "how-a-bone-heals",
+   "germs-and-hand-washing"
+  ],
+  "needs": "",
+  "needsSource": "none: a particle simulation of flow through a hole with sticking rules for platelets and a fibre net, then a grid of skin cells migrating across the gap; timings from textbook wound healing, stated as a simplification",
+  "pitfall": "A scab is not the new skin and the body does not heal from the outside in: the new skin grows underneath, from the edges, and the scab falls off when it is done.",
+  "why": "NGSS 4-LS1-1: plants and animals have internal and external structures that function to support survival, with skin named as an example structure. https://www2.cde.ca.gov/cacs/id/web/29023",
+  "overlapWith": "heart-circulation: that page keeps the blood inside the vessels; this one is what blood does when it leaks out.",
+  "leadsTo": [
+   "the-cell",
+   "heart-circulation"
+  ],
+  "origin": "living-things-and-body"
+ },
+ {
+  "slug": "hunger-and-fullness",
+  "title": "Why you feel full",
+  "level": 0,
+  "kind": "simulate",
+  "category": "medicine",
+  "everyday": false,
+  "interaction": "Eat something, a glass of water, an apple, a bowl of porridge or a bag of crisps, and watch the stomach stretch and a fullness gauge rise; then let the clock run as the stomach squeezes its contents out into the gut, fast for water and slow for fat, and the gauge falls toward hungry. Compare a small snack with a big bowl of soup holding the same energy: the soup fills you more and for longer.",
+  "takeaway": "You feel full when your stomach is stretched and hungry when it empties, so foods with the same energy can keep you full for very different times.",
+  "prerequisites": [],
+  "related": [
+   "digestion-journey",
+   "body-thermostat",
+   "smell-and-taste",
+   "homeostasis"
+  ],
+  "needs": "",
+  "needsSource": "Gastric-emptying half-times by food type (liquids in tens of minutes, solid meals in a couple of hours, fat slower) from published meal studies stated on the page; fullness from stomach volume plus a slow signal from the gut; no dataset shipped",
+  "pitfall": "Fullness is not a calorie counter: the stomach measures stretch and the gut reports slowly, which is why a bag of crisps can leave you hungry and a bowl of soup does not. The page calls no food bad.",
+  "why": "England KS2 Year 3 statutory requirement: identify that animals, including humans, need the right types and amount of nutrition. https://www.gov.uk/government/publications/national-curriculum-in-england-science-programmes-of-study/national-curriculum-in-england-science-programmes-of-study",
+  "overlapWith": "homeostasis: that page plots blood sugar and insulin after a meal; this one stops at the stomach and never looks at the blood.",
+  "leadsTo": [
+   "homeostasis"
+  ],
+  "origin": "living-things-and-body"
+ },
+ {
+  "slug": "joints-and-skeleton",
+  "title": "Build a joint",
+  "level": 0,
+  "kind": "build",
+  "category": "medicine",
+  "everyday": false,
+  "interaction": "Build an arm, then a leg, by choosing a joint for each junction from a palette of hinge, pivot, ball-and-socket and fixed; then try to touch your nose, scratch your back and turn a key. The skeleton moves exactly as far as its joints allow, so a hinge at the shoulder leaves the hand stuck in one plane and a ball at the knee buckles under the body.",
+  "takeaway": "Joints come in a few shapes, hinges, pivots and ball-and-sockets, and the body uses the shape that fits each job.",
+  "prerequisites": [],
+  "related": [
+   "muscles-pull-in-pairs",
+   "how-a-bone-heals",
+   "bridges-structures"
+  ],
+  "needs": "",
+  "needsSource": "none: forward kinematics with each joint type's degrees of freedom and textbook ranges of motion",
+  "pitfall": "The elbow is not the only joint in the forearm: turning your palm over is a separate pivot joint below it, so a hinge alone cannot explain what an arm does. Fixed joints (the skull) are joints too.",
+  "why": "England KS2 Year 3 statutory requirement: identify that humans and some other animals have skeletons and muscles for support, protection and movement. https://www.gov.uk/government/publications/national-curriculum-in-england-science-programmes-of-study/national-curriculum-in-england-science-programmes-of-study",
+  "overlapWith": "bridges-structures: the only existing build page; it assembles a structure to carry loads, while this one assembles joints to reach places, with no forces.",
+  "leadsTo": [
+   "bridges-structures",
+   "newtons-laws"
+  ],
+  "origin": "living-things-and-body"
+ },
+ {
+  "slug": "muscles-pull-in-pairs",
+  "title": "Muscles pull in pairs",
+  "level": 0,
+  "kind": "manipulate",
+  "category": "medicine",
+  "everyday": false,
+  "interaction": "Drag the hand of a cutaway arm up and down: the biceps shortens and bulges to lift it and the triceps to lower it, and tugging either muscle alone shows it can only pull, never push. Hang a bag of shopping from the hand and watch how hard the biceps must pull, many times the bag's weight, because it grips the forearm so close to the elbow.",
+  "takeaway": "A muscle can only pull, so every joint needs a pair that take turns, and the one that grips near the elbow must pull far harder than the weight in your hand.",
+  "prerequisites": [],
+  "related": [
+   "joints-and-skeleton",
+   "heartbeat-and-pulse",
+   "bridges-structures"
+  ],
+  "needs": "",
+  "needsSource": "none: a two-link lever with real attachment distances (biceps a few centimetres from the elbow, the hand some thirty-five centimetres away) gives the force ratio",
+  "pitfall": "Muscles never push; the opposite movement is always another muscle pulling. And a bigger muscle does not change the lever: it still pulls from the same place.",
+  "why": "England KS3 programme of study: the function of muscles and examples of antagonistic muscles. https://www.gov.uk/government/publications/national-curriculum-in-england-science-programmes-of-study/national-curriculum-in-england-science-programmes-of-study",
+  "overlapWith": "bridges-structures: that page colours beams by tension and compression under a load; this one is a living lever with two pullers, and the load is a shopping bag.",
+  "leadsTo": [
+   "newtons-laws",
+   "bridges-structures"
+  ],
+  "origin": "living-things-and-body"
+ },
+ {
+  "slug": "reflexes",
+  "title": "Reflexes",
+  "level": 0,
+  "kind": "simulate",
+  "category": "medicine",
+  "everyday": false,
+  "interaction": "Touch a hot pan on screen and watch two signals race along the body's wiring: one takes the short loop to the spinal cord and straight back to the arm muscle, the other carries on up to the brain; the hand is away before the ouch arrives, with both times on a clock. Then take the page's own reaction test, click when the colour changes, and see your time land far above the reflex's.",
+  "takeaway": "A reflex is a shortcut through the spinal cord, which is why your hand is off the hot pan before you feel the pain.",
+  "prerequisites": [],
+  "related": [
+   "heartbeat-and-pulse",
+   "why-spinning-makes-you-dizzy",
+   "neurons"
+  ],
+  "needs": "",
+  "needsSource": "none: path lengths times textbook nerve conduction speeds (tens of metres per second for the fast fibres, with a short delay at each junction), and a reaction-time test measured in the browser",
+  "pitfall": "The brain does not decide to pull the hand away; it finds out afterwards. And the reflex is not faster because its signal travels faster: it is faster because its path is shorter.",
+  "why": "NGSS MS-LS1-8: sensory receptors send messages that result in immediate behaviour or memories, with the hot-handle example. https://nyssls.info/index.php/MS-LS1-8",
+  "overlapWith": "neurons: that page is the spike itself, ions and myelin at level 2; this one shows no voltage, only paths and timings, and the reader's own reaction time.",
+  "leadsTo": [
+   "the-cell",
+   "electric-circuits"
+  ],
+  "origin": "living-things-and-body"
+ },
+ {
+  "slug": "smell-and-taste",
+  "title": "Smell and taste",
+  "level": 0,
+  "kind": "build",
+  "category": "medicine",
+  "everyday": false,
+  "interaction": "Build a smell: drag a molecule across a row of a dozen receptor locks and see which ones it fits, lighting a pattern; a different molecule lights a different pattern, and two together light a new one, so the nose tells smells apart by the pattern rather than by one lock each. Then eat a strawberry with the nose pinched and watch only the tongue's five basic tastes light up: most of what you call flavour vanishes.",
+  "takeaway": "There is no sensor for each smell: a smell is the pattern of many sensors lit at once, and most of what you taste is really smell.",
+  "prerequisites": [],
+  "related": [
+   "hearing-and-the-ear",
+   "hunger-and-fullness",
+   "vision-color"
+  ],
+  "needs": "",
+  "needsSource": "The receptor matrix is a stated toy with real counts (about four hundred human odorant-receptor types, five basic tastes), after the combinatorial-code result of Malnic, Hirono, Sato and Buck (1999, Cell 96:713); if an open odorant-receptor response dataset is used to fill it, its licence must be checked",
+  "pitfall": "The tongue map (sweet at the tip, bitter at the back) is a myth: every taste is sensed all over the tongue. And flavour is not a sixth taste; it is smell arriving through the back of the mouth.",
+  "why": "NGSS MS-LS1-8: sensory receptors respond to stimuli, with tongue and nose receptors reacting to specific chemicals. https://thewonderofscience.com/msls18",
+  "overlapWith": "vision-color: that page builds colour from three cone types; this one builds a smell from hundreds of receptors, the same pattern idea with a different sense and a pinched-nose test.",
+  "leadsTo": [
+   "vision-color",
+   "the-cell"
+  ],
+  "origin": "living-things-and-body"
+ },
+ {
+  "slug": "sugar-and-tooth-decay",
+  "title": "Sugar and your teeth",
+  "level": 0,
+  "kind": "simulate",
+  "category": "medicine",
+  "everyday": true,
+  "interaction": "Place snacks and drinks on a day's timeline and run it: each sugary bite drops the mouth's acid meter into the red for about half an hour, and the enamel on a close-up tooth wears away only while the meter is there. Try one big bag of sweets at once against the same sweets spread through the day, then add brushing with fluoride toothpaste and watch the meter recover faster.",
+  "takeaway": "Teeth are damaged by how often sugar arrives, not by how much: the same sweets spread through the day keep the mouth acid for hours.",
+  "prerequisites": [],
+  "related": [
+   "germs-and-hand-washing",
+   "digestion-journey",
+   "acids-bases"
+  ],
+  "needs": "",
+  "needsSource": "Stephan curve: the published plaque pH-after-sugar curve (Stephan 1944, Journal of Dental Research; summarised at https://www.dentalcare.com/en-us/ce-courses/ce713/stephan-curve) is used as the model's shape; no dataset is shipped",
+  "pitfall": "Sugar does not dissolve teeth: the bacteria in plaque turn it into acid, and the acid does the damage below a mouth pH of about 5.5. Sugar-free does not mean acid-free: fizzy drinks are acid on their own.",
+  "why": "England KS2 Year 4 statutory requirement: identify the different types of teeth in humans and their simple functions, taught with tooth-decay investigations. https://www-legacy.stem.org.uk/resources/community/collection/12365/year-4-animals-including-humans",
+  "overlapWith": "acids-bases: that page is the chemistry of acids; this one is one acid attack you can schedule, on a tooth, with no chemistry shown.",
+  "leadsTo": [
+   "acids-bases"
+  ],
+  "origin": "living-things-and-body"
+ },
+ {
+  "slug": "why-bruises-change-colour",
+  "title": "Why bruises change colour",
+  "level": 0,
+  "kind": "step",
+  "category": "medicine",
+  "everyday": false,
+  "interaction": "Bump a shin, lightly or hard, and watch blood leak from tiny broken vessels and pool under the skin; then scrub the days: the pool darkens as its oxygen goes, turns green as the red pigment is taken apart, then yellow, then fades as the pieces are carried off. A harder bump makes a bigger pool that takes longer to clear, and a colour key under the scrubber tells you roughly how old a bruise is.",
+  "takeaway": "A bruise is blood trapped under the skin, and its changing colours are the body taking that blood apart piece by piece.",
+  "prerequisites": [],
+  "related": [
+   "how-cuts-heal",
+   "heartbeat-and-pulse",
+   "heart-circulation"
+  ],
+  "needs": "",
+  "needsSource": "none: haemoglobin to biliverdin to bilirubin as first-order conversions in a spreading pool, with the colour mixed from the three pigments; timings stated as ranges, since bruise ageing varies with size and person",
+  "pitfall": "Bruises are not blood going bad, and the green and yellow are not signs of infection: the yellow is the same pigment that colours jaundice, and it is the normal end of the clean-up.",
+  "why": "Demand: a standing reader question in the Ask Discover column. https://www.discovermagazine.com/ask-discover-39543",
+  "overlapWith": "heart-circulation: that page keeps blood in the vessels; this one follows blood that got out, day by day, with no pump.",
+  "leadsTo": [
+   "heart-circulation"
+  ],
+  "origin": "living-things-and-body"
+ },
+ {
+  "slug": "why-shots-protect-you",
+  "title": "Why a shot protects you",
+  "level": 0,
+  "kind": "simulate",
+  "category": "medicine",
+  "everyday": false,
+  "interaction": "Let a germ into a body and watch a race of counts: the germ doubles every few hours while the body's matching defenders start from a handful and take about a week to multiply, so you are ill before they win. Give the same body a shot first, a harmless lookalike of the germ, and run the race again: the defenders start in their thousands and the germ never gets going; add a second shot and see the head start grow.",
+  "takeaway": "A shot is a practice run: the defenders are already made, so the real germ loses the race before it can multiply enough to make you ill.",
+  "prerequisites": [],
+  "related": [
+   "germs-and-hand-washing",
+   "fever",
+   "immune-system",
+   "mrna-vaccines",
+   "epidemics"
+  ],
+  "needs": "",
+  "needsSource": "none: two growth curves with textbook timescales (a first response taking about a week, a second taking days; germ doubling times stated), after the standard primary and secondary antibody curves",
+  "pitfall": "The shot does not contain the illness and does not make you a little sick to teach you: it is a lookalike, and feeling sore or warm afterward is the practice run itself.",
+  "why": "England statutory RSHE and health education guidance, primary health education: the facts and scientific evidence relating to vaccination and immunisation, introduced when vaccinations are offered to pupils. https://www.gov.uk/government/publications/relationships-education-relationships-and-sex-education-rse-and-health-education",
+  "overlapWith": "mrna-vaccines: that page follows the mRNA into a cell at level 2, and immune-system selects the matching cells; this one shows no cells, only the race of counts with and without a head start.",
+  "leadsTo": [
+   "epidemics"
+  ],
+  "origin": "living-things-and-body"
+ },
+ {
+  "slug": "why-spinning-makes-you-dizzy",
+  "title": "Why spinning makes you dizzy",
+  "level": 0,
+  "kind": "manipulate",
+  "category": "medicine",
+  "everyday": false,
+  "interaction": "Spin a head on a chair with a slider and watch the fluid in the ear's three rings lag behind, bending the little flap that tells the brain turning; keep spinning at a steady speed and the fluid catches up, so the feeling fades. Stop suddenly and the fluid keeps going, the flap bends the other way, and the brain reports turning in the opposite direction while the room stands still: that is dizzy.",
+  "takeaway": "Your ears sense turning with a ring of fluid, and when you stop spinning the fluid keeps going, so you feel you are turning the other way.",
+  "prerequisites": [],
+  "related": [
+   "hearing-and-the-ear",
+   "reflexes",
+   "oscillations-resonance"
+  ],
+  "needs": "",
+  "needsSource": "none: the torsion-pendulum model of the semicircular canal (fluid lag with a time constant of a few seconds, plus the brain's longer velocity storage), driven by the slider's turning speed",
+  "pitfall": "Dizziness after spinning is not blood sloshing or the brain being overwhelmed by speed: the sensor is faithfully reporting a real movement of fluid that is no longer the head's movement.",
+  "why": "Demand: a standing Life's Little Mysteries question. https://www.livescience.com/33828-spinning-dizzy.html",
+  "overlapWith": "oscillations-resonance: that page drives a spring; this one is a sensor's lag, with the same inner ear as hearing-and-the-ear but a different organ in it.",
+  "leadsTo": [
+   "oscillations-resonance",
+   "newtons-laws"
+  ],
+  "origin": "living-things-and-body"
+ },
+ {
+  "slug": "why-you-get-sleepy",
+  "title": "Why you get sleepy",
+  "level": 0,
+  "kind": "simulate",
+  "category": "medicine",
+  "everyday": false,
+  "interaction": "Set a bedtime and a wake-up time and run three days: a sleep-pressure tank fills while you are awake and drains while you sleep, and a body clock sets the hours when sleep comes easily; sleepiness is the gap between them. Skip a night and watch the tank overflow; nap in the afternoon and see tonight's sleep come later; a strip under the plot shows the night's cycles of light and deep sleep.",
+  "takeaway": "Sleepiness is a pressure that builds all day and drains at night, gated by a clock that opens a window for it; when the two disagree you lie awake tired or nod off at noon.",
+  "prerequisites": [],
+  "related": [
+   "body-thermostat",
+   "growing-up",
+   "homeostasis"
+  ],
+  "needs": "",
+  "needsSource": "none: the two-process model (Borbely 1982; retrospective at https://www.ncbi.nlm.nih.gov/pmc/articles/PMC9540767/) is an exponential sleep pressure and a daily rhythm with two thresholds; the night stages follow the standard ninety-minute cycle",
+  "pitfall": "The page explains when you get sleepy, not why animals sleep at all, which is still an open question. And a weekend lie-in drains the tank but does not move the clock, which is why Monday feels like jet lag.",
+  "why": "England statutory RSHE and health education guidance, primary health education: the importance of sufficient good quality sleep for health, the amount of sleep recommended for their age, and practical steps for improving sleep. https://www.gov.uk/government/publications/relationships-education-relationships-and-sex-education-rse-and-health-education",
+  "overlapWith": "homeostasis: that page is a feedback loop around blood sugar over hours; this one is a pressure and a clock over days, with no hormones shown.",
+  "leadsTo": [
+   "homeostasis"
+  ],
+  "origin": "living-things-and-body"
+ },
+ {
+  "slug": "a-year-of-weather",
+  "title": "A year of weather, two places",
+  "level": 0,
+  "kind": "explore",
+  "category": "earth",
+  "interaction": "Scrub through one real year of daily weather at a chosen station: each day a bar from the night's low to the afternoon's high and a drop for the rain, the 365 days drawn in a ring. Pick a second place (a desert, a rainy tropical coast, the Arctic, a foggy coast, a snowy interior) and its ring appears beside the first. Flip to the next year: the days are different every time, but the shape of each ring, the climate, comes back.",
+  "takeaway": "Weather is what happens today and nobody can tell you a month ahead; climate is the shape of the whole year, different in each place and the same from year to year.",
+  "prerequisites": [],
+  "related": [
+   "sea-breeze",
+   "cloud-base",
+   "dew-and-fog",
+   "water-cycle"
+  ],
+  "needs": "Daily high, low and rain for a handful of US stations in contrasting climates (Phoenix for desert, Hilo for wet tropics, Utqiagvik for the Arctic, San Francisco for a coast, Minneapolis for a continental interior) from NOAA GHCN-Daily (https://www.ncei.noaa.gov/products/land-based-station/global-historical-climatology-network-daily); US stations are US Government data, public domain. Non-US stations in GHCN-Daily carry no clear licence, so the page uses US stations only.",
+  "needsSource": "NOAA GHCN-Daily, US stations only (US Government data, public domain)",
+  "pitfall": "One cold week does not disprove a warming climate and one hot day does not prove it: the page compares whole years, never single days.",
+  "why": "NGSS 3-ESS2-1: 'Represent data in tables and graphical displays to describe typical weather conditions expected during a particular season' (https://www.nextgenscience.org/pe/3-ess2-1-earths-systems); England KS1 geography, seasonal and daily weather patterns.",
+  "overlapWith": "greenhouse-effect (level 1) runs emission scenarios to 2100; this page shows no trend and no model, only measured days, to separate weather from climate before any warming is discussed.",
+  "leadsTo": [
+   "greenhouse-effect"
+  ],
+  "everyday": false,
+  "origin": "earth-sky-weather"
+ }
+]

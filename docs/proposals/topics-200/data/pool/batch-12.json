@@ -1,0 +1,518 @@
+[
+ {
+  "slug": "hydraulics-digger-arm",
+  "title": "Diggers and hydraulics: a small push becomes a huge one",
+  "level": 0,
+  "kind": "manipulate",
+  "category": "energy",
+  "interaction": "Push a small piston and watch oil shove a much bigger piston at the digger's arm: the big one moves with many times the force but only a fraction of the distance, and a counter shows the two trade places exactly. Change the piston sizes and lift a car, then a boulder; let an air bubble into the pipe and the arm goes spongy. Drive the three cylinders of a digger's boom, arm and bucket to scoop and dump.",
+  "takeaway": "A liquid passes a push on undiminished, so a wide piston lifts many times what a narrow one is pushed with, paid for in distance.",
+  "prerequisites": [],
+  "related": [
+   "crane-counterweight",
+   "car-brakes-stopping-distance"
+  ],
+  "needs": "",
+  "pitfall": "Hydraulics make no energy: the work in equals the work out, the small piston simply travels much farther. A liquid does not squash, which is the whole point; a spongy brake pedal is air in the line.",
+  "why": "England KS3 science, forces: pressure in fluids and hydraulics, https://www.gov.uk/government/publications/national-curriculum-in-england-science-programmes-of-study (PhET 'Under Pressure' covers the same ground for middle school)",
+  "overlapWith": "bridges-structures: that page carries loads through members in tension and compression; this page is the fluid push inside a digger's cylinders and the force-for-distance trade.",
+  "needsSource": "none",
+  "leadsTo": [
+   "newtons-laws",
+   "bridges-structures"
+  ],
+  "everyday": false,
+  "origin": "vehicles-and-big-machines"
+ },
+ {
+  "slug": "kettle",
+  "title": "Electric kettle",
+  "level": 0,
+  "kind": "simulate",
+  "category": "energy",
+  "interaction": "Fill the kettle with one, two or four cups, switch it on and watch the element warm the water next to it, which rises while cooler water sinks to take its place, with a thermometer climbing and a timer counting the seconds. At 100 °C the thermometer stops however long the kettle stays on, bubbles of steam leave the water, the steam climbs the tube to a strip that bends, and the switch clicks off. Compare the seconds to the boil for each filling.",
+  "takeaway": "Twice the water takes twice as long to boil, and once it boils the water stops getting hotter, so leaving the kettle on longer only turns water into steam.",
+  "prerequisites": [],
+  "related": [
+   "toaster",
+   "room-thermostat",
+   "thermos-flask"
+  ],
+  "needs": "",
+  "pitfall": "Boiling water does not keep getting hotter the longer it boils, and the bubbles are steam, not air.",
+  "why": "PhET 'Energy Forms and Changes' (CC BY) heats water and other materials and is the standard primary and middle-school simulation of heating (https://climate.gov/teaching/resources/energy-forms-and-changes-35754); NGSS 4-PS3-2, energy transferred by heat and electric currents (https://www.cpp.edu/respect/resources/documents_4th/gr4.et_ngss.pdf).",
+  "overlapWith": "states-of-matter: that page runs a molecular-dynamics box through melting and boiling; this page heats a real appliance's worth of water, counting cups and seconds, and ends at the automatic switch.",
+  "needsSource": "none",
+  "leadsTo": [
+   "states-of-matter",
+   "electric-circuits"
+  ],
+  "everyday": true,
+  "origin": "home-mechanisms"
+ },
+ {
+  "slug": "levers-and-scissors",
+  "title": "Levers, seesaws & scissors",
+  "level": 0,
+  "kind": "manipulate",
+  "category": "energy",
+  "interaction": "Put a child and an adult on a seesaw and drag the pivot until it balances, with each side's turning effect shown as weights times notches from the pivot. Then cut a card with scissors near the pivot and out at the tips, crack a nut with a nutcracker, open a tin with a can opener and pick up a crumb with tweezers, and see which end of each lever moves far and which pushes hard.",
+  "takeaway": "A lever trades distance for force: the end that moves farther pushes less, which is why a long handle and a short jaw crack the nut and why nothing is gained for free.",
+  "prerequisites": [],
+  "related": [
+   "pulleys-and-cranes",
+   "bicycle-gears",
+   "screws-and-screwdrivers",
+   "car-brakes"
+  ],
+  "needs": "",
+  "pitfall": "A lever does not create force or energy: the push times the distance moved is the same at both ends, and scissors cut better near the pivot because the force is larger there, not because the blades are sharper.",
+  "why": "KS2 science, Year 5 Forces (levers, pulleys and gears let a smaller force have a greater effect; https://www.stem.org.uk/node/12696); PhET's 'Balancing Act' teeter-totter is the standard primary simulation of the same idea (listed at https://phys.libretexts.org/Learning_Objects/Visualizations_and_Simulations/PhET_Simulations).",
+  "overlapWith": "bridges-structures: that page colours the members of a built structure by tension and compression under a rolling load; this page is the turning effect about a pivot, with the reader moving the pivot and the loads.",
+  "needsSource": "none",
+  "leadsTo": [
+   "newtons-laws",
+   "bridges-structures"
+  ],
+  "everyday": true,
+  "origin": "home-mechanisms"
+ },
+ {
+  "slug": "light-bulb-hot-wire",
+  "title": "Why a light bulb glows (and gets hot)",
+  "level": 0,
+  "kind": "manipulate",
+  "category": "energy",
+  "interaction": "Slide a dimmer and watch the thin wire inside an old-style bulb go from dark to dull red to orange to white as it heats, while a bar splits what the bulb takes into light you can see and heat you can feel. At full brightness the heat bar is many times the light bar; a hand held near the bulb feels it. Swap in an LED bulb giving the same light and the heat bar nearly vanishes.",
+  "takeaway": "An old bulb makes light by heating a wire until it glows white, and most of what it takes leaves as heat, while an LED makes the same light nearly cold.",
+  "prerequisites": [],
+  "related": [
+   "battery-runs-down",
+   "socket-to-power-station"
+  ],
+  "needs": "The CIE 1931 colour-matching functions and the photopic sensitivity curve, to turn the glowing wire's temperature into a colour on screen and a light-versus-heat split (CIE tables, freely distributed by the Colour & Vision Research Laboratory, cvrl.org); tungsten's emissivity from a physics reference if the colour is to be exact.",
+  "pitfall": "The wire does not burn: there is no oxygen inside the bulb, which is why a tungsten filament glows for a thousand hours. Brightness does not rise in step with the dimmer: a little more current makes the wire much hotter, much brighter and whiter, so the colour changes with the brightness.",
+  "why": "England KS2 science, Year 6 electricity: associate the brightness of a lamp with the cells in the circuit, https://www.gov.uk/government/publications/national-curriculum-in-england-science-programmes-of-study ('how does a light bulb work' is a perennial search question)",
+  "overlapWith": "electric-circuits: that page lights bulbs as circuit elements with current and voltage meters; this page is what happens inside the bulb's wire and where the energy ends up, with the LED as the comparison.",
+  "needsSource": "CIE 1931 colour-matching functions and V(lambda) via cvrl.org (freely distributed CIE tables).",
+  "leadsTo": [
+   "electric-circuits",
+   "light-optics"
+  ],
+  "everyday": true,
+  "origin": "vehicles-and-big-machines"
+ },
+ {
+  "slug": "lock-and-key",
+  "title": "Lock & key",
+  "level": 0,
+  "kind": "build",
+  "category": "energy",
+  "interaction": "Cut a key by setting the depth of each of its five notches, slide it into a pin-tumbler lock and watch each spring-loaded pin stack ride up its notch. Turn the key: the plug rotates only if every stack's split sits exactly at the gap between plug and housing. Then try a neighbour's key, file one notch too deep, or push the pins up one at a time with a pick to see why the plug jams or turns.",
+  "takeaway": "A key does not push the pins out of the way; it lifts each stack to exactly the height where its split lines up with the edge of the turning cylinder, and one wrong height is enough to block it.",
+  "prerequisites": [],
+  "related": [
+   "zipper",
+   "click-pen",
+   "cryptography"
+  ],
+  "needs": "",
+  "pitfall": "A notch cut too deep blocks the lock as surely as one too shallow: the pins must line up, not be moved aside, and picking works on small manufacturing gaps, not on magic.",
+  "why": "'How do pin tumbler locks work?' is a perennial everyday-engineering question (ScienceABC explainer, https://www.scienceabc.com/innovation/pick-door-locks-pin-tumbler-sherlock-doors-open.html; LockWiki 'Shear line', https://LockWiki.com/index.php/Shear_line).",
+  "overlapWith": "logic-gates: that page wires AND and OR gates into circuits; the lock is one mechanical AND of five pins, and the reader cuts a key rather than wiring.",
+  "needsSource": "none",
+  "leadsTo": [
+   "logic-gates"
+  ],
+  "everyday": true,
+  "origin": "home-mechanisms"
+ },
+ {
+  "slug": "power-station-kettle",
+  "title": "A power station is a giant kettle",
+  "level": 0,
+  "kind": "step",
+  "category": "energy",
+  "interaction": "Step through a power station from the fire to the wire: fuel heats water in a boiler, steam blasts through turbine blades and spins them, the spinning magnet makes electricity, and the spent steam is cooled back to water in the cooling tower. Choose the heat source (coal, gas, nuclear, geothermal, mirrors focusing the sun) and the chain stays the same, while a bar of buckets shows how much of the heat leaves as electricity and how much goes out through the cooling tower: about one bucket in three for coal and nuclear, nearer one in two for the best gas plants.",
+  "takeaway": "Most of the world's electricity is made by boiling water to spin a magnet, whatever the heat comes from, and more of the heat goes out the cooling tower than down the wire.",
+  "prerequisites": [],
+  "related": [
+   "socket-to-power-station",
+   "dam-water-height",
+   "geothermal-heat-below",
+   "heat-engines"
+  ],
+  "needs": "Average heat rates by fuel from the US EIA (Electric Power Annual, public domain), so the bar of buckets changes with the fuel chosen.",
+  "pitfall": "The cooling tower's white plume is water vapour, not smoke, and the tower is not the chimney. The turbine is spun by steam, not by the fire, and a nuclear plant boils water the same way as a coal one.",
+  "why": "US EIA Energy Explained, 'How electricity is generated', https://www.eia.gov/energyexplained/electricity/how-electricity-is-generated.php (curriculum: England KS3 science, 'fuels and energy resources')",
+  "overlapWith": "heat-engines: that page is a four-stroke piston engine and the efficiency law; this page is the steam chain of a power station, with the two-out-of-three loss shown as a count from real plant data, not derived.",
+  "needsSource": "EIA Electric Power Annual, average operating heat rates by energy source (public domain).",
+  "leadsTo": [
+   "electric-circuits",
+   "states-of-matter"
+  ],
+  "everyday": false,
+  "origin": "vehicles-and-big-machines"
+ },
+ {
+  "slug": "pulleys-and-cranes",
+  "title": "Pulleys & cranes",
+  "level": 0,
+  "kind": "build",
+  "category": "energy",
+  "interaction": "Hang a crate from a rope, add pulleys to the hook and to the beam one at a time, and pull the free end: a counter shows the rope you pulled in against the height the crate rose, and a gauge shows the pull it took. Then build a crane with a boom, a winch and a counterweight at the back, swing the crate out along the boom and find where it tips.",
+  "takeaway": "Each extra rope holding the crate divides the pull you need and multiplies the rope you must pull, and a crane stands as long as its counterweight's turning effect beats the load's.",
+  "prerequisites": [],
+  "related": [
+   "levers-and-scissors",
+   "bridges-structures"
+  ],
+  "needs": "",
+  "pitfall": "Pulleys give no free lifting: a single fixed pulley only changes the direction of the pull, and every halving of the force doubles the rope.",
+  "why": "KS2 science, Year 5 Forces (pulleys), and the STEM Learning primary collection 'Forces: Gears, pulleys, levers and springs' (https://stem.org.uk/node/12033); Year 5 design and technology projects build pulley or gear mechanisms (https://www.brattonstpeters.org.uk/media/53368/year-5-mechanical-systems-pulleys-or-gears.pdf).",
+  "overlapWith": "bridges-structures: that page is a static structure carrying a load to the ground; here a rope and wheels trade rope length for force, and the only structure is a boom that may tip.",
+  "needsSource": "none",
+  "leadsTo": [
+   "newtons-laws",
+   "bridges-structures"
+  ],
+  "everyday": true,
+  "origin": "home-mechanisms"
+ },
+ {
+  "slug": "refrigerator",
+  "title": "Refrigerator & freezer",
+  "level": 0,
+  "kind": "step",
+  "category": "energy",
+  "interaction": "Step or play one parcel of refrigerant round its loop: it boils in the cold pipes inside the box and soaks up heat, the compressor squeezes it until it is hotter than the kitchen, it gives that heat away through the warm coils at the back, and a narrow valve lets it expand and go cold again. Set the dial, open the door, put in a warm pot or move the fridge into a hot room and watch the thermometer and how long the compressor runs. Then try to cool the kitchen by leaving the door open and watch the room get warmer.",
+  "takeaway": "A fridge does not make cold; it carries heat from the inside to the coils on its back, and the work of carrying it also ends up as heat in the room.",
+  "prerequisites": [
+   "thermos-flask"
+  ],
+  "related": [
+   "room-thermostat",
+   "kettle",
+   "heat-engines"
+  ],
+  "needs": "",
+  "pitfall": "Cold is not a substance the fridge produces: an open fridge warms the kitchen, and the back of a fridge is always warmer than the room.",
+  "why": "Google's 2017 how-to data shows fridge repair as the top household how-to across warm-climate countries (https://www.engadget.com/2017-09-04-google-interactive-map-how-to-searches.html); 'How does a refrigerator work?' is a standing Q&A on physics sites (https://www.askamathematician.com/2009/10/q-how-does-a-refrigerator-work/). The catalogue's Reserve lists Heat pumps.",
+  "overlapWith": "heat-engines: that page steps a four-stroke engine round a pressure-volume loop at level 2; this page runs the same kind of loop backwards as a parcel of refrigerant, with heat counted as it leaves the box, and no chart or efficiency.",
+  "needsSource": "none",
+  "leadsTo": [
+   "states-of-matter"
+  ],
+  "everyday": true,
+  "origin": "home-mechanisms"
+ },
+ {
+  "slug": "room-thermostat",
+  "title": "Thermostat",
+  "level": 0,
+  "kind": "simulate",
+  "category": "energy",
+  "interaction": "Turn the dial on a room thermostat and watch the heater switch on when the room drops below the setting and off when it rises above it, while heat leaks out through the walls and the room temperature wobbles in a band around the target. Open a window, change the heater's power or widen the switch's gap and see the wobble, the heater's on-time and the overshoot change; zoom into the bimetal strip bending toward and away from its contact.",
+  "takeaway": "A thermostat is a switch, not a tap: turning it up does not heat the room faster, it only moves the line where the heater turns off, and the room always wobbles a little around that line.",
+  "prerequisites": [],
+  "related": [
+   "refrigerator",
+   "kettle",
+   "feedback-control",
+   "homeostasis"
+  ],
+  "needs": "",
+  "pitfall": "Turning the dial higher does not make the heater hotter or the room warm faster; the heater is either on or off, and the setting only decides when it switches.",
+  "why": "'How do thermostats work?' explainers and classroom bimetal thermostat kits (Explain That Stuff, https://explainthatstuff.com/thermostats.html; Flinn Scientific thermostat model, https://www.flinnsci.com/thermostat-model/ap4735/).",
+  "overlapWith": "feedback-control: that page tunes the three gains of a PID controller at level 2 with response plots; this is a single on/off switch with one dial, and the reader watches the room wobble.",
+  "needsSource": "none",
+  "leadsTo": [
+   "homeostasis",
+   "electric-circuits"
+  ],
+  "everyday": true,
+  "origin": "home-mechanisms"
+ },
+ {
+  "slug": "screws-and-screwdrivers",
+  "title": "Screws, ramps & screwdrivers",
+  "level": 0,
+  "kind": "manipulate",
+  "category": "energy",
+  "interaction": "Push a crate up a ramp whose slope you set and watch the push needed fall as the ramp gets longer. Wrap the same ramp around a post to make a screw thread, turn it, and count the turns it takes to go in one finger's width with a coarse and with a fine thread. Then swap the screwdriver's handle for a fatter or a thinner one and see the twist you need change.",
+  "takeaway": "A ramp, a screw thread and a fat handle all let a small push do a heavy job by making it travel farther, and the finer the thread the more turns it costs.",
+  "prerequisites": [],
+  "related": [
+   "levers-and-scissors",
+   "bicycle-gears",
+   "water-taps-and-pipes"
+  ],
+  "needs": "",
+  "pitfall": "The thread does not multiply work: the push times the distance is the same as lifting straight up, and a screw stays put because its thread is shallow enough for friction to hold it, not because the thread is shaped to grip.",
+  "why": "Nearest standard: KS2 science Year 5 Forces names levers, pulleys and gears as mechanisms that let a smaller force have a greater effect, and KS1 design and technology adds wheels and axles; ramps and screws are the simple machines those lists leave out (primary national curriculum, https://dera.ioe.ac.uk/18300/1/PRIMARY_national_curriculum.pdf). No page-specific signal was found before the search budget ran out.",
+  "overlapWith": "newtons-laws: that page sends a cart along an editable track with energy bars; this page compares a ramp, a thread and a handle by counting pushes and turns, with no energy bars.",
+  "needsSource": "none",
+  "leadsTo": [
+   "newtons-laws"
+  ],
+  "everyday": true,
+  "origin": "home-mechanisms"
+ },
+ {
+  "slug": "skyscraper-sway-damper",
+  "title": "Skyscrapers in the wind",
+  "level": 0,
+  "kind": "simulate",
+  "category": "energy",
+  "interaction": "Blow gusty wind at a tall tower and watch its top sway a few metres back and forth; the sway builds when the gusts arrive in time with the tower's own rhythm. Hang a huge steel ball near the top on cables, tuned to swing at that same rhythm, and watch it swing the other way and cut the sway by nearly half; detune the ball, widen the tower's base, or try a short stubby building for comparison.",
+  "takeaway": "A tall building sways like a tree, and a giant pendulum hidden near the top swinging against it is what keeps the sway small.",
+  "prerequisites": [],
+  "related": [
+   "crane-counterweight",
+   "swing-pumping-alone"
+  ],
+  "needs": "",
+  "pitfall": "The ball does not hold the building still by being heavy; it works by swinging out of step, and a ball tuned to the wrong rhythm does almost nothing. Skyscrapers are meant to sway: a tower that could not bend would crack.",
+  "why": "Taipei 101's 660-tonne tuned mass damper, on public display and the subject of many explainers, https://www.amusingplanet.com/2014/08/the-728-ton-tuned-mass-damper-of-taipei.html",
+  "overlapWith": "bridges-structures: that page loads a still frame and colours members by stress; this page is a building moving in the wind and the machine that calms it. oscillations-resonance shows resonance with a mass on a spring; here it is the problem, and the damper the cure.",
+  "needsSource": "none",
+  "leadsTo": [
+   "oscillations-resonance",
+   "bridges-structures"
+  ],
+  "everyday": false,
+  "origin": "vehicles-and-big-machines"
+ },
+ {
+  "slug": "socket-to-power-station",
+  "title": "Where the socket's electricity comes from",
+  "level": 0,
+  "kind": "explore",
+  "category": "energy",
+  "interaction": "Switch on a lamp and follow its wire back out of the house, up the pole, through the transformer and along the pylons to the plants feeding the region, all drawn from one real region's hourly generation record. Scrub through a day and a year: the share from the sun rises and falls with daylight, wind comes and goes, and gas, coal, nuclear and hydro fill whatever is left, with the lamp's glow coloured in the same shares. Pick a cloudy day, a windy night, or summer against winter.",
+  "takeaway": "The electricity at a socket is being made at that very moment by a changing mix of plants, and the mix on a calm night is not the mix at a breezy noon.",
+  "prerequisites": [],
+  "related": [
+   "wind-turbine-wind-speed",
+   "solar-panel-tilt-day",
+   "power-station-kettle",
+   "power-grid",
+   "light-bulb-hot-wire"
+  ],
+  "needs": "Hourly generation by fuel for one or two balancing regions over a full year from the US EIA Hourly Electric Grid Monitor (Form EIA-930; US government work, public domain), or a European region from the ENTSO-E transparency platform (free reuse with attribution).",
+  "pitfall": "Electricity is not stored in the wires and does not travel from one named plant to one named house: every plant feeds the same grid, so the lamp's share is the region's share. Nor do solar and wind 'run out' at night and leave the lamp dark; other plants take over, which the record shows.",
+  "why": "The US EIA built a public Hourly Electric Grid Monitor because people ask exactly this: https://www.eia.gov/electricity/gridmonitor/ (curriculum: NGSS 4-ESS3-1, energy and natural resources)",
+  "overlapWith": "power-grid: that page has the reader balance supply and demand with dispatch, transformers and frequency; this page asks nothing but a scrub through a real year and shows only where the electricity actually came from.",
+  "needsSource": "EIA-930 hourly generation by fuel type (public domain, https://www.eia.gov/electricity/gridmonitor/); alternative ENTSO-E transparency data (attribution required).",
+  "leadsTo": [
+   "electric-circuits",
+   "greenhouse-effect"
+  ],
+  "everyday": true,
+  "origin": "vehicles-and-big-machines"
+ },
+ {
+  "slug": "solar-panel-tilt-day",
+  "title": "A solar panel through the day",
+  "level": 0,
+  "kind": "manipulate",
+  "category": "energy",
+  "interaction": "Tilt and turn a solar panel on a roof while the sun crosses the sky for the chosen date and place; a meter shows the panel's output, biggest when it faces the sun squarely and zero at night. Scrub the year: a panel set for summer loses out in winter, and a cloud passing over cuts the meter at once. Compare a flat panel, a tilted one and one that follows the sun as counts of homes lit over a year.",
+  "takeaway": "A solar panel makes most when it faces the sun squarely, so its tilt, the hour, the season and the clouds all show up in its output.",
+  "prerequisites": [],
+  "related": [
+   "wind-turbine-wind-speed",
+   "socket-to-power-station",
+   "solar-cells"
+  ],
+  "needs": "",
+  "pitfall": "A panel needs light, not heat: it makes less on a hot day, not more, and a cold bright winter noon beats a hot hazy afternoon. The sun is not overhead at noon outside the tropics, so a flat panel is never the best one.",
+  "why": "NGSS 4-ESS3-1, energy from renewable resources, https://www.nextgenscience.org/pe/4-ess3-1-earth-and-human-activity ('which way should solar panels face' is a common search question)",
+  "overlapWith": "solar-cells: that page is the p-n junction and the band-gap trade-off at level 2; this page treats the panel as a box and asks only how much sunlight reaches it. sun-earth-moon shows the angle of sunlight to explain seasons; here the control is the panel, not the planet.",
+  "needsSource": "none (sun position from NOAA's published solar-position equations, US government work, https://gml.noaa.gov/grad/solcalc/; clear-sky sunlight from a published clear-sky model such as Haurwitz)",
+  "leadsTo": [
+   "sun-earth-moon",
+   "electric-circuits"
+  ],
+  "everyday": true,
+  "origin": "vehicles-and-big-machines"
+ },
+ {
+  "slug": "toilet-flush",
+  "title": "Toilet flush & siphons",
+  "level": 0,
+  "kind": "simulate",
+  "category": "energy",
+  "interaction": "Press the lever: the flapper lifts, the tank pours into the bowl and the bowl's water climbs toward the top of the bend behind it. The moment it spills over, the whole bend fills and the bowl drains itself, fast, until air gets in and it gurgles to a stop. Then pour a bucket in slowly or quickly to find what starts the siphon, and watch the float rise with the refilling tank and shut its own valve.",
+  "takeaway": "The tank does not push anything down the drain; it only raises the bowl high enough to fill the bend, and from then on the siphon empties the bowl by itself until air breaks it.",
+  "prerequisites": [],
+  "related": [
+   "water-taps-and-pipes",
+   "drinking-straw",
+   "feedback-control"
+  ],
+  "needs": "",
+  "pitfall": "The flush is not a pump and not 'suction': the bowl drains because the water in the falling leg of the bend outweighs the water in the rising leg, and a slow pour that never fills the bend drains nothing.",
+  "why": "A university general-education course on everyday physics opens with a lecture chapter titled 'Toilet Science' (HKU PHYS0607, https://www.physics.hku.hk/~phys0607/lectures/chap02.html); Google's 2017 how-to data puts toilet repair at the top of North American searches (https://www.engadget.com/2017-09-04-google-interactive-map-how-to-searches.html).",
+  "overlapWith": "feedback-control: that page tunes PID gains on a pendulum, a drone and a car at level 2; here the float valve is only the last step, an on/off switch, and the page is the siphon, which no existing page shows.",
+  "needsSource": "none",
+  "leadsTo": [
+   "newtons-laws"
+  ],
+  "everyday": true,
+  "origin": "home-mechanisms"
+ },
+ {
+  "slug": "umbrella",
+  "title": "Umbrella",
+  "level": 0,
+  "kind": "manipulate",
+  "category": "energy",
+  "interaction": "Slide the runner up the shaft and watch the short stretchers push the ribs outward until the canopy is taut and the runner clicks into its catch; slide it down and the ribs fold in. Then blow wind at the open umbrella from below with a slider: the ribs bend, and past a gust strength the canopy flips inside out, which a second slider for rib stiffness delays.",
+  "takeaway": "An umbrella opens because a sliding ring pushes short struts that lever the ribs outward, and it flips inside out when wind from below pushes the ribs past the point where they can push back.",
+  "prerequisites": [],
+  "related": [
+   "levers-and-scissors",
+   "flight",
+   "bridges-structures"
+  ],
+  "needs": "",
+  "pitfall": "Wind does not pull the umbrella up: air from below pushes on the canopy, and it is the catch that holds the runner, not the ribs, that keeps it open.",
+  "why": "KS2 design and technology, mechanical systems including levers and linkages (STEM Learning KS2 'Mechanical systems' collection, https://stem.org.uk/node/466480; statutory text in the primary national curriculum, https://dera.ioe.ac.uk/18300/1/PRIMARY_national_curriculum.pdf).",
+  "overlapWith": "flight: that page is lift on a wing with streamlines and a pressure map at level 2; here the wind is only a load on a linkage the reader opens and closes with a runner.",
+  "needsSource": "none",
+  "leadsTo": [
+   "bridges-structures"
+  ],
+  "everyday": true,
+  "origin": "home-mechanisms"
+ },
+ {
+  "slug": "vacuum-cleaner",
+  "title": "Vacuum cleaner",
+  "level": 0,
+  "kind": "simulate",
+  "category": "energy",
+  "interaction": "Switch on the fan and watch it push air out of the body, so the air inside thins and the room's air pushes in through the nozzle, carrying dust grains along wherever the airflow past them is strong enough to lift them. Narrow the nozzle, lift it off the carpet, or let the bag fill with dust and watch the airflow and the lifting change; block the hose and the fan roars while nothing moves.",
+  "takeaway": "A vacuum cleaner does not pull: its fan empties the air inside, the room's air rushes in to fill the gap and carries the dust, and if the flow is blocked the fan can roar without lifting anything.",
+  "prerequisites": [
+   "drinking-straw"
+  ],
+  "related": [
+   "water-taps-and-pipes",
+   "flight"
+  ],
+  "needs": "",
+  "pitfall": "Suction is not a pull and more motor power is not more cleaning: a full bag or a blocked hose defeats the strongest fan, because it is the airflow that carries the dust.",
+  "why": "KS3 science, Year 8 pressure in fluids: gas pressure and atmospheric pressure as the push of air (scheme at https://flipeducation.ai/curriculum/gb/science/year-8/pressure-in-fluids); nearest standard, no page-specific signal was found before the search budget ran out.",
+  "overlapWith": "atmosphere-weather: that page lets pressure differences drive wind and weather over a map at level 2; here the pressure difference is made by a fan in a box and the wind is in a hose.",
+  "needsSource": "none",
+  "leadsTo": [
+   "newtons-laws"
+  ],
+  "everyday": true,
+  "origin": "home-mechanisms"
+ },
+ {
+  "slug": "water-taps-and-pipes",
+  "title": "Taps, pipes & water towers",
+  "level": 0,
+  "kind": "build",
+  "category": "energy",
+  "interaction": "Fill a water tower, lay pipes from it to a house and open a tap: a gauge shows the push of the water growing with the tower's height, and the flow from the tap growing with that push and shrinking as the pipe gets longer or thinner. Open a second tap, run the shower upstairs and downstairs at once, or kink the garden hose, and watch the flows share out; raise the tower to fix a feeble upstairs shower.",
+  "takeaway": "What pushes water out of a tap is the height of the water above it, and every long or thin pipe on the way uses up part of that push, which is why the upstairs shower weakens when a downstairs tap opens.",
+  "prerequisites": [],
+  "related": [
+   "toilet-flush",
+   "drinking-straw",
+   "screws-and-screwdrivers",
+   "electric-circuits"
+  ],
+  "needs": "",
+  "pitfall": "A pump does not push water straight to each tap, and opening a tap wider does not raise the pressure: it lowers it, because more flow loses more push in the pipes.",
+  "why": "KS3 physics, pressure in liquids set by depth, with the pipe network as the familiar case (end points at https://files.schudio.com/oswaldtwistleschool/files/documents/KS3_Physics_End_Points.pdf; Year 8 scheme at https://flipeducation.ai/curriculum/gb/science/year-8/pressure-in-fluids).",
+  "overlapWith": "electric-circuits: that page wires batteries and bulbs and meters current and voltage; this page is the water version, a tower and pipes solved the same way, and it is the analogy that prepares for the circuit page rather than a copy of it.",
+  "needsSource": "none",
+  "leadsTo": [
+   "electric-circuits"
+  ],
+  "everyday": true,
+  "origin": "home-mechanisms"
+ },
+ {
+  "slug": "wind-turbine-wind-speed",
+  "title": "Wind turbines: a little more wind, a lot more power",
+  "level": 0,
+  "kind": "manipulate",
+  "category": "energy",
+  "interaction": "Turn up the wind over a turbine and watch the blades spin faster while a row of houses lights up one by one; the count of lit houses climbs far faster than the wind does, and doubling the wind lights eight times as many. Lengthen the blades for more, then push the wind past the turbine's limit and watch it hold steady and finally feather its blades and stop. A real wind farm's measured power against wind speed is drawn under the toy's curve.",
+  "takeaway": "Doubling the wind speed gives a turbine about eight times the power, so where a turbine stands matters more than how big it is.",
+  "prerequisites": [],
+  "related": [
+   "socket-to-power-station",
+   "solar-panel-tilt-day",
+   "dam-water-height",
+   "kite-string-wind",
+   "power-grid"
+  ],
+  "needs": "Measured ten-minute power and wind-speed records of a real wind farm as the reference curve: the Kelmarsh or Penmanshiel SCADA data on Zenodo (Cubico Sustainable Investments, CC BY 4.0).",
+  "pitfall": "More wind is not always more power: above its rated wind the turbine holds its output steady, and above cut-out it stops, so the eight-times rule holds only below rated power. The blades turn because the wind lifts them like a wing, not because it pushes them from behind.",
+  "why": "NGSS 4-ESS3-1, obtaining energy from natural resources, and the US DOE's much-visited 'How do wind turbines work' explainer: https://www.energy.gov/eere/wind/how-do-wind-turbines-work",
+  "overlapWith": "power-grid: that page dispatches wind as one source among many to hold the grid's frequency; this page is one turbine, the wind alone, and the cube law shown as a count of lit houses.",
+  "needsSource": "Kelmarsh (https://doi.org/10.5281/zenodo.5841834) and Penmanshiel (https://doi.org/10.5281/zenodo.5946808) wind farm SCADA datasets, CC BY 4.0.",
+  "leadsTo": [
+   "newtons-laws"
+  ],
+  "everyday": false,
+  "origin": "vehicles-and-big-machines"
+ },
+ {
+  "slug": "wind-up-toy",
+  "title": "Wind-up toys",
+  "level": 0,
+  "kind": "simulate",
+  "category": "energy",
+  "interaction": "Turn the key of a toy and watch its spiral spring coil tighter, with a counter of turns stored; let go and the spring unwinds through a train of gears into the legs, and the toy walks until the counter reaches zero. Swap the gear train for a faster or a slower one and see the toy run quickly for a short time or slowly for a long time from the same turns; add a spinning fan governor and watch it even out the speed.",
+  "takeaway": "Every turn you put into the spring comes back out through the gears, so a gear train that makes the toy slower makes it walk for longer, because the stored turns are all you have to spend.",
+  "prerequisites": [],
+  "related": [
+   "bicycle-gears",
+   "clock-escapement",
+   "springs-and-scales"
+  ],
+  "needs": "",
+  "pitfall": "Winding faster stores nothing extra, and the spring does not run out all at once: its push weakens as it unwinds, which is why the toy slows at the end unless a governor evens it out.",
+  "why": "KS2 design and technology: pupils 'understand and use mechanical systems in their products, for example gears, pulleys, cams, levers and linkages' (primary national curriculum, https://dera.ioe.ac.uk/18300/1/PRIMARY_national_curriculum.pdf; teaching collection at https://planbee.com/collections/mechanisms-mechanical-systems).",
+  "overlapWith": "newtons-laws: that page shows energy bars on a track; here energy is stored as counted turns in a spring and spent through a gear train, which no existing page shows.",
+  "needsSource": "none",
+  "leadsTo": [
+   "newtons-laws"
+  ],
+  "everyday": true,
+  "origin": "home-mechanisms"
+ },
+ {
+  "slug": "zipper",
+  "title": "Zipper",
+  "level": 0,
+  "kind": "manipulate",
+  "category": "energy",
+  "interaction": "Drag the slider up and watch its Y-shaped channel bend the two tapes toward each other so that each tooth's hook drops into the hollow between the two teeth across from it; drag it down and the wedge inside prises them apart one at a time. Then pull the two sides of a closed stretch apart with a growing force and see every locked tooth take a share of it, and pull the same way on an open stretch.",
+  "takeaway": "A zip holds because each tooth is trapped by the two teeth across from it, and only the slider's wedge can free them, one at a time.",
+  "prerequisites": [],
+  "related": [
+   "lock-and-key",
+   "click-pen"
+  ],
+  "needs": "",
+  "pitfall": "The slider does not stick or lock the teeth: it only bends the tapes so the staggered teeth can interleave, and once interleaved they hold each other.",
+  "why": "'How Zippers Work' is a long-running HowStuffWorks everyday-innovations explainer (https://science.howstuffworks.com/innovation/everyday-innovations/zipper.htm/printable).",
+  "overlapWith": "bridges-structures: that page loads a structure the reader built and colours members by tension and compression; a zip is a chain of identical hooks that the slider engages and frees one by one, and the pull test only shows that the chain shares a load.",
+  "needsSource": "none",
+  "leadsTo": [
+   "bridges-structures"
+  ],
+  "everyday": true,
+  "origin": "home-mechanisms"
+ }
+]

@@ -1,0 +1,627 @@
+[
+ {
+  "slug": "metal-detector",
+  "title": "Metal detectors",
+  "level": 0,
+  "kind": "manipulate",
+  "category": "physics",
+  "everyday": true,
+  "interaction": "Sweep a coil over a beach with coins, a ring, a bottle cap and a stone buried at different depths. The coil's pulsing magnetism is drawn reaching into the sand; when it crosses metal it stirs swirling currents in the metal, and those currents make a magnetic echo the coil hears as a tone. The stone stays silent, the aluminium cap sings though no magnet would stick to it, and the deep coin only whispers; a bigger coil reaches deeper but finds the small things less well.",
+  "takeaway": "A metal detector's coil makes a changing magnetism that sets up swirling currents in any nearby metal, magnetic or not, and the echo of those currents is what it hears; nearer and bigger metal, louder echo.",
+  "prerequisites": [],
+  "related": [
+   "contactless-cards",
+   "traffic-light-controller",
+   "smoke-detector"
+  ],
+  "needs": "",
+  "needsSource": "none; the target is a small conducting loop coupled to the search coil, with an echo that falls off steeply with distance (roughly the sixth power for a small target).",
+  "pitfall": "It is not a magnet attracting metal: it finds gold and aluminium, which no magnet picks up. The echo fades very fast with depth, so 'it found nothing' does not mean nothing is there.",
+  "why": "NGSS 3-PS2-3: 'cause and effect relationships of electric or magnetic interactions between two objects not in contact with each other' (https://www.nextgenscience.org/pe/3-ps2-3-motion-and-stability-forces-and-interactions); 'Metal detector' averaged about 6,100 views a month on English Wikipedia in 2025.",
+  "overlapWith": "contactless-cards in this batch: coupled coils again, but there a chip answers on purpose while here any metal echoes. electromagnetism (level 2) induces a current in a coil from a moving magnet; the eddy-current echo is the level-0 version with no field lines.",
+  "leadsTo": [
+   "electric-circuits"
+  ],
+  "origin": "everyday-technology"
+ },
+ {
+  "slug": "microwave-oven",
+  "title": "Microwave oven",
+  "level": 0,
+  "kind": "simulate",
+  "category": "physics",
+  "interaction": "Switch the oven on and watch the waves from the magnetron bounce off the metal walls and add up into a fixed pattern of hot spots and quiet spots about six centimetres apart. Put in a bar of chocolate with the turntable stopped and see it melt only at the spots, then start the turntable and watch the food sweep through them; thicken the food to see the waves reach only a centimetre or two in, with the middle warming later by conduction.",
+  "takeaway": "The waves in the box form a fixed pattern of hot and cold spots, so the food has to move through them, and they heat only the outer layer, from which heat spreads inward.",
+  "prerequisites": [],
+  "related": [
+   "kettle",
+   "wireless-signals"
+  ],
+  "needs": "",
+  "pitfall": "Microwaves do not cook from the inside out, and 2.45 GHz is not a special resonance of water; the waves penetrate a centimetre or two and the middle of a thick food heats by conduction.",
+  "why": "The chocolate-bar speed-of-light experiment is a classroom standard (National Geographic Education, https://blog.education.nationalgeographic.org/2015/04/15/a-peep-into-the-speed-of-light/; school practical at https://www.preproom.org/practicals/pr.aspx?prID=1089); 'how to use a microwave' searches rose 1,472% in the UK in 2022 (https://www.insightdiy.co.uk/news/most-googled-diy-questions-in-the-uk/11094.htm).",
+  "overlapWith": "waves-interference: that page shows standing waves on a string and two-source ripples; here the standing wave fills a metal box, melts chocolate at its peaks, and the turntable is the fix.",
+  "needsSource": "none",
+  "leadsTo": [
+   "waves-interference"
+  ],
+  "everyday": true,
+  "origin": "home-mechanisms"
+ },
+ {
+  "slug": "mirror-images",
+  "title": "Mirror images",
+  "level": 0,
+  "kind": "build",
+  "category": "physics",
+  "everyday": true,
+  "interaction": "Place flat mirrors on a board between an eye and a toy: the page traces light from the toy, bounces it off each mirror and follows it back to where the eye believes the toy is, as far behind the mirror as the toy is in front. Build a periscope from two mirrors to see over a wall, then set two mirrors at a corner and count the images as you close the angle. Stand a figure with a label on its front before one mirror and see which way it turns: front to back, not left to right.",
+  "takeaway": "A mirror image sits behind the mirror exactly as far as the object is in front, and bouncing light along straight lines explains periscopes and kaleidoscopes.",
+  "prerequisites": [],
+  "related": [
+   "shadows-and-pinholes",
+   "light-optics"
+  ],
+  "needs": "",
+  "pitfall": "A mirror does not swap left and right; it swaps front and back. And a mirror half your height shows all of you, however far you stand from it.",
+  "why": "KS3 physics 'Light waves' (specular reflection at a surface; use of ray model to explain imaging in mirrors, the pinhole camera) https://www.gov.uk/government/publications/national-curriculum-in-england-science-programmes-of-study/national-curriculum-in-england-science-programmes-of-study ; KS2 Year 3 'Light' (light is reflected from surfaces), same document.",
+  "overlapWith": "light-optics: that page has mirrors as one item on an optical bench beside lenses and prisms; this one is only flat mirrors, the image behind the glass, periscopes and multiple reflections, with no refraction.",
+  "needsSource": "none; the law of reflection and virtual-image construction over several mirrors.",
+  "leadsTo": [
+   "light-optics"
+  ],
+  "origin": "basic-physical-science"
+ },
+ {
+  "slug": "noise-cancelling",
+  "title": "Noise-cancelling headphones",
+  "level": 0,
+  "kind": "simulate",
+  "category": "physics",
+  "everyday": true,
+  "interaction": "An aeroplane rumble reaches a drawn ear as a wave; switch the cancelling on and a tiny microphone on the headphone hears it, the speaker plays the same wave upside down, and the two add to a flat line while a meter shows how much noise is left. Now slide the noise from a low rumble to a high hiss: the headphone's copy arrives a hair late, which hardly matters for slow waves and ruins the cancellation for fast ones, so the meter climbs. Add a sudden clap and watch it get through untouched.",
+  "takeaway": "Noise-cancelling headphones add a mirror image of the noise so that the two shakes sum to nothing, which works for slow steady rumbles and fails for fast hisses and sudden sounds because the copy arrives a little late.",
+  "prerequisites": [
+   "speakers-and-microphones"
+  ],
+  "related": [
+   "sound-as-numbers"
+  ],
+  "needs": "",
+  "needsSource": "none; the residual of a wave plus its inverted, slightly delayed copy, swept across pitch.",
+  "pitfall": "The headphones do not block sound with a wall; they add sound. High hisses are quietened by the ear cups' padding, not by cancelling; keep the two apart. Cancellation is not the noise being sucked away.",
+  "why": "'Active noise control' averaged about 7,100 views a month on English Wikipedia in 2025 (https://wikimedia.org/api/rest_v1/metrics/pageviews/per-article/en.wikipedia/all-access/user/Active_noise_control/monthly/2025010100/2025123100).",
+  "overlapWith": "waves-interference (level 1): that page shows bands of cancellation in a ripple tank; this one is the device, with the delay as the one control and 'how much is left' as the meter.",
+  "leadsTo": [
+   "waves-interference"
+  ],
+  "origin": "everyday-technology"
+ },
+ {
+  "slug": "paints-and-lights",
+  "title": "Mixing paints vs mixing lights",
+  "level": 0,
+  "kind": "manipulate",
+  "category": "physics",
+  "everyday": true,
+  "interaction": "Mix two paints on paper, cyan and yellow say, and the mix is green and darker than either; the page multiplies the measured reflection of each paint colour by colour and shows what is left. Mix the same two as torch beams on a white wall and the overlap is brighter and a different colour. Add the third paint and the paper goes nearly black; add the third beam and the wall goes white.",
+  "takeaway": "Lights add up and get brighter, paints each take colours away and get darker, so the same two colours mixed give different results.",
+  "prerequisites": [],
+  "related": [
+   "blue-sky-red-sunset",
+   "vision-color"
+  ],
+  "needs": "Measured reflectance spectra of a few artists' or printer pigments (cyan, magenta, yellow, red, blue, white, black). No openly licensed set was identified this session; the candidate is weak until one is found. The CIE colour-matching functions are already shipped by vision-color.",
+  "pitfall": "The page must not teach red, yellow and blue as 'the' three primary colours: printers and painters who want the widest range use cyan, magenta and yellow, and lights use red, green and blue. Black paint is not 'all colours mixed'.",
+  "why": "KS3 physics 'Light waves' (colours and the different frequencies of light; differential colour effects in absorption and diffuse reflection) https://www.gov.uk/government/publications/national-curriculum-in-england-science-programmes-of-study/national-curriculum-in-england-science-programmes-of-study ; PhET 'Color Vision' listed in the PhET middle-school guide https://phet.colorado.edu/files/guides/MiddleSchool_en.pdf",
+  "overlapWith": "vision-color: that page mixes red, green and blue light to match a target with the cone responses shown; this one makes paint the core, reflection spectra multiplied, and keeps the lights only as the foil that shows why paint mixes differently.",
+  "needsSource": "Additive mixing of lamp spectra and subtractive mixing by multiplying reflectance spectra (single-constant Kubelka-Munk), converted with the shipped CMFs (vision-color/cone-data.ts, CVRL). Pigment spectra: no open source confirmed; weak until one is (candidates to check: a university spectral database or a pigment-reference set with a stated licence).",
+  "leadsTo": [
+   "vision-color",
+   "light-optics"
+  ],
+  "origin": "basic-physical-science"
+ },
+ {
+  "slug": "paper-plane-glide",
+  "title": "Paper planes: finding the balance point",
+  "level": 0,
+  "kind": "simulate",
+  "category": "physics",
+  "interaction": "Throw a paper plane and watch it glide, rear up and stall, or dive, depending on where its weight sits: slide a paper clip along the nose to move the balance point and throw again, and a trace of each flight builds up. Bend the tail flaps up or down, throw harder or softer, and find the settings that give the longest, smoothest glide; a marker shows the balance point and the wing's centre as they move.",
+  "takeaway": "A paper plane glides when its weight sits a little ahead of its wings, and a well-trimmed plane recovers from a bad throw by nodding back to the same path.",
+  "prerequisites": [],
+  "related": [
+   "kite-string-wind",
+   "helicopter-rotor",
+   "sailing-into-wind",
+   "flight"
+  ],
+  "needs": "",
+  "pitfall": "A plane does not fly because air over the top must 'catch up' with air below; the wing pushes air down and the air pushes back. A harder throw does not fix a plane that is out of balance; it only makes it loop or dive sooner.",
+  "why": "Bartosz Ciechanowski's interactive 'Airfoil', the explainer readers reach for on lift, https://ciechanow.ski/airfoil/ (curriculum: NGSS 3-5-ETS1-3, testing and improving a design)",
+  "overlapWith": "flight: that page is the wing section itself at level 2; this page never shows the pressure map and asks the reader to trim a whole plane with a paper clip.",
+  "needsSource": "none (thin-plate lift, drag and pitching moment with a simple stall, stated on the page)",
+  "leadsTo": [
+   "newtons-laws"
+  ],
+  "everyday": true,
+  "origin": "vehicles-and-big-machines"
+ },
+ {
+  "slug": "parachute-terminal-speed",
+  "title": "Parachutes: why you stop speeding up",
+  "level": 0,
+  "kind": "simulate",
+  "category": "physics",
+  "interaction": "Jump from a plane and watch the speed dial climb and then stick, as the air's push back grows with speed until it matches your weight; pull the cord and a canopy opens, the push leaps, you slow hard, and the dial settles at a new, gentle speed. Try a bigger and a smaller canopy, a heavier jumper, a stone and a feather, then jump on the Moon where no air pushes back at all.",
+  "takeaway": "Air pushes back harder the faster you fall, until it matches your weight and the speed stops rising, and a big canopy brings that balance at a slow speed.",
+  "prerequisites": [],
+  "related": [
+   "hot-air-balloon-lift",
+   "kite-string-wind",
+   "fireworks-shell-burst"
+  ],
+  "needs": "",
+  "pitfall": "A parachute does not stop you falling or push you up: you keep falling, only slowly. After the canopy opens you slow down, you do not go up; the film of a jumper 'rising' is shot by a cameraman who is still falling fast.",
+  "why": "England KS2 science, Year 5 forces: air resistance, with parachutes the standard classroom investigation, https://www.stem.org.uk/resources/community/collection/12696/year-5-forces",
+  "overlapWith": "newtons-laws: that page has air resistance as a slider on a projectile; this page is one falling body, the speed dial and the moment the push balances the weight.",
+  "needsSource": "none",
+  "leadsTo": [
+   "newtons-laws"
+  ],
+  "everyday": false,
+  "origin": "vehicles-and-big-machines"
+ },
+ {
+  "slug": "playground-swing",
+  "title": "Pushing a swing",
+  "level": 0,
+  "kind": "manipulate",
+  "category": "physics",
+  "interaction": "Give a swing one push and watch it go back and forth at a steady rhythm; lengthen or shorten the ropes, or swap the child for an adult, and see that only the length changes the rhythm. Then tap the push button whenever you like: pushes that land at the same point of each swing make it climb, pushes at the wrong moment bring it down, and a seated rider who leans back and straightens their legs at the right moments climbs with no push at all.",
+  "takeaway": "A swing's rhythm is set by its length alone, not by how hard it is pushed or who sits on it, and it climbs only when each push or pump adds a little at the same point of every swing.",
+  "prerequisites": [],
+  "related": [
+   "clock-escapement",
+   "washing-machine-spin"
+  ],
+  "needs": "",
+  "pitfall": "Pushing harder is not what makes a swing go higher, and a heavier child does not swing slower: timing and length are what matter.",
+  "why": "PhET 'Pendulum Lab' is recommended for middle school in PhET's own teaching guide (https://phet.colorado.edu/files/guides/MiddleSchool_en.pdf); KS3 physics collections teach pendulums alongside moments and pressure (https://www.stem.org.uk/node/15878).",
+  "overlapWith": "oscillations-resonance: that page plots amplitude against driving frequency with sliders for mass, stiffness and damping; here there is one push button and a rope-length slider and no plot, and the thing to see is that length sets the rhythm, pushing harder does not, and only well-timed pushes add up.",
+  "needsSource": "none",
+  "leadsTo": [
+   "oscillations-resonance"
+  ],
+  "everyday": true,
+  "origin": "home-mechanisms"
+ },
+ {
+  "slug": "pressure-cooker",
+  "title": "Pressure cooker",
+  "level": 0,
+  "kind": "simulate",
+  "category": "physics",
+  "interaction": "Heat water in an open pot and watch the thermometer stop at 100 °C as the steam escapes; close the lid with its weighted valve and the trapped steam presses on the water until the valve lifts and hisses, and now the water boils hotter, near 120 °C. Put a potato in and watch it cook in a third of the time; carry the open pot up a mountain to see it boil cooler and cook slower, or choose a heavier valve weight and watch the boiling point climb until the safety valve sets the limit.",
+  "takeaway": "Water boils hotter when something presses on it, and it is the hotter water, not the pressure itself, that cooks the food faster.",
+  "prerequisites": [
+   "kettle"
+  ],
+  "related": [
+   "thermos-flask",
+   "states-of-matter"
+  ],
+  "needs": "Water's boiling temperature against pressure: the IAPWS-95 saturation data from the NIST Chemistry WebBook (SRD 69), already shipped for heat-engines (`src/routes/heat-engines/steam-data.ts`); licence as recorded in docs/DATA-SOURCES.md, NIST SRD copyright, unconfirmed. The published Antoine constants for water would do instead. Cooking time as a function of temperature is a stated simplification.",
+  "pitfall": "It is not the pressure that cooks the food but the higher boiling temperature, and a pot at altitude is not 'less hot' because of thin air but because its water boils at a lower temperature.",
+  "why": "Nearest standard: KS2 science Year 4 States of matter, 'measure or research the temperature at which materials change state' (primary national curriculum, https://dera.ioe.ac.uk/18300/1/PRIMARY_national_curriculum.pdf); the vapour-pressure model is first-year engineering material (https://eng.libretexts.org/Bookshelves/Chemical_Engineering/Foundations_of_Chemical_and_Biological_Engineering_I_(Verret_Qiao_Barghout)/03%3A_Phase_Equilibrium/3.07%3A_Estimating_Vapour_Pressure). No page-specific signal was found before the search budget ran out.",
+  "overlapWith": "states-of-matter: that page shows boiling as particles escaping a liquid in a molecular-dynamics box; this page is the boiling temperature as a dial set by pressure, with cooking time as the count.",
+  "needsSource": "NIST Chemistry WebBook SRD 69 saturation data, already used by heat-engines (free access; NIST SRD copyright, recorded as unconfirmed in docs/DATA-SOURCES.md), or published Antoine constants for water",
+  "leadsTo": [
+   "states-of-matter"
+  ],
+  "everyday": true,
+  "origin": "home-mechanisms"
+ },
+ {
+  "slug": "roller-coaster-feel",
+  "title": "Roller coasters: where the heavy and floaty moments come from",
+  "level": 0,
+  "kind": "build",
+  "category": "physics",
+  "interaction": "Draw a track with hills, dips and a loop, let a chain haul the car to the top of the first hill, and release it: it coasts, climbs no hill taller than the first, and comes round slower each lap as rubbing steals a little. A gauge on the rider's seat shows how heavy they feel, squashed into the seat at the bottom of a dip and over the top of the loop, floating over a hump; shape the loop as a circle or a teardrop and find where the car falls off.",
+  "takeaway": "After the first hill a coaster has no engine and only spends the height it was given, and the squashed and floating feelings come from the track bending the car's path.",
+  "prerequisites": [],
+  "related": [
+   "swing-pumping-alone",
+   "car-steering-corners",
+   "bicycle-gears-hills"
+  ],
+  "needs": "",
+  "pitfall": "The car is not powered round the track and does not speed up on its own; it only trades height for speed. At the top of the loop you are held in not by a force flinging you outward but by the car going too fast to fall away from the track.",
+  "why": "PhET 'Energy Skate Park: Basics', in PhET's elementary-school simulation guide, https://phet.colorado.edu/en/simulations/energy-skate-park-basics",
+  "overlapWith": "newtons-laws: that page already has an editable track with energy bars; this page keeps the track but drops the bars for the rider's felt weight, the loop and the first-hill rule, as one toy.",
+  "needsSource": "none",
+  "leadsTo": [
+   "newtons-laws"
+  ],
+  "everyday": false,
+  "origin": "vehicles-and-big-machines"
+ },
+ {
+  "slug": "sailing-into-wind",
+  "title": "Sailing against the wind",
+  "level": 0,
+  "kind": "manipulate",
+  "category": "physics",
+  "interaction": "Turn a sailboat's heading on a pond with the wind blowing from the top and watch where it goes: downwind it is pushed along; across the wind the sail becomes a wing and the keel stops the boat sliding sideways, so it squirts forward like a pip squeezed between finger and thumb; point straight into the wind and the sail flaps and the boat stops. Zigzag to a buoy upwind and count the tacks; take away the keel and the boat slides sideways instead.",
+  "takeaway": "A sailboat cannot point straight into the wind, but with the sail acting as a wing and the keel refusing to slide sideways it can zigzag its way upwind.",
+  "prerequisites": [],
+  "related": [
+   "kite-string-wind",
+   "submarine-ballast-tanks",
+   "paper-plane-glide",
+   "flight"
+  ],
+  "needs": "",
+  "pitfall": "Upwind the sail is not pushed from behind; it is pulled like a wing, and without the keel that pull slides the boat sideways. There is a wedge of headings into the wind where no sail works, and the only way through it is to zigzag.",
+  "why": "UNSW School of Physics, 'The physics of sailing', https://www.phys.unsw.edu.au/~jw/sailing.html ('how do sailboats sail upwind' is a perennial explainer question)",
+  "overlapWith": "flight: that page explains a wing's lift at level 2; this page uses two wings, one in air and one in water, and the only control is where the boat points.",
+  "needsSource": "none",
+  "leadsTo": [
+   "newtons-laws"
+  ],
+  "everyday": false,
+  "origin": "vehicles-and-big-machines"
+ },
+ {
+  "slug": "seatbelt-crash",
+  "title": "Seatbelts & airbags",
+  "level": 0,
+  "kind": "simulate",
+  "category": "physics",
+  "interaction": "Drive a car with a dummy into a wall at a chosen speed and watch the car crumple to a stop in a short distance while the dummy keeps going at the old speed until something stops it: the dashboard, a belt, or a belt and an airbag. A gauge shows how hard each one pushes on the dummy and over what distance; then pull the belt from its reel slowly and fast to see the little pendulum or spinning weight lock the ratchet.",
+  "takeaway": "Nothing throws you forward in a crash; you simply keep going while the car stops, and the longer the distance over which something stops you, the gentler the push.",
+  "prerequisites": [],
+  "related": [
+   "car-brakes",
+   "washing-machine-spin",
+   "springs-and-scales"
+  ],
+  "needs": "",
+  "pitfall": "You are not 'thrown forward' by the crash, and the belt does not lock because you pull hard: it locks on a sudden jerk or a sharp slowing of the car, however light the pull.",
+  "why": "'How a seat belt works' is set reading in driver-education curricula (Montana OPI module 2.1, https://opifiles.mt.gov/portals/182/Page%20Files/Driver%20Education/Curriculum/Module%202%20all%20files/2.1-How-Seat-Belts-Work.pdf) and a standing explainer topic (https://engineerfix.com/how-a-seat-belt-works-the-mechanics-explained/).",
+  "overlapWith": "newtons-laws: that page collides carts of different mass; here the reader is the cart, and the control is the distance over which they are stopped.",
+  "needsSource": "none",
+  "leadsTo": [
+   "newtons-laws"
+  ],
+  "everyday": true,
+  "origin": "home-mechanisms"
+ },
+ {
+  "slug": "shadows-and-pinholes",
+  "title": "Shadows & pinholes",
+  "level": 0,
+  "kind": "manipulate",
+  "category": "physics",
+  "everyday": true,
+  "interaction": "Drag a lamp, a toy and a wall about a room: straight rays from the lamp are blocked by the toy, and the shadow on the wall grows as the lamp comes closer and shrinks as the wall comes closer. Swap the small bulb for a wide lampshade and the shadow's edge goes soft; switch on a second lamp and a second shadow appears. Poke a pinhole in a shoebox and the picture of the lamp forms upside down on its back wall.",
+  "takeaway": "Light travels in straight lines, so a shadow is simply where the lines are blocked, and its size follows the lines back to the lamp.",
+  "prerequisites": [],
+  "related": [
+   "mirror-images",
+   "sun-earth-moon"
+  ],
+  "needs": "",
+  "pitfall": "A shadow is not something a lamp throws onto a wall; it is where no light arrives. And the Moon's phases are not Earth's shadow (the page should point to sun-earth-moon for eclipses, which are).",
+  "why": "Bartosz Ciechanowski, 'Lights and Shadows' https://ciechanow.ski/lights-and-shadows/ ; KS2 Year 3 'Light' (find patterns in the way the size of shadows change) and Year 6 'Light' (light appears to travel in straight lines; shadows have the shape of the objects that cast them) https://www.gov.uk/government/publications/national-curriculum-in-england-science-programmes-of-study/national-curriculum-in-england-science-programmes-of-study",
+  "overlapWith": "light-optics: that page bends rays through lenses and prisms on an optical bench; this one never bends a ray, only blocks it, and is about shadow size, soft edges and the pinhole picture.",
+  "needsSource": "none; ray projection from a point or extended source past polygons onto a wall (umbra and penumbra).",
+  "leadsTo": [
+   "light-optics",
+   "sun-earth-moon"
+  ],
+  "origin": "basic-physical-science"
+ },
+ {
+  "slug": "smoke-detector",
+  "title": "What a smoke alarm senses",
+  "level": 0,
+  "kind": "simulate",
+  "category": "physics",
+  "everyday": true,
+  "interaction": "Open a smoke alarm into two little chambers: in the first, a speck of a safe radioactive metal knocks bits of air into charged pieces that drift across a gap and make a tiny steady trickle of current, and in the second a lamp shines across a dark box past a sensor that sees nothing. Blow smoke in: in the first chamber the smoke particles grab the charged bits and the trickle drops, in the second the smoke scatters light onto the sensor, and either sounds the alarm. Slide from the thin smoke of a smouldering sofa to the smoke of a flaming pan and see which chamber reacts first.",
+  "takeaway": "A smoke alarm does not smell smoke: it either notices that smoke has caught the charged air crossing a gap, or sees light bounced off smoke in a dark box, and the two kinds notice different fires first.",
+  "prerequisites": [],
+  "related": [
+   "metal-detector"
+  ],
+  "needs": "",
+  "needsSource": "none beyond published figures: an americium-241 source of about 37 kBq, and the ionisation-first for flaming fires, photoelectric-first for smouldering fires result of NIST's comparison, as quoted on Wikipedia's Smoke detector page (https://en.wikipedia.org/wiki/Smoke_detector).",
+  "pitfall": "The radioactive speck is tiny and the alarm is safe to live with; say so plainly. Neither kind detects heat or gas (carbon monoxide alarms are a different device). The chirp at night is a low battery, not smoke.",
+  "why": "'Smoke detector' averaged about 6,400 views a month on English Wikipedia in 2025 (https://wikimedia.org/api/rest_v1/metrics/pageviews/per-article/en.wikipedia/all-access/user/Smoke_detector/monthly/2025010100/2025123100).",
+  "overlapWith": "radioactivity (level 1) shows decay and half-life and light-optics shows rays; here the source and the lamp are tools, and the model is charged bits drifting and being captured, and light scattered by particles.",
+  "leadsTo": [
+   "radioactivity",
+   "light-optics"
+  ],
+  "origin": "everyday-technology"
+ },
+ {
+  "slug": "speakers-and-microphones",
+  "title": "Headphones, speakers and microphones",
+  "level": 0,
+  "kind": "manipulate",
+  "category": "physics",
+  "everyday": true,
+  "interaction": "Drag a slider back and forth to push current through a coil glued to a paper cone sitting in a magnet: the cone follows your hand in and out, and the air in front of it is shown as dots bunching and spreading as the push travels away. Let the page wiggle the current for you: faster wiggles give a higher note, bigger wiggles a louder one, and the dots show the same. Then unplug the battery, tap the cone, and watch a small current appear in the coil: the speaker has become a microphone.",
+  "takeaway": "A speaker is a magnet shoving a cone in and out exactly as fast as the sound wiggles, air passes the shove along, and a microphone is the same thing run backwards.",
+  "prerequisites": [],
+  "related": [
+   "sound-as-numbers",
+   "radio-tuning"
+  ],
+  "needs": "",
+  "needsSource": "none; the force on a current-carrying coil in the magnet's field, a mass-and-spring cone, and a one-dimensional pressure wave in front of it.",
+  "pitfall": "The cone does not blow air across the room: each bit of air only shakes in place and passes the shake on. Bigger is not louder by itself; loudness is how hard the cone moves. The earpiece in headphones is the same device shrunk, not a different mechanism.",
+  "why": "England KS3 physics: 'sound produced by vibrations of objects, in loudspeakers, detected by their effects on microphone diaphragm and the ear drum' (https://www.gov.uk/government/publications/national-curriculum-in-england-science-programmes-of-study/national-curriculum-in-england-science-programmes-of-study).",
+  "overlapWith": "motors-generators (level 2) is the same reversibility with a rotating coil and a commutator; waves-interference (level 1) makes sound waves in a ripple tank. This page is one coil on a cone, with the reader's hand as the signal; the physics lens's sound-is-a-shake candidate is the air alone, and this is the device.",
+  "leadsTo": [
+   "waves-interference",
+   "electric-circuits"
+  ],
+  "origin": "everyday-technology"
+ },
+ {
+  "slug": "spinning-tops",
+  "title": "Why a spinning top stays up",
+  "level": 0,
+  "kind": "simulate",
+  "category": "physics",
+  "everyday": true,
+  "interaction": "Flick a top with a chosen spin and watch it stand; tip it with a nudge and instead of falling over it leans and slowly wobbles round in a circle. As friction slows the spin the wobble widens and quickens, until the top finally topples. Try a gyroscope held by one end and a bicycle wheel held by its axle, run by the same equations.",
+  "takeaway": "A spinning thing resists being tipped: a push on it turns into a slow sideways wobble, and it falls over only once the spin runs down.",
+  "prerequisites": [],
+  "related": [
+   "balance-and-tipping",
+   "sun-earth-moon"
+  ],
+  "needs": "",
+  "pitfall": "Spinning does not make the top lighter or cancel gravity; gravity pulls on it the whole time, and the top answers by wobbling round instead of falling.",
+  "why": "Signal not verified this session (web-search budget was exhausted before the gyroscope searches ran); expected signals: Veritasium's gyroscopic-precession videos and the Wikipedia 'Gyroscope' and 'Top' articles. Ciechanowski's 'Bicycle' explainer is verified in his archive listing https://ciechanow.ski/bicycle/ (content not checked this session).",
+  "overlapWith": "sun-earth-moon: that page keeps Earth's tilted axis pointing the same way as it orbits, which is this effect at planet scale, while this one spins a toy on a table and shows the wobble and the fall; among proposed pages, balance-and-tipping tips things that are not spinning.",
+  "needsSource": "none; the heavy symmetric top (Euler's equations with the torque of gravity and a friction torque), integrated in real time.",
+  "leadsTo": [
+   "newtons-laws",
+   "sun-earth-moon"
+  ],
+  "origin": "basic-physical-science"
+ },
+ {
+  "slug": "springs-and-scales",
+  "title": "Springs & spring scales",
+  "level": 0,
+  "kind": "manipulate",
+  "category": "physics",
+  "interaction": "Hang weights on a spring one at a time and watch it stretch the same extra amount for each one, so a ruler beside it becomes a scale; swap in a stiffer spring, or put two springs side by side or end to end, and compare how far they stretch for the same weights. Load it past its limit and see it stay stretched when the weights come off; then press a bathroom scale, a mattress and a pogo stick and watch the same rule at work.",
+  "takeaway": "A spring stretches by the same extra amount for each extra weight, which is what makes it a scale, until it is pulled past the point where it stops coming back.",
+  "prerequisites": [],
+  "related": [
+   "wind-up-toy",
+   "seatbelt-crash",
+   "oscillations-resonance"
+  ],
+  "needs": "",
+  "pitfall": "A spring does not push back with the same force however far it is stretched, and one stretched past its limit is not broken but bent: it still works, from a new rest length.",
+  "why": "PhET 'Hooke's Law' is the standard primary and middle-school simulation of springs (https://www.compadre.org/Precollege/items/similar.cfm?ID=14156); KS2 Year 5 forces collections add springs to levers, pulleys and gears (https://stem.org.uk/node/12033).",
+  "overlapWith": "oscillations-resonance: that page sets a spring bouncing and plots its response; this page never lets it move: it is the stretch per weight that makes a scale, and the limit beyond which it stays bent.",
+  "needsSource": "none",
+  "leadsTo": [
+   "oscillations-resonance",
+   "newtons-laws"
+  ],
+  "everyday": true,
+  "origin": "home-mechanisms"
+ },
+ {
+  "slug": "submarine-ballast-tanks",
+  "title": "Submarines: sinking and rising on purpose",
+  "level": 0,
+  "kind": "simulate",
+  "category": "physics",
+  "interaction": "Flood a submarine's tanks with sea water and it grows heavier than the water it pushes aside and sinks; blow the water out with compressed air and it rises; let in just enough and it hovers, neither rising nor sinking. Tilt the fins and drive forward to glide up or down; a pair of scales shows the submarine's weight against the weight of water it displaces at every moment. Hover, then add a small extra load and watch what happens.",
+  "takeaway": "A submarine goes down and up by changing its own weight with water taken in or pushed out, until it weighs just as much as the water it displaces.",
+  "prerequisites": [],
+  "related": [
+   "hot-air-balloon-lift",
+   "sailing-into-wind"
+  ],
+  "needs": "",
+  "pitfall": "A submarine does not sink because it is made of steel: full of air it floats like a ship, and it only sinks when water replaces the air. Hovering is a knife edge: a little too heavy and it keeps sinking, which is why submarines trim constantly.",
+  "why": "PhET 'Buoyancy: Basics', in PhET's middle-school simulation list, https://phet.colorado.edu/en/simulations/buoyancy-basics ('how do submarines sink and float' is a common search question)",
+  "overlapWith": "newtons-laws: that page balances forces on carts; here the two forces are the submarine's weight and the water's upward push, and the reader changes one of them. Floating itself is not in the catalogue; this is the one vehicle that floats, sinks and hovers by choice.",
+  "needsSource": "none",
+  "leadsTo": [
+   "newtons-laws",
+   "states-of-matter"
+  ],
+  "everyday": false,
+  "origin": "vehicles-and-big-machines"
+ },
+ {
+  "slug": "swing-pumping-alone",
+  "title": "Pumping a swing with nobody pushing",
+  "level": 0,
+  "kind": "simulate",
+  "category": "physics",
+  "interaction": "Sit on a swing and tap to stand up or crouch: stand at the bottom of each pass and crouch at the ends, and the swing goes higher and higher with no one pushing; do it at the wrong moments and it dies away. A trace shows each swing's height over time; a second rider pumps seated by leaning back and forward instead. Shorten the chains and feel the timing change.",
+  "takeaway": "You pump a swing by lifting yourself at the bottom and dropping at the ends, and only the right timing adds to the swing.",
+  "prerequisites": [],
+  "related": [
+   "roller-coaster-feel",
+   "skyscraper-sway-damper"
+  ],
+  "needs": "",
+  "pitfall": "Pumping is not pushing against the air or the chains: the swing gains because you lift your weight when the chain is tight at the bottom and let it drop at the ends. The rhythm is twice per swing, not once.",
+  "why": "NGSS 3-PS2-2, patterns in motion, whose examples include a child swinging on a swing, https://www.nextgenscience.org/pe/3-ps2-2-motion-and-stability-forces-and-interactions",
+  "overlapWith": "oscillations-resonance: that page drives a pendulum with an outside periodic push; this page has no outside push at all, the rider pumps by changing the swing's length, which is a different mechanism.",
+  "needsSource": "none (variable-length pendulum; the seated pumping is a stated simplification)",
+  "leadsTo": [
+   "oscillations-resonance",
+   "newtons-laws"
+  ],
+  "everyday": true,
+  "origin": "vehicles-and-big-machines"
+ },
+ {
+  "slug": "swings-and-pendulums",
+  "title": "Swings & pendulums",
+  "level": 0,
+  "kind": "manipulate",
+  "category": "physics",
+  "everyday": true,
+  "interaction": "Two swings hang side by side; put a big child on one and a small child on the other, release them together, and they swing in step. Lengthen one swing's chains and it falls behind the other, beat by beat. Push one harder and it swings further out but keeps the same beat; a metronome and a grandfather clock sit beside them, keeping time by the same rule.",
+  "takeaway": "How fast a swing swings depends on how long it is, not on who is sitting in it or how hard it was pushed.",
+  "prerequisites": [],
+  "related": [
+   "bouncing-ball",
+   "oscillations-resonance"
+  ],
+  "needs": "",
+  "pitfall": "A heavier child does not swing slower, and a bigger push does not make the swing go faster, only further; both are common guesses the page must disprove on screen.",
+  "why": "Signal not verified this session (web-search budget was exhausted); expected signals: NGSS 3-PS2-2 (patterns in motion that predict future motion, with a child on a swing as the clarification example) and PhET 'Pendulum Lab'. KS2 Year 5 'Forces' (gravity, mechanisms) is the nearest verified standard https://www.gov.uk/government/publications/national-curriculum-in-england-science-programmes-of-study/national-curriculum-in-england-science-programmes-of-study",
+  "overlapWith": "oscillations-resonance: that page sets mass, stiffness and damping and plots amplitude against a driving frequency; this one has two swings, one control at a time, no plot and no driving, and exists to show that weight and push do not change the beat.",
+  "needsSource": "none; the full pendulum equation (no small-angle shortcut) with light damping, run for two pendulums at once.",
+  "leadsTo": [
+   "oscillations-resonance"
+  ],
+  "origin": "basic-physical-science"
+ },
+ {
+  "slug": "temperature-and-touch",
+  "title": "Temperature & what the hand feels",
+  "level": 0,
+  "kind": "manipulate",
+  "category": "physics",
+  "everyday": true,
+  "interaction": "Touch things around a room (a metal spoon, a wooden spoon, a wool hat, a tiled floor) with a hand that feels how fast heat leaves it, then with a thermometer that reads its own temperature once it has settled: the thermometer says they are all the same, the hand says the metal is colder. Put the thermometer in a kettle and watch its liquid climb as its particles jiggle harder. Pour a cup of boiling water into a bath of warm water and see which temperature wins.",
+  "takeaway": "Things that have sat in the same room are all at the same temperature; what the hand feels is how fast heat flows out of it, which is why metal feels colder than wood.",
+  "prerequisites": [],
+  "related": [
+   "keeping-things-warm",
+   "glowing-hot",
+   "states-of-matter"
+  ],
+  "needs": "Thermal conductivity, density and heat capacity for a handful of materials (handbook values).",
+  "pitfall": "Metal in a room is not colder than wood; it only takes heat from the hand faster. And temperature is not the amount of heat: a warm bath holds far more heat than a cup of boiling water.",
+  "why": "Veritasium, 'Why Does Metal Feel Colder Than Wood If They're Same Temp?' (Misconceptions About Temperature), as listed by STEM Learning UK https://stem.org.uk/rxeyxn ; KS3 physics 'Energy' (heating and thermal equilibrium: a temperature difference leads to energy transfer from the hotter to the cooler object) https://www.gov.uk/government/publications/national-curriculum-in-england-science-programmes-of-study/national-curriculum-in-england-science-programmes-of-study",
+  "overlapWith": "states-of-matter: that page turns a temperature knob to melt and boil a box of molecules; this one is about what a thermometer and a hand each measure, and why they disagree.",
+  "needsSource": "One-dimensional heat conduction between skin and object (the rate set by each material's conductivity and heat capacity), a thermometer as a small thermal mass, mixing by heat capacity. Material values from a handbook table (Wikipedia, CC BY-SA 4.0, or a textbook).",
+  "leadsTo": [
+   "states-of-matter",
+   "homeostasis"
+  ],
+  "origin": "basic-physical-science"
+ },
+ {
+  "slug": "thermos-flask",
+  "title": "Thermos flasks & keeping things warm",
+  "level": 0,
+  "kind": "simulate",
+  "category": "physics",
+  "interaction": "Pour hot tea into a bare mug, a mug with a lid, a foam cup and a vacuum flask and watch four thermometers fall over an hour at different rates, with heat shown leaking through the walls, out of the open top and as a glow from the surface. Swap the wall material, add a lid, pump the air out of the double wall and silver it, and see which change stops which leak; then fill them with iced water and watch the same walls keep the cold in.",
+  "takeaway": "A drink cools by heat leaking through its walls, out of its open top and as a glow, and a flask stays hot by blocking each route in turn: a vacuum for the walls, a lid for the top and a mirror for the glow.",
+  "prerequisites": [],
+  "related": [
+   "kettle",
+   "room-thermostat"
+  ],
+  "needs": "",
+  "pitfall": "A flask does not make heat or 'keep the cold in' as if cold were a substance: it slows heat flow in either direction, and metal feels cold only because it conducts heat away fast.",
+  "why": "KS2 science, Year 5 Properties and changes of materials: compare everyday materials as thermal insulators (primary national curriculum, https://dera.ioe.ac.uk/18300/1/PRIMARY_national_curriculum.pdf); NGSS 4-PS3-2, energy transferred by heat (https://www.cpp.edu/respect/resources/documents_4th/gr4.et_ngss.pdf).",
+  "overlapWith": "entropy: that page mixes fast and slow particles and counts microstates at level 2; here heat flows out of a cup by three named routes and the page is about slowing each one.",
+  "needsSource": "none",
+  "leadsTo": [
+   "greenhouse-effect"
+  ],
+  "everyday": true,
+  "origin": "home-mechanisms"
+ },
+ {
+  "slug": "toaster",
+  "title": "Toaster",
+  "level": 0,
+  "kind": "simulate",
+  "category": "physics",
+  "interaction": "Push the lever down and watch current flow through the thin wires, which heat up and glow a colour that follows their temperature, from dull red to orange. Set the browning dial and watch the bread's surface darken, faster near the wires than far from them, until the timer releases the latch; turn the dial up and down to see that it changes the time the bread spends there, not the heat of the wires.",
+  "takeaway": "The wires glow because they are hot, and their colour tells how hot; the dial only sets how long the bread sits in front of them.",
+  "prerequisites": [],
+  "related": [
+   "kettle",
+   "room-thermostat",
+   "stars",
+   "electric-circuits"
+  ],
+  "needs": "The wire's glow colour comes from Planck's law weighted by the CIE 2 degree colour-matching functions already shipped for vision-color (`src/routes/vision-color/cone-data.ts`, read from CVRL's copy of the CIE 2012 XYZ functions; CVRL states no licence, recorded as unconfirmed in docs/DATA-SOURCES.md). A published blackbody-to-sRGB fit would avoid the data. The browning rate is a stated simplification (faster when hotter), not measured data.",
+  "pitfall": "The wire does not glow because electricity is light: it glows because it is hot, and a higher setting on most toasters makes the bread stay longer, not the wires hotter.",
+  "why": "NGSS 4-PS3-2: energy can be transferred from place to place by light, heat and electric currents (https://www.cpp.edu/respect/resources/documents_4th/gr4.et_ngss.pdf); nearest standard, no toaster-specific signal was found before the search budget ran out.",
+  "overlapWith": "stars: that page links a star's colour to its temperature at level 2 with spectra and a Hertzsprung-Russell diagram; here the same rule is read off a toaster wire, with no spectrum or diagram.",
+  "needsSource": "CIE colour-matching functions via CVRL, already shipped for vision-color (no licence stated at source; unconfirmed in docs/DATA-SOURCES.md), or a published blackbody-colour approximation needing no data",
+  "leadsTo": [
+   "electric-circuits",
+   "vision-color"
+  ],
+  "everyday": true,
+  "origin": "home-mechanisms"
+ },
+ {
+  "slug": "touchscreens",
+  "title": "How a touchscreen feels your finger",
+  "level": 0,
+  "kind": "manipulate",
+  "category": "physics",
+  "everyday": true,
+  "interaction": "Drag a finger over a screen whose glass is made see-through: under it is a grid of thin crossing wires, and at every crossing a small store of charge that your finger, a bag of salty water, draws a little from when it comes near. The grid lights up where the draw is biggest and the phone marks the spot between the brightest crossings. Press harder and nothing changes; put on a woollen glove and the glow fades to nothing; add a second finger and a second spot appears; drip water on the glass and a false spot wanders.",
+  "takeaway": "A touchscreen does not feel pressure: it notices where your body draws a little charge from a grid of crossings under the glass, which is why gloves and water confuse it and pressing harder does nothing.",
+  "prerequisites": [],
+  "related": [
+   "keyboard-rows-and-columns",
+   "fingerprint-match"
+  ],
+  "needs": "",
+  "needsSource": "none; mutual capacitance at each crossing reduced in proportion to the overlap with a conductive footprint, then a centroid between the strongest crossings.",
+  "pitfall": "No pressure and no warmth is sensed (older resistive screens did sense pressure; say so). The finger does not conduct electricity into the phone; it only needs to be near. A plastic stylus does nothing, and a touchscreen stylus works because its tip is conductive.",
+  "why": "'Touchscreen' averaged about 12,200 views a month on English Wikipedia in 2025 (https://wikimedia.org/api/rest_v1/metrics/pageviews/per-article/en.wikipedia/all-access/user/Touchscreen/monthly/2025010100/2025123100).",
+  "overlapWith": "electric-circuits (level 1) has charge flowing in wires and electromagnetism (level 2) has fields and charges; here the model is a grid of capacitances reduced under a conductive footprint and a peak-finding rule.",
+  "leadsTo": [
+   "electric-circuits"
+  ],
+  "origin": "everyday-technology"
+ },
+ {
+  "slug": "train-wheel-cones",
+  "title": "Train wheels: why trains stay on the rails",
+  "level": 0,
+  "kind": "manipulate",
+  "category": "physics",
+  "interaction": "Roll a pair of train wheels joined by an axle along two rails and nudge it sideways: because each wheel is a slight cone, the side pushed outward rides on a bigger circle and runs faster, and the pair swings back to the middle, wobbling less and less. Swap in flat wheels and the pair drifts to the rail's edge and leans on its flange; make the cone steeper and the wobble gets wilder. Send the pair round a curve and watch it steer itself with no differential.",
+  "takeaway": "A train steers itself because its wheels are cones: whichever side rides up onto the bigger part of the cone turns the axle back toward the middle.",
+  "prerequisites": [],
+  "related": [
+   "ice-skates-glide-and-grip",
+   "car-steering-corners"
+  ],
+  "needs": "",
+  "pitfall": "The flanges do not steer the train: on straight track they rarely touch the rail, and a train running on its flanges squeals and wears. The wheels are not free to spin separately as a car's are; they are fixed to one axle, which is why the cone is needed.",
+  "why": "Feynman's explanation of conical train wheels, retold in Tadashi Tokieda's widely shared video, https://kottke.org/21/10/the-simple-physics-trick-that-helps-trains-stay-on-their-tracks",
+  "overlapWith": "oscillations-resonance: that page is a mass on a spring and a pendulum; the wheelset's wobble is a geometric oscillation on rails with no spring at all, and the page is about steering, not resonance.",
+  "needsSource": "none",
+  "leadsTo": [
+   "newtons-laws",
+   "oscillations-resonance"
+  ],
+  "everyday": false,
+  "origin": "vehicles-and-big-machines"
+ }
+]

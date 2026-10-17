@@ -1,0 +1,635 @@
+[
+ {
+  "slug": "cell-towers-handover",
+  "title": "How your phone finds a tower",
+  "level": 0,
+  "kind": "simulate",
+  "category": "networks",
+  "everyday": true,
+  "interaction": "Drag a phone across a town map dotted with towers; each tower's reach is drawn as a fading patch, the bars on the phone follow the nearest strong tower, and a line shows which tower the phone is talking to. Start a call and walk a route: as one tower fades and the next grows, the line jumps over without the call dropping. Drive into a valley or a thick building and watch the bars fall; put a stadium crowd in one patch and watch its calls queue because the tower has only so many lines.",
+  "takeaway": "Your phone only ever talks to the nearest tower with a clear signal, and towers pass you along as you move, so coverage means a tower close enough, not a satellite overhead.",
+  "prerequisites": [],
+  "related": [
+   "wifi-and-walls",
+   "radio-tuning"
+  ],
+  "needs": "",
+  "needsSource": "none; signal strength from a standard distance-and-obstacle path-loss model, handover to the stronger tower with a margin, and a fixed number of channels per tower. Real tower positions could come from OpenCelliD (CC BY-SA 4.0) but are not needed.",
+  "pitfall": "Ordinary phones do not talk to satellites, and a text does not go phone to phone: it goes to a tower, into the network and out of another tower. Bars measure the link to the tower, not the distance to the person you are calling.",
+  "why": "England KS2 computing: 'understand computer networks, including the internet; how they can provide multiple services' (https://www.gov.uk/government/publications/national-curriculum-in-england-computing-programmes-of-study/national-curriculum-in-england-computing-programmes-of-study); 'Cellular network' averaged about 12,400 views a month on English Wikipedia in 2025.",
+  "overlapWith": "internet (level 1): that page follows packets through routers; this one stays at the first hop, the radio link between a phone and a tower and the handover, and never shows a packet. wireless-signals (level 2) is how bits ride the wave.",
+  "leadsTo": [
+   "internet",
+   "waves-interference"
+  ],
+  "origin": "everyday-technology"
+ },
+ {
+  "slug": "password-guessing",
+  "title": "How a password gets guessed",
+  "level": 0,
+  "kind": "simulate",
+  "category": "networks",
+  "everyday": true,
+  "interaction": "Type a password (or pick one) and release a guessing machine against it. It tries the hundred thousand most common passwords first and finds '123456' or 'liverpool1' in a blink, then starts counting through every combination: a counter shows how many guesses are left and how long that takes at a million guesses a second. Make the password one letter longer and the count multiplies; swap letters for symbols and it barely moves; type three unrelated words and the counter runs off the chart.",
+  "takeaway": "Each extra character multiplies the guesses needed, so a long password of ordinary words beats a short one full of symbols, unless it is on the list of common ones that every guesser tries first.",
+  "prerequisites": [],
+  "related": [
+   "fingerprint-match",
+   "face-unlock-depth",
+   "contactless-cards"
+  ],
+  "needs": "The NCSC and Have I Been Pwned list of the 100,000 most common breached passwords (2019): the NCSC pages quote the top counts but state no licence for the file (NCSC content is usually under the Open Government Licence v3; unconfirmed). Fallback: the top entries and counts quoted in the NCSC announcement plus a permissively licensed word list (SCOWL).",
+  "needsSource": "NCSC top-100k password list, licence unconfirmed; the counting model itself needs no data.",
+  "pitfall": "Guessing at the login screen is slow and gets locked out; the fast guessing happens against stolen scrambled copies, which is why strength still matters. Symbol substitutions such as 'p@ssw0rd' are on the lists. The count assumes the guesser does not know your recipe: real guessers also try combinations of common words, so the words must be genuinely unrelated, and the page should say so. Do not show the scrambling itself; hashing is cryptography, level 2.",
+  "why": "England KS3 computing: 'use technology safely, respectfully, responsibly and securely, including protecting their online identity and privacy' (https://www.gov.uk/government/publications/national-curriculum-in-england-computing-programmes-of-study/national-curriculum-in-england-computing-programmes-of-study); NCSC's 2019 analysis of the 100,000 most common breached passwords (https://www.ncsc.gov.uk/news/most-hacked-passwords-revealed-as-uk-cyber-survey-exposes-gaps-in-online-security).",
+  "overlapWith": "cryptography (level 2) hashes and signs, and primes-modular-arithmetic shows easy-forward, hard-back; this page is only counting guesses, with the common-password list as the twist.",
+  "leadsTo": [
+   "primes-modular-arithmetic",
+   "binary"
+  ],
+  "origin": "everyday-technology"
+ },
+ {
+  "slug": "qr-codes",
+  "title": "QR codes",
+  "level": 0,
+  "kind": "build",
+  "category": "networks",
+  "everyday": true,
+  "interaction": "Type a short message and watch it become a square of black and white cells, built the real way: the three big corner squares that tell a camera where the code is and which way up, then the message as cells, then spare cells computed from the message. Point a drawn camera at it from any angle and it reads. Now paint over cells with a brush: the message still comes out, and a counter shows how many cells are damaged; keep painting and find the moment it fails, then paint over a corner square instead, which fails at once.",
+  "takeaway": "A QR code carries its message plus spare cells computed from it, so a scratched or half-covered code still reads, until too much is gone or the corner finders are hidden.",
+  "prerequisites": [],
+  "related": [
+   "barcode-stripes",
+   "emoji-and-text-as-numbers"
+  ],
+  "needs": "None to ship; the page runs a real encoder and decoder (open-source implementations of the QR standard exist under MIT and Apache 2.0, e.g. qrcode-generator and jsQR).",
+  "needsSource": "none; an in-browser QR encoder and decoder (Reed-Solomon) under MIT/Apache 2.0.",
+  "pitfall": "The three corner squares hold no message; they are for finding and orienting. The code is not read in a spiral or line by line, and the spare cells are not a copy of the message, so do not say the data is duplicated.",
+  "why": "NGSS 4-PS4-3: 'using a grid of 1's and 0's representing black and white to send information about a picture' (https://www.nextgenscience.org/pe/4-ps4-3-waves-and-their-applications-technologies-information-transfer); 'QR code' averaged about 388,000 views a month on English Wikipedia in 2025.",
+  "overlapWith": "error-correction (level 2): that page shows a Hamming code's parity checks on bits; this one is the object, with damage painted on and a count of cells survivable, and no arithmetic shown. barcode-stripes in this batch is the one-dimensional cousin with only a check digit.",
+  "leadsTo": [
+   "binary"
+  ],
+  "origin": "everyday-technology"
+ },
+ {
+  "slug": "radio-tuning",
+  "title": "Tuning a radio",
+  "level": 0,
+  "kind": "manipulate",
+  "category": "networks",
+  "everyday": true,
+  "interaction": "Several stations broadcast at once and the antenna wire picks up all of them as one tangled wiggle. Turn the tuning knob: a swing inside the radio that likes one rhythm builds up only for the station whose rhythm matches, and the others fall away; between stations the swing stays small and you hear hiss. Then look at one station's wave up close: the music rides on it as changes in height (AM) or in rhythm (FM); pick which and hear why FM survives a lightning crackle better.",
+  "takeaway": "Every station reaches the antenna at the same time, and tuning means choosing which rhythm the radio swings along with.",
+  "prerequisites": [],
+  "related": [
+   "cell-towers-handover",
+   "speakers-and-microphones"
+  ],
+  "needs": "",
+  "needsSource": "none; a sum of carrier waves through a tuned resonant filter whose centre follows the knob, then envelope or frequency detection, synthesised to audio.",
+  "pitfall": "Radio waves are not sound waves: nothing in the air is playing the music, and the station is not caught alone; selection happens inside the set by resonance. Tuning does not make the other stations leave the wire.",
+  "why": "'Radio' averaged about 25,200 views a month on English Wikipedia in 2025 (https://wikimedia.org/api/rest_v1/metrics/pageviews/per-article/en.wikipedia/all-access/user/Radio/monthly/2025010100/2025123100).",
+  "overlapWith": "oscillations-resonance (level 1) shows one oscillator building up when pushed at its natural frequency, and wireless-signals (level 2) shows modulation; what is new here is many stations on one wire at once and selection by the swing, with sound as the output.",
+  "leadsTo": [
+   "oscillations-resonance",
+   "waves-interference"
+  ],
+  "origin": "everyday-technology"
+ },
+ {
+  "slug": "remote-control-blinks",
+  "title": "What a remote control says",
+  "level": 0,
+  "kind": "step",
+  "category": "networks",
+  "everyday": true,
+  "interaction": "Press a button on a drawn remote and a lamp on its nose blinks in invisible light; the page shows the blinks slowed a thousand times: a long opening flash, then a string of short flashes with short and long gaps that spell the button's number, then the same string inverted as a check. Hold the button and a short 'still pressed' pattern repeats. Point the remote at the wall and the blinks bounce to the TV; put a hand in front and nothing arrives; look through a phone camera (a front camera especially; many rear ones filter infrared out) and the blinks become visible.",
+  "takeaway": "A remote talks in fast blinks of invisible light, each button its own pattern of long and short gaps, which is why it needs a clear line, or a wall to bounce off, and many phone cameras can see it.",
+  "prerequisites": [],
+  "related": [
+   "wifi-and-walls",
+   "barcode-stripes",
+   "digital-clock-counting"
+  ],
+  "needs": "",
+  "needsSource": "none; the pattern follows the widely documented NEC infrared protocol (38 kHz carrier, 9 ms leader, short and long gaps for 0 and 1, inverted copy of the command, repeat code), with brightness falling with distance and reflection.",
+  "pitfall": "The remote is not sending heat rays or radio: most TV remotes use infrared light pulses (some newer ones use radio and work through walls; say so). The TV does not see steady light: it listens for flashes at one fast rhythm, which is why sunlight does not change the channel.",
+  "why": "NGSS 4-PS4-3: 'generate and compare multiple solutions that use patterns to transfer information' (https://www.nextgenscience.org/pe/4-ps4-3-waves-and-their-applications-technologies-information-transfer).",
+  "overlapWith": "wireless-signals (level 2) modulates a carrier and binary reads bits; this page is the everyday object, with the pattern shown as long and short gaps and a line-of-sight model.",
+  "leadsTo": [
+   "binary",
+   "light-optics"
+  ],
+  "origin": "everyday-technology"
+ },
+ {
+  "slug": "wifi-and-walls",
+  "title": "Wi-Fi around the house",
+  "level": 0,
+  "kind": "build",
+  "category": "networks",
+  "everyday": true,
+  "interaction": "Place a router on a floor plan and the rooms fill with a signal map; drag the laptop around and its speed gauge follows the colour. Add walls, a brick one, a fridge, a fish tank, and watch each cut a shadow in the map and the gauge drop, as the link slows down to be heard through the loss. Switch the router to the faster, shorter-reach band and compare; then add a neighbour's router on the same channel and watch the two take turns.",
+  "takeaway": "Wi-Fi is radio: walls and water eat it, the link slows down rather than breaking as the signal fades, and two networks on one channel must take turns.",
+  "prerequisites": [],
+  "related": [
+   "cell-towers-handover",
+   "remote-control-blinks"
+  ],
+  "needs": "",
+  "needsSource": "none beyond published indoor loss figures (ITU-R P.1238 indoor propagation model and typical wall losses).",
+  "pitfall": "Wi-Fi is not the internet; a full signal to the router says nothing about the line out of the house. Distance does not reduce the router's 'speed': the devices slow their sending so that the weaker signal can still be read.",
+  "why": "NGSS MS-PS4-2: 'waves are reflected, absorbed, or transmitted through various materials' (https://www.nextgenscience.org/pe/ms-ps4-2-waves-and-their-applications-technologies-information-transfer); 'Wi-Fi' averaged about 73,900 views a month on English Wikipedia in 2025 (https://wikimedia.org/api/rest_v1/metrics/pageviews/per-article/en.wikipedia/all-access/user/Wi-Fi/monthly/2025010100/2025123100).",
+  "overlapWith": "wireless-signals (level 2): that page packs bits onto a carrier against noise; this one is where to put the router, computed from a wall-by-wall loss model, with speed shown as a gauge and no waveform.",
+  "leadsTo": [
+   "internet",
+   "waves-interference"
+  ],
+  "origin": "everyday-technology"
+ },
+ {
+  "slug": "autocomplete-spellcheck",
+  "title": "How your phone guesses your word",
+  "level": 0,
+  "kind": "manipulate",
+  "category": "ai",
+  "everyday": true,
+  "interaction": "Type a word with a slip in it and watch the phone's two counts: which real words are one or two changes away, and how often each of those is used in a huge pile of books. The suggestion is the common one that is close; type a rare name and watch it 'corrected' into a common word. Then type the start of a sentence and see the next-word guesses, which are nothing but a count of which word most often followed the last one in the pile; change the last word and the counts change.",
+  "takeaway": "A phone guesses your word by counting: which real words are nearest to what you typed and which are used most, so it is confidently wrong whenever you are unusual.",
+  "prerequisites": [],
+  "related": [
+   "spam-filter-word-counts",
+   "emoji-and-text-as-numbers",
+   "voice-assistant-wake-word"
+  ],
+  "needs": "Word and word-pair counts: a subset of the Google Books Ngram data (1-grams and 2-grams, CC BY 3.0, https://storage.googleapis.com/books/ngrams/books/datasetsv3.html), or counts the page builds itself from a Project Gutenberg text (public domain).",
+  "needsSource": "Google Books Ngram (CC BY 3.0) and/or a public-domain book; Norvig's count_1w and count_2w files derive from the Google Web Trillion Word corpus with no stated data terms, so not those.",
+  "pitfall": "The phone does not understand the sentence and is not reading your mind; it also learns your own words by counting them. Do not call the next-word counts a language model with a network: here it is a table of counts, and language-models is where the network comes in.",
+  "why": "AI4K12 Big Idea 4, Natural Interaction, in the AAAI/CSTA K-12 AI guidelines (https://ai4k12.org/); the nearest existing page is level 2.",
+  "overlapWith": "language-models (level 2): that page shows a real network's next-token probabilities and sampling; this one has no network, only edit distance and counted word pairs, and the suggestions can be checked by hand.",
+  "leadsTo": [
+   "learning-from-data",
+   "bayes-theorem"
+  ],
+  "origin": "everyday-technology"
+ },
+ {
+  "slug": "face-unlock-depth",
+  "title": "Why a photo cannot unlock your phone",
+  "level": 0,
+  "kind": "manipulate",
+  "category": "ai",
+  "everyday": true,
+  "interaction": "Turn a head in front of a drawn phone: the phone sprays a pattern of thousands of invisible dots onto it, a second camera sees where each dot lands, and the page shows the depth map they measure, nose nearest, ears farthest. Enrol the head, then present it again turned, smiling or with glasses: the map differs a little and the match bar stays above the line. Hold up a flat photo of the same face and every dot lands at the same depth, so the bar collapses; present a twin's head with the same shape and the bar stays up.",
+  "takeaway": "Face unlock measures the shape of your face in depth from where a pattern of dots lands, so a flat photo fails while a face with the same shape, a twin, can pass.",
+  "prerequisites": [],
+  "related": [
+   "fingerprint-match",
+   "password-guessing",
+   "digital-camera-sensor"
+  ],
+  "needs": "A head to measure: a simple parametric head drawn on the page (no external data), or a scanned head if one under an open licence is confirmed.",
+  "needsSource": "none; depth is computed by triangulating projected dots against the head's surface on the page.",
+  "pitfall": "It is not reading your eyes or your DNA, and a match is a score above a line, never certainty; the phone follows gradual changes such as a beard by updating the stored map. Name the depth method as one kind (structured light) and say that other phones use other depth tricks.",
+  "why": "AI4K12 Big Idea 1, Perception (https://ai4k12.org/); 'Face ID' averaged about 14,500 views a month on English Wikipedia in 2025 (https://wikimedia.org/api/rest_v1/metrics/pageviews/per-article/en.wikipedia/all-access/user/Face_ID/monthly/2025010100/2025123100).",
+  "overlapWith": "fingerprint-match in this batch: the same enough-points-agree rule on ridges; light-optics (level 1) has the ray model. medical-imaging reconstructs a slice from many shadows; here depth comes from where projected dots land.",
+  "leadsTo": [
+   "light-optics",
+   "learning-from-data"
+  ],
+  "origin": "everyday-technology"
+ },
+ {
+  "slug": "fingerprint-match",
+  "title": "How a phone knows your finger",
+  "level": 0,
+  "kind": "manipulate",
+  "category": "ai",
+  "everyday": true,
+  "interaction": "Press a finger on a drawn sensor and see what it sees: a small patch of ridges, not the whole print, with the ridge ends and forks marked as dots, which are all the phone keeps. Press again, sliding and turning the finger or pressing only a corner, and watch the match count, how many dots line up, rise or fall past the 'enough' line. Wet the finger or put a cut across it and lose a few dots; press a different finger and watch almost none line up.",
+  "takeaway": "A phone stores a map of where your ridges end and fork, not a picture, and unlocks when enough of those points line up, never all of them.",
+  "prerequisites": [],
+  "related": [
+   "face-unlock-depth",
+   "password-guessing",
+   "touchscreens",
+   "teach-a-machine"
+  ],
+  "needs": "Fingerprint images generated on the page with a published synthetic-fingerprint model (an orientation field with cores and deltas filtered into ridges, as in SFinGe, Cappelli et al. 2000), stated on the page as synthetic; the FVC benchmark databases are research-use only and are not shipped.",
+  "needsSource": "none shipped; synthetic ridges from a published model, with the minutiae extracted by thinning. Real fingerprint databases (FVC, NIST SD) are not openly licensed.",
+  "pitfall": "The match is never total: a threshold decides, so a dirty or cut finger can fail and, rarely, a stranger can pass. The phone keeps no image of the print, and the sensor reads a patch, which is why enrolment asks for many presses.",
+  "why": "AI4K12 Big Idea 1, Perception (https://ai4k12.org/); 'Fingerprint' averaged about 17,700 views a month on English Wikipedia in 2025 (https://wikimedia.org/api/rest_v1/metrics/pageviews/per-article/en.wikipedia/all-access/user/Fingerprint/monthly/2025010100/2025123100).",
+  "overlapWith": "face-unlock-depth in this batch: the same decision rule, enough points agree, on a different measurement; cryptography (level 2) is how the secret is kept. Nothing existing shows a biometric match.",
+  "leadsTo": [
+   "learning-from-data"
+  ],
+  "origin": "everyday-technology"
+ },
+ {
+  "slug": "spam-filter-word-counts",
+  "title": "How a spam filter decides",
+  "level": 0,
+  "kind": "build",
+  "category": "ai",
+  "everyday": true,
+  "interaction": "A pile of real text messages arrives, each already marked spam or not; pick any word, 'free', 'win', 'tonight', 'mum', and see two counts, how many spam messages contain it and how many ordinary ones. Build the filter by letting it count every word, then write a message of your own and watch the words vote: each nudges the score toward spam or not according to its two counts. Try to sneak past with 'fr33' and watch the vote change; mark your message and see the counts update.",
+  "takeaway": "A spam filter has no idea what a message means: it counts which words turned up more in past spam, which is why spammers misspell and why your 'report spam' clicks teach it.",
+  "prerequisites": [],
+  "related": [
+   "autocomplete-spellcheck",
+   "teach-a-machine",
+   "you-might-also-like"
+  ],
+  "needs": "The SMS Spam Collection (Almeida and Hidalgo, UCI Machine Learning Repository, 5,574 messages, CC BY 4.0), or a subset.",
+  "needsSource": "UCI SMS Spam Collection, CC BY 4.0 (https://archive.ics.uci.edu/dataset/228/sms+spam+collection).",
+  "pitfall": "No word is bad: 'free' is only commoner in spam. The filter can be fooled both ways, and how much spam exists overall matters, so a rare kind of message needs stronger evidence; keep that as counts, not Bayes' formula.",
+  "why": "AI4K12 Big Idea 3, Learning, in the AAAI/CSTA K-12 AI guidelines (https://ai4k12.org/).",
+  "overlapWith": "bayes-theorem (level 1) counts true and false positives in a grid of 1,000 people and learning-from-data fits a curve; this page builds the simplest real classifier on a real corpus, with word counts the reader can check.",
+  "leadsTo": [
+   "bayes-theorem",
+   "learning-from-data"
+  ],
+  "origin": "everyday-technology"
+ },
+ {
+  "slug": "step-counter",
+  "title": "How a phone counts your steps",
+  "level": 0,
+  "kind": "simulate",
+  "category": "ai",
+  "everyday": true,
+  "interaction": "Play a real recording from a phone on someone's waist as they walk, climb stairs, sit and stand, with the stretches labelled: a line jiggles with every stride. Set the 'that was a step' line and watch the counter: too low and the fidgets during the sitting stretches count as steps, too high and the gentle strolling stretches are missed. Then shake the phone in a drawn car on a bumpy road and watch the counter climb without anyone walking.",
+  "takeaway": "A step counter counts jolts of a shaking sensor, so it needs a line between a stride and a fidget, and a bumpy ride can count as a walk.",
+  "prerequisites": [],
+  "related": [
+   "teach-a-machine"
+  ],
+  "needs": "Continuous raw accelerometer traces at 50 samples a second, with activity labels, from the Smartphone-Based Recognition of Human Activities and Postural Transitions dataset (UCI, CC BY 4.0).",
+  "needsSource": "UCI HAPT dataset, CC BY 4.0 (https://archive.ics.uci.edu/dataset/341/smartphone+based+recognition+of+human+activities+and+postural+transitions). It labels activity stretches but records no step counts, so there is no step ground truth: false counts are steps counted while sitting or standing, and the walking count is judged against the strides visible in the trace. The bumpy-car trace is synthesised and said to be.",
+  "pitfall": "The phone does not sense feet or use GPS to count steps; it counts jolts. Show the misses and the false counts, not a perfect counter.",
+  "why": "AI4K12 Big Idea 1, Perception: 'computers perceive the world using sensors' (https://ai4k12.org/); 'Pedometer' averaged about 3,800 views a month on English Wikipedia in 2025.",
+  "overlapWith": "newtons-laws (level 1) is forces and motion and feedback-control reads sensors into a controller; nothing existing counts events in a real sensor trace.",
+  "leadsTo": [
+   "learning-from-data",
+   "newtons-laws"
+  ],
+  "origin": "everyday-technology"
+ },
+ {
+  "slug": "teach-a-machine",
+  "title": "Teach a machine to tell things apart",
+  "level": 0,
+  "kind": "build",
+  "category": "ai",
+  "everyday": true,
+  "interaction": "Draw a few cats and a few houses (or pull examples from a pile of other people's doodles), label them, and draw a new one: the machine shrinks every drawing to a small grid of squares, finds the stored drawings most like the new one square by square, and the labels of those neighbours vote. Watch it get the first guesses wrong, add more examples and watch the votes firm up. Then teach it a trap: every cat drawn in the top corner, every house at the bottom, and see it decide by position instead of shape.",
+  "takeaway": "A machine learns to sort things by comparing new examples with the ones it was shown, so more and more varied examples make it better, and a lazy pattern in the examples teaches it the wrong thing.",
+  "prerequisites": [],
+  "related": [
+   "spam-filter-word-counts",
+   "you-might-also-like",
+   "voice-assistant-wake-word",
+   "fingerprint-match",
+   "step-counter"
+  ],
+  "needs": "Optional: doodles from the Quick, Draw! dataset (Google, CC BY 4.0) as a ready pile of examples; the reader's own drawings need nothing.",
+  "needsSource": "Quick, Draw! dataset, CC BY 4.0 (https://github.com/googlecreativelab/quickdraw-dataset), optional.",
+  "pitfall": "The machine does not know what a cat is; it compares squares. Do not call the neighbour vote a neural network; neural-networks comes later. The trap where every wolf photo had snow is real and belongs on the page.",
+  "why": "AI4K12 Big Idea 3, Learning, in the AAAI/CSTA K-12 AI guidelines (https://ai4k12.org/).",
+  "overlapWith": "learning-from-data (level 1): that page fits a curve to points and shows overfitting with a test set; this one classifies drawings by nearest neighbours with no curve and no error plot, and leads into it.",
+  "leadsTo": [
+   "learning-from-data"
+  ],
+  "origin": "everyday-technology"
+ },
+ {
+  "slug": "voice-assistant-wake-word",
+  "title": "How a speaker hears its name",
+  "level": 0,
+  "kind": "step",
+  "category": "ai",
+  "everyday": true,
+  "interaction": "Say 'go' or 'stop' into the microphone (or pick one of the shipped recordings of other people saying it) and step through what the speaker does: the sound becomes a picture, time left to right and pitch bottom to top, with the loud parts bright; a small trained network that has looked at thousands of such pictures lights a confidence bar for each word it knows. Whisper, add kitchen noise or say a word it never learned, and watch the bars fall or the 'unknown' bar rise. The page says which words the network knows and that everything after the wake word goes to a bigger computer.",
+  "takeaway": "A voice assistant turns sound into a picture of pitches over time, and a small network that has seen thousands of people say the word recognises the shape, which is why noise and unfamiliar voices trip it.",
+  "prerequisites": [],
+  "related": [
+   "sound-as-numbers",
+   "autocomplete-spellcheck",
+   "teach-a-machine"
+  ],
+  "needs": "A small keyword-spotting model that runs in the browser: the TensorFlow.js speech-commands model (Apache 2.0), trained on the Speech Commands dataset (CC BY 4.0), whose vocabulary is the digits plus up, down, left, right, go, stop, yes and no; plus a handful of shipped clips from that dataset for readers who decline the microphone.",
+  "needsSource": "TensorFlow.js speech-commands model (Apache 2.0, https://github.com/tensorflow/tfjs-models/tree/master/speech-commands) and Speech Commands v2 (CC BY 4.0).",
+  "pitfall": "The wake-word listener does not understand words and does not send everything it hears: the small network runs on the device and knows only a few words, and the rest is sent only after it fires. It is not matching against one recording of the owner.",
+  "why": "AI4K12 Big Idea 1, Perception (https://ai4k12.org/); 'Virtual assistant' averaged about 7,400 views a month on English Wikipedia in 2025 (https://wikimedia.org/api/rest_v1/metrics/pageviews/per-article/en.wikipedia/all-access/user/Virtual_assistant/monthly/2025010100/2025123100).",
+  "overlapWith": "convolution-vision (level 2) inspects a trained image classifier layer by layer on drawn digits; here the input is sound, the picture is the spectrogram the reader watches being made, and the network is a box with confidence bars. language-models is what runs after the wake word.",
+  "leadsTo": [
+   "waves-interference",
+   "learning-from-data"
+  ],
+  "origin": "everyday-technology"
+ },
+ {
+  "slug": "you-might-also-like",
+  "title": "Why the app says 'you might also like'",
+  "level": 0,
+  "kind": "explore",
+  "category": "ai",
+  "everyday": true,
+  "interaction": "Start on any article in a small web of real Wikipedia pages and see where its readers went next, as arrows whose thickness is a count; the 'you might also like' box is just the thickest arrows. Pick a different starting page and the box changes; follow a few arrows yourself and watch the suggestions drift toward the most-visited pages, which turn up in nearly everyone's box. Then add a brand-new page with no visits and see that nothing can recommend it yet.",
+  "takeaway": "'You might also like' is a count of where other people went after the same thing you are looking at, so it pulls everyone toward the popular and has nothing to say about anything new.",
+  "prerequisites": [],
+  "related": [
+   "spam-filter-word-counts",
+   "teach-a-machine"
+  ],
+  "needs": "A small subset of the Wikipedia Clickstream (monthly referer-to-article counts, CC0), e.g. the neighbourhood of a few dozen articles.",
+  "needsSource": "Wikimedia Clickstream, CC0 (https://dumps.wikimedia.org/other/clickstream/). No open user-by-film ratings set was found (MovieLens is research-use only), so 'people like you' from ratings is not built here; the page is item-to-item counts.",
+  "pitfall": "The app does not know you; it knows counts of other people's paths, or in shops their purchases. Do not present the suggestion as taste or understanding, and show the pull toward the popular and the empty box for a new item rather than hiding them.",
+  "why": "AI4K12 Big Idea 3, Learning (https://ai4k12.org/); 'Recommender system' averaged about 7,700 views a month on English Wikipedia in 2025 (https://wikimedia.org/api/rest_v1/metrics/pageviews/per-article/en.wikipedia/all-access/user/Recommender_system/monthly/2025010100/2025123100).",
+  "overlapWith": "pagerank (level 2): that page ranks pages by who links to whom with a random surfer; this one uses counts of actual reader paths from one page to the next, and the output is a 'next' list, not a ranking of the whole web. learning-from-data fits a model; here there is only counting.",
+  "leadsTo": [
+   "learning-from-data",
+   "graph-search"
+  ],
+  "origin": "everyday-technology"
+ },
+ {
+  "slug": "battery-runs-down",
+  "title": "A battery is a bucket of pushes",
+  "level": 0,
+  "kind": "simulate",
+  "category": "energy",
+  "interaction": "Put a battery in a torch, switch it on and let the clock run: a gauge shows the store draining and the beam dimming over hours. Fit a bigger bulb and the store empties faster; add a second battery end to end and the bulb is brighter but the pair runs down sooner; put the two side by side and the bulb is as before but lasts twice as long. A counter records the hours each arrangement gives.",
+  "takeaway": "A battery holds a fixed store, so a brighter lamp means a shorter life, and two batteries can be stacked for more push or paired for more hours.",
+  "prerequisites": [],
+  "related": [
+   "light-bulb-hot-wire",
+   "redox-batteries"
+  ],
+  "needs": "",
+  "pitfall": "A battery does not store electricity or electrons: it stores a chemical push, and the electrons that flow were in the wire all along. The bulb does not use current up: the same current leaves the battery as returns to it, and what the bulb takes is the store.",
+  "why": "England KS2 science, Year 6 electricity: 'associate the brightness of a lamp or the volume of a buzzer with the number and voltage of cells used in the circuit', https://www.gov.uk/government/publications/national-curriculum-in-england-science-programmes-of-study",
+  "overlapWith": "electric-circuits: that page wires series and parallel circuits with meters; this page watches one torch over hours and is about the store running out, not the circuit. redox-batteries, at level 2, is the chemistry inside.",
+  "needsSource": "none (a typical AA cell's capacity and discharge shape quoted from a published manufacturer datasheet, cited on the page)",
+  "leadsTo": [
+   "electric-circuits"
+  ],
+  "everyday": true,
+  "origin": "vehicles-and-big-machines"
+ },
+ {
+  "slug": "bicycle-gears",
+  "title": "Bicycle gears",
+  "level": 0,
+  "kind": "manipulate",
+  "category": "energy",
+  "interaction": "Turn the pedals one full turn and count how many times the back wheel turns with the chain on each pair of sprockets. Then set a hill and pedal: a gauge shows how hard each push must be and a marker shows how far one push carries the bike. Shift while climbing to find the gear that is light enough to push and still gets you up.",
+  "takeaway": "A small sprocket in front and a big one at the back turn the wheel less per pedal turn, so each push is easier but carries you a shorter way; no gear gives you more for free.",
+  "prerequisites": [],
+  "related": [
+   "levers-and-scissors",
+   "pulleys-and-cranes",
+   "screws-and-screwdrivers",
+   "wind-up-toy"
+  ],
+  "needs": "",
+  "pitfall": "A low gear does not make the rider stronger or add energy: it trades distance for force, and the wheel turns less for every pedal turn.",
+  "why": "KS2 science, Year 5 Forces: pupils 'recognise that some mechanisms, including levers, pulleys and gears, allow a smaller force to have a greater effect' (statutory text quoted at https://www.stem.org.uk/node/12696); Bartosz Ciechanowski's 'Bicycle' explainer shows the demand for the adult version (https://waxy.org/2023/03/interactive-explainer-of-the-physics-of-a-bicycle).",
+  "overlapWith": "newtons-laws: that page pushes carts and launches projectiles with energy bars; this page is the gear ratio alone, counted in wheel turns per pedal turn and in how hard each push must be on a hill.",
+  "needsSource": "none",
+  "leadsTo": [
+   "newtons-laws"
+  ],
+  "everyday": true,
+  "origin": "home-mechanisms"
+ },
+ {
+  "slug": "bicycle-gears-hills",
+  "title": "Bicycle gears: why low gear gets you up the hill",
+  "level": 0,
+  "kind": "manipulate",
+  "category": "energy",
+  "interaction": "Pedal a bicycle along a road that rises into a hill and shift gears: in a high gear each pedal turn carries you far but the pedals go stiff on the slope and you grind to a halt; in a low gear the pedals spin easily and the bike climbs, slower. Counters show wheel turns per pedal turn and the push needed on the pedal, and a rider of the same strength tries each gear on the same hill.",
+  "takeaway": "Gears trade distance for push: a low gear turns the wheel less per pedal stroke but needs less force, which is what gets a rider up a hill.",
+  "prerequisites": [],
+  "related": [
+   "engine-pushes-to-spin",
+   "crane-counterweight",
+   "roller-coaster-feel"
+  ],
+  "needs": "",
+  "pitfall": "A low gear gives no extra energy and makes no hill shorter: you pedal more turns for the same climb. Gears do not make a bike faster on their own; at the same effort a high gear is faster only where the road is flat.",
+  "why": "Bartosz Ciechanowski's interactive 'Bicycle', https://ciechanow.ski/bicycle/ (curriculum: England KS2 Year 5, levers, pulleys and gears)",
+  "overlapWith": "newtons-laws: that page has carts on tracks with energy bars; this page is the chain, the sprockets and the hill, and the trade between force and distance.",
+  "needsSource": "none",
+  "leadsTo": [
+   "newtons-laws"
+  ],
+  "everyday": true,
+  "origin": "vehicles-and-big-machines"
+ },
+ {
+  "slug": "car-brakes",
+  "title": "Car brakes",
+  "level": 0,
+  "kind": "manipulate",
+  "category": "energy",
+  "interaction": "Press the brake pedal and follow the push: the pedal is a lever, the small piston it moves squeezes fluid that cannot be squashed into the big pistons at the wheels, and those press the pads onto the spinning discs, with gauges showing the force and the distance moved at each stage. Then drive at a chosen speed and brake: the discs glow with the car's motion turned into heat, and the stopping distance grows four times when the speed doubles; wet the road and the tyres skid before the brakes run out.",
+  "takeaway": "A light push on the pedal becomes a crushing squeeze at the wheels because fluid passes the push on to bigger pistons, the car's motion ends up as heat in the discs, and twice the speed needs four times the distance.",
+  "prerequisites": [],
+  "related": [
+   "levers-and-scissors",
+   "seatbelt-crash",
+   "water-taps-and-pipes"
+  ],
+  "needs": "",
+  "pitfall": "Brake fluid does not squash to absorb the push, and the brakes do not stop the car: they stop the wheels, and it is the tyres gripping the road that stops the car.",
+  "why": "KS3 physics, pressure in liquids and hydraulic machines, with the hydraulic jack and brakes as the set applications (STEM Learning KS3 collection 'Forces at a Distance: moments, balance, pressure, hydraulics and pendulums', https://www.stem.org.uk/node/15878; a school scheme at https://medenschool.co.uk/data/uploads/files/MTP_for_Pressure_Moments_and_Densitty.pdf).",
+  "overlapWith": "newtons-laws: that page collides carts and shows energy bars; this page follows one push from pedal to disc through a hydraulic machine and ends with stopping distance against speed.",
+  "needsSource": "none",
+  "leadsTo": [
+   "newtons-laws"
+  ],
+  "everyday": true,
+  "origin": "home-mechanisms"
+ },
+ {
+  "slug": "click-pen",
+  "title": "Click pen",
+  "level": 0,
+  "kind": "step",
+  "category": "energy",
+  "interaction": "Press the button of a retractable pen and step through what happens inside: the plunger's slanted teeth push the cam down and twist it part of a turn, the spring pushes it back up, and the cam lands either on a tooth, which holds the tip out, or slides into a slot, which lets it back in. Scrub the clicks back and forth with the barrel made transparent and count how many it takes for the cam to come round to where it started; then press the tip to paper and watch the ball roll a film of ink out of the tube.",
+  "takeaway": "Every click turns the cam one notch, so it lands alternately on a tooth and in a slot, which is why one press puts the tip out and the next brings it back.",
+  "prerequisites": [],
+  "related": [
+   "lock-and-key",
+   "clock-escapement",
+   "zipper"
+  ],
+  "needs": "",
+  "pitfall": "The pen has no switch that remembers: its memory is the cam's angle, and the ball does not squirt ink, it rolls it out like a tiny paint roller.",
+  "why": "Engineer Guy's 'How does a retractable pen work?' video and its write-up (https://makezine.com/article/craft/retractable-pen-work/); giant clicker-pen builds are a classroom staple (https://www.instructables.com/Giant-Clicker-Pen).",
+  "overlapWith": "logic-gates: that page builds a flip-flop as a circuit; the pen's cam is a mechanical toggle whose state is an angle, and the reader counts clicks, not bits.",
+  "needsSource": "none",
+  "leadsTo": [
+   "logic-gates"
+  ],
+  "everyday": true,
+  "origin": "home-mechanisms"
+ },
+ {
+  "slug": "clock-escapement",
+  "title": "Pendulum clocks & the escapement",
+  "level": 0,
+  "kind": "simulate",
+  "category": "energy",
+  "interaction": "Hang a weight on a cord that turns a toothed wheel and watch the wheel spin away in a blur; add the anchor that rocks with a pendulum, and the wheel can now advance only one tooth per swing, with a tick each time a tooth is caught and a tiny push back to the pendulum to keep it going. Lengthen or shorten the pendulum, or hang a heavier weight, and count ticks against a reference second hand to see which change alters the rate.",
+  "takeaway": "The weight drives the clock and the pendulum only meters it out, one tooth per swing, so the length of the pendulum sets the time and a heavier weight hardly changes the rate.",
+  "prerequisites": [],
+  "related": [
+   "wind-up-toy",
+   "playground-swing",
+   "click-pen"
+  ],
+  "needs": "",
+  "pitfall": "The pendulum does not power the clock, and a bigger swing does not tick faster: for small swings the length alone sets the period.",
+  "why": "Bartosz Ciechanowski's 'Mechanical Watch', the most-shared interactive explainer of a mainspring and escapement (https://pxlnv.com/linklog/mechanical-watch-movement/); KS3 physics collections pair pendulums with moments and pressure (https://www.stem.org.uk/node/15878).",
+  "overlapWith": "oscillations-resonance: that page sets a pendulum's length and plots its period; here the period is a given and the page is the catch-and-release that turns swings into ticks, and why the drive weight does not change the rate.",
+  "needsSource": "none",
+  "leadsTo": [
+   "oscillations-resonance"
+  ],
+  "everyday": true,
+  "origin": "home-mechanisms"
+ },
+ {
+  "slug": "crane-counterweight",
+  "title": "Tower cranes: why they don't fall over",
+  "level": 0,
+  "kind": "build",
+  "category": "energy",
+  "interaction": "Hang a load from a tower crane and slide the trolley out along the jib: the crane leans and tips unless the concrete blocks on the short arm balance it, and a gauge shows how close to tipping it is. Add or remove counterweights and move the load in and out to find the heaviest load the crane can carry at each reach; then rig the hook with two or four rope falls and watch the motor's pull shrink as the rope it must wind grows.",
+  "takeaway": "A crane stands because a heavy block near the tower balances a load far out on the jib, like a seesaw, and the farther out the load, the less it may weigh.",
+  "prerequisites": [],
+  "related": [
+   "hydraulics-digger-arm",
+   "skyscraper-sway-damper",
+   "bicycle-gears-hills"
+  ],
+  "needs": "",
+  "pitfall": "The counterweight is not there to outweigh the load: a small load far out can out-tip a big block close in, because distance counts as much as weight. The pulleys give no free lift: four falls quarter the pull but the motor winds four times the rope.",
+  "why": "England KS2 science, Year 5 forces: 'levers, pulleys and gears allow a smaller force to have a greater effect', https://www.gov.uk/government/publications/national-curriculum-in-england-science-programmes-of-study",
+  "overlapWith": "bridges-structures: that page carries a load to the ground through a frame; this page is the balance of a crane about its base, the load chart it gives, and the rope falls at its hook.",
+  "needsSource": "none",
+  "leadsTo": [
+   "newtons-laws",
+   "bridges-structures"
+  ],
+  "everyday": false,
+  "origin": "vehicles-and-big-machines"
+ },
+ {
+  "slug": "dam-water-height",
+  "title": "Dams and water wheels: the push is in the height",
+  "level": 0,
+  "kind": "manipulate",
+  "category": "energy",
+  "interaction": "Raise the water behind a dam and open its gate: water jets out faster from a deeper reservoir, spins the wheel harder and lights more houses. Move the wheel to the foot of a tall waterfall, then halfway up, and compare; close the gate when the reservoir runs low and wait for rain to refill it. A second stream with ten times the flow but a tenth of the drop lights the same number of houses.",
+  "takeaway": "A dam's power comes from how far the water falls and how much of it falls, so a small high stream can match a big low one.",
+  "prerequisites": [],
+  "related": [
+   "wind-turbine-wind-speed",
+   "power-station-kettle",
+   "geothermal-heat-below"
+  ],
+  "needs": "",
+  "pitfall": "The water at the bottom of a lake is not pushing harder because it is 'stronger': pressure grows with depth, and the same stream falling further carries more. A dam makes no energy of its own: it stores rain that fell on the hills, and with no rain the reservoir empties.",
+  "why": "USGS Water Science School, 'Hydroelectric power: how it works', https://www.usgs.gov/special-topics/water-science-school/science/hydroelectric-power-how-it-works (curriculum: NGSS 4-ESS3-1)",
+  "overlapWith": "power-grid: that page dispatches hydro as one source; this page is the water wheel itself and what height and flow do to it, and nothing about the grid.",
+  "needsSource": "none",
+  "leadsTo": [
+   "newtons-laws"
+  ],
+  "everyday": false,
+  "origin": "vehicles-and-big-machines"
+ },
+ {
+  "slug": "elevator",
+  "title": "Elevator",
+  "level": 0,
+  "kind": "manipulate",
+  "category": "energy",
+  "interaction": "Put people into the cab one at a time and watch the rope over the wheel at the top: a counterweight on the other side balances the empty cab plus about half a load, so the motor only lifts the difference, shown on a gauge that is lowest with the cab half full and highest going up full or down empty. Then arm the safety and cut the rope: the governor's flyweights throw the brake shoes into the rails before the cab has dropped far.",
+  "takeaway": "The motor of an elevator does not lift the whole cab, only the difference between the cab and its counterweight, and it is a speed-triggered brake, not the rope, that keeps a falling cab safe.",
+  "prerequisites": [
+   "pulleys-and-cranes"
+  ],
+  "related": [
+   "escalator",
+   "levers-and-scissors"
+  ],
+  "needs": "",
+  "pitfall": "A snapped rope does not mean a fall, and the motor never carries the full weight of a loaded cab; show the counterweight doing its share.",
+  "why": "'How do elevators work?' is a standing children's question (Wonderopolis, https://wonderopolis.org/wonder/how-do-elevators-work) with adult explainers alongside (https://explainthatstuff.com/how-elevators-work.html).",
+  "overlapWith": "newtons-laws: that page balances forces on carts and projectiles; here two weights hang over one wheel and the motor's job is counted in people.",
+  "needsSource": "none",
+  "leadsTo": [
+   "newtons-laws"
+  ],
+  "everyday": true,
+  "origin": "home-mechanisms"
+ },
+ {
+  "slug": "engine-pushes-to-spin",
+  "title": "Inside a car engine: from pushes to spinning",
+  "level": 0,
+  "kind": "build",
+  "category": "energy",
+  "interaction": "Start with one cylinder: a bang pushes the piston down, the crank turns that push into part of a turn, and a dial shows the shaft speeding up and slowing with every bang, so the car would lurch. Add a second, third and fourth cylinder that fire in turn, then a heavy flywheel, and watch the dial smooth out. Press the bang yourself to feel the timing, then let the engine run.",
+  "takeaway": "An engine turns a string of separate pushes into a steady spin, and cylinders firing in turn plus a heavy wheel are what make it smooth.",
+  "prerequisites": [],
+  "related": [
+   "bicycle-gears-hills",
+   "car-brakes-stopping-distance",
+   "heat-engines"
+  ],
+  "needs": "",
+  "pitfall": "The fuel does not explode the car forward: the burning gas only pushes a piston a few centimetres, and everything else is linkage. A four-stroke cylinder pushes on only one stroke in four, which is why a single cylinder runs so rough.",
+  "why": "Bartosz Ciechanowski's interactive 'Internal Combustion Engine', https://ciechanow.ski/internal-combustion-engine/",
+  "overlapWith": "heat-engines: that page traces the gas round a pressure-volume loop and the efficiency ceiling at level 2; this page is the crank, the firing order and the flywheel, and never draws the loop.",
+  "needsSource": "none (the cylinder's push over a stroke is a simplified pressure profile, stated as such on the page)",
+  "leadsTo": [
+   "newtons-laws"
+  ],
+  "everyday": true,
+  "origin": "vehicles-and-big-machines"
+ },
+ {
+  "slug": "escalator",
+  "title": "Escalator",
+  "level": 0,
+  "kind": "explore",
+  "category": "energy",
+  "interaction": "Scrub the chain of an escalator and follow one step round the loop: it rides on two pairs of wheels on two separate tracks, and because the tracks sit one step-height apart on the slope and level out at the ends, the step stays flat all the way up, sinks into a flat floor at the top and turns over underneath. Drag the two tracks closer together or further apart and watch the steps tilt; zoom into the landing to see why the comb has to mesh with grooves in the step.",
+  "takeaway": "The steps of an escalator do not fold; they are rigid, and it is the shape of the two tracks they ride on that keeps them level on the slope and flattens them at each end.",
+  "prerequisites": [],
+  "related": [
+   "elevator",
+   "bicycle-gears"
+  ],
+  "needs": "",
+  "pitfall": "Steps are not hinged flaps that fold flat, and the handrail is a separate belt driven to match the step speed, not part of the step chain.",
+  "why": "'How Escalators Work' (HowStuffWorks, https://science.howstuffworks.com/transport/engines-equipment/escalator.htm) is reused as a KS2 reading-comprehension text by primary schools (https://longton-st-oswalds.lancs.sch.uk/serve_file/971111).",
+  "overlapWith": "bridges-structures: that page is about forces in members; the escalator page is pure geometry, a rigid step on two tracks, with no forces at all.",
+  "needsSource": "none",
+  "leadsTo": [
+   "unit-circle"
+  ],
+  "everyday": true,
+  "origin": "home-mechanisms"
+ }
+]

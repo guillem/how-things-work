@@ -16,3 +16,7 @@ bun.lockb
 /docs/reviews/batches/
 /docs/reviews/*.md
 !/docs/reviews/README.md
+
+# Topic-proposal research: candidate pool (machine-written) and the workflow scripts as they ran
+/docs/proposals/topics-200/data/
+/docs/proposals/topics-200/workflows/

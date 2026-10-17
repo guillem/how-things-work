@@ -1,0 +1,648 @@
+[
+ {
+  "slug": "vibrations-and-sound",
+  "title": "Vibrations & sound",
+  "level": 0,
+  "kind": "manipulate",
+  "category": "physics",
+  "everyday": true,
+  "interaction": "Twang a ruler held over the edge of a table: the strip wobbles, and a row of air particles passes the push along to an ear, each one jiggling in place while the squeeze travels down the row; the speakers play the note. Slide the ruler in to shorten it and the wobble quickens and the note rises; twang it harder and the wobble widens and the note gets louder. Move the ear away and the sound fades, then pump the air out of a jar around a ringing bell and nothing arrives at all.",
+  "takeaway": "A sound is a wobble passed along through the air: a faster wobble is a higher note, a bigger wobble a louder one, and with no air nothing reaches the ear.",
+  "prerequisites": [],
+  "related": [
+   "waves-interference"
+  ],
+  "needs": "",
+  "pitfall": "Sound does not travel as air flying from the source to the ear; each bit of air jiggles in place and passes the push on. Louder is not higher: loudness and pitch are two different things.",
+  "why": "KS2 Year 4 'Sound' (sounds are made by something vibrating; vibrations travel through a medium to the ear; sounds get fainter with distance) https://www.gov.uk/government/publications/national-curriculum-in-england-science-programmes-of-study/national-curriculum-in-england-science-programmes-of-study ; Bartosz Ciechanowski, 'Sound' https://ciechanow.ski/sound/",
+  "overlapWith": "waves-interference: that page puts two sources in a ripple tank and finds a string's harmonics; this one has a single vibrating ruler and a single row of air particles, no interference, no harmonics, just pitch, loudness, distance and the need for air.",
+  "needsSource": "none; a vibrating strip whose rate rises as it is shortened (cantilever), a one-dimensional chain of masses and springs for the air, loudness falling with distance, and synthesised tones through Web Audio.",
+  "leadsTo": [
+   "waves-interference",
+   "oscillations-resonance"
+  ],
+  "origin": "basic-physical-science"
+ },
+ {
+  "slug": "washing-machine-spin",
+  "title": "Washing machine spin",
+  "level": 0,
+  "kind": "simulate",
+  "category": "physics",
+  "interaction": "Load wet clothes into a drum with holes and spin it up with a speed slider: the drum keeps pushing the clothes round in a circle, but the water at the holes gets no push and leaves in a straight line, tangent to the drum, into the outer tub, with a trail showing each drop's straight path. Spin faster to shed more water, then pile the clothes on one side and watch the drum thump and walk, and spread them out to fix it.",
+  "takeaway": "Nothing throws the water outward: the drum keeps turning the clothes while the water at the holes simply carries straight on, and the faster the drum, the more water escapes.",
+  "prerequisites": [],
+  "related": [
+   "seatbelt-crash",
+   "playground-swing",
+   "orbits-kepler"
+  ],
+  "needs": "",
+  "pitfall": "Do not say a centrifugal force flings the water out: seen from the room the water moves in a straight line and it is the drum that turns away from it.",
+  "why": "Nearest standard: KS3 physics forces, where a force is needed to change the direction of motion (STEM Learning KS3 forces collection, https://www.stem.org.uk/node/15878). No page-specific signal was found before the search budget ran out.",
+  "overlapWith": "newtons-laws: that page shows forces changing motion on a straight track; here the straight path is what the water takes when the drum stops pushing it, and the circle belongs to the drum.",
+  "needsSource": "none",
+  "leadsTo": [
+   "newtons-laws",
+   "orbits-kepler"
+  ],
+  "everyday": true,
+  "origin": "home-mechanisms"
+ },
+ {
+  "slug": "water-pressure-and-hydraulics",
+  "title": "Water pressure & hydraulics",
+  "level": 0,
+  "kind": "manipulate",
+  "category": "physics",
+  "everyday": true,
+  "interaction": "Punch holes at different heights in a tall bottle and the jets reach different distances, the lowest furthest. Lower a gauge into a lake, then into a thin tube of the same depth: it reads the same, deeper means harder, however wide or narrow the water. Push down on the small piston of a hydraulic lift and the big piston raises a car with a far bigger push, but rises a far shorter way; try the same with a bicycle brake and a digger's arm.",
+  "takeaway": "Water pushes harder the deeper you go, whatever the shape of the container, and a liquid passes a push along so that a small push on a small piston becomes a big push on a big one that moves less far.",
+  "prerequisites": [],
+  "related": [
+   "air-pressure-and-straws",
+   "floating-sinking-and-boats",
+   "bridges-structures"
+  ],
+  "needs": "",
+  "pitfall": "Pressure depends on depth, not on how much water there is: a thin tube and a lake push equally hard at the same depth. And a hydraulic lift is not free work; the big piston moves as much less as it pushes more.",
+  "why": "PhET 'Under Pressure' (pressure, density, fluids) https://phet.colorado.edu/en/simulations/under-pressure ; KS3 physics 'Pressure in fluids' (pressure in liquids, increasing with depth) and KS2 Year 5 'Forces' (mechanisms that allow a smaller force to have a greater effect) https://www.gov.uk/government/publications/national-curriculum-in-england-science-programmes-of-study/national-curriculum-in-england-science-programmes-of-study",
+  "overlapWith": "bridges-structures: that page carries loads through beams and cables; this one carries a push through a liquid, and shows that depth, not width, sets the pressure.",
+  "needsSource": "none; hydrostatic pressure growing with depth, jets from Torricelli's law, Pascal's principle with volume conservation between the two pistons.",
+  "leadsTo": [
+   "newtons-laws",
+   "bridges-structures"
+  ],
+  "origin": "basic-physical-science"
+ },
+ {
+  "slug": "bell-inequality",
+  "title": "Entanglement & Bell's theorem",
+  "level": 3,
+  "kind": "simulate",
+  "category": "physics",
+  "interaction": "Send pairs of entangled particles to two stations and set each station's measurement angle. First program the particles with any hidden instruction table you like and run thousands of pairs: the CHSH correlation never passes 2. Then switch the source to quantum mechanics and the simulated stations climb to 2.83; overlay the counts from the 2015 Delft experiment, which reached 2.42 with its error bar clear of 2.",
+  "takeaway": "No set of pre-agreed answers can push the correlation past 2, quantum mechanics predicts up to 2.83, and the real experiment measured 2.42, above the classical bound.",
+  "prerequisites": [
+   "stern-gerlach"
+  ],
+  "related": [
+   "quantum-computing",
+   "cryptography"
+  ],
+  "needs": "Delft loophole-free Bell test data (Hensen et al. 2015), 4TU.ResearchData doi:10.4121/uuid:6e19e9b2-4a2d-40b5-8dd3-a660bf3c0a31, under the 4TU General Terms of Use (open access but not a CC licence; the page works without it).",
+  "pitfall": "Entanglement sends no message: each station's own results are coin flips whatever the other does, and only the comparison afterwards shows the correlation.",
+  "why": "Veritasium's Bell-test explainer, among the most watched quantum videos: https://www.sciencealert.com/watch-this-is-how-quantum-entanglement-really-works",
+  "overlapWith": "quantum-computing: entangles two qubits and compares results; this page pits those results against every possible hidden-variable strategy and shows the inequality broken.",
+  "needsSource": "4TU.ResearchData, 4TU General Terms of Use (open, not CC); weak as a shipped dataset, optional.",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "physics-l3"
+ },
+ {
+  "slug": "bifurcations",
+  "title": "Bifurcations & nonlinear dynamics",
+  "level": 3,
+  "kind": "manipulate",
+  "category": "physics",
+  "interaction": "Slide one parameter of a flow on the line or the plane and watch its fixed points move, collide and vanish (saddle-node), split in two (pitchfork) or give birth to a limit cycle (Hopf), with the bifurcation diagram drawn as you go and the vector field animated beside it. Then apply the same slider to real systems: a laser crossing threshold, a beam that buckles, a neuron that starts firing.",
+  "takeaway": "A smooth change in a parameter can produce a sudden change in behaviour, and a handful of bifurcation types account for nearly all of them.",
+  "prerequisites": [
+   "calculus",
+   "oscillations-resonance"
+  ],
+  "related": [
+   "chaos-fractals",
+   "feedback-control",
+   "neurons",
+   "lasers",
+   "solitons"
+  ],
+  "needs": "",
+  "pitfall": "Chaos is not the subject: the logistic map and the double pendulum stay on chaos-fractals, and this page concerns what happens to equilibria of continuous flows before any chaos appears.",
+  "why": "MIT OCW 8.09 Classical Mechanics III, chapter 7 on chaos and nonlinear dynamics with Strogatz as the text: https://ocw.mit.edu/courses/8-09-classical-mechanics-iii-fall-2014/pages/syllabus",
+  "overlapWith": "chaos-fractals: covers the logistic map's period doubling and chaos; this page covers the saddle-node, pitchfork and Hopf bifurcations of continuous flows that come before chaos.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "physics-l3"
+ },
+ {
+  "slug": "blackbody-cavity-modes",
+  "title": "Blackbody radiation from counting modes",
+  "level": 3,
+  "kind": "build",
+  "category": "physics",
+  "interaction": "Set the size and temperature of a cavity; the page counts the standing-wave modes in each frequency band and assigns each its average energy. Give every mode kT and the total runs off to infinity at high frequency; give each Planck's quantized average and the familiar hump appears. Overlay the COBE FIRAS spectrum of the cosmic microwave background and slide the temperature until it fits.",
+  "takeaway": "The blackbody spectrum is the number of wave modes times the average energy of each, and only a quantized average keeps the high-frequency end from exploding.",
+  "prerequisites": [
+   "waves-interference",
+   "partition-function"
+  ],
+  "related": [
+   "big-bang",
+   "stars",
+   "quantum-harmonic-oscillator",
+   "greenhouse-effect",
+   "casimir-effect"
+  ],
+  "needs": "COBE FIRAS CMB monopole spectrum (Fixsen et al. 1996), firas_monopole_spec_v1.txt from NASA LAMBDA; NASA data, public domain.",
+  "pitfall": "Planck quantized the oscillators of the cavity wall, not light itself; the page must not present the derivation as the discovery of the photon.",
+  "why": "PhET lists 'Blackbody Spectrum' (HTML5) among its quantum simulations: https://phet.colorado.edu/en/search?q=Planck",
+  "overlapWith": "stars: uses the blackbody curve to colour stars by temperature; this page derives the curve by counting modes and shows exactly where classical physics fails.",
+  "needsSource": "NASA LAMBDA, https://lambda.gsfc.nasa.gov/product/cobe/firas_monopole_spect.html; US government data, public domain.",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "physics-l3"
+ },
+ {
+  "slug": "bose-einstein-condensation",
+  "title": "Quantum statistics & Bose-Einstein condensation",
+  "level": 3,
+  "kind": "simulate",
+  "category": "physics",
+  "interaction": "Fill the ladder of levels of a trap with identical particles and cool them: with Boltzmann statistics the occupation thins out smoothly, with bosons a macroscopic fraction drops into the ground level below a critical temperature, with fermions the levels stack up to a Fermi energy. A plot tracks the condensate fraction against temperature, and beside it the 1995 JILA velocity distributions of rubidium show the same peak appearing.",
+  "takeaway": "Whether particles may share a state decides a gas's whole thermal behaviour: bosons pile into one state when cold, fermions never can.",
+  "prerequisites": [
+   "partition-function",
+   "quantum-mechanics"
+  ],
+  "related": [
+   "lasers",
+   "stars",
+   "standard-model"
+  ],
+  "needs": "JILA/NIST 1995 rubidium velocity-distribution images (credit NIST/JILA/CU-Boulder); NIST material, public domain in the US.",
+  "pitfall": "Condensation needs no attraction at all: it happens in an ideal gas purely because the particles are indistinguishable, so the page must not explain it as the atoms sticking together.",
+  "why": "MIT OCW 8.044 syllabus notes Bose gases and Bose-Einstein condensation as the one modern addition to the course: https://ocw.mit.edu/courses/8-044-statistical-physics-i-spring-2013/pages/syllabus",
+  "overlapWith": "states-of-matter: condenses a gas through attraction; here a gas condenses with no forces at all, purely because its particles are indistinguishable.",
+  "needsSource": "NIST image gallery, 'Bose-Einstein condensate' 1995 (NIST/JILA/CU-Boulder); public domain as NIST work, to be confirmed on NIST's own page.",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "physics-l3"
+ },
+ {
+  "slug": "brownian-motion",
+  "title": "Brownian motion & the Einstein relation",
+  "level": 3,
+  "kind": "step",
+  "category": "physics",
+  "interaction": "Step through Einstein's and Perrin's argument with a live model at each stage: a grain in a bath of molecules is kicked at random (a Langevin simulation), its mean squared displacement grows in proportion to time, the slope depends on temperature, viscosity and grain size, and Perrin's 1909 displacement counts fall on the predicted Gaussian. The last step turns the slope into Avogadro's number.",
+  "takeaway": "A visible grain's random jitter grows with the square root of time, and the rate of that growth counts the molecules in a mole.",
+  "prerequisites": [
+   "entropy",
+   "central-limit-theorem"
+  ],
+  "related": [
+   "states-of-matter",
+   "partition-function"
+  ],
+  "needs": "Perrin's displacement counts for gamboge grains (Annales de Chimie et de Physique, 1909); public domain.",
+  "pitfall": "Displacement grows with the square root of time, not time; a Brownian grain has no measurable velocity, which is why Perrin measured displacements.",
+  "why": "Princeton COS 126 'Atomic Nature of Matter' assignment, which has students repeat Perrin's estimate of Avogadro's number from Brownian displacements: https://introcs.cs.princeton.edu/java/assignments/atomic.html",
+  "overlapWith": "central-limit-theorem: sums random variables in the abstract; this page is the physical random walk and the measurement that turned it into a count of molecules.",
+  "needsSource": "Perrin, 'Mouvement brownien et réalité moléculaire', Ann. Chim. Phys. 1909; public domain (author died 1942).",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "physics-l3"
+ },
+ {
+  "slug": "casimir-effect",
+  "title": "The Casimir effect",
+  "level": 3,
+  "kind": "manipulate",
+  "category": "physics",
+  "interaction": "Slide two mirrors toward each other inside a one-dimensional cavity; the page lists the standing-wave modes that still fit between them and outside, adds up their zero-point energies with an adjustable high-frequency cutoff, and shows the difference settling to a finite value that does not depend on the cutoff. The resulting force is plotted against separation.",
+  "takeaway": "Constraining which waves can exist between two plates lowers the vacuum energy between them, and the plates feel that as an attraction that grows steeply as they approach.",
+  "prerequisites": [
+   "quantum-harmonic-oscillator",
+   "waves-interference"
+  ],
+  "related": [
+   "blackbody-cavity-modes",
+   "feynman-diagrams"
+  ],
+  "needs": "",
+  "pitfall": "The force is not evidence of a vast tappable energy in the vacuum, and it can equally be computed from fluctuating charges in the plates; say so.",
+  "why": "Wikipedia 'Casimir effect', a perennial 'how does it work' question whose popular explanation is disputed on the page itself: https://en.wikipedia.org/wiki/Casimir_effect",
+  "overlapWith": "blackbody-cavity-modes: counts the same cavity modes with thermal energy; here it is their zero-point energy and the force it exerts.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "physics-l3"
+ },
+ {
+  "slug": "crystal-diffraction",
+  "title": "Diffraction & crystal structure",
+  "level": 3,
+  "kind": "build",
+  "category": "physics",
+  "interaction": "Place atoms in a unit cell and choose the lattice; the page builds the reciprocal lattice and lights up each Bragg reflection with its structure factor, so adding a second atom at the body centre makes half the spots vanish. Rotate the crystal in a monochromatic beam to see which reflections flash, then load a real structure (salt, diamond, quartz) from the Crystallography Open Database and compare its computed powder pattern with the cell you built.",
+  "takeaway": "A diffraction pattern is the crystal's lattice seen in reciprocal space, and the brightness of each spot encodes where the atoms sit within the cell.",
+  "prerequisites": [
+   "waves-interference",
+   "fourier-transform"
+  ],
+  "related": [
+   "semiconductors",
+   "protein-folding",
+   "medical-imaging",
+   "dna-to-protein"
+  ],
+  "needs": "Crystal structures as CIF files from the Crystallography Open Database; CC0.",
+  "pitfall": "Diffraction does not image atoms: the spots give the Fourier transform's magnitudes and the phases are lost, which is why a structure must be inferred.",
+  "why": "MIT OCW 8.231 Physics of Solids I: diffraction and the reciprocal lattice, Bloch's theorem: https://ocw.mit.edu/courses/8-231-physics-of-solids-i-fall-2006/pages/syllabus/",
+  "overlapWith": "semiconductors: shows lattices beside energy bands; this page is how the lattices are known at all, from their diffraction patterns.",
+  "needsSource": "Crystallography Open Database, https://www.crystallography.net/cod/ ; CC0 with a request to cite the original authors.",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "physics-l3"
+ },
+ {
+  "slug": "dirac-equation",
+  "title": "The Dirac equation",
+  "level": 3,
+  "kind": "simulate",
+  "category": "physics",
+  "interaction": "Launch a wave packet governed by the one-dimensional Dirac equation and watch its two spinor components: at low momentum it moves like a Schrödinger packet, near c it respects the speed limit and trembles (Zitterbewegung) when positive- and negative-energy parts mix. Raise a potential step above twice the rest energy and the packet passes through where Schrödinger says it must stop (the Klein paradox), the first sign of antiparticles.",
+  "takeaway": "Marrying quantum mechanics to special relativity forces a second set of solutions on the equation, and they are the antiparticles.",
+  "prerequisites": [
+   "quantum-mechanics",
+   "special-relativity"
+  ],
+  "related": [
+   "standard-model",
+   "feynman-diagrams",
+   "stern-gerlach"
+  ],
+  "needs": "",
+  "pitfall": "Negative-energy states are not negative mass or an error; present them as the positron's states.",
+  "why": "MIT OCW 8.323 Relativistic Quantum Field Theory I: Dirac theory: https://ocw.mit.edu/courses/8-323-relativistic-quantum-field-theory-i-spring-2023/pages/syllabus",
+  "overlapWith": "standard-model: lists the antiparticles; this page shows where they come from in the equation.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "physics-l3"
+ },
+ {
+  "slug": "feynman-diagrams",
+  "title": "Feynman diagrams",
+  "level": 3,
+  "kind": "build",
+  "category": "physics",
+  "interaction": "Choose the incoming and outgoing particles of a QED process and draw diagrams from a palette of electron, muon and photon lines joined at vertices; the page checks each against the rules, grades it by its powers of the coupling, and evaluates the tree-level amplitude numerically to plot the angular distribution and the cross section against energy. Compare electron-positron annihilation into muon pairs with the LEP measurements.",
+  "takeaway": "Each diagram is a term in a calculation, its vertices count the powers of a small number, and summing the few lowest ones reproduces what colliders measure.",
+  "prerequisites": [
+   "standard-model",
+   "perturbation-theory",
+   "special-relativity"
+  ],
+  "related": [
+   "dirac-equation",
+   "quantum-scattering",
+   "casimir-effect"
+  ],
+  "needs": "Measured e+e- → μ+μ- cross sections and asymmetries from LEP at 192-208 GeV, HEPData record 48691 and its companions, released under CC0.",
+  "pitfall": "Diagrams are not pictures of what happens: the virtual photon is a term in a sum, and the page must not animate it as a real particle in flight.",
+  "why": "MIT OCW 8.323 Relativistic Quantum Field Theory I: Feynman diagrams, Feynman rules and e+e- → μ+μ-: https://ocw.mit.edu/courses/8-323-relativistic-quantum-field-theory-i-spring-2023/pages/syllabus",
+  "overlapWith": "standard-model: steps through beta decay as an exchange of force carriers; this page turns the diagram into a calculator whose output is compared with collider data.",
+  "needsSource": "HEPData (CERN), https://www.hepdata.net/record/48691; terms of use say datasets are CC0 unless stated otherwise, https://hepdata.net/terms",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "physics-l3"
+ },
+ {
+  "slug": "frozen-in-flux",
+  "title": "Magnetohydrodynamics: frozen-in field lines",
+  "level": 3,
+  "kind": "simulate",
+  "category": "physics",
+  "interaction": "Paint a flow (a vortex, a shear, a converging stream) over a conducting fluid threaded by a magnetic field and set the magnetic Reynolds number: the page integrates the induction equation on a grid, and the field lines are swept, stretched and wound up with the fluid at high values, or slip through it and diffuse away at low ones. Pluck a field line and watch an Alfvén wave run along it.",
+  "takeaway": "In a good conductor the magnetic field is carried with the fluid like dye, so moving the fluid stretches and winds the field, which is how stars and planets build theirs.",
+  "prerequisites": [
+   "electromagnetism",
+   "navier-stokes"
+  ],
+  "related": [
+   "plasma-kinetics",
+   "nuclear-fusion",
+   "stars",
+   "atmosphere-weather"
+  ],
+  "needs": "",
+  "pitfall": "Field lines moving with the fluid is a theorem about ideal conductors, not a property of magnetic fields in general; show the diffusive case beside it.",
+  "why": "MIT OCW 22.611J Introduction to Plasma Physics I: MHD models, equilibrium and stability: https://ocw.mit.edu/courses/22-611j-introduction-to-plasma-physics-i-fall-2003/pages/syllabus",
+  "overlapWith": "nuclear-fusion: holds a plasma in a magnetic bottle; this page shows the field being moved by the conducting fluid instead of the other way round.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "physics-l3"
+ },
+ {
+  "slug": "hamiltonian-phase-space",
+  "title": "Hamiltonian mechanics & phase space",
+  "level": 3,
+  "kind": "explore",
+  "category": "physics",
+  "interaction": "Pan and zoom the phase portrait of a pendulum and hover to launch a trajectory, finding the separatrix between swinging and spinning. Drop a cloud of nearby starting states and watch it stretch and fold while its area stays exactly fixed; add friction and the area shrinks toward a point. Switch to a periodically kicked rotor and scrub the kick strength to see its Poincaré section go from nested curves to a chaotic sea.",
+  "takeaway": "Hamiltonian flow moves a cloud of states through phase space like an incompressible fluid, preserving its area, and only dissipation can shrink it.",
+  "prerequisites": [
+   "least-action"
+  ],
+  "related": [
+   "chaos-fractals",
+   "entropy",
+   "noethers-theorem"
+  ],
+  "needs": "",
+  "pitfall": "Area preservation does not mean the cloud keeps its shape: it stretches into filaments that look like they fill the space, which is where coarse-grained entropy comes from.",
+  "why": "MIT OCW 8.223 Classical Mechanics II, lectures 15-19 on Hamiltonian mechanics and Poisson brackets: https://ocw.mit.edu/courses/8-223-classical-mechanics-ii-january-iap-2017/pages/syllabus",
+  "overlapWith": "chaos-fractals: starts two double pendulums and zooms the Mandelbrot set; this page is about the geometry of the state space itself, its conserved area and the Poincaré section.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "physics-l3"
+ },
+ {
+  "slug": "hydrogen-atom",
+  "title": "The Schrödinger equation & the hydrogen atom",
+  "level": 3,
+  "kind": "manipulate",
+  "category": "physics",
+  "interaction": "Shoot the radial Schrödinger equation numerically: slide the trial energy and watch the wavefunction blow up one way or the other until it settles into a bound state, then collect the ladder of levels and their 1/n² pattern. Pick n, l and m to render the orbital's probability cloud, and compare the computed Balmer wavelengths with the measured lines from the NIST database.",
+  "takeaway": "Hydrogen's spectral lines are the differences between the only energies at which a wave fits around the proton, and the orbitals are the shapes of those fitted waves.",
+  "prerequisites": [
+   "quantum-mechanics",
+   "electromagnetism"
+  ],
+  "related": [
+   "atoms-periodic-table",
+   "quantum-harmonic-oscillator",
+   "stern-gerlach"
+  ],
+  "needs": "Hydrogen energy levels and Balmer-line wavelengths from the NIST Atomic Spectra Database (SRD 78); US government data, public domain.",
+  "pitfall": "The 1s state has zero angular momentum and is not a circular orbit; the cloud is a probability density, not a smeared-out electron.",
+  "why": "MIT OCW 8.04 Quantum Physics I: Schrödinger's equation in three dimensions, central potentials and hydrogenic systems: https://ocw.mit.edu/courses/8-04-quantum-physics-i-spring-2013/pages/syllabus",
+  "overlapWith": "atoms-periodic-table: fills shells and views orbital shapes in 3D; this page solves the equation that produces those shells and checks its energies against measured lines.",
+  "needsSource": "NIST ASD, https://physics.nist.gov/asd; NIST data, public domain in the US under the NIST open licence.",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "physics-l3"
+ },
+ {
+  "slug": "ising-model",
+  "title": "The Ising model & phase transitions",
+  "level": 3,
+  "kind": "simulate",
+  "category": "physics",
+  "interaction": "Run a lattice of spins with the Metropolis algorithm and slide the temperature through the critical point: domains grow out of noise, the magnetization jumps from zero to nearly full, and the susceptibility and heat capacity spike. Apply a field and sweep it back and forth to trace a hysteresis loop; grow the lattice to see the transition sharpen, and shrink it to one dimension to see it vanish.",
+  "takeaway": "Nearest-neighbour alignment alone produces a sharp phase transition, and the ordered state appears at a precise temperature only in the limit of a large system.",
+  "prerequisites": [
+   "entropy",
+   "partition-function"
+  ],
+  "related": [
+   "states-of-matter",
+   "neural-networks"
+  ],
+  "needs": "",
+  "pitfall": "A one-dimensional chain has no phase transition at any temperature above zero; show that case so the reader does not believe order is automatic.",
+  "why": "MIT OCW RES.8-010 Introduction to Statistical Physics, lecture 8 on the Ising model via its partition function: https://www.ocw.mit.edu/courses/res-8-010-introduction-to-statistical-physics-summer-2018/mitres_8_010su18_lec8.pdf",
+  "overlapWith": "states-of-matter: freezes and boils a box of molecules; this page strips a transition down to the simplest possible model and shows the critical point's divergences.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "physics-l3"
+ },
+ {
+  "slug": "lasers",
+  "title": "Lasers",
+  "level": 3,
+  "kind": "simulate",
+  "category": "physics",
+  "interaction": "Pump a four-level gain medium between two mirrors and watch the populations and the photon number evolve under the rate equations: below threshold the cavity holds a few spontaneous photons, and at threshold the inversion clamps while the output climbs linearly with pump power. Lower the mirror reflectivity, switch to a three-level or a two-level medium, or open and close a shutter to see relaxation oscillations and a Q-switched pulse.",
+  "takeaway": "A laser is a cavity in which stimulated emission out-competes loss, and above that threshold every extra pumped atom adds a photon to the same mode.",
+  "prerequisites": [
+   "quantum-mechanics",
+   "oscillations-resonance"
+  ],
+  "related": [
+   "bose-einstein-condensation",
+   "bifurcations",
+   "semiconductors",
+   "solar-cells",
+   "perturbation-theory"
+  ],
+  "needs": "",
+  "pitfall": "Population inversion is impossible by pumping a two-level system at any power; the page must show the two-level case saturating at equal populations.",
+  "why": "PhET 'Lasers' is in its quantum collection, and MIT OCW 6.977 builds threshold and inversion from the rate equations: https://ocw.mit.edu/courses/6-977-semiconductor-optoelectronics-theory-and-design-fall-2002/",
+  "overlapWith": "solar-cells: a junction turns photons into current; this is the inverse, a medium amplifying light, and the LED half of the Reserve item is a sentence in semiconductors, not a page.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "physics-l3"
+ },
+ {
+  "slug": "least-action",
+  "title": "The principle of least action",
+  "level": 3,
+  "kind": "manipulate",
+  "category": "physics",
+  "interaction": "Drag the control points of a ball's path through a space-time plot between two fixed events; the action (kinetic minus potential energy summed along the path) is computed live and compared with the true trajectory, and the path snaps toward the stationary one when released. Switch the potential to a spring, a planet or a light ray crossing two media and watch the straight line, the ellipse and the refracted ray each fall out of the same rule.",
+  "takeaway": "Nature's path between two events is the one whose action is stationary, and the laws of motion and refraction are that one rule in different potentials.",
+  "prerequisites": [
+   "newtons-laws",
+   "calculus"
+  ],
+  "related": [
+   "light-optics"
+  ],
+  "needs": "",
+  "pitfall": "The true path makes the action stationary, not always least: for a long enough path in a spring potential it is a saddle, and the page must show that case rather than call it a minimum.",
+  "why": "MIT OCW 8.223 Classical Mechanics II, lectures 1-4 on Lagrangian mechanics with the reading 'When action is not least' (Gray & Taylor): https://ocw.mit.edu/courses/8-223-classical-mechanics-ii-january-iap-2017/pages/syllabus",
+  "overlapWith": "newtons-laws: that page pushes carts with forces; this one derives the same motions from a single scalar quantity attached to a whole path.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "physics-l3"
+ },
+ {
+  "slug": "maxwell-equations",
+  "title": "Maxwell's equations on a grid",
+  "level": 3,
+  "kind": "build",
+  "category": "physics",
+  "interaction": "Draw metal walls, dielectric blocks and a current source on a grid; the page integrates Maxwell's two curl equations step by step (the Yee scheme) and paints the electric and magnetic fields as they evolve. Build a dipole antenna and see its radiation pattern, a waveguide that cuts off below a frequency, a slab that focuses a pulse.",
+  "takeaway": "A changing electric field makes a magnetic field and vice versa, and iterating those two rules on a grid is enough to make antennas radiate, guides channel and lenses focus.",
+  "prerequisites": [
+   "electromagnetism",
+   "calculus"
+  ],
+  "related": [
+   "light-optics",
+   "wireless-signals",
+   "radiating-charge"
+  ],
+  "needs": "",
+  "pitfall": "The grid is not the physics: show the time-step limit (Courant condition) and the numerical dispersion so the reader does not take grid artefacts for wave behaviour.",
+  "why": "MIT OCW 8.07 Electromagnetism II: Maxwell's equations, electromagnetic waves, radiation: https://ocw.mit.edu/courses/8-07-electromagnetism-ii-fall-2012/",
+  "overlapWith": "electromagnetism: shows static field lines and induction in a coil; this page solves the full time-dependent equations on a grid so that waves, antennas and guides emerge from them.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "physics-l3"
+ },
+ {
+  "slug": "navier-stokes",
+  "title": "Fluid flow & the Navier-Stokes equations",
+  "level": 3,
+  "kind": "simulate",
+  "category": "physics",
+  "interaction": "Drive a fluid past a cylinder (a lattice-Boltzmann solver on a grid) and slide the Reynolds number: at low values the flow creeps symmetrically around it, then a pair of standing eddies forms, then vortices shed alternately into a wavy street whose frequency the page measures, and finally the wake turns irregular. Draw your own obstacle, add a second one downstream, and watch the drag.",
+  "takeaway": "One dimensionless number, the ratio of inertia to viscosity, decides whether a flow is smooth, periodic or turbulent, whatever the fluid or the size.",
+  "prerequisites": [
+   "newtons-laws",
+   "calculus"
+  ],
+  "related": [
+   "flight",
+   "atmosphere-weather",
+   "heart-circulation"
+  ],
+  "needs": "",
+  "pitfall": "Turbulence is not randomness injected into the model; it emerges from the deterministic equations at high Reynolds number and the page must not add noise.",
+  "why": "MIT OCW 2.25 Advanced Fluid Mechanics: Navier-Stokes, similarity and dimensional analysis, boundary layers and separation: https://ocw.mit.edu/courses/2-25-advanced-fluid-mechanics-fall-2013/pages/syllabus",
+  "overlapWith": "flight: puts a wing in a stream and shows lift and stall; this page is the governing equation itself, swept through Reynolds number to the onset of turbulence.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "physics-l3"
+ },
+ {
+  "slug": "noethers-theorem",
+  "title": "Noether's theorem",
+  "level": 3,
+  "kind": "manipulate",
+  "category": "physics",
+  "interaction": "Run a simulated planet, a bead on a wire or two colliding masses, then apply a transformation to the whole experiment with a dial: shift it in space, rotate it, shift it in time. Meters show which of momentum, angular momentum and energy stays constant along the trajectory; break a symmetry by adding a wall, a fixed centre or a potential that changes with time and watch the matching meter start to drift while the others hold.",
+  "takeaway": "Every continuous symmetry of a system's action comes paired with a quantity that stays constant, and breaking the symmetry is exactly what lets that quantity change.",
+  "prerequisites": [
+   "least-action"
+  ],
+  "related": [
+   "hamiltonian-phase-space",
+   "standard-model"
+  ],
+  "needs": "",
+  "pitfall": "The symmetry belongs to the action, not to the motion: an elliptical orbit is not rotationally symmetric, yet angular momentum is conserved because the potential is.",
+  "why": "MIT OCW 8.223 Classical Mechanics II, the lectures on conserved quantities that follow the Lagrangian unit: https://ocw.mit.edu/courses/8-223-classical-mechanics-ii-january-iap-2017/pages/syllabus",
+  "overlapWith": "newtons-laws: shows energy and momentum conserved in collisions; here conservation is derived from a symmetry and switched off by breaking that symmetry.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "physics-l3"
+ },
+ {
+  "slug": "partition-function",
+  "title": "The partition function",
+  "level": 3,
+  "kind": "manipulate",
+  "category": "physics",
+  "interaction": "Build a small system from a palette of energy levels (a two-level atom, a quantum oscillator, a rotor, a particle in a box) and slide the temperature: the page computes the Boltzmann weights and their sum, the partition function, and fills each level with its share of the population. Linked plots show the mean energy and heat capacity; watch the Schottky bump of a two-level system and the freezing-out of an oscillator's heat capacity, then compare the oscillator model with the measured heat capacity of diamond.",
+  "takeaway": "Once a system's energy levels are known, one sum over them fixes its energy, heat capacity and entropy at every temperature.",
+  "prerequisites": [
+   "entropy"
+  ],
+  "related": [
+   "quantum-harmonic-oscillator",
+   "states-of-matter"
+  ],
+  "needs": "Measured heat capacity of diamond against temperature as tabulated by Einstein (1907) from Weber's measurements; public domain.",
+  "pitfall": "Temperature is not average energy: a two-level system's energy saturates, so its heat capacity rises and then falls back to zero as it gets hotter.",
+  "why": "MIT OCW 8.044 Statistical Physics I: microcanonical and canonical ensembles: https://ocw.mit.edu/courses/8-044-statistical-physics-i-spring-2013/pages/syllabus",
+  "overlapWith": "entropy: counts the microstates of a gas at fixed energy; this page fixes the temperature instead and shows how the Boltzmann weighting over levels yields every thermal property.",
+  "needsSource": "Einstein, Annalen der Physik 22 (1907), table of Weber's diamond heat-capacity data; public domain.",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "physics-l3"
+ },
+ {
+  "slug": "perturbation-theory",
+  "title": "Perturbation theory",
+  "level": 3,
+  "kind": "manipulate",
+  "category": "physics",
+  "interaction": "Add a small extra term to a potential (an electric field on hydrogen, an x⁴ term on an oscillator) and slide its strength: the page diagonalizes the full problem numerically and lays the exact levels beside the first- and second-order estimates, so the reader sees where the series tracks and where it fails. Then switch the perturbation on and off in time and watch transitions appear at the rate Fermi's golden rule predicts.",
+  "takeaway": "A problem you cannot solve can be approximated from one you can, order by order, and the exact answer tells you where the series stops tracking.",
+  "prerequisites": [
+   "hydrogen-atom",
+   "quantum-harmonic-oscillator",
+   "linear-transformations"
+  ],
+  "related": [
+   "lasers"
+  ],
+  "needs": "",
+  "pitfall": "The series for the anharmonic oscillator diverges for any coupling; show the terms getting worse past some order rather than implying convergence.",
+  "why": "MIT OCW 8.06 Quantum Physics III: time-independent and time-dependent perturbation theory, Fermi's golden rule: https://ocw.mit.edu/courses/8-06-quantum-physics-iii-spring-2018/",
+  "overlapWith": "hydrogen-atom: solves the unperturbed atom; this page adds a field to it and shows the Stark shifts and transitions that result.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "physics-l3"
+ },
+ {
+  "slug": "plasma-kinetics",
+  "title": "Plasma: shielding, oscillations & Landau damping",
+  "level": 3,
+  "kind": "simulate",
+  "category": "physics",
+  "interaction": "Run a one-dimensional particle-in-cell plasma: drop in a test charge and watch electrons cloud around it until its field dies beyond the Debye length; displace a slab of electrons and release it to ring at the plasma frequency; launch a wave and see it fade as particles moving at its speed absorb it (Landau damping); send two beams through each other and watch the instability grow.",
+  "takeaway": "A plasma shields, oscillates and trades energy with waves collectively, through its own electric field rather than through collisions.",
+  "prerequisites": [
+   "electromagnetism",
+   "entropy"
+  ],
+  "related": [
+   "nuclear-fusion",
+   "stars",
+   "frozen-in-flux",
+   "wireless-signals"
+  ],
+  "needs": "",
+  "pitfall": "Landau damping takes energy from the wave with no collisions at all; do not add a friction term and call it damping.",
+  "why": "MIT OCW 22.611J Introduction to Plasma Physics I: Debye shielding, plasma waves, Landau damping, streaming instabilities: https://ocw.mit.edu/courses/22-611j-introduction-to-plasma-physics-i-fall-2003/pages/syllabus",
+  "overlapWith": "nuclear-fusion: confines a plasma as a hot fluid to reach ignition; this page is the plasma's own electrostatic behaviour, particle by particle.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "physics-l3"
+ },
+ {
+  "slug": "quantum-harmonic-oscillator",
+  "title": "The quantum harmonic oscillator",
+  "level": 3,
+  "kind": "manipulate",
+  "category": "physics",
+  "interaction": "Slide up the energy ladder of a quantum spring and see each level's wavefunction and probability density against the classical turning points. Mix levels with the raising operator to build a coherent state and press play: the packet swings back and forth like a classical mass without spreading, while a squeezed state breathes and a single level stands still.",
+  "takeaway": "A quantum spring holds energy only in equal steps, and the right superposition of those steps moves exactly like the classical oscillator.",
+  "prerequisites": [
+   "quantum-mechanics",
+   "oscillations-resonance"
+  ],
+  "related": [
+   "partition-function",
+   "blackbody-cavity-modes",
+   "lasers",
+   "hydrogen-atom"
+  ],
+  "needs": "",
+  "pitfall": "The ground state has energy and its probability leaks past the classical turning points; the lowest state is not 'at rest'.",
+  "why": "MIT OCW 8.05 Quantum Physics II course description: the harmonic oscillator, spin and angular momentum: https://ocw.mit.edu/courses/8-05-quantum-physics-ii-fall-2013/pages/syllabus",
+  "overlapWith": "quantum-mechanics: sends a free packet at a barrier; this page confines the packet in a spring, the one potential whose quantum states underlie photons and phonons.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "physics-l3"
+ }
+]

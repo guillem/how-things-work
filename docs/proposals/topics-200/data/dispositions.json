@@ -1,0 +1,121 @@
+[
+ {
+  "item": "Lasers & LEDs",
+  "decision": "merge",
+  "slug": "light-bulb-hot-wire",
+  "reason": "The LED half lands at level 0 as the cold comparison in light-bulb-hot-wire; the laser half is university material and belongs to the level-3 physics lens (its 'lasers' proposal), not to this lens.",
+  "lens": "vehicles-and-big-machines"
+ },
+ {
+  "item": "Heat pumps",
+  "decision": "merge",
+  "slug": "refrigerator-heat-mover",
+  "reason": "Not among this lens's thirty: the everyday heat pump is the fridge, which the household-mechanisms lens proposes as refrigerator-heat-mover (heat moved, not made, with the back of the fridge warm); a heating heat pump is the same page run backwards and can be one step of it.",
+  "lens": "vehicles-and-big-machines"
+ },
+ {
+  "item": "Fluid dynamics",
+  "decision": "merge",
+  "slug": "navier-stokes",
+  "reason": "Not a level-0 topic as named. Its everyday faces are spread over this lens's submarine-ballast-tanks (buoyancy), parachute-terminal-speed (drag), kite-string-wind and sailing-into-wind (lift); the subject itself is the level-3 physics lens's navier-stokes proposal.",
+  "lens": "vehicles-and-big-machines"
+ },
+ {
+  "item": "Fluid dynamics",
+  "decision": "promote",
+  "slug": "fluid-dynamics",
+  "reason": "A level-3 physics topic that belongs to another lens; three level-0 pages here (floating-sinking-and-boats, air-pressure-and-straws, water-pressure-and-hydraulics) are its on-ramp, so keep it as a level-3 candidate rather than fold it into any of them.",
+  "lens": "basic-physical-science"
+ },
+ {
+  "item": "Lasers & LEDs",
+  "decision": "promote",
+  "slug": "lasers-and-leds",
+  "reason": "Level-3 physics, outside this level-0 lens; glowing-hot is the level-0 contrast (light from heat) that a lasers-and-LEDs page (light without heat) would pick up.",
+  "lens": "basic-physical-science"
+ },
+ {
+  "item": "Heat pumps",
+  "decision": "promote",
+  "slug": "heat-pumps",
+  "reason": "An energy-category topic (level 2) for another lens; keeping-things-warm and temperature-and-touch are the level-0 pages a heat-pump page can assume readers have met.",
+  "lens": "basic-physical-science"
+ },
+ {
+  "item": "Fluid dynamics",
+  "decision": "promote",
+  "slug": "navier-stokes",
+  "reason": "Promoted at level 3 as a lattice-Boltzmann page swept through the Reynolds number, with turbulence-cascade as a companion; flight already covers the wing, so the new page is the equation itself and the transition to turbulence.",
+  "lens": "physics-l3"
+ },
+ {
+  "item": "Lasers & LEDs",
+  "decision": "promote",
+  "slug": "lasers",
+  "reason": "Promoted at level 3 as the rate-equation model of a laser (inversion, threshold, Q-switching); the LED half is a p-n junction run as a light source and belongs as a sentence in semiconductors or solar-cells, not a page of its own.",
+  "lens": "physics-l3"
+ },
+ {
+  "item": "Exponentials & logarithms",
+  "decision": "promote",
+  "slug": "exponentials-logarithms",
+  "reason": "Honest at level 1 and fills a gap the catalogue leans on without naming it (radioactivity, epidemics, acids-bases and earthquakes all use exponentials or log scales). Narrowed to the rule itself and the logarithm as a count of steps so it does not repeat those pages.",
+  "lens": "math-l3"
+ },
+ {
+  "item": "Differential equations",
+  "decision": "promote",
+  "slug": "phase-portraits",
+  "reason": "Promoted as a level-3 page on the phase plane, stability and linearization, which no existing page covers; the solver side of the subject goes to the separate numerical-stability candidate rather than one overloaded page.",
+  "lens": "math-l3"
+ },
+ {
+  "item": "Game theory",
+  "decision": "promote",
+  "slug": "evolutionary-game-theory",
+  "reason": "Promoted at level 3 with replicator dynamics so that the graphic is a real model (an ODE on the simplex) rather than a payoff table to read; Nash equilibria, cycling and spatial cooperation are all observable in it.",
+  "lens": "math-l3"
+ },
+ {
+  "item": "Cellular automata",
+  "decision": "promote",
+  "slug": "cellular-automata",
+  "reason": "Honest at level 1, needs no data, and is one of the strongest-demand interactive topics in mathematics; it also gives the site a second level-1 mathematics page in this batch, which the new-100 plan wants.",
+  "lens": "math-l3"
+ },
+ {
+  "item": "Telescopes",
+  "decision": "promote",
+  "slug": "telescopes",
+  "reason": "Not a level-0 page: it needs light-optics, so it belongs to the level-1 space lens (aperture and light-gathering, why a bigger mirror sees fainter and sharper). Worth promoting there; none of the thirty candidates here replaces it.",
+  "lens": "earth-sky-weather"
+ },
+ {
+  "item": "Cellular automata",
+  "decision": "promote",
+  "slug": "life-on-a-grid",
+  "reason": "Conway's Life is the one cellular automaton a nine-year-old can run by counting neighbours, and the Numberphile demand signal is strong; the deeper material (Wolfram's rules, universality) stays out of this lens and can be added at level 2 or 3 later.",
+  "lens": "numbers-shapes-computers"
+ },
+ {
+  "item": "Exponentials & logarithms",
+  "decision": "merge",
+  "slug": "growing-patterns",
+  "reason": "The doubling half (rice on a chessboard, paper folding, add-the-same against double) is level-0 material and lands in growing-patterns; the logarithm half is not level 0 and belongs to a level-1 or level-2 lens, so the Reserve line should stay for that half.",
+  "lens": "numbers-shapes-computers"
+ },
+ {
+  "item": "Hearing & the cochlea",
+  "decision": "merge",
+  "slug": "hearing-and-the-ear",
+  "reason": "The level-0 page covers the ear's path from eardrum to the place-by-pitch map, which is what a beginner needs; the cochlea's own mechanics (travelling wave, active amplifier, otoacoustic emissions) remain open for a level-3 page under another lens and are not duplicated here.",
+  "lens": "living-things-and-body"
+ },
+ {
+  "item": "Heat pumps",
+  "decision": "merge",
+  "slug": "refrigerator",
+  "reason": "The household half of the reserve item (a loop that carries heat from cold to warm, and why the back of a fridge is warm) becomes the level-0 refrigerator page. A level-2 heat-pumps page (coefficient of performance against outdoor temperature, the reversing valve, heating a house) is a different page and stays open for the level-2/3 lens.",
+  "lens": "home-mechanisms"
+ }
+]

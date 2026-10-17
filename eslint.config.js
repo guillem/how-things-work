@@ -10,6 +10,8 @@ const gitignorePath = path.resolve(import.meta.dirname, '.gitignore');
 
 export default defineConfig(
 	includeIgnoreFile(gitignorePath),
+	// Research scripts for the topic proposal: workflow scripts (top-level return) and one-off tools.
+	{ ignores: ['docs/proposals/**'] },
 	js.configs.recommended,
 	ts.configs.recommended,
 	svelte.configs.recommended,

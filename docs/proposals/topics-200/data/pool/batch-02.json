@@ -1,0 +1,674 @@
+[
+ {
+  "slug": "continued-fractions",
+  "title": "Continued fractions & rational approximation",
+  "level": 3,
+  "kind": "explore",
+  "category": "math",
+  "interaction": "Pick a number (π, e, √2, the golden ratio) or type one and watch it unwind into a continued fraction by taking the whole part and flipping the remainder, each step shown as cutting squares out of a rectangle. The convergents appear on a number line and as lattice points hugging the line of slope x; the golden ratio's all-ones expansion makes it the slowest to approximate, and a calendar example shows the 19-year Metonic cycle as a convergent of the month-to-year ratio.",
+  "takeaway": "The convergents of a continued fraction are the best fractions a number has for their size, and the golden ratio, all ones, is the number that fractions fit worst.",
+  "prerequisites": [
+   "primes-modular-arithmetic"
+  ],
+  "related": [
+   "riemann-zeta-primes",
+   "sun-earth-moon",
+   "chaos-fractals"
+  ],
+  "needs": "",
+  "pitfall": "'Best' means best for the size of the denominator; decimal truncations also converge but are not the best fractions. Show 314/100 losing to 22/7.",
+  "why": "MIT OCW 18.781 Theory of Numbers (continued fractions, Diophantine approximation): https://ocw.mit.edu/courses/18-781-theory-of-numbers-spring-2012/",
+  "overlapWith": "primes-modular-arithmetic: that page sieves primes and does clock arithmetic at level 1; this page is Diophantine approximation: how well fractions can pin down an irrational, and why some irrationals resist.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "math-l3"
+ },
+ {
+  "slug": "convex-duality",
+  "title": "Convexity, Lagrange multipliers & duality",
+  "level": 3,
+  "kind": "manipulate",
+  "category": "math",
+  "interaction": "Drag a point on a contour map of an objective with a constraint curve: the gradients of both are drawn, and the constrained optimum is where they line up, with the multiplier read as their ratio. Toggle the convexity of the objective and of the feasible set to see where a local optimum stops being global; a second panel plots the dual function against the multiplier, whose maximum touches the primal optimum from below when the problem is convex, and loosening the constraint shows the multiplier as its price.",
+  "takeaway": "At a constrained optimum the objective's gradient is a multiple of the constraint's, that multiple is the price of the constraint, and for a convex problem the dual's best lower bound is exactly the optimum.",
+  "prerequisites": [
+   "calculus",
+   "linear-transformations",
+   "gradient-descent"
+  ],
+  "related": [
+   "linear-programming",
+   "feedback-control",
+   "learning-from-data",
+   "calculus-of-variations"
+  ],
+  "needs": "",
+  "pitfall": "Gradient alignment is only a necessary condition: it also holds at constrained maxima and saddle points. Show a point that satisfies it and is not the minimum.",
+  "why": "Stanford EE364a Convex Optimization I (optimality conditions, duality): https://web.stanford.edu/class/ee364a/",
+  "overlapWith": "gradient-descent: that page rolls a ball down an unconstrained loss landscape; this page adds constraints, shows where the ball stops against a wall, and introduces the dual problem.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "math-l3"
+ },
+ {
+  "slug": "elliptic-curves",
+  "title": "Elliptic curves",
+  "level": 3,
+  "kind": "manipulate",
+  "category": "math",
+  "interaction": "Drag two points on a real curve y² = x³ + ax + b: the line through them meets the curve a third time, and reflecting that point gives their sum; drag a and b to reshape the curve, including the singular shapes where the rule breaks. Switch to the same curve modulo a small prime: it becomes a scatter of points, the same chord-and-tangent rule still works by arithmetic, and adding a point to itself over and over hops around unpredictably, which is the hard problem elliptic-curve signatures rely on.",
+  "takeaway": "The points of an elliptic curve form a group under a geometric rule, and over a finite field repeated addition is easy to do and hard to undo.",
+  "prerequisites": [
+   "primes-modular-arithmetic",
+   "cryptography"
+  ],
+  "related": [
+   "consensus-blockchains",
+   "riemann-zeta-primes",
+   "galois-theory"
+  ],
+  "needs": "",
+  "pitfall": "An elliptic curve is not an ellipse, and the discriminant must be nonzero: show the cusp and the node where the rule fails. Associativity is a theorem, not obvious; let the page verify it numerically.",
+  "why": "Corbellini, Elliptic Curve Cryptography: a gentle introduction (the most-cited explainer of the group law): https://andrea.corbellini.name/2015/05/17/elliptic-curve-cryptography-a-gentle-introduction/",
+  "overlapWith": "cryptography: that page runs Diffie–Hellman with modular exponentiation and signs messages; this page builds the group that modern signatures (and Bitcoin's) use and shows the geometry behind it.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "math-l3"
+ },
+ {
+  "slug": "evolutionary-game-theory",
+  "title": "Game theory & evolutionary dynamics",
+  "level": 3,
+  "kind": "simulate",
+  "category": "math",
+  "interaction": "Edit the payoff matrix of a two-strategy game (prisoner's dilemma, hawk–dove, stag hunt) and the best-response diagram marks the Nash equilibria, pure and mixed, while a population playing the game evolves under replicator dynamics with its strategy shares shown as a moving point. Switch to rock–paper–scissors on a triangle and watch the shares circle the mixed equilibrium instead of settling; run a spatial version where cooperators survive by clustering on a grid.",
+  "takeaway": "An equilibrium is a state where no player gains by changing alone; a population of copiers evolves toward it, but can also circle it forever.",
+  "prerequisites": [
+   "calculus"
+  ],
+  "related": [
+   "evolution",
+   "ecosystems",
+   "phase-portraits",
+   "consensus-blockchains",
+   "reinforcement-learning"
+  ],
+  "needs": "",
+  "pitfall": "A Nash equilibrium is not the best collective outcome: in the prisoner's dilemma it is the worst joint result. Show the gap rather than present equilibrium as optimal.",
+  "why": "MIT OCW 14.12 Economic Applications of Game Theory, syllabus: https://ocw.mit.edu/courses/14-12-economic-applications-of-game-theory-fall-2012/pages/syllabus",
+  "overlapWith": "evolution: that page runs natural selection on a heritable trait; here selection acts on strategies whose fitness depends on what everyone else is doing, which is what produces equilibria and cycles.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "math-l3"
+ },
+ {
+  "slug": "fixed-point-iteration",
+  "title": "Fixed points, Newton's method & its fractal",
+  "level": 3,
+  "kind": "explore",
+  "category": "math",
+  "interaction": "Iterate x → g(x) on a cobweb diagram by dragging the start: the orbit spirals into the fixed point when the slope there is smaller than 1 in size and away when it is larger, and a slider reshapes g. Switch to Newton's method on a polynomial, drag the start to watch tangent lines jump to a root, then color every starting point of the complex plane by the root it reaches and zoom into the boundary, where the basins interleave at every scale.",
+  "takeaway": "Repeating a map settles on a point only where the map squeezes distances, and which answer Newton's method finds depends on the starting point in an infinitely detailed way.",
+  "prerequisites": [
+   "calculus",
+   "complex-numbers"
+  ],
+  "related": [
+   "chaos-fractals",
+   "gradient-descent",
+   "numerical-stability",
+   "winding-numbers",
+   "galois-theory"
+  ],
+  "needs": "",
+  "pitfall": "Newton's method is not globally convergent: show starts that cycle or diverge, and show that the basin boundary is a fractal shared by all basins rather than a thin line.",
+  "why": "3Blue1Brown, Newton's fractal: https://www.3blue1brown.com/lessons/newtons-fractal",
+  "overlapWith": "chaos-fractals: that page zooms the Mandelbrot set and cascades the logistic map; this page is about convergence: when iteration settles, why, and the basin fractal that Newton's method draws.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "math-l3"
+ },
+ {
+  "slug": "galois-theory",
+  "title": "Galois theory: why the quintic has no formula",
+  "level": 3,
+  "kind": "manipulate",
+  "category": "math",
+  "interaction": "Drag a polynomial's coefficients around loops in the complex plane while its roots, found numerically every frame, move live; come back to the start and the roots have swapped places, and the page records the permutation. For degrees 2 to 4 the permutations made by loops of loops (commutators) die out after a few levels, which is what nested radicals can express; for degree 5 the page shows a loop of loops of loops that still cycles three roots, which no expression in radicals can do.",
+  "takeaway": "The value of a formula built from radicals cannot change along a loop of loops of loops, but a quintic's roots can, so no such formula exists.",
+  "prerequisites": [
+   "complex-numbers",
+   "symmetry-groups"
+  ],
+  "related": [
+   "winding-numbers",
+   "elliptic-curves",
+   "fixed-point-iteration"
+  ],
+  "needs": "",
+  "pitfall": "Unsolvable by radicals does not mean the roots do not exist or cannot be computed: the page finds them numerically on every frame. Some quintics are solvable; the claim is that no one formula works for all.",
+  "why": "Abel–Ruffini theorem, topological (Arnold) proof section: https://en.wikipedia.org/wiki/Abel%E2%80%93Ruffini_theorem",
+  "overlapWith": "complex-numbers: that page shows multiplication as rotation and scaling; this page moves coefficients around that plane and watches roots permute, which no existing page does.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "math-l3"
+ },
+ {
+  "slug": "generating-functions",
+  "title": "Generating functions",
+  "level": 3,
+  "kind": "build",
+  "category": "math",
+  "interaction": "Build a counting problem from pieces (coins of chosen values, dice, steps of 1 or 2) and the page multiplies the matching polynomials: the coefficients, drawn as bars, count the ways to make each total, and clicking a bar highlights the products that contributed. Feed in the Fibonacci recurrence and watch the series collapse to a single fraction; expand the fraction back and the terms reappear, with the pole nearest the origin setting the growth rate on a log plot.",
+  "takeaway": "A counting problem can be turned into a polynomial whose coefficients are the answers, so multiplying polynomials counts combinations and one fraction can hold a whole infinite sequence.",
+  "prerequisites": [
+   "calculus",
+   "taylor-series"
+  ],
+  "related": [
+   "central-limit-theorem",
+   "fourier-transform",
+   "compression"
+  ],
+  "needs": "",
+  "pitfall": "A generating function is bookkeeping: x is never given a value, so convergence is not an issue until the fraction is read back as a series. Say that the equals sign is formal.",
+  "why": "MIT 18.211 Combinatorial Analysis (enumeration and generating functions): https://yufeizhao.com/211/",
+  "overlapWith": "central-limit-theorem: that page sums random variables; this page shows that summing variables multiplies their generating functions, and uses the same multiplication to count.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "math-l3"
+ },
+ {
+  "slug": "heat-and-wave-equations",
+  "title": "The heat and wave equations",
+  "level": 3,
+  "kind": "simulate",
+  "category": "math",
+  "interaction": "Draw an initial temperature or displacement profile on a rod or string and run it under the heat equation and the wave equation side by side on the same grid: the heat profile smooths and decays, the wave profile splits into two travelling halves and reflects off fixed or free ends. A Fourier-mode view shows each mode's amplitude decaying at a rate proportional to k² under heat and rotating at frequency ck under waves; a 2D version runs a drum and a hot spot on a plate.",
+  "takeaway": "One time derivative makes a profile spread and forget its shape; two make it travel and keep it.",
+  "prerequisites": [
+   "fourier-transform",
+   "calculus"
+  ],
+  "related": [
+   "waves-interference",
+   "numerical-stability",
+   "random-walks",
+   "quantum-mechanics",
+   "vector-calculus"
+  ],
+  "needs": "",
+  "pitfall": "The heat equation has infinite propagation speed: a change is felt everywhere at once, however faintly. Do not present diffusion as a slow wave, and do not let the two panels share a 'speed'.",
+  "why": "MIT OCW 18.303 Linear Partial Differential Equations: https://ocw.mit.edu/courses/18-303-linear-partial-differential-equations-fall-2006/",
+  "overlapWith": "waves-interference: that page shows superposition and standing waves in a ripple tank at level 1; this page solves the equations themselves, mode by mode, and contrasts wave propagation with diffusion on the same initial profile.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "math-l3"
+ },
+ {
+  "slug": "hyperbolic-geometry",
+  "title": "Hyperbolic geometry",
+  "level": 3,
+  "kind": "manipulate",
+  "category": "math",
+  "interaction": "Drag points in the Poincaré disk: straight lines are arcs meeting the rim at right angles, a triangle's angles add to less than 180° by an amount equal to its area, and through a point there are many lines that miss a given line. Slide a ruler to measure distances that grow without bound near the rim, tile the disk with seven triangles at a vertex, impossible on a flat plane, and switch to the half-plane and the hyperboloid to see the same geometry three ways.",
+  "takeaway": "Drop the parallel axiom and a consistent geometry appears in which triangles are thin, space grows exponentially with distance, and there is room for tilings the flat plane cannot hold.",
+  "prerequisites": [
+   "unit-circle",
+   "complex-numbers"
+  ],
+  "related": [
+   "symmetry-groups",
+   "black-holes",
+   "special-relativity"
+  ],
+  "needs": "",
+  "pitfall": "The rim is not an edge of the space: distances to it are infinite and the tiles near it are all the same size as the central one. Let the reader drag a rim tile to the center to see it.",
+  "why": "Oregon State MTH 338 / Modern Non-Euclidean Geometry text, the Poincaré disk: https://books.physics.oregonstate.edu/MNEG/pintro.html",
+  "overlapWith": "black-holes: that page bends rays through curved spacetime; this page is the pure geometry of constant negative curvature with its axioms made visible.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "math-l3"
+ },
+ {
+  "slug": "knot-invariants",
+  "title": "Knot theory",
+  "level": 3,
+  "kind": "build",
+  "category": "math",
+  "interaction": "Draw a closed curve that crosses itself, click each crossing to choose which strand is on top, and the page computes the diagram's invariants live: a tricoloring if one exists, the Kauffman bracket and the Jones polynomial. Apply the three Reidemeister moves by dragging and watch the drawing change while the invariants stay fixed; try to untangle a trefoil and see its polynomial refuse to become the unknot's.",
+  "takeaway": "Two drawings show the same knot only if three local moves can turn one into the other, and a quantity that survives those moves can prove that a knot is really knotted.",
+  "prerequisites": [],
+  "related": [
+   "winding-numbers",
+   "protein-folding",
+   "symmetry-groups"
+  ],
+  "needs": "Optional: a dozen prime knots up to 8 crossings as PD codes for a picker (KnotInfo, knotinfo.org: freely downloadable, licence unstated, citation requested). All invariants are computed on the page, so the diagrams can be hand-entered instead.",
+  "pitfall": "The Jones polynomial does not distinguish every knot, and whether it detects the unknot is open. Equal polynomials must never be presented as proof that two knots are the same.",
+  "why": "KnotInfo, the standard open table of knot invariants used in undergraduate knot theory courses (Adams' The Knot Book): https://knotinfo.org/",
+  "overlapWith": "winding-numbers (proposed): that page counts turns of a loop around a point; this one counts crossings of a loop with itself. No existing page treats knots; carbon-polymers only rotates mirror-image molecules.",
+  "needsSource": "KnotInfo PD codes: downloadable, licence unstated (weak as shipped data); compute invariants on the page and hand-enter a dozen diagrams instead",
+  "leadsTo": [],
+  "everyday": true,
+  "origin": "math-l3"
+ },
+ {
+  "slug": "linear-programming",
+  "title": "Linear programming & the simplex method",
+  "level": 3,
+  "kind": "step",
+  "category": "math",
+  "interaction": "Set up a small production problem: each constraint is a half-plane, the feasible region is the polygon they cut out, and dragging the objective's direction slides a level line until it leaves the region at a corner. Step the simplex method as it walks from corner to adjacent corner, improving at each step, with the tableau shown beside the picture; a 3D polytope shows the same walk along edges, and loosening one constraint reveals its shadow price.",
+  "takeaway": "The best point of a linear objective over a polygon is always at a corner, and the simplex method finds it by walking from corner to better corner.",
+  "prerequisites": [
+   "linear-transformations",
+   "convex-duality"
+  ],
+  "related": [
+   "graph-search",
+   "turing-machines",
+   "gradient-descent"
+  ],
+  "needs": "",
+  "pitfall": "Simplex is exponential in the worst case (Klee–Minty), and the integer version is not solved by rounding the continuous optimum. Show a rounded solution that is infeasible.",
+  "why": "MIT OCW 15.053 Optimization Methods in Management Science (linear programming, simplex): https://ocw.mit.edu/courses/15-053-optimization-methods-in-management-science-spring-2013/",
+  "overlapWith": "turing-machines: that page shows a travelling-salesman search space exploding; this page shows a large class of optimization problems that are solved efficiently by walking the corners of a polytope.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "math-l3"
+ },
+ {
+  "slug": "markov-chain-monte-carlo",
+  "title": "Monte Carlo & MCMC",
+  "level": 3,
+  "kind": "simulate",
+  "category": "math",
+  "interaction": "Estimate an area or an integral by throwing random points and watch the error shrink as 1/√N beside a grid rule whose cost explodes with dimension; raise the dimension until Monte Carlo wins. Then sample a 2D target known only up to a constant with the Metropolis algorithm: drag the proposal width and watch the acceptance rate, the trace plot and the autocorrelation, with a bimodal target showing a chain that never finds the second hump.",
+  "takeaway": "Random sampling gives answers whose error falls as one over the square root of the sample size whatever the dimension, and a Markov chain can sample a distribution it only knows up to a constant if it runs long enough to forget its start.",
+  "prerequisites": [
+   "markov-chains",
+   "bayes-theorem"
+  ],
+  "related": [
+   "central-limit-theorem",
+   "random-walks",
+   "diffusion-models",
+   "resampling-inference",
+   "entropy"
+  ],
+  "needs": "",
+  "pitfall": "A high acceptance rate is not a good score: near 100% the chain is barely moving. Let the autocorrelation plot find the sweet spot rather than stating a rule of thumb.",
+  "why": "Chi Feng's interactive MCMC gallery, as featured on Andrew Gelman's blog: https://andrewgelman.com/2018/07/26/awesome-mcmc-animation-site-chi-feng-github/",
+  "overlapWith": "central-limit-theorem: that page builds a histogram of sample means; this page uses randomness as a method of computation and introduces chains that sample a target distribution.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "math-l3"
+ },
+ {
+  "slug": "markov-chains",
+  "title": "Markov chains",
+  "level": 3,
+  "kind": "build",
+  "category": "math",
+  "interaction": "Draw states and weighted arrows, release many walkers and watch the occupancy histogram converge to the stationary distribution, which is also shown as the eigenvector of the transition matrix; add an absorbing state and read off expected absorption times. Load the vowel–consonant chain Markov fitted to Eugene Onegin in 1913 and generate text from letter chains of order 1, 2 and 3; then make a chain periodic or reducible and watch convergence fail.",
+  "takeaway": "Where a chain spends its time in the long run depends only on its transition probabilities, not on where it started, provided it can reach every state and does not march in lockstep.",
+  "prerequisites": [
+   "linear-transformations",
+   "bayes-theorem"
+  ],
+  "related": [
+   "pagerank",
+   "reinforcement-learning",
+   "markov-chain-monte-carlo",
+   "random-walks",
+   "random-graphs"
+  ],
+  "needs": "Pushkin's Eugene Onegin (1833, public domain; Russian Wikisource) for Markov's vowel–consonant chain, and any public-domain English text for the letter chains.",
+  "pitfall": "A stationary distribution is not a limit for every chain: a periodic chain never settles and a reducible one depends on the start. Build those cases on the page instead of hiding them.",
+  "why": "MIT OCW 6.262 Discrete Stochastic Processes, syllabus: https://ocw.mit.edu/courses/6-262-discrete-stochastic-processes-spring-2011/pages/syllabus",
+  "overlapWith": "pagerank: that page releases a random surfer on a web graph and reads off its stationary visit counts; this page is the general theory (arbitrary chains, absorbing states, periodicity, mixing) with PageRank as one instance.",
+  "needsSource": "Eugene Onegin, Russian text: public domain (Pushkin, d. 1837), Russian Wikisource",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "math-l3"
+ },
+ {
+  "slug": "numerical-stability",
+  "title": "Numerical methods & stability",
+  "level": 3,
+  "kind": "simulate",
+  "category": "math",
+  "interaction": "Integrate an orbit, a damped oscillator and a stiff decay with forward Euler, backward Euler, RK4 and leapfrog from the same start; drag the step size and watch the energy drift, the orbit spiral outward or the stiff solution explode. A second panel draws each method's absolute-stability region on the complex plane with the problem's hλ marked; for the heat equation, raise the time step past the Δt ≤ Δx²/2 limit and watch a checkerboard instability grow out of nothing.",
+  "takeaway": "A time step is stable only when the problem's eigenvalues times the step land inside the method's stability region, which is why a stiff problem needs an implicit method rather than a smaller step.",
+  "prerequisites": [
+   "calculus",
+   "complex-numbers",
+   "phase-portraits"
+  ],
+  "related": [
+   "orbits-kepler",
+   "heat-and-wave-equations",
+   "gradient-descent",
+   "fixed-point-iteration",
+   "taylor-series"
+  ],
+  "needs": "",
+  "pitfall": "Smaller steps do not always help: round-off error grows as steps shrink, and an explicit method on a stiff problem stays unstable until the step is impractically small. Plot the error against step size and show it turning back up.",
+  "why": "MIT OCW 18.330 Introduction to Numerical Analysis, syllabus (numerical methods for ODE initial-value problems): https://ocw.mit.edu/courses/18-330-introduction-to-numerical-analysis-spring-2012/pages/syllabus",
+  "overlapWith": "orbits-kepler: that page simulates orbits; this page is about the integrator, not the physics: the same orbit under four methods and the reason some of them go wrong.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "math-l3"
+ },
+ {
+  "slug": "phase-portraits",
+  "title": "Phase portraits & stability",
+  "level": 3,
+  "kind": "manipulate",
+  "category": "math",
+  "interaction": "Drag the four entries of a 2×2 linear system, or move its two eigenvalues on the complex plane, and the phase plane redraws as a node, saddle, spiral or center while a trace–determinant chart marks where you are. Switch to a nonlinear system (damped pendulum, predator–prey, van der Pol) and hover a critical point to see its linearization laid over the real flow; drag a parameter through a Hopf bifurcation and watch a limit cycle be born.",
+  "takeaway": "The long-run behavior of a system is read off from a few fixed points and their eigenvalues, and near each fixed point the real flow is the linear flow.",
+  "prerequisites": [
+   "linear-transformations",
+   "calculus"
+  ],
+  "related": [
+   "oscillations-resonance",
+   "ecosystems",
+   "feedback-control",
+   "chaos-fractals",
+   "numerical-stability",
+   "evolutionary-game-theory"
+  ],
+  "needs": "",
+  "pitfall": "A center predicted by the linearization is not conclusive: the nonlinear terms decide (Hartman–Grobman covers only hyperbolic points). Show the frictionless pendulum beside the damped one rather than claiming linearization settles every case.",
+  "why": "MIT OCW 18.03SC, Unit IV, Linearization near critical points: https://ocw.mit.edu/courses/18-03sc-differential-equations-fall-2011/pages/unit-iv-first-order-systems/linearization-near-critical-points",
+  "overlapWith": "chaos-fractals: that page shows sensitivity to initial conditions and the logistic map's cascade; this one never leaves the phase plane and classifies flows by their fixed points and eigenvalues (ecosystems shows one predator–prey cycle at level 1 as curves, not as a portrait).",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "math-l3"
+ },
+ {
+  "slug": "projective-geometry",
+  "title": "Conic sections & projective geometry",
+  "level": 3,
+  "kind": "manipulate",
+  "category": "math",
+  "interaction": "Tilt a plane through a double cone and the section runs from circle to ellipse to parabola to hyperbola, with the same curve drawn flat; then look at a circle on the floor through a movable camera and its image runs through the same family, turning into a hyperbola when the circle crosses the horizon. Drag four points on a line and their cross-ratio stays fixed under any projection; place six points on a conic and Pascal's three intersection points stay on a line as you move them.",
+  "takeaway": "The ellipse, parabola and hyperbola are one curve seen from different viewpoints, and projection keeps lines straight and cross-ratios fixed, which is enough to prove theorems about conics.",
+  "prerequisites": [
+   "linear-transformations",
+   "unit-circle"
+  ],
+  "related": [
+   "graphics-3d",
+   "orbits-kepler",
+   "light-optics"
+  ],
+  "needs": "",
+  "pitfall": "The parabola's second focus is not vaguely 'at infinity': show it running off the picture and the curve closing up through the line at infinity in homogeneous coordinates.",
+  "why": "Wikipedia, Conic section (reference page for the cone-and-plane and projective views): https://en.wikipedia.org/wiki/Conic_section",
+  "overlapWith": "graphics-3d: that page projects triangles onto a screen; this page studies what projection preserves, with conics as the running example.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "math-l3"
+ },
+ {
+  "slug": "random-graphs",
+  "title": "Random graphs & the giant component",
+  "level": 3,
+  "kind": "simulate",
+  "category": "math",
+  "interaction": "Slide the average degree of a random graph on a few hundred nodes and watch components merge: the largest component's share of the nodes stays near zero until the average degree passes 1, then climbs steeply, with that share plotted live against degree. Grow a preferential-attachment graph node by node to see hubs appear in the picture and in a heavy-tailed degree histogram, and run bond percolation on a grid to see the same kind of threshold.",
+  "takeaway": "Adding links at random does not connect a network gradually: a giant connected piece appears suddenly once each node has about one link on average.",
+  "prerequisites": [
+   "graph-search",
+   "central-limit-theorem"
+  ],
+  "related": [
+   "epidemics",
+   "internet",
+   "pagerank",
+   "markov-chains"
+  ],
+  "needs": "",
+  "pitfall": "The sharp threshold is a large-graph limit; with a few hundred nodes the curve is rounded. Show the knee sharpening as n grows instead of drawing a step.",
+  "why": "MIT 6.207/14.15 Networks, Lecture 4: Erdős–Rényi graphs and phase transitions: https://economics.mit.edu/sites/default/files/inline-files/Lecture%204%20-%20Erdos-Renyi%20Graphs%20and%20Phase%20Transitions.pdf",
+  "overlapWith": "internet: that page routes packets across a given network and epidemics spreads infection through a crowd; this page is about the structure of random networks and the threshold at which they connect at all.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "math-l3"
+ },
+ {
+  "slug": "random-walks",
+  "title": "Random walks & Brownian motion",
+  "level": 3,
+  "kind": "simulate",
+  "category": "math",
+  "interaction": "Release thousands of walkers on a line, a grid and a 3D lattice and watch the cloud spread: the root-mean-square distance grows as the square root of time, and the histogram converges to the solution of the heat equation. Zoom into one walker's path with ever finer steps and it looks the same at every scale; run the return experiment, where every walker in 1D and 2D eventually comes home while in 3D a fixed fraction never does.",
+  "takeaway": "A sum of random steps spreads as the square root of time, which is the same law that spreads heat, and whether a walker ever comes home depends on how many dimensions it moves in.",
+  "prerequisites": [
+   "central-limit-theorem"
+  ],
+  "related": [
+   "heat-and-wave-equations",
+   "markov-chains",
+   "markov-chain-monte-carlo",
+   "entropy",
+   "states-of-matter",
+   "diffusion-models"
+  ],
+  "needs": "",
+  "pitfall": "An unbiased walk's mean displacement stays at zero while its spread grows as √t; only a biased walk drifts linearly. The 3D return probability (about 34%) is a fraction, not zero, and must be shown as a measured count.",
+  "why": "Wikipedia, Random walk (Pólya's recurrence theorem; high-traffic reference page): https://en.wikipedia.org/wiki/Random_walk",
+  "overlapWith": "central-limit-theorem: that page drops balls through a Galton board, a random walk that ends in a bell curve; this page follows the walkers through time, measures how their spread scales and asks whether they return.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "math-l3"
+ },
+ {
+  "slug": "resampling-inference",
+  "title": "Hypothesis tests, the bootstrap & permutation",
+  "level": 3,
+  "kind": "simulate",
+  "category": "math",
+  "interaction": "Compare a measurement between two groups of real penguins: shuffle the group labels thousands of times, build the histogram of differences that chance alone produces, and read the p-value as where the observed difference falls in it. Resample each group with replacement for a bootstrap confidence interval on the difference and on a regression slope; then drag the true effect and the sample size of a simulated study to plot its power, and run twenty null comparisons at once to watch one of them come out 'significant'.",
+  "takeaway": "A p-value is where the real result sits among the results that pure chance makes, and sample size, not luck, is what makes a real effect visible.",
+  "prerequisites": [
+   "central-limit-theorem",
+   "bayes-theorem",
+   "learning-from-data"
+  ],
+  "related": [
+   "markov-chain-monte-carlo",
+   "epidemics"
+  ],
+  "needs": "The Palmer penguins dataset (344 penguins, bill and flipper measurements by species; palmerpenguins, CC0).",
+  "pitfall": "A p-value is not the probability that the null hypothesis is true, and failing to reject is not evidence of no effect. The power plot must show a true effect that a small study routinely misses.",
+  "why": "Hesterberg, What Teachers Should Know about the Bootstrap: Resampling in the Undergraduate Statistics Curriculum: https://arxiv.org/abs/1411.5279",
+  "overlapWith": "learning-from-data: that page fits a curve and shows overfitting with a held-out set; this page asks whether a difference or a slope is real, by rebuilding the chance distribution from the data itself.",
+  "needsSource": "Palmer penguins (Gorman, Williams & Fraser 2014; palmerpenguins package): CC0",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "math-l3"
+ },
+ {
+  "slug": "riemann-zeta-primes",
+  "title": "The Riemann zeta function & the primes",
+  "level": 3,
+  "kind": "manipulate",
+  "category": "math",
+  "interaction": "Scrub along the critical line and watch ζ(1/2 + it), computed on the page by the Riemann–Siegel formula, spiral through the origin at each zero, while a count of primes up to x steps beside the smooth estimates x/ln x and Li(x). Add the zeros one pair at a time to Riemann's explicit formula and watch the smooth curve grow wiggles that lock onto the prime staircase, the way adding Fourier terms sharpens a square wave.",
+  "takeaway": "The zeros of the zeta function are the frequencies of the primes: adding them one by one turns a smooth guess into the exact staircase.",
+  "prerequisites": [
+   "complex-numbers",
+   "primes-modular-arithmetic",
+   "fourier-transform"
+  ],
+  "related": [
+   "continued-fractions",
+   "taylor-series",
+   "winding-numbers"
+  ],
+  "needs": "None required: the zeros are found on the page by root-finding the Riemann–Siegel Z(t). The first 100 zeros from LMFDB (lmfdb.org/zeros/zeta; the LMFDB datasets page states CC BY-SA for its datasets) serve as a test reference.",
+  "pitfall": "ζ(s) = Σ n^−s holds only for Re(s) > 1; on the critical line the page must use the analytic continuation, not a truncated sum, and the computed zeros illustrate the hypothesis without proving it.",
+  "why": "3Blue1Brown, Visualizing the Riemann zeta function and analytic continuation: https://www.youtube.com/watch?v=sD0NjbwqlYw",
+  "overlapWith": "primes-modular-arithmetic: that page strikes out multiples on a grid; this page asks how many primes there are up to x and shows the answer encoded in the zeros of a complex function.",
+  "needsSource": "none required; LMFDB zeta zeros (CC BY-SA per lmfdb.org/datasets) as a test reference only",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "math-l3"
+ },
+ {
+  "slug": "sampling-theorem",
+  "title": "Sampling & the Nyquist limit",
+  "level": 3,
+  "kind": "manipulate",
+  "category": "math",
+  "interaction": "Pick or draw a band-limited signal, drag the sampling rate and watch the samples be rebuilt into a continuous curve by summing one sinc per sample: the reconstruction is exact until the rate drops below twice the highest frequency, when a lower-frequency alias appears, visible in the spectrum as its copies overlapping. Spin a wheel under a strobe to see it stop or reverse, and play a tone sampled at adjustable rates to hear the alias.",
+  "takeaway": "A signal with no frequencies above B is completely determined by samples taken more than 2B times a second, and sampling slower folds its high frequencies into false low ones.",
+  "prerequisites": [
+   "fourier-transform",
+   "waves-interference"
+  ],
+  "related": [
+   "wireless-signals",
+   "compression",
+   "medical-imaging",
+   "channel-capacity"
+  ],
+  "needs": "",
+  "pitfall": "The samples need not look like the signal: a sine sampled just above twice its frequency looks like jagged nothing yet reconstructs exactly. Show the sinc reconstruction, never connect the dots.",
+  "why": "MIT OCW RES.6.007 Signals and Systems, Lecture 16: Sampling: https://ocw.mit.edu/courses/res-6-007-signals-and-systems-spring-2011/resources/lecture-16-sampling/",
+  "overlapWith": "fourier-transform: that page rebuilds a signal from its frequencies, and wireless-signals modulates a carrier; this page is about turning a continuous signal into numbers and back, and the exact rate at which that stops working.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": true,
+  "origin": "math-l3"
+ },
+ {
+  "slug": "svd-low-rank",
+  "title": "The singular value decomposition",
+  "level": 3,
+  "kind": "manipulate",
+  "category": "math",
+  "interaction": "Drag the columns of a 2×2 or 2×3 matrix and see the transformation as rotate, stretch along two axes, rotate: the unit circle's image is an ellipse whose axes are the singular values. Load a grayscale photo, slide the number of kept singular values from 1 to full rank and watch the image sharpen while the plotted singular values fall off and a counter compares numbers stored; apply the same cut to a matrix of noisy measurements and the noise is seen to live in the small singular values.",
+  "takeaway": "Every matrix is a rotation, a stretch and a rotation, and keeping only the largest stretches gives the best low-rank version, which is why a few numbers can carry most of a picture.",
+  "prerequisites": [
+   "linear-transformations",
+   "tensors"
+  ],
+  "related": [
+   "embeddings",
+   "compression",
+   "convolution-vision",
+   "gpu"
+  ],
+  "needs": "One grayscale photograph in the public domain or CC0 (NASA image library, or a Wikimedia Commons CC0 image).",
+  "pitfall": "Singular values are not eigenvalues: a rotation has singular values 1 and 1 and no real eigenvectors. Keep the eigen view from linear-transformations distinct from this one.",
+  "why": "MIT OCW 18.065, Lecture 17, Rapidly decreasing singular values (low-rank images): https://ocw.mit.edu/courses/18-065-matrix-methods-in-data-analysis-signal-processing-and-machine-learning-spring-2018/resources/lecture-17-rapidly-decreasing-singular-values/",
+  "overlapWith": "linear-transformations: that page shows eigenvectors as the directions that only stretch; this page decomposes any matrix, rectangular ones included, and uses the decomposition to compress and denoise.",
+  "needsSource": "one photo: NASA image library (public domain) or Wikimedia Commons (CC0)",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "math-l3"
+ },
+ {
+  "slug": "symmetry-groups",
+  "title": "Symmetry & groups",
+  "level": 3,
+  "kind": "build",
+  "category": "math",
+  "interaction": "Compose the symmetries of a triangle, a square or a frieze by clicking them in order: the shape moves and the Cayley table fills in, showing that order matters for the square (a rotation then a flip is not a flip then a rotation), with subgroups and cosets lit up by color. Then pick generators and a lattice and the page tiles the plane with a motif, cycling through the 17 wallpaper groups, with a counter showing why a 5-fold rotation never closes up.",
+  "takeaway": "Symmetries combine like numbers but need not commute, their multiplication table captures the whole structure, and the plane admits exactly 17 repeating patterns.",
+  "prerequisites": [
+   "linear-transformations",
+   "unit-circle"
+  ],
+  "related": [
+   "galois-theory",
+   "hyperbolic-geometry",
+   "semiconductors",
+   "knot-invariants"
+  ],
+  "needs": "",
+  "pitfall": "A group is not tied to one shape: the rotations of a hexagon and addition mod 6 have the same table after relabeling. Show two different-looking tables that match.",
+  "why": "A-level Further Mathematics, groups (Edexcel FP2 chapter 2: Cayley tables, subgroups, Lagrange): https://pmt.physicsandmathstutor.com/download/Maths/A-level/Further/Additional-Pure/Edexcel/FP2/Cheat-Sheets/Ch.2%20Groups.pdf",
+  "overlapWith": "linear-transformations: that page shows one matrix at a time; this page composes transformations and studies the structure of the whole set of them.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "math-l3"
+ },
+ {
+  "slug": "taylor-series",
+  "title": "Taylor series & where they stop working",
+  "level": 3,
+  "kind": "manipulate",
+  "category": "math",
+  "interaction": "Pick a function and add Taylor terms one at a time with a slider: the polynomial hugs e^x and sin x ever further from the center, but for 1/(1 + x²) it fits perfectly up to |x| = 1 and blows up beyond, however many terms are added. A linked complex plane shows the disk of convergence growing from the center and stopping exactly when it touches the function's nearest singularity at ±i; drag the center and the disk resizes to match. Compare with Chebyshev interpolation to see a polynomial that fits the whole interval anyway.",
+  "takeaway": "A Taylor series converges exactly as far as the nearest singularity in the complex plane, even when nothing goes wrong on the real line.",
+  "prerequisites": [
+   "calculus",
+   "complex-numbers"
+  ],
+  "related": [
+   "fourier-transform",
+   "riemann-zeta-primes",
+   "numerical-stability",
+   "generating-functions"
+  ],
+  "needs": "",
+  "pitfall": "More terms do not always mean a better fit: outside the radius each new term makes the polynomial worse, and a function can be smooth everywhere on the real line and still have a finite radius.",
+  "why": "3Blue1Brown, Essence of calculus: Taylor series: https://www.3blue1brown.com/lessons/taylor-series",
+  "overlapWith": "calculus: that page shows the tangent line (the first Taylor term) and the integral; this page stacks the higher terms and explains the radius of convergence through the complex plane.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "math-l3"
+ },
+ {
+  "slug": "vector-calculus",
+  "title": "Div, grad & curl",
+  "level": 3,
+  "kind": "manipulate",
+  "category": "math",
+  "interaction": "Pick or paint a 2D vector field (a source, a vortex, a shear, a dipole) and drag a small box or loop over it: the net flow out of the box is the divergence and the net circulation around the loop is the curl, both computed numerically and colored across the whole field. Drag a scalar hill to see its gradient field, shrink the loop to watch circulation per area converge to the curl, then fill a large loop with small boxes and watch the interior edges cancel, which is Green's theorem in one picture.",
+  "takeaway": "Divergence is outflow per area and curl is spin per area, and adding up tiny boxes cancels everything but the boundary, which is why a surface integral can equal a line integral.",
+  "prerequisites": [
+   "calculus",
+   "linear-transformations"
+  ],
+  "related": [
+   "electromagnetism",
+   "atmosphere-weather",
+   "flight",
+   "heat-and-wave-equations"
+  ],
+  "needs": "",
+  "pitfall": "A field can swirl visibly and have zero curl (the 1/r vortex), and parallel straight arrows can have nonzero curl (a shear). Show both, so that curl is not read as 'looks rotating'.",
+  "why": "MIT OCW 18.02SC Multivariable Calculus (vector fields, Green's, Stokes' and the divergence theorem): https://ocw.mit.edu/courses/18-02sc-multivariable-calculus-fall-2010/",
+  "overlapWith": "electromagnetism: that page draws field lines of charges and induction; this page is the mathematics of fields themselves, with the theorems that Maxwell's equations are written in.",
+  "needsSource": "none",
+  "leadsTo": [],
+  "everyday": false,
+  "origin": "math-l3"
+ }
+]

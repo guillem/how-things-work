@@ -1,0 +1,177 @@
+[
+ {
+  "slug": "barcode-stripes",
+  "title": "Barcodes at the checkout",
+  "level": 0,
+  "kind": "step",
+  "category": "networks",
+  "everyday": true,
+  "interaction": "Drag a scanner's red line across a barcode and watch what it sees, a trace of dark and light over time, then step through it: a start mark, six groups of stripes, a middle mark, six more and an end mark, each group of four widths one digit. Scan slowly, fast, at an angle or upside down and the widths all stretch together, so the digits come out the same. Smudge one stripe and the last digit, a check digit, says the number is wrong.",
+  "takeaway": "A barcode is a number written as stripe widths, read as proportions so that speed and angle do not matter, with a last digit that catches a misread; the price is looked up afterwards.",
+  "prerequisites": [],
+  "related": [
+   "qr-codes",
+   "remote-control-blinks"
+  ],
+  "needs": "",
+  "needsSource": "none; the EAN-13 layout (95 modules, 7 per digit, L/G/R patterns, weighted check digit) from the published GS1 specification.",
+  "pitfall": "The barcode does not contain the price or the product name; it is a number the till looks up. The scanner reads ratios of widths, not absolute sizes, which is why the code can be printed at any size.",
+  "why": "'Barcode' averaged about 29,200 views a month on English Wikipedia in 2025 (https://wikimedia.org/api/rest_v1/metrics/pageviews/per-article/en.wikipedia/all-access/user/Barcode/monthly/2025010100/2025123100).",
+  "overlapWith": "qr-codes in this batch: the two-dimensional cousin with error correction; this page is one row of widths, a check digit and no repair. binary reads bits; here a digit is a pattern of four widths.",
+  "leadsTo": [
+   "binary"
+  ],
+  "origin": "everyday-technology"
+ },
+ {
+  "slug": "cell-towers-handover",
+  "title": "How your phone finds a tower",
+  "level": 0,
+  "kind": "simulate",
+  "category": "networks",
+  "everyday": true,
+  "interaction": "Drag a phone across a town map dotted with towers; each tower's reach is drawn as a fading patch, the bars on the phone follow the nearest strong tower, and a line shows which tower the phone is talking to. Start a call and walk a route: as one tower fades and the next grows, the line jumps over without the call dropping. Drive into a valley or a thick building and watch the bars fall; put a stadium crowd in one patch and watch its calls queue because the tower has only so many lines.",
+  "takeaway": "Your phone only ever talks to the nearest tower with a clear signal, and towers pass you along as you move, so coverage means a tower close enough, not a satellite overhead.",
+  "prerequisites": [],
+  "related": [
+   "wifi-and-walls",
+   "radio-tuning"
+  ],
+  "needs": "",
+  "needsSource": "none; signal strength from a standard distance-and-obstacle path-loss model, handover to the stronger tower with a margin, and a fixed number of channels per tower. Real tower positions could come from OpenCelliD (CC BY-SA 4.0) but are not needed.",
+  "pitfall": "Ordinary phones do not talk to satellites, and a text does not go phone to phone: it goes to a tower, into the network and out of another tower. Bars measure the link to the tower, not the distance to the person you are calling.",
+  "why": "England KS2 computing: 'understand computer networks, including the internet; how they can provide multiple services' (https://www.gov.uk/government/publications/national-curriculum-in-england-computing-programmes-of-study/national-curriculum-in-england-computing-programmes-of-study); 'Cellular network' averaged about 12,400 views a month on English Wikipedia in 2025.",
+  "overlapWith": "internet (level 1): that page follows packets through routers; this one stays at the first hop, the radio link between a phone and a tower and the handover, and never shows a packet. wireless-signals (level 2) is how bits ride the wave.",
+  "leadsTo": [
+   "internet",
+   "waves-interference"
+  ],
+  "origin": "everyday-technology"
+ },
+ {
+  "slug": "password-guessing",
+  "title": "How a password gets guessed",
+  "level": 0,
+  "kind": "simulate",
+  "category": "networks",
+  "everyday": true,
+  "interaction": "Type a password (or pick one) and release a guessing machine against it. It tries the hundred thousand most common passwords first and finds '123456' or 'liverpool1' in a blink, then starts counting through every combination: a counter shows how many guesses are left and how long that takes at a million guesses a second. Make the password one letter longer and the count multiplies; swap letters for symbols and it barely moves; type three unrelated words and the counter runs off the chart.",
+  "takeaway": "Each extra character multiplies the guesses needed, so a long password of ordinary words beats a short one full of symbols, unless it is on the list of common ones that every guesser tries first.",
+  "prerequisites": [],
+  "related": [
+   "fingerprint-match",
+   "face-unlock-depth",
+   "contactless-cards"
+  ],
+  "needs": "The NCSC and Have I Been Pwned list of the 100,000 most common breached passwords (2019): the NCSC pages quote the top counts but state no licence for the file (NCSC content is usually under the Open Government Licence v3; unconfirmed). Fallback: the top entries and counts quoted in the NCSC announcement plus a permissively licensed word list (SCOWL).",
+  "needsSource": "NCSC top-100k password list, licence unconfirmed; the counting model itself needs no data.",
+  "pitfall": "Guessing at the login screen is slow and gets locked out; the fast guessing happens against stolen scrambled copies, which is why strength still matters. Symbol substitutions such as 'p@ssw0rd' are on the lists. The count assumes the guesser does not know your recipe: real guessers also try combinations of common words, so the words must be genuinely unrelated, and the page should say so. Do not show the scrambling itself; hashing is cryptography, level 2.",
+  "why": "England KS3 computing: 'use technology safely, respectfully, responsibly and securely, including protecting their online identity and privacy' (https://www.gov.uk/government/publications/national-curriculum-in-england-computing-programmes-of-study/national-curriculum-in-england-computing-programmes-of-study); NCSC's 2019 analysis of the 100,000 most common breached passwords (https://www.ncsc.gov.uk/news/most-hacked-passwords-revealed-as-uk-cyber-survey-exposes-gaps-in-online-security).",
+  "overlapWith": "cryptography (level 2) hashes and signs, and primes-modular-arithmetic shows easy-forward, hard-back; this page is only counting guesses, with the common-password list as the twist.",
+  "leadsTo": [
+   "primes-modular-arithmetic",
+   "binary"
+  ],
+  "origin": "everyday-technology"
+ },
+ {
+  "slug": "qr-codes",
+  "title": "QR codes",
+  "level": 0,
+  "kind": "build",
+  "category": "networks",
+  "everyday": true,
+  "interaction": "Type a short message and watch it become a square of black and white cells, built the real way: the three big corner squares that tell a camera where the code is and which way up, then the message as cells, then spare cells computed from the message. Point a drawn camera at it from any angle and it reads. Now paint over cells with a brush: the message still comes out, and a counter shows how many cells are damaged; keep painting and find the moment it fails, then paint over a corner square instead, which fails at once.",
+  "takeaway": "A QR code carries its message plus spare cells computed from it, so a scratched or half-covered code still reads, until too much is gone or the corner finders are hidden.",
+  "prerequisites": [],
+  "related": [
+   "barcode-stripes",
+   "emoji-and-text-as-numbers"
+  ],
+  "needs": "None to ship; the page runs a real encoder and decoder (open-source implementations of the QR standard exist under MIT and Apache 2.0, e.g. qrcode-generator and jsQR).",
+  "needsSource": "none; an in-browser QR encoder and decoder (Reed-Solomon) under MIT/Apache 2.0.",
+  "pitfall": "The three corner squares hold no message; they are for finding and orienting. The code is not read in a spiral or line by line, and the spare cells are not a copy of the message, so do not say the data is duplicated.",
+  "why": "NGSS 4-PS4-3: 'using a grid of 1's and 0's representing black and white to send information about a picture' (https://www.nextgenscience.org/pe/4-ps4-3-waves-and-their-applications-technologies-information-transfer); 'QR code' averaged about 388,000 views a month on English Wikipedia in 2025.",
+  "overlapWith": "error-correction (level 2): that page shows a Hamming code's parity checks on bits; this one is the object, with damage painted on and a count of cells survivable, and no arithmetic shown. barcode-stripes in this batch is the one-dimensional cousin with only a check digit.",
+  "leadsTo": [
+   "binary"
+  ],
+  "origin": "everyday-technology"
+ },
+ {
+  "slug": "radio-tuning",
+  "title": "Tuning a radio",
+  "level": 0,
+  "kind": "manipulate",
+  "category": "networks",
+  "everyday": true,
+  "interaction": "Several stations broadcast at once and the antenna wire picks up all of them as one tangled wiggle. Turn the tuning knob: a swing inside the radio that likes one rhythm builds up only for the station whose rhythm matches, and the others fall away; between stations the swing stays small and you hear hiss. Then look at one station's wave up close: the music rides on it as changes in height (AM) or in rhythm (FM); pick which and hear why FM survives a lightning crackle better.",
+  "takeaway": "Every station reaches the antenna at the same time, and tuning means choosing which rhythm the radio swings along with.",
+  "prerequisites": [],
+  "related": [
+   "cell-towers-handover",
+   "speakers-and-microphones"
+  ],
+  "needs": "",
+  "needsSource": "none; a sum of carrier waves through a tuned resonant filter whose centre follows the knob, then envelope or frequency detection, synthesised to audio.",
+  "pitfall": "Radio waves are not sound waves: nothing in the air is playing the music, and the station is not caught alone; selection happens inside the set by resonance. Tuning does not make the other stations leave the wire.",
+  "why": "'Radio' averaged about 25,200 views a month on English Wikipedia in 2025 (https://wikimedia.org/api/rest_v1/metrics/pageviews/per-article/en.wikipedia/all-access/user/Radio/monthly/2025010100/2025123100).",
+  "overlapWith": "oscillations-resonance (level 1) shows one oscillator building up when pushed at its natural frequency, and wireless-signals (level 2) shows modulation; what is new here is many stations on one wire at once and selection by the swing, with sound as the output.",
+  "leadsTo": [
+   "oscillations-resonance",
+   "waves-interference"
+  ],
+  "origin": "everyday-technology"
+ },
+ {
+  "slug": "remote-control-blinks",
+  "title": "What a remote control says",
+  "level": 0,
+  "kind": "step",
+  "category": "networks",
+  "everyday": true,
+  "interaction": "Press a button on a drawn remote and a lamp on its nose blinks in invisible light; the page shows the blinks slowed a thousand times: a long opening flash, then a string of short flashes with short and long gaps that spell the button's number, then the same string inverted as a check. Hold the button and a short 'still pressed' pattern repeats. Point the remote at the wall and the blinks bounce to the TV; put a hand in front and nothing arrives; look through a phone camera (a front camera especially; many rear ones filter infrared out) and the blinks become visible.",
+  "takeaway": "A remote talks in fast blinks of invisible light, each button its own pattern of long and short gaps, which is why it needs a clear line, or a wall to bounce off, and many phone cameras can see it.",
+  "prerequisites": [],
+  "related": [
+   "wifi-and-walls",
+   "barcode-stripes",
+   "digital-clock-counting"
+  ],
+  "needs": "",
+  "needsSource": "none; the pattern follows the widely documented NEC infrared protocol (38 kHz carrier, 9 ms leader, short and long gaps for 0 and 1, inverted copy of the command, repeat code), with brightness falling with distance and reflection.",
+  "pitfall": "The remote is not sending heat rays or radio: most TV remotes use infrared light pulses (some newer ones use radio and work through walls; say so). The TV does not see steady light: it listens for flashes at one fast rhythm, which is why sunlight does not change the channel.",
+  "why": "NGSS 4-PS4-3: 'generate and compare multiple solutions that use patterns to transfer information' (https://www.nextgenscience.org/pe/4-ps4-3-waves-and-their-applications-technologies-information-transfer).",
+  "overlapWith": "wireless-signals (level 2) modulates a carrier and binary reads bits; this page is the everyday object, with the pattern shown as long and short gaps and a line-of-sight model.",
+  "leadsTo": [
+   "binary",
+   "light-optics"
+  ],
+  "origin": "everyday-technology"
+ },
+ {
+  "slug": "wifi-and-walls",
+  "title": "Wi-Fi around the house",
+  "level": 0,
+  "kind": "build",
+  "category": "networks",
+  "everyday": true,
+  "interaction": "Place a router on a floor plan and the rooms fill with a signal map; drag the laptop around and its speed gauge follows the colour. Add walls, a brick one, a fridge, a fish tank, and watch each cut a shadow in the map and the gauge drop, as the link slows down to be heard through the loss. Switch the router to the faster, shorter-reach band and compare; then add a neighbour's router on the same channel and watch the two take turns.",
+  "takeaway": "Wi-Fi is radio: walls and water eat it, the link slows down rather than breaking as the signal fades, and two networks on one channel must take turns.",
+  "prerequisites": [],
+  "related": [
+   "cell-towers-handover",
+   "remote-control-blinks"
+  ],
+  "needs": "",
+  "needsSource": "none beyond published indoor loss figures (ITU-R P.1238 indoor propagation model and typical wall losses).",
+  "pitfall": "Wi-Fi is not the internet; a full signal to the router says nothing about the line out of the house. Distance does not reduce the router's 'speed': the devices slow their sending so that the weaker signal can still be read.",
+  "why": "NGSS MS-PS4-2: 'waves are reflected, absorbed, or transmitted through various materials' (https://www.nextgenscience.org/pe/ms-ps4-2-waves-and-their-applications-technologies-information-transfer); 'Wi-Fi' averaged about 73,900 views a month on English Wikipedia in 2025 (https://wikimedia.org/api/rest_v1/metrics/pageviews/per-article/en.wikipedia/all-access/user/Wi-Fi/monthly/2025010100/2025123100).",
+  "overlapWith": "wireless-signals (level 2): that page packs bits onto a carrier against noise; this one is where to put the router, computed from a wall-by-wall loss model, with speed shown as a gauge and no waveform.",
+  "leadsTo": [
+   "internet",
+   "waves-interference"
+  ],
+  "origin": "everyday-technology"
+ }
+]

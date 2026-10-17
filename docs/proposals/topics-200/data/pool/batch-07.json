@@ -1,0 +1,654 @@
+[
+ {
+  "slug": "rust",
+  "title": "Rust",
+  "level": 0,
+  "kind": "simulate",
+  "category": "chemistry",
+  "everyday": true,
+  "interaction": "Four iron nails side by side: in dry air, in plain water, in salty water, and painted. Scrub the weeks and watch rust spots start wherever water and air both touch the metal and spread across the nail, while a bar shows how much iron is left. One control at a time: the dampness of the air, the salt in the water, or a scratch through the paint. The rust spreads on a grid whose rate in each cell follows how wet and how salty that cell is.",
+  "takeaway": "Iron rusts only where water and air reach it together, salt speeds it up, and a coat of paint works until it is scratched.",
+  "prerequisites": [],
+  "related": [
+   "fire-triangle",
+   "lemon-battery"
+  ],
+  "needs": "",
+  "needsSource": "none; the relative rates (dry air, fresh water, salt water, the humidity below which iron barely rusts) are a few published corrosion figures stated as a simplification",
+  "pitfall": "Rust is not dirt on the surface and cannot be wiped off: it is the iron itself turned into a new, flaky substance, which is why rusting cannot be undone.",
+  "why": "England KS2 Year 5 'Properties and changes of materials' (rusting as an irreversible change that makes a new material): https://www.gov.uk/government/publications/national-curriculum-in-england-science-programmes-of-study",
+  "overlapWith": "redox-batteries: that page moves electrons between two electrodes at level 2; here the same iron-and-oxygen idea is a spot on a nail growing with wet and salt, with no electrons shown.",
+  "leadsTo": [
+   "chemical-bonds",
+   "atoms-periodic-table"
+  ],
+  "origin": "chemistry-and-cooking"
+ },
+ {
+  "slug": "salt-and-ice",
+  "title": "Salt on ice: roads and ice cream",
+  "level": 0,
+  "kind": "simulate",
+  "category": "chemistry",
+  "everyday": true,
+  "interaction": "A block of ice drawn as a neat stack of water particles, with a thermometer. One control at a time: sprinkle salt, and salt particles get between the water particles at the surface so the stack cannot re-form, and the ice melts although the thermometer reads below freezing; turn the cold down further and the salt stops working; pour on more salt and watch where it stops helping. Then put a bag of cream into the salted ice: the melting pulls heat out of the cream, the bath's thermometer drops below what plain ice could reach, and the cream freezes.",
+  "takeaway": "Salt gets in the way of water re-freezing, so salted ice melts below freezing, and that melting draws so much heat out of its surroundings that a salt-and-ice bath gets colder than ice, cold enough to freeze cream.",
+  "prerequisites": [],
+  "related": [
+   "growing-crystals",
+   "dissolving-sugar-and-salt",
+   "why-metal-feels-cold",
+   "sink-or-float"
+  ],
+  "needs": "Freezing point of salt water against salt content (NaCl brine table and its lowest point, about minus 21 °C), from the US FHWA 'Manual of Practice for an Effective Anti-icing Program' (US government work, public domain).",
+  "needsSource": "US FHWA brine freezing-point table, public domain US government work: https://www.fhwa.dot.gov/publications/research/safety/95202/005.cfm",
+  "pitfall": "Salt does not heat the ice or 'burn' through it, and it does not work at any cold: below about minus twenty, no amount of salt will melt ice.",
+  "why": "Scientific American / Science Buddies 'Making Ice Cream in a Bag' (freezing-point depression for children): https://scientificamerican.com/article/scrumptious-science-making-ice-cream-in-a-bag/",
+  "overlapWith": "states-of-matter: that page melts a pure substance by raising its temperature; here the ice melts because of what is added to it, at a temperature where pure ice would stay solid.",
+  "leadsTo": [
+   "states-of-matter"
+  ],
+  "origin": "chemistry-and-cooking"
+ },
+ {
+  "slug": "separating-mixtures",
+  "title": "Taking a mixture apart",
+  "level": 0,
+  "kind": "build",
+  "category": "chemistry",
+  "everyday": true,
+  "interaction": "Tip sand, salt, iron filings, water and a drop of ink together, then pick a tool from the palette (a magnet, a sieve, filter paper, an evaporating dish, a still, a strip of blotting paper) and watch each kind of particle pass or stay according to its size, whether it dissolves, or when it boils off. Chain the tools in an order of your choosing until everything is back on its own; filter the salty water and the salt sails straight through, evaporate it and the salt stays behind while the water can be caught again as drops.",
+  "takeaway": "Each separating tool uses one difference between the parts (size, magnetism, dissolving, boiling) and a mixture comes apart only when the tools are used in the right order.",
+  "prerequisites": [
+   "dissolving-sugar"
+  ],
+  "related": [
+   "drying-and-evaporation",
+   "magnets-and-poles",
+   "atoms-periodic-table"
+  ],
+  "needs": "",
+  "pitfall": "Filtering cannot remove something that has dissolved; only evaporating or distilling can. And the water that evaporates away is not gone: a still catches it back.",
+  "why": "KS2 Year 5 'Properties and changes of materials' (use knowledge of solids, liquids and gases to decide how mixtures might be separated) and KS3 chemistry 'Pure and impure substances' (filtration, evaporation, distillation and chromatography) https://www.gov.uk/government/publications/national-curriculum-in-england-science-programmes-of-study/national-curriculum-in-england-science-programmes-of-study",
+  "overlapWith": "atoms-periodic-table: that page builds atoms and elements; this one never looks inside a particle, only sorts particles of different kinds by size, magnetism, dissolving and boiling.",
+  "needsSource": "none; a particle-level rule model (size against mesh, dissolved or not, boiling order, magnetic or not) run through the chosen chain of tools.",
+  "leadsTo": [
+   "states-of-matter",
+   "atoms-periodic-table"
+  ],
+  "origin": "basic-physical-science"
+ },
+ {
+  "slug": "sink-or-float",
+  "title": "Sink or float",
+  "level": 0,
+  "kind": "manipulate",
+  "category": "chemistry",
+  "everyday": true,
+  "interaction": "A tank of water and a shelf of same-size blocks: cork, wood, ice, candle wax, plastic, brick, aluminium, steel. Drag any block in and it settles where its weight balances the water it pushes aside, with the pushed-aside water drawn as a shadow, and a balance weighs each block against a same-size block of water. One control: drag salt into the tank to make the water heavier, and watch an egg that sank rise. Last, press a ball of modelling clay flat into a boat and see it float.",
+  "takeaway": "What floats is anything lighter than the same-size lump of water, so a steel ship floats by being mostly air, and an egg floats in salty water because salty water is heavier.",
+  "prerequisites": [],
+  "related": [
+   "soap-and-grease",
+   "salt-and-ice",
+   "separating-mixtures"
+  ],
+  "needs": "Densities of the materials shown and of fresh and salt water (CRC Handbook or Wikipedia tables, CC BY-SA); about a dozen numbers.",
+  "needsSource": "A dozen published densities (CRC Handbook; Wikipedia tables are CC BY-SA); facts, no dataset",
+  "pitfall": "Heavy things do not sink and light things float: a small steel nail sinks while a big log floats, so the comparison must be against the same amount of water.",
+  "why": "PhET 'Density' simulation (CC BY), widely used for sink-or-float lessons: https://phet.colorado.edu/en/simulations/density; NGSS 5-PS1-3 (identify materials by their properties).",
+  "overlapWith": "states-of-matter: that page notes that ice is less dense than water inside a phase diagram; here density is the whole page, met as a sink-or-float contest between everyday blocks, with no phase diagram.",
+  "leadsTo": [
+   "states-of-matter",
+   "newtons-laws"
+  ],
+  "origin": "chemistry-and-cooking"
+ },
+ {
+  "slug": "smells-and-diffusion",
+  "title": "How a smell crosses a room",
+  "level": 0,
+  "kind": "simulate",
+  "category": "chemistry",
+  "everyday": true,
+  "interaction": "Open a bottle of perfume in the corner of a room: its particles wander off by random knocks from the air, and a nose at the far wall lights up when the first ones arrive, with a clock showing how long it took. Warm the room and they wander faster; close a door and they pile up behind it. Then open a window to make a draught and watch the smell cross the room many times faster than wandering alone could carry it.",
+  "takeaway": "A smell is particles that have wandered to your nose by random knocks; warmth speeds them up, and across a room moving air does most of the carrying.",
+  "prerequisites": [],
+  "related": [
+   "drying-and-evaporation",
+   "dissolving-sugar",
+   "states-of-matter"
+  ],
+  "needs": "",
+  "pitfall": "The particles do not head for the nose; they wander at random and some happen to arrive. And in still air that wandering alone would take hours to cross a room; the page must show that draughts do most of the work rather than pretend diffusion is fast.",
+  "why": "KS3 chemistry 'Pure and impure substances' (diffusion in terms of the particle model) https://www.gov.uk/government/publications/national-curriculum-in-england-science-programmes-of-study/national-curriculum-in-england-science-programmes-of-study",
+  "overlapWith": "entropy: that page mixes fast and slow particles to count arrangements and explain time's arrow; this one follows one smell from a bottle to a nose, with warmth and draughts, and never counts arrangements.",
+  "needsSource": "none; random-walk particles (the step rate rising with temperature) in a room with walls and doors, plus an optional air current that carries them.",
+  "leadsTo": [
+   "states-of-matter"
+  ],
+  "origin": "basic-physical-science"
+ },
+ {
+  "slug": "soap-and-grease",
+  "title": "Why soap cleans",
+  "level": 0,
+  "kind": "simulate",
+  "category": "chemistry",
+  "everyday": true,
+  "interaction": "Shake a drop of oil into water and watch it gather itself back into one blob: water particles hold on to each other and leave the oil out. Add soap particles, each drawn as a water-loving head on an oil-loving tail, and they crowd round the oil, tails in, splitting it into tiny coated droplets that stay apart and rinse away. Add more soap or less, use warm water, then try the same on a greasy plate and on the fatty coat of a virus.",
+  "takeaway": "A soap particle has one end that likes water and one that likes oil, so soap wraps grease in coats that water can carry away.",
+  "prerequisites": [],
+  "related": [
+   "water-drops-and-surface-tension",
+   "dissolving-sugar",
+   "the-cell"
+  ],
+  "needs": "",
+  "pitfall": "Soap does not dissolve grease the way water dissolves sugar, and it does not poison germs; it breaks up their fatty coats and lifts them off, which is why rinsing matters.",
+  "why": "Demand signal, not verified this session: the New York Times 'Why Soap Works' (Pall Thordarson, 13 March 2020) https://www.nytimes.com/2020/03/13/health/soap-coronavirus-handwashing-germs.html could not be fetched and the search budget ran out before a search for it, so the URL is from memory. No KS2/KS3 or NGSS standard names soap directly; the nearest verified standard is KS3 chemistry 'The particulate nature of matter' https://www.gov.uk/government/publications/national-curriculum-in-england-science-programmes-of-study/national-curriculum-in-england-science-programmes-of-study",
+  "overlapWith": "the-cell: that page has the membrane as one part of a cell; this one is about the two-ended soap particle, oil in water, and why rinsing takes the grease away, with the membrane only as the last example.",
+  "needsSource": "none; a coarse-grained particle model with water-loving and oil-loving beads and two-bead soap molecules, a few hundred particles.",
+  "leadsTo": [
+   "chemical-bonds",
+   "the-cell"
+  ],
+  "origin": "basic-physical-science"
+ },
+ {
+  "slug": "sponge-and-paper-towel",
+  "title": "How a sponge holds water",
+  "level": 0,
+  "kind": "manipulate",
+  "category": "chemistry",
+  "everyday": true,
+  "interaction": "A cut-away sponge and a strip of paper towel over a puddle. Lower either one until it touches: water climbs into the holes, higher in the narrow ones than the wide ones, and the puddle shrinks; a side view shows the water clinging to the walls and pulling itself up. One control at a time: the size of the holes, squeezing the sponge, or swapping the water for oil. A last scene stands a stick of celery in coloured water and watches the colour climb its tubes.",
+  "takeaway": "Water climbs into small holes because it clings to their walls, and the narrower the hole the higher it climbs, which is why a sponge full of tiny holes holds water and does not drip.",
+  "prerequisites": [],
+  "related": [
+   "bubbles-and-foam",
+   "soap-and-grease",
+   "bean-in-a-jar"
+  ],
+  "needs": "",
+  "needsSource": "none; capillary rise in pores of different width from the surface tension of water and of oil (two constants)",
+  "pitfall": "A sponge does not 'suck' water in; the water pulls itself in, and squeezing only works because it closes the holes.",
+  "why": "Science World 'Escaping Water' paper-towel capillary activity: https://www.scienceworld.ca/resource/escaping-water/; England KS2 Year 3 'Plants' (water transport in a stem).",
+  "overlapWith": "states-of-matter: shares the particle look only; no existing page shows capillary action, and the celery here is a wick rather than the cell of the-cell.",
+  "leadsTo": [
+   "states-of-matter",
+   "photosynthesis"
+  ],
+  "origin": "chemistry-and-cooking"
+ },
+ {
+  "slug": "toast-and-browning",
+  "title": "Why toast goes brown",
+  "level": 0,
+  "kind": "simulate",
+  "category": "chemistry",
+  "everyday": true,
+  "interaction": "A slice of bread in a toaster, seen in cross-section with a thermometer in its surface. One control: the toaster dial. The surface colour runs from pale through gold to black as a browning count climbs, but only once the surface has dried and climbed well past the heat of boiling water; a second slice dipped in water stays pale for as long as it is wet, and a slice held in steam does not brown in the time any toasting takes. A time scrub replays any run, and the model is a browning rate that doubles every few degrees.",
+  "takeaway": "Food only browns once it is dry and hotter than boiling water, which is why toast, roast and fried food brown while boiled or steamed food stays pale for as long as it is wet.",
+  "prerequisites": [],
+  "related": [
+   "caramel-and-candy-stages",
+   "cooking-an-egg",
+   "kitchen-thermometer",
+   "apple-browning"
+  ],
+  "needs": "A browning rate against temperature (Maillard kinetics: one activation energy) from published food-science measurements; no dataset.",
+  "needsSource": "One published activation energy for Maillard browning (food-science literature); a constant, no dataset",
+  "pitfall": "Browning is not burning, and it is not the sugar alone (that is caramel): the colour comes from sugars and proteins reacting together once the surface is dry and hot.",
+  "why": "Modernist Cuisine, 'The Maillard Reaction' (why boiled food does not brown): https://modernistcuisine.com/mc/the-maillard-reaction/",
+  "overlapWith": "reaction-rates-equilibrium: that page shows collision energy crossing a barrier at level 2; here the reader sees only that wet food cannot get hot enough and dry food can, from a thermometer and a colour.",
+  "leadsTo": [
+   "states-of-matter",
+   "chemical-bonds"
+  ],
+  "origin": "chemistry-and-cooking"
+ },
+ {
+  "slug": "water-drops-and-surface-tension",
+  "title": "Water drops & surface tension",
+  "level": 0,
+  "kind": "manipulate",
+  "category": "chemistry",
+  "everyday": true,
+  "interaction": "Drag a drop of water onto a waxed leaf and it pulls itself into a bead; on paper it spreads; inside the drop every particle is pulled every way, at the surface only inward, and the drop's shape follows from the simulated pulls. Keep adding water to a coin until the bulge finally spills; lay a paperclip flat on the surface and it rests in a dent; land a pond skater. Touch a drop of soap to the surface and the bead flattens, the paperclip sinks and a sprinkle of pepper races to the edges.",
+  "takeaway": "Water pulls itself together at its surface, enough to bead up and hold a paperclip, and a touch of soap weakens that pull.",
+  "prerequisites": [],
+  "related": [
+   "soap-and-grease",
+   "floating-sinking-and-boats",
+   "states-of-matter"
+  ],
+  "needs": "",
+  "pitfall": "There is no skin or film on water; the surface behaves like one because the particles there are pulled inward with nothing pulling back. The paperclip is not lighter than water; it would sink if pushed through.",
+  "why": "Signal not verified this session (search budget exhausted before the surface-tension search ran); expected demand signals: the Wikipedia 'Surface tension' article and the pepper-and-soap / paperclip home experiments. The nearest verified standard is KS3 chemistry 'The particulate nature of matter' https://www.gov.uk/government/publications/national-curriculum-in-england-science-programmes-of-study/national-curriculum-in-england-science-programmes-of-study",
+  "overlapWith": "states-of-matter: that page runs a molecular box with no free surface to show melting and boiling; this one is all about the free surface of a liquid, wetting, beading and what soap does to it.",
+  "needsSource": "none; a two-dimensional molecular box with attraction between water particles and a free surface, a substrate that attracts them more or less (wetting), and soap as particles that weaken the surface pull; or a particle fluid with a surface-tension force.",
+  "leadsTo": [
+   "chemical-bonds",
+   "states-of-matter"
+  ],
+  "origin": "basic-physical-science"
+ },
+ {
+  "slug": "why-metal-feels-cold",
+  "title": "Why metal feels cold",
+  "level": 0,
+  "kind": "manipulate",
+  "category": "chemistry",
+  "everyday": true,
+  "interaction": "A table with a metal spoon, a wooden spoon, a plastic cup and a woollen glove, all at room temperature, with a thermometer that reads the same on each. Drag a finger onto any one: a strip of heat colour flows out of the fingertip into the object, fast into the metal and barely at all into the wool, and a 'feels like' dial follows the fingertip's own temperature. One control: the room temperature; set the room hot and the same metal now feels hottest. The flow is a heat-conduction model with each material's real conductivity.",
+  "takeaway": "Everything on the table is the same temperature; the metal feels cold because it carries heat out of your finger fastest, and the same metal feels hottest in a hot room.",
+  "prerequisites": [],
+  "related": [
+   "salt-and-ice",
+   "kitchen-thermometer"
+  ],
+  "needs": "Thermal conductivity, density and heat capacity of a few common materials (a metal, wood, plastic, wool, skin), from textbook or Wikipedia tables (CC BY-SA); under ten constants.",
+  "needsSource": "Under ten published material constants (textbook tables; Wikipedia CC BY-SA); facts, no dataset",
+  "pitfall": "Metal is not colder than wood, and cold does not flow into your hand: heat flows out of it, and a thermometer shows the two objects equal.",
+  "why": "Veritasium, 'Why Does Metal Feel Colder Than Wood If They're the Same Temperature?' (a classic misconception video): https://www.youtube.com/watch?v=vqDbMEdLiCs; England KS2 Year 5 lists thermal conductivity among material properties.",
+  "overlapWith": "entropy: that page shows heat flowing between fast and slow particles at level 2; here it is one finger on one object, and the only question is how fast heat leaves the skin.",
+  "leadsTo": [
+   "states-of-matter"
+  ],
+  "origin": "chemistry-and-cooking"
+ },
+ {
+  "slug": "apple-browning",
+  "title": "Why a cut apple goes brown",
+  "level": 0,
+  "kind": "manipulate",
+  "category": "biology",
+  "everyday": true,
+  "interaction": "A cut apple face, drawn as a sheet of cells. Scrub the minutes and brown spreads in from wherever air touches the cut, because an enzyme freed by the cut meets the air, while a brownness meter climbs. One control at a time: paint a region with lemon juice (the enzyme stops in acid), press cling film over a region (no air), move the apple into the fridge (slower), or dip a slice in boiling water (the enzyme is destroyed). Each region browns at its own pace side by side.",
+  "takeaway": "An apple browns because a cut lets one of its own enzymes meet the air, so keeping air off, chilling it, or lemon juice each slow the browning, and heat stops it for good.",
+  "prerequisites": [],
+  "related": [
+   "onion-tears",
+   "toast-and-browning",
+   "ripening-fruit",
+   "fridge-and-spoilage"
+  ],
+  "needs": "",
+  "needsSource": "none; a cut-surface grid with air diffusing in and an enzyme rate that depends on acidity and temperature (constants from the polyphenol-oxidase references)",
+  "pitfall": "Browning is not rotting and not the apple going bad: a brown apple slice is safe. And lemon juice does not 'seal' the surface; it stops the enzyme.",
+  "why": "Science Buddies 'Enzymatic Browning' activity (apple and banana, lemon juice): https://www.sciencebuddies.org/stem-activities/enzymatic-browning",
+  "overlapWith": "the-cell: this page's cells are only the containers a cut breaks open, and the-cell never shows an enzyme at work; its browning is also unrelated to the dry-heat browning of toast.",
+  "leadsTo": [
+   "the-cell"
+  ],
+  "origin": "chemistry-and-cooking"
+ },
+ {
+  "slug": "bean-in-a-jar",
+  "title": "A bean in a jar",
+  "level": 0,
+  "kind": "simulate",
+  "category": "biology",
+  "everyday": true,
+  "interaction": "A bean seed pressed against the glass of a jar with a wet paper towel. One control at a time: water or none, warm or cold, light or a dark cupboard. Scrub the days and the seed swells, splits, sends a root down and a shoot up while a growth ruler follows. No water and nothing happens; cold and it takes weeks; in the dark it sprouts just as well but the seedling grows pale and leggy, then stops once its stored food is used up, while the one in the light turns green and keeps going. Turn the jar on its side and the root bends down again.",
+  "takeaway": "A seed needs water and warmth, not light, to sprout, because it lives on food stored inside it, and only once that runs out does the seedling need light to make its own.",
+  "prerequisites": [],
+  "related": [
+   "sponge-and-paper-towel",
+   "ripening-fruit"
+  ],
+  "needs": "",
+  "needsSource": "none; a germination and growth rate against temperature and water with a stored-food budget, constants from published bean germination studies",
+  "pitfall": "Seeds do not need light or soil to germinate, and a seedling in the dark grows taller, not shorter, at first; that is not healthy growth but stored food running out.",
+  "why": "England KS2 Year 3 'Plants' (requirements for life and growth) and NGSS 3-LS1-1 (life cycles): https://www.gov.uk/government/publications/national-curriculum-in-england-science-programmes-of-study (curriculum page; not fetched this session, search budget exhausted)",
+  "overlapWith": "photosynthesis: that page runs the chloroplast with light and CO2 at level 1; here light matters only after the seed's stored food is gone, and the controls are water, warmth and a dark cupboard.",
+  "leadsTo": [
+   "photosynthesis",
+   "the-cell"
+  ],
+  "origin": "chemistry-and-cooking"
+ },
+ {
+  "slug": "bread-and-yeast",
+  "title": "Bread and yeast",
+  "level": 0,
+  "kind": "simulate",
+  "category": "biology",
+  "everyday": true,
+  "interaction": "A ball of dough in a bowl, with a window into it: yeast cells drawn as dots eat sugar particles and give off gas particles that collect in bubbles, so the dough swells and a ruler follows it. One control: the temperature of the room. Cold and the yeast barely move; warm and the dough doubles in an hour; too hot and the yeast die and the rise stops for good. A second run bakes the dough: the oven swells the bubbles once more and then sets the crumb, and the baked slice shows its holes.",
+  "takeaway": "Dough rises because living yeast eat sugar and breathe out gas that gets trapped in the dough, fastest when it is warm but not hot, and the holes in bread are those bubbles.",
+  "prerequisites": [],
+  "related": [
+   "baking-soda-and-vinegar",
+   "cake-rising",
+   "milk-and-yogurt",
+   "fridge-and-spoilage",
+   "mould-on-bread"
+  ],
+  "needs": "Rate of gas production by baker's yeast against temperature, from a published fermentation study (a cardinal-temperature curve with a few fitted constants); no dataset.",
+  "needsSource": "A few fitted constants from a published yeast fermentation-rate study; facts, no dataset",
+  "pitfall": "Yeast is alive and does not simply 'activate': too much heat kills it, and the holes in bread are not air mixed in by kneading.",
+  "why": "Demand: 'why does yeast make bread rise' (BBC Science Focus): https://www.sciencefocus.com/nature/why-does-yeast-make-bread-rise/; England KS2 Year 6 'Living things' (micro-organisms) and NGSS MS-LS1-1.",
+  "overlapWith": "respiration-atp: that page follows glucose through the cell at level 2; here the yeast is a dot that eats sugar and makes a bubble, and the only control is warmth.",
+  "leadsTo": [
+   "the-cell"
+  ],
+  "origin": "chemistry-and-cooking"
+ },
+ {
+  "slug": "caterpillar-to-butterfly",
+  "title": "Caterpillar to butterfly",
+  "level": 0,
+  "kind": "step",
+  "category": "biology",
+  "everyday": false,
+  "interaction": "Step a monarch from egg to butterfly on a day counter: the caterpillar eats and swells until its skin, which cannot stretch, splits and is shed, five times over, growing about two thousand times heavier in two weeks; then it hangs, sheds once more into a chrysalis, and a cutaway shows most of its insides dissolved and rebuilt into wings, legs and a drinking straw while the stored fat drains. Warm the days and every stage runs faster.",
+  "takeaway": "A caterpillar is an eating machine that must shed its skin to grow, and inside the chrysalis it is largely taken apart and rebuilt into a flying one.",
+  "prerequisites": [],
+  "related": [
+   "inside-an-egg",
+   "flowers-and-bees",
+   "growing-up"
+  ],
+  "needs": "",
+  "needsSource": "none: growth across five instars with a moult whenever the body outgrows its skin, a mass budget in the pupa, and stage lengths versus temperature from the monarch literature (Monarch Joint Venture; Zalucki 1982), stated on the page",
+  "pitfall": "The caterpillar does not turn to soup: its nervous system, some muscles and the small clusters of cells that become the wings survive and build the adult, and the butterfly is the same individual, not a new one.",
+  "why": "England KS2 Year 5 statutory requirement: describe the differences in the life cycles of a mammal, an amphibian, an insect and a bird. https://www.ase.org.uk/sites/default/files/PLAN%20Examples%20of%20Work%20Y5%20Living%20things%20and%20their%20habitats%20Melissa.pdf",
+  "overlapWith": "the-cell: that page shows what a cell contains; this one follows one animal's body being rebuilt, as masses and moults, with no cell biology.",
+  "leadsTo": [
+   "the-cell",
+   "dna-to-protein"
+  ],
+  "origin": "living-things-and-body"
+ },
+ {
+  "slug": "flowers-and-bees",
+  "title": "Flowers and bees",
+  "level": 0,
+  "kind": "simulate",
+  "category": "biology",
+  "everyday": false,
+  "interaction": "Watch bees work a meadow of flowers: each visit leaves pollen from the last flower and picks up new, and a flower only sets seed once pollen from another of its kind has arrived; count the seed heads at the end of the day. Take the bees away, paint the flowers dull, or thin the meadow, and count again.",
+  "takeaway": "A flower cannot move, so it pays bees in sugar to carry its pollen, and without the bees most of the seeds never form.",
+  "prerequisites": [],
+  "related": [
+   "seeds-and-germination",
+   "food-chains",
+   "caterpillar-to-butterfly",
+   "ecosystems"
+  ],
+  "needs": "",
+  "needsSource": "none: an agent simulation of bees drawn to colour and scent, carrying pollen that is deposited and diluted at each visit, with seed set requiring pollen of the right kind and nectar that refills over time",
+  "pitfall": "Bees are not helping on purpose and flowers are not for people: each is feeding, and the pollen hitches a ride. Not every flower needs a bee: grasses and many trees use the wind.",
+  "why": "England KS2 Year 3 statutory requirement: explore the part that flowers play in the life cycle of flowering plants, including pollination, seed formation and seed dispersal. https://www.gov.uk/government/publications/national-curriculum-in-england-science-programmes-of-study/national-curriculum-in-england-science-programmes-of-study",
+  "overlapWith": "ecosystems: that page couples a predator and its prey; this one couples two species that trade, counted in seeds, with no population cycles.",
+  "leadsTo": [
+   "meiosis-inheritance",
+   "ecosystems"
+  ],
+  "origin": "living-things-and-body"
+ },
+ {
+  "slug": "food-chains",
+  "title": "Who eats whom",
+  "level": 0,
+  "kind": "build",
+  "category": "biology",
+  "everyday": false,
+  "interaction": "Drag plants and animals from a shelf into a chain, grass to grasshopper to frog to hawk, and the arrows point the way the food goes; then feed it: a thousand plants feed about a hundred grasshoppers, ten frogs and one hawk, and the pyramid of counts builds itself. Cross two chains into a web, remove the grass or add a second hawk, and watch how many of each the field can feed.",
+  "takeaway": "Each step up a food chain feeds about ten times fewer animals, which is why a field holds a thousand grass plants, a hundred grasshoppers, ten frogs and one hawk.",
+  "prerequisites": [],
+  "related": [
+   "flowers-and-bees",
+   "ecosystems",
+   "carbon-cycle"
+  ],
+  "needs": "",
+  "needsSource": "none: an energy-budget pyramid with a transfer fraction of about one tenth per link (Lindeman 1942, a rule of thumb stated as such) and example daily intakes from textbook ecology",
+  "pitfall": "Arrows point from the food to the eater, the direction the energy goes, not from the eater to the eaten. And the one-tenth is a rule of thumb, not a law: the page says about.",
+  "why": "NGSS 5-LS2-1: develop a model to describe the movement of matter among plants, animals, decomposers and the environment; also England KS2 Year 4 food chains. https://keslerscience.com/ngss-5-ls2-1-cycling-of-matter",
+  "overlapWith": "ecosystems: that page runs predator and prey through time and removes species from a web; this one has no time at all, only arrows and counts, the door to that page.",
+  "leadsTo": [
+   "ecosystems",
+   "carbon-cycle"
+  ],
+  "origin": "living-things-and-body"
+ },
+ {
+  "slug": "fridge-and-spoilage",
+  "title": "How a fridge keeps food fresh",
+  "level": 0,
+  "kind": "simulate",
+  "category": "biology",
+  "everyday": true,
+  "interaction": "A plate of food with a count of germs on it, starting at a handful. One control: where the plate sits (a warm kitchen, a cool room, the fridge, the freezer), set by dragging the plate. Scrub the hours and days: on the counter the count doubles every half hour or so and passes the 'unsafe' line in hours; in the fridge each doubling takes many hours and the line is reached in days; in the freezer the count stands still. Move a plate from the freezer back to the counter and the doubling resumes from where it stopped.",
+  "takeaway": "Cold does not kill the germs on food; it slows how often they double, so the same food lasts hours on the counter, days in the fridge, and months in the freezer.",
+  "prerequisites": [],
+  "related": [
+   "mould-on-bread",
+   "bread-and-yeast",
+   "kitchen-thermometer",
+   "apple-browning",
+   "ripening-fruit"
+  ],
+  "needs": "Bacterial growth rate against temperature for a common spoilage bacterium (the Ratkowsky square-root model and its fitted constants; Ratkowsky et al., J. Bacteriol. 1982 and 1983, free to read on PMC), plus the USDA FSIS 'danger zone' limits (public domain).",
+  "needsSource": "Fitted constants from Ratkowsky et al. 1982/1983 (free on PMC; a few numbers, not a dataset) and USDA FSIS limits (public domain)",
+  "pitfall": "Freezing does not kill bacteria and the fridge does not 'clean' food: thawed food carries every germ it froze with, and cooking is what kills them.",
+  "why": "USDA FSIS 'Danger Zone' guidance (bacteria double in as little as 20 minutes between 40 and 140 °F): https://www.fsis.usda.gov/news-events/news-press-releases/usda-urges-consumers-keep-clear-danger-zone-summer",
+  "overlapWith": "epidemics: that page spreads infection between people at level 1; here germs multiply on one plate and the only control is its temperature, with nothing spreading between people.",
+  "leadsTo": [
+   "the-cell",
+   "epidemics"
+  ],
+  "origin": "chemistry-and-cooking"
+ },
+ {
+  "slug": "how-fish-breathe",
+  "title": "How fish breathe",
+  "level": 0,
+  "kind": "manipulate",
+  "category": "biology",
+  "everyday": false,
+  "interaction": "Push water over a gill with a slider while blood runs through it the other way, and count the oxygen dots that cross from water to blood; flip a switch to make the blood run the same way as the water and the dots that cross fall to about half. Lift the fish out of the water and the feathery gill folds collapse onto each other and dry, and the dots stop crossing.",
+  "takeaway": "A fish gets oxygen by running its blood against the water flow, so the blood always meets water fresher than itself.",
+  "prerequisites": [],
+  "related": [
+   "breathing-and-lungs",
+   "why-big-birds-flap-slowly",
+   "heart-circulation"
+  ],
+  "needs": "",
+  "needsSource": "none: a one-dimensional counter-current exchanger with diffusion between two flows; water holds about thirty times less oxygen per litre than air, from textbook physiology",
+  "pitfall": "Fish out of water are not short of oxygen (air has more): the gill folds stick together and dry out so nothing can cross. And gills are not lungs that happen to be outside: the water flows through, it is never held.",
+  "why": "NGSS 4-LS1-1: internal structures that support survival, with gills among the standard classroom examples. https://www2.cde.ca.gov/cacs/id/web/29023",
+  "overlapWith": "heart-circulation: that page has one loop for the lungs; this is the gill itself as an exchanger you can run backwards, with no heart.",
+  "leadsTo": [
+   "heart-circulation",
+   "states-of-matter"
+  ],
+  "origin": "living-things-and-body"
+ },
+ {
+  "slug": "how-plants-drink",
+  "title": "How plants drink",
+  "level": 0,
+  "kind": "simulate",
+  "category": "biology",
+  "everyday": true,
+  "interaction": "Stand a stick of celery or a white flower in coloured water and watch the dye climb; set the day to sunny, windy, humid or dark and the climb speeds up or stalls, because the pull comes from water leaving the leaves. Zoom to the leaf's pores opening and closing, then scale up to a tree on a hot day and count the buckets it lifts.",
+  "takeaway": "A plant has no pump: the leaves let water escape into the air, and that pulls a chain of water up from the roots.",
+  "prerequisites": [],
+  "related": [
+   "seeds-and-germination",
+   "why-leaves-change-colour",
+   "tree-rings"
+  ],
+  "needs": "",
+  "needsSource": "none: cohesion-tension with a simple evaporative-demand term (light, wind, humidity, pore opening) sets the flow, and the dye front follows it; a tree's daily water use quoted from textbook plant physiology",
+  "pitfall": "Roots do not push water up a tree (root pressure is tiny), and plants do not eat soil: the soil supplies water and a little mineral salt, and the plant's bulk comes from the air.",
+  "why": "NGSS 5-LS1-1: plants acquire their material for growth chiefly from air and water. https://www2.cde.ca.gov/cacs/id/web/29040",
+  "overlapWith": "photosynthesis: that page opens the stomata for carbon dioxide; this one follows the water those same pores let out, and nothing is made.",
+  "leadsTo": [
+   "photosynthesis",
+   "states-of-matter"
+  ],
+  "origin": "living-things-and-body"
+ },
+ {
+  "slug": "inside-an-egg",
+  "title": "Inside an egg",
+  "level": 0,
+  "kind": "explore",
+  "category": "biology",
+  "everyday": true,
+  "interaction": "Scrub the 21 days of a hen's egg in a warm incubator: candle it to watch the embryo grow, the yolk shrink and the air pocket at the blunt end widen as water seeps out through the shell's tiny holes. Turn the incubator's humidity up or down and the pocket grows too slowly or too fast; at day 21 the chick breaks into that pocket for its first breath and then through the shell.",
+  "takeaway": "An egg is a packed lunch with a breathing shell: the chick eats the yolk, breathes through thousands of tiny holes, and the air pocket it needs at the end is made by the water those holes let out.",
+  "prerequisites": [],
+  "related": [
+   "caterpillar-to-butterfly",
+   "why-big-birds-flap-slowly",
+   "growing-up"
+  ],
+  "needs": "A published day-by-day table of chick embryo mass (e.g. Romanoff 1960, The Avian Embryo) transcribed with citation, not yet confirmed open; the 12 percent water-loss target by day 18 comes from hatchery guides (Pas Reform, Cobb) that are published but not openly licensed; candling views drawn in-house.",
+  "needsSource": "weak until a source is confirmed: the daily embryo mass curve needs a citable table (Romanoff 1960 or a poultry-science paper); water-loss targets from hatchery guides, published but not openly licensed",
+  "pitfall": "A supermarket egg has no chick in it and never will: it is unfertilised. And the shell is not sealed: it breathes, which is why the air pocket grows and why a dirty or waxed egg can suffocate a chick.",
+  "why": "Classroom hatching programmes (4-H embryology) with candling lessons, taught in primary schools across the US; the Year 5 bird life cycle in England. https://afs.ca.uky.edu/sites/afs.ca.uky.edu/files/Embryology%20-%20Lesson%206%20-%20Candling.pdf",
+  "overlapWith": "the-cell: that page zooms into a finished cell; this one watches one cell's descendants become a chick, as masses and an air pocket, with no cell biology.",
+  "leadsTo": [
+   "the-cell",
+   "meiosis-inheritance"
+  ],
+  "origin": "living-things-and-body"
+ },
+ {
+  "slug": "jelly-and-pineapple",
+  "title": "Jelly and the pineapple problem",
+  "level": 0,
+  "kind": "simulate",
+  "category": "biology",
+  "everyday": true,
+  "interaction": "A bowl of hot jelly at particle scale: long strands drifting free. Scrub it cooling in the fridge and the strands tangle into a net that holds the water still, so the bowl stops sloshing. One control: what fruit goes in. Tinned pineapple, strawberries or oranges change nothing; fresh pineapple (or kiwi) brings an enzyme that snips strands wherever it meets them, and the net never joins up however long it cools. Heat the fresh pineapple first and the enzyme is wrecked and the jelly sets.",
+  "takeaway": "Jelly sets when long strands tangle into a net, and fresh pineapple carries an enzyme that cuts the strands faster than they can tangle, which cooking the pineapple stops.",
+  "prerequisites": [],
+  "related": [
+   "cooking-an-egg",
+   "onion-tears",
+   "milk-and-yogurt"
+  ],
+  "needs": "",
+  "needsSource": "none; a strand-network model (percolation) with a cutting enzyme that heat destroys",
+  "pitfall": "The pineapple does not 'melt' the jelly or add water; it cuts the strands. And tinned pineapple works because it was cooked, not because it was sweetened.",
+  "why": "A standard home experiment: 'Fruit enzymes gelatin experiment' (which fruits stop jelly setting, and why cooked pineapple does not): https://teachbesideme.com/fruit-enzymes-gelatin-experiment/; England KS3 biology (enzymes in digestion).",
+  "overlapWith": "protein-folding: that page folds a chain against an energy score at level 2; here strands only tangle or get cut, and the reader's control is the fruit.",
+  "leadsTo": [
+   "the-cell"
+  ],
+  "origin": "chemistry-and-cooking"
+ },
+ {
+  "slug": "milk-and-yogurt",
+  "title": "Milk, vinegar and yogurt",
+  "level": 0,
+  "kind": "simulate",
+  "category": "biology",
+  "everyday": true,
+  "interaction": "A glass of milk at particle scale: protein balls drifting apart because they all carry the same charge. One control at a time: a spoon of vinegar, and the acid takes the charge away so the balls clump into curds that sink under clear whey; a spoonful of live yogurt into warm milk, and bacteria eat the milk sugar and make the acid themselves, so the same clumping happens over hours into one smooth set. A thermometer shows the yogurt bacteria working only when warm, and heating the milk first gives a thicker set.",
+  "takeaway": "Milk is a cloud of tiny protein balls kept apart by their charge; acid, poured in or made by bacteria, lets them clump, which is curds in a minute or yogurt overnight.",
+  "prerequisites": [],
+  "related": [
+   "cooking-an-egg",
+   "bread-and-yeast",
+   "fridge-and-spoilage",
+   "jelly-and-pineapple",
+   "soap-and-grease"
+  ],
+  "needs": "",
+  "needsSource": "none; a charged-colloid clumping model with acid, plus a bacterial acid-production rate against temperature (a few published constants)",
+  "pitfall": "Milk curdling with vinegar is not milk 'going off', and the bacteria in yogurt are not the bacteria that spoil food: the same clumping is cheese, yogurt and sour milk.",
+  "why": "NGSS 5-PS1-4 names milk and vinegar as a mixing that makes a new substance: https://www.nextgenscience.org/dci-arrangement/5-ps1-matter-and-its-interactions; England KS2 Year 6 (micro-organisms, including useful ones).",
+  "overlapWith": "acids-bases: that page tracks pH on a logarithmic scale through a titration; here acid is only something that lets protein balls stick, and the reader never sees a pH number.",
+  "leadsTo": [
+   "the-cell",
+   "acids-bases"
+  ],
+  "origin": "chemistry-and-cooking"
+ },
+ {
+  "slug": "mould-on-bread",
+  "title": "Mould on bread",
+  "level": 0,
+  "kind": "explore",
+  "category": "biology",
+  "everyday": true,
+  "interaction": "A loaf in a bread bin. Scrub a week: a spore lands, and a network of threads spreads through the crumb, shown in an x-ray view the reader can toggle; the fuzzy spot on the surface appears days after the threads beneath it, and by the time it shows the threads reach well beyond it. Pan to a second loaf kept in the fridge (slower) and a third left to dry (barely any). One control: how moist the bread is. Cut off the fuzzy spot and the x-ray shows what was left behind.",
+  "takeaway": "The fuzzy spot is only the top of a mould whose threads have already spread far through the bread unseen, so cutting the spot off does not remove it; mould needs damp, and cold slows it.",
+  "prerequisites": [],
+  "related": [
+   "fridge-and-spoilage",
+   "ripening-fruit",
+   "bread-and-yeast"
+  ],
+  "needs": "",
+  "needsSource": "none; a thread-growth model on a grid with a moisture- and temperature-dependent extension rate, stated as a simplification",
+  "pitfall": "Mould is not dirt on the surface, and a spot cut off does not make the rest of a soft loaf clean; hard cheese is different because the threads cannot push through it.",
+  "why": "USDA FSIS 'Molds on Food: Are They Dangerous?' (why soft foods with a mould spot are discarded whole): https://www.fsis.usda.gov/food-safety/safe-food-handling-and-preparation/food-safety-basics/molds-food-are-they-dangerous (canonical page; not fetched this session, search budget exhausted); England KS2 Year 6 (micro-organisms).",
+  "overlapWith": "the-cell: that page shows animal, plant and bacterial cells; a mould's thread network is a different kind of body, and no existing page shows a fungus or anything growing through food.",
+  "leadsTo": [
+   "the-cell",
+   "ecosystems"
+  ],
+  "origin": "chemistry-and-cooking"
+ },
+ {
+  "slug": "onion-tears",
+  "title": "Why onions make you cry",
+  "level": 0,
+  "kind": "manipulate",
+  "category": "biology",
+  "everyday": true,
+  "interaction": "An onion slice under a magnifier, its cells drawn as little boxes, each holding two ingredients kept in separate compartments. Drag a knife across: every cell the blade opens spills its two ingredients together, they react, and a puff of tear gas rises and drifts toward an eye whose tear count climbs. One control at a time: a sharper knife (fewer crushed cells), a chilled onion (less of the gas rises off a cold cut), cutting under running water (the gas dissolves), or a fan. Garlic in the same rig stings the nose and not the eyes.",
+  "takeaway": "An onion makes its tear gas only when a cell is cut open and two ingredients kept apart inside it finally meet, so fewer crushed cells, cold, or water in the way mean fewer tears.",
+  "prerequisites": [],
+  "related": [
+   "apple-browning",
+   "jelly-and-pineapple"
+  ],
+  "needs": "",
+  "needsSource": "none; a cell-grid model with a temperature-dependent reaction and a drifting gas, the chemistry named only in the text",
+  "pitfall": "The gas is not stored in the onion waiting to escape; it is made at the moment of cutting. Chilling helps a little, and whether it slows the reaction itself is disputed, so the page must not claim it does.",
+  "why": "Demand: 'why do onions make you cry' (Discover): https://www.discovermagazine.com/health/why-do-onions-make-us-cry; England KS2 Year 6 / NGSS MS-LS1-2 (cells and their parts).",
+  "overlapWith": "the-cell: that page zooms through a cell's organelles; here cells are boxes that matter only because cutting them mixes what they keep apart.",
+  "leadsTo": [
+   "the-cell"
+  ],
+  "origin": "chemistry-and-cooking"
+ },
+ {
+  "slug": "ripening-fruit",
+  "title": "Ripening in a paper bag",
+  "level": 0,
+  "kind": "simulate",
+  "category": "biology",
+  "everyday": true,
+  "interaction": "A bowl of hard green bananas and avocados. One control at a time: put them in a paper bag, add a ripe apple, or put them in the fridge. Each fruit gives off a ripening gas drawn as particles, more as it ripens, so a closed bag fills with gas and every fruit inside ripens faster, a ripe apple adds a burst, and the open bowl lets the gas drift away; cold slows everything. Scrub the days and watch the colours turn and a firmness meter fall, then overshoot into brown if left too long.",
+  "takeaway": "Ripening fruit gives off a gas that tells fruit nearby to ripen too, so a bag traps it and speeds things up, an open bowl lets it escape, and cold slows it all down.",
+  "prerequisites": [],
+  "related": [
+   "apple-browning",
+   "fridge-and-spoilage",
+   "mould-on-bread",
+   "bean-in-a-jar"
+  ],
+  "needs": "",
+  "needsSource": "none; a self-reinforcing ethylene production rate against ripeness and temperature, with constants from postharvest references, stated as a simplification",
+  "pitfall": "The bag does not work by keeping light out or keeping the fruit warm; it keeps the fruit's own gas in. And a ripe fruit ripens its neighbours, which is why one bad apple spoils the barrel.",
+  "why": "Demand: 'how to ripen avocados faster' is a top kitchen search; classroom version at education.com: https://www.education.com/activity/article/ripening-avocados",
+  "overlapWith": "homeostasis: that page's feedback loop is a person's blood sugar at level 1; here a fruit's gas feeds back on its own ripening and its neighbours', and no existing page touches fruit or ethylene.",
+  "leadsTo": [
+   "the-cell",
+   "homeostasis"
+  ],
+  "origin": "chemistry-and-cooking"
+ }
+]

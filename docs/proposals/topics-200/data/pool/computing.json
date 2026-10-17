@@ -1,0 +1,405 @@
+[
+ {
+  "slug": "computer-coin-flip",
+  "title": "How a computer flips a coin",
+  "level": 0,
+  "kind": "simulate",
+  "category": "computing",
+  "interaction": "Pick a starting number and press next: a fixed rule (multiply, add, keep the last two digits) spins a wheel to the next number, and the numbers land on a board looking as scattered as coin flips. Keep pressing and the wheel comes back to where it started and the sequence repeats, sooner for a small wheel. Reset with the same start and the same 'random' flips come out again, which is how a game replays the same level; pick a bigger wheel and count how long it takes to repeat.",
+  "takeaway": "A computer makes its 'random' numbers by a fixed rule from a starting number, so the same start replays the same sequence, and every rule on a wheel eventually comes round to the beginning.",
+  "prerequisites": [
+   "coin-streaks"
+  ],
+  "related": [
+   "life-on-a-grid",
+   "secret-codes"
+  ],
+  "needs": "",
+  "pitfall": "'Eventually repeats' is true of any rule on a finite wheel, but real generators take longer than the age of the universe: show the small wheel repeating and say the real ones are bigger, not different in kind. And do not claim computers can never be random: dice-like hardware sources exist.",
+  "why": "Wikipedia, 'Pseudorandom number generator': the sequence is 'completely determined by an initial value' (the seed) and reproducible; the everyday question is 'how do computers generate random numbers'. https://en.wikipedia.org/wiki/Pseudorandom_number_generator",
+  "overlapWith": "cryptography (level 2) relies on randomness but never shows where its random numbers come from; coin-streaks (this batch) is about a real coin, while this page is about the rule a computer uses instead of one.",
+  "needsSource": "none",
+  "leadsTo": [
+   "epidemics"
+  ],
+  "everyday": false,
+  "origin": "numbers-shapes-computers"
+ },
+ {
+  "slug": "digital-clock-counting",
+  "title": "How a digital clock keeps time",
+  "level": 0,
+  "kind": "simulate",
+  "category": "computing",
+  "everyday": true,
+  "interaction": "Switch on a tiny quartz tuning fork, kept shaking by the battery and a small circuit, and it shakes 32,768 times a second, far too fast to see; the page slows it down and feeds its shakes into a chain of halvers, where each box passes on one tick for every two it gets, and after fifteen boxes one tick a second comes out and the seconds digit advances. Then run the clock for a month against a reference clock while warming or cooling the fork: a shake that is off by a hair becomes seconds of drift by the end of the month.",
+  "takeaway": "A digital clock is a very fast, very steady shake counted down by halving, and a shake that is off by a tiny fraction adds up to seconds a month.",
+  "prerequisites": [],
+  "related": [
+   "remote-control-blinks"
+  ],
+  "needs": "",
+  "needsSource": "none beyond published figures: 32,768-per-second tuning-fork crystals halved fifteen times, and a parabolic temperature drift of about -0.035 parts per million per degree squared away from the turnover point (manufacturers' datasheets, as quoted on Wikipedia's Quartz clock page).",
+  "pitfall": "The crystal does not 'know' time and does not shake once a second; the slow ticks come from counting. The clock on a mains-powered oven counts the grid's alternations instead, a different reference; say so rather than lumping the two together.",
+  "why": "'Quartz clock' averaged about 12,500 views a month on English Wikipedia in 2025 (https://wikimedia.org/api/rest_v1/metrics/pageviews/per-article/en.wikipedia/all-access/user/Quartz_clock/monthly/2025010100/2025123100).",
+  "overlapWith": "oscillations-resonance: that page shows why a resonator has a natural frequency; this one takes the steady shake as given and shows the counting chain and the drift, with no spring or pendulum model. The household lens's clock-escapement candidate is the mechanical clock.",
+  "leadsTo": [
+   "binary",
+   "oscillations-resonance"
+  ],
+  "origin": "everyday-technology"
+ },
+ {
+  "slug": "elevator-chooses-floors",
+  "title": "How an elevator chooses its next floor",
+  "level": 0,
+  "kind": "simulate",
+  "category": "computing",
+  "everyday": true,
+  "interaction": "Press call buttons on the floors of a ten-storey building and inside the car, in any order, and watch the car run: it keeps going the way it is going, stops at every call ahead of it, then turns round, while a stopwatch on each waiting person adds up. Flip the rule to 'answer calls in the order they were pressed' and replay the same calls: the car zigzags and the stopwatches run much longer. Add a second car and watch the two share the calls.",
+  "takeaway": "An elevator does not answer calls in the order they were pressed: it sweeps up, then down, serving everything on the way, and that simple rule makes everyone wait less.",
+  "prerequisites": [],
+  "related": [
+   "traffic-light-controller"
+  ],
+  "needs": "",
+  "needsSource": "none; a discrete-event simulation of the up-then-down rule (a car keeps answering calls in its direction until none remain, then reverses, as described on Wikipedia's Elevator page) against first-come-first-served.",
+  "pitfall": "Pressing the button again does not call the car faster: a call is registered once. Do not promise that the sweep is the best possible rule, only that it beats first-come-first-served; real buildings add further rules for parking and peak times.",
+  "why": "'Elevator' averaged about 14,700 views a month on English Wikipedia in 2025 (https://wikimedia.org/api/rest_v1/metrics/pageviews/per-article/en.wikipedia/all-access/user/Elevator/monthly/2025010100/2025123100).",
+  "overlapWith": "sorting: the nearest existing page on comparing rules by their cost; nothing existing has a scheduling rule. The household lens's elevator-counterweight candidate is the rope and the motor; this page is the decision rule, and the two can link.",
+  "leadsTo": [
+   "sorting",
+   "graph-search"
+  ],
+  "origin": "everyday-technology"
+ },
+ {
+  "slug": "emoji-and-text-as-numbers",
+  "title": "Emoji and text as numbers",
+  "level": 0,
+  "kind": "manipulate",
+  "category": "computing",
+  "everyday": true,
+  "interaction": "Type a message and watch it travel as a row of numbers, one per letter, space or emoji, taken from an agreed list that every phone owns a copy of. Switch the receiving phone to an older model that has no picture for one of the numbers: that emoji arrives as an empty box while the letters are fine. Then watch the message counter: 160 plain letters fit in one text, and adding a single emoji drops the room to 70, because every character now has to be sent as a bigger number.",
+  "takeaway": "Letters and emoji travel as numbers from a shared list, and the picture is drawn by the phone that receives them, so a number it does not know shows as a box.",
+  "prerequisites": [],
+  "related": [
+   "screens-and-pixels",
+   "keyboard-rows-and-columns",
+   "qr-codes"
+  ],
+  "needs": "The Unicode character and emoji lists (Unicode Character Database and emoji-test.txt) under the Unicode licence, which allows copying and redistribution with the notice; the text-message rules (GSM 7-bit alphabet, 160 characters; UCS-2, 70 characters) from the published GSM 03.38 specification.",
+  "needsSource": "Unicode data files (Unicode licence v3, permissive with notice); GSM 03.38 alphabet, a published standard.",
+  "pitfall": "An emoji is not a picture that is sent: the same number is drawn differently by each phone maker, and some emoji (skin tones, families, flags) are several numbers joined, which the page should show rather than hide. Characters are not all the same size on the wire, so 'one character is one byte' is wrong; show the byte count, not a formula.",
+  "why": "England KS3 computing: data of various types 'including text, sounds and pictures' represented in binary (https://www.gov.uk/government/publications/national-curriculum-in-england-computing-programmes-of-study/national-curriculum-in-england-computing-programmes-of-study); 'Emoji' averaged about 62,200 views a month on English Wikipedia in 2025.",
+  "overlapWith": "binary: that page reads one byte as a number, a character and a colour; this one works on whole messages at the everyday layer: the shared list of numbers, the drawing done by the receiver, and the text-message counter.",
+  "leadsTo": [
+   "binary"
+  ],
+  "origin": "everyday-technology"
+ },
+ {
+  "slug": "keyboard-rows-and-columns",
+  "title": "Inside a keyboard",
+  "level": 0,
+  "kind": "manipulate",
+  "category": "computing",
+  "everyday": true,
+  "interaction": "Press keys on a drawn keyboard with its lid off: under the keys there is no wire per key, only a few row wires crossing a few column wires, and a scanner that runs along the rows many times a second and lights the crossing where a pressed key connects. Hold three keys that make three corners of a rectangle and watch a fourth key light up that nobody pressed. Switch the layout from QWERTY to AZERTY and press the same key: the keyboard sends the same crossing, and the computer's table turns it into a different letter.",
+  "takeaway": "A keyboard does not send letters: it reports which row and column met, and the computer looks the letter up, which is why one keyboard can type any alphabet and some key combinations confuse it.",
+  "prerequisites": [],
+  "related": [
+   "emoji-and-text-as-numbers",
+   "touchscreens"
+  ],
+  "needs": "",
+  "needsSource": "none; a scanned row-and-column matrix with the ghost path traced through three closed switches.",
+  "pitfall": "Two different failures: ghosting is a phantom fourth key when three corners of a rectangle are held (cured by a diode at each key), and blocking is a cheap keyboard refusing a third key to avoid it. Do not present them as one thing, and do not say a key 'sends a letter'.",
+  "why": "'Computer keyboard' averaged about 24,800 views a month on English Wikipedia in 2025 (https://wikimedia.org/api/rest_v1/metrics/pageviews/per-article/en.wikipedia/all-access/user/Computer_keyboard/monthly/2025010100/2025123100).",
+  "overlapWith": "logic-gates: that page wires gates and reads a truth table; here the only logic is a scan of crossings, and the point is the lookup from a position to a character.",
+  "leadsTo": [
+   "binary",
+   "logic-gates",
+   "electric-circuits"
+  ],
+  "origin": "everyday-technology"
+ },
+ {
+  "slug": "life-on-a-grid",
+  "title": "Life on a grid",
+  "level": 0,
+  "kind": "simulate",
+  "category": "computing",
+  "interaction": "Paint a few squares on a grid and press step: every square counts its live neighbours at once, and the three rules (lonely dies, crowded dies, exactly three neighbours gives birth) show as the counts on each square. Press play and find the shapes that blink, the ones that sit still and the glider that walks across the board. Change one number in a rule and watch the same seed grow, freeze or die.",
+  "takeaway": "A rule about counting neighbours, applied to every square at once, makes things that blink, walk and grow that nobody drew.",
+  "prerequisites": [],
+  "related": [
+   "growing-patterns",
+   "computer-coin-flip",
+   "repeat-loops"
+  ],
+  "needs": "",
+  "pitfall": "All squares update together from the previous picture, not one after another; a page that updates in place gets wrong patterns. And do not call Life 'random': the same seed gives the same future every time.",
+  "why": "Numberphile, 'Inventing Game of Life (John Conway)' (title confirmed; YouTube does not render view counts in fetch); promotes the Reserve item 'Cellular automata' at level 0. https://www.youtube.com/watch?v=R9Plq-D1gEk",
+  "overlapWith": "chaos-fractals (level 2) shows simple rules making unpredictable paths; this page's rule is three neighbour counts on a grid the reader paints, and the reader can edit the rule.",
+  "needsSource": "none",
+  "leadsTo": [
+   "ecosystems"
+  ],
+  "everyday": false,
+  "origin": "numbers-shapes-computers"
+ },
+ {
+  "slug": "pixels-and-pictures",
+  "title": "A picture is a grid of numbers",
+  "level": 0,
+  "kind": "manipulate",
+  "category": "computing",
+  "interaction": "Pinch into a photograph until it breaks into squares, then into one square: a single colour, kept as three counts. Paint a tiny picture on a grid of lights that are only on or off and read the row of numbers that describes it; switch to four shades of grey, then to colour, and the row of numbers grows. Double the grid's size and watch the picture sharpen while the number count jumps fourfold.",
+  "takeaway": "A picture in a computer is a grid of squares each kept as a few numbers, so more squares mean a sharper picture and four times as many numbers for each doubling.",
+  "prerequisites": [],
+  "related": [
+   "zoom-by-tens",
+   "twenty-questions"
+  ],
+  "needs": "One small photograph, CC0 from Wikimedia Commons or taken in-house.",
+  "pitfall": "Zooming in does not add detail: a blurry photo enlarged stays blurry, which the page shows instead of the TV trope of 'enhance'. Keep to counts; no bits, bytes or hex.",
+  "why": "England KS3 computing: 'how data of various types (including text, sounds and pictures) can be represented and manipulated digitally'; CS Unplugged's Image Representation ('Colour by Numbers') activity. https://classic.csunplugged.org/activities/image-representation/",
+  "overlapWith": "binary (level 1) reads one byte as a colour among other conventions; this page never shows a bit, only the grid, the shade counts and the resolution.",
+  "needsSource": "A CC0 photograph from Wikimedia Commons, or an in-house photo; no model or dataset.",
+  "leadsTo": [
+   "binary",
+   "vision-color"
+  ],
+  "everyday": true,
+  "origin": "numbers-shapes-computers"
+ },
+ {
+  "slug": "repeat-loops",
+  "title": "Repeat: loops",
+  "level": 0,
+  "kind": "build",
+  "category": "computing",
+  "interaction": "Draw a square by giving a pen-robot eight cards, then wrap 'forward, turn' in a repeat card set to 4 and get the same square from two cards; the page counts cards written against steps taken. Change the repeat count and the turn and the square becomes a triangle, a hexagon, a star. Put a repeat inside a repeat and a few cards draw a flower of forty squares.",
+  "takeaway": "A loop does the same few steps many times, so a handful of cards can draw a picture of thousands of steps, and changing one number changes the whole picture.",
+  "prerequisites": [
+   "robot-instructions",
+   "angles-as-turns"
+  ],
+  "related": [
+   "sunflower-spirals",
+   "life-on-a-grid"
+  ],
+  "needs": "",
+  "pitfall": "The turn for a star is the robot's own turn, not the star's inside angle; let the reader see a wrong count fail to close the shape rather than correcting it.",
+  "why": "England KS2 computing: 'use sequence, selection, and repetition in programs; work with variables and various forms of input and output'. https://www.gov.uk/government/publications/national-curriculum-in-england-computing-programmes-of-study/national-curriculum-in-england-computing-programmes-of-study",
+  "overlapWith": "cpu (level 2) runs a loop as a conditional jump over machine instructions; here the loop is a card that wraps other cards, with no counters or jumps shown.",
+  "needsSource": "none",
+  "leadsTo": [
+   "sorting"
+  ],
+  "everyday": false,
+  "origin": "numbers-shapes-computers"
+ },
+ {
+  "slug": "robot-instructions",
+  "title": "A robot follows instructions",
+  "level": 0,
+  "kind": "build",
+  "category": "computing",
+  "interaction": "Drag instruction cards (forward, turn left, turn right, pick up) into a list and press run: a robot on a floor grid does exactly what the cards say, in order, and walks into the wall if that is what they say. Fix the list until it reaches the flag, then try the 'make a sandwich' list with a step missing and watch the robot butter the air. Hand the same list to a second robot standing somewhere else and see where it ends up.",
+  "takeaway": "A robot does exactly what its list says, in order, nothing more and nothing less, so a missing or swapped card changes the whole result.",
+  "prerequisites": [],
+  "related": [
+   "solving-a-maze",
+   "sorting-network"
+  ],
+  "needs": "",
+  "pitfall": "The computer does not 'understand' the goal: a list that nearly works gets no credit, and the page must never auto-correct the reader's list. Also, left and right are the robot's, not the viewer's.",
+  "why": "England KS1 computing: 'programs execute by following precise and unambiguous instructions'; CS Unplugged Kidbots (ages 5 to 10). https://www.csunplugged.org/en/topics/kidbots/",
+  "overlapWith": "cpu (level 2) steps a real processor through fetch, decode and execute with registers and memory; this page has a robot and cards, no memory or arithmetic, and is the first idea of a program.",
+  "needsSource": "none",
+  "leadsTo": [
+   "sorting",
+   "graph-search"
+  ],
+  "everyday": true,
+  "origin": "numbers-shapes-computers"
+ },
+ {
+  "slug": "screens-and-pixels",
+  "title": "Screens and pixels",
+  "level": 0,
+  "kind": "explore",
+  "category": "computing",
+  "everyday": true,
+  "interaction": "Pinch into a photo until the picture falls apart into a grid of squares, then further, until each square turns out to be three tiny lights, red, green and blue, side by side. Pick one square and slide its three lights up and down: from a distance the square turns yellow, pink, white or black, with no yellow or white light anywhere in it. Then take pixels away from the whole picture, by halves, and watch a face become blocks.",
+  "takeaway": "A screen picture is a grid of tiny red, green and blue lights, and every colour you see on it is those three lights at different brightnesses, blurred together by your eye.",
+  "prerequisites": [],
+  "related": [
+   "digital-camera-sensor",
+   "e-reader-ink",
+   "emoji-and-text-as-numbers"
+  ],
+  "needs": "One photograph under CC0 (Wikimedia Commons), shown at its real pixel grid.",
+  "needsSource": "none beyond a CC0 photograph; the subpixel drawing and the mixing are computed from the pixel values.",
+  "pitfall": "There is no yellow or white light on the screen: white is all three lights on. A black pixel is lights off, or on an LCD a backlight blocked by a shutter; say which kind of screen is drawn rather than presenting one as how all screens work.",
+  "why": "England KS3 computing: 'understand how data of various types (including text, sounds and pictures) can be represented and manipulated digitally, in the form of binary digits' (https://www.gov.uk/government/publications/national-curriculum-in-england-computing-programmes-of-study/national-curriculum-in-england-computing-programmes-of-study).",
+  "overlapWith": "vision-color: that page mixes red, green and blue light to match a colour and shows the cone responses; this one starts from the object, the screen, and shows that the mixing is done by three tiny lights per pixel and the grid they make, with no eye model.",
+  "leadsTo": [
+   "binary",
+   "vision-color"
+  ],
+  "origin": "everyday-technology"
+ },
+ {
+  "slug": "secret-codes",
+  "title": "Secret codes & code-breaking",
+  "level": 0,
+  "kind": "step",
+  "category": "computing",
+  "interaction": "Turn the inner ring of a code wheel and type a message: each letter steps along the alphabet by the same amount, and your friend turns the ring back to read it. A spy who does not know the turn tries all 25 turns at once and the one that reads as words jumps out. Scramble the alphabet instead of turning it; now the spy counts the letters in the secret message, lines its tallest bar up with the tallest bar of ordinary English, and the message comes out letter by letter.",
+  "takeaway": "A code that shifts every letter the same way falls to trying all 25 shifts, and a code that scrambles the alphabet falls to counting letters, because E stays the most common letter however it is disguised.",
+  "prerequisites": [],
+  "related": [
+   "twenty-questions",
+   "computer-coin-flip"
+  ],
+  "needs": "English letter frequencies counted at build time by a script from a public-domain text, e.g. Project Gutenberg's Alice's Adventures in Wonderland (public domain), not typed in from memory.",
+  "pitfall": "A short message has too few letters for counting to work: show the counting fail on a one-line note and succeed on a paragraph, rather than pretending frequency analysis always works.",
+  "why": "The National Cipher Challenge, the University of Southampton's codebreaking competition for school teams, starts every year with ciphers of this kind. https://www.cipherchallenge.org/",
+  "overlapWith": "cryptography (level 2) covers key exchange, hashing and signatures with modular arithmetic; this page is pen-and-paper ciphers and the two ways they break, with no keys shared over a channel.",
+  "needsSource": "A Project Gutenberg public-domain English text for the letter counts.",
+  "leadsTo": [
+   "primes-modular-arithmetic"
+  ],
+  "everyday": false,
+  "origin": "numbers-shapes-computers"
+ },
+ {
+  "slug": "solving-a-maze",
+  "title": "Solving a maze",
+  "level": 0,
+  "kind": "simulate",
+  "category": "computing",
+  "interaction": "Press 'new maze' and the page draws one; put your explorer's hand on the right-hand wall and press walk: it traces every dead end and comes out at the exit. Switch to a maze with an island in it and watch the same explorer circle the island forever. Give it chalk to mark every passage it enters and it finds the way out of any maze; then compare its chalk marks with the shortest route.",
+  "takeaway": "Keeping one hand on the wall gets you out of a maze without loops but circles forever when there is an island, while an explorer that marks where it has been always gets out.",
+  "prerequisites": [],
+  "related": [
+   "robot-instructions",
+   "treasure-map-coordinates"
+  ],
+  "needs": "",
+  "pitfall": "The wall-follower fails on mazes that are not simply connected (loops, islands) and when started from inside; the marking explorer finds an exit but not necessarily the shortest route: show both limits.",
+  "why": "Wikipedia, 'Maze-solving algorithm' (wall follower; Trémaux's algorithm, which 'is not guaranteed to find the shortest route'). https://en.wikipedia.org/wiki/Maze-solving_algorithm",
+  "overlapWith": "graph-search (level 1) expands breadth-first and A* frontiers on a grid with costs; this page sends one explorer with one rule and never shows a frontier or a cost.",
+  "needsSource": "none",
+  "leadsTo": [
+   "graph-search"
+  ],
+  "everyday": true,
+  "origin": "numbers-shapes-computers"
+ },
+ {
+  "slug": "sorting-network",
+  "title": "A sorting machine",
+  "level": 0,
+  "kind": "build",
+  "category": "computing",
+  "interaction": "Six numbered balls roll down a board of tracks; where two tracks meet, the smaller ball goes left and the larger right, and the balls arrive at the bottom in order. Rebuild the board yourself by placing meeting points, drop a shuffled set of balls and see whether they come out sorted; press 'try every order' and the page drops all 720 shuffles and reports any that fail. Then count how many meeting points fire at the same moment: the board sorts in rounds, not one swap at a time.",
+  "takeaway": "A fixed board of pairwise swaps sorts any shuffle of the balls, and several swaps happen at once, so the board finishes in fewer rounds than it has swaps.",
+  "prerequisites": [],
+  "related": [
+   "twenty-questions",
+   "robot-instructions"
+  ],
+  "needs": "",
+  "pitfall": "A board that sorts the examples you tried may still fail on another order; the page must test all orders, not a few. And this is not how most software sorts: say it is how hardware and parallel sorters do it.",
+  "why": "CS Unplugged Sorting Networks, with lessons for ages 5 to 7, 8 to 10 and 11 to 14 (site content CC BY-SA 4.0; reuse the idea, not the worksheets). https://www.csunplugged.org/en/topics/sorting-networks/",
+  "overlapWith": "sorting (level 1) steps bubble, insertion, merge and quick sort one comparison at a time and plots Big-O; this page is a fixed, parallel board of swaps the reader builds and verifies, with no growth curves.",
+  "needsSource": "none",
+  "leadsTo": [
+   "sorting",
+   "logic-gates"
+  ],
+  "everyday": false,
+  "origin": "numbers-shapes-computers"
+ },
+ {
+  "slug": "sound-as-numbers",
+  "title": "Sound as a list of numbers",
+  "level": 0,
+  "kind": "manipulate",
+  "category": "computing",
+  "everyday": true,
+  "interaction": "Record a clap or a word (or pick a shipped clip) and see it as a wiggly line; a slider sets how many times a second the computer measures the line, from tens of thousands down to a few hundred, and the measurements appear as dots that join into a new line. Play the dots back: the sound stays itself until the dots get too sparse, then the high parts go first and voices turn muffled and wrong. A second slider sets how many different heights a measurement may take, from thousands down to four, and the sound turns grainy.",
+  "takeaway": "A recording is a long list of measurements of the air's push taken thousands of times a second, and the sound survives as long as the measurements are frequent and fine enough.",
+  "prerequisites": [],
+  "related": [
+   "speakers-and-microphones",
+   "voice-assistant-wake-word",
+   "screens-and-pixels"
+  ],
+  "needs": "A short sound clip under CC0 (Freesound) for readers who decline the microphone; the microphone path uses the browser's own audio input.",
+  "needsSource": "none beyond a CC0 clip; sampling and requantising are computed on the page.",
+  "pitfall": "More measurements per second do not make a sound louder or longer, only truer; the wiggly line is a graph of pressure against time, not a picture of air moving sideways. Do not invoke the sampling theorem by name; show the point where the dots fail.",
+  "why": "England KS3 computing: data of various types 'including text, sounds and pictures' represented in binary (https://www.gov.uk/government/publications/national-curriculum-in-england-computing-programmes-of-study/national-curriculum-in-england-computing-programmes-of-study); NGSS MS-PS4-3 on digitized signals (https://www.nextgenscience.org/pe/ms-ps4-3-waves-and-their-applications-technologies-information-transfer).",
+  "overlapWith": "compression (level 2) uses frequency content to drop detail and fourier-transform decomposes signals; this page stops at measurements, how often and how finely, listened to.",
+  "leadsTo": [
+   "binary",
+   "waves-interference"
+  ],
+  "origin": "everyday-technology"
+ },
+ {
+  "slug": "traffic-light-controller",
+  "title": "Traffic lights that know you are there",
+  "level": 0,
+  "kind": "build",
+  "category": "computing",
+  "everyday": true,
+  "interaction": "Cars arrive at a crossroads from four directions while a timer runs the lights through a fixed cycle; queues grow on the busy road while the empty road gets its green anyway. Bury a sensor loop in each lane and switch the controller to 'skip a green nobody is waiting for': the queues shrink. Then set the busy road's green longer and shorter and find which choice keeps the total queue smallest.",
+  "takeaway": "A traffic light is a small counting program, and giving it a sensor so that it can skip empty roads makes the whole crossroads wait less.",
+  "prerequisites": [],
+  "related": [
+   "elevator-chooses-floors",
+   "metal-detector"
+  ],
+  "needs": "",
+  "needsSource": "none; cars arrive at random at set rates and queue, and the loop detector follows the published inductive-loop principle (a metal mass above the loop lowers its inductance and trips the controller).",
+  "pitfall": "The loop in the road is not a pressure plate: it senses metal, which is why a bicycle may fail to trigger it. Pressing a pedestrian button again does not shorten the wait; the request is registered once.",
+  "why": "England KS2 computing: 'design, write and debug programs that accomplish specific goals, including controlling or simulating physical systems' (https://www.gov.uk/government/publications/national-curriculum-in-england-computing-programmes-of-study/national-curriculum-in-england-computing-programmes-of-study); traffic lights are the standard project of the Teach Computing Year 5 physical-computing unit (https://teachcomputing.org/curriculum/key-stage-2/programming-a-selection-in-physical-computing/connecting-crumbles).",
+  "overlapWith": "feedback-control (level 2) tunes a continuous controller; this one is a rule with a sensor and a timer, with a queue of cars as the cost. graph-search routes one car across a map; this page runs one crossing.",
+  "leadsTo": [
+   "logic-gates",
+   "graph-search"
+  ],
+  "origin": "everyday-technology"
+ },
+ {
+  "slug": "twenty-questions",
+  "title": "Twenty questions: halving the haystack",
+  "level": 0,
+  "kind": "step",
+  "category": "computing",
+  "interaction": "Think of a number from 1 to 100 and answer the page's 'higher or lower' questions: a bar of candidates shrinks by half each answer and the counter stops at seven. Now find a word in a thousand-page dictionary by opening it in the middle, then in the middle of the right half, counting the opens, against a search that flips through every page. Then play animal twenty questions: each yes/no question hides half of the hundred animals on the board until one is left.",
+  "takeaway": "A question that splits what is left in half finds the answer in a handful of steps, where checking one at a time takes hundreds.",
+  "prerequisites": [],
+  "related": [
+   "secret-codes",
+   "pixels-and-pictures",
+   "sorting-network"
+  ],
+  "needs": "The animal board: the UCI Zoo dataset (101 animals, 16 yes/no and count features), CC BY 4.0.",
+  "pitfall": "Halving only works on a sorted list or on questions that really split the pile: show 'is it a penguin?' barely shrinking the board, and the dictionary trick failing on an unsorted pile of pages.",
+  "why": "England KS3 computing: 'several key algorithms that reflect computational thinking [for example, ones for sorting and searching]'; CS Unplugged Searching Algorithms ('How many guesses?', 'Divide and conquer', ages 5 to 10). https://www.csunplugged.org/en/topics/searching-algorithms/",
+  "overlapWith": "sorting (level 1) shows how the cost of sorting grows with input size; nothing in the catalogue shows searching. This page shows halving against one-by-one on counts alone, without growth curves.",
+  "needsSource": "UCI Machine Learning Repository, Zoo dataset, CC BY 4.0.",
+  "leadsTo": [
+   "sorting",
+   "learning-from-data"
+  ],
+  "everyday": true,
+  "origin": "numbers-shapes-computers"
+ }
+]
