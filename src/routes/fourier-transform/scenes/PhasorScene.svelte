@@ -14,7 +14,7 @@
 	 * computed once per change of the controls and looked up per frame.
 	 */
 	import { cycle } from '#lib/draw/index.ts';
-	import type { StageProps } from '#lib/explainer/index.ts';
+	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { num, partialSamples, waveSpectrum } from '../fourier';
 	import { N_WAVE, theWave, waveSource } from '../signals';
 
@@ -112,25 +112,40 @@
 
 <g>
 	{#if !spectrum}
-		{@render txt(480, 280, 'Nothing drawn yet', 22, { anchor: 'middle', weight: 600 })}
-		{@render txt(
-			480,
-			312,
-			'Draw a waveform on the top graph of “The spectrum” or “Draw any waveform”,',
-			14,
-			{ anchor: 'middle', muted: true }
-		)}
-		{@render txt(480, 334, 'or pick one of the other waveforms.', 14, {
-			anchor: 'middle',
-			muted: true
-		})}
+		<!-- <Readout>: on narrow screens these are listed as HTML under the stage -->
+		<Readout
+			id="empty"
+			order={1}
+			label="Nothing drawn yet"
+			value="draw a waveform on the top graph of “The spectrum” or “Draw any waveform”"
+			note="or pick one of the other waveforms"
+		>
+			{@render txt(480, 280, 'Nothing drawn yet', 22, { anchor: 'middle', weight: 600 })}
+			{@render txt(
+				480,
+				312,
+				'Draw a waveform on the top graph of “The spectrum” or “Draw any waveform”,',
+				14,
+				{ anchor: 'middle', muted: true }
+			)}
+			{@render txt(480, 334, 'or pick one of the other waveforms.', 14, {
+				anchor: 'middle',
+				muted: true
+			})}
+		</Readout>
 	{:else}
 		<!-- axes of the circles and of the trace -->
 		<line x1={CX} x2={CX} y1={CY - 175} y2={CY + 175} stroke="var(--stage-grid)" />
 		<line x1="30" x2={TX1} y1={CY} y2={CY} stroke="var(--stage-line)" />
 		<line x1={TX0} x2={TX0} y1={CY - 160} y2={CY + 160} stroke="var(--stage-line)" />
-		{@render txt(TX0, CY + 186, 'now', 12, { anchor: 'middle', muted: true })}
-		{@render txt(TX1, CY + 186, '1 second earlier', 12, { anchor: 'end', muted: true })}
+		<Readout
+			id="trace-key"
+			order={11}
+			label="trace: now at the left, 1 second earlier at the right"
+		>
+			{@render txt(TX0, CY + 186, 'now', 12, { anchor: 'middle', muted: true })}
+			{@render txt(TX1, CY + 186, '1 second earlier', 12, { anchor: 'end', muted: true })}
+		</Readout>
 
 		<!-- the circles, biggest first -->
 		{#each chain.slice(0, Math.min(chain.length - 1, MAX_CIRCLES)) as p, i (i)}
@@ -157,11 +172,13 @@
 				stroke-width="3"
 				stroke-linecap="round"
 			/>
-			{@render txt(CX - 10, CY - (U * avg) / 2 + 4, `0 Hz: average ${num(avg)}`, 12, {
-				anchor: 'end',
-				weight: 600,
-				color: 'var(--ft-bar)'
-			})}
+			<Readout id="avg" order={2} label="0 Hz" value="average {num(avg)}" color="var(--ft-bar)">
+				{@render txt(CX - 10, CY - (U * avg) / 2 + 4, `0 Hz: average ${num(avg)}`, 12, {
+					anchor: 'end',
+					weight: 600,
+					color: 'var(--ft-bar)'
+				})}
+			</Readout>
 		{/if}
 		<path
 			d={arms}
@@ -210,33 +227,56 @@
 		/>
 
 		<!-- readouts -->
-		{@render txt(32, 44, `${circleCount} turning circle${circleCount === 1 ? '' : 's'}`, 20, {
-			weight: 600,
-			color: 'var(--ft-sum)'
-		})}
-		{@render txt(
-			32,
-			68,
-			`rebuilding ${theWave(shape)} from 1 Hz to ${termsN} Hz (frequencies with no amount are left out)`,
-			13,
-			{ muted: true }
-		)}
-		{#if first}
+		<Readout
+			id="circles"
+			order={1}
+			label="Turning circles"
+			value={String(circleCount)}
+			note="rebuilding {theWave(
+				shape
+			)} from 1 Hz to {termsN} Hz (frequencies with no amount are left out)"
+			color="var(--ft-sum)"
+		>
+			{@render txt(32, 44, `${circleCount} turning circle${circleCount === 1 ? '' : 's'}`, 20, {
+				weight: 600,
+				color: 'var(--ft-sum)'
+			})}
 			{@render txt(
 				32,
-				560,
-				`The 1 Hz circle: radius ${num(first.amp)}, one turn per second of signal; the n Hz circle turns n times`,
+				68,
+				`rebuilding ${theWave(shape)} from 1 Hz to ${termsN} Hz (frequencies with no amount are left out)`,
 				13,
-				{ weight: 600 }
+				{ muted: true }
 			)}
+		</Readout>
+		{#if first}
+			<Readout
+				id="first"
+				order={3}
+				label="The 1 Hz circle"
+				value="radius {num(first.amp)}, one turn per second of signal"
+				note="the n Hz circle turns n times; slowed down: one second of signal takes {PERIOD} s here"
+			>
+				{@render txt(
+					32,
+					560,
+					`The 1 Hz circle: radius ${num(first.amp)}, one turn per second of signal; the n Hz circle turns n times`,
+					13,
+					{ weight: 600 }
+				)}
+			</Readout>
 		{/if}
-		{@render txt(32, 582, `Slowed down: one second of signal takes ${PERIOD} s here.`, 12, {
-			muted: true
-		})}
-		{@render txt(TX1, 44, 'dashed: the original', 13, {
-			anchor: 'end',
-			weight: 600,
-			color: 'var(--ft-target)'
-		})}
+		<Readout id="slowed">
+			{@render txt(32, 582, `Slowed down: one second of signal takes ${PERIOD} s here.`, 12, {
+				muted: true
+			})}
+		</Readout>
+		<Readout id="original-key" order={10} label="dashed: the original" color="var(--ft-target)">
+			{@render txt(TX1, 44, 'dashed: the original', 13, {
+				anchor: 'end',
+				weight: 600,
+				color: 'var(--ft-target)'
+			})}
+		</Readout>
 	{/if}
 </g>

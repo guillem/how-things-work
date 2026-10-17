@@ -28,7 +28,7 @@
 	import { cubicInOut } from 'svelte/easing';
 	import { cycle, Handle, smoothstep, startDrag, type Point } from '#lib/draw/index.ts';
 	import DrawButton from '../DrawButton.svelte';
-	import type { StageProps } from '#lib/explainer/index.ts';
+	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { num, pack, partialSamples, unpack, waveFromStroke, waveSpectrum } from '../fourier';
 	import { BARS, N_WAVE, WAVE_NAMES, editedSpectrum, samplesPath, waveSource } from '../signals';
 
@@ -240,6 +240,17 @@
 				? `${theName} rebuilt from ${termsN === 1 ? '1 Hz only' : `1 to ${termsN} Hz`}`
 				: `The signal: ${name}`
 	);
+
+	// Phone readouts: the spectrum's notes in one line.
+	const spectrumNote = $derived(
+		[
+			samples && !editing ? summary : '',
+			'0 Hz: the average, which can be negative',
+			drawPhase && termsN > BARS ? `+ ${termsN - BARS} more (17–${termsN} Hz) not shown` : ''
+		]
+			.filter(Boolean)
+			.join(' · ')
+	);
 </script>
 
 {#snippet txt(
@@ -270,25 +281,38 @@
 	</defs>
 
 	<!-- ================= the signal ================= -->
-	{@render txt(X0, 34, cap(title), 17, {
-		weight: 600,
-		color: rebuilt ? 'var(--ft-sum)' : 'var(--stage-ink)'
-	})}
-	<g class="fine-only">
-		{@render txt(
-			X1,
-			34,
-			ghostPath
-				? 'dashed: the original · drag across to draw your own'
-				: 'drag across this graph to draw your own',
-			12,
-			{ anchor: 'end', muted: true }
-		)}
-	</g>
-	{#if ghostPath}
-		<g class="coarse-only">
-			{@render txt(X1 - 124, 34, 'dashed: the original', 12, { anchor: 'end', muted: true })}
+	<!-- <Readout>: on narrow screens these are listed as HTML under the stage -->
+	<Readout
+		id="signal"
+		order={1}
+		label="Top graph"
+		value={cap(title)}
+		color={rebuilt ? 'var(--ft-sum)' : undefined}
+	>
+		{@render txt(X0, 34, cap(title), 17, {
+			weight: 600,
+			color: rebuilt ? 'var(--ft-sum)' : 'var(--stage-ink)'
+		})}
+	</Readout>
+	<Readout id="draw-hint">
+		<g class="fine-only">
+			{@render txt(
+				X1,
+				34,
+				ghostPath
+					? 'dashed: the original · drag across to draw your own'
+					: 'drag across this graph to draw your own',
+				12,
+				{ anchor: 'end', muted: true }
+			)}
 		</g>
+	</Readout>
+	{#if ghostPath}
+		<Readout id="original-key" order={10} label="dashed: the original" color="var(--ft-target)">
+			<g class="coarse-only">
+				{@render txt(X1 - 124, 34, 'dashed: the original', 12, { anchor: 'end', muted: true })}
+			</g>
+		</Readout>
 	{/if}
 	{#each [-1, 1] as v (v)}
 		<line x1={X0} x2={X1} y1={CY - US * v} y2={CY - US * v} stroke="var(--stage-grid)" />
@@ -354,9 +378,16 @@
 	{#if sweepV !== null}
 		<!-- in the title row, between the title and the drawing hint (or the Draw
 		     button); anchored at its start so it doesn't shift as the value changes -->
-		{@render txt(X0 + 290, 34, `at ${num(sweep, 2)} s the signal is at ${num(sweepV)}`, 13, {
-			weight: 600
-		})}
+		<Readout
+			id="sweep"
+			order={2}
+			label="At the line"
+			value="at {num(sweep, 2)} s the signal is at {num(sweepV)}"
+		>
+			{@render txt(X0 + 290, 34, `at ${num(sweep, 2)} s the signal is at ${num(sweepV)}`, 13, {
+				weight: 600
+			})}
+		</Readout>
 	{/if}
 	{#if !samples && !stroke.length}
 		<rect
@@ -370,27 +401,36 @@
 			stroke-dasharray="6 6"
 			opacity="0.7"
 		/>
-		{@render txt((X0 + X1) / 2, CY - 6, 'Drag across this graph to draw a waveform', 18, {
-			anchor: 'middle',
-			weight: 600,
-			color: 'var(--ft-bar)'
-		})}
-		{@render txt(
-			(X0 + X1) / 2,
-			CY + 20,
-			'from left to right: one second of a repeating signal',
-			13,
-			{
+		<Readout
+			id="empty"
+			order={3}
+			label="Drag across the top graph to draw a waveform"
+			value="from left to right: one second of a repeating signal"
+			note="with a finger: tap Draw first"
+			color="var(--ft-bar)"
+		>
+			{@render txt((X0 + X1) / 2, CY - 6, 'Drag across this graph to draw a waveform', 18, {
 				anchor: 'middle',
-				muted: true
-			}
-		)}
-		<g class="coarse-only">
-			{@render txt((X0 + X1) / 2, CY + 42, 'with a finger: tap Draw first', 13, {
-				anchor: 'middle',
-				muted: true
+				weight: 600,
+				color: 'var(--ft-bar)'
 			})}
-		</g>
+			{@render txt(
+				(X0 + X1) / 2,
+				CY + 20,
+				'from left to right: one second of a repeating signal',
+				13,
+				{
+					anchor: 'middle',
+					muted: true
+				}
+			)}
+			<g class="coarse-only">
+				{@render txt((X0 + X1) / 2, CY + 42, 'with a finger: tap Draw first', 13, {
+					anchor: 'middle',
+					muted: true
+				})}
+			</g>
+		</Readout>
 	{/if}
 
 	{#if armed}
@@ -422,16 +462,25 @@
 	<DrawButton x={X1} y={12} {armed} ontoggle={() => (armed = !armed)} />
 
 	<!-- ================= the spectrum ================= -->
-	{@render txt(
-		X0,
-		338,
-		editing ? 'The spectrum: drag the bars' : 'The spectrum: amplitude of each frequency',
-		17,
-		{ weight: 600, color: 'var(--ft-bar)' }
-	)}
-	{#if samples && !editing}
-		{@render txt(X1, 338, summary, 13, { anchor: 'end', weight: 600 })}
-	{/if}
+	<Readout
+		id="spectrum"
+		order={4}
+		label="The spectrum"
+		value={editing ? 'drag the bars' : 'amplitude of each frequency'}
+		note={spectrumNote}
+		color="var(--ft-bar)"
+	>
+		{@render txt(
+			X0,
+			338,
+			editing ? 'The spectrum: drag the bars' : 'The spectrum: amplitude of each frequency',
+			17,
+			{ weight: 600, color: 'var(--ft-bar)' }
+		)}
+		{#if samples && !editing}
+			{@render txt(X1, 338, summary, 13, { anchor: 'end', weight: 600 })}
+		{/if}
+	</Readout>
 	{#each [0.5, 1, 1.5] as v (v)}
 		<line x1={X0} x2={X1} y1={BY - unit * v} y2={BY - unit * v} stroke="var(--stage-grid)" />
 		{@render txt(X0 - 10, BY - unit * v + 4, num(v, 1), 12, { anchor: 'end', muted: true })}
@@ -456,17 +505,19 @@
 		{#if Math.abs(v) > 0.005 && !editing}
 			<!-- a negative bar's value goes under it, or beside it when the bar is too deep -->
 			{@const beside = v < 0 && h > unit / 2}
-			{@render txt(
-				beside ? x + BW / 2 + 4 : x,
-				v >= 0 ? top - 6 : beside ? BY + h / 2 + 4 : BY + h + 14,
-				num(v),
-				11,
-				{
-					anchor: beside ? 'start' : 'middle',
-					muted: !used,
-					opacity: grow(n)
-				}
-			)}
+			<Readout id="bar-{n}">
+				{@render txt(
+					beside ? x + BW / 2 + 4 : x,
+					v >= 0 ? top - 6 : beside ? BY + h / 2 + 4 : BY + h + 14,
+					num(v),
+					11,
+					{
+						anchor: beside ? 'start' : 'middle',
+						muted: !used,
+						opacity: grow(n)
+					}
+				)}
+			</Readout>
 		{/if}
 		{@render txt(x, v < -0.005 ? BY - 8 : BY + 18, `${n}`, 12, {
 			anchor: 'middle',
@@ -476,22 +527,24 @@
 	{/each}
 	<line x1={X0} x2={X1} y1={BY} y2={BY} stroke="var(--stage-line)" stroke-width="1.5" />
 	{@render txt(X1, BY + 38, 'frequency (Hz) →', 12, { anchor: 'end', muted: true })}
-	{@render txt(X1, BY + 55, '0 Hz: the average, which can be negative', 12, {
-		anchor: 'end',
-		muted: true
-	})}
-	{#if drawPhase && termsN > BARS}
-		{@render txt(
-			X1,
-			BY + 72,
-			`+ ${termsN - BARS} more frequencies (17–${termsN} Hz) not shown`,
-			12,
-			{
-				anchor: 'end',
-				muted: true
-			}
-		)}
-	{/if}
+	<Readout id="spectrum-notes">
+		{@render txt(X1, BY + 55, '0 Hz: the average, which can be negative', 12, {
+			anchor: 'end',
+			muted: true
+		})}
+		{#if drawPhase && termsN > BARS}
+			{@render txt(
+				X1,
+				BY + 72,
+				`+ ${termsN - BARS} more frequencies (17–${termsN} Hz) not shown`,
+				12,
+				{
+					anchor: 'end',
+					muted: true
+				}
+			)}
+		{/if}
+	</Readout>
 
 	{#if editing && samples}
 		{#each bars as v, n (n)}

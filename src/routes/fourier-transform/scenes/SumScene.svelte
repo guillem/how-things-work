@@ -21,7 +21,7 @@
 	import { Tween } from 'svelte/motion';
 	import { cubicInOut } from 'svelte/easing';
 	import { cycle } from '#lib/draw/index.ts';
-	import type { StageProps } from '#lib/explainer/index.ts';
+	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { num, partialSamples, rmsError, shapeSamples, waveSpectrum } from '../fourier';
 	import { oneOver, wavePath } from '../signals';
 
@@ -178,6 +178,43 @@
 	/** Whether the highest point is next to the jump (with 1 or 2 Hz only, the highest point is the hump at 0.25 s). */
 	const nearJump = $derived(over.at > IN.u0);
 	const ticks = [0, 0.25, 0.5, 0.75, 1];
+
+	// Phone readouts (the same text as the drawing's).
+	const sqSweepText = $derived(
+		`at ${num(sqSweep, 2)} s: sum ${num(sqSweepV)} · square ${sqTarget > 0 ? '+1' : '−1'} · gap ${num(
+			Math.abs(sqSweepV - sqTarget)
+		)}`
+	);
+	const newestRow = $derived(
+		termsN % 2 === 0
+			? {
+					label: `${termsN} Hz`,
+					value: 'added nothing: the square wave contains none of it',
+					color: 'var(--ft-p2)'
+				}
+			: termsN > 1
+				? {
+						label: 'Newest (thin line)',
+						value: `${termsN} Hz with amplitude ${oneOver(termsN)} × 4/π = ${num(amp(termsN), 3)}`,
+						color: 'var(--ft-p2)'
+					}
+				: {
+						label: 'One sine wave',
+						value: '1 Hz with amplitude 4/π ≈ 1.27',
+						color: 'var(--ft-sum)'
+					}
+	);
+	const overRow = $derived(
+		nearJump
+			? {
+					value: `${num(over.peak - 1, 3)} above +1 = ${num((100 * (over.peak - 1)) / 2, 1)}% of the jump`,
+					note: `the peak is ${num(1000 * (0.5 - over.at), 0)} ms before the jump; more frequencies: closer, but hardly lower`
+				}
+			: {
+					value: 'too few frequencies for a peak at the jump yet',
+					note: 'add some with the slider'
+				}
+	);
 </script>
 
 {#snippet txt(
@@ -210,7 +247,10 @@
 	<!-- ================= sines: three waves and their sum ================= -->
 	{#if wSines.current > 0.01}
 		<g opacity={wSines.current}>
-			{@render txt(24, 40, 'Add the heights at every moment', 18, { weight: 600 })}
+			<!-- <Readout>: on narrow screens these are listed as HTML under the stage -->
+			<Readout id="sines-title">
+				{@render txt(24, 40, 'Add the heights at every moment', 18, { weight: 600 })}
+			</Readout>
 			{#each ROWS as r, i (r.n)}
 				{@const on = 0.3 + 0.7 * inSum(i)}
 				<line x1={SX0} x2={SX1} y1={r.y} y2={r.y} stroke="var(--stage-line)" />
@@ -222,7 +262,9 @@
 					opacity={on}
 					stroke-linejoin="round"
 				/>
-				{@render txt(24, r.y + 5, r.label, 15, { weight: 600, color: r.color, opacity: on })}
+				<Readout id="part-{r.n}" order={10 + i} label={r.label} color={r.color} opacity={on}>
+					{@render txt(24, r.y + 5, r.label, 15, { weight: 600, color: r.color, opacity: on })}
+				</Readout>
 				{#if i > 0}
 					{@render txt(162, r.y + 6, '+', 20, { anchor: 'middle', muted: true, opacity: on })}
 				{/if}
@@ -253,7 +295,9 @@
 				stroke-width="3.5"
 				stroke-linejoin="round"
 			/>
-			{@render txt(24, SUM_Y + 5, 'sum', 15, { weight: 700, color: 'var(--ft-sum)' })}
+			<Readout id="sines-sum" order={13} label="sum" color="var(--ft-sum)">
+				{@render txt(24, SUM_Y + 5, 'sum', 15, { weight: 700, color: 'var(--ft-sum)' })}
+			</Readout>
 			{@render txt(162, SUM_Y + 6, '=', 20, { anchor: 'middle', muted: true })}
 
 			<!-- the sweep: the heights at this moment, head to tail -->
@@ -307,11 +351,27 @@
 					muted: true
 				})}
 			{/each}
-			{@render txt(SX0, SUM_Y + SU + 66, sweepText, 14, { weight: 600, color: 'var(--ft-sum)' })}
-			{@render txt(SX1, 40, 'dashed: a square wave of the same size', 12, {
-				anchor: 'end',
-				muted: true
-			})}
+			<Readout
+				id="sines-sweep"
+				order={1}
+				label="Heights at the line"
+				value={sweepText}
+				color="var(--ft-sum)"
+				opacity={wSines.current}
+			>
+				{@render txt(SX0, SUM_Y + SU + 66, sweepText, 14, { weight: 600, color: 'var(--ft-sum)' })}
+			</Readout>
+			<Readout
+				id="sines-dashed"
+				order={14}
+				label="dashed: a square wave of the same size"
+				color="var(--ft-target)"
+			>
+				{@render txt(SX1, 40, 'dashed: a square wave of the same size', 12, {
+					anchor: 'end',
+					muted: true
+				})}
+			</Readout>
 		</g>
 	{/if}
 
@@ -382,65 +442,101 @@
 				stroke="var(--stage-bg)"
 				stroke-width="2"
 			/>
-			{@render txt(
-				X1,
-				88,
-				`at ${num(sqSweep, 2)} s: sum ${num(sqSweepV)} · square ${sqTarget > 0 ? '+1' : '−1'} · gap ${num(
-					Math.abs(sqSweepV - sqTarget)
-				)}`,
-				13,
-				{ anchor: 'end', weight: 600 }
-			)}
+			<Readout id="sq-sweep" order={2} label="At the line" value={sqSweepText} opacity={wSquare}>
+				{@render txt(
+					X1,
+					88,
+					`at ${num(sqSweep, 2)} s: sum ${num(sqSweepV)} · square ${sqTarget > 0 ? '+1' : '−1'} · gap ${num(
+						Math.abs(sqSweepV - sqTarget)
+					)}`,
+					13,
+					{ anchor: 'end', weight: 600 }
+				)}
+			</Readout>
 
 			<!-- readouts -->
-			{@render txt(
-				X0,
-				40,
-				termsN === 1 ? 'The sum so far: 1 Hz only' : `The sum so far: 1 Hz to ${termsN} Hz`,
-				20,
-				{ weight: 600, color: 'var(--ft-sum)' }
-			)}
-			{@render txt(
-				X0,
-				64,
-				oddCount > 1
-					? `${oddCount} sine waves that count (odd frequencies); every even one is zero`
-					: '1 sine wave that counts (odd frequencies); every even one is zero',
-				13,
-				{ muted: true }
-			)}
-			{@render txt(X1, 40, 'square wave', 14, {
-				anchor: 'end',
-				weight: 600,
-				color: 'var(--ft-target)'
-			})}
+			<Readout
+				id="sq-sum"
+				order={1}
+				label="The sum so far"
+				value={termsN === 1 ? '1 Hz only' : `1 Hz to ${termsN} Hz`}
+				note={phase === 'gibbs'
+					? undefined
+					: oddCount > 1
+						? `${oddCount} sine waves that count (odd frequencies); every even one is zero`
+						: '1 sine wave that counts (odd frequencies); every even one is zero'}
+				color="var(--ft-sum)"
+				opacity={wSquare}
+			>
+				{@render txt(
+					X0,
+					40,
+					termsN === 1 ? 'The sum so far: 1 Hz only' : `The sum so far: 1 Hz to ${termsN} Hz`,
+					20,
+					{ weight: 600, color: 'var(--ft-sum)' }
+				)}
+				{@render txt(
+					X0,
+					64,
+					oddCount > 1
+						? `${oddCount} sine waves that count (odd frequencies); every even one is zero`
+						: '1 sine wave that counts (odd frequencies); every even one is zero',
+					13,
+					{ muted: true }
+				)}
+			</Readout>
+			<Readout id="sq-key" order={10} label="square wave (dashed)" color="var(--ft-target)">
+				{@render txt(X1, 40, 'square wave', 14, {
+					anchor: 'end',
+					weight: 600,
+					color: 'var(--ft-target)'
+				})}
+			</Readout>
 
 			<g opacity={1 - wGibbs.current}>
-				{#if termsN % 2 === 0}
-					{@render txt(
-						X0,
-						470,
-						`${termsN} Hz added nothing: the square wave contains none of it.`,
-						15,
-						{ weight: 600, color: 'var(--ft-p2)' }
-					)}
-				{:else if termsN > 1}
-					{@render txt(
-						X0,
-						470,
-						`newest: ${termsN} Hz with amplitude ${oneOver(termsN)} × 4/π = ${num(amp(termsN), 3)} (thin line)`,
-						15,
-						{ weight: 600, color: 'var(--ft-p2)' }
-					)}
-				{:else}
-					{@render txt(X0, 470, 'one sine wave: 1 Hz with amplitude 4/π ≈ 1.27', 15, {
-						weight: 600,
-						color: 'var(--ft-sum)'
+				<Readout
+					id="sq-newest"
+					order={3}
+					label={newestRow.label}
+					value={newestRow.value}
+					color={newestRow.color}
+					opacity={wSquare * (1 - wGibbs.current)}
+				>
+					{#if termsN % 2 === 0}
+						{@render txt(
+							X0,
+							470,
+							`${termsN} Hz added nothing: the square wave contains none of it.`,
+							15,
+							{ weight: 600, color: 'var(--ft-p2)' }
+						)}
+					{:else if termsN > 1}
+						{@render txt(
+							X0,
+							470,
+							`newest: ${termsN} Hz with amplitude ${oneOver(termsN)} × 4/π = ${num(amp(termsN), 3)} (thin line)`,
+							15,
+							{ weight: 600, color: 'var(--ft-p2)' }
+						)}
+					{:else}
+						{@render txt(X0, 470, 'one sine wave: 1 Hz with amplitude 4/π ≈ 1.27', 15, {
+							weight: 600,
+							color: 'var(--ft-sum)'
+						})}
+					{/if}
+				</Readout>
+				<Readout
+					id="sq-gap"
+					order={4}
+					label="Average gap from the square wave"
+					value={num(gap, 3)}
+					note="root-mean-square difference over the second"
+					opacity={wSquare * (1 - wGibbs.current)}
+				>
+					{@render txt(X0, 500, `average gap from the square wave: ${num(gap, 3)}`, 15, {
+						weight: 600
 					})}
-				{/if}
-				{@render txt(X0, 500, `average gap from the square wave: ${num(gap, 3)}`, 15, {
-					weight: 600
-				})}
+				</Readout>
 				<rect
 					x={X0}
 					y="514"
@@ -459,7 +555,11 @@
 					fill="none"
 					stroke="var(--stage-line)"
 				/>
-				{@render txt(X0, 548, '(root-mean-square difference over the second)', 12, { muted: true })}
+				<Readout id="sq-gap-note">
+					{@render txt(X0, 548, '(root-mean-square difference over the second)', 12, {
+						muted: true
+					})}
+				</Readout>
 			</g>
 
 			<!-- gibbs: the top of the jump, magnified -->
@@ -523,41 +623,67 @@
 							stroke-width="3"
 							stroke-linecap="round"
 						/>
-						{@render txt(peakX - 10, iy(over.peak) - 8, `peak ${num(over.peak, 3)}`, 13, {
-							anchor: 'end',
-							weight: 600,
-							color: 'var(--ft-bar)'
-						})}
+						<Readout id="peak-label">
+							{@render txt(peakX - 10, iy(over.peak) - 8, `peak ${num(over.peak, 3)}`, 13, {
+								anchor: 'end',
+								weight: 600,
+								color: 'var(--ft-bar)'
+							})}
+						</Readout>
 					{/if}
-					{@render txt(IN.x0, IN.y0 - 8, 'magnified: the top of the jump at 0.5 s', 12, {
-						muted: true
-					})}
-					{@render txt(X0, 470, 'The jump: from +1 down to −1, a drop of 2', 15, { weight: 600 })}
-					{#if nearJump}
-						{@render txt(
-							X0,
-							498,
-							`Overshoot: ${num(over.peak - 1, 3)} above +1 = ${num((100 * (over.peak - 1)) / 2, 1)}% of the jump`,
-							15,
-							{ weight: 600, color: 'var(--ft-bar)' }
-						)}
-						{@render txt(
-							X0,
-							526,
-							`The peak is ${num(1000 * (0.5 - over.at), 0)} ms before the jump`,
-							15,
-							{ weight: 600 }
-						)}
-					{:else}
-						{@render txt(X0, 498, 'Too few frequencies for a peak at the jump yet:', 15, {
-							weight: 600,
-							color: 'var(--ft-bar)'
+					<Readout id="inset-key" order={11} label="box: the top of the jump at 0.5 s, magnified">
+						{@render txt(IN.x0, IN.y0 - 8, 'magnified: the top of the jump at 0.5 s', 12, {
+							muted: true
 						})}
-						{@render txt(X0, 526, 'add some with the slider', 15, { weight: 600 })}
-					{/if}
-					{@render txt(X0, 552, 'more frequencies: closer to the jump, but hardly lower', 12, {
-						muted: true
-					})}
+					</Readout>
+					<Readout
+						id="jump"
+						order={3}
+						label="The jump"
+						value="from +1 down to −1, a drop of 2"
+						opacity={wGibbs.current}
+					>
+						{@render txt(X0, 470, 'The jump: from +1 down to −1, a drop of 2', 15, {
+							weight: 600
+						})}
+					</Readout>
+					<Readout
+						id="overshoot"
+						order={4}
+						label="Overshoot"
+						value={overRow.value}
+						note={overRow.note}
+						color="var(--ft-bar)"
+						opacity={wGibbs.current}
+					>
+						{#if nearJump}
+							{@render txt(
+								X0,
+								498,
+								`Overshoot: ${num(over.peak - 1, 3)} above +1 = ${num((100 * (over.peak - 1)) / 2, 1)}% of the jump`,
+								15,
+								{ weight: 600, color: 'var(--ft-bar)' }
+							)}
+							{@render txt(
+								X0,
+								526,
+								`The peak is ${num(1000 * (0.5 - over.at), 0)} ms before the jump`,
+								15,
+								{ weight: 600 }
+							)}
+						{:else}
+							{@render txt(X0, 498, 'Too few frequencies for a peak at the jump yet:', 15, {
+								weight: 600,
+								color: 'var(--ft-bar)'
+							})}
+							{@render txt(X0, 526, 'add some with the slider', 15, { weight: 600 })}
+						{/if}
+					</Readout>
+					<Readout id="gibbs-note">
+						{@render txt(X0, 552, 'more frequencies: closer to the jump, but hardly lower', 12, {
+							muted: true
+						})}
+					</Readout>
 				</g>
 			{/if}
 		</g>
