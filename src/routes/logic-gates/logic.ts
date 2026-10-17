@@ -75,11 +75,12 @@ export const outputsOf = (c: Circuit) =>
 /**
  * Value of every node for the given input values (by input id). A gate slot
  * with no wire reads as 0 (false). Returns also each node's "depth": how many
- * gates a signal passes through to reach it (for the propagation animation; a
- * block adds the gates on the longest path through the circuit inside it),
- * and `ports`: the value of each of a node's outputs (`value` is output 0).
- * A block whose circuit isn't given outputs 0, and so does a block inside a
- * block's circuit. Throws if the circuit has a loop.
+ * gates a signal passes through to reach it, at most (for the propagation
+ * animation), and the same per output in `portDepth` (a block's sum and carry
+ * out are ready at different times: the depth through a block follows the
+ * paths of the circuit inside it), and `ports`, the value of each output
+ * (`value` is output 0). A block whose circuit isn't given outputs 0, and so
+ * does a block inside a block's circuit. Throws if the circuit has a loop.
  */
 export function evaluate(c: Circuit, inputs: Record<string, boolean>, blocks: Blocks = {}) {
 	const byId = new Map(c.nodes.map((n) => [n.id, n]));
@@ -98,7 +99,7 @@ export function evaluate(c: Circuit, inputs: Record<string, boolean>, blocks: Bl
 			slots[w.slot] = { from: w.from, port };
 	}
 	const ports = new Map<string, boolean[]>();
-	const depth = new Map<string, number>();
+	const portDepth = new Map<string, number[]>();
 	const visiting = new Set<string>();
 	const visit = (id: string): boolean[] => {
 		const known = ports.get(id);
@@ -107,46 +108,86 @@ export function evaluate(c: Circuit, inputs: Record<string, boolean>, blocks: Bl
 		visiting.add(id);
 		const n = byId.get(id)!;
 		let out: boolean[];
-		let d = 0;
-		if (n.kind === 'in') out = [!!inputs[id]];
-		else {
+		let d: number[];
+		if (n.kind === 'in') {
+			out = [!!inputs[id]];
+			d = [0];
+		} else {
 			const src = feeds.get(id)!;
 			const vals = src.map((s) => (s ? visit(s.from)[s.port] : false));
-			d = Math.max(0, ...src.map((s) => (s ? depth.get(s.from)! : 0)));
-			if (n.kind === 'out') out = [vals[0]];
-			else if (n.kind === 'FA') {
-				const inner = blockOutputs(blocks[n.kind], vals);
-				out = inner.outputs;
-				d += inner.depth;
+			const at = src.map((s) => (s ? portDepth.get(s.from)![s.port] : 0));
+			const latest = Math.max(0, ...at);
+			if (n.kind === 'out') {
+				out = [vals[0]];
+				d = [latest];
+			} else if (n.kind === 'FA') {
+				const def = blocks[n.kind];
+				out = def ? blockOutputs(def, vals) : [false, false];
+				// each output is ready once the slowest input that reaches it has gone
+				// through the gates in between (an output no input reaches is ready at once)
+				const paths = def ? innerPaths(def) : null;
+				d = [0, 1].map((p) =>
+					Math.max(0, ...at.map((t, s) => (paths?.[s] && paths[s][p] >= 0 ? t + paths[s][p] : 0)))
+				);
 			} else {
 				out = [gate(n.kind, vals[0], vals[1] ?? false)];
-				d += 1;
+				d = [latest + 1];
 			}
 		}
 		visiting.delete(id);
 		ports.set(id, out);
-		depth.set(id, d);
+		portDepth.set(id, d);
 		return out;
 	};
 	for (const n of c.nodes) visit(n.id);
 	const value = new Map([...ports].map(([id, v]) => [id, v[0] ?? false] as const));
-	return { value, depth, ports };
+	const depth = new Map([...portDepth].map(([id, d]) => [id, Math.max(0, ...d)] as const));
+	return { value, depth, ports, portDepth };
 }
 
-/**
- * A full-adder block's two outputs for its three input values, worked out by the
- * circuit inside it, and the number of gates on the longest path through it.
- */
-function blockOutputs(def: Circuit | undefined, vals: boolean[]) {
-	if (!def) return { outputs: [false, false], depth: 1 };
+/** A full-adder block's two outputs for its three input values, worked out by the circuit inside it. */
+function blockOutputs(def: Circuit, vals: boolean[]) {
 	const ins = inputsOf(def);
 	const outs = outputsOf(def);
-	const { value, depth } = evaluate(
-		def,
-		Object.fromEntries(ins.map((n, i) => [n.id, vals[i] ?? false]))
+	const { value } = evaluate(def, Object.fromEntries(ins.map((n, i) => [n.id, vals[i] ?? false])));
+	return [0, 1].map((k) => (outs[k] ? value.get(outs[k].id)! : false));
+}
+
+const pathCache = new WeakMap<Circuit, number[][]>();
+/**
+ * Inside a block's circuit: `paths[slot][output]` is the number of gates on the
+ * longest path from that input to that output, or -1 if there is none.
+ */
+function innerPaths(def: Circuit) {
+	const cached = pathCache.get(def);
+	if (cached) return cached;
+	const byId = new Map(def.nodes.map((n) => [n.id, n]));
+	const into = new Map<string, string[]>();
+	for (const w of def.wires) into.set(w.to, [...(into.get(w.to) ?? []), w.from]);
+	const memo = new Map<string, number>();
+	const longest = (id: string, from: string, seen: Set<string>): number => {
+		const key = `${id}<${from}`;
+		const m = memo.get(key);
+		if (m !== undefined) return m;
+		const n = byId.get(id);
+		let r = -1;
+		if (n && n.kind === 'in') r = id === from ? 0 : -1;
+		else if (n && n.kind !== 'FA' && !seen.has(id)) {
+			const step = n.kind === 'out' ? 0 : 1;
+			for (const s of into.get(id) ?? []) {
+				const l = longest(s, from, new Set([...seen, id]));
+				if (l >= 0) r = Math.max(r, l + step);
+			}
+		}
+		memo.set(key, r);
+		return r;
+	};
+	const outs = outputsOf(def);
+	const paths = inputsOf(def).map((i) =>
+		[0, 1].map((k) => (outs[k] ? longest(outs[k].id, i.id, new Set()) : -1))
 	);
-	const outputs = [0, 1].map((k) => (outs[k] ? value.get(outs[k].id)! : false));
-	return { outputs, depth: Math.max(1, ...outs.map((o) => depth.get(o.id)!)) };
+	pathCache.set(def, paths);
+	return paths;
 }
 
 /** True if adding this wire would close a loop. */

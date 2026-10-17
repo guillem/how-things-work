@@ -146,7 +146,18 @@ test('a full-adder block adds like the circuit inside it, which takes three gate
 	expect(isFullAdder(ONE_BLOCK)).toBe(false); // without its circuit a block outputs 0
 	const blocks = { FA: FULL_ADDER };
 	expect(outs(ONE_BLOCK, blocks)).toEqual(outs(FULL_ADDER));
-	expect(evaluate(ONE_BLOCK, { a: true, b: true, ci: true }, blocks).depth.get('co')).toBe(3);
+	// A → XOR → AND → OR reaches the carry out; the carry in passes only AND → OR
+	const { portDepth } = evaluate(ONE_BLOCK, { a: true, b: true, ci: true }, blocks);
+	expect(portDepth.get('f')).toEqual([2, 3]);
+});
+
+test('in the 4-bit chain the carry ripples: two more gate delays for every block it crosses', () => {
+	const { depth } = evaluate(ADDER4, adder4Inputs(15, 1, false), { FA: FULL_ADDER });
+	// carry out of bit 0 after 3 gates, then 2 per block: 5, 7, 9
+	expect(depth.get('co')).toBe(9);
+	// bit 3's sum waits for the carry into it (7) and one XOR
+	expect(depth.get('s3')).toBe(8);
+	expect(depth.get('s0')).toBe(2);
 });
 
 test('four full-adder blocks in a chain add every pair of 4-bit numbers, with either carry in', () => {
