@@ -209,3 +209,9 @@ Non-commercial:
   the data table (cell-efficiency-data-table.xlsx, Last-Modified 14 Aug 2026) and the chart PDF
   (cell-pv-eff.pdf, Rev. 07-17-2026) are unchanged; re-running `build-records.mjs` on the new
   download gives the same `records.ts`. Not there yet; nothing changed.
+- **PhotochemCAD pigment spectra** (photosynthesis, candidate to replace `absorbance()`): checked
+  2026-10-17. https://www.photochemcad.com/ and its natural-chlorophylls database (chlorophyll a
+  and b in diethyl ether, NCHL006/NCHL014, Du 1998; Taniguchi & Lindsey, Photochem. Photobiol.
+  97: 136, 2021) carry only "© 1998-2026 Lindsey, J. S.; Taniguchi, M.; Du, H." and no licence
+  or permission to redistribute; the OMLC copy (https://omlc.org/spectra/PhotochemCAD/) is
+  reworked by S. Prahl with no licence either. Not used; the Gaussian approximations stay.
