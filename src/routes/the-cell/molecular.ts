@@ -180,7 +180,31 @@ export function headCentre(m: Placed): [number, number] {
 /** ATP in a liver cell: 3.38 mM (BioNumbers 100858), molecules per nm³. */
 export const ATP_PER_NM3 = 3.38e-3 * 6.022e23 * 1e-24;
 
-/** Proteins scattered at `perUm3` in a box, avoiding `exclude`, from a mixture of kinds. */
+/**
+ * The share of a box that `exclude` leaves free, sampled on a grid `step` nm apart: what is
+ * left of the box for molecules dissolved in the compartment once the structures in it (a
+ * crista fold, ribosomes, DNA) are taken out. A concentration is a count per volume of
+ * the compartment, so the count in a slice is n × d × the free area, not the box's area.
+ */
+export function freeFraction(
+	box: { x0: number; x1: number; y0: number; y1: number },
+	exclude: (x: number, y: number) => boolean,
+	step = 2
+): number {
+	let free = 0;
+	let all = 0;
+	for (let x = box.x0 + step / 2; x < box.x1; x += step)
+		for (let y = box.y0 + step / 2; y < box.y1; y += step) {
+			all++;
+			if (!exclude(x, y)) free++;
+		}
+	return all ? free / all : 0;
+}
+
+/**
+ * Proteins scattered at `perUm3` in a box, avoiding `exclude`, from a mixture of kinds. The
+ * counts follow from the box's free area (`exclude` with r = 0, the structures themselves).
+ */
 export function scatter(
 	seed: number,
 	box: { x0: number; x1: number; y0: number; y1: number },
@@ -189,7 +213,8 @@ export function scatter(
 	perUm3 = PROTEINS_PER_UM3
 ): Placed[] {
 	const r = rng(seed);
-	const area = (box.x1 - box.x0) * (box.y1 - box.y0);
+	const area =
+		(box.x1 - box.x0) * (box.y1 - box.y0) * freeFraction(box, (x, y) => exclude(x, y, 0));
 	const out: Placed[] = [];
 	for (const m of mix) {
 		const n = Math.round(perUm3 * 1e-9 * m.share * m.d * area);
@@ -309,7 +334,7 @@ export const ENVELOPE = (() => {
 
 /** Proteins per µm³ (BioNumbers: 2–4 million) and the share of each kind drawn (illustrative). */
 export const PROTEINS_PER_UM3 = 3e6;
-const MIX: { id: Placed['id']; share: number; d: number }[] = [
+export const CROWD_MIX: { id: Placed['id']; share: number; d: number }[] = [
 	{ id: 'efTuTrna', share: 0.25, d: 8 },
 	{ id: 'adk', share: 0.53, d: 5 },
 	{ id: 'trna', share: 0.12, d: 6 },
@@ -328,7 +353,7 @@ export interface Crowd {
 	dna: [number, number][][];
 	/** How many proteins the concentration predicts for the slice. */
 	expected: number;
-	/** Area of the slice of cytoplasm considered, nm². */
+	/** Area of the slice of cytoplasm considered, less the ribosomes and DNA in it, nm². */
 	area: number;
 }
 
@@ -347,7 +372,6 @@ export function crowd(X = 240, Y = 150): Crowd {
 		.filter((p) => Math.abs(p.x) < X + 20 && p.y < Y + 20)
 		.map((p) => ({ id: 'ribosome70S' as const, ...p, angle: r.range(0, Math.PI * 2) }));
 	const top = ENVELOPE.im1 + 1;
-	const area = 2 * X * (Y - top);
 	// DNA strands of the nucleoid's edge, laid first so that the proteins leave them visible
 	const rd = rng(24);
 	const dna: [number, number][][] = [];
@@ -373,11 +397,21 @@ export function crowd(X = 240, Y = 150): Crowd {
 		dna.some((pts) =>
 			pts.some(([px, py]) => Math.abs(px - x) < d && Math.hypot(px - x, py - y) < d)
 		);
+	const [gx, gy] = ATOM_SPOTS.glucose;
+	// the proteins' concentration is per volume of cytoplasm: count them from the area that
+	// the ribosomes, the DNA and the glucose in view leave free
+	const free = freeFraction(
+		{ x0: -X, x1: X, y0: top, y1: Y },
+		(x, y) =>
+			Math.hypot(x - gx, y - gy) < 0.5 ||
+			ribosomes.some((q) => Math.hypot(q.x - x, q.y - y) < 12) ||
+			onDna(x, y, 1)
+	);
+	const area = 2 * X * (Y - top) * free;
 	const proteins: Placed[] = [];
 	let expected = 0;
-	const [gx, gy] = ATOM_SPOTS.glucose;
 	// the big machines first, so that they still find room in the crowd
-	for (const m of [...MIX].sort((a, b) => b.d - a.d)) {
+	for (const m of [...CROWD_MIX].sort((a, b) => b.d - a.d)) {
 		// n per nm² of slice = n per nm³ × diameter
 		const n = Math.round(PROTEINS_PER_UM3 * 1e-9 * m.share * m.d * area);
 		expected += n;
