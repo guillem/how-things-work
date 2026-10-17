@@ -191,3 +191,16 @@ Non-commercial:
   none, 5.6 × 10⁸ bacteria per culture), Table 4 (mutation rates 1.1–4.1 × 10⁻⁸ per time unit)
   and the text's exp. 23 estimate (0.32 × 10⁻⁸ per division). Facts quoted with citation; no
   data file shipped. Licence: PMC copyright notice (publisher's copyright); quoting facts only.
+- **Barrangou et al. 2007, Fig. 3** (crispr, yogurt step): R. Barrangou et al., "CRISPR provides
+  acquired resistance against viruses in prokaryotes", Science 315: 1709–1712 (2007),
+  doi:10.1126/science.1138140. Science's full text needs a (free) sign-in, so the figure was read
+  from the Wayback Machine's copy of the journal's figure image,
+  http://web.archive.org/web/2020/https://science.sciencemag.org/content/sci/315/5819/1709/F3.medium.gif
+  (440 × 405 px, legible; retrieved 2026-10-17); the legend text was not available. Read from it:
+  WTΦ858+S1S2 resistant to Φ858, sensitive to Φ2972; ΔCRISPR1 and ::pR (spacers out of the
+  cas-adjacent array) sensitive to Φ858; WTΦ2972+S4::pS1S2 resistant to Φ858 and sensitive to
+  Φ2972 (confirms the reading of Danisco's patent table, US 10066233, behind commit b281621);
+  ::pcas5− sensitive, ::pcas7− still resistant. Licence: © AAAS; consulted, not redistributed.
+  Gene names: Sapranauskas et al. 2011, Nucleic Acids Res. 39: 9275, "cas9 (formerly named cas5
+  and csn1)", read from https://epublications.vu.lt/object/elaba:4437157/4437157.pdf
+  (retrieved 2026-10-17; open access).
