@@ -116,6 +116,29 @@ test('rays curve back up: the path to 30° dives far deeper than the straight li
 	expect(ray.kind).toBe('P');
 });
 
+test('the rays that reached the three Nepal stations (33°–44°) never left the mantle', () => {
+	// The summary marks these stations: the rays that located the earthquake turn back about
+	// 800–1,100 km down, far above the core (2,891 km).
+	const landing = (wave: 'P' | 'S', dist: number) => {
+		let lo = 0.1;
+		let hi = 1.5;
+		for (let i = 0; i < 40; i++) {
+			const mid = (lo + hi) / 2;
+			if (surfaceDistance(rayAt(wave, mid, ORIGIN.depth)!.angle) > dist) lo = mid;
+			else hi = mid;
+		}
+		return rayAt(wave, lo, ORIGIN.depth)!;
+	};
+	expect(stations.map((s) => Math.round(s.dist)).sort((a, b) => a - b)).toEqual([33, 38, 44]);
+	for (const s of stations)
+		for (const wave of ['P', 'S'] as const) {
+			const ray = landing(wave, s.dist);
+			expect(ray.kind).toBe(wave);
+			expect(EARTH_R - ray.deepest).toBeGreaterThan(700);
+			expect(EARTH_R - ray.deepest).toBeLessThan(1200);
+		}
+});
+
 test('S − P grows with distance, and turns back into the distance', () => {
 	let last = 0;
 	for (let d = 2; d <= 95; d += 3) {

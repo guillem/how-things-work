@@ -109,3 +109,11 @@ test('two steps of magnitude are 1,000 times the energy', async ({ page }) => {
 	await expect(stage(page)).toContainText('releases 32 times the energy of M 6.8');
 	await expect(stage(page)).toContainText('10 times bigger');
 });
+
+test('the summary marks the three Nepal stations, whose rays stay in the mantle', async ({
+	page
+}) => {
+	await open(page, './earthquakes/#interior');
+	await expect(stage(page)).toContainText('the stations that located Nepal 2015, 33°–44°');
+	await expect(stage(page)).toContainText('their rays never go below the mantle');
+});

@@ -15,7 +15,9 @@
 	 *   makes the core liquid to the centre.
 	 * - station: P and S, with a seismometer the reader drags round the surface
 	 *   (`params.station`, degrees) and the arrivals it records.
-	 * - summary: P and S, the layers labelled with what the waves showed.
+	 * - summary: P and S, the layers labelled with what the waves showed, and the three
+	 *   seismometers that located the 2015 Nepal earthquake (locate step) at their real distances,
+	 *   with the rays that reach them: they stay in the mantle.
 	 */
 	import { untrack } from 'svelte';
 	import { Tween } from 'svelte/motion';
@@ -23,6 +25,7 @@
 	import { Handle, Label } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { AK135 } from '../data/ak135';
+	import { stations } from '../locate';
 	import {
 		CMB_DEPTH,
 		EARTH_R,
@@ -265,7 +268,15 @@
 	const KIND_SHORT: Record<string, string> = { P: 'P', S: 'S', PKP: 'core', PKIKP: 'inner core' };
 	const kindColor = (k: string) =>
 		k === 'S' ? 'var(--eq-s)' : k === 'PKIKP' ? 'var(--eq-inner-wave)' : 'var(--eq-p)';
-	const near = (d: Drawn) => phase === 'station' && Math.abs(d.land - stationDeg) < 1.6;
+	/** The Nepal stations' distances (33°–44°), marked on the summary slice. */
+	const NEPAL = stations.map((s) => ({ sta: s.rec.sta, dist: s.dist }));
+	const nepalSpan = `${Math.round(Math.min(...NEPAL.map((s) => s.dist)))}°–${Math.round(Math.max(...NEPAL.map((s) => s.dist)))}°`;
+	const near = (d: Drawn) =>
+		phase === 'station'
+			? Math.abs(d.land - stationDeg) < 1.6
+			: phase === 'summary' &&
+				/^[PS]1-/.test(d.key) && // right-hand side, where the stations are drawn
+				NEPAL.some((s) => Math.abs(d.land - s.dist) < 1.6);
 	function moveStation(p: { x: number; y: number }) {
 		const a = (Math.atan2(p.x - C.x, -(p.y - C.y)) * 180) / Math.PI;
 		setParam('station', Math.max(2, Math.round(Math.abs(a))));
@@ -461,6 +472,20 @@
 				muted={!strong}
 			/>
 		</Readout>
+	{/if}
+
+	<!-- the stations that located the Nepal earthquake -->
+	{#if phase === 'summary'}
+		{#each NEPAL as st (st.sta)}
+			{@const [x, y] = at(st.dist, RP + 2)}
+			<path
+				transform="translate({x} {y}) rotate({st.dist})"
+				d="M0 -11 L6.5 0 L-6.5 0 Z"
+				fill="var(--eq-station)"
+				stroke="var(--stage-bg)"
+				stroke-width="1"
+			/>
+		{/each}
 	{/if}
 
 	<!-- the seismometer -->
@@ -815,6 +840,19 @@
 						<path d="M0 232h24" stroke="var(--eq-p)" stroke-width="5" opacity="0.4" />
 						<text x="32" y="236"
 							>P shadow {Math.round(pEdge)}°–{Math.round(coreFrom)}°: the core slows P</text
+						>
+					</Readout>
+					<Readout
+						id="sum-nepal"
+						order={12}
+						label={undefined}
+						value="Nepal 2015 stations, {nepalSpan}: rays stay in the mantle"
+						color="var(--eq-station)"
+					>
+						<path d="M12 252 L18.5 263 L5.5 263 Z" fill="var(--eq-station)" />
+						<text x="32" y="262">the stations that located Nepal 2015, {nepalSpan}</text>
+						<text x="32" y="280" class="muted" font-size="12"
+							>their rays never go below the mantle</text
 						>
 					</Readout>
 				{/if}
