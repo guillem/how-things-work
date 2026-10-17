@@ -88,6 +88,18 @@ test('timeline: the CMB at 371,000 years and 2,970 K, cooled to 2.73 K today', a
 	await expect(stage(page)).toContainText('1.06 mm');
 });
 
+test('timeline: atoms form before the light gets free', async ({ page }) => {
+	await open(page, './big-bang/#cmb');
+	const year = 365.25 * 86400;
+	// 250,000 years (z ≈ 1,400): a plasma; 300,000 years (z ≈ 1,250): most electrons bound,
+	// but still opaque.
+	await range(page, 'tCmb').fill(Math.log10(250_000 * year).toFixed(6));
+	await expect(stage(page)).toContainText('A glowing, opaque plasma');
+	await range(page, 'tCmb').fill(Math.log10(300_000 * year).toFixed(6));
+	await expect(stage(page)).toContainText('Atoms forming; the gas is still opaque');
+	await expect(stage(page)).toContainText(/Electrons bound into atoms\s*(5\d|6\d)%/);
+});
+
 test('dragging along the timeline moves through time', async ({ page }) => {
 	await open(page, './big-bang/#first-second');
 	await expect(stage(page)).toContainText('1.0 seconds');

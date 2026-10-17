@@ -253,7 +253,9 @@
 		if (sec < T_FREEZE_S) return 'Protons and neutrons keep turning into each other';
 		if (sec < T_NUC_S) return 'Neutrons decaying; too hot for deuterium';
 		if (sec < 3600) return 'The first nuclei: hydrogen and helium';
-		if (z > PLANCK.zStar + 60) return 'A glowing, opaque plasma';
+		// Most electrons are bound well before the light gets free (z ≈ 1270 against z* ≈ 1090).
+		if (z > PLANCK.zStar + 60)
+			return bound < 0.5 ? 'A glowing, opaque plasma' : 'Atoms forming; the gas is still opaque';
 		if (z > PLANCK.zStar - 100) return 'Atoms form: the light breaks free';
 		if (yr < 1e8) return 'The dark ages: neutral gas, no stars yet';
 		if (ionizedAgain < 0.97) return 'The first stars and galaxies light up';
