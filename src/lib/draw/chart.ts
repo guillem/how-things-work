@@ -36,6 +36,33 @@ export function ticks(lo: number, hi: number, count = 5): number[] {
 	return out;
 }
 
+/**
+ * Which of an axis's tick labels to draw so that none of them collide: every
+ * k-th one, with the smallest stride k that leaves at least `gap` between
+ * neighbours. `at` holds the labels' centres along the axis and `size` their
+ * extents along it, in drawing units. Of the k possible offsets, the one that
+ * keeps label `prefer` (say the origin's) is used. Returns the indices to draw.
+ * `<Axes>` uses it on phones, where the labels are drawn larger.
+ */
+export function spacedLabels(
+	at: readonly number[],
+	size: readonly number[],
+	gap = 0,
+	prefer = 0
+): number[] {
+	const n = at.length;
+	for (let k = 1; k < n; k++) {
+		const keep: number[] = [];
+		for (let i = prefer % k; i < n; i += k) keep.push(i);
+		const clear = keep.every(
+			(i, j) =>
+				j === 0 || Math.abs(at[i] - at[keep[j - 1]]) >= (size[i] + size[keep[j - 1]]) / 2 + gap
+		);
+		if (clear) return keep;
+	}
+	return n > 0 ? [Math.min(prefer, n - 1)] : [];
+}
+
 /** A "nice" upper bound ≥ `v` for an axis that starts at 0 (1, 2, 2.5, 5 × 10ⁿ). */
 export function niceMax(v: number): number {
 	if (!(v > 0)) return 1;

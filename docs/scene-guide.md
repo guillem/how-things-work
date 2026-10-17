@@ -134,6 +134,16 @@ SVG and the text is listed in an HTML panel under the stage, in real 12–15 px 
 - Keep each step's panel short (≤ ~4 rows): it adds to the pinned stage card. Desktop must stay
   pixel-identical; check phones at 390 × 844 with `TOUCH=1`.
 
+Charts drawn with `<Axes>` need nothing: at ≤ 640 px it draws its tick labels and axis titles
+at a real ~10 px (it measures the stage's scale), keeps every k-th tick label so that none
+collide (`spacedLabels` in `chart.ts`; tick marks and grid lines all stay, and the label at 0 is
+kept), and puts the x title at the right end of the tick row in place of the labels it covers
+(a row lower when it would hide more than one and the stage has room). So on phones, keep the
+x title short ("days", "SNR (dB)"), leave ~70 units left of a y axis for its labels, and give a
+second `<Axes>` over the same x axis (a right-hand y axis) `xTicks={[]}` so it doesn't draw the
+x labels again. Tick labels a scene draws itself (not through `<Axes>`) stay as small as they
+were.
+
 ## Verification loop (required)
 
 1. Type-check only your scene (other scenes may be in flux while you work):
