@@ -19,7 +19,7 @@
 	 */
 	import { cycle, startDrag, type Point } from '#lib/draw/index.ts';
 	import DrawButton from '../DrawButton.svelte';
-	import type { StageProps } from '#lib/explainer/index.ts';
+	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { chain, curveCircles, num, pack, pen, type Complex } from '../fourier';
 	import { curveSource, normaliseLoop } from '../signals';
 
@@ -164,22 +164,36 @@
 <g>
 	<!-- ================= the drawing ================= -->
 	{#if circles}
-		{@render txt(
-			40,
-			40,
-			`${count} circle${count === 1 ? '' : 's'} drawing ${name === 'drawn' ? 'your drawing' : `the ${NAMES[name] ?? name}`}`,
-			20,
-			{ weight: 600, color: 'var(--ft-pen)' }
-		)}
-		{@render txt(
-			40,
-			64,
-			phase === 'draw'
+		<!-- <Readout>: on narrow screens these are listed as HTML under the stage -->
+		<Readout
+			id="drawing"
+			order={1}
+			label="Drawing"
+			value="{count} circle{count === 1 ? '' : 's'} drawing {name === 'drawn'
+				? 'your drawing'
+				: `the ${NAMES[name] ?? name}`}"
+			note="{phase === 'draw'
 				? 'draw a loop here to replace it · biggest circles first'
-				: 'biggest circles first · dashed: the original',
-			13,
-			{ muted: true }
-		)}
+				: 'biggest circles first · dashed: the original'} · slowed down: one trip takes {PERIOD} s here"
+			color="var(--ft-pen)"
+		>
+			{@render txt(
+				40,
+				40,
+				`${count} circle${count === 1 ? '' : 's'} drawing ${name === 'drawn' ? 'your drawing' : `the ${NAMES[name] ?? name}`}`,
+				20,
+				{ weight: 600, color: 'var(--ft-pen)' }
+			)}
+			{@render txt(
+				40,
+				64,
+				phase === 'draw'
+					? 'draw a loop here to replace it · biggest circles first'
+					: 'biggest circles first · dashed: the original',
+				13,
+				{ muted: true }
+			)}
+		</Readout>
 
 		<path
 			d={originalPath}
@@ -252,21 +266,30 @@
 			stroke-dasharray="6 6"
 			opacity="0.7"
 		/>
-		{@render txt(CX, CY - 8, 'Draw a loop here', 20, {
-			anchor: 'middle',
-			weight: 600,
-			color: 'var(--ft-pen)'
-		})}
-		{@render txt(CX, CY + 18, 'it closes when you let go', 13, {
-			anchor: 'middle',
-			muted: true
-		})}
-		<g class="coarse-only">
-			{@render txt(CX, CY + 40, 'with a finger: tap Draw first', 13, {
+		<Readout
+			id="empty"
+			order={1}
+			label="Draw a loop here"
+			value="it closes when you let go"
+			note="with a finger: tap Draw first"
+			color="var(--ft-pen)"
+		>
+			{@render txt(CX, CY - 8, 'Draw a loop here', 20, {
+				anchor: 'middle',
+				weight: 600,
+				color: 'var(--ft-pen)'
+			})}
+			{@render txt(CX, CY + 18, 'it closes when you let go', 13, {
 				anchor: 'middle',
 				muted: true
 			})}
-		</g>
+			<g class="coarse-only">
+				{@render txt(CX, CY + 40, 'with a finger: tap Draw first', 13, {
+					anchor: 'middle',
+					muted: true
+				})}
+			</g>
+		</Readout>
 	{/if}
 
 	{#if strokePath}
@@ -310,14 +333,26 @@
 
 	<!-- ================= the circles by frequency ================= -->
 	{#if circles}
-		{@render txt(BX0, 120, 'Radius of each circle', 15, { weight: 600 })}
-		{@render txt(BX0, 140, 'by frequency (turns per trip round the curve)', 12, { muted: true })}
-		{@render txt(BX0, 172, '● clockwise (k < 0)', 13, { weight: 600, color: 'var(--ft-pen)' })}
-		{@render txt(BX1, 172, 'anticlockwise (k > 0) ●', 13, {
-			anchor: 'end',
-			weight: 600,
-			color: 'var(--ft-sum)'
-		})}
+		<Readout
+			id="bars-key"
+			order={10}
+			label="bars: radius of each circle by frequency k (turns per trip; 0 is the centre)"
+		>
+			{@render txt(BX0, 120, 'Radius of each circle', 15, { weight: 600 })}
+			{@render txt(BX0, 140, 'by frequency (turns per trip round the curve)', 12, {
+				muted: true
+			})}
+		</Readout>
+		<Readout id="cw-key" order={11} label="clockwise (k < 0)" color="var(--ft-pen)">
+			{@render txt(BX0, 172, '● clockwise (k < 0)', 13, { weight: 600, color: 'var(--ft-pen)' })}
+		</Readout>
+		<Readout id="acw-key" order={12} label="anticlockwise (k > 0)" color="var(--ft-sum)">
+			{@render txt(BX1, 172, 'anticlockwise (k > 0) ●', 13, {
+				anchor: 'end',
+				weight: 600,
+				color: 'var(--ft-sum)'
+			})}
+		</Readout>
 		{#each KS as k (k)}
 			{@const r = byK[k + kShow]}
 			{@const h = k === 0 ? 0 : (BH * r) / chartMax}
@@ -339,27 +374,41 @@
 			<line x1={bx(k)} x2={bx(k)} y1={BY} y2={BY + 5} stroke="var(--stage-line)" />
 			{@render txt(bx(k), BY + 20, `${k}`.replace('-', '−'), 12, { anchor: 'middle', muted: true })}
 		{/each}
-		{@render txt(bx(0), BY + 40, '0: the centre, not a circle', 12, {
-			anchor: 'middle',
-			muted: true
-		})}
+		<Readout id="centre-note">
+			{@render txt(bx(0), BY + 40, '0: the centre, not a circle', 12, {
+				anchor: 'middle',
+				muted: true
+			})}
+		</Readout>
 		{#if biggest}
-			{@render txt(
-				BX0,
-				BY + 86,
-				`Biggest: k = ${`${biggest.k}`.replace('-', '−')}, radius ${num(biggest.radius)},`,
-				13,
-				{ weight: 600 }
-			)}
-			{@render txt(
-				BX0,
-				BY + 104,
-				`${Math.abs(biggest.k)} turn${Math.abs(biggest.k) === 1 ? '' : 's'} ${biggest.k > 0 ? 'anticlockwise' : 'clockwise'} per trip`,
-				13,
-				{ weight: 600 }
-			)}
+			<Readout
+				id="biggest"
+				order={2}
+				label="Biggest circle"
+				value="k = {`${biggest.k}`.replace('-', '−')}, radius {num(biggest.radius)}"
+				note="{Math.abs(biggest.k)} turn{Math.abs(biggest.k) === 1 ? '' : 's'} {biggest.k > 0
+					? 'anticlockwise'
+					: 'clockwise'} per trip"
+			>
+				{@render txt(
+					BX0,
+					BY + 86,
+					`Biggest: k = ${`${biggest.k}`.replace('-', '−')}, radius ${num(biggest.radius)},`,
+					13,
+					{ weight: 600 }
+				)}
+				{@render txt(
+					BX0,
+					BY + 104,
+					`${Math.abs(biggest.k)} turn${Math.abs(biggest.k) === 1 ? '' : 's'} ${biggest.k > 0 ? 'anticlockwise' : 'clockwise'} per trip`,
+					13,
+					{ weight: 600 }
+				)}
+			</Readout>
 		{/if}
-		{@render txt(BX0, 580, `Slowed down: one trip takes ${PERIOD} s here`, 12, { muted: true })}
+		<Readout id="slowed">
+			{@render txt(BX0, 580, `Slowed down: one trip takes ${PERIOD} s here`, 12, { muted: true })}
+		</Readout>
 	{/if}
 </g>
 

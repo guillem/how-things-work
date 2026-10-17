@@ -6,6 +6,7 @@
 	 * motion can carry a molecule.
 	 */
 	import { Label, clamp } from '#lib/draw/index.ts';
+	import { Readout } from '#lib/explainer/index.ts';
 	import type { Phase } from '../phase';
 
 	interface Props {
@@ -64,12 +65,18 @@
 	<Label x={X0 - 8} y={sy(0) + 4} text="0" size={11} anchor="end" muted />
 	<Label x={X0 - 8} y={sy(-1) + 4} text="−ε" size={11} anchor="end" muted />
 	<Label x={X0 - 8} y={sy(1) + 4} text="+ε" size={11} anchor="end" muted />
-	<Label x={X0} y={Y0 - 14} text="energy of a pair of molecules" size={12} anchor="start" muted />
-	<Label x={X1} y={sy(0) + 20} text="distance between them →" size={12} anchor="end" muted />
+	<Readout id="curve" order={10} label="curve: energy of a pair of molecules, by their distance">
+		<Label x={X0} y={Y0 - 14} text="energy of a pair of molecules" size={12} anchor="start" muted />
+		<Label x={X1} y={sy(0) + 20} text="distance between them →" size={12} anchor="end" muted />
+	</Readout>
 
 	<path d={curve} fill="none" stroke="var(--som-co2)" stroke-width="2.5" />
-	<Label x={sx(1.02)} y={sy(1.2)} text="repel" size={12} anchor="start" weight={600} />
-	<Label x={sx(1.75)} y={sy(-0.55)} text="attract" size={12} anchor="start" weight={600} />
+	<Readout id="repel" order={11} label="repel" marker={1} at={[sx(1.02) + 24, sy(1.2) - 4]}>
+		<Label x={sx(1.02)} y={sy(1.2)} text="repel" size={12} anchor="start" weight={600} />
+	</Readout>
+	<Readout id="attract" order={12} label="attract" marker={2} at={[sx(1.75) + 28, sy(-0.55) - 4]}>
+		<Label x={sx(1.75)} y={sy(-0.55)} text="attract" size={12} anchor="start" weight={600} />
+	</Readout>
 
 	<!-- depth of the dip -->
 	<line
@@ -81,7 +88,9 @@
 		stroke-width="1.2"
 		stroke-dasharray="3 3"
 	/>
-	<Label x={sx(RM) + 8} y={sy(-0.25) + 4} text="depth ε" size={11} anchor="start" muted />
+	<Readout id="depth">
+		<Label x={sx(RM) + 8} y={sy(-0.25) + 4} text="depth ε" size={11} anchor="start" muted />
+	</Readout>
 
 	<!-- the motion's energy, measured in the box -->
 	<rect
@@ -109,15 +118,24 @@
 		stroke-width="1.5"
 	/>
 
-	<Label x={X0} y={Y1 + 40} text="average energy of motion:" size={13} anchor="start" />
-	<Label
-		x={X0 + 178}
-		y={Y1 + 40}
-		text="{kinetic.toFixed(2)} ε ({Math.round(kinetic * 100)}% of the depth)"
-		size={13}
-		weight={700}
-		anchor="start"
+	<Readout
+		id="motion"
+		order={4}
+		label="Average energy of motion"
+		value="{kinetic.toFixed(2)} ε ({Math.round(kinetic * 100)}% of the depth ε)"
+		note={verdict[phase]}
 		color="var(--som-trail)"
-	/>
-	<Label x={X0} y={Y1 + 66} text={verdict[phase]} size={13} anchor="start" />
+	>
+		<Label x={X0} y={Y1 + 40} text="average energy of motion:" size={13} anchor="start" />
+		<Label
+			x={X0 + 178}
+			y={Y1 + 40}
+			text="{kinetic.toFixed(2)} ε ({Math.round(kinetic * 100)}% of the depth)"
+			size={13}
+			weight={700}
+			anchor="start"
+			color="var(--som-trail)"
+		/>
+		<Label x={X0} y={Y1 + 66} text={verdict[phase]} size={13} anchor="start" />
+	</Readout>
 </g>

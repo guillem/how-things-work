@@ -97,6 +97,30 @@ test('the bond angle is drawn on the molecule in the still frame', async ({ page
 	await expect(arc).toHaveText('116.1°');
 });
 
+test('the still frame draws the angle arc wide open, on the clearest pair of atoms', async ({
+	page
+}) => {
+	await page.emulateMedia({ reducedMotion: 'reduce' });
+	const arc = stage(page).getByTestId('angle-arc');
+	/** The arc's chord, in scene units (the stage is 960 × 600). */
+	const chord = () =>
+		arc.locator('path').evaluate((p: SVGPathElement) => {
+			const a = p.getPointAtLength(0);
+			const b = p.getPointAtLength(p.getTotalLength());
+			return Math.hypot(a.x - b.x, a.y - b.y);
+		});
+	await page.goto('./chemical-bonds/#lonepairs');
+	for (const [mol, angle] of [
+		['NH3', '106.7°'],
+		['CH4', '109.5°'],
+		['H2O', '104.5°']
+	]) {
+		await page.locator(`button[data-control=lpMol][data-value=${mol}]`).click();
+		await expect(arc).toHaveText(angle);
+		expect(await chord()).toBeGreaterThan(60);
+	}
+});
+
 test('hovering an atom holds the turning molecule still to be clicked', async ({ page }) => {
 	await page.clock.install();
 	await page.goto('./chemical-bonds/#build');
@@ -115,4 +139,35 @@ test('hovering an atom holds the turning molecule still to be clicked', async ({
 	const held = await turn.getAttribute('aria-valuenow');
 	await page.clock.runFor(5000);
 	await expect(turn).toHaveAttribute('aria-valuenow', held ?? '');
+});
+
+// Phone readouts (as in phone-readouts.e2e.ts): on a narrow screen the readouts leave the
+// drawing and are listed as text under the stage.
+test.describe('on a phone', () => {
+	test.use({ viewport: { width: 390, height: 844 }, hasTouch: true, reducedMotion: 'reduce' });
+	const readouts = (page: Page) => page.getByRole('group', { name: 'Readouts' });
+
+	test('the bond tug-of-war is text under the stage and follows the pair', async ({ page }) => {
+		await page.goto('./chemical-bonds/#tug');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/Chlorine\s*electronegativity 3\.16/);
+		await expect(panel).toContainText(/H–Cl bond\s*ΔEN = 3\.16 − 2\.20 = 0\.96/);
+		await expect(panel).toContainText('a polar covalent bond');
+		await expect(stage(page)).not.toContainText('a polar covalent bond');
+		await page.locator('button[data-control=pair][data-value=NaCl]').click();
+		await expect(panel).toContainText('the electron is handed over (ionic)');
+	});
+
+	test('the molecule readout is text under the stage and follows the molecule', async ({
+		page
+	}) => {
+		await page.goto('./chemical-bonds/#lonepairs');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/Shape\s*bent/);
+		await expect(panel).toContainText('H–O–H angle: 104.5°');
+		await expect(stage(page)).not.toContainText('H–O–H angle');
+		await page.locator('button[data-control=lpMol][data-value=NH3]').click();
+		await expect(panel).toContainText(/Shape\s*trigonal pyramidal/);
+		await expect(panel).toContainText(/Bond angles\s*CH₄ 109\.5° · NH₃ 106\.7° · H₂O 104\.5°/);
+	});
 });

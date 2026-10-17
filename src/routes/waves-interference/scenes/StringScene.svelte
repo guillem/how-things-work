@@ -24,7 +24,7 @@
 	import { untrack } from 'svelte';
 	import { Tween } from 'svelte/motion';
 	import { cubicInOut } from 'svelte/easing';
-	import type { StageProps } from '#lib/explainer/index.ts';
+	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { A2, GUITAR_SCALE, nodes, pluckAmplitude, standing, travellingHalves } from '../waves';
 	import Card from './Card.svelte';
 	import { playNote, stopAll } from './sound';
@@ -210,11 +210,14 @@
 	<g style:pointer-events="none">
 		<rect x={X0 - 14} y={Y - 40} width="12" height="80" rx="3" fill="var(--stage-line)" />
 		<rect x={X1 + 2} y={Y - 40} width="12" height="80" rx="3" fill="var(--stage-line)" />
-		<text x={X0 - 8} y={Y + 60} text-anchor="middle" class="muted" font-size="12">nut</text>
-		<text x={X1 + 8} y={Y + 60} text-anchor="middle" class="muted" font-size="12">bridge</text>
-		<text x={(X0 + X1) / 2} y={Y + AMP + 52} text-anchor="middle" class="muted" font-size="11"
-			>L = 65 cm · drawn hugely slowed down</text
-		>
+		<!-- <Readout>: on narrow screens listed as HTML under the stage -->
+		<Readout id="string" order={20} label="string: L = 65 cm, drawn hugely slowed down">
+			<text x={X0 - 8} y={Y + 60} text-anchor="middle" class="muted" font-size="12">nut</text>
+			<text x={X1 + 8} y={Y + 60} text-anchor="middle" class="muted" font-size="12">bridge</text>
+			<text x={(X0 + X1) / 2} y={Y + AMP + 52} text-anchor="middle" class="muted" font-size="11"
+				>L = 65 cm · drawn hugely slowed down</text
+			>
+		</Readout>
 		<line
 			x1={X0}
 			x2={X1}
@@ -269,14 +272,16 @@
 			{/each}
 			<!-- node / antinode labels on the first loop -->
 			{#if n > 1}
-				<text
-					x={nodeXs[1]}
-					y={Y + AMP + 22}
-					text-anchor="middle"
-					class="halo"
-					font-size="12"
-					font-weight="600">node</text
-				>
+				<Readout id="node" order={10} label="node" marker={1} at={[nodeXs[1], Y + AMP + 26]}>
+					<text
+						x={nodeXs[1]}
+						y={Y + AMP + 22}
+						text-anchor="middle"
+						class="halo"
+						font-size="12"
+						font-weight="600">node</text
+					>
+				</Readout>
 				<line
 					x1={nodeXs[1]}
 					x2={nodeXs[1]}
@@ -286,14 +291,22 @@
 					stroke-dasharray="2 3"
 				/>
 			{/if}
-			<text
-				x={antinodeXs[0]}
-				y={Y - AMP - 14}
-				text-anchor="middle"
-				class="halo"
-				font-size="12"
-				font-weight="600">antinode</text
+			<Readout
+				id="antinode"
+				order={11}
+				label="antinode"
+				marker={2}
+				at={[antinodeXs[0], Y - AMP - 26]}
 			>
+				<text
+					x={antinodeXs[0]}
+					y={Y - AMP - 14}
+					text-anchor="middle"
+					class="halo"
+					font-size="12"
+					font-weight="600">antinode</text
+				>
+			</Readout>
 			<!-- one loop is half a wavelength -->
 			<g transform="translate(0 {Y + AMP + 22})">
 				{#if n > 1}
@@ -307,30 +320,36 @@
 						marker-start="url(#arrowhead)"
 						marker-end="url(#arrowhead)"
 					/>
-					<text
-						x={(nodeXs[n - 1] + nodeXs[n]) / 2}
-						y="-6"
-						text-anchor="middle"
-						class="halo"
-						font-size="12"
-						style:fill="var(--wav-a)"
-						font-weight="600">½ λ = {fmt(lamCm / 2, 1)} cm</text
-					>
+					<Readout id="half-lambda">
+						<text
+							x={(nodeXs[n - 1] + nodeXs[n]) / 2}
+							y="-6"
+							text-anchor="middle"
+							class="halo"
+							font-size="12"
+							style:fill="var(--wav-a)"
+							font-weight="600">½ λ = {fmt(lamCm / 2, 1)} cm</text
+						>
+					</Readout>
 				{/if}
 			</g>
 			{#if oHalves > 0.3}
 				<g opacity={oHalves}>
-					<text x={X0 + 6} y={Y - AMP - 28} class="halo" font-size="12" style:fill="var(--wav-a)"
-						>wave going right →</text
-					>
-					<text
-						x={X1 - 6}
-						y={Y - AMP - 28}
-						text-anchor="end"
-						class="halo"
-						font-size="12"
-						style:fill="var(--wav-b)">← its reflection going left</text
-					>
+					<Readout id="right" order={12} label="wave going right →" color="var(--wav-a)">
+						<text x={X0 + 6} y={Y - AMP - 28} class="halo" font-size="12" style:fill="var(--wav-a)"
+							>wave going right →</text
+						>
+					</Readout>
+					<Readout id="left" order={13} label="← its reflection going left" color="var(--wav-b)">
+						<text
+							x={X1 - 6}
+							y={Y - AMP - 28}
+							text-anchor="end"
+							class="halo"
+							font-size="12"
+							style:fill="var(--wav-b)">← its reflection going left</text
+						>
+					</Readout>
 				</g>
 			{/if}
 		</g>
@@ -349,14 +368,16 @@
 			/>
 			{#if held}
 				<circle cx={pluckX} cy={Y - AMP} r="9" fill="var(--wav-bead)" opacity="0.85" />
-				<text
-					x={pluckX}
-					y={Y - AMP - 18}
-					text-anchor="middle"
-					class="halo"
-					font-size="12"
-					font-weight="600">pulled here…</text
-				>
+				<Readout id="pluck" order={10} label="pulled here…" color="var(--wav-bead)">
+					<text
+						x={pluckX}
+						y={Y - AMP - 18}
+						text-anchor="middle"
+						class="halo"
+						font-size="12"
+						font-weight="600">pulled here…</text
+					>
+				</Readout>
 			{:else}
 				<line
 					x1={pluckX}
@@ -367,14 +388,16 @@
 					stroke-dasharray="2 4"
 					opacity="0.8"
 				/>
-				<text
-					x={pluckX}
-					y={Y - AMP - 16}
-					text-anchor="middle"
-					class="halo"
-					font-size="12"
-					style:fill="var(--wav-bead)">plucked here</text
-				>
+				<Readout id="pluck" order={10} label="plucked here" color="var(--wav-bead)">
+					<text
+						x={pluckX}
+						y={Y - AMP - 16}
+						text-anchor="middle"
+						class="halo"
+						font-size="12"
+						style:fill="var(--wav-bead)">plucked here</text
+					>
+				</Readout>
 			{/if}
 		</g>
 	{/if}
@@ -383,9 +406,16 @@
 	<g style:pointer-events="none">
 		<line x1={CX0} x2={CX1} y1={CY} y2={CY} stroke="var(--stage-line)" />
 		{#if phase === 'pluck'}
-			<text x={CX0} y={CY - CH - 18} font-size="13" font-weight="600"
-				>How much of each harmonic the pluck contains</text
+			<Readout
+				id="chart"
+				order={21}
+				label="bars: how much of each harmonic the pluck contains (× none)"
+				color="var(--wav-a)"
 			>
+				<text x={CX0} y={CY - CH - 18} font-size="13" font-weight="600"
+					>How much of each harmonic the pluck contains</text
+				>
+			</Readout>
 			{#each relAmps as a, i (i)}
 				{@const x = barX(i + 1)}
 				<rect
@@ -407,9 +437,16 @@
 				>harmonic frequency (Hz)</text
 			>
 		{:else}
-			<text x={CX0} y={CY - CH + 30} font-size="13" font-weight="600"
-				>The only frequencies that fit: n × 110 Hz</text
+			<Readout
+				id="chart"
+				order={21}
+				label="below: the only frequencies that fit, n × 110 Hz"
+				color="var(--wav-a)"
 			>
+				<text x={CX0} y={CY - CH + 30} font-size="13" font-weight="600"
+					>The only frequencies that fit: n × 110 Hz</text
+				>
+			</Readout>
 			{#each [0, 200, 400, 600, 800, 1000] as f (f)}
 				<line x1={ladderX(f)} x2={ladderX(f)} y1={CY} y2={CY + 5} stroke="var(--stage-line)" />
 				<text x={ladderX(f)} y={CY + 18} text-anchor="middle" class="muted" font-size="11">{f}</text

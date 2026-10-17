@@ -17,7 +17,7 @@
 	 * set point, shown 2.5 s after its (pre-settled) start.
 	 */
 	import { Label } from '#lib/draw/index.ts';
-	import type { StageProps } from '#lib/explainer/index.ts';
+	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import {
 		BoxRun,
 		FPS,
@@ -189,17 +189,24 @@
 </script>
 
 <g>
-	<!-- heading -->
-	<Label
-		x={BX}
-		y={48}
-		text="{SUBSTANCES[sub].name} ({SUBSTANCES[sub].formula}) · {formatCelsius(
-			celsius
-		)} · {formatAtm(P / ATM)}"
-		size={14}
-		weight={600}
-		anchor="start"
-	/>
+	<!-- heading (<Readout>: on narrow screens listed as HTML under the stage) -->
+	<Readout
+		id="heading"
+		order={1}
+		label="{SUBSTANCES[sub].name} ({SUBSTANCES[sub].formula})"
+		value="{formatCelsius(celsius)} · {formatAtm(P / ATM)}"
+	>
+		<Label
+			x={BX}
+			y={48}
+			text="{SUBSTANCES[sub].name} ({SUBSTANCES[sub].formula}) · {formatCelsius(
+				celsius
+			)} · {formatAtm(P / ATM)}"
+			size={14}
+			weight={600}
+			anchor="start"
+		/>
+	</Readout>
 
 	<!-- the box -->
 	<rect
@@ -222,7 +229,9 @@
 			stroke-width="1.2"
 			stroke-dasharray="5 5"
 		/>
-		<Label x={BX + BW + 12} y={iceLine - 10} text="ice level" size={11} anchor="start" muted />
+		<Readout id="ice-level">
+			<Label x={BX + BW + 12} y={iceLine - 10} text="ice level" size={11} anchor="start" muted />
+		</Readout>
 	{/if}
 
 	{#if model === 'mb'}
@@ -294,59 +303,80 @@
 			/>
 		{/each}
 	{/if}
-	<Label
-		x={BX + BW + 12}
-		y={pistonLabelY}
-		text={atStop ? 'piston at' : 'piston'}
-		size={12}
-		anchor="start"
-		muted
-	/>
-	<Label
-		x={BX + BW + 12}
-		y={pistonLabelY + 16}
-		text={atStop ? 'its stop' : formatAtm(P / ATM)}
-		size={12}
-		anchor="start"
-		muted
-	/>
+	<Readout id="piston">
+		<Label
+			x={BX + BW + 12}
+			y={pistonLabelY}
+			text={atStop ? 'piston at' : 'piston'}
+			size={12}
+			anchor="start"
+			muted
+		/>
+		<Label
+			x={BX + BW + 12}
+			y={pistonLabelY + 16}
+			text={atStop ? 'its stop' : formatAtm(P / ATM)}
+			size={12}
+			anchor="start"
+			muted
+		/>
+	</Readout>
 
 	<!-- what the box measures -->
-	<Label
-		x={BX}
-		y={BOTTOM + 30}
-		text="molecules in a crystal pattern: {pct(measured.order)}"
-		size={12}
-		anchor="start"
-		muted
-	/>
+	<Readout
+		id="crystal"
+		order={2}
+		label="In a crystal pattern"
+		value={pct(measured.order)}
+		note={freezing ? 'shortcut: gliding into the ice lattice' : undefined}
+	>
+		<Label
+			x={BX}
+			y={BOTTOM + 30}
+			text="molecules in a crystal pattern: {pct(measured.order)}"
+			size={12}
+			anchor="start"
+			muted
+		/>
+	</Readout>
 	{#if model === 'mb'}
-		<Label
-			x={BX}
-			y={BOTTOM + 50}
-			text="hydrogen bonds per molecule: {measured.bonds.toFixed(1)}"
-			size={12}
-			anchor="start"
-			muted
-		/>
+		<Readout
+			id="second"
+			order={3}
+			label="Hydrogen bonds per molecule"
+			value={measured.bonds.toFixed(1)}
+		>
+			<Label
+				x={BX}
+				y={BOTTOM + 50}
+				text="hydrogen bonds per molecule: {measured.bonds.toFixed(1)}"
+				size={12}
+				anchor="start"
+				muted
+			/>
+		</Readout>
 	{:else}
-		<Label
-			x={BX}
-			y={BOTTOM + 50}
-			text="molecules flying free: {pct(measured.free)}"
-			size={12}
-			anchor="start"
-			muted
-		/>
+		<Readout id="second" order={3} label="Flying free" value={pct(measured.free)}>
+			<Label
+				x={BX}
+				y={BOTTOM + 50}
+				text="molecules flying free: {pct(measured.free)}"
+				size={12}
+				anchor="start"
+				muted
+			/>
+		</Readout>
 	{/if}
 	{#if freezing}
-		<Label
-			x={BX + BW / 2}
-			y={top + 24}
-			text="shortcut: gliding into the ice lattice"
-			size={12}
-			pill
-		/>
+		<Readout id="shortcut">
+			<Label
+				x={BX + BW / 2}
+				y={top + 24}
+				text="shortcut: gliding into the ice lattice"
+				size={12}
+				pill
+			/>
+		</Readout>
 	{/if}
 
 	<!-- side panel -->

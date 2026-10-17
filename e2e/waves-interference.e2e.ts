@@ -260,3 +260,55 @@ test('at the end of a crossing the source fades out before it starts again', asy
 	}
 	expect(jumps).toBeGreaterThan(0);
 });
+
+// Phone readouts (as in phone-readouts.e2e.ts): on a narrow screen the readouts leave the
+// drawing and are listed as text under the stage.
+test.describe('on a phone', () => {
+	test.use({ viewport: { width: 390, height: 844 }, hasTouch: true, reducedMotion: 'reduce' });
+	const readouts = (page: Page) => page.getByRole('group', { name: 'Readouts' });
+
+	test('the Doppler readouts are text under the stage and follow the speed', async ({ page }) => {
+		await page.goto('./waves-interference/#doppler');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/Heard ahead\s*482 Hz/);
+		await expect(panel).toContainText(/Heard behind\s*405 Hz/);
+		await expect(stage(page)).not.toContainText('Heard ahead');
+		await slider(page, 'speed').fill('0');
+		await expect(panel).toContainText(/Heard ahead\s*440 Hz\s*no shift when still/);
+	});
+
+	test('the harmonic readouts are text under the stage and follow the slider', async ({ page }) => {
+		await page.goto('./waves-interference/#harmonics');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/Frequency\s*330 Hz/);
+		await slider(page, 'harmonic').fill('5');
+		await expect(panel).toContainText(/Frequency\s*550 Hz/);
+		await expect(panel).toContainText(/Wavelength λ = 2L ÷ n\s*26\.0 cm/);
+		await expect(stage(page)).not.toContainText('26.0 cm');
+	});
+});
+
+test('a step change in the middle of a drag lets go of the source', async ({ page }) => {
+	await page.emulateMedia({ reducedMotion: 'reduce' });
+	await page.goto('./waves-interference/#doppler');
+	const src = page.getByRole('slider', { name: /The source \(drag it/ });
+	// The brackets of squeezed and stretched crests show while the source moves
+	// on its own, and hide while it is held.
+	await expect(reading(page, 'squeezed')).toBeVisible();
+	const box = (await src.boundingBox())!;
+	await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2);
+	await page.mouse.down();
+	await page.mouse.move(box.x + box.width / 2 + 40, box.y + box.height / 2, { steps: 4 });
+	await expect(reading(page, 'squeezed')).toBeHidden();
+	// The next step and back with the keyboard, the button still down: the
+	// pass-by step takes the source handle away mid-drag.
+	await page.evaluate(() => (document.activeElement as HTMLElement | null)?.blur());
+	await page.keyboard.press('ArrowRight');
+	await expect(page).toHaveURL(/#pass-by$/);
+	await page.keyboard.press('ArrowLeft');
+	await expect(page).toHaveURL(/#doppler$/);
+	await expect(src).toBeAttached();
+	// Released: it moves on its own again, without waiting for the button.
+	await expect(reading(page, 'squeezed')).toBeVisible();
+	await page.mouse.up();
+});

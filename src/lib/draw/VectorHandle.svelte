@@ -9,6 +9,7 @@
 	 * the step size. Every key it handles is default-prevented, so the
 	 * explainer's own arrow-key navigation leaves it alone.
 	 */
+	import { onDestroy } from 'svelte';
 	import type { Point } from './math';
 	import { startDrag } from './pointer';
 
@@ -50,6 +51,11 @@
 	}: Props = $props();
 
 	let dragging = $state(false);
+	/** Ends the drag in progress, if any. */
+	let stopDrag: (() => void) | null = null;
+	// A step change can unmount the handle mid-drag, and the pointer's release
+	// would never reach it: the drag ends here, so the scene hears `ondragend`.
+	onDestroy(() => stopDrag?.());
 
 	function onpointerdown(event: PointerEvent) {
 		// Only the main button drags (as `startDrag` decides): a right-click
@@ -61,13 +67,14 @@
 		// the handle anywhere (or a floated handle) moves nothing, and the tip then
 		// follows the pointer by exactly the distance dragged.
 		let off: Point | null = null;
-		startDrag(
+		stopDrag = startDrag(
 			event,
 			(p) => {
 				off ??= { x: p.x - x, y: p.y - y };
 				onmove({ x: p.x - off.x, y: p.y - off.y });
 			},
 			() => {
+				stopDrag = null;
 				dragging = false;
 				ondragend?.();
 			}

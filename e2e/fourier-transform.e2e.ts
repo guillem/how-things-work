@@ -238,3 +238,29 @@ test.describe('on a touch screen', () => {
 		await expect(stage(page)).toContainText('Your drawing rebuilt from 1 to 5 Hz');
 	});
 });
+
+// Phone readouts (as in phone-readouts.e2e.ts): on a narrow screen the readouts leave the
+// drawing and are listed as text under the stage.
+test.describe('on a phone', () => {
+	test.use({ viewport: { width: 390, height: 844 }, hasTouch: true, reducedMotion: 'reduce' });
+	const readouts = (page: Page) => page.getByRole('group', { name: 'Readouts' });
+
+	test('the overshoot is text under the stage and follows the frequencies', async ({ page }) => {
+		await page.goto('./fourier-transform/#gibbs');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/The sum so far\s*1 Hz to 5 Hz/);
+		await expect(panel).toContainText(/Overshoot\s*0\.\d+ above \+1 = \d+\.\d% of the jump/);
+		await expect(stage(page)).not.toContainText('Overshoot');
+		await range(page, 'terms').fill('49');
+		await expect(panel).toContainText('= 9.0% of the jump');
+	});
+
+	test('the winding strength is text under the stage and follows the speed', async ({ page }) => {
+		await page.goto('./fourier-transform/#wind');
+		const panel = readouts(page);
+		await expect(panel).toContainText(/Strength of 1 Hz\s*2 × 0\.637 = 1\.273/);
+		await expect(stage(page)).not.toContainText('strength of 1 Hz');
+		await range(page, 'windK').fill('3');
+		await expect(panel).toContainText(/Strength of 3 Hz\s*2 × 0\.212 = 0\.424/);
+	});
+});

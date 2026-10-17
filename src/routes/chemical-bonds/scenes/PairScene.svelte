@@ -18,7 +18,7 @@
 	import { Tween } from 'svelte/motion';
 	import { cubicInOut } from 'svelte/easing';
 	import { clamp, lerp, smoothstep } from '#lib/draw/index.ts';
-	import type { StageProps } from '#lib/explainer/index.ts';
+	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { shellCounts } from '../../atoms-periodic-table/atom';
 	import { bond, data, electronegativity, type Sym } from '../model';
 	import { ATOM, NEG, POS } from '../look';
@@ -198,7 +198,9 @@
 				opacity={settle}
 			/>
 		{/each}
-		{@render txt(mid, TY - 92, 'shared pair', 13, { weight: 600 })}
+		<Readout id="shared" label="shared pair" marker={1} at={[mid, TY - 106]}>
+			{@render txt(mid, TY - 92, 'shared pair', 13, { weight: 600 })}
+		</Readout>
 		<line
 			x1={mid}
 			y1={TY - 84}
@@ -208,8 +210,10 @@
 			stroke-width="1"
 			opacity={settle}
 		/>
-		{@render txt(hA - 4, TY + 104, 'H: 2 electrons', 12, { muted: true })}
-		{@render txt(hB + 4, TY + 104, 'H: 2 electrons', 12, { muted: true })}
+		<Readout id="h-counts">
+			{@render txt(hA - 4, TY + 104, 'H: 2 electrons', 12, { muted: true })}
+			{@render txt(hB + 4, TY + 104, 'H: 2 electrons', 12, { muted: true })}
+		</Readout>
 
 		<!-- the equation, filling in as it happens -->
 		<g transform="translate(480 420)">
@@ -221,19 +225,29 @@
 				{@render txt(55, 0, 'H:H', 26, { weight: 700 })}
 				{@render txt(125, 0, '=', 22, { muted: true })}
 				{@render txt(195, 0, 'H–H', 26, { weight: 700 })}
-				{@render txt(55, 30, 'shared pair', 12, { muted: true })}
-				{@render txt(195, 30, 'one bond = one line', 12, { muted: true })}
+				<Readout id="eq-notes">
+					{@render txt(55, 30, 'shared pair', 12, { muted: true })}
+					{@render txt(195, 30, 'one bond = one line', 12, { muted: true })}
+				</Readout>
 			</g>
 		</g>
-		{@render txt(
-			480,
-			530,
-			'Each hydrogen counts both shared electrons: a full shell of two, like helium.',
-			14,
-			{
-				weight: 600
-			}
-		)}
+		<Readout
+			id="share-caption"
+			order={1}
+			label="Each hydrogen"
+			value="2 electrons: a full shell"
+			note="counts both shared electrons, like helium · one bond = one line"
+		>
+			{@render txt(
+				480,
+				530,
+				'Each hydrogen counts both shared electrons: a full shell of two, like helium.',
+				14,
+				{
+					weight: 600
+				}
+			)}
+		</Readout>
 	{:else if phase === 'tug'}
 		{@const [A, B] = pair}
 		{@const xA = TX - tugGap / 2}
@@ -271,16 +285,23 @@
 
 		<!-- electronegativities and partial charges -->
 		{#each [{ x: xA, s: A, sign: left ? -1 : 1 }, { x: xB, s: B, sign: left ? 1 : -1 }] as at, i (i)}
-			{@render txt(at.x, TY - cloudR(at.s) - 38, `${data(at.s).name}`, 13, { weight: 600 })}
-			{@render txt(
-				at.x,
-				TY - cloudR(at.s) - 20,
-				`electronegativity ${electronegativity(at.s).toFixed(2)}`,
-				12,
-				{
-					muted: true
-				}
-			)}
+			<Readout
+				id="en-{i}"
+				order={1 + i}
+				label={data(at.s).name}
+				value="electronegativity {electronegativity(at.s).toFixed(2)}"
+			>
+				{@render txt(at.x, TY - cloudR(at.s) - 38, `${data(at.s).name}`, 13, { weight: 600 })}
+				{@render txt(
+					at.x,
+					TY - cloudR(at.s) - 20,
+					`electronegativity ${electronegativity(at.s).toFixed(2)}`,
+					12,
+					{
+						muted: true
+					}
+				)}
+			</Readout>
 			{#if s > 0.05}
 				{@const full = ionic > 0.5}
 				{@render txt(
@@ -305,17 +326,19 @@
 					fill-opacity={band.label === 'pure covalent' ? 1 : 0.22}
 					stroke="var(--border-strong)"
 				/>
-				{@render txt((scaleX(band.from) + scaleX(band.to)) / 2, 38, band.label, 12, {
-					weight:
-						b.kind ===
-						(band.label === 'pure covalent'
-							? 'nonpolar'
-							: band.label === 'polar covalent'
-								? 'polar'
-								: 'ionic')
-							? 700
-							: 500
-				})}
+				<Readout id="band-{band.label}">
+					{@render txt((scaleX(band.from) + scaleX(band.to)) / 2, 38, band.label, 12, {
+						weight:
+							b.kind ===
+							(band.label === 'pure covalent'
+								? 'nonpolar'
+								: band.label === 'polar covalent'
+									? 'polar'
+									: 'ionic')
+								? 700
+								: 500
+					})}
+				</Readout>
 			{/each}
 			{#each [0, 0.4, 1.8, 3.3] as v (v)}
 				{@render txt(scaleX(v), 56, v.toFixed(1), 11, { muted: true })}
@@ -326,26 +349,52 @@
 				fill="var(--stage-ink)"
 				stroke="var(--stage-bg)"
 			/>
-			{@render txt(scaleX(b.dEN), -20, b.dEN.toFixed(2), 14, { weight: 700 })}
+			<Readout id="den-pointer">
+				{@render txt(scaleX(b.dEN), -20, b.dEN.toFixed(2), 14, { weight: 700 })}
+			</Readout>
 		</g>
-		{@render txt(
-			480,
-			540,
-			b.dEN === 0
-				? `${A}–${B}: identical atoms share equally (difference 0).`
-				: `${A}–${B}: difference ${electronegativity(b.pulls === A ? A : B).toFixed(2)} − ${electronegativity(b.pulls === A ? B : A).toFixed(2)} = ${b.dEN.toFixed(2)}: ${b.kind === 'nonpolar' ? 'practically equal sharing' : b.kind === 'polar' ? 'a polar covalent bond' : 'the electron is handed over (ionic)'}`,
-			14,
-			{ weight: 600 }
-		)}
-		{@render txt(
-			480,
-			562,
-			'Bands: a rough guide (OpenStax Chemistry 2e); real bonds change gradually.',
-			11,
-			{
-				muted: true
-			}
-		)}
+		<Readout
+			id="den"
+			order={3}
+			label="{A}–{B} bond"
+			value={b.dEN === 0
+				? 'ΔEN = 0'
+				: `ΔEN = ${electronegativity(b.pulls === A ? A : B).toFixed(2)} − ${electronegativity(b.pulls === A ? B : A).toFixed(2)} = ${b.dEN.toFixed(2)}`}
+			note={b.dEN === 0
+				? 'identical atoms share equally'
+				: b.kind === 'nonpolar'
+					? 'practically equal sharing'
+					: b.kind === 'polar'
+						? 'a polar covalent bond'
+						: 'the electron is handed over (ionic)'}
+		>
+			{@render txt(
+				480,
+				540,
+				b.dEN === 0
+					? `${A}–${B}: identical atoms share equally (difference 0).`
+					: `${A}–${B}: difference ${electronegativity(b.pulls === A ? A : B).toFixed(2)} − ${electronegativity(b.pulls === A ? B : A).toFixed(2)} = ${b.dEN.toFixed(2)}: ${b.kind === 'nonpolar' ? 'practically equal sharing' : b.kind === 'polar' ? 'a polar covalent bond' : 'the electron is handed over (ionic)'}`,
+				14,
+				{ weight: 600 }
+			)}
+		</Readout>
+		<Readout
+			id="bands"
+			order={4}
+			label="Bands"
+			value="covalent < 0.4 < polar < 1.8 < ionic"
+			note="a rough guide (OpenStax); real bonds change gradually"
+		>
+			{@render txt(
+				480,
+				562,
+				'Bands: a rough guide (OpenStax Chemistry 2e); real bonds change gradually.',
+				11,
+				{
+					muted: true
+				}
+			)}
+		</Readout>
 	{:else}
 		<!-- ionic: the electron hop -->
 		{@const naR = lerp(cloudR('Na'), 46, ions)}
@@ -379,21 +428,49 @@
 				marker-end="url(#arrowhead)"
 				marker-start="url(#arrowhead)"
 			/>
-			{@render txt((NA.x + CL.x) / 2, NA.y + 125, 'opposite charges attract', 13, { weight: 600 })}
+			<Readout id="attract">
+				{@render txt((NA.x + CL.x) / 2, NA.y + 125, 'opposite charges attract', 13, {
+					weight: 600
+				})}
+			</Readout>
 		</g>
-		{@render txt(NA.x, 110, ions > 0.5 ? `Na⁺ (${ionShells(11, -1)})` : `Na (${shells(11)})`, 15, {
-			weight: 700
-		})}
-		{@render txt(CL.x, 110, ions > 0.5 ? `Cl⁻ (${ionShells(17, 1)})` : `Cl (${shells(17)})`, 15, {
-			weight: 700
-		})}
-		{@render txt(NA.x, 130, ions > 0.5 ? 'gave its outer electron' : 'one outer electron', 12, {
-			muted: true
-		})}
-		{@render txt(CL.x, 130, ions > 0.5 ? 'full outer shell of 8' : 'one short of 8', 12, {
-			muted: true
-		})}
-		{@render txt(290, 470, 'electrons per shell, from the element data', 11, { muted: true })}
+		<Readout
+			id="na"
+			order={1}
+			label="Sodium"
+			value={ions > 0.5 ? `Na⁺ (${ionShells(11, -1)})` : `Na (${shells(11)})`}
+			note={ions > 0.5 ? 'gave its outer electron' : 'one outer electron'}
+		>
+			{@render txt(
+				NA.x,
+				110,
+				ions > 0.5 ? `Na⁺ (${ionShells(11, -1)})` : `Na (${shells(11)})`,
+				15,
+				{
+					weight: 700
+				}
+			)}
+			{@render txt(NA.x, 130, ions > 0.5 ? 'gave its outer electron' : 'one outer electron', 12, {
+				muted: true
+			})}
+		</Readout>
+		<Readout
+			id="cl"
+			order={2}
+			label="Chlorine"
+			value={ions > 0.5 ? `Cl⁻ (${ionShells(17, 1)})` : `Cl (${shells(17)})`}
+			note={ions > 0.5 ? 'full outer shell of 8' : 'one short of 8'}
+		>
+			{@render txt(CL.x, 110, ions > 0.5 ? `Cl⁻ (${ionShells(17, 1)})` : `Cl (${shells(17)})`, 15, {
+				weight: 700
+			})}
+			{@render txt(CL.x, 130, ions > 0.5 ? 'full outer shell of 8' : 'one short of 8', 12, {
+				muted: true
+			})}
+		</Readout>
+		<Readout id="shells-note">
+			{@render txt(290, 470, 'electrons per shell, from the element data', 11, { muted: true })}
+		</Readout>
 
 		<!-- one layer of the salt crystal -->
 		{#each lattice as c (c.i)}
@@ -406,23 +483,42 @@
 					stroke={c.na ? ATOM.Na.edge : ATOM.Cl.edge}
 					stroke-width="1.2"
 				/>
-				<text
-					x={c.x}
-					y={c.y + 4}
-					text-anchor="middle"
-					font-weight="700"
-					font-size={c.na ? 10 : 11}
-					style:fill="#ffffff">{c.na ? 'Na⁺' : 'Cl⁻'}</text
-				>
+				<Readout id="ion-{c.i}">
+					<text
+						x={c.x}
+						y={c.y + 4}
+						text-anchor="middle"
+						font-weight="700"
+						font-size={c.na ? 10 : 11}
+						style:fill="#ffffff">{c.na ? 'Na⁺' : 'Cl⁻'}</text
+					>
+				</Readout>
 			</g>
 		{/each}
 		<g opacity={smoothstep(2.0, 2.4, time)}>
-			{@render txt(728, 450, 'Table salt: one layer of the crystal', 13, { weight: 600 })}
-			{@render txt(728, 469, 'each Na⁺ surrounded by Cl⁻, and each Cl⁻ by Na⁺', 12, {
-				muted: true
-			})}
-			{@render txt(728, 486, '(ions not to scale)', 11, { muted: true })}
+			<Readout
+				id="salt"
+				order={4}
+				label="Table salt"
+				value="one layer of the crystal"
+				note="each Na⁺ surrounded by Cl⁻, and each Cl⁻ by Na⁺ (ions not to scale)"
+				opacity={smoothstep(2.0, 2.4, time)}
+			>
+				{@render txt(728, 450, 'Table salt: one layer of the crystal', 13, { weight: 600 })}
+				{@render txt(728, 469, 'each Na⁺ surrounded by Cl⁻, and each Cl⁻ by Na⁺', 12, {
+					muted: true
+				})}
+				{@render txt(728, 486, '(ions not to scale)', 11, { muted: true })}
+			</Readout>
 		</g>
-		{@render txt(480, 555, 'Na· + ·Cl  →  Na⁺ + Cl⁻   (an ionic bond)', 16, { weight: 700 })}
+		<Readout
+			id="reaction"
+			order={3}
+			label="An ionic bond"
+			value="Na· + ·Cl → Na⁺ + Cl⁻"
+			note="opposite charges attract"
+		>
+			{@render txt(480, 555, 'Na· + ·Cl  →  Na⁺ + Cl⁻   (an ionic bond)', 16, { weight: 700 })}
+		</Readout>
 	{/if}
 </g>

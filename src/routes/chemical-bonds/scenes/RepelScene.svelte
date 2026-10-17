@@ -12,7 +12,7 @@
 	import { untrack } from 'svelte';
 	import { Tween } from 'svelte/motion';
 	import { clamp, smoothstep, startDrag, type Point } from '#lib/draw/index.ts';
-	import type { StageProps } from '#lib/explainer/index.ts';
+	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { pairAngles, relax, type Vec } from '../model';
 	import { projector } from '../look';
 
@@ -238,52 +238,91 @@
 		{/each}
 	</g>
 
-	<!-- readout -->
-	{@render txt(PX, 70, `${n} electron domains`, 22, { weight: 700 })}
-	{@render txt(PX, 96, settled > 0.5 ? info.shape : 'spreading out…', 17, {
-		weight: 600,
-		muted: settled <= 0.5
-	})}
-	{@render txt(PX, 130, 'Angles between domains now:', 13, { weight: 600 })}
-	{@render txt(
-		PX,
-		150,
-		distinct.length > 4 ? 'still changing…' : distinct.map((a) => `${a}°`).join(', '),
-		14,
-		{ weight: 700 }
-	)}
+	<!-- readout (<Readout>: on narrow screens listed as HTML under the stage) -->
+	<Readout
+		id="domains"
+		order={1}
+		label="{n} electron domains"
+		value={settled > 0.5 ? info.shape : 'spreading out…'}
+	>
+		{@render txt(PX, 70, `${n} electron domains`, 22, { weight: 700 })}
+		{@render txt(PX, 96, settled > 0.5 ? info.shape : 'spreading out…', 17, {
+			weight: 600,
+			muted: settled <= 0.5
+		})}
+	</Readout>
+	<Readout
+		id="angles"
+		order={2}
+		label="Angles between domains now"
+		value={distinct.length > 4 ? 'still changing…' : distinct.map((a) => `${a}°`).join(', ')}
+		note="computed: charges on a sphere pushing each other apart (1/r²)"
+	>
+		{@render txt(PX, 130, 'Angles between domains now:', 13, { weight: 600 })}
+		{@render txt(
+			PX,
+			150,
+			distinct.length > 4 ? 'still changing…' : distinct.map((a) => `${a}°`).join(', '),
+			14,
+			{ weight: 700 }
+		)}
+	</Readout>
 	{#if settled > 0.5}
-		{@render txt(PX, 188, `Like the ${n} domains around the centre of`, 13)}
-		{@render txt(PX, 206, info.example, 13, { weight: 600 })}
-		{#if info.note}
-			{@render txt(PX, 224, `(${info.note}: they can hold more than 8)`, 11, { muted: true })}
-		{/if}
+		<Readout
+			id="example"
+			order={3}
+			label="Like the {n} domains around the centre of"
+			value={info.example}
+			note={info.note
+				? `${info.note}: they can hold more than 8`
+				: n === 4
+					? 'flat, four would be 90° apart; in 3D they get 109.5°'
+					: undefined}
+		>
+			{@render txt(PX, 188, `Like the ${n} domains around the centre of`, 13)}
+			{@render txt(PX, 206, info.example, 13, { weight: 600 })}
+			{#if info.note}
+				{@render txt(PX, 224, `(${info.note}: they can hold more than 8)`, 11, { muted: true })}
+			{/if}
+		</Readout>
 	{/if}
 	{#if n === 4}
-		{@render txt(PX, 268, 'Flat, four would be 90° apart;', 12, { muted: true })}
-		{@render txt(PX, 284, 'in 3D they get 109.5°.', 12, { muted: true })}
+		<Readout id="flat">
+			{@render txt(PX, 268, 'Flat, four would be 90° apart;', 12, { muted: true })}
+			{@render txt(PX, 284, 'in 3D they get 109.5°.', 12, { muted: true })}
+		</Readout>
 	{/if}
-	<g transform="translate({PX} 330)">
-		<ellipse
-			cx="30"
-			cy="0"
-			rx="30"
-			ry="16"
-			fill="var(--focus)"
-			fill-opacity="0.2"
-			stroke="var(--focus)"
-		/>
-		<circle cx="42" cy="-5" r="3.5" fill="var(--stage-ink)" />
-		<circle cx="42" cy="5" r="3.5" fill="var(--stage-ink)" />
-		{@render txt(72, -2, 'one electron domain: a bond', 12)}
-		{@render txt(72, 14, '(single, double or triple) or a lone pair', 12, { muted: true })}
-	</g>
-	{@render txt(PX, 400, 'The spreading is computed: charges on a', 11, { muted: true })}
-	{@render txt(PX, 415, 'sphere pushing each other apart (1/r²).', 11, { muted: true })}
-	{@render txt(CX, 584, 'Drag to turn · change the number of domains to replay', 11, {
-		anchor: 'middle',
-		muted: true
-	})}
+	<Readout
+		id="key-domain"
+		order={10}
+		label="one electron domain: a bond (single, double or triple) or a lone pair"
+		color="var(--focus)"
+	/>
+	<Readout id="legend">
+		<g transform="translate({PX} 330)">
+			<ellipse
+				cx="30"
+				cy="0"
+				rx="30"
+				ry="16"
+				fill="var(--focus)"
+				fill-opacity="0.2"
+				stroke="var(--focus)"
+			/>
+			<circle cx="42" cy="-5" r="3.5" fill="var(--stage-ink)" />
+			<circle cx="42" cy="5" r="3.5" fill="var(--stage-ink)" />
+			{@render txt(72, -2, 'one electron domain: a bond', 12)}
+			{@render txt(72, 14, '(single, double or triple) or a lone pair', 12, { muted: true })}
+		</g>
+	</Readout>
+	<Readout id="minor">
+		{@render txt(PX, 400, 'The spreading is computed: charges on a', 11, { muted: true })}
+		{@render txt(PX, 415, 'sphere pushing each other apart (1/r²).', 11, { muted: true })}
+		{@render txt(CX, 584, 'Drag to turn · change the number of domains to replay', 11, {
+			anchor: 'middle',
+			muted: true
+		})}
+	</Readout>
 </g>
 
 <style>

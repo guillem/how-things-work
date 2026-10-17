@@ -6,6 +6,7 @@
 	 * ring. The molecules vibrate a little (a pure function of t).
 	 */
 	import { Label } from '#lib/draw/index.ts';
+	import { Readout } from '#lib/explainer/index.ts';
 
 	interface Props {
 		t: number;
@@ -60,7 +61,9 @@
 </script>
 
 <g>
-	<Label x={430} y={64} text="one ring of the ice, close up" size={13} anchor="start" muted />
+	<Readout id="ring-title">
+		<Label x={430} y={64} text="one ring of the ice, close up" size={13} anchor="start" muted />
+	</Readout>
 	<path
 		d={outward}
 		fill="none"
@@ -82,46 +85,66 @@
 		/>
 	{/each}
 
-	<Label x={CX} y={CY + 5} text="open space" size={12} muted />
-	<Label
-		x={(m0.x + m5.x) / 2 + 14}
-		y={(m0.y + m5.y) / 2}
-		text="hydrogen bond"
-		size={12}
-		anchor="start"
-		color="var(--som-bond)"
-		weight={600}
-	/>
-	<Label x={m0.x + 46} y={m0.y + 40} text="to the next ring" size={11} anchor="start" muted />
+	<Readout id="open" order={12} label="open space" marker={2} at={[CX, CY]}>
+		<Label x={CX} y={CY + 5} text="open space" size={12} muted />
+	</Readout>
+	<Readout
+		id="hbond"
+		order={11}
+		label="hydrogen bond (dashed)"
+		marker={1}
+		at={[(m0.x + m5.x) / 2 + 40, (m0.y + m5.y) / 2 - 4]}
+	>
+		<Label
+			x={(m0.x + m5.x) / 2 + 14}
+			y={(m0.y + m5.y) / 2}
+			text="hydrogen bond"
+			size={12}
+			anchor="start"
+			color="var(--som-bond)"
+			weight={600}
+		/>
+	</Readout>
+	<Readout id="next" order={13} label="to the next ring" marker={3} at={[m0.x + 70, m0.y + 36]}>
+		<Label x={m0.x + 46} y={m0.y + 40} text="to the next ring" size={11} anchor="start" muted />
+	</Readout>
 
-	<Label
-		x={430}
-		y={420}
-		text="Each molecule bonds along its three arms, so the"
-		size={13}
-		anchor="start"
-	/>
-	<Label
-		x={430}
-		y={440}
-		text="molecules stand apart around open hexagons."
-		size={13}
-		anchor="start"
-	/>
-	<Label
-		x={430}
-		y={472}
-		text="In real ice, in 3D, each molecule bonds to four"
-		size={13}
-		anchor="start"
-		muted
-	/>
-	<Label
-		x={430}
-		y={492}
-		text="neighbours, and the crystal has hexagonal channels."
-		size={13}
-		anchor="start"
-		muted
-	/>
+	<Readout
+		id="ring"
+		order={4}
+		label="One ring of the ice"
+		value="molecules stand apart around open hexagons"
+		note="each bonds along its three arms; in real ice, in 3D, each bonds to four neighbours, and the crystal has hexagonal channels"
+	>
+		<Label
+			x={430}
+			y={420}
+			text="Each molecule bonds along its three arms, so the"
+			size={13}
+			anchor="start"
+		/>
+		<Label
+			x={430}
+			y={440}
+			text="molecules stand apart around open hexagons."
+			size={13}
+			anchor="start"
+		/>
+		<Label
+			x={430}
+			y={472}
+			text="In real ice, in 3D, each molecule bonds to four"
+			size={13}
+			anchor="start"
+			muted
+		/>
+		<Label
+			x={430}
+			y={492}
+			text="neighbours, and the crystal has hexagonal channels."
+			size={13}
+			anchor="start"
+			muted
+		/>
+	</Readout>
 </g>

@@ -15,7 +15,7 @@
 	 * current one marked. It peaks at the waveform's own frequencies.
 	 */
 	import { cycle } from '#lib/draw/index.ts';
-	import type { StageProps } from '#lib/explainer/index.ts';
+	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { num, strengthAt, wind } from '../fourier';
 	import { samplesPath, theWave, waveSource } from '../signals';
 
@@ -129,23 +129,34 @@
 
 <g>
 	{#if !samples}
-		{@render txt(480, 280, 'Nothing drawn yet', 22, { anchor: 'middle', weight: 600 })}
-		{@render txt(
-			480,
-			312,
-			'Draw a waveform on the top graph of “The spectrum” or “Draw any waveform”,',
-			14,
-			{ anchor: 'middle', muted: true }
-		)}
-		{@render txt(480, 334, 'or pick one of the other waveforms.', 14, {
-			anchor: 'middle',
-			muted: true
-		})}
+		<!-- <Readout>: on narrow screens these are listed as HTML under the stage -->
+		<Readout
+			id="empty"
+			order={1}
+			label="Nothing drawn yet"
+			value="draw a waveform on the top graph of “The spectrum” or “Draw any waveform”"
+			note="or pick one of the other waveforms"
+		>
+			{@render txt(480, 280, 'Nothing drawn yet', 22, { anchor: 'middle', weight: 600 })}
+			{@render txt(
+				480,
+				312,
+				'Draw a waveform on the top graph of “The spectrum” or “Draw any waveform”,',
+				14,
+				{ anchor: 'middle', muted: true }
+			)}
+			{@render txt(480, 334, 'or pick one of the other waveforms.', 14, {
+				anchor: 'middle',
+				muted: true
+			})}
+		</Readout>
 	{:else}
 		<!-- ================= the signal ================= -->
-		{@render txt(SX0, 40, `${SECONDS} seconds of ${theWave(shape)}`, 17, {
-			weight: 600
-		})}
+		<Readout id="signal" order={1} label="Top left" value="{SECONDS} seconds of {theWave(shape)}">
+			{@render txt(SX0, 40, `${SECONDS} seconds of ${theWave(shape)}`, 17, {
+				weight: 600
+			})}
+		</Readout>
 		{#each [-1, 1] as v (v)}
 			<line x1={SX0} x2={SX1} y1={SCY - SU * v} y2={SCY - SU * v} stroke="var(--stage-grid)" />
 		{/each}
@@ -172,29 +183,55 @@
 		{@render txt(SX1, SCY + SU + 26, `${SECONDS} s`, 12, { anchor: 'end', muted: true })}
 
 		<!-- readouts -->
-		{@render txt(
-			SX0,
-			322,
-			`Winding: ${kText} turn${k === 1 ? '' : 's'} per second, clockwise`,
-			15,
-			{
+		<Readout
+			id="winding"
+			order={2}
+			label="Winding"
+			value="{kText} turn{k === 1 ? '' : 's'} per second, clockwise"
+			color="var(--ft-wind)"
+		>
+			{@render txt(
+				SX0,
+				322,
+				`Winding: ${kText} turn${k === 1 ? '' : 's'} per second, clockwise`,
+				15,
+				{
+					weight: 600,
+					color: 'var(--ft-wind)'
+				}
+			)}
+		</Readout>
+		<Readout
+			id="centre"
+			order={3}
+			label="Centre of mass"
+			value="{num(dist, 3)} from the middle"
+			note="of the wound curve"
+			color="var(--ft-bar)"
+		>
+			{@render txt(SX0, 348, `centre of mass: ${num(dist, 3)} from the middle`, 15, {
 				weight: 600,
-				color: 'var(--ft-wind)'
-			}
-		)}
-		{@render txt(SX0, 348, `centre of mass: ${num(dist, 3)} from the middle`, 15, {
-			weight: 600,
-			color: 'var(--ft-bar)'
-		})}
-		{@render txt(
-			SX0,
-			374,
-			k < 1e-9
-				? `no winding: the centre is the average, ${num(centre.re, 3)}`
-				: `strength of ${kText} Hz = 2 × ${num(dist, 3)} = ${num(strength, 3)}`,
-			15,
-			{ weight: 700 }
-		)}
+				color: 'var(--ft-bar)'
+			})}
+		</Readout>
+		<Readout
+			id="strength"
+			order={4}
+			label={k < 1e-9 ? 'No winding' : `Strength of ${kText} Hz`}
+			value={k < 1e-9
+				? `the centre is the average, ${num(centre.re, 3)}`
+				: `2 × ${num(dist, 3)} = ${num(strength, 3)}`}
+		>
+			{@render txt(
+				SX0,
+				374,
+				k < 1e-9
+					? `no winding: the centre is the average, ${num(centre.re, 3)}`
+					: `strength of ${kText} Hz = 2 × ${num(dist, 3)} = ${num(strength, 3)}`,
+				15,
+				{ weight: 700 }
+			)}
+		</Readout>
 
 		<!-- ================= the winding ================= -->
 		<circle cx={WX} cy={WY} r={wr} fill="none" stroke="var(--stage-grid)" stroke-dasharray="4 5" />
@@ -244,12 +281,14 @@
 			stroke="var(--stage-bg)"
 			stroke-width="2.5"
 		/>
-		{@render txt(WX + WR + 30, 50, 'centre of mass', 13, {
-			anchor: 'end',
-			weight: 600,
-			color: 'var(--ft-bar)'
-		})}
-		{@render txt(WX + WR + 30, 68, 'of the wound curve', 12, { anchor: 'end', muted: true })}
+		<Readout id="centre-label">
+			{@render txt(WX + WR + 30, 50, 'centre of mass', 13, {
+				anchor: 'end',
+				weight: 600,
+				color: 'var(--ft-bar)'
+			})}
+			{@render txt(WX + WR + 30, 68, 'of the wound curve', 12, { anchor: 'end', muted: true })}
+		</Readout>
 
 		<!-- ================= strength at every winding speed ================= -->
 		<line x1={PX0} x2={PX1} y1={PY} y2={PY} stroke="var(--stage-line)" stroke-width="1.5" />
@@ -262,9 +301,16 @@
 			anchor: 'end',
 			muted: true
 		})}
-		{@render txt(PX0, PY - PH - 14, 'strength found at each winding speed', 13, {
-			weight: 600
-		})}
+		<Readout
+			id="curve-key"
+			order={10}
+			label="bottom: strength found at each winding speed"
+			color="var(--ft-bar)"
+		>
+			{@render txt(PX0, PY - PH - 14, 'strength found at each winding speed', 13, {
+				weight: 600
+			})}
+		</Readout>
 		<path d={curve.path} fill="none" stroke="var(--ft-bar)" stroke-width="2" opacity="0.85" />
 		<line
 			x1={kx}
