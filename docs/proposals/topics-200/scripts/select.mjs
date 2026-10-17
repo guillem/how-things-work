@@ -9,7 +9,10 @@ import path from 'node:path';
 const here = path.dirname(new URL(import.meta.url).pathname);
 const DATA = path.resolve(here, '../data');
 const STAGES = path.join(DATA, 'stages');
-const QUOTA = { 0: 45, 1: 10, 2: 3, 3: 42 };
+// Level split and per-category targets. On 2026-10-18 the user asked to lean towards AI where the
+// split has to be uneven (ideally a complete ladder for understanding LLMs) and chose to take the
+// AI slots from level 0: 39 / 10 / 3 / 48 instead of 45 / 10 / 3 / 42.
+const QUOTA = { 0: 39, 1: 10, 2: 3, 3: 48 };
 const L3_TARGET = {
 	math: 5,
 	physics: 2,
@@ -20,23 +23,24 @@ const L3_TARGET = {
 	space: 2,
 	computing: 2,
 	networks: 5,
-	ai: 3,
+	ai: 9,
 	energy: 5
 };
 const L0_TARGET = {
-	math: 4,
-	physics: 6,
-	chemistry: 4,
+	math: 3,
+	physics: 5,
+	chemistry: 3,
 	biology: 4,
-	medicine: 5,
-	earth: 4,
+	medicine: 4,
+	earth: 3,
 	space: 3,
-	computing: 4,
+	computing: 3,
 	networks: 3,
-	ai: 2,
-	energy: 6
+	ai: 3,
+	energy: 5
 };
 const CAT_MAX = 12;
+const capOf = (c) => (c === 'ai' ? 18 : CAT_MAX);
 const CAT_IDS = JSON.parse(
 	fs.readFileSync(path.join(DATA, 'workflow-args.json'), 'utf8')
 ).categories.map((c) => c.id);
@@ -74,24 +78,17 @@ const merges = collected('merge-');
 const mergedCats = Object.keys(merges).map((l) => l.slice('merge:'.length));
 const missingMerge = CAT_IDS.filter((c) => !mergedCats.includes(c));
 const dropped = new Map();
+const keepOf = new Map(); // dropped slug -> the slug its merge group kept
 for (const m of Object.values(merges)) {
 	for (const g of m.groups || [])
 		for (const d of g.drop || [])
-			if (norm(d) !== norm(g.keep))
+			if (norm(d) !== norm(g.keep)) {
 				dropped.set(norm(d), `merged into ${norm(g.keep)}: ${g.reason}`);
+				keepOf.set(norm(d), norm(g.keep));
+			}
 	for (const d of m.duplicatesOfExisting || [])
 		dropped.set(norm(d.slug), `duplicate of existing ${d.existing}: ${d.reason}`);
 }
-const mergedOut = pool
-	.filter((e) => dropped.has(e.slug))
-	.map((e) => ({
-		slug: e.slug,
-		level: e.level,
-		category: e.category,
-		title: e.title,
-		why: dropped.get(e.slug)
-	}));
-pool = pool.filter((e) => !dropped.has(e.slug));
 
 // --- judge ---
 const judges = collected('judge-');
@@ -125,12 +122,45 @@ for (const e of pool) {
 		e.level = lv.suggestedLevel;
 	}
 }
+// Merge drops apply after judging. When a judge rejected the candidate a merge group kept
+// (usually as a duplicate of the very one it absorbed), the dropped members come back.
+const bySlug = Object.fromEntries(pool.map((e) => [e.slug, e]));
+const restored = [];
+for (const [d, k] of keepOf)
+	if (bySlug[k] && bySlug[k].rejected) {
+		dropped.delete(d);
+		restored.push(`${d} (its merge kept ${k}, which a judge rejected)`);
+	}
+const mergedOut = pool
+	.filter((e) => dropped.has(e.slug))
+	.map((e) => ({
+		slug: e.slug,
+		level: e.level,
+		category: e.category,
+		title: e.title,
+		why: dropped.get(e.slug)
+	}));
+pool = pool.filter((e) => !dropped.has(e.slug));
 const unjudged = pool.filter((e) => !Object.keys(e.scores).length).map((e) => e.slug);
 const halfJudged = pool.filter((e) => Object.keys(e.scores).length === 1).map((e) => e.slug);
 
 // --- select by quota (as the single-run script did) ---
 const eligible = pool.filter((e) => !e.rejected && e.score > 0);
-const byScore = [...eligible].sort((a, b) => b.score - a.score || (a.slug < b.slug ? -1 : 1));
+// Scores are means of two 1-to-5 marks, so ties are common. Ties go to the higher fit-level
+// mark (fit, honest level and distinctness), then to AI (the user's tilt), then to the demand
+// lens's candidates, then to a
+// fixed hash of the slug (not the alphabet, which would favour early letters).
+const ORIGIN = Object.fromEntries(
+	JSON.parse(fs.readFileSync(path.join(DATA, 'pool.json'), 'utf8')).map((e) => [e.slug, e.origin])
+);
+const hash = (s) => [...s].reduce((h, c) => (Math.imul(h, 31) + c.charCodeAt(0)) >>> 0, 7);
+const rank = (a, b) =>
+	b.score - a.score ||
+	(b.scores['fit-level'] || 0) - (a.scores['fit-level'] || 0) ||
+	(b.category === 'ai') - (a.category === 'ai') ||
+	(ORIGIN[b.slug] === 'demand') - (ORIGIN[a.slug] === 'demand') ||
+	hash(a.slug) - hash(b.slug);
+const byScore = [...eligible].sort(rank);
 const notes = [];
 function selectByQuota() {
 	const chosen = [];
@@ -161,7 +191,7 @@ function selectByQuota() {
 		for (const c of byScore) {
 			if (levelCount[level] >= QUOTA[level]) break;
 			if (c.level !== level || chosenSlugs.has(c.slug)) continue;
-			if ((catCount[c.category] || 0) >= CAT_MAX) continue;
+			if ((catCount[c.category] || 0) >= capOf(c.category)) continue;
 			take(c);
 		}
 		if (levelCount[level] < QUOTA[level])
@@ -194,7 +224,7 @@ if (curator) {
 		runnersUp = runnersUp.filter((e) => e !== inn).concat(out);
 		curatorSwaps.push({ out: out.slug, in: inn.slug, reason: s.reason });
 	}
-	runnersUp.sort((a, b) => b.score - a.score || (a.slug < b.slug ? -1 : 1));
+	runnersUp.sort(rank);
 }
 
 const count = (list, k) => list.reduce((a, e) => ((a[e[k]] = (a[e[k]] || 0) + 1), a), {});
@@ -225,6 +255,7 @@ const out = {
 	eligibleByLevel: count(eligible, 'level'),
 	notes,
 	mergedOut,
+	restored,
 	rejectedByJudges: pool
 		.filter((e) => e.rejected)
 		.map((e) => ({
@@ -250,6 +281,7 @@ console.log(
 		`judge: ${missingJudge.length ? missingJudge.length + ' passes missing' : 'complete'}, ${unjudged.length} unjudged, ${halfJudged.length} with one judge; ` +
 		`${out.rejectedByJudges.length} rejected, ${out.relevelled.length} re-levelled`
 );
+for (const r of restored) console.log('restored', r);
 console.log(`eligible by level ${JSON.stringify(out.eligibleByLevel)}`);
 console.log(
 	`selected ${selected.length}: ${JSON.stringify(out.counts.byLevel)} ${JSON.stringify(out.counts.byCategory)}`

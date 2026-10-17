@@ -1,0 +1,400 @@
+[
+ {
+  "lens": "llm-ladder",
+  "ok": true,
+  "count": 16,
+  "candidates": [
+   {
+    "slug": "next-word-guessing-game",
+    "title": "How a chatbot picks its next word",
+    "level": 0,
+    "kind": "manipulate",
+    "category": "ai",
+    "everyday": true,
+    "interaction": "Play a guessing game against a tiny machine that has read a few children's books: a story stops mid-sentence, you guess the next word, and the machine shows its own guess as a row of word cards, each with a count of how often that word came next in everything it read. Then let it write on its own, one word at a time, always picking from those counts, and press the one button, 'read more books', to watch its guesses and its stories get better.",
+    "takeaway": "A chatbot writes by guessing one word at a time from what usually came next in the text it learned from, so it picks likely words, not true ones.",
+    "prerequisites": [],
+    "related": [
+     "ngram-text-models",
+     "words-keep-company",
+     "language-models"
+    ],
+    "needs": "A few public-domain children's books (Beatrix Potter, Aesop's fables) from Project Gutenberg, counted in the page.",
+    "pitfall": "Do not say real chatbots only count word pairs: say this toy looks back one or two words, while a real chatbot uses a neural network that looks back over thousands. And it does not look answers up in a stored copy of the books.",
+    "why": "Code.org How AI Works, lesson 'Chatbots and Large Language Models' (grades 6-12): https://studio.code.org/s/how-ai-works-2023/lessons/8",
+    "overlapWith": "language-models: that page shows a real network's next-token probabilities for a level-2 reader; this one lets a beginner play the same game against word counts they can read off cards.",
+    "needsSource": "Project Gutenberg texts of books in the US public domain (public domain).",
+    "leadsTo": [
+     "learning-from-data"
+    ]
+   },
+   {
+    "slug": "words-keep-company",
+    "title": "Words that keep the same company",
+    "level": 0,
+    "kind": "explore",
+    "category": "ai",
+    "everyday": false,
+    "interaction": "Pick a word from a small storybook collection, 'cat', and see the words that turn up next to it most often, as a row of bars you can count. Pick 'dog' and its row looks almost the same; pick 'spoon' and it looks different. Then explore a map the page builds from those rows alone, where words with similar neighbours sit close together, and drag one word to see its closest friends light up.",
+    "takeaway": "A computer can tell that two words mean similar things, without knowing what either means, because they keep turning up next to the same other words.",
+    "prerequisites": [],
+    "related": [
+     "next-word-guessing-game",
+     "embeddings"
+    ],
+    "needs": "Public-domain children's books from Project Gutenberg, counted in the page; the map is computed from the co-occurrence counts.",
+    "pitfall": "Close on the map does not mean the same: opposites such as 'hot' and 'cold' keep the same company and land close together. The map is a flattened picture; the friends list is computed from the full counts.",
+    "why": "Code.org How AI Works video series for grades 6-12 (how computers represent words and language): https://code.org/ai/how-ai-works",
+    "overlapWith": "embeddings: that page explores pretrained word vectors with vector arithmetic at level 2; this one builds similarity from neighbour counts a beginner can read, with no vectors named.",
+    "needsSource": "Project Gutenberg public-domain texts (public domain).",
+    "leadsTo": [
+     "learning-from-data"
+    ]
+   },
+   {
+    "slug": "ngram-text-models",
+    "title": "N-gram text models & their limits",
+    "level": 1,
+    "kind": "build",
+    "category": "ai",
+    "everyday": false,
+    "interaction": "Feed a text into a counting machine that records which letter (or word) follows each run of the previous n, then let it write by sampling from those counts. Slide n from 1 to 10 and watch the samples go from gibberish to word-like to Shakespeare-like, while two meters track what goes wrong: the share of contexts in held-out text that were never seen climbs toward all of them, and the longest stretch copied verbatim from the source grows until the model only recites.",
+    "takeaway": "Counting what followed the last few symbols gives more fluent text as the window grows, but the number of possible contexts explodes so fast that long windows are almost never seen, and the model can only copy; a model that reaches far back has to generalise instead of count.",
+    "prerequisites": [
+     "learning-from-data"
+    ],
+    "related": [
+     "next-word-guessing-game",
+     "language-models",
+     "compression",
+     "training-a-tiny-language-model"
+    ],
+    "needs": "Tiny Shakespeare (about 1 MB of Shakespeare, from Karpathy's char-rnn repository) and the reader's own text.",
+    "pitfall": "Unseen contexts are not a problem solved by more data alone: the count of possible contexts grows exponentially with n. Smoothing and back-off fix the zero counts but not the lack of long-range structure.",
+    "why": "Karpathy, Neural Networks: Zero to Hero, 'building makemore' (bigram character model): https://karpathy.ai/zero-to-hero.html",
+    "overlapWith": "language-models: that page shows a trained network's predictions; this one builds the counting model that preceded it and shows why counting cannot reach far back.",
+    "needsSource": "Tiny Shakespeare: Shakespeare's text is public domain; the char-rnn repository that ships it is MIT.",
+    "leadsTo": []
+   },
+   {
+    "slug": "training-a-tiny-language-model",
+    "title": "Training a tiny language model",
+    "level": 3,
+    "kind": "simulate",
+    "category": "ai",
+    "everyday": false,
+    "interaction": "Press train and a small character-level transformer (two layers, a few tens of thousands of weights) learns Tiny Shakespeare live in the page: the training and validation cross-entropy fall on a loss curve with the n-gram models' scores drawn as horizontal lines, perplexity is read off beside it, and a sample is written every few hundred steps. Change the model width, the context length and the amount of data, and watch it beat the bigram line, then the 5-gram line, and, with too little data, start memorising as the two curves split.",
+    "takeaway": "Training a language model is gradient descent on one number, the average surprise at the next character, and the samples improve in a fixed order (letter frequencies, then spelling, then words, then form) as that number falls.",
+    "prerequisites": [
+     "language-models",
+     "gradient-descent",
+     "ngram-text-models"
+    ],
+    "related": [
+     "scaling-laws",
+     "compression",
+     "weight-quantization",
+     "knowledge-distillation"
+    ],
+    "needs": "Tiny Shakespeare; a tiny transformer trained by the page itself (nanoGPT's character-level configuration is the reference).",
+    "pitfall": "Perplexity is the exponential of the average cross-entropy per token and is comparable only between models with the same tokenizer; a training loss near zero is memorisation, not success.",
+    "why": "Karpathy, Neural Networks: Zero to Hero, 'Let's build GPT: from scratch, in code, spelled out': https://karpathy.ai/zero-to-hero.html",
+    "overlapWith": "language-models: that page uses a finished model's precomputed probabilities; this one trains a model from random weights in front of the reader and measures it.",
+    "needsSource": "Tiny Shakespeare (public-domain text; char-rnn repository MIT); nanoGPT is MIT; the weights are the page's own.",
+    "leadsTo": []
+   },
+   {
+    "slug": "residual-stream-logit-lens",
+    "title": "Inside a transformer block: the residual stream",
+    "level": 3,
+    "kind": "explore",
+    "category": "ai",
+    "everyday": false,
+    "interaction": "Pick a prompt and follow one token's vector down GPT-2 small's twelve blocks: in each, layer norm rescales a copy, attention adds what it gathered from other tokens, and the MLP adds its own output, drawn as arrows summing onto a running vector. A logit lens decodes that running vector after every block into the model's best guess for the next token, so a grid of layers by positions shows the answer appearing and sharpening; switch off any block's attention or MLP and see which guesses change.",
+    "takeaway": "A transformer does not pass a message from layer to layer; every block adds a correction to one shared running vector, and the prediction is refined gradually as those corrections pile up.",
+    "prerequisites": [
+     "transformers",
+     "language-models"
+    ],
+    "related": [
+     "where-facts-live",
+     "induction-heads",
+     "superposition-features"
+    ],
+    "needs": "Residual-stream activations, block outputs and ablated runs of GPT-2 small for a set of prompts, precomputed (or GPT-2 small run in the browser through ONNX).",
+    "pitfall": "The logit lens reads early layers with the final unembedding, which they were never trained for; it works roughly on GPT-2 and fails on some other models (the tuned lens fixes this). Do not present early-layer guesses as what the model 'thinks'.",
+    "why": "Belrose et al., Eliciting Latent Predictions from Transformers with the Tuned Lens (logit lens on GPT-2 as baseline): https://arxiv.org/abs/2303.08112",
+    "overlapWith": "transformers: that page shows attention weights and one attention operation; this one shows the whole block, the residual sum and the MLP, and reads the prediction out at every depth.",
+    "needsSource": "GPT-2 small (OpenAI): weights released under a modified MIT licence (repository licence).",
+    "leadsTo": []
+   },
+   {
+    "slug": "where-facts-live",
+    "title": "Where a language model keeps its facts",
+    "level": 3,
+    "kind": "manipulate",
+    "category": "ai",
+    "everyday": false,
+    "interaction": "Give GPT-2 small a factual prompt ('The Eiffel Tower is in the city of') and see its probability for the right answer. Blur the subject's tokens with noise and the answer collapses; then restore the clean hidden state at one layer and one position at a time and watch a heatmap fill in with how much of the answer each restoration brings back. Click a hot cell to see the MLP neurons that fire there and the tokens each neuron's output pushes up.",
+    "takeaway": "Recall of a fact is concentrated in the MLP layers at the subject's last token in the middle of the network, where an MLP acts like a key-value memory: the subject switches neurons on and their outputs write the attribute into the residual stream.",
+    "prerequisites": [
+     "residual-stream-logit-lens"
+    ],
+    "related": [
+     "superposition-features",
+     "retrieval-augmented-generation"
+    ],
+    "needs": "Causal-tracing runs of GPT-2 small (corrupted and restored hidden states for every layer and position) for a few dozen hand-written factual prompts, precomputed; neuron outputs decoded with the unembedding.",
+    "pitfall": "Causal tracing localises where restoring a state matters, not where a fact is 'stored' as in a database; editing those layers does not cleanly change one fact, and a single neuron rarely means one thing (superposition).",
+    "why": "3Blue1Brown, How might LLMs store facts (Deep Learning, chapter 7): https://3blue1brown.com/lessons/mlp",
+    "overlapWith": "residual-stream-logit-lens: that page reads predictions out layer by layer; this one intervenes on hidden states to find which layers and positions cause a recalled fact.",
+    "needsSource": "GPT-2 small, modified MIT licence; the prompts are the project's own.",
+    "leadsTo": []
+   },
+   {
+    "slug": "positional-encoding",
+    "title": "Position in a transformer: sinusoids & RoPE",
+    "level": 3,
+    "kind": "manipulate",
+    "category": "ai",
+    "everyday": false,
+    "interaction": "Shuffle the words of a sentence fed to a small attention layer with no position information: every output vector moves with its word, unchanged, so 'dog bites man' and 'man bites dog' look identical. Add sinusoidal encodings and drag a position slider to see each pair of dimensions turn like the hands of clocks running at different speeds; switch to RoPE, where queries and keys are rotated instead, and drag two tokens along the sentence: the attention score stays the same as long as their distance does. Then push the sentence past the training length and compare how each scheme copes.",
+    "takeaway": "Attention on its own treats a sentence as a bag of words, and position has to be added; rotating queries and keys by an angle proportional to position makes the score depend only on how far apart two tokens are.",
+    "prerequisites": [
+     "transformers",
+     "unit-circle"
+    ],
+    "related": [
+     "fourier-transform",
+     "long-context-attention-cost"
+    ],
+    "needs": "",
+    "pitfall": "RoPE does not add a position vector to the embeddings and is not applied to the values; and 'depends only on relative position' holds for the score of one query-key pair, not for the whole network's behaviour beyond the trained length.",
+    "why": "Su et al., RoFormer: Enhanced Transformer with Rotary Position Embedding: https://arxiv.org/abs/2104.09864 (and the EleutherAI explainer https://blog.eleuther.ai/rotary-embeddings/)",
+    "overlapWith": "transformers: that page shows attention on real sentences without explaining word order; this one shows that attention is blind to order and how the two standard encodings fix it.",
+    "needsSource": "none",
+    "leadsTo": []
+   },
+   {
+    "slug": "kv-cache-inference",
+    "title": "Serving a language model: the KV cache",
+    "level": 3,
+    "kind": "simulate",
+    "category": "computing",
+    "everyday": false,
+    "interaction": "Generate text with a small transformer running in the page, first recomputing every earlier token at each step and then with a cache that keeps each layer's keys and values, while the page measures the time per token and counts the arithmetic and the bytes read. Then scale up to a published model configuration on a published GPU: drag the batch size and the context length and watch a roofline chart place prefill (the whole prompt at once) on the compute ceiling and each decode step far below it, on the memory-bandwidth slope, until a large batch lifts it.",
+    "takeaway": "After the prompt, generating each token reads every weight and the whole cache from memory for very little arithmetic, so serving speed is set by memory bandwidth, and batching many requests together is what makes it cheap.",
+    "prerequisites": [
+     "transformers",
+     "gpu"
+    ],
+    "related": [
+     "speculative-decoding",
+     "long-context-attention-cost",
+     "weight-quantization"
+    ],
+    "needs": "A small transformer run in the page (the project's own or GPT-2 small); published model configurations (layers, widths, heads) and GPU datasheet figures for memory bandwidth and peak throughput.",
+    "pitfall": "The cache does not make decoding compute-bound or free: its size grows with context and batch, and at long contexts reading the cache, not the weights, dominates. Prefill and decode are different regimes; one tokens-per-second figure hides both.",
+    "why": "WEKA, Prefill and Decode: a technical guide to the two phases of inference: https://www.weka.io/learn/ai-ml/prefill-and-decode/",
+    "overlapWith": "gpu: that page races parallel against serial work; this one shows that generation is starved of memory bandwidth, not arithmetic, and how the cache and batching change that.",
+    "needsSource": "GPU figures from vendor datasheets (published specifications); model configurations from public model cards; GPT-2 small modified MIT if used.",
+    "leadsTo": []
+   },
+   {
+    "slug": "long-context-attention-cost",
+    "title": "Long context & the cost of attention",
+    "level": 3,
+    "kind": "simulate",
+    "category": "computing",
+    "everyday": false,
+    "interaction": "Grow the context from a hundred tokens to a million and watch the attention score matrix grow as a square while the rest of the model grows as a line, with memory and time read off for a published model on a published GPU. Then run attention on real small matrices two ways in the page, all at once and tile by tile with a running maximum and sum (the FlashAttention scheme), and see the two outputs agree to the last digit while the tiled one never holds the full matrix; switch to a sliding window and see which tokens can no longer see each other.",
+    "takeaway": "Attention compares every token with every other, so its cost grows with the square of the context; tiling removes the memory wall without changing the answer, but not the quadratic arithmetic.",
+    "prerequisites": [
+     "kv-cache-inference"
+    ],
+    "related": [
+     "positional-encoding",
+     "retrieval-augmented-generation",
+     "recurrent-networks"
+    ],
+    "needs": "Published model configurations and GPU datasheet figures; the tiled computation runs on the page's own matrices.",
+    "pitfall": "FlashAttention is exact, not an approximation, and it saves memory traffic, not multiplications; and a model that accepts a long context does not necessarily use all of it well.",
+    "why": "Dao et al., FlashAttention: Fast and Memory-Efficient Exact Attention with IO-Awareness: https://arxiv.org/abs/2205.14135",
+    "overlapWith": "kv-cache-inference: that page is about the per-token cost of decoding; this one is about how attention's cost scales with context length and how tiling avoids storing the score matrix.",
+    "needsSource": "Vendor datasheets and public model cards (published figures); no other data.",
+    "leadsTo": []
+   },
+   {
+    "slug": "weight-quantization",
+    "title": "Quantization: shrinking a model's numbers",
+    "level": 3,
+    "kind": "manipulate",
+    "category": "ai",
+    "everyday": false,
+    "interaction": "Drag a bits slider from 16 down to 2 over a histogram of a real weight matrix: the allowed values become a coarse grid, every weight snaps to its nearest step, and the error is drawn as a second histogram. Switch from one scale per matrix to one per small group and see a single outlier stop wasting the grid; the page's own tiny language model, quantized live, writes samples and reports its loss as the bits drop, beside a precomputed sweep of GPT-2 small's perplexity.",
+    "takeaway": "A model's weights can be stored in 8 or even 4 bits with little loss because most of them cluster near zero, but a few large outliers set the grid's range, so clever scaling, not fewer bits alone, keeps the model working.",
+    "prerequisites": [
+     "training-a-tiny-language-model",
+     "binary"
+    ],
+    "related": [
+     "kv-cache-inference",
+     "knowledge-distillation",
+     "floating-point"
+    ],
+    "needs": "Weight matrices of GPT-2 small and a precomputed perplexity sweep of it quantized at several bit widths and group sizes; the page's own tiny model for the live part.",
+    "pitfall": "Rounding to nearest is the baseline, not the state of the art (GPTQ corrects remaining weights for each rounding error); and weight quantization speeds decoding because it moves fewer bytes, not because the arithmetic is cheaper.",
+    "why": "Hugging Face Transformers documentation, bitsandbytes 8-bit and 4-bit quantization: https://huggingface.co/docs/transformers/quantization/bitsandbytes",
+    "overlapWith": "binary: that page reads bit patterns as numbers; this one shows what a neural network loses when its numbers get fewer bits and how outliers decide the damage.",
+    "needsSource": "GPT-2 small, modified MIT licence; the tiny model is the project's own.",
+    "leadsTo": []
+   },
+   {
+    "slug": "lora-fine-tuning",
+    "title": "Fine-tuning & LoRA",
+    "level": 3,
+    "kind": "build",
+    "category": "ai",
+    "everyday": false,
+    "interaction": "Take the page's tiny language model pretrained on Shakespeare and teach it a new style (public-domain poems or recipes) two ways: update every weight, or freeze them and train a small low-rank add-on, choosing its rank and which matrices get one. The new-style loss and the old-text loss are plotted together with the count of trainable weights; the full update is shown as a matrix with its singular values, which fall off steeply, and the LoRA update can be merged into the weights with one click.",
+    "takeaway": "The change fine-tuning makes to a weight matrix is close to low-rank, so training two thin matrices instead of the whole thing reaches almost the same result with a hundredth of the trainable weights, and forgets less of what the model knew.",
+    "prerequisites": [
+     "training-a-tiny-language-model",
+     "linear-transformations"
+    ],
+    "related": [
+     "instruction-tuning",
+     "svd-low-rank",
+     "knowledge-distillation"
+    ],
+    "needs": "The project's tiny pretrained model; a public-domain fine-tuning text from Project Gutenberg.",
+    "pitfall": "LoRA does not make the model smaller or faster at inference (merged, it has the same weights); it saves memory and storage during training. 'Forgets less' is a tendency, not a guarantee.",
+    "why": "Hu et al., LoRA: Low-Rank Adaptation of Large Language Models: https://arxiv.org/abs/2106.09685",
+    "overlapWith": "training-a-tiny-language-model: that page trains from scratch; this one adapts a trained model and compares updating everything with a low-rank update.",
+    "needsSource": "Project Gutenberg public-domain texts; own weights.",
+    "leadsTo": []
+   },
+   {
+    "slug": "instruction-tuning",
+    "title": "From base model to assistant",
+    "level": 3,
+    "kind": "step",
+    "category": "ai",
+    "everyday": false,
+    "interaction": "Type a question to two versions of the same small open model, the base model and its instruction-tuned twin, running side by side in the page: the base model continues the text (often with more questions), the tuned one answers. Step through what changed: the chat template wraps the turns in special tokens, the training examples are pairs of prompts and answers, and the loss is counted only on the answer's tokens; then compare both models' next-token distributions at the first word of the reply.",
+    "takeaway": "An assistant is a pretrained text predictor further trained on examples of conversations, so the same next-token machine learns that after a question comes an answer, not more of the document.",
+    "prerequisites": [
+     "training-a-tiny-language-model"
+    ],
+    "related": [
+     "lora-fine-tuning",
+     "rlhf-alignment",
+     "reasoning-rl-verifiable-rewards"
+    ],
+    "needs": "SmolLM2-135M and SmolLM2-135M-Instruct (Hugging Face), run in the browser with Transformers.js, or their next-token distributions precomputed for a set of prompts.",
+    "pitfall": "Instruction tuning does not add the knowledge the assistant uses; it mostly changes format and behaviour, and the base model already 'knew' the answer. Do not equate it with RLHF, which is a later, separate stage.",
+    "why": "Hugging Face LLM Course, fine-tuning and chat templates: https://huggingface.co/learn/llm-course",
+    "overlapWith": "language-models: that page shows a base model predicting the next token; this one shows what supervised fine-tuning on conversations changes in the same model and why it then answers.",
+    "needsSource": "SmolLM2-135M and -Instruct: Apache-2.0 per the official model card metadata (seen in a README snapshot, not re-checked on the live card).",
+    "leadsTo": []
+   },
+   {
+    "slug": "knowledge-distillation",
+    "title": "Distillation: a small model learning from a large one",
+    "level": 3,
+    "kind": "simulate",
+    "category": "ai",
+    "everyday": false,
+    "interaction": "A larger teacher model (the page's tiny transformer at full width) and a much smaller student both see the same Shakespeare. Train the student two ways side by side: on the actual next character only, or on the teacher's whole probability distribution softened by a temperature slider. The student's validation loss curves race, and the teacher's soft targets for one context are drawn as bars, showing which wrong characters it considers nearly right.",
+    "takeaway": "A teacher's full probability distribution carries far more information per example than the one correct answer, so a small model trained to match it learns faster and ends better than one trained on the text alone.",
+    "prerequisites": [
+     "training-a-tiny-language-model"
+    ],
+    "related": [
+     "weight-quantization",
+     "lora-fine-tuning",
+     "speculative-decoding"
+    ],
+    "needs": "Tiny Shakespeare; the teacher is the project's own model, trained offline and shipped, the student trains live.",
+    "pitfall": "The soft-target term's gradients shrink as one over the temperature squared and must be scaled back up; and a student cannot exceed its teacher on what the teacher got wrong.",
+    "why": "Hinton, Vinyals and Dean, Dark knowledge / Distilling the Knowledge in a Neural Network (talk slides): https://www.tti-c.org/dl/dark14.pdf",
+    "overlapWith": "training-a-tiny-language-model: that page trains on text; this one trains a smaller model on another model's predictions and shows why that signal is richer.",
+    "needsSource": "Tiny Shakespeare (public domain; char-rnn repository MIT); own weights.",
+    "leadsTo": []
+   },
+   {
+    "slug": "speculative-decoding",
+    "title": "Speculative decoding",
+    "level": 3,
+    "kind": "step",
+    "category": "ai",
+    "everyday": false,
+    "interaction": "A cheap draft model guesses the next few tokens and the large target model checks them all in one pass: step through each guess, accepted with probability min(1, p/q) or rejected and replaced by a sample from the leftover distribution, with p and q drawn as overlapping bar charts. Change the number of guesses and swap in a better or worse draft to see the tokens gained per target pass, then run ten thousand samples and watch their histogram match the target model's exactly.",
+    "takeaway": "A small model can do the guessing and the big one only the checking, which yields several tokens per expensive pass with output distributed exactly as if the big model had written it alone.",
+    "prerequisites": [
+     "kv-cache-inference",
+     "language-models"
+    ],
+    "related": [
+     "knowledge-distillation",
+     "long-context-attention-cost"
+    ],
+    "needs": "Two models run in the page: the project's tiny transformer as the target and a bigram or smaller transformer as the draft.",
+    "pitfall": "It is not an approximation: with the rejection rule the output distribution equals the target's. Accepting only exact matches with the target's top choice is valid only for greedy decoding. The speed-up pays off because a decode pass is memory-bound, so checking several tokens costs about as much as one.",
+    "why": "Wikipedia, Speculative decoding (Leviathan et al. 2023; Chen et al. 2023): https://en.wikipedia.org/wiki/Speculative_decoding",
+    "overlapWith": "kv-cache-inference: that page shows why one decode step is memory-bound; this one exploits that slack to verify several drafted tokens per step without changing the output.",
+    "needsSource": "none external; own models.",
+    "leadsTo": []
+   },
+   {
+    "slug": "chain-of-thought-scratchpad",
+    "title": "Why thinking out loud helps a model",
+    "level": 3,
+    "kind": "step",
+    "category": "ai",
+    "everyday": false,
+    "interaction": "Two tiny transformers of the same size were trained on multi-digit addition: one writes the answer straight away, the other writes its working (digit sums and carries) first. Pose sums of growing length and step through each model token by token: the direct one fails once the carries outrun its layers, the scratchpad one keeps going because each written token feeds the next pass. An accuracy-by-number-of-digits chart compares them, including lengths longer than any seen in training.",
+    "takeaway": "A transformer does a fixed amount of computation per token, so writing intermediate steps gives it more computation and a place to store partial results, which lets the same model solve longer problems.",
+    "prerequisites": [
+     "training-a-tiny-language-model",
+     "transformers"
+    ],
+    "related": [
+     "reasoning-rl-verifiable-rewards",
+     "turing-machines"
+    ],
+    "needs": "Two tiny transformers trained offline by the project on generated addition problems (with and without scratchpad), shipped and run in the page.",
+    "pitfall": "The written steps help because they are computation the model conditions on, not because the model is narrating a hidden thought; in large models the written reasoning is not guaranteed to be a faithful account of how the answer was reached.",
+    "why": "Nye et al., Show Your Work: Scratchpads for Intermediate Computation with Language Models: https://arxiv.org/abs/2112.00114",
+    "overlapWith": "training-a-tiny-language-model: that page trains on prose; this one compares two trained models on a checkable task to show what generated intermediate tokens add.",
+    "needsSource": "none external; generated problems and own weights.",
+    "leadsTo": []
+   },
+   {
+    "slug": "reasoning-rl-verifiable-rewards",
+    "title": "Training reasoning with checkable rewards",
+    "level": 3,
+    "kind": "simulate",
+    "category": "ai",
+    "everyday": false,
+    "interaction": "Start from a tiny model that sometimes solves arithmetic puzzles with a scratchpad, and run group-relative policy optimisation live: for each puzzle it writes a group of attempts, a checker marks each right or wrong, and each attempt's tokens are pushed up or down by how it compared with the group's average, shown as coloured attempts. Watch accuracy on the first try (pass@1) climb while the chance that any of 64 tries is right (pass@64) barely moves, and scrub precomputed checkpoints of a longer run to see the average length of the working change.",
+    "takeaway": "Reinforcement learning on answers a program can check needs no human labels and makes a model reliably produce the solutions it could already find occasionally, which is why pass@1 rises much more than pass@many.",
+    "prerequisites": [
+     "reinforcement-learning",
+     "chain-of-thought-scratchpad"
+    ],
+    "related": [
+     "rlhf-alignment",
+     "instruction-tuning"
+    ],
+    "needs": "The project's tiny scratchpad model and generated puzzles; a short RL run live in the page, and checkpoints of a longer run precomputed offline.",
+    "pitfall": "Do not claim the model learns new reasoning from nothing; at this scale RL with verifiable rewards mostly re-weights what the starting model can already sample. A reward that checks only the final answer also rewards lucky or wrong working.",
+    "why": "DeepSeek-R1 (RL on verifiable rewards with GRPO): https://arxiv.org/abs/2501.12948; analysis of GRPO's dynamics: https://arxiv.org/abs/2503.06639",
+    "overlapWith": "reinforcement-learning: that page learns values in a grid world; this one applies policy-gradient RL to a language model whose reward is a correctness check (unlike the pool's rlhf-alignment, which learns a reward from human preferences).",
+    "needsSource": "none external; generated puzzles and own weights.",
+    "leadsTo": []
+   }
+  ],
+  "reserveDisposition": []
+ }
+]

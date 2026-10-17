@@ -940,5 +940,56 @@
   "leadsTo": [],
   "everyday": false,
   "origin": "computing-networks-l3"
+ },
+ {
+  "slug": "kv-cache-inference",
+  "title": "Serving a language model: the KV cache",
+  "level": 3,
+  "kind": "simulate",
+  "category": "computing",
+  "everyday": false,
+  "interaction": "Generate text with a small transformer running in the page, first recomputing every earlier token at each step and then with a cache that keeps each layer's keys and values, while the page measures the time per token and counts the arithmetic and the bytes read. Then scale up to a published model configuration on a published GPU: drag the batch size and the context length and watch a roofline chart place prefill (the whole prompt at once) on the compute ceiling and each decode step far below it, on the memory-bandwidth slope, until a large batch lifts it.",
+  "takeaway": "After the prompt, generating each token reads every weight and the whole cache from memory for very little arithmetic, so serving speed is set by memory bandwidth, and batching many requests together is what makes it cheap.",
+  "prerequisites": [
+   "transformers",
+   "gpu"
+  ],
+  "related": [
+   "speculative-decoding",
+   "long-context-attention-cost",
+   "weight-quantization"
+  ],
+  "needs": "A small transformer run in the page (the project's own or GPT-2 small); published model configurations (layers, widths, heads) and GPU datasheet figures for memory bandwidth and peak throughput.",
+  "pitfall": "The cache does not make decoding compute-bound or free: its size grows with context and batch, and at long contexts reading the cache, not the weights, dominates. Prefill and decode are different regimes; one tokens-per-second figure hides both.",
+  "why": "WEKA, Prefill and Decode: a technical guide to the two phases of inference: https://www.weka.io/learn/ai-ml/prefill-and-decode/",
+  "overlapWith": "gpu: that page races parallel against serial work; this one shows that generation is starved of memory bandwidth, not arithmetic, and how the cache and batching change that.",
+  "needsSource": "GPU figures from vendor datasheets (published specifications); model configurations from public model cards; GPT-2 small modified MIT if used.",
+  "leadsTo": [],
+  "origin": "llm-ladder"
+ },
+ {
+  "slug": "long-context-attention-cost",
+  "title": "Long context & the cost of attention",
+  "level": 3,
+  "kind": "simulate",
+  "category": "computing",
+  "everyday": false,
+  "interaction": "Grow the context from a hundred tokens to a million and watch the attention score matrix grow as a square while the rest of the model grows as a line, with memory and time read off for a published model on a published GPU. Then run attention on real small matrices two ways in the page, all at once and tile by tile with a running maximum and sum (the FlashAttention scheme), and see the two outputs agree to the last digit while the tiled one never holds the full matrix; switch to a sliding window and see which tokens can no longer see each other.",
+  "takeaway": "Attention compares every token with every other, so its cost grows with the square of the context; tiling removes the memory wall without changing the answer, but not the quadratic arithmetic.",
+  "prerequisites": [
+   "kv-cache-inference"
+  ],
+  "related": [
+   "positional-encoding",
+   "retrieval-augmented-generation",
+   "recurrent-networks"
+  ],
+  "needs": "Published model configurations and GPU datasheet figures; the tiled computation runs on the page's own matrices.",
+  "pitfall": "FlashAttention is exact, not an approximation, and it saves memory traffic, not multiplications; and a model that accepts a long context does not necessarily use all of it well.",
+  "why": "Dao et al., FlashAttention: Fast and Memory-Efficient Exact Attention with IO-Awareness: https://arxiv.org/abs/2205.14135",
+  "overlapWith": "kv-cache-inference: that page is about the per-token cost of decoding; this one is about how attention's cost scales with context length and how tiling avoids storing the score matrix.",
+  "needsSource": "Vendor datasheets and public model cards (published figures); no other data.",
+  "leadsTo": [],
+  "origin": "llm-ladder"
  }
 ]

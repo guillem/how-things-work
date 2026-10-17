@@ -13,6 +13,7 @@ const here = path.dirname(new URL(import.meta.url).pathname);
 const DATA = path.resolve(here, '../data');
 const STAGES = path.join(DATA, 'stages');
 const CAT_MAX = 12;
+const capOf = (c) => (c === 'ai' ? 18 : CAT_MAX); // the AI tilt, as in select.mjs
 const GAP_SWAPS = 10;
 const KINDS = ['manipulate', 'simulate', 'step', 'build', 'explore'];
 const acceptUnverified = process.argv.includes('--accept-unverified');
@@ -91,14 +92,14 @@ while (queue.length) {
 	const cands = runners.filter((c) => !tried.has(c.slug) && c.level === e.level);
 	let rep = cands.find((c) => c.category === e.category);
 	if (!rep) {
-		rep = cands.find((c) => (cc[c.category] || 0) < CAT_MAX);
+		rep = cands.find((c) => (cc[c.category] || 0) < capOf(c.category));
 		if (rep)
 			deviations.push(
 				`${e.slug} (L${e.level}/${e.category}) replaced from another category: ${rep.slug} (${rep.category})`
 			);
 	}
 	if (!rep) {
-		rep = runners.find((c) => !tried.has(c.slug) && (cc[c.category] || 0) < CAT_MAX);
+		rep = runners.find((c) => !tried.has(c.slug) && (cc[c.category] || 0) < capOf(c.category));
 		if (rep)
 			deviations.push(
 				`${e.slug} (L${e.level}) replaced at another level: ${rep.slug} (L${rep.level}/${rep.category})`
@@ -159,7 +160,7 @@ if (!pending.length && gapCands.length) {
 		const cc = catCounts(final);
 		const victims = final
 			.filter((e) => e.level === g.level && !String(e.origin || '').startsWith('gap'))
-			.filter((e) => e.category === g.category || (cc[g.category] || 0) < CAT_MAX)
+			.filter((e) => e.category === g.category || (cc[g.category] || 0) < capOf(g.category))
 			.sort((a, b) => (a.score || 0) - (b.score || 0));
 		if (!victims.length) {
 			gapEntries.push({ ...g, kept: 'runner-up (no slot at its level)' });

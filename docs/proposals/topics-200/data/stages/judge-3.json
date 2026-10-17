@@ -1,0 +1,2299 @@
+[
+ {
+  "label": "judge:fit-level:b21",
+  "result": {
+   "verdicts": [
+    {
+     "slug": "drone-four-rotors",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "A clear mechanism (steering purely by rotor speed differences, yaw from counter-rotating pairs) that fits one-control-at-a-time play and differs from feedback-control, which only holds a drone at a height."
+    },
+    {
+     "slug": "elevator",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "Counterweight balance counted in people plus the speed-triggered governor brake is a real two-part mechanism no existing page shows, and it builds sensibly on pulleys-and-cranes."
+    },
+    {
+     "slug": "engine-pushes-to-spin",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "Crank, firing order and flywheel smoothing pulses is a genuine mechanism kept apart from heat-engines' P-V loop, and it works without formulas."
+    },
+    {
+     "slug": "escalator",
+     "score": 3,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "A neat geometric mechanism (rigid steps kept level by two offset tracks), but it is narrow, and leadsTo unit-circle is a stretch."
+    },
+    {
+     "slug": "hydraulics-digger-arm",
+     "score": 5,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "Pascal's force-for-distance trade, shown with pistons and a digger, is a core primary and KS3 mechanism that no existing page covers and that shows well as a graphic."
+    },
+    {
+     "slug": "kettle",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "Convection, the boiling-point plateau counted in cups and seconds, and the bimetal cut-off make an everyday mechanism, distinct from states-of-matter's molecular box."
+    },
+    {
+     "slug": "levers-and-scissors",
+     "score": 5,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "Levers are the canonical level-0 machine, the turning effect counted in weights times notches needs no formula, and no existing page has it."
+    },
+    {
+     "slug": "light-bulb-hot-wire",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "A glowing hot wire and where the energy goes, with an LED to compare, is a clear mechanism and energy story that electric-circuits does not show."
+    },
+    {
+     "slug": "lock-and-key",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "The pin-tumbler shear line is a beautiful, very visual mechanism a 10-year-old can explore, though it sits loosely in the energy category and its link to logic-gates is thin."
+    },
+    {
+     "slug": "power-station-kettle",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "Boil water to spin a magnet whatever the fuel, with the cooling-tower loss shown as counts, is a high-demand beginner chain, distinct from heat-engines' piston and law and from the socket page's generation mix."
+    },
+    {
+     "slug": "pulleys-and-cranes",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "Rope-for-force trade and crane tipping are core simple machines; the turning-effect half overlaps levers-and-scissors somewhat, so keep the crane short."
+    },
+    {
+     "slug": "refrigerator",
+     "score": 5,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "Heat carried out, not cold made (with the open-door paradox), is a striking misconception buster that runs heat-engines' loop backwards without the chart; it is the honest level-0 twin of heat-pumps."
+    },
+    {
+     "slug": "room-thermostat",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "On/off control with a hysteresis wobble and the 'turning it up doesn't heat faster' takeaway is a good level-0 precursor to feedback-control without duplicating PID."
+    },
+    {
+     "slug": "screws-and-screwdrivers",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "Ramp, thread and handle as one trade of distance for force is a genuine mechanism; it shares that takeaway with levers and pulleys, so the cluster of simple machines may need trimming."
+    },
+    {
+     "slug": "skyscraper-sway-damper",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "Resonant sway and a tuned mass damper are a vivid mechanism with real demand, distinct from the static bridges page and the abstract oscillations page."
+    },
+    {
+     "slug": "socket-to-power-station",
+     "score": 3,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "A real-data scrub of the generation mix is engaging but closer to a data tour than a mechanism, and it partly overlaps power-grid and power-station-kettle."
+    },
+    {
+     "slug": "solar-panel-tilt-day",
+     "score": 3,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "The angle of sunlight on a panel is a real, manipulable effect, but it largely reuses sun-earth-moon's cosine idea applied to a panel, so it is a modest addition."
+    },
+    {
+     "slug": "toilet-flush",
+     "score": 5,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "The siphon flush and the float valve are a surprising, everyday mechanism no page shows, and they need no formulas."
+    },
+    {
+     "slug": "umbrella",
+     "score": 2,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "A simple linkage plus flipping inside out is thin as a 'how it works' subject and weakly linked to anything the site teaches next."
+    },
+    {
+     "slug": "vacuum-cleaner",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "The 'it doesn't pull' air-pressure mechanism, shown with a fan, airflow and a blocked hose, is a good misconception page, distinct from atmosphere-weather."
+    },
+    {
+     "slug": "water-taps-and-pipes",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "Head and pipe losses shared between taps are a real mechanism and the classic analogy that prepares for electric-circuits without copying it."
+    },
+    {
+     "slug": "wind-turbine-wind-speed",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "The cube law shown as lit houses, with cut-out and real farm data, is a striking comparison-only takeaway, distinct from power-grid's dispatch."
+    },
+    {
+     "slug": "wind-up-toy",
+     "score": 3,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "Stored turns spent through a gear train is a fine mechanism, but its speed-versus-duration trade echoes the other simple-machine candidates."
+    },
+    {
+     "slug": "zipper",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "Interlocking teeth and the slider's wedge are a visual, little-known mechanism a child handles daily; there is nothing like it on the site."
+    },
+    {
+     "slug": "heat-pumps",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 1,
+     "reason": "A Reserve topic with high public demand: heat delivered per unit of electricity, falling as it gets colder, is the right level-1 addition, though it reuses the refrigerator candidate's loop, so the two must divide the work clearly."
+    }
+   ]
+  }
+ },
+ {
+  "label": "judge:fit-level:b20",
+  "result": {
+   "verdicts": [
+    {
+     "slug": "keyword-spotting-ctc",
+     "score": 4,
+     "reject": false,
+     "reason": "A real mechanism (spectrogram to per-frame letters to CTC collapse) that no page covers, honest at level 3, though it depends on recurrent-networks, which is itself only a candidate.",
+     "suggestedLevel": 3
+    },
+    {
+     "slug": "mixture-of-experts",
+     "score": 4,
+     "reject": false,
+     "reason": "A topical level-3 mechanism (routing, load-balancing collapse, parameters stored vs used) distinct from transformers' attention, with a toy 2-D version the graphic can show.",
+     "suggestedLevel": 3
+    },
+    {
+     "slug": "monte-carlo-tree-search",
+     "score": 5,
+     "reject": false,
+     "reason": "A playable, clearly mechanistic algorithm (select, expand, rollout, backup) with the AlphaGo upgrade, distinct from graph-search and grid-world RL, and honest at level 3.",
+     "suggestedLevel": 3
+    },
+    {
+     "slug": "normalizing-flows",
+     "score": 3,
+     "reject": false,
+     "reason": "Honest level 3 with a vivid change-of-variables graphic, but a niche generative family that fewer visitors will look for than VAEs or diffusion.",
+     "suggestedLevel": 3
+    },
+    {
+     "slug": "recommender-systems",
+     "score": 4,
+     "reject": false,
+     "reason": "Matrix factorization fitted live on the reader's own ratings is a real mechanism people meet every day, and it is distinct from embeddings because the vectors are learned from missing entries.",
+     "suggestedLevel": 3
+    },
+    {
+     "slug": "recurrent-networks",
+     "score": 4,
+     "reject": false,
+     "reason": "Foundational level-3 content (gating against vanishing gradients) that the catalogue lacks and other candidates name as a prerequisite, and distinct from transformers.",
+     "suggestedLevel": 3
+    },
+    {
+     "slug": "retrieval-augmented-generation",
+     "score": 3,
+     "reject": false,
+     "reason": "In high demand and its ranking is live, but the generation half is precomputed and the page is more a pipeline than one mechanism, which leans toward the embeddings and language-models pages.",
+     "suggestedLevel": 3
+    },
+    {
+     "slug": "rlhf-alignment",
+     "score": 4,
+     "reject": false,
+     "reason": "A well-designed level-3 page: a Bradley-Terry reward model plus an exact KL-tilted policy makes reward hacking visible, and it is clearly distinct from grid-world reinforcement learning.",
+     "suggestedLevel": 3
+    },
+    {
+     "slug": "scaling-laws",
+     "score": 3,
+     "reject": false,
+     "reason": "An empirical law, not a causal mechanism, but the Chinchilla compute-optimal split is a real model the graphic can solve; the live retraining is heavy and adds little.",
+     "suggestedLevel": 3
+    },
+    {
+     "slug": "superposition-features",
+     "score": 3,
+     "reject": false,
+     "reason": "The toy model is genuinely mechanistic, the page is honest at level 3 and distinct from embeddings, but it is a specialist interpretability topic with a narrower audience.",
+     "suggestedLevel": 3
+    },
+    {
+     "slug": "support-vector-machines",
+     "score": 4,
+     "reject": false,
+     "reason": "A classic level-3 ML mechanism (maximum margin, support vectors, the kernel trick) with draggable points, distinct from neural-network boundaries.",
+     "suggestedLevel": 3
+    },
+    {
+     "slug": "tokenization",
+     "score": 4,
+     "reject": false,
+     "reason": "Building BPE merge by merge and running GPT-2's real merges explains why tokens fall where they do, which goes beyond language-models' display of a given split.",
+     "suggestedLevel": 3
+    },
+    {
+     "slug": "tree-ensembles",
+     "score": 4,
+     "reject": false,
+     "reason": "Greedy splits, bagging and boosting are core ML mechanisms the catalogue lacks, are shown well on the plane, and are distinct from learning-from-data's polynomial fit; three methods make the page long.",
+     "suggestedLevel": 3
+    },
+    {
+     "slug": "uncertainty-calibration",
+     "score": 3,
+     "reject": false,
+     "reason": "Useful level-3 material (reliability diagram, temperature scaling, ensemble disagreement), but closer to evaluation practice than one mechanism, and partly overlaps the uncertainty theme of other pages.",
+     "suggestedLevel": 3
+    },
+    {
+     "slug": "variational-autoencoders",
+     "score": 3,
+     "reject": false,
+     "reason": "A navigable latent plane and the KL trade-off are a real mechanism distinct from diffusion's denoising, though it is a second generative-model page alongside diffusion-models.",
+     "suggestedLevel": 3
+    },
+    {
+     "slug": "world-models",
+     "score": 3,
+     "reject": false,
+     "reason": "The compounding error of imagined rollouts is a clear level-3 mechanism beyond grid-world RL, but it needs a live dynamics model plus a planner, which is heavy for its audience.",
+     "suggestedLevel": 3
+    },
+    {
+     "slug": "battery-runs-down",
+     "score": 3,
+     "reject": false,
+     "reason": "A good level-0 everyday question (brighter lamp means shorter life), but the series/parallel content leans on electric-circuits, and the 'bucket of pushes' metaphor misstates what a battery stores, so the framing needs fixing.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "bicycle-gears",
+     "score": 4,
+     "reject": false,
+     "reason": "A level-0 classic where everything is a count (wheel turns per pedal turn, push on a hill), with a real force-distance trade and no existing page on gears.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "bicycle-gears-hills",
+     "score": 2,
+     "reject": true,
+     "reason": "A substantial duplicate of the bicycle-gears candidate in this same file (same ratio counter, same hill, same force-for-distance takeaway); merge any good details into it.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "car-brakes",
+     "score": 3,
+     "reject": false,
+     "reason": "Familiar and mechanistic, but it packs three ideas (lever, hydraulic multiplication, speed-squared stopping distance) into one level-0 page with one control at a time; it should be trimmed to the hydraulic chain or to stopping distance.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "click-pen",
+     "score": 4,
+     "reject": false,
+     "reason": "A delightful, purely mechanical toggle a 10-year-old holds every day, shown by scrubbing clicks; the leadsTo logic-gates link is a stretch but the page is distinct.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "clock-escapement",
+     "score": 5,
+     "reject": false,
+     "reason": "A textbook how-it-works mechanism (the weight drives, the pendulum meters) told entirely in counts, and distinct from oscillations-resonance's period plot.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "crane-counterweight",
+     "score": 4,
+     "reject": false,
+     "reason": "Seesaw balance on a familiar machine is honest at level 0 and distinct from bridges-structures; the rope-falls second idea should be optional or cut.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "dam-water-height",
+     "score": 3,
+     "reject": false,
+     "reason": "Height times flow as a comparison works at level 0 and is distinct from power-grid, but the mechanism is thin (one product of two quantities) and the waterfall and reservoir parts dilute it.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "differential-gear",
+     "score": 4,
+     "reject": false,
+     "reason": "A genuine hidden mechanism, explained with turn counters and no formulas, and no page covers gears; it is at the hard edge of level 0 but workable with the cage opened step by step.",
+     "suggestedLevel": 0
+    }
+   ]
+  }
+ },
+ {
+  "label": "judge:build:b18",
+  "result": {
+   "verdicts": [
+    {
+     "slug": "lambda-calculus",
+     "score": 5,
+     "reject": false,
+     "reason": "A beta-reducer with normal-order stepping, Church encodings and a simple type checker is a small honest algorithm that runs instantly in the browser; omega needs a step cap.",
+     "suggestedLevel": 3
+    },
+    {
+     "slug": "locks-deadlock",
+     "score": 5,
+     "reject": false,
+     "reason": "Interleavings of two threads and dining philosophers with a resource-allocation graph and cycle detection make a small, deterministic simulation that is clearly visible.",
+     "suggestedLevel": 3
+    },
+    {
+     "slug": "os-scheduling",
+     "score": 5,
+     "reject": false,
+     "reason": "FCFS, SJF, round robin and MLFQ over a handful of jobs are tiny discrete-event simulations, and the Gantt chart and metrics follow directly from them.",
+     "suggestedLevel": 3
+    },
+    {
+     "slug": "pseudo-random-numbers",
+     "score": 5,
+     "reject": false,
+     "reason": "LCG, RANDU, xorshift and live chi-square and serial tests are a few lines of code each; the RANDU planes in a rotatable 3D cloud are an honest, striking result.",
+     "suggestedLevel": 3
+    },
+    {
+     "slug": "regular-expressions-automata",
+     "score": 5,
+     "reject": false,
+     "reason": "Thompson construction, subset construction and a backtracking matcher with a step counter are standard small algorithms, and the blow-up is a real measured count.",
+     "suggestedLevel": 3
+    },
+    {
+     "slug": "sat-solving",
+     "score": 5,
+     "reject": false,
+     "reason": "A small CDCL solver over map-colouring clauses and random 3-SAT at n of about 20 to 50 runs at interactive rates, and the phase-transition peak near 4.26 shows up in the solver's real effort.",
+     "suggestedLevel": 3
+    },
+    {
+     "slug": "virtual-memory",
+     "score": 4,
+     "reject": false,
+     "reason": "Page tables, a TLB and FIFO, LRU and clock on a reference string, including Belady's anomaly, form an honest simulation, but the address-walk part leans towards browsing a diagram and needs the replacement simulation as its core.",
+     "suggestedLevel": 3
+    },
+    {
+     "slug": "barcode-stripes",
+     "score": 5,
+     "reject": false,
+     "reason": "A real EAN-13 encoder, decoder and check digit plus a scan-line trace whose widths scale with speed and angle is a small, exact model; the layout is in the public GS1 specification.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "cell-towers-handover",
+     "score": 4,
+     "reject": false,
+     "reason": "A log-distance path-loss model with obstacle loss, handover with hysteresis and a fixed number of channels per tower (Erlang-style blocking) is a small agent model that runs easily; no data is needed.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "password-guessing",
+     "score": 4,
+     "reject": false,
+     "reason": "The keyspace counter is pure arithmetic and the dictionary twist is honest, but the licence of the NCSC/HIBP top-100k file is unconfirmed (a web search found no stated licence), so the build should use the stated fallback or confirm OGL first.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "qr-codes",
+     "score": 5,
+     "reject": false,
+     "reason": "A real QR encoder with Reed-Solomon (MIT and Apache libraries exist) and a decoder run on painted damage give an exact failure point; for robustness the decoder should read the cell grid rather than a simulated camera image.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "radio-tuning",
+     "score": 4,
+     "reject": false,
+     "reason": "A sum of carriers through a resonant band-pass filter followed by envelope and FM detection is an honest small DSP model; scaled-down carrier frequencies plus Web Audio output are needed and should be stated.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "remote-control-blinks",
+     "score": 3,
+     "reject": false,
+     "reason": "An NEC protocol encoder and timing display plus a line-of-sight and reflection ray model is real but thin, and it risks becoming a stepped picture of a pulse train unless the reflection and blocking geometry carries the page.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "wifi-and-walls",
+     "score": 4,
+     "reject": false,
+     "reason": "A multi-wall indoor loss model (ITU-R P.1238 and per-material losses, freely published) on a grid heatmap, with an SNR-to-rate table and CSMA turn-taking, is a buildable, honest model.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "web-page-rendering",
+     "score": 3,
+     "reject": false,
+     "reason": "Buildable only with a deliberately tiny HTML subset parser, selector matcher and block/inline layout engine; the scope is large and risks a stepped diagram, so it must restrict itself to a stated subset of CSS.",
+     "suggestedLevel": 1
+    },
+    {
+     "slug": "shazam-audio-fingerprint",
+     "score": 5,
+     "reject": false,
+     "reason": "STFT, peak picking, pair hashing and an offset histogram over a dozen synthesized clips is the real Wang algorithm at small scale and runs in milliseconds, with no data licensing.",
+     "suggestedLevel": 2
+    },
+    {
+     "slug": "audio-codecs",
+     "score": 4,
+     "reject": false,
+     "reason": "Aliasing, sinc reconstruction, quantisation and a published spreading-function masking model over a CC0 clip all run client-side; the masking model is a simplification that the page must label.",
+     "suggestedLevel": 3
+    },
+    {
+     "slug": "distributed-hash-tables",
+     "score": 5,
+     "reject": false,
+     "reason": "Consistent hashing, Chord finger tables and churn with replicas over thousands of simulated nodes are cheap to simulate, and the logarithmic hop count is a measured result.",
+     "suggestedLevel": 3
+    },
+    {
+     "slug": "elliptic-curve-cryptography",
+     "score": 5,
+     "reject": false,
+     "reason": "Chord-and-tangent addition over the reals, a small prime field scatter and double-and-add with BigInt for real curve parameters are an exact, small model; the curve parameters are public standards.",
+     "suggestedLevel": 3
+    },
+    {
+     "slug": "git-merkle-trees",
+     "score": 4,
+     "reject": false,
+     "reason": "Content hashing (SHA-1 or SHA-256 via SubtleCrypto), an object DAG, a Myers diff with three-way merge and Merkle proofs are all real and small, though the scope is broad.",
+     "suggestedLevel": 3
+    },
+    {
+     "slug": "kalman-filter",
+     "score": 5,
+     "reject": false,
+     "reason": "A 2D constant-velocity Kalman filter with covariance ellipses, sensor fusion and model mismatch is a textbook small linear-algebra model that runs every frame.",
+     "suggestedLevel": 3
+    },
+    {
+     "slug": "mimo-beamforming",
+     "score": 4,
+     "reject": false,
+     "reason": "The array factor from phases and spacing is exact, and a geometric ray channel matrix with a small complex SVD is honest and cheap; the channel model is simplified and the page should say so.",
+     "suggestedLevel": 3
+    },
+    {
+     "slug": "onion-routing",
+     "score": 4,
+     "reject": false,
+     "reason": "Layered encryption as a stepped wrap and unwrap is near-diagrammatic, but the Monte Carlo of compromised circuits against the observer's fraction, plus timing correlation, gives it a real model.",
+     "suggestedLevel": 3
+    },
+    {
+     "slug": "radar-sonar",
+     "score": 5,
+     "reject": false,
+     "reason": "Pulse and chirp echoes, a matched filter by FFT correlation, a Doppler range map and noise are a small, honest 1D signal simulation.",
+     "suggestedLevel": 3
+    },
+    {
+     "slug": "tcp-congestion-control",
+     "score": 5,
+     "reject": false,
+     "reason": "A discrete-time bottleneck queue with Reno, CUBIC and delay-based senders produces the real sawtooth, convergence to a fair share and bufferbloat at interactive rates.",
+     "suggestedLevel": 3
+    }
+   ]
+  }
+ },
+ {
+  "label": "judge:fit-level:b18",
+  "result": {
+   "verdicts": [
+    {
+     "slug": "lambda-calculus",
+     "score": 3,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "A real mechanism (beta reduction, Church numerals, Y combinator, typing) that shows well step by step and is distinct from turing-machines, but it is the narrowest audience in the batch and its payoff is abstract."
+    },
+    {
+     "slug": "locks-deadlock",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "Races, locks and a resource-graph cycle in dining philosophers form a clear, simulable mechanism that is core to university concurrency courses, and no existing page covers it."
+    },
+    {
+     "slug": "os-scheduling",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "Promotes 'Operating systems' from the reserve list: real scheduling policies with Gantt charts and turnaround metrics, distinct from cpu, which runs a single program."
+    },
+    {
+     "slug": "pseudo-random-numbers",
+     "score": 3,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "The RANDU planes and live statistical tests make a good visual reveal and the subject is distinct from chaos-fractals, but it is less in demand, and the core idea could sit at level 2."
+    },
+    {
+     "slug": "regular-expressions-automata",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "Thompson NFA to DFA, catastrophic backtracking and the pumping lemma are a genuine, highly visual university topic, and the page is the clean bottom rung below turing-machines."
+    },
+    {
+     "slug": "sat-solving",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "CDCL with clause learning and the 4.26 phase transition give a mechanism and a striking result that go well beyond turing-machines' brief look at an exploding search space."
+    },
+    {
+     "slug": "virtual-memory",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "Page tables, the TLB, page faults and replacement policies (with Belady's anomaly) are a core OS mechanism that draws well and is distinct from cpu's flat memory."
+    },
+    {
+     "slug": "barcode-stripes",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "A familiar object with a real mechanism (widths read as ratios, plus a check digit) that a 10-year-old can explore without formulas, distinct from binary and from the QR candidate."
+    },
+    {
+     "slug": "cell-towers-handover",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "Signal bars, handover and tower capacity explain an everyday experience at level 0, and the page stays clear of the packet-level internet page and the modulation-level wireless-signals page."
+    },
+    {
+     "slug": "password-guessing",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "Guess counts that multiply with each extra character, plus the common-password list, are an honest level-0 counting mechanism with real everyday value, distinct from cryptography."
+    },
+    {
+     "slug": "qr-codes",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "Painting damage onto a real Reed-Solomon-backed code and watching it still read makes the toy the takeaway; it is distinct from error-correction's Hamming arithmetic and pairs well with barcodes without duplicating them."
+    },
+    {
+     "slug": "radio-tuning",
+     "score": 3,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "Choosing a station by resonance is a sound mechanism and new in its many-stations framing, but it leans on oscillations-resonance, and the AM/FM comparison risks overloading a level-0 page that should offer one control at a time."
+    },
+    {
+     "slug": "remote-control-blinks",
+     "score": 3,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "A charming level-0 object with a real protocol (NEC-style pulse gaps) and a phone-camera hook, but the mechanism is thin and overlaps the barcode and binary ideas."
+    },
+    {
+     "slug": "wifi-and-walls",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "A router placement map driven by a wall-loss model, with rate adaptation and channel sharing, is practical and visual for beginners, and distinct from wireless-signals."
+    },
+    {
+     "slug": "web-page-rendering",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 1,
+     "reason": "Parsing, style matching, layout and paint form a real pipeline that a level-1 reader can follow on editable HTML, and the page picks up where the internet page stops."
+    },
+    {
+     "slug": "shazam-audio-fingerprint",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 2,
+     "reason": "Constellation hashing with a histogram of time offsets is a superb, distinct mechanism; it honestly needs fourier-transform, a level-2 page, so level 2 is right despite the target mix."
+    },
+    {
+     "slug": "audio-codecs",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "Sampling, aliasing, quantisation and psychoacoustic masking are a genuine signal-processing model that no existing page covers; compression handles images, not hearing or sampling."
+    },
+    {
+     "slug": "distributed-hash-tables",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "Consistent hashing and Chord finger tables show logarithmic hop counts and minimal key movement, a real distributed-systems mechanism distinct from consensus-blockchains."
+    },
+    {
+     "slug": "elliptic-curve-cryptography",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "The chord-and-tangent group law, first over the reals and then over a finite field, is visual and is the real model, a clear level-3 step beyond the modular Diffie-Hellman of cryptography."
+    },
+    {
+     "slug": "git-merkle-trees",
+     "score": 3,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "Content addressing, three-way merge and Merkle proofs are a real mechanism, but the hash-chain tamper demo partly repeats consensus-blockchains, and the page mixes two subjects (git and Merkle proofs)."
+    },
+    {
+     "slug": "kalman-filter",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "A predict/update cycle with a growing and shrinking covariance ellipse is the real model and a strong, distinct level-3 page; the category is off, though, and it belongs with mathematics or energy (beside feedback-control) rather than networks."
+    },
+    {
+     "slug": "mimo-beamforming",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "Phased-array steering, grating lobes and the channel matrix's singular values as parallel streams are the real model, and the page extends wireless-signals without repeating it."
+    },
+    {
+     "slug": "onion-routing",
+     "score": 3,
+     "reject": false,
+     "suggestedLevel": 2,
+     "reason": "Layered encryption and the odds that an observer controls both ends make a clear, distinct mechanism, but the model is simple enough for a level-2 reader rather than university level."
+    },
+    {
+     "slug": "radar-sonar",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "Echo timing, chirps with matched filtering, Doppler and range-Doppler maps are a real signal-processing model, and medical-imaging only mentions ultrasound in passing."
+    },
+    {
+     "slug": "tcp-congestion-control",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "The AIMD sawtooth, convergence to fairness and bufferbloat are a well-known, very drawable control loop that the internet page's resend demo does not cover."
+    }
+   ]
+  }
+ },
+ {
+  "label": "judge:build:b20",
+  "result": {
+   "verdicts": [
+    {
+     "slug": "keyword-spotting-ctc",
+     "score": 4,
+     "reject": false,
+     "reason": "A small conv/GRU CTC model over mel features of one-second clips runs in the browser in milliseconds and the CTC collapse is a few lines of exact code; Speech Commands v2 is CC BY 4.0; the microphone path is optional extra work and the precomputed clips carry the takeaway.",
+     "suggestedLevel": 3
+    },
+    {
+     "slug": "mixture-of-experts",
+     "score": 5,
+     "reject": false,
+     "reason": "A router plus a handful of tiny MLP experts on a 2-D regression trains live in milliseconds per step, and collapse without the load-balancing loss is a real, reproducible outcome; no data needed.",
+     "suggestedLevel": 3
+    },
+    {
+     "slug": "monte-carlo-tree-search",
+     "score": 5,
+     "reject": false,
+     "reason": "MCTS on Connect Four is a small exact algorithm running thousands of simulations per second client-side, and a self-play policy/value net small enough to ship (own weights) is a standard, modest offline job.",
+     "suggestedLevel": 3
+    },
+    {
+     "slug": "normalizing-flows",
+     "score": 4,
+     "reject": false,
+     "reason": "Affine coupling layers in 2-D have exact Jacobians and train on two-moons in seconds with hand-written gradients or a tiny autodiff; the density recoloring is an honest change-of-variables evaluation on a grid.",
+     "suggestedLevel": 3
+    },
+    {
+     "slug": "recommender-systems",
+     "score": 2,
+     "reject": true,
+     "reason": "Alternating least squares is trivially buildable, but the page's evidence (cold start, popularity bias, held-out error) needs a real ratings table and the named MovieLens set is research-only, not openly licensed, with no open alternative identified; a synthetic table would be invented data.",
+     "suggestedLevel": 3
+    },
+    {
+     "slug": "recurrent-networks",
+     "score": 4,
+     "reject": false,
+     "reason": "A plain RNN and a small LSTM on a recall-after-gap task train live with BPTT in the browser, and the per-step gradient norm is a real computed quantity, so the vanishing-gradient contrast is honest; training the LSTM on long gaps may need a precomputed fallback.",
+     "suggestedLevel": 3
+    },
+    {
+     "slug": "retrieval-augmented-generation",
+     "score": 4,
+     "reject": false,
+     "reason": "BM25 and MiniLM embedding search over a few thousand CC BY-SA paragraphs run in the browser (Apache-2.0 model via transformers.js or precomputed vectors), and the answers with and without retrieval are honestly precomputed from an open small model for a fixed question set; the free-question path shows only retrieval, which should be stated.",
+     "suggestedLevel": 3
+    },
+    {
+     "slug": "rlhf-alignment",
+     "score": 4,
+     "reject": false,
+     "reason": "The Bradley-Terry fit on precomputed embeddings and the exact KL-tilted policy over 64 precomputed GPT-2 continuations are small, honest computations, and reward hacking falls out of the real math; GPT-2 and MiniLM licences are open.",
+     "suggestedLevel": 3
+    },
+    {
+     "slug": "scaling-laws",
+     "score": 4,
+     "reject": false,
+     "reason": "The precomputed sweep of the project's own small models and the Chinchilla parametric law with published constants are honest and cheap to render; retraining one sweep point live must be a tiny model to stay interactive, and Epoch AI data should be dropped unless its licence is checked.",
+     "suggestedLevel": 3
+    },
+    {
+     "slug": "superposition-features",
+     "score": 5,
+     "reject": false,
+     "reason": "The toy model of superposition (a few features into two hidden dimensions, ReLU readout) trains live in seconds and the antipodal and pentagon geometries emerge from the real loss; a small sparse autoencoder on those activations is equally cheap.",
+     "suggestedLevel": 3
+    },
+    {
+     "slug": "support-vector-machines",
+     "score": 5,
+     "reject": false,
+     "reason": "A perceptron and an SMO-solved soft-margin SVM with polynomial and RBF kernels on dozens of dragged points solve in milliseconds, so the boundary and support vectors update live as an exact model.",
+     "suggestedLevel": 3
+    },
+    {
+     "slug": "tokenization",
+     "score": 5,
+     "reject": false,
+     "reason": "BPE training on a typed corpus is a small exact algorithm and GPT-2's byte-level tokenizer (regex pre-split plus about 50k merges, a few hundred KB, MIT/modified-MIT) runs instantly in the browser.",
+     "suggestedLevel": 3
+    },
+    {
+     "slug": "tree-ensembles",
+     "score": 5,
+     "reject": false,
+     "reason": "CART splits, bagging and gradient boosting on 2-D points or Palmer penguins (CC0) are exact, fast algorithms rendered as region maps, so every step is a real computation.",
+     "suggestedLevel": 3
+    },
+    {
+     "slug": "uncertainty-calibration",
+     "score": 5,
+     "reject": false,
+     "reason": "Training a tiny 2-D classifier and an ensemble of five, binning a reliability diagram and temperature scaling are all fast exact computations, and the overconfidence far from data is a real outcome of the model.",
+     "suggestedLevel": 3
+    },
+    {
+     "slug": "variational-autoencoders",
+     "score": 4,
+     "reject": false,
+     "reason": "Shipping a 2-D-latent AE and VAE trained offline on Fashion-MNIST (MIT) and running the decoders live is honest and small; the KL-weight slider needs a precomputed family of models (or a set of retrained checkpoints) since retraining on images live is too slow, which the entry should state.",
+     "suggestedLevel": 3
+    },
+    {
+     "slug": "world-models",
+     "score": 4,
+     "reject": false,
+     "reason": "Cart-pole dynamics, a small MLP learning the next state online and Dyna- or MPC-style planning in imagination all run at interactive rates, and compounding model error is a real outcome of the learned model.",
+     "suggestedLevel": 3
+    },
+    {
+     "slug": "battery-runs-down",
+     "score": 4,
+     "reject": false,
+     "reason": "A capacity-and-discharge model of an AA cell driving a resistive bulb in series and parallel is small and honest, with the capacity and curve shape quoted as facts from a datasheet; the bulb's changing resistance can be simplified at level 0 without misleading.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "bicycle-gears",
+     "score": 4,
+     "reject": false,
+     "reason": "Gear ratio from tooth counts and pedal force from slope and ratio form a small honest statics model; it nearly duplicates bicycle-gears-hills in this same pool, so only one should survive.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "bicycle-gears-hills",
+     "score": 4,
+     "reject": false,
+     "reason": "The same gear-ratio and incline-force model, with a fixed-strength rider stalling or climbing, is buildable and honest; it duplicates bicycle-gears in this pool and the two should be merged.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "car-brakes",
+     "score": 4,
+     "reject": false,
+     "reason": "A lever, Pascal's-law hydraulic ratio, pad friction and v-squared stopping distance with a friction limit for skidding make a small honest chain of models, though it is two pages' worth of content and should be kept tight.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "click-pen",
+     "score": 2,
+     "reject": true,
+     "reason": "The cam mechanism is a fixed kinematic sequence the reader only steps through, with no parameter whose change the model answers, so the page is an animated cutaway to tap rather than a model.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "clock-escapement",
+     "score": 5,
+     "reject": false,
+     "reason": "A pendulum ODE with an anchor that catches the escape wheel and gives a small impulse each swing is a compact, honest simulation, and the period depending on length but not drive weight falls out of it.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "crane-counterweight",
+     "score": 5,
+     "reject": false,
+     "reason": "Torque balance about the tipping edge and the mechanical advantage of rope falls are exact, tiny statics models that produce a real load chart live.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "dam-water-height",
+     "score": 4,
+     "reject": false,
+     "reason": "Torricelli outflow, power proportional to flow times head and a draining reservoir are a small honest model, and the equal-power comparison of high head against high flow comes straight out of it.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "differential-gear",
+     "score": 4,
+     "reject": false,
+     "reason": "The differential's kinematic constraint (wheel speeds averaging the cage's) and the equal-torque split that lets one wheel spin on ice are a small honest gear model, driven by a bend radius the reader sets.",
+     "suggestedLevel": 0
+    }
+   ]
+  }
+ },
+ {
+  "label": "judge:fit-level:b19",
+  "result": {
+   "verdicts": [
+    {
+     "slug": "tls-handshake",
+     "score": 4,
+     "reject": false,
+     "reason": "A real protocol mechanism (key share, certificate chain, forward secrecy) with a strong MITM toggle, honestly level 3 and distinct from cryptography's separate primitives, though its prerequisite elliptic-curve-cryptography is only a pool candidate.",
+     "suggestedLevel": 3
+    },
+    {
+     "slug": "video-codecs",
+     "score": 4,
+     "reject": false,
+     "reason": "Motion-compensated prediction is a clear visual mechanism that compression (still images only) does not cover, and the keyframe-corruption toy shows the takeaway well; level 3 is honest, though the core could also work at level 2.",
+     "suggestedLevel": 3
+    },
+    {
+     "slug": "zero-knowledge-proofs",
+     "score": 4,
+     "reject": false,
+     "reason": "A graph-colouring protocol where a cheater's survival probability falls round by round, plus a Schnorr simulator, is real level-3 material, and no existing page covers it.",
+     "suggestedLevel": 3
+    },
+    {
+     "slug": "autocomplete-spellcheck",
+     "score": 4,
+     "reject": false,
+     "reason": "An everyday object explained by two checkable counts (nearness and frequency) with no formulas, so it suits level 0; it stays distinct from language-models because it has no network, but it shares the counting idea with spam-filter-word-counts and you-might-also-like.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "face-unlock-depth",
+     "score": 3,
+     "reject": false,
+     "reason": "Structured-light depth sensing is a real mechanism a child can follow (photo fails, twin passes), but it is more optics than AI and overlaps fingerprint-match's 'enough points agree' takeaway in this batch, so the project should probably keep only one of the two biometric pages.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "fingerprint-match",
+     "score": 4,
+     "reject": false,
+     "reason": "Matching ridge endings and forks against an 'enough' line is a clean level-0 mechanism on a familiar object, and nothing existing shows a biometric match; it is the stronger of the two biometric candidates.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "spam-filter-word-counts",
+     "score": 4,
+     "reject": false,
+     "reason": "Naive Bayes reduced to word counts that vote is a genuine classifier a 10-year-old can check, and it prepares well for bayes-theorem; the vote weighting must stay as comparisons, not ratios, to remain level 0.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "step-counter",
+     "score": 3,
+     "reject": false,
+     "reason": "A threshold on a real accelerometer trace is an honest level-0 mechanism with a nice false-positive and false-negative trade-off, but it is thin and is signal processing more than AI.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "teach-a-machine",
+     "score": 5,
+     "reject": false,
+     "reason": "Nearest-neighbour voting on the reader's own doodles, with a shortcut-learning trap, makes the toy the takeaway; it is an ideal level-0 entry to learning-from-data and distinct from it.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "voice-assistant-wake-word",
+     "score": 3,
+     "reject": false,
+     "reason": "Building the spectrogram is a good visual, but the deciding step is a black-box network with confidence bars, so the page shows less mechanism than its level-0 siblings; it is still distinct from convolution-vision.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "you-might-also-like",
+     "score": 3,
+     "reject": false,
+     "reason": "Co-visitation counts with a popularity pull and a cold-start problem form a real but thin mechanism, it sits close to pagerank's link-graph picture, and it repeats the batch's 'it's just counting' theme.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "k-means-clustering",
+     "score": 4,
+     "reject": false,
+     "reason": "Promotes a reserve topic with an honest level-1 algorithm a learner can step by hand on penguins, but it duplicates the k-means half of clustering-gaussian-mixtures in this file, so only one of them should keep k-means as its core.",
+     "suggestedLevel": 1
+    },
+    {
+     "slug": "clustering-gaussian-mixtures",
+     "score": 3,
+     "reject": false,
+     "reason": "EM on Gaussian mixtures with soft responsibilities is real level-3 content, but the candidate also repeats k-means-clustering's stepping and ring demo; it should be refocused on EM and density methods, with k-means-clustering as its prerequisite.",
+     "suggestedLevel": 3
+    },
+    {
+     "slug": "adaptive-optimizers",
+     "score": 4,
+     "reject": false,
+     "reason": "Using conditioning as the control and showing per-parameter scaling and schedules goes properly beyond gradient-descent's momentum toggle, and it is standard university ML.",
+     "suggestedLevel": 3
+    },
+    {
+     "slug": "adversarial-examples",
+     "score": 4,
+     "reject": false,
+     "reason": "FGSM on an in-browser classifier, with random noise as the control, is a striking mechanism that shows a real model, honestly level 3 and distinct from convolution-vision's inspection.",
+     "suggestedLevel": 3
+    },
+    {
+     "slug": "contrastive-learning",
+     "score": 3,
+     "reject": false,
+     "reason": "A genuine level-3 mechanism distinct from embeddings, but training an image encoder live in the browser is heavy, and the CLIP add-on makes it two pages in one.",
+     "suggestedLevel": 3
+    },
+    {
+     "slug": "dimensionality-reduction",
+     "score": 4,
+     "reject": false,
+     "reason": "PCA as the rotation that keeps the most spread, contrasted with t-SNE's artefacts, covers the other half of the reserve topic and answers embeddings' own pitfall; level 3 is honest for t-SNE.",
+     "suggestedLevel": 3
+    },
+    {
+     "slug": "double-descent",
+     "score": 4,
+     "reject": false,
+     "reason": "It extends learning-from-data's test-error curve through the interpolation peak with a real random-features model and a bias-variance decomposition, which is clearly level 3 and distinct.",
+     "suggestedLevel": 3
+    },
+    {
+     "slug": "dropout-and-batch-norm",
+     "score": 3,
+     "reject": false,
+     "reason": "Each technique is real, but bundling dropout, weight decay and batch norm reads as a survey of training tricks rather than one mechanism with one takeaway; it would be stronger narrowed to a single technique.",
+     "suggestedLevel": 3
+    },
+    {
+     "slug": "evolutionary-algorithms",
+     "score": 4,
+     "reject": false,
+     "reason": "Gradient-free search with CMA-ES's adapting ellipse and a GA's diversity collapse is a visual mechanism distinct from both evolution (biology) and gradient-descent, and fits level 3.",
+     "suggestedLevel": 3
+    },
+    {
+     "slug": "federated-learning",
+     "score": 3,
+     "reject": false,
+     "reason": "Federated averaging with client drift and a privacy-noise trade-off is a valid level-3 mechanism, but it is niche and bundles two topics (federation and differential privacy).",
+     "suggestedLevel": 3
+    },
+    {
+     "slug": "gaussian-processes",
+     "score": 4,
+     "reject": false,
+     "reason": "Clicking in observations and watching the uncertainty band pinch and swell is a direct visual of the real model, it is a core university topic, and it is distinct from every existing page.",
+     "suggestedLevel": 3
+    },
+    {
+     "slug": "generative-adversarial-networks",
+     "score": 4,
+     "reject": false,
+     "reason": "A live 2-D generator-versus-discriminator game with mode collapse is a clear mechanism, it is distinct from diffusion-models' denoising, and it is honest level 3.",
+     "suggestedLevel": 3
+    },
+    {
+     "slug": "graph-neural-networks",
+     "score": 4,
+     "reject": false,
+     "reason": "Message passing on the karate club, with oversmoothing and an expressiveness limit, is real level-3 content and goes beyond pagerank's scalar propagation.",
+     "suggestedLevel": 3
+    },
+    {
+     "slug": "induction-heads",
+     "score": 3,
+     "reject": false,
+     "reason": "A real, testable circuit (shown by ablation) that is distinct from transformers, but it is research-frontier interpretability rather than what a typical university student learns, and it depends on precomputed training checkpoints.",
+     "suggestedLevel": 3
+    }
+   ]
+  }
+ },
+ {
+  "label": "judge:fit-level:b17",
+  "result": {
+   "verdicts": [
+    {
+     "slug": "life-on-a-grid",
+     "score": 5,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "Conway's Life is a real, rule-driven mechanism a 10-year-old can paint and run, the toy is the takeaway, and chaos-fractals never shows cellular automata (though leadsTo ecosystems is a weak link; turing-machines or chaos-fractals are not level 1, so consider logic-gates or leave it nearly empty)."
+    },
+    {
+     "slug": "pixels-and-pictures",
+     "score": 2,
+     "reject": true,
+     "suggestedLevel": 0,
+     "reason": "It shares its opening (pinch a photo into squares) and its resolution-halving step with screens-and-pixels in this same file, so fold its 'grid of numbers, four times as many per doubling' step into that page instead of building two level-0 pixel pages."
+    },
+    {
+     "slug": "repeat-loops",
+     "score": 3,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "A genuine, Logo-style mechanism that is honest at level 0, but it reuses robot-instructions' cards and robot, so it reads more like that page's second half than a separate topic; keep it only if both survive as a pair."
+    },
+    {
+     "slug": "robot-instructions",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "The first idea of a program, shown as a robot that does exactly what its cards say, is a clean level-0 mechanism with nothing like it in the catalogue (cpu is level 2 registers), and it is the natural home for loops if repeat-loops is merged in."
+    },
+    {
+     "slug": "screens-and-pixels",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "It starts from an object everyone knows and shows the real mechanism (three subpixels mixed by the eye, a grid of them) with sliders a child can use, and it is distinct from vision-color's cone model; it should absorb pixels-and-pictures."
+    },
+    {
+     "slug": "secret-codes",
+     "score": 5,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "Caesar brute force and frequency analysis are real mechanisms done by counting, a classic primary and middle-school favourite, and clearly distinct from the level-2 cryptography page's key exchange and hashing."
+    },
+    {
+     "slug": "solving-a-maze",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "The wall follower against Trémaux marking is a true algorithm with a visible failure (the island) a 10-year-old can see, and it sits well below graph-search's frontiers and costs."
+    },
+    {
+     "slug": "sorting-network",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "A CS Unplugged staple that has a checkable mechanism (fixed comparators, parallel rounds, test all 720 orders) and needs only comparisons, and it is distinct from sorting's sequential algorithms and Big-O curves."
+    },
+    {
+     "slug": "sound-as-numbers",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "Sampling rate and bit depth heard directly is a real mechanism with an audible payoff, honest at level 0 if the wording stays 'how often' and 'how finely', and it is not covered by compression or fourier-transform."
+    },
+    {
+     "slug": "traffic-light-controller",
+     "score": 3,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "A queue simulation with a sensor rule is a legitimate mechanism from an everyday object, but its takeaway is thin and tuning green times to minimise total queue edges toward optimisation; its leadsTo targets (logic-gates, graph-search) are also loose."
+    },
+    {
+     "slug": "twenty-questions",
+     "score": 5,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "Halving against one-by-one search is a core idea shown with counts only, from a game every child knows, and the catalogue has no searching page at all."
+    },
+    {
+     "slug": "databases-and-queries",
+     "score": 3,
+     "reject": false,
+     "suggestedLevel": 1,
+     "reason": "Tables, keys, joins and indexes fill a real gap and the index row-count is a visible mechanism, but the page tries to cover normalisation, queries, indexes and transactions at once, and transactions overlap b-trees-transactions, so it should be trimmed to keys, joins and the index."
+    },
+    {
+     "slug": "game-tree-search",
+     "score": 5,
+     "reject": false,
+     "suggestedLevel": 1,
+     "reason": "Minimax with depth and pruning is a vivid mechanism with a strong visitor draw, honest at level 1 with noughts and crosses and Connect Four, and distinct from graph-search because a value flows up the tree against an opponent."
+    },
+    {
+     "slug": "how-simulations-work",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 1,
+     "reason": "Stepping a ball and an orbit, with step-size error and the half-step update fixing the orbit, is the site's own engine made visible and honest at level 1, and neither calculus nor any physics page shows it."
+    },
+    {
+     "slug": "perlin-noise-terrain",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 1,
+     "reason": "Summed octaves of gradient noise is a real algorithm with an appealing generative toy and no formulas needed beyond 'twice as fine, half as tall', and it is distinct from chaos-fractals, which discovers structure rather than building it."
+    },
+    {
+     "slug": "recursion",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 1,
+     "reason": "The call stack and the base case are a core mechanism that no page shows, honest at level 1 with factorial and Hanoi; its memoisation step should stay brief so it does not pre-empt dynamic-programming."
+    },
+    {
+     "slug": "b-trees-transactions",
+     "score": 3,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "B+tree splits and write-ahead-log crash recovery are genuine level-3 database internals, but this is two topics in one page, and it depends on a pool candidate (locks-deadlock) and overlaps databases-and-queries on transactions."
+    },
+    {
+     "slug": "cache-memory-hierarchy",
+     "score": 5,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "A cache simulator with real parameters, where row against column order changes the miss rate, is a core systems mechanism at the right level, with a strong visual and no overlap with cpu's flat memory."
+    },
+    {
+     "slug": "compilers",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "A compiler pipeline from lexing to optimised code that runs on the existing cpu page is a true level-3 mechanism and a satisfying closure of the computing ladder, though its scope (graph-colouring register allocation as well) is large."
+    },
+    {
+     "slug": "cpu-pipelines",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "Pipeline hazards, forwarding and a two-bit predictor, shown cycle by cycle, are standard computer architecture with a clear diagram, and it is distinct from cpu's one-at-a-time cycle and from the cache candidate."
+    },
+    {
+     "slug": "dynamic-programming",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "Edit distance tables and seam carving give a real mechanism with a visible payoff at the right level, and the page stays distinct from graph-search and recursion if recursion leaves the table idea to it."
+    },
+    {
+     "slug": "fast-fourier-transform",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "The butterfly recursion and the operation count are exactly what a university student learns, and the page is properly distinct from fourier-transform's meaning-of-the-transform page, though it could sit in math rather than computing."
+    },
+    {
+     "slug": "floating-point",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "Float spacing, cancellation and summation order are real numerical-computing mechanisms with a striking 0.1+0.2 hook, and the page goes well beyond binary's single float reading."
+    },
+    {
+     "slug": "garbage-collection",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "Mark-and-sweep, copying, generational collection and the reference-counting cycle leak are a genuine level-3 mechanism drawn naturally as a heap graph, and the catalogue has nothing like it."
+    },
+    {
+     "slug": "hash-tables-bloom-filters",
+     "score": 5,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "Probe lengths and Bloom false-positive rates, measured against the real formulas, are core data-structure models that suit the site's 'real model' rule, and the page is distinct from cryptography's use of hashes."
+    }
+   ]
+  }
+ },
+ {
+  "label": "judge:build:b21",
+  "result": {
+   "verdicts": [
+    {
+     "slug": "drone-four-rotors",
+     "score": 5,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "A small rigid-body ODE (thrust per rotor gives lift, pitch and roll torques; drag torque from spin direction gives yaw) runs trivially in the browser, and each effect the page describes comes straight out of it."
+    },
+    {
+     "slug": "elevator",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "The motor load is counterweight statics (cab plus load minus counterweight) and the rope cut is a short free-fall ODE with a speed-triggered governor brake; honest and small, though the governor's flyweights are a threshold rather than modelled in detail."
+    },
+    {
+     "slug": "engine-pushes-to-spin",
+     "score": 5,
+     "reject": false,
+     "suggedtedLevel": 0,
+     "suggestedLevel": 0,
+     "reason": "Slider-crank geometry turns a stated pressure profile into torque, and one ODE for shaft speed with flywheel inertia shows the speed ripple shrinking as cylinders and the flywheel are added; a clear, honest model."
+    },
+    {
+     "slug": "escalator",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "A real geometric construction (a rigid step on two wheel pairs riding two offset tracks) stays level, or tilts when the reader moves the tracks; the comb-and-groove zoom is the only part that is just a picture."
+    },
+    {
+     "slug": "hydraulics-digger-arm",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "Pascal's principle plus volume conservation is exact and tiny, the air bubble works as a compressible spring, and the boom-arm-bucket is planar linkage kinematics; all of it runs at interactive rates."
+    },
+    {
+     "slug": "kettle",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "A lumped heat balance (element power against water mass, with a plateau at 100 C) gives the honest time to boil for each filling, and the bimetal switch is a threshold; the convection currents should come from a small 2D Boussinesq grid or be labelled as drawn, not shown as decoration passing for a model."
+    },
+    {
+     "slug": "levers-and-scissors",
+     "score": 3,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "The seesaw torque balance is a real, honest model, but the run of scissors, nutcracker, can opener and tweezers risks turning into a tour of pictures to tap unless each tool keeps the same draggable effort, load and pivot model."
+    },
+    {
+     "slug": "light-bulb-hot-wire",
+     "score": 5,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "Planck's law at the filament temperature, integrated against the CIE colour-matching and V(lambda) tables (freely downloadable from cvrl.org), gives both the glow colour and the light-versus-heat split honestly and cheaply; the LED comparison needs only a cited luminous efficacy."
+    },
+    {
+     "slug": "lock-and-key",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "Pin-stack geometry against cut depths and a shear-line check is an exact, small model that shows clearly why the plug turns or jams; picking one pin at a time needs a simplified binding order, which the page should state."
+    },
+    {
+     "slug": "power-station-kettle",
+     "score": 2,
+     "reject": true,
+     "suggestedLevel": 0,
+     "reason": "As described it is a step-through diagram of boiler, turbine, generator and cooling tower, with a lookup of EIA heat rates (public domain) for the bar; no model runs, so it is a browse-a-diagram, and its data side overlaps socket-to-power-station."
+    },
+    {
+     "slug": "pulleys-and-cranes",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "Mechanical advantage from counting the supporting rope segments, and crane tipping from a moment balance about the base edge, are exact and small, and both results show directly on the counters and in the tip."
+    },
+    {
+     "slug": "refrigerator",
+     "score": 3,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "The box and room heat balance with thermostat duty cycle and the open-door case is an honest lumped ODE, but the refrigerant parcel loop is a stepped diagram unless it is tied to the computed heat flows, so the build must make the loop part of that model."
+    },
+    {
+     "slug": "room-thermostat",
+     "score": 5,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "Newton's law of cooling plus a heater with a hysteresis switch is a one-line ODE that shows the wobble band, overshoot and on-time responding to every control; this is the honest model at this level."
+    },
+    {
+     "slug": "screws-and-screwdrivers",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "Inclined-plane statics, a thread as a ramp wrapped round a post (pitch against turns) and torque against handle radius are exact and tiny; the model is honest, if thin, and should state whether friction is left out."
+    },
+    {
+     "slug": "skyscraper-sway-damper",
+     "score": 5,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "Two coupled damped oscillators (tower mode and pendulum damper) driven by a gust force are a small ODE that shows resonance, the anti-phase swing and detuning directly; it is the honest model of a tuned mass damper."
+    },
+    {
+     "slug": "socket-to-power-station",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "A scrubbable year of EIA-930 hourly generation by fuel (US government, public domain; about 8,760 rows times a few fuels) is a small shipped dataset that honestly shows the daily and seasonal shares; the wire-following path from lamp to plant is decoration around that data."
+    },
+    {
+     "slug": "solar-panel-tilt-day",
+     "score": 5,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "NOAA's solar-position equations (public domain), the cosine of the angle between the sun and the panel's normal, and a published clear-sky model give an honest, cheap model of output by hour and by year."
+    },
+    {
+     "slug": "toilet-flush",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "A lumped model of tank, bowl and trapway levels, in which the siphon primes once the bend overflows fast enough and breaks when air enters, plus a float valve, runs easily; the priming threshold is a simplification the page should state."
+    },
+    {
+     "slug": "umbrella",
+     "score": 3,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "The runner, stretcher and rib linkage is honest planar kinematics, but turning inside out is snap-through buckling, which a level-0 model can only approximate with a threshold on rib bending, so that part is close to a picture."
+    },
+    {
+     "slug": "vacuum-cleaner",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "A fan pressure-flow curve against the system's resistance (nozzle gap, bag fill, blocked hose) is an honest lumped model, and dust lifting where the airflow passes a threshold can be drawn as particles; it covers every effect described."
+    },
+    {
+     "slug": "water-taps-and-pipes",
+     "score": 5,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "A small pipe-network solve (head from the tower's height, flow per pipe from its resistance by length and width) is exact for the stated analogy and runs instantly as the reader edits the network."
+    },
+    {
+     "slug": "wind-turbine-wind-speed",
+     "score": 5,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "Power proportional to blade area times wind speed cubed, capped at rated power and cut out above a limit, is the honest model, and the Kelmarsh SCADA reference curve is CC BY 4.0 on Zenodo (confirmed); the page must say that eight times as many houses holds only below rated speed."
+    },
+    {
+     "slug": "wind-up-toy",
+     "score": 5,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "Spring torque falling with the turns left, a gear ratio, leg friction and a fan governor with speed-squared drag make a small ODE that shows the fast-short against slow-long trade and the steadying effect directly."
+    },
+    {
+     "slug": "zipper",
+     "score": 3,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "The Y-channel engaging the teeth is a buildable geometric construction, but the pull test is thin: the load share is simple division and the open-stretch case has no real model, so the page leans toward an animation of a mechanism."
+    },
+    {
+     "slug": "heat-pumps",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 1,
+     "reason": "COP as the Carnot limit times a stated second-law efficiency (or the cited Staffell et al. fit, a formula that does not need open access) is an honest, small model that shows the ratio falling with the temperature lift; the refrigerant loop must be driven by that model so it is not just a picture."
+    }
+   ]
+  }
+ },
+ {
+  "label": "judge:build:b17",
+  "result": {
+   "verdicts": [
+    {
+     "slug": "life-on-a-grid",
+     "score": 5,
+     "reject": false,
+     "reason": "Conway's Life on a small grid with an editable B/S rule is an exact, tiny cellular automaton that steps at thousands of generations a second, and the rule counts can be drawn on each cell; no data needed.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "pixels-and-pictures",
+     "score": 4,
+     "reject": false,
+     "reason": "Real model (sampling an image to a grid, quantising to 1/2/8 bits, counting numbers) is honest and cheap with one CC0 photo; it largely overlaps the batch's screens-and-pixels, so only one of the two should survive.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "repeat-loops",
+     "score": 5,
+     "reject": false,
+     "reason": "A turtle-graphics interpreter with nested repeat cards is a genuine, tiny program runner whose drawn path is a pure function of step count; no data.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "robot-instructions",
+     "score": 4,
+     "reject": false,
+     "reason": "A card-list interpreter driving a robot on a grid is a real, trivial model; the 'make a sandwich' scene risks being a scripted animation rather than the same interpreter, so it should be built from the same action set or dropped.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "screens-and-pixels",
+     "score": 4,
+     "reject": false,
+     "reason": "Rendering a CC0 photo's real pixel values as RGB subpixel triplets and downsampling by halves is honest and cheap in SVG at a cropped region; overlaps pixels-and-pictures in this batch, so keep one.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "secret-codes",
+     "score": 5,
+     "reject": false,
+     "reason": "Caesar brute force and substitution frequency analysis are exact algorithms, and letter counts from a public-domain Project Gutenberg text are freely computable at build time.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "solving-a-maze",
+     "score": 5,
+     "reject": false,
+     "reason": "Maze generation, a wall-follower and Tremaux's chalk-marking algorithm are small exact algorithms that animate step by step, and the island loop is a real failure the model produces on its own.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "sorting-network",
+     "score": 5,
+     "reject": false,
+     "reason": "A reader-built comparator network checked against all 720 permutations of six inputs is exact and instant, and parallel rounds fall out of the network depth; no data.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "sound-as-numbers",
+     "score": 4,
+     "reject": false,
+     "reason": "Resampling and requantising a clip with Web Audio is a real computation and Freesound offers CC0 clips; playback and microphone add beyond SVG-as-function-of-time, but the drawn samples stay a pure function of the sliders.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "traffic-light-controller",
+     "score": 4,
+     "reject": false,
+     "reason": "A seeded random-arrival queue simulation with fixed-cycle and actuated controllers is a small honest discrete-event model, and the queue totals respond to the green split; no data needed.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "twenty-questions",
+     "score": 4,
+     "reject": false,
+     "reason": "Binary search and a greedy question tree over the UCI Zoo dataset (101 animals, CC BY 4.0 under UCI's repository licence) are exact and tiny; real features will not split exactly in half, which the page must show honestly rather than claim perfect halving.",
+     "suggestedLevel": 0
+    },
+    {
+     "slug": "databases-and-queries",
+     "score": 4,
+     "reject": false,
+     "reason": "A tiny in-browser relational engine (filter, sort, hash/nested-loop join, index vs full scan with row counts) over Palmer penguins (CC0) or a GeoNames extract (CC BY 4.0) is real and fast; the concurrent-transaction scene needs to be a real interleaving, not a canned animation.",
+     "suggestedLevel": 1
+    },
+    {
+     "slug": "game-tree-search",
+     "score": 5,
+     "reject": false,
+     "reason": "Full minimax for noughts and crosses and depth-limited alpha-beta for Connect Four (about 7^6 ≈ 120k nodes at depth 6, fine in a Web Worker) are exact and interactive, with real node counts; no data.",
+     "suggestedLevel": 1
+    },
+    {
+     "slug": "how-simulations-work",
+     "score": 5,
+     "reject": false,
+     "reason": "Explicit Euler versus semi-implicit (symplectic) stepping on a falling ball and a Kepler orbit against the exact solution is the honest, tiny model, and the error and energy drift are visible on the graphic.",
+     "suggestedLevel": 1
+    },
+    {
+     "slug": "perlin-noise-terrain",
+     "score": 4,
+     "reject": false,
+     "reason": "Gradient noise with octaves on a modest grid is exact and fast; a tiltable shaded 3D landscape in SVG must stay coarse (or be a hillshaded 2D map) to remain interactive.",
+     "suggestedLevel": 1
+    },
+    {
+     "slug": "recursion",
+     "score": 5,
+     "reject": false,
+     "reason": "Stepping a real interpreter of small recursive functions with a drawn call stack, a Fibonacci call tree with and without memoisation, and a depth-limited overflow is exact and cheap.",
+     "suggestedLevel": 1
+    },
+    {
+     "slug": "b-trees-transactions",
+     "score": 4,
+     "reject": false,
+     "reason": "A B+tree with adjustable fan-out and counted node reads, plus a write-ahead log with crash-and-replay and two isolation modes, are all small real algorithms; two models make it a large page but nothing needs a backend.",
+     "suggestedLevel": 3
+    },
+    {
+     "slug": "cache-memory-hierarchy",
+     "score": 5,
+     "reject": false,
+     "reason": "A set-associative cache simulator fed by real address traces of row/column sums, a linked-list walk and blocked matrix multiply is exact, fast and produces the hit/miss curves itself.",
+     "suggestedLevel": 3
+    },
+    {
+     "slug": "compilers",
+     "score": 4,
+     "reject": false,
+     "reason": "A toy lexer, recursive-descent parser, IR, constant folding, dead-code elimination and graph-colouring register allocation targeting the existing cpu page's ISA is a real pipeline that runs instantly; scope is large but honest.",
+     "suggestedLevel": 3
+    },
+    {
+     "slug": "cpu-pipelines",
+     "score": 5,
+     "reject": false,
+     "reason": "A cycle-accurate five-stage pipeline simulator with hazards, forwarding and a two-bit branch predictor is small and exact, and stall and flush counts come from the model.",
+     "suggestedLevel": 3
+    },
+    {
+     "slug": "dynamic-programming",
+     "score": 4,
+     "reject": false,
+     "reason": "Edit-distance table with traceback, knapsack, and seam carving on a small CC0 image (Wikimedia CC0 or NASA public domain) are exact and run in milliseconds; three demos is generous but each is a real algorithm.",
+     "suggestedLevel": 3
+    },
+    {
+     "slug": "fast-fourier-transform",
+     "score": 5,
+     "reject": false,
+     "reason": "A radix-2 Cooley-Tukey FFT on 8 to 64 samples with a drawn butterfly, counted multiplications and FFT polynomial multiplication is exact and trivially fast.",
+     "suggestedLevel": 3
+    },
+    {
+     "slug": "floating-point",
+     "score": 5,
+     "reject": false,
+     "reason": "IEEE 754 encoding, rounding to half (emulated), single (Math.fround) and double precision, cancellation and Kahan summation are exact in JavaScript, so every gap and error shown is computed, not drawn.",
+     "suggestedLevel": 3
+    },
+    {
+     "slug": "garbage-collection",
+     "score": 4,
+     "reject": false,
+     "reason": "A heap of objects with pointers, mark-and-sweep, a copying and a generational collector and reference counting on a cycle are small real algorithms; the allocation program must be a seeded generator so pauses and memory come from the model.",
+     "suggestedLevel": 3
+    },
+    {
+     "slug": "hash-tables-bloom-filters",
+     "score": 5,
+     "reject": false,
+     "reason": "Chaining and open addressing with measured probe lengths, resizing, and a Bloom filter whose measured false-positive rate tracks (1-e^{-kn/m})^k are exact and instant; no data.",
+     "suggestedLevel": 3
+    }
+   ]
+  }
+ },
+ {
+  "label": "judge:fit-level:b23",
+  "result": {
+   "verdicts": [
+    {
+     "slug": "robot-arm-kinematics",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "A real mechanism a robotics student learns (Jacobian, singularities, null-space redundancy) shown through the manipulability ellipsoid; it is distinct from feedback-control, whose arm is only a closing PID example, though its fit under Energy & Machines is looser than its appeal."
+    },
+    {
+     "slug": "ship-stability",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "The page re-integrates the hull's buoyancy as it heels, which gives a vivid, visual mechanism and a pitfall that busts a common myth; no existing page covers buoyancy, and the righting-arm curve, the free-surface effect and the angle of vanishing stability are honest naval-architecture level 3."
+    },
+    {
+     "slug": "steam-power-cycles",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "The Rankine cycle on a T-s diagram with real IAPWS steam properties is core university thermodynamics, and it is clearly distinct from the closed-cylinder p-V loop of heat-engines; it needs to stay separate from the gas-turbine/combined-cycle candidate elsewhere in the pool."
+    },
+    {
+     "slug": "superconducting-magnets",
+     "score": 3,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "Its critical surface and quench propagation make a genuine, honestly level-3 mechanism distinct from fusion and imaging, but it is a niche specialist subject with less pull for visitors than the other candidates."
+    },
+    {
+     "slug": "thermoelectrics",
+     "score": 3,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "The 1D Seebeck/Peltier/Joule leg model and the ZT trade-off are a real level-3 mechanism, distinct from solar-cells, but the subject is niche and the graphic is mostly curves rather than a vivid moving mechanism."
+    },
+    {
+     "slug": "tribology-lubrication",
+     "score": 3,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "The page solves the Reynolds-equation pressure wedge and sweeps the Stribeck curve, a genuine mechanism that replaces newtons-laws' friction coefficient and fits an engineering level 3, but its everyday hook (oil) is undersold and its appeal is moderate."
+    },
+    {
+     "slug": "wind-turbine-aerodynamics",
+     "score": 5,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "It is a high-demand subject with a crisp mechanism (actuator-disc momentum balance to the Betz limit, then blade-element-momentum with real NREL polars), honestly level 3, and it extends flight to the whole rotor without duplicating it."
+    }
+   ]
+  }
+ },
+ {
+  "label": "judge:build:b19",
+  "result": {
+   "verdicts": [
+    {
+     "slug": "tls-handshake",
+     "score": 3,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "Buildable with real X25519/ECDSA and HKDF through WebCrypto or a small library and a real public certificate chain, so the MITM failure and forward secrecy are computed, not drawn. It needs care, because a stepped protocol page drifts easily into a browse-a-diagram of message boxes."
+    },
+    {
+     "slug": "video-codecs",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "Block motion search, residual DCT and quantisation on a few small frames is a real codec model that runs at interactive rates. Big Buck Bunny video frames are CC BY 3.0, and the entry rightly excludes the NC-ND score."
+    },
+    {
+     "slug": "zero-knowledge-proofs",
+     "score": 5,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "Graph 3-colouring commitments and Schnorr on small numbers are tiny exact algorithms. The cheater-survival curve and the simulated transcripts come straight out of the code, and no data is needed."
+    },
+    {
+     "slug": "autocomplete-spellcheck",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "Edit distance plus word and bigram counts is the honest model of a Norvig-style corrector. A shipped subset of Google Ngram counts (CC BY 3.0) or counts from a Gutenberg text is small and openly licensed, and the entry correctly avoids Norvig's unlicensed count files."
+    },
+    {
+     "slug": "face-unlock-depth",
+     "score": 3,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "Ray-casting a dot pattern onto a parametric head and comparing depth maps is a real triangulation model and works without data. The match score and the twin case are toy stand-ins for a real face-ID network, though, so the page has to say the matcher is simplified."
+    },
+    {
+     "slug": "fingerprint-match",
+     "score": 3,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "Minutiae alignment and counting is a real, small algorithm. Synthesising ridges SFinGe-style (orientation field plus Gabor filtering) and thinning them is substantial work, best precomputed. It is correct that no real fingerprint database is openly licensed."
+    },
+    {
+     "slug": "spam-filter-word-counts",
+     "score": 5,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "Naive Bayes word counts on the UCI SMS Spam Collection (CC BY 4.0, confirmed on UCI, about 500 KB) is a small, exact, real classifier whose counts the reader can check."
+    },
+    {
+     "slug": "step-counter",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "Threshold and peak detection on real labelled HAPT accelerometer traces from UCI (CC BY 4.0, UCI's standard licence) is an honest, small model, and the entry is candid that there is no step ground truth and that the car trace is synthetic."
+    },
+    {
+     "slug": "teach-a-machine",
+     "score": 5,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "k-nearest-neighbours on downsampled drawings is exact and instant in the browser. The reader's drawings need no data, and Quick, Draw! (CC BY 4.0) is optional. The shortcut-by-position trap falls out of the real model."
+    },
+    {
+     "slug": "voice-assistant-wake-word",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "The TF.js speech-commands model (Apache 2.0, 18-word vocabulary) and Speech Commands clips (CC BY 4.0) run in the browser. The network itself is a black box, the shipped clips have to be pushed through the same WebAudio spectrogram pipeline the model expects, and the page adds a TF.js dependency."
+    },
+    {
+     "slug": "you-might-also-like",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 0,
+     "reason": "Item-to-item counts from a small CC0 Wikimedia Clickstream subset (licence confirmed) is an honest recommender, and following arrows is a real random walk that drifts toward hubs. It must keep the computation (drift, cold start) visible so it doesn't become a graph to browse."
+    },
+    {
+     "slug": "k-means-clustering",
+     "score": 5,
+     "reject": false,
+     "suggestedLevel": 1,
+     "reason": "Lloyd's algorithm, the elbow plot and a DBSCAN contrast on Palmer penguins (CC0) or hand-placed points are tiny exact algorithms. It overlaps heavily with clustering-gaussian-mixtures in the same batch, so one of the two should absorb the other."
+    },
+    {
+     "slug": "adaptive-optimizers",
+     "score": 5,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "SGD, momentum, RMSProp and Adam on a quadratic with adjustable conditioning are a few lines each and run instantly. The small-network loss curve can be trained live, and no data is needed."
+    },
+    {
+     "slug": "adversarial-examples",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "FGSM against a small digit classifier with input gradients in the browser is real and fast. It needs two offline-trained weight sets (one adversarially trained), with own weights only, following the MNIST decision of convolution-vision."
+    },
+    {
+     "slug": "clustering-gaussian-mixtures",
+     "score": 5,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "k-means, EM on 2-D Gaussian mixtures and DBSCAN are small exact algorithms on Palmer penguins (CC0, confirmed for the palmerpenguins package). It duplicates k-means-clustering's k-means and ring demo, so the level-3 page should start at EM."
+    },
+    {
+     "slug": "contrastive-learning",
+     "score": 3,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "An InfoNCE encoder on a Fashion-MNIST subset (MIT) is feasible as precomputed checkpoints, but live training with augmentations is slow in the browser. The CLIP variant has no real text data behind it, so it would be a toy, and it should be cut or narrowed to label-name text."
+    },
+    {
+     "slug": "dimensionality-reduction",
+     "score": 5,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "PCA on a rotatable 3-D cloud and live t-SNE on a few hundred Fashion-MNIST points (MIT) both run comfortably at interactive rates, and the perplexity and seed artefacts are real outputs of the algorithm."
+    },
+    {
+     "slug": "double-descent",
+     "score": 5,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "Random-feature ridge regression is a closed-form linear solve with a few hundred features at most, so sweeping width, resampling and regularisation all compute live, and the interpolation peak emerges from the real model."
+    },
+    {
+     "slug": "dropout-and-batch-norm",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "A small MLP on 2-D data trained live, TensorFlow-Playground style, with dropout, weight decay and batch norm is fully buildable. The many synchronised panels (boundary, histograms, per-layer activations) are a scope risk, not a buildability one."
+    },
+    {
+     "slug": "evolutionary-algorithms",
+     "score": 5,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "CMA-ES on 2-D landscapes and a GA on a small tour are both small exact algorithms, and the stretching covariance ellipse is the algorithm's own state. These are two demos, though, so the page may need to choose one focus."
+    },
+    {
+     "slug": "federated-learning",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "FedAvg over a few simulated clients with small 2-D models, plus clipping and Gaussian noise, is cheap and honest. The privacy budget slider must compute a real epsilon (for example from a moments accountant or a simple Gaussian-mechanism bound) rather than a label."
+    },
+    {
+     "slug": "gaussian-processes",
+     "score": 5,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "GP regression with a handful of points is a small Cholesky solve, so the posterior band, the sampled functions, kernel swaps and UCB queries are all exact and instant, and no data is needed."
+    },
+    {
+     "slug": "generative-adversarial-networks",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "A tiny 2-D GAN trained live is feasible and mode collapse genuinely appears. The Fashion-MNIST (MIT) sample grids need an offline training run with own weights, and live training is stochastic, so the page needs fixed seeds for deterministic tests."
+    },
+    {
+     "slug": "graph-neural-networks",
+     "score": 5,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "A GCN on the 34-node karate club trains in milliseconds, oversmoothing and the WL-indistinguishable pair come straight from the computation, and the graph is a tiny published fact table that is safe to re-enter with a citation."
+    },
+    {
+     "slug": "induction-heads",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "A two-layer attention-only transformer with a tiny vocabulary is cheap to run forward and to ablate in the browser. The phase-change checkpoints must be trained offline (feasible on a laptop), with own weights and no external data."
+    }
+   ]
+  }
+ },
+ {
+  "label": "judge:build:b23",
+  "result": {
+   "verdicts": [
+    {
+     "slug": "robot-arm-kinematics",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "Damped-least-squares Jacobian IK on a 6/7-joint chain with UR5 DH parameters (public in BSD/Apache ROS packages) runs trivially per frame, and singular values give the ellipsoid; the only cost is drawing a 3D arm and ellipsoid in projected SVG, which a planar 3-link mode could make more legible."
+    },
+    {
+     "slug": "ship-stability",
+     "score": 5,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "Clipping a hull section (or integrating Wigley stations) at each heel angle and finding the waterline that keeps displacement constant is a small, honest hydrostatics computation that yields B, GZ and the full righting-arm curve live, with the free-surface correction as a standard formula and no data licence issue."
+    },
+    {
+     "slug": "steam-power-cycles",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "The IAPWS-IF97 equations are freely published and CoolProp is MIT-licensed, so porting the relevant regions to JS gives honest cycle states and a T-s diagram at interactive rates; the blade-erosion visual is decoration, but the cycle model itself is real."
+    },
+    {
+     "slug": "superconducting-magnets",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "A 1D heat equation along the conductor with Joule heating switched on by a Bottura-fit critical surface, coupled to an L-R dump circuit, is a small explicit PDE plus ODE that runs fine in the browser; the fit parameters are published facts and the NIST cryogenic property fits are US-government public."
+    },
+    {
+     "slug": "thermoelectrics",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "The constant-property leg model (Seebeck, Peltier, Joule, conduction) is an honest closed form for efficiency, power and cooler limits versus current and ZT, and it checks out (about 0.2 of Carnot at ZT 1); temperature-dependent material curves are mostly in paywalled papers, so the page should use slider properties with typical Bi2Te3 values from open sources, and the graphic risks becoming mostly plots."
+    },
+    {
+     "slug": "tribology-lubrication",
+     "score": 3,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "The 1D Reynolds equation, or the Sommerfeld solution, gives an honest film pressure and hydrodynamic friction, but the boundary and mixed parts of the Stribeck curve are not in that model and would need an empirical asperity-contact blend (e.g. Greenwood-Williamson), and ISO 3448 itself is a paywalled standard, though grade viscosities and the Walther fit are widely published."
+    },
+    {
+     "slug": "wind-turbine-aerodynamics",
+     "score": 5,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "Actuator-disc momentum theory is analytic, and a blade-element-momentum iteration over about 20 elements with the NREL S809 polar (openly published by a US-government lab) converges in milliseconds, so both stages are small, honest, interactive models."
+    }
+   ]
+  }
+ },
+ {
+  "label": "judge:fit-level:b22",
+  "result": {
+   "verdicts": [
+    {
+     "slug": "heat-transfer-insulation",
+     "score": 4,
+     "reject": false,
+     "reason": "A much-wanted, honest level-1 mechanism page (heat through a wall, convection cells, radiation) that no existing page shows, since entropy only equalises particle temperatures; trim it to the wall and keep the pan and radiator as short steps so it stays one graphic.",
+     "suggestedLevel": 1
+    },
+    {
+     "slug": "mains-electricity",
+     "score": 4,
+     "reject": false,
+     "reason": "A well-placed level-1 bridge between electric-circuits and power-grid with visible mechanisms (AC on a scope, fuse, earth fault, breaker); its transformer step repeats power-grid's, so keep that part brief.",
+     "suggestedLevel": 1
+    },
+    {
+     "slug": "abs-brakes",
+     "score": 4,
+     "reject": false,
+     "reason": "A tyre slip curve with wheel dynamics and a cycling controller is a real nonlinear model a vehicle-engineering student meets, it has a crisp counter-intuitive takeaway, and it is distinct from feedback-control's PID.",
+     "suggestedLevel": 3
+    },
+    {
+     "slug": "battery-degradation",
+     "score": 3,
+     "reject": false,
+     "reason": "High everyday demand, but the model is a fitted semi-empirical curve rather than a mechanism the graphic can show working, and it sits close to lithium-cell-dynamics in the same batch; one of the two battery pages may be enough.",
+     "suggestedLevel": 3
+    },
+    {
+     "slug": "bicycle-stability",
+     "score": 5,
+     "reject": false,
+     "reason": "A classic level-3 result (the linearised Whipple model's eigenvalues, self-stability without gyroscopes) with a surprising takeaway, an everyday object and nothing like it on the site, though it fits physics better than energy.",
+     "suggestedLevel": 3
+    },
+    {
+     "slug": "carbon-capture",
+     "score": 3,
+     "reject": false,
+     "reason": "The minimum work of separation against dilution is a real thermodynamic model and a timely subject, but the absorber-stripper process plus the power-plant coupling risk turning the page into a process survey rather than one graphic.",
+     "suggestedLevel": 3
+    },
+    {
+     "slug": "chip-cooling",
+     "score": 3,
+     "reject": false,
+     "reason": "Thermal resistances in series and hotspot concentration form a real mechanism, distinct from cpu, but the core idea is close to level 2 and overlaps the conduction part of heat-transfer-insulation.",
+     "suggestedLevel": 3
+    },
+    {
+     "slug": "decay-heat",
+     "score": 4,
+     "reject": false,
+     "reason": "Summing decay chains into the decay-heat curve is a genuine level-3 model with a striking takeaway (7 percent after shutdown, Fukushima), and it starts exactly where nuclear-fission and radioactivity stop.",
+     "suggestedLevel": 3
+    },
+    {
+     "slug": "escapements",
+     "score": 4,
+     "reject": false,
+     "reason": "A mechanism the eye can follow, plus real level-3 content (circular error, Airy's condition on impulse timing), distinct from oscillations-resonance's sinusoidal drive.",
+     "suggestedLevel": 3
+    },
+    {
+     "slug": "ev-drivetrains",
+     "score": 3,
+     "reject": false,
+     "reason": "An honest level-3 vehicle energy balance with a useful takeaway about drag and regenerative braking, but it is more an energy-accounting simulation than one mechanism and spreads across motor, pack and road.",
+     "suggestedLevel": 3
+    },
+    {
+     "slug": "exergy-analysis",
+     "score": 3,
+     "reject": false,
+     "reason": "Its takeaway (the boiler, not the condenser, destroys most work potential) is a real level-3 insight, but a Grassmann diagram is accounting more than mechanism, and it depends on steam-power-cycles, a page that does not exist yet.",
+     "suggestedLevel": 3
+    },
+    {
+     "slug": "flywheels",
+     "score": 3,
+     "reject": false,
+     "reason": "The rotating-disc stress solution and the specific-strength argument form a clean level-3 model that no existing page covers, but it is a niche storage technology with modest visitor pull.",
+     "suggestedLevel": 3
+    },
+    {
+     "slug": "fuel-cells-hydrogen",
+     "score": 4,
+     "reject": false,
+     "reason": "The polarization curve with its three losses is the real model an electrochemistry or energy student learns, it is distinct from redox-batteries, and the hydrogen round trip gives it a takeaway visitors care about.",
+     "suggestedLevel": 3
+    },
+    {
+     "slug": "gas-turbines-combined-cycle",
+     "score": 4,
+     "reject": false,
+     "reason": "A real Brayton model on a T-s diagram with the compressor's share of the work and a bottoming steam cycle is core level-3 thermodynamics and distinct from heat-engines' Otto loop; it also underpins jet-engines.",
+     "suggestedLevel": 3
+    },
+    {
+     "slug": "geothermal-power",
+     "score": 3,
+     "reject": false,
+     "reason": "The cold front breaking through between injector and producer is a real mechanism the graphic can show, and it is distinct from plate-tectonics, but the subject has limited demand and the binary cycle is an add-on.",
+     "suggestedLevel": 3
+    },
+    {
+     "slug": "grid-storage-sizing",
+     "score": 3,
+     "reject": false,
+     "reason": "Its diminishing-returns curve over a year of real data is a genuine level-3 analysis, but it is more of a data study than a mechanism, and it extends power-grid's battery rather than showing something new.",
+     "suggestedLevel": 3
+    },
+    {
+     "slug": "heat-pumps-refrigeration",
+     "score": 5,
+     "reject": false,
+     "reason": "A Reserve item with high everyday demand, and a vapour-compression cycle on a real-refrigerant p-h diagram is exactly what the field teaches; heat-engines never runs a cycle backward or shows a phase change.",
+     "suggestedLevel": 3
+    },
+    {
+     "slug": "hvdc-transmission",
+     "score": 3,
+     "reject": false,
+     "reason": "The long-line charging-current limit and the AC/DC break-even distance form a real level-3 model beyond power-grid's resistive loss, but the audience is narrow and phasors are hard to make visual.",
+     "suggestedLevel": 3
+    },
+    {
+     "slug": "hydraulic-systems",
+     "score": 3,
+     "reject": false,
+     "reason": "The orifice law, throttling heat and the hydraulic natural frequency form an honest level-3 model of a familiar machine (the excavator), but the build-a-circuit format and the controller tuning make it sprawling and partly repeat feedback-control.",
+     "suggestedLevel": 3
+    },
+    {
+     "slug": "hydro-turbines",
+     "score": 3,
+     "reject": false,
+     "reason": "Euler's turbine equation with velocity triangles and the morph across specific speed is real turbomachinery the graphic can show, distinct from power-grid, though demand is moderate and the pumped-storage add-on widens it.",
+     "suggestedLevel": 3
+    },
+    {
+     "slug": "involute-gears",
+     "score": 4,
+     "reject": false,
+     "reason": "A beautiful mechanism to animate (an involute traced from a string, a fixed line of action, Willis's planetary ratios), honest mechanical-engineering level 3, and no existing page shows a mechanism in motion like it.",
+     "suggestedLevel": 3
+    },
+    {
+     "slug": "jet-engines",
+     "score": 4,
+     "reject": false,
+     "reason": "High demand, and the propulsive-efficiency takeaway about bypass ratio makes it distinct from flight and rockets; it builds on gas-turbines-combined-cycle rather than duplicating it, but both pages must not repeat the T-s cycle.",
+     "suggestedLevel": 3
+    },
+    {
+     "slug": "lithium-cell-dynamics",
+     "score": 3,
+     "reject": false,
+     "reason": "The single-particle model with diffusion-limited surface concentration and lithium plating is the real level-3 electrochemistry and distinct from redox-batteries' cartoon, but it overlaps battery-degradation and should merge with it or take precedence over it.",
+     "suggestedLevel": 3
+    },
+    {
+     "slug": "maglev-trains",
+     "score": 3,
+     "reject": false,
+     "reason": "Eddy-current lift and drag against speed, and the unstable attractive design held by feedback, are real mechanisms, but they are two half-topics, and the second leans on feedback-control.",
+     "suggestedLevel": 3
+    },
+    {
+     "slug": "reverse-osmosis",
+     "score": 4,
+     "reject": false,
+     "reason": "A clear mechanism (pressure above an osmotic pressure that rises as the brine concentrates along the membrane), a crisp minimum-energy takeaway and a real separation model, and it is distinct from the-cell's osmosis.",
+     "suggestedLevel": 3
+    }
+   ]
+  }
+ },
+ {
+  "label": "judge:build:b22",
+  "result": {
+   "verdicts": [
+    {
+     "slug": "heat-transfer-insulation",
+     "score": 3,
+     "reject": false,
+     "suggestedLevel": 1,
+     "reason": "The conduction core is an honest, small 1D/2D heat equation on a grid through a wall with a tabulated k (facts, no licence issue). The pan-convection, radiator and thermal-camera add-ons are not modelled, though: honest convection needs a fluid solver, and the others are pictures. Narrow it to the wall/insulation model with a U-value meter."
+    },
+    {
+     "slug": "mains-electricity",
+     "score": 3,
+     "reject": false,
+     "suggestedLevel": 1,
+     "reason": "The sine-wave oscilloscope, P=VI current draw, kWh meter, fuse threshold and transformer turns ratio are all trivially computable. But the earth-fault and breaker scenes are rule-driven animations rather than a model, so the page risks being a picture to tap unless the fault path is computed as a real circuit."
+    },
+    {
+     "slug": "abs-brakes",
+     "score": 5,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "A quarter-car wheel ODE with a magic-formula or Burckhardt slip curve and a bang-bang slip controller is a classic small real-time model. The curve coefficients are widely reproduced numeric values, so no licensing problem."
+    },
+    {
+     "slug": "battery-degradation",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "Evaluating a semi-empirical calendar-plus-cycle ageing law over a usage pattern is cheap and honest, though the 'knee' is not produced by the Schmalstieg law and needs a separate published mechanism. The NASA PCoE ageing data's licence is unconfirmed (data.gov lists no licence for the Li-ion ageing set), so confirm it or use an openly licensed dataset for the overlay."
+    },
+    {
+     "slug": "bicycle-stability",
+     "score": 5,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "The Whipple benchmark is a 4-state linear system whose eigenvalues against speed and time responses compute instantly. The parameters are openly tabulated, and the self-stable band and the countersteer are visible in the graphic."
+    },
+    {
+     "slug": "carbon-capture",
+     "score": 3,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "The minimum-work-of-separation curve against concentration is a clean, honest formula. But the absorber/stripper 'step' is mostly a flowsheet whose numbers come from Kent-Eisenberg plus a lumped heat balance, so it is at risk of being a diagram with numbers unless the loading cycle is drawn as a computed equilibrium plot."
+    },
+    {
+     "slug": "chip-cooling",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "A 2D/3D heat-diffusion grid on a die with a series resistance stack, plus a throttling loop, runs easily in the browser. The hotspot-versus-area effect emerges from the model, and conductivities are published facts."
+    },
+    {
+     "slug": "decay-heat",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "Decay heat as a sum of precomputed exponentials (Bateman chains reduced offline from public-domain ENDF/B-VIII.0 yields and decay data) evaluates instantly on a log time axis. Burnup and fuel-type changes need a few precomputed inventories rather than a live depletion code, which should be stated honestly."
+    },
+    {
+     "slug": "escapements",
+     "score": 5,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "A nonlinear pendulum ODE with an impulse applied at a chosen phase directly shows the circular error and Airy's escapement-error result. It needs no data and is small and honest."
+    },
+    {
+     "slug": "ev-drivetrains",
+     "score": 5,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "Road-load equations, a motor torque-speed envelope and an internal-resistance pack integrated over a public-domain EPA drive cycle make a small, real time-stepped model with an observable energy and range result."
+    },
+    {
+     "slug": "exergy-analysis",
+     "score": 3,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "A steady-state Rankine/Brayton exergy balance with IAPWS-IF97 and NASA polynomials is computable live, and the sliders do recompute the Grassmann diagram. But the 'hover each component' framing leans towards browse-a-diagram, and the page shares its whole property engine with the steam and gas-turbine candidates."
+    },
+    {
+     "slug": "flywheels",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "The analytic rotating-disc and rim stress solution, the energy, the burst speed from tabulated strength, and a coast-down ODE with friction and drag are all closed-form or tiny. Material strengths are published facts."
+    },
+    {
+     "slug": "fuel-cells-hydrogen",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "A semi-empirical polarization curve (Nernst minus activation, ohmic and concentration losses) with published parameters is an honest, instant model. The electrolysis round-trip chain is simple arithmetic on top of it, and NIST data is public."
+    },
+    {
+     "slug": "gas-turbines-combined-cycle",
+     "score": 5,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "A Brayton cycle with component efficiencies and public-domain NASA cp polynomials, plus a bottoming steam cycle, gives a live T-s diagram and an efficiency well above 60 percent from a small, honest calculation."
+    },
+    {
+     "slug": "geothermal-power",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "An analytic doublet potential-flow field with a 2D advection-diffusion temperature grid over years runs at interactive rates. The cold-front breakthrough is directly visible, and only published rock properties are needed."
+    },
+    {
+     "slug": "grid-storage-sizing",
+     "score": 5,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "8760 hours of public-domain EIA-930 data with a greedy charge/discharge rule is tiny to ship and to run. Sweeping storage size to draw the unmet-demand curve is real computation, not a picture."
+    },
+    {
+     "slug": "heat-pumps-refrigeration",
+     "score": 5,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "A vapor-compression cycle on a p-h diagram from refrigerant properties tabulated offline from MIT-licensed CoolProp is an honest, instant model. CO2 needs supercritical tables but that is just more table."
+    },
+    {
+     "slug": "hvdc-transmission",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "The phasor long-line (telegrapher) equations with standard per-km constants compute voltage and current along the line instantly, and the charging-current limit and break-even distance emerge from them. Animating the phasors keeps it a function of time."
+    },
+    {
+     "slug": "hydraulic-systems",
+     "score": 3,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "An orifice-law plus oil-compressibility ODE for a valve-cylinder-load is a small, real model with the ringing visible. But a free-form circuit builder with an excavator arm is a large UI scope, so a fixed circuit with a few components would keep it honest and buildable."
+    },
+    {
+     "slug": "hydro-turbines",
+     "score": 3,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "The Euler-equation velocity triangles and the Pelton half-jet-speed optimum are honest and computable. But the specific-speed morph from Pelton to Francis to Kaplan, and their efficiency-versus-load curves, would be drawn shapes and representative curves rather than a model, so that part is a picture."
+    },
+    {
+     "slug": "involute-gears",
+     "score": 5,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "An exact geometric construction: the involute from the base circle, the meshing line of action, an undercut check, the contact ratio and the Willis planetary equation all compute live in SVG with no data."
+    },
+    {
+     "slug": "jet-engines",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "Station-by-station ideal or efficiency-corrected turbofan cycle analysis with the open ISA atmosphere is a small, honest calculation giving thrust, TSFC and the thermal/propulsive split. The stepping UI sits on a real model."
+    },
+    {
+     "slug": "lithium-cell-dynamics",
+     "score": 5,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "A single-particle model (two spherical diffusion PDEs on a few dozen radial nodes, Butler-Volmer, OCP curves) runs easily in real time. Parameters come from the BSD-licensed PyBaMM Chen2020 set, taken from an open-access paper, and the plating threshold emerges from the anode potential."
+    },
+    {
+     "slug": "maglev-trains",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "The analytic thin-sheet electrodynamic lift and drag formulas against speed, plus an unstable EMS ODE with a tunable controller, are small and honest. The drawn eddy-current pattern should come from the analytic solution, not be decoration."
+    },
+    {
+     "slug": "reverse-osmosis",
+     "score": 4,
+     "reject": false,
+     "suggestedLevel": 3,
+     "reason": "A 1D along-membrane model (solution-diffusion flux, van 't Hoff osmotic pressure rising with brine concentration) and the minimum-work-versus-recovery curve are small, honest computations needing only published seawater composition and membrane coefficients."
+    }
+   ]
+  }
+ }
+]
