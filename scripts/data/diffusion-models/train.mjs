@@ -8,6 +8,7 @@
  *   node scripts/data/diffusion-models/train.mjs moons <cache dir>
  *   node scripts/data/diffusion-models/train.mjs mnist <cache dir> [--workers 2] [--epochs 40]
  *   node scripts/data/diffusion-models/train.mjs sequences <cache dir>
+ *   node scripts/data/diffusion-models/train.mjs nearest <cache dir>
  *   node scripts/data/diffusion-models/train.mjs gradcheck <cache dir>
  *
  * Training (both models) follows Ho, Jain & Abbeel, "Denoising Diffusion Probabilistic Models"
@@ -38,7 +39,11 @@
  *
  * sequences: loads the saved MNIST weights and samples, with the page's `sample`, the
  *   denoising sequences the page shows, plus three real test digits for the noising steps.
- *   Writes src/routes/diffusion-models/mnist-sequences.ts.
+ *   Writes src/routes/diffusion-models/mnist-sequences.ts, then runs `nearest` on them.
+ *
+ * nearest: the distance from each shipped finished digit, and from each MNIST test digit, to the
+ *   nearest training digit (./nearest.mjs). Needs only the shipped digits and MNIST, not the
+ *   weights. Writes src/routes/diffusion-models/mnist-nearest.ts.
  */
 import fs from 'node:fs';
 import path from 'node:path';
@@ -48,7 +53,6 @@ import {
 	T,
 	alphaBar,
 	gaussian,
-	mulberry32,
 	paramCount,
 	unflatten
 } from '../../../src/routes/diffusion-models/ddpm.ts';
@@ -63,6 +67,23 @@ const SNR_CAP = 5;
 const ROUTES = path.resolve(import.meta.dirname, '../../../src/routes/diffusion-models');
 
 // ------------------------------------------------------------------------------- data
+
+/**
+ * mulberry32, a small seeded generator of uniform numbers in [0, 1): the one the shipped weights
+ * were trained with. The page's shared `rng` (src/lib/draw/math.ts) is the same generator except
+ * for seed 0, which it replaces by a constant; the first batch of the first worker uses seed 0,
+ * so training keeps its own copy to stay reproducible.
+ */
+function mulberry32(seed) {
+	let a = seed >>> 0;
+	return () => {
+		a = (a + 0x6d2b79f5) >>> 0;
+		let t = a;
+		t = Math.imul(t ^ (t >>> 15), t | 1);
+		t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+		return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+	};
+}
 
 // ------------------------------------------------------------------------------ worker
 if (!isMainThread) {
@@ -351,8 +372,13 @@ if (isMainThread) {
 	} else if (mode === 'sequences' && cache) {
 		const { sequences } = await import('./sequences.mjs');
 		await sequences(cache);
+	} else if (mode === 'nearest' && cache) {
+		const { nearest } = await import('./nearest.mjs');
+		await nearest(cache);
 	} else {
-		console.error('usage: train.mjs moons | mnist <cache> | sequences <cache> | gradcheck');
+		console.error(
+			'usage: train.mjs moons | mnist <cache> | sequences <cache> | nearest <cache> | gradcheck'
+		);
 		process.exit(1);
 	}
 }
