@@ -81,7 +81,6 @@ export default defineConfig(
 			'src/routes/learning-from-data/fit.ts',
 			'src/routes/learning-from-data/scenes/CurveScene.svelte',
 			'src/routes/learning-from-data/scenes/FitScene.svelte',
-			'src/routes/logic-gates/logic.ts',
 			'src/routes/ocean-currents/scenes/GyreScene.svelte',
 			'src/routes/ocean-currents/scenes/OverturnScene.svelte',
 			'src/routes/oscillations-resonance/scenes/PendulumScene.svelte',
