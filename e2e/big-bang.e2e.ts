@@ -78,8 +78,10 @@ test('timeline: the CMB at 371,000 years and 2,970 K, cooled to 2.73 K today', a
 	await expect(stage(page)).toContainText('371,000 years');
 	await expect(stage(page)).toContainText('2,970 K');
 	await expect(stage(page)).toContainText('974 nm');
-	// the opaque-to-transparent switch is schematic: it reads as escaped light, not bound electrons
-	await expect(stage(page)).toContainText('Light that has escaped for good');
+	// electrons bound (Peebles' three-level atom): nearly nine in ten at z*, while the light's
+	// escape, drawn schematically, is only halfway
+	await expect(stage(page)).toContainText(/Electrons bound into atoms\s*87%/);
+	await expect(stage(page)).toContainText(/Light that has escaped for good\s*50%/);
 	await range(page, 'tCmb').press('End');
 	await expect(stage(page)).toContainText('13.8 billion years');
 	await expect(stage(page)).toContainText('2.73 K');

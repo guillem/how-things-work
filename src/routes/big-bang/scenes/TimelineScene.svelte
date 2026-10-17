@@ -12,10 +12,12 @@
 	 *  - the readouts (right): time, temperature, redshift, size, and per step the neutron
 	 *    count, helium's share, or the ionized fraction; the light's spectrum (Planck's law at
 	 *    T) on a log-wavelength axis.
-	 * The atoms switch on, and the light escapes, across z* ± 100 (the width of the
-	 * last-scattering shell): a schematic of when light stops scattering, not of how many
-	 * electrons are bound (about 90% already are at z*). The box is not to scale: in reality
-	 * there are 1.6 billion photons per nucleon (stated in the first-second notes).
+	 * Electrons settle onto nuclei following Peebles' three-level atom (`freeElectrons(z)`),
+	 * less those ionized again by the first stars: half are bound by z ≈ 1270, about 87% at
+	 * z*. The light escapes later, across z* ± 100 (the width of the last-scattering shell):
+	 * a schematic of when light stops scattering off the free electrons that remain. The box
+	 * is not to scale: in reality there are 1.6 billion photons per nucleon (stated in the
+	 * first-second notes).
 	 */
 	import { hash, Label, type Point, startDrag, wavelengthToColor } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
@@ -30,6 +32,7 @@
 		T_DARK_ENERGY,
 		T_START_S,
 		Z_EQ,
+		freeElectrons,
 		heliumMassFraction,
 		neutronsPerProton,
 		pairsLeft,
@@ -120,6 +123,11 @@
 	const pairs = $derived(Math.round(12 * pairsLeft(temp)));
 	const neutral = $derived(smooth(PLANCK.zStar + 100, PLANCK.zStar - 100, z));
 	const ionizedAgain = $derived(reionized(z));
+	/** Electrons bound into atoms: Peebles' recombination, then the first stars' ionization. */
+	const bound = $derived((1 - freeElectrons(z)) * (1 - ionizedAgain));
+	const boundText = $derived(
+		bound > 0.99 && bound < 0.99995 ? `${(bound * 100).toFixed(2)}%` : `${Math.round(bound * 100)}%`
+	);
 	const glow = $derived(smooth(700, 3000, temp));
 	const starsLit = $derived(Math.round(7 * smooth(lgYr(1e8), lgYr(1.5e9), logT)));
 	function smooth(lo: number, hi: number, v: number) {
@@ -177,7 +185,7 @@
 		for (let k = 0; k < protons; k++) {
 			// atoms: an electron circles a free proton (or a helium nucleus)
 			const host = freeProtons[k];
-			const boundNow = hash(k, 77) < neutral && !(hash(k, 78) < ionizedAgain);
+			const boundNow = hash(k, 77) < 1 - freeElectrons(z) && !(hash(k, 78) < ionizedAgain);
 			if (host && boundNow) {
 				const ph = tt * 2 + hash(k, 79) * 6.28;
 				out.push({ k, x: host.x + 9 * Math.cos(ph), y: host.y + 9 * Math.sin(ph), bound: true });
@@ -404,22 +412,25 @@
 			<Label x={918} y={234} text="helium" size={11} anchor="end" muted />
 		{/if}
 	{:else if phase === 'cmb'}
+		<Readout id="bound" order={6} label="Electrons bound into atoms" value={boundText}>
+			{@render row(162, 'Electrons bound into atoms', boundText)}
+		</Readout>
 		<Readout
 			id="atoms"
-			order={6}
+			order={7}
 			label="Light that has escaped for good"
 			value="{Math.round(neutral * 100)}%"
 		>
-			{@render row(162, 'Light that has escaped for good', `${Math.round(neutral * 100)}%`)}
+			{@render row(188, 'Light that has escaped for good', `${Math.round(neutral * 100)}%`)}
 		</Readout>
-		<Readout id="peak" order={7} label="The light is brightest at" value={lambdaText(lambdaPeak)}>
-			{@render row(188, 'The light is brightest at', lambdaText(lambdaPeak))}
+		<Readout id="peak" order={8} label="The light is brightest at" value={lambdaText(lambdaPeak)}>
+			{@render row(214, 'The light is brightest at', lambdaText(lambdaPeak))}
 		</Readout>
 		<Readout id="opaque">
 			<Label
 				anchor="start"
 				x={560}
-				y={222}
+				y={240}
 				text={neutral < 0.5
 					? 'Opaque: light bounces off free electrons'
 					: 'Transparent: light flies straight'}
