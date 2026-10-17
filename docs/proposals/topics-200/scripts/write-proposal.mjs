@@ -106,7 +106,7 @@ const refuted = verified.rejectedInVerify;
 const runnersUp = [
 	"Every candidate that did not make the hundred is kept, with its scores and the judges' and",
 	"reviewers' notes, in `docs/proposals/topics-200/data/` (`selection.json`, `verified.json`). The",
-	"strongest of them are the natural new Reserve. (Entry notes that mention "the pool" mean this candidate pool: every entry the researchers proposed.) Score is the mean of the two judges' marks",
+	"strongest of them are the natural new Reserve. (Entry notes that mention the pool mean this candidate pool: every entry the researchers proposed.) Score is the mean of the two judges' marks",
 	'(1 to 5) times three, so 15 is the top.',
 	'',
 	"**The LLM ladder's second wave.** Rungs left out of the ladder, several scoring as well as the pages selected; the",
