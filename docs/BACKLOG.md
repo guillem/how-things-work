@@ -39,109 +39,51 @@ Batch 3 took `graph-search` and `chaos-fractals` (the first `explore` topic). Ot
 `ecosystems`, `electric-circuits` (unlocks 4 topics),
 `binary` (unlocks 7 topics in Computing and Networks).
 
-## Known gaps in built topics
+## Open after the backlog round (2026-10-17)
 
-- **photosynthesis** — ticked 2026-10-11, after the fact-check review and the rate model
-  ("What limits the rate?": PROSPECT-D leaf optics + FvCB, `src/routes/photosynthesis/model.ts`).
-  Smaller, left as is: the three pigment curves of the spectrum scene are smooth Gaussian
-  approximations of solvent spectra (`absorbance()` in `palette.ts`, labelled relative); measured
-  spectra (e.g. PhotochemCAD, chlorophyll a/b in diethyl ether) would be better. The model treats
-  every absorbed photon alike (McCree's lower yield for blue is not modelled) and fixes the
-  leaf's internal CO₂ at 70% of the air's (no stomata); both are stated on the page. At light 0
-  on `#water` two captions say the same thing on one line (the lumen caption and "no light:
-  electron flow stops…"); they may touch at 13 px. On `#summary` both light captions stay in the
-  accessibility tree at every light level (only their opacity changes).
+All 100 topics are built and ticked. The backlog round of 2026-10-17 (one agent per package in a
+local worktree, merged into `main`) cleared almost everything that was open; what it did is in
+`docs/STATUS.md` and the git log. Data licences are listed in [`DATA-SOURCES.md`](DATA-SOURCES.md).
 
-- **learning-from-data** — ticked: the user accepted dragging only (2026-10-08).
+**Still open (not decided, or waiting on someone else)**
 
-- **oscillations-resonance** — catalogue extras from the fact-check (2026-10-13), not built: a
-  stiffness control on the resonance-curve step (the driven spring is fixed at 1 kg on 39 N/m, so
-  the peak never moves; reading it there alone would leave the push step on a hidden value), and
-  dots at each push frequency tried, at the simulated steady swing, so the reader builds the curve.
-
-- **atmosphere-weather** — ticked: the user accepted that fronts form from the placed lows and
-  that the reader sets heat transport and spin rather than the heating pattern (2026-10-08).
-
-- **chemical-bonds** (batch 7) — the builder makes single-centre molecules only, with lone pairs
-  drawn only on the centre atom (the text says so); the slow auto-turn pauses while the pointer
-  is over the molecule or an atom. In NH₃'s still frame the angle arc joins two H atoms that
-  nearly overlap on screen, so it is small and faint.
-
-- **states-of-matter** (batch 9) — the box is chaotic, so its frames differ between machines
-  (V8 version, CPU). Water's density anomaly holds on average over starts (~6–7% more room for
-  ice) but not in every single run: seed 2 locally shows ice slightly denser. The page uses seed 1
-  (3.5–12% more room depending on the machine). Water's freezing is a scripted lattice shortcut.
-
-- **logic-gates** — the catalogue's 4-bit-adder challenge is a "connect the carries" task on the ripple step (wire three carry links; a checker counts the pairs added right), not a build from gates; a gate-level build would need a multi-output full-adder block on the canvas and a 9-input checker (~4–6 h).
-
-- **atmosphere-weather** — the cold/warm/stationary front classification lives in `MapScene`
-  and has no test; moving it into `atmosphere.ts` would allow a model test.
-
-- **waves-interference** — if a step change unmounts a `Handle` mid-drag its end callback never
-  fires (Doppler keeps `dragX`; the tank keeps its pre-warm off for that mount).
-
-- **atoms-periodic-table** — the build step labels any neutron count "radioactive nucleus (it will
-  decay)", even far outside the known isotopes (carbon with 0 or 40 neutrons); needs a per-element
-  known-isotope range (e.g. mendeleev's isotopes table) to say "no such nucleus has ever been made"
-  (fact-check 2026-10-13).
-
-(The gap round of 2026-10-12/13 cleared the rest of this list: chaos-fractals `period(r)`,
-orbits-kepler labels and the `#two` flake, ecosystems' static web opening and y-axes,
-oscillations-resonance's pendulum label, logic-gates, central-limit-theorem, binary's signed
-sliders, electric-circuits' node count, pagerank's note, graph-search, waves-interference's
-placeable/draggable sources and frame cache, radioactivity, linear-transformations,
-fourier-transform, bridges-structures' reactions and `addMember`, atmosphere-weather's stationary
-fronts and Coriolis panels, learning-from-data's parser, the sun-earth-moon tilt mismatch, the
-photosynthesis `#summary` captions (fading by design, now tested), and the weak entropy/sorting
-tests.)
-
-(A review of that round on 2026-10-13 fixed what it got wrong: the chemical-bonds angle arc,
-which never drew, and its hover pause, which released over atoms; the fourier-transform
-`#spectrum` readout drawn over the title and the draw-wave scale that moved with the slider; the
-pendulum label, still crossed at 56–90°; the Doppler source that jumped to mid-stage on release
-and stopped on a tap; tank sources pushed out by the spacing slider; the tank pre-warm's cost;
-radioactivity's raw half-life and lost quarter mark; ecosystems' fractional ticks and half-empty
-chart; the linear-transformations drag offset; `period(r)` near the splits; the orbits-kepler
-label search; right-clicks leaving handles held; and a logic-gates test that guarded nothing.)
-
-## Open after the final push (2026-10-15)
-
-All 100 topics are built and ticked. These are the items left open, deferred by the builder and
-fact-check agents or flagged for the user. Data licences are listed in
-[`DATA-SOURCES.md`](DATA-SOURCES.md).
-
-**Framework**
-
-- **Controls can't be driven by a scene.** deep-time's time slider doesn't follow the cursor while
-  "play" runs; a way for a scene to update or disable a control would fix it.
-
-**Deferred in topics**
-
-- embeddings: a test that 8-bit storage moves similarities by < 0.01 (needs a raw GloVe sample).
-- quantum-computing: a 0°/90° toggle for A's axis on the Bell step (all four CHSH correlations).
-- the-cell: protein crowds count from the whole box area (~10% too many); scale by free fraction.
-- vision-color: an S input on the red–green channel (option B); re-check the cone data against
-  cvrl.org (it came from the colour-science library's copy while cvrl.org was down).
-- dna-to-protein: a "letters copied" control to step through transcription.
-- earthquakes: the PKPab row of the ak135 table test (the table page is a scanned image);
-  station marks on the summary slice.
-- convolution-vision: the build-up animation for the editable filter (only the Sobel one animates).
-- respiration-atp: split the "Yeast, E. coli (10)" rotor option (the transport cost is wrong for
-  E. coli).
-- diffusion-models: store nearest-training-digit distances with a test. The trained MNIST weights
-  were lost with a wiped scratch dir; regenerating digit runs means retraining (~75 min).
-- big-bang: a three-level-atom (Peebles) model for the CMB "electrons bound" readout.
-- flight: a test for the flow scene's "160 times slower".
-- stars: a remnant marker at the end of a 12–30 M☉ free run.
-- nuclear-fusion: draw the plasma vessel as a tokamak cross-section; the redrawn q = 3 field line
-  reads like stacked loops on the tilted ring.
-- deep-time: PhanDA gives one temperature per stage, so the short windows show flat steps.
-- evolution: the Luria–Delbrück figures (11.3, variance 694, 11 of 20) come from course notes;
-  check them against Table 2 of Genetics 28: 491–511 (1943).
-- crispr: the yogurt-experiment correction rests on Danisco's patent strain table (US 10066233);
-  check it against Fig. 3 of Barrangou et al. 2007.
+- nuclear-fusion: the redrawn q = 3 field line on the confinement step still reads like stacked
+  loops. The plasma is drawn as a flat band, not a tube, so a winding line has no surface to read
+  against; it needs a real torus outline or a cross-section inset (a design decision; two
+  attempts reverted).
 - solar-cells: re-run `scripts/data/solar-cells/build-records.mjs` when NLR adds LONGi's newer
-  records.
+  records (re-checked 2026-10-17: the chart is still the 2026-08-14 one).
+- photosynthesis: the pigment curves stay smooth Gaussian approximations; PhotochemCAD's measured
+  spectra carry only a copyright notice (no permission to redistribute). Ask the authors, or find
+  an openly licensed set.
+- deep-time: PhanDA gives one temperature per stage, so the short windows show flat steps (a data
+  limit; smoothing it would invent data).
+- states-of-matter: the box is chaotic, so its frames differ between machines; water's density
+  anomaly holds on average over starts, not in every run (the page uses seed 1).
+
+**For the user to decide** (each is stated on its page, or invisible on stage)
+
+- the-cell: small molecules (ATP in the crista, ions at the membrane) still count from the whole
+  box; the protein crowds now count from the free space.
+- evolution: the model keeps 20 million cells and 3 × 10⁻⁸ per division; Luria & Delbrück's
+  experiment 16 had 5.6 × 10⁸ bacteria per culture and rates of about 1.1 × 10⁻⁸ (the page says so).
+- crispr: the model's `added` strain still carries its 2972 spacer next to the leader, so it reads
+  as immune to 2972, while Barrangou's Fig. 3 shows construct IV sensitive (the stage only plates
+  858).
+- vision-color: unique blue is the page's own 475 nm (`UNIQUE_BLUE`), which calibrates the new S
+  input on the red–green channel; a sourced value is a one-constant change.
+- atmosphere-weather: the model's fronts form rings around the low (outer ring warm to the north
+  and west, cold to the east and south), not the textbook wave; the narrative never says where they
+  sit.
+- logic-gates: once the reader's full adder is packed into a block it can't be edited again
+  without a reload (it is always correct by then).
+
+**Known limitations, stated on their pages**
+
+- chemical-bonds: the builder makes single-centre molecules only, with lone pairs drawn only on the
+  centre atom.
+- photosynthesis: every absorbed photon counts alike (no McCree blue penalty); the leaf's internal
+  CO₂ is fixed at 70% of the air's (no stomata).
 
 **Modelling choices, stated on their pages** (kept unless the user decides otherwise)
 
@@ -168,35 +110,22 @@ and then applies the fixes.
   from easiest to hardest, the filter's ordering (numeric) needs a look too. With ~200 topics the
   Area chips take five rows on a phone; collapse them into a menu there if that feels heavy.
 
-- **Stage text on phones — option B (decided 2026-10-13), mechanism landed.** At 390 px wide the
-  960-unit stage is drawn at ~0.4 scale, so 13-unit labels end up ~5 px. The user chose B
-  (readouts out of the SVG) over a zoomable stage and landscape. On viewports ≤ 640 px a scene's
-  `<Readout>`s leave the drawing and are listed in an HTML panel under the stage (12–15 px, short
-  rows two by two); the drawing keeps numbered badges or short labels, minor labels hide. Wider
-  screens render pixel-identically. Code: `src/lib/explainer/Readout.svelte`,
-  `readouts.svelte.ts`, `ReadoutPanel.svelte`; tests in `e2e/phone-readouts.e2e.ts`; how-to in
-  `docs/scene-guide.md` ("Phone readouts"). Converted: every scene of photosynthesis,
-  epidemics, central-limit-theorem, bayes-theorem, unit-circle, sorting, binary, graph-search, newtons-laws, orbits-kepler,
-  oscillations-resonance, primes-modular-arithmetic, complex-numbers, error-correction,
-  electric-circuits, logic-gates, internet, pagerank, learning-from-data, reinforcement-learning,
-  entropy, chaos-fractals, calculus, linear-transformations, sun-earth-moon, radioactivity,
-  special-relativity, light-optics, motors-generators, cryptography, compression, cpu,
-  atoms-periodic-table, electromagnetism, ecosystems, heart-circulation, bridges-structures and
-  atmosphere-weather; the 54 topics of the final push were built with readouts from the start
-  (the panel adds ~50–195 px to the pinned card;
-  membrane, crowd and the graph-search race are the tallest).
-  To convert the next scene: wrap each readout/caption in `<Readout id label value note>`, part names in `<Readout label marker
-at>` (badge), minor labels in a bare `<Readout>`; pass the scene's fade as `opacity`; check
-  phone shots (390 × 844, `TOUCH=1`, both themes) and a desktop pixel diff against main; extend
-  `e2e/phone-readouts.e2e.ts` with the scene's key readout. Still to do: ocean-currents, semiconductors, black-holes, homeostasis, states-of-matter, chemical-bonds,
-  waves-interference and fourier-transform (92 of 100 converted); then the shared `<Axes>` tick labels,
-  which still show tiny on phones
-  (several hundred text elements, each needing editorial choices), plus axis ticks in the shared chart
-  helpers.
+- **Stage text on phones — done in all 100 topics (2026-10-17).** On viewports ≤ 640 px a scene's
+  `<Readout>`s leave the drawing and are listed in an HTML panel under the stage; the drawing keeps
+  numbered badges or short labels, minor labels hide; wider screens render pixel-identically
+  (`src/lib/explainer/Readout.svelte`, how-to in `docs/scene-guide.md`, "Phone readouts"). The
+  tallest panels: photosynthesis' membrane, epidemics' crowd, the graph-search race and
+  waves-interference's path-difference step (4 rows and 6 chips). The shared `<Axes>` adapts too:
+  on phones its tick labels and titles render at ~10 px real size, labels that would collide are
+  thinned (`spacedLabels` in `chart.ts`), and the x title shares the tick row; desktop is
+  pixel-identical. Fourteen topics got per-topic fixes for it
+  (margins, shorter titles, the three scenes that draw their own ticks). Left: deep-time's axis
+  unit ("million years ago") stays hidden on phones, for lack of a second row.
 
-- Possible cleanup: knip (2026-10-15) lists about 160 unused exports and 60 unused types in
-  `src/routes/*/*.ts` (helpers exported for tests or never used). Its "unused files" for
-  `scripts/data/*.mjs`, `scripts/shot.mjs` and `scripts/batch-review.ts`, and the
-  `@anthropic-ai/sdk` devDependency, are false positives: standalone scripts.
+- **Unused exports — mostly done (2026-10-17).** `knip.json` configures knip with the tests and
+  scripts as entry points (`npx knip --include exports,types`). Exports only used inside their own
+  file are now private. Left exported, for someone to delete with judgement: 61 symbols used nowhere
+  (some are documented constants or helpers kept for a future step): big-bang/cosmology.ts: `redshiftOf`; carbon-cycle/data.ts: `FOSSIL_RESOURCES`; carbon-polymers/structures.ts: `structureMass`; chemical-bonds/model.ts: `fullShell`; consensus-blockchains/consensus.ts: `RaftRun`; cpu/cpu.ts: `MEANINGS`; cryptography/crypto.ts: `DIGESTS_LOG10`; dark-matter/galaxies.ts: `MILKY_WAY`, `haloDensity`, `massForSpeed`; deep-time/deeptime.ts: `ZoomId`; diffusion-models/ddpm.ts: `noiseGuess`, `signalLeft`; earthquakes/earth.ts: `MOHO_DEPTH`, `grazingCore`, `pathXY`; ecosystems/eco.ts: `webMatrix`, `webRates`; entropy/gas.ts: `positionWays`; feedback-control/control.ts: `roadHeight`; gravitational-waves/gw.ts: `LIGO_BASELINE`, `nearbyRedshift`, `orbitalSpeed`; greenhouse-effect/climate.ts: `T_SURFACE`, `mixedLayerWarming`; heart-circulation/scenes/heart.ts: `HEART_H`, `HEART_W`; heat-engines/steam.ts: `T_COND_MAX`, `T_COND_MIN`, `T_STEAM_MAX`, `T_STEAM_MIN`; homeostasis/model.ts: `basalUnitsPerDay`; immune-system/model.ts: `firstAbove`; language-models/steps.ts: `PromptId`; light-optics/optics.ts: `convexThickness`, `wavelengthIn`; light-optics/scenes/ui.ts: `mainPaths`; meiosis-inheritance/model.ts: `haldaneInverse`; motors-generators/machine.ts: `MAINS_HZ`; nuclear-fission/model.ts: `U235_FAST_FISSION`, `meanDelay`; nuclear-fusion/model.ts: `Q_FISSION_PROMPT`; oscillations-resonance/oscillator.ts: `phaseLag`; power-grid/grid.ts: `NUCLEAR_CAPACITY`, `VOLTAGES`, `dayKinetic`, `inverterShareAt`; protein-folding/hp.ts: `Residue`; protein-folding/structure.ts: `BAND_LABEL`; reaction-rates-equilibrium/look.ts: `fmtLapse`; reaction-rates-equilibrium/model.ts: `energyDensity`; reinforcement-learning/qlearning.ts: `worldRows`; semiconductors/model.ts: `NI_GE`; standard-model/scenes/shared.ts: `tokenColour`; stars/star.ts: `TRACK_MASSES`; states-of-matter/phase.ts: `toKelvin`; the-cell/frames.ts: `Branch`; the-cell/liver.ts: `RibosomeOnER`; transformers/attention.ts: `headName`; transistors-chipmaking/model.ts: `TOX_NM`, `vdsSat`. Generated data
+  files and the shared `src/lib` types were not touched.
 - ~~A short "how to use the controls" note shared by all pages~~ — done: the `?` keyboard
   shortcuts overlay in the explainer shell.

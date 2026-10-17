@@ -4,7 +4,7 @@ The self-handover. If work is interrupted, this file alone must be enough to con
 top to bottom, then run the commands under "Resume". **Update it at every commit**, not just at
 the end of a development.
 
-Last updated: 2026-10-17 UTC.
+Last updated: 2026-10-17 04:15 UTC.
 
 ## How we work
 
@@ -65,49 +65,38 @@ Last updated: 2026-10-17 UTC.
 
 ## Current development
 
-**Overnight backlog round (started 2026-10-17 ~00:30 UTC)**, before releasing 1.0. One agent per
-package in a local worktree; each branch is merged into local `main` as it finishes. Nothing is
-pushed or released until the user validates. Wave 1: logic-gates gate-level adder; phone readouts
-A (ocean-currents, semiconductors, black-holes, homeostasis); phone readouts B (states-of-matter,
-chemical-bonds + NH₃ arc, waves-interference + Handle unmount, fourier-transform); framework
-(scene-driven controls, deep-time slider, atmosphere-weather fronts into the model); extras
-bio/AI (the-cell, dna-to-protein, respiration-atp, convolution-vision); source re-checks
-(vision-color, evolution, crispr, solar-cells, photosynthesis). Wave 2: shared `<Axes>` ticks on
-phones; extras physics/space (quantum-computing, stars, nuclear-fusion, big-bang, flight,
-oscillations-resonance); external-data items (atoms-periodic-table isotopes, embeddings GloVe,
-earthquakes ak135); diffusion-models retrain; knip cleanup. Left for the user: data licences and
-the modelling choices (BACKLOG). If interrupted: `git worktree list` shows unmerged packages.
-Merged so far: framework (`disabled` on controls; deep-time's slider follows play and keeps the
-played age; atmosphere-weather's `frontAt` in the model; note: the model's fronts form rings
-around the low, not the textbook wave shape)); extras bio/AI (the-cell counts from free space, was 19% high in the
-cytoplasm; dna-to-protein "Letters copied" slider; respiration-atp yeast and E. coli split;
-convolution-vision's editable map builds up). Open question for the user: the-cell's small
-molecules (ATP, ions) still count from the whole box. logic-gates: a new sixth step, "Build a 4-bit adder": the reader's own full
-adder becomes a two-output block, four chained, checked over all 512 inputs (once packed, the
-block can't be re-edited without a reload). Source re-checks: vision-color's cones match cvrl.org
-(build script reads CVRL now) and option B landed (S feeds red–green; 475 nm neutral, violet
-reddish); evolution's Luria–Delbrück figures from the 1943 paper (11.35); crispr's note checked
-against Barrangou Fig. 3; photosynthesis' #water caption overlap fixed. Still open: solar-cells
-(NLR hasn't added LONGi yet), measured pigment spectra (no redistribution licence). For the
-user: evolution's model keeps 20 million cells and 3×10⁻⁸ (paper: 5.6×10⁸, ~1.1×10⁻⁸; stated on
-the page); crispr's `added` strain still immune to 2972 in the model (not shown on stage). Phone readouts B: states-of-matter, chemical-bonds,
-waves-interference, fourier-transform converted (desktop pixel-identical); `startDrag` returns
-an end function that Handle/VectorHandle call on destroy; chemical-bonds' angle arc picks the
-clearest pair (NH₃ readable). Phone readouts A: ocean-currents, semiconductors,
-black-holes, homeostasis (desktop pixel-identical, 148 shots): all 100 topics now have phone
-readouts. Outside data: atoms-periodic-table says "no such nucleus has ever been made" outside
-NUBASE2020's known isotopes (licence unconfirmed: the file states none); embeddings' 8-bit
-storage moves similarities by at most 0.0034 (GloVe fixture, tests only); earthquakes' PKPab
-row from TauP ak135 and the three Nepal stations on the summary slice. diffusion-models: no retrain needed (the shipped runs
-hold the finished digits); `mnist-nearest.ts` (tests only) stores each digit's distance to its
-nearest training digit, and a test backs the page's "generated, not copied" note (mean 8.48 vs
-8.57 for test digits); `train.mjs` loads again (it lost `mulberry32` in the rng refactor). Physics/space extras: quantum-computing A's axis
-0°/90° (B's slider now measures from z), stars remnant marker, oscillations-resonance stiffness
-and swing dots, big-bang Peebles atom (half bound at z ≈ 1272, 87% at z*; headline follows it),
-flight "160 times slower" tested, nuclear-fusion tokamak cross-section (the q = 3 field line is
-still open). Export cleanup (knip.json). Shared `<Axes>` readable on phones (desktop
-pixel-identical). `make e2e-full` on main after these merges: 2,195 passed (2.9 min, with one
-agent running alongside). Last package running: per-topic chart fixes on phones.
+**Backlog round, 2026-10-17 (overnight), done; on local `main`, not pushed or released.** Before
+releasing 1.0 the user asked to clear the backlog. One agent per package in a local worktree,
+each branch merged into `main` with `make check` and its topics' tests; worktrees removed.
+What is still open, and the decisions left for the user, are in `BACKLOG.md` ("Open after the
+backlog round").
+
+- Framework: any control takes `disabled: (params) => boolean`; deep-time's slider follows
+  "play" and keeps the played age. `startDrag` returns an end function, so a Handle unmounted
+  mid-drag releases it.
+- Phone readouts in all 100 topics (the last eight converted, desktop pixel-identical), and the
+  shared `<Axes>` readable on phones (~10 px ticks, thinned labels; desktop pixel-identical), plus
+  per-topic chart fixes in 14 topics (margins, a few shorter titles: epidemics' R₀ title,
+  transistors-chipmaking's "1,000", carbon-polymers' "carbons (log)").
+- logic-gates: a sixth step, "Build a 4-bit adder", from the reader's own full adder (a
+  two-output block, four chained, checked over all 512 inputs).
+- Topic extras: the-cell (protein crowds from free space; was 19% high), dna-to-protein ("Letters
+  copied"), respiration-atp (yeast and E. coli split), convolution-vision (the editable map builds
+  up), quantum-computing (A's axis 0°/90°; B's slider now measures from z), stars (remnant
+  marker), oscillations-resonance (stiffness on the driven steps, swing dots), big-bang (Peebles'
+  three-level atom: half bound at z ≈ 1272, 87% at z*; headline follows), flight ("160 times
+  slower" tested), nuclear-fusion (tokamak cross-section), atmosphere-weather (`frontAt` in the
+  model), chemical-bonds (NH₃ angle arc readable).
+- Sources and data: vision-color's cones match cvrl.org, and option B (S on the red–green
+  channel) landed; evolution's Luria–Delbrück figures from the 1943 paper; crispr checked against
+  Barrangou Fig. 3; photosynthesis' `#water` captions; atoms-periodic-table's known isotopes
+  (NUBASE2020; licence unconfirmed); embeddings' 8-bit test (GloVe fixture); earthquakes' PKPab
+  row (TauP ak135) and Nepal stations; diffusion-models' nearest-training-digit distances (no
+  retrain needed; `train.mjs` loads again).
+- Cleanup: about 900 exports nothing imports are now private (`knip.json`; 61 unused symbols
+  listed in BACKLOG).
+- Final tree (2026-10-17 ~04:10 UTC): `make check` green; `make e2e-full` 2,195 passed in 2 min 52 s;
+  `npx playwright test --workers=2` (closer to CI) 2,195 passed in 7.9 min.
 
 **Before that, committed on local `main`, not pushed or released** (2026-10-17):
 

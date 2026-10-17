@@ -507,7 +507,7 @@
 			<header>
 				<h1>How Things Work <span class="accent">— the full picture</span></h1>
 				<span class="updated"
-					>updated 2026-10-17 00:05 ·
+					>updated 2026-10-17 03:15 UTC ·
 					<a href="https://guillem.github.io/how-things-work/">live site</a></span
 				>
 			</header>
@@ -523,7 +523,9 @@
 			<div class="badges">
 				<span class="badge"><span class="dot green"></span>v0.1.21 live · all 100 topics</span>
 				<span class="badge"><span class="dot green"></span>make check green on main</span>
-				<span class="badge"><span class="dot green"></span>maintenance · nothing in progress</span>
+				<span class="badge"
+					><span class="dot green"></span>backlog round done · waiting for your check</span
+				>
 			</div>
 			<div class="hero">
 				<div class="row">
@@ -738,12 +740,22 @@
 								>
 							</div>
 						</div>
+						<div class="task">
+							<span class="mark">✓</span>
+							<div>
+								backlog round (2026-10-17, overnight)<span class="small"
+									>phone readouts in all 100 topics and readable charts on phones · logic-gates
+									4-bit adder · scene-driven controls · ~20 topic extras · source re-checks · export
+									cleanup</span
+								>
+							</div>
+						</div>
 						<div class="task todo">
 							<span class="mark">→</span>
 							<div>
-								committed locally, not pushed: index search and filters<span class="small"
-									>search box, Area and Level filters, state in the URL · browser tests 4 min 9 s →
-									2 min 46 s (fixed sleeps in scenes.e2e.ts replaced by the fake clock)</span
+								committed locally, not pushed or released<span class="small"
+									>index search and filters, faster tests, the backlog round · waiting for your
+									local check, then v1.0.0</span
 								>
 							</div>
 						</div>
@@ -753,26 +765,26 @@
 						<div class="task todo">
 							<span class="mark">1</span>
 							<div>
-								phone readouts on the 8 topics left, then the shared Axes tick labels<span
-									class="small"
-									>ocean-currents, semiconductors, black-holes, homeostasis, states-of-matter,
-									chemical-bonds, waves-interference, fourier-transform</span
+								validate locally, push, release v1.0.0<span class="small"
+									>make release V=v1.0.0</span
 								>
 							</div>
 						</div>
 						<div class="task todo">
 							<span class="mark">2</span>
 							<div>
-								the items deferred in topics<span class="small"
-									>BACKLOG "Open after the final push": tests to add, small extras, data to
-									re-check</span
+								nuclear-fusion q = 3 field line<span class="small"
+									>needs a torus outline or a cross-section inset (design decision)</span
 								>
 							</div>
 						</div>
 						<div class="task todo">
 							<span class="mark">3</span>
 							<div>
-								known gaps in built topics<span class="small">listed below and in BACKLOG</span>
+								waiting on others<span class="small"
+									>solar-cells: NLR to add LONGi's records · photosynthesis: a licence for measured
+									pigment spectra</span
+								>
 							</div>
 						</div>
 					</div>
@@ -795,6 +807,16 @@
 								>
 							</div>
 						</div>
+						<div class="task todo">
+							<span class="mark">★</span>
+							<div>
+								six choices from the backlog round<span class="small"
+									>the-cell small molecules · evolution's culture size · crispr's 2972 spacer ·
+									vision-color's unique blue · atmosphere fronts as rings · logic-gates block
+									editing; BACKLOG "For the user to decide"</span
+								>
+							</div>
+						</div>
 					</div>
 				</div>
 			</section>
@@ -807,24 +829,23 @@
 						<div class="task todo">
 							<span class="mark">○</span>
 							<div>
-								small: photosynthesis duplicate caption at light 0 · atmosphere fronts
-								classification untested · waves-interference handle unmounted mid-drag ·
-								atoms-periodic-table labels impossible nuclei "radioactive"
+								nuclear-fusion q = 3 field line · deep-time axis unit hidden on phones
 								<span class="small">details in BACKLOG.md</span>
 							</div>
 						</div>
 						<div class="task todo">
 							<span class="mark">○</span>
 							<div>
-								catalogue extras not built: oscillations-resonance stiffness control and tried-push
-								dots · logic-gates gate-level adder (~4–6 h)
+								by design or data: chemical-bonds builder is single-centre only · states-of-matter
+								box is chaotic · deep-time's flat PhanDA steps
 							</div>
 						</div>
-						<div class="task todo">
-							<span class="mark">○</span>
+						<div class="task">
+							<span class="mark">✓</span>
 							<div>
-								by design: chemical-bonds builder is single-centre only · states-of-matter box is
-								chaotic, so frames differ between machines
+								cleared 2026-10-17: photosynthesis captions · atmosphere fronts tested · handle
+								unmounted mid-drag · impossible nuclei · oscillations stiffness and dots ·
+								logic-gates gate-level adder · ~15 topic extras
 							</div>
 						</div>
 					</div>
@@ -911,18 +932,20 @@
 								Stage text rule fixed in v0.1.21: <span class="mono">font-size</span> attributes and
 								Label’s <span class="mono">size</span> work; the 37 local text helpers are gone
 							</li>
-							<li class="open">Phone readouts: 8 topics left, then the shared Axes tick labels</li>
+							<li class="done">
+								Phone readouts in all 100 topics; shared Axes readable on phones (2026-10-17)
+							</li>
 						</ul>
 					</div>
 					<div class="site-box">
 						<ul class="tight">
-							<li class="open">
-								<span class="mono">sun-earth-moon</span> is the one topic without a hand-drawn card
-								vignette
+							<li class="done">
+								Export cleanup (2026-10-17): <span class="mono">knip.json</span>; 61 unused symbols
+								listed in BACKLOG
 							</li>
-							<li class="open">
-								Possible cleanup: knip lists ~160 unused exports and ~60 unused types in the topics’
-								<span class="mono">.ts</span> files
+							<li class="done">
+								A control can be disabled from a scene (<span class="mono">disabled</span>); a
+								Handle unmounted mid-drag releases it
 							</li>
 							<li>
 								Every seeded generator now uses <span class="mono">rng</span> from
@@ -1046,8 +1069,8 @@
 				</div>
 				<div>
 					Numbers come from the repo’s own books: the TOPICS.md checklist, STATUS.md, BACKLOG.md and
-					the git tags. Last updated 2026-10-17: index search and filters, faster tests, committed
-					locally.
+					the git tags. Last updated 2026-10-17 after the backlog round (committed locally, not
+					pushed).
 				</div>
 			</footer>
 		</div>
