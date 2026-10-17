@@ -33,7 +33,14 @@
 	import { cubicInOut } from 'svelte/easing';
 	import { Handle, clamp, cycle, hash, smoothstep, type Point } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
-	import { advectedTemperature, pressure, wind, type System } from '../atmosphere';
+	import {
+		FRONT_GRADIENT,
+		advectedTemperature,
+		frontAt,
+		pressure,
+		wind,
+		type System
+	} from '../atmosphere';
 
 	let { step, t, params, setParam, reduced }: StageProps = $props();
 
@@ -596,11 +603,8 @@
 		return d;
 	});
 
-	// Fronts: the middle isotherm where the temperature changes faster than
-	// GRAD_MIN. Cold front where the wind blows across it from the cold side to
-	// the warm side (cold air advancing), warm front the other way, and a
-	// stationary front where the wind blows along it (neither side advancing).
-	const GRAD_MIN = 4.5; // °C per 100 km
+	// Fronts: the middle isotherm, classified point by point by `frontAt` (cold,
+	// warm or stationary, from the wind across the temperature contrast).
 	const DKX = MW / TNX / K; // km between grid points
 	const DKY = MH / TNY / K;
 	interface FrontRun {
@@ -640,7 +644,7 @@
 				const g = Math.hypot(ex, ey);
 				const x = tgx(line[k]);
 				const y = tgy(line[k + 1]);
-				let kind: 'cold' | 'warm' | 'stationary' | null = null;
+				let kind: FrontRun['kind'] | null = null;
 				let nx = 0;
 				let ny = 0;
 				// Not in the tightly wound middle of a system, where the spiral arms
@@ -648,21 +652,14 @@
 				const kx = KX(x);
 				const ky = KY(y);
 				const core = systems.some((s) => Math.hypot(kx - s.x, ky - s.y) < 0.45 * s.r);
-				if (g > GRAD_MIN && !core) {
-					const [u, v] = wind(systems, KX(x), KY(y), 45, false);
-					const across = (u * ex + v * ey) / g; // m/s towards the warm side
-					if (Math.abs(across) > 1.5) {
-						kind = across > 0 ? 'cold' : 'warm';
-						// Direction the front moves, in screen coordinates (y down).
-						const s = Math.sign(across);
-						nx = (s * ex) / g;
-						ny = (-s * ey) / g;
-					} else {
-						// The wind blows along the boundary: a stationary front, its
-						// normal pointing towards the warm side.
-						kind = 'stationary';
-						nx = ex / g;
-						ny = -ey / g;
+				if (g > FRONT_GRADIENT && !core) {
+					const [u, v] = wind(systems, kx, ky, 45, false);
+					const f = frontAt(ex, ey, u, v);
+					if (f) {
+						kind = f.kind;
+						// The front's direction, in screen coordinates (y down).
+						nx = f.nx;
+						ny = -f.ny;
 					}
 				}
 				if (kind && cur && cur.kind === kind) cur.pts.push({ x, y, nx, ny });

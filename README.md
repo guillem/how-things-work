@@ -113,8 +113,9 @@ An explainer is a list of **steps** (`ExplainerSpec` in `src/lib/explainer/types
 - step navigation with keyboard shortcuts (`←`/`→`, `Space`, `R`, `A`, `F`, `Home`/`End`, `?`),
 - a pausable animation clock with 0.5×/1×/2× speed and optional auto-advance,
 - deep links (`/photosynthesis/#atp`), a contents list, full screen, reduced-motion support,
-- per-step interactive controls (`range`, `toggle`, `select`) whose values reach the stage as
-  `params`.
+- per-step interactive controls (`range`, `toggle`, `select`, `action`) whose values reach the
+  stage as `params`. A scene moves a control with `setParam(id, value)`, and a control's
+  `disabled: (params) => boolean` greys it out while, say, a "play" toggle drives it.
 
 The stage is a Svelte snippet that receives `StageProps` on every frame: the current `step`, the
 elapsed time `t` in seconds, `playing`, `reduced` (prefers-reduced-motion), `dark` and `params`.
