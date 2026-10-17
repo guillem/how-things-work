@@ -27,7 +27,7 @@
 	const lg = (n: number) => Math.log10(n);
 	const draw = $derived(smoothstep(0.3, 3, time));
 	const lineEnd = $derived(1971 + 50 * draw);
-	const NAMES: Record<number, string> = { 3: '1 thousand', 6: '1 million', 9: '1 billion' };
+	const NAMES: Record<number, string> = { 3: '1,000', 6: '1 million', 9: '1 billion' };
 
 	const sofar = $derived(COUNTS.filter(([y]) => y <= year));
 	const best = $derived(sofar.reduce((a, b) => (b[1] > a[1] ? b : a), COUNTS[0]));

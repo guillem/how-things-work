@@ -20,10 +20,17 @@
 	import { cubicInOut } from 'svelte/easing';
 	import { Axes, Label, clamp, linePath, scale, smoothstep } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
+	import { useReadouts } from '#lib/explainer/readouts.svelte.ts';
 	import { MMOL_PER_MGDL, THRESHOLDS, at, extremes, type Sample } from '../model';
 	import { FROM, TO, run, setup } from '../scenario';
 
 	let { step, t, params, reduced }: StageProps = $props();
+
+	// On phones (≤ 640 px) the charts move up a little, so that <Axes> has room under the
+	// glucagon chart to put the long time title a row below the hour labels instead of over
+	// the last four of them. The readouts above them are listed under the stage there.
+	const readouts = useReadouts();
+	const lift = $derived(readouts?.out ? 'translate(0 -28)' : undefined);
 
 	const LEAD = 0.8; // seconds before the cursor starts
 	const SWEEP = 14; // seconds for the cursor to cross the window
@@ -508,266 +515,275 @@
 	</Readout>
 
 	<!-- ===================== right: the three charts ===================== -->
-	<!-- exercise and the meal, behind everything -->
-	{#if runSpan}
-		<rect
-			x={sx(runSpan.a)}
-			y={G.y0}
-			width={sx(runSpan.b) - sx(runSpan.a)}
-			height={C.y1 - G.y0}
-			fill="var(--hm-muscle)"
-			opacity="0.08"
-		/>
-		<Readout id="key-run" order={20} label="Shaded: the {runLabel}" color="var(--hm-muscle)">
-			<Label
-				x={(sx(runSpan.a) + sx(runSpan.b)) / 2}
-				y={G.y0 + 30}
-				text={runLabel}
-				size={11}
-				weight={600}
-				color="var(--hm-muscle)"
+	<g transform={lift}>
+		<!-- exercise and the meal, behind everything -->
+		{#if runSpan}
+			<rect
+				x={sx(runSpan.a)}
+				y={G.y0}
+				width={sx(runSpan.b) - sx(runSpan.a)}
+				height={C.y1 - G.y0}
+				fill="var(--hm-muscle)"
+				opacity="0.08"
 			/>
-		</Readout>
-	{/if}
+			<Readout id="key-run" order={20} label="Shaded: the {runLabel}" color="var(--hm-muscle)">
+				<Label
+					x={(sx(runSpan.a) + sx(runSpan.b)) / 2}
+					y={G.y0 + 30}
+					text={runLabel}
+					size={11}
+					weight={600}
+					color="var(--hm-muscle)"
+				/>
+			</Readout>
+		{/if}
 
-	<!-- glucose -->
-	<rect
-		x={X0}
-		y={syG(THRESHOLDS.hypo)}
-		width={X1 - X0}
-		height={G.y1 - syG(THRESHOLDS.hypo)}
-		fill="var(--hm-hypo-bg)"
-	/>
-	<Axes {sx} sy={syG} xTicks={[]} yTicks={gTicks} yLabel="blood glucose, mg/dL" />
-	<Readout
-		id="key-hypo"
-		order={21}
-		label={lines === 'hypo'
-			? 'Below 70: hypoglycaemia · below 54 (dashed): dangerous'
-			: 'Below 70: hypoglycaemia'}
-		color="var(--hm-hypo)"
-	>
-		<text
-			x={sx(0) + 6}
-			y={syG(lines === 'hypo' ? 54 : THRESHOLDS.hypo) + 13}
-			font-size="11"
-			class="halo"
-			style:fill="var(--hm-hypo)"
-			>{lines === 'hypo'
-				? 'below 70: hypoglycaemia · below 54 (dashed): dangerous'
-				: 'below 70: hypoglycaemia'}</text
-		>
-	</Readout>
-	{#if lines === 'ogtt'}
-		<line
-			x1={X0}
-			x2={X1}
-			y1={syG(140)}
-			y2={syG(140)}
-			stroke="var(--stage-ink-muted)"
-			stroke-dasharray="5 4"
-		/>
-		<line
-			x1={sx(120)}
-			x2={sx(120)}
-			y1={G.y0 + 22}
-			y2={G.y1}
-			stroke="var(--stage-ink-muted)"
-			stroke-dasharray="2 3"
-		/>
-	{:else if lines === 'diagnosis'}
-		<line
-			x1={X0}
-			x2={X1}
-			y1={syG(126)}
-			y2={syG(126)}
-			stroke="var(--hm-glucose)"
-			stroke-dasharray="5 4"
-		/>
-	{:else if lines === 'hypo'}
+		<!-- glucose -->
 		<rect
 			x={X0}
-			y={syG(180)}
+			y={syG(THRESHOLDS.hypo)}
 			width={X1 - X0}
-			height={syG(70) - syG(180)}
-			fill="var(--hm-glucagon)"
-			opacity="0.07"
+			height={G.y1 - syG(THRESHOLDS.hypo)}
+			fill="var(--hm-hypo-bg)"
 		/>
-		<line
-			x1={X0}
-			x2={X1}
-			y1={syG(54)}
-			y2={syG(54)}
-			stroke="var(--hm-hypo)"
-			stroke-dasharray="5 4"
-		/>
-	{/if}
-
-	<!-- meal and injection markers -->
-	{#if sc.carbs > 0}
-		{#each panels as pn (pn.y0)}
-			<line x1={sx(0)} x2={sx(0)} y1={pn.y0} y2={pn.y1} stroke="var(--hm-gut)" stroke-width="1.2" />
-		{/each}
-		<Readout id="key-meal" order={22} label="Meal: {sc.carbs} g" color="var(--hm-gut)">
-			<Label
-				x={sx(0) + 5}
-				y={G.y0 + 12}
-				text="meal: {sc.carbs} g"
-				size={11}
-				weight={600}
-				anchor="start"
-			/>
-		</Readout>
-	{/if}
-	{#if sc.dose > 0}
-		{@const dx = sx(sc.doseAt)}
-		<path d="M{dx - 6} {I.y0} h12 l-6 10 Z" fill="var(--hm-insulin)" />
-		<Readout id="key-dose" order={23} label="▼ {sc.dose} U injected" color="var(--hm-insulin)">
-			<Label
-				x={dx + 9}
-				y={I.y0 + 10}
-				text="{sc.dose} U injected"
-				size={11}
-				weight={600}
-				anchor="start"
-			/>
-		</Readout>
-	{/if}
-
-	{#if ghost}
-		<path
-			d={path(ghost, (p) => p.g, syG)}
-			fill="none"
-			stroke="var(--hm-glucose)"
-			stroke-width="1.5"
-			stroke-dasharray="4 3"
-			opacity="0.5"
-		/>
-	{/if}
-	<path
-		d={path(shown, (p) => p.g, syG)}
-		fill="none"
-		stroke="var(--hm-glucose)"
-		stroke-width="2.6"
-		stroke-linejoin="round"
-	/>
-
-	<!-- reference-line labels, above the curves so that their halo keeps them legible -->
-	{#if lines === 'ogtt'}
-		<Readout id="key-140" order={24} label="Dashed 140: normal limit 2 h after">
-			<Label
-				x={X1 - 4}
-				y={syG(140) - 6}
-				text="140: normal limit 2 h after"
-				size={11}
-				anchor="end"
-				muted
-			/>
-		</Readout>
-	{/if}
-	{#if lines === 'diagnosis'}
+		<Axes {sx} sy={syG} xTicks={[]} yTicks={gTicks} yLabel="blood glucose, mg/dL" />
 		<Readout
-			id="key-126"
-			order={24}
-			label="Dashed 126: diabetes if fasting"
-			color="var(--hm-glucose)"
+			id="key-hypo"
+			order={21}
+			label={lines === 'hypo'
+				? 'Below 70: hypoglycaemia · below 54 (dashed): dangerous'
+				: 'Below 70: hypoglycaemia'}
+			color="var(--hm-hypo)"
 		>
-			<Label
-				x={X1 - 4}
-				y={syG(126) - 6}
-				text="126: diabetes if fasting"
-				size={11}
-				anchor="end"
-				color="var(--hm-glucose)"
-			/>
+			<text
+				x={sx(0) + 6}
+				y={syG(lines === 'hypo' ? 54 : THRESHOLDS.hypo) + 13}
+				font-size="11"
+				class="halo"
+				style:fill="var(--hm-hypo)"
+				>{lines === 'hypo'
+					? 'below 70: hypoglycaemia · below 54 (dashed): dangerous'
+					: 'below 70: hypoglycaemia'}</text
+			>
 		</Readout>
-	{/if}
-	{#if lines === 'hypo'}
-		<Readout id="key-target" order={24} label="Target 70–180" color="var(--hm-glucagon)">
-			<Label x={X1 - 4} y={syG(180) - 6} text="target 70–180" size={11} anchor="end" muted />
-		</Readout>
-	{/if}
-
-	<!-- insulin -->
-	<Axes {sx} sy={syI} xTicks={[]} yTicks={iTicks} yLabel="insulin, µU/mL" />
-	{#if ghost}
-		<path
-			d={path(ghost, (p) => p.i, syI)}
-			fill="none"
-			stroke="var(--hm-insulin)"
-			stroke-width="1.5"
-			stroke-dasharray="4 3"
-			opacity="0.5"
-		/>
-	{/if}
-	<path
-		d={path(shown, (p) => p.i, syI)}
-		fill="none"
-		stroke="var(--hm-insulin)"
-		stroke-width="2.4"
-		stroke-linejoin="round"
-	/>
-
-	<!-- glucagon -->
-	<Axes
-		{sx}
-		sy={syC}
-		xTicks={hours}
-		yTicks={[0, 1, 2, 3]}
-		xFormat={hourText}
-		yFormat={(v) => `×${v}`}
-		xLabel={sc.carbs > 0 ? 'time after the meal' : 'time'}
-		yLabel="glucagon, × fasting level"
-	/>
-	{#if ghost}
-		<path
-			d={path(ghost, (p) => p.gcg, syC)}
-			fill="none"
-			stroke="var(--hm-glucagon)"
-			stroke-width="1.5"
-			stroke-dasharray="4 3"
-			opacity="0.5"
-		/>
-	{/if}
-	<path
-		d={path(shown, (p) => p.gcg, syC)}
-		fill="none"
-		stroke="var(--hm-glucagon)"
-		stroke-width="2.4"
-		stroke-linejoin="round"
-	/>
-
-	<!-- legend for the faint curves -->
-	{#if ghost}
-		<line
-			x1={X1 - 150}
-			x2={X1 - 128}
-			y1={36}
-			y2={36}
-			stroke="var(--stage-ink-muted)"
-			stroke-width="1.5"
-			stroke-dasharray="4 3"
-		/>
-		<Readout id="key-ghost" order={25} label="Faint dashed: {cfg.ghostLabel}">
-			<text x={X1 - 122} y={40} font-size="12" class="muted">{cfg.ghostLabel}</text>
-		</Readout>
-	{/if}
-
-	<!-- cursor -->
-	{#if !done}
-		{#each panels as pn (pn.y0)}
+		{#if lines === 'ogtt'}
 			<line
-				x1={sx(minute)}
-				x2={sx(minute)}
-				y1={pn.y0}
-				y2={pn.y1}
+				x1={X0}
+				x2={X1}
+				y1={syG(140)}
+				y2={syG(140)}
+				stroke="var(--stage-ink-muted)"
+				stroke-dasharray="5 4"
+			/>
+			<line
+				x1={sx(120)}
+				x2={sx(120)}
+				y1={G.y0 + 22}
+				y2={G.y1}
 				stroke="var(--stage-ink-muted)"
 				stroke-dasharray="2 3"
-				opacity="0.7"
 			/>
-		{/each}
-		<circle cx={sx(minute)} cy={syG(now.g)} r="4" fill="var(--hm-glucose)" />
-		<circle cx={sx(minute)} cy={syI(now.i)} r="3.5" fill="var(--hm-insulin)" />
-		<circle cx={sx(minute)} cy={syC(Math.min(3, now.gcg))} r="3.5" fill="var(--hm-glucagon)" />
-	{/if}
+		{:else if lines === 'diagnosis'}
+			<line
+				x1={X0}
+				x2={X1}
+				y1={syG(126)}
+				y2={syG(126)}
+				stroke="var(--hm-glucose)"
+				stroke-dasharray="5 4"
+			/>
+		{:else if lines === 'hypo'}
+			<rect
+				x={X0}
+				y={syG(180)}
+				width={X1 - X0}
+				height={syG(70) - syG(180)}
+				fill="var(--hm-glucagon)"
+				opacity="0.07"
+			/>
+			<line
+				x1={X0}
+				x2={X1}
+				y1={syG(54)}
+				y2={syG(54)}
+				stroke="var(--hm-hypo)"
+				stroke-dasharray="5 4"
+			/>
+		{/if}
+
+		<!-- meal and injection markers -->
+		{#if sc.carbs > 0}
+			{#each panels as pn (pn.y0)}
+				<line
+					x1={sx(0)}
+					x2={sx(0)}
+					y1={pn.y0}
+					y2={pn.y1}
+					stroke="var(--hm-gut)"
+					stroke-width="1.2"
+				/>
+			{/each}
+			<Readout id="key-meal" order={22} label="Meal: {sc.carbs} g" color="var(--hm-gut)">
+				<Label
+					x={sx(0) + 5}
+					y={G.y0 + 12}
+					text="meal: {sc.carbs} g"
+					size={11}
+					weight={600}
+					anchor="start"
+				/>
+			</Readout>
+		{/if}
+		{#if sc.dose > 0}
+			{@const dx = sx(sc.doseAt)}
+			<path d="M{dx - 6} {I.y0} h12 l-6 10 Z" fill="var(--hm-insulin)" />
+			<Readout id="key-dose" order={23} label="▼ {sc.dose} U injected" color="var(--hm-insulin)">
+				<Label
+					x={dx + 9}
+					y={I.y0 + 10}
+					text="{sc.dose} U injected"
+					size={11}
+					weight={600}
+					anchor="start"
+				/>
+			</Readout>
+		{/if}
+
+		{#if ghost}
+			<path
+				d={path(ghost, (p) => p.g, syG)}
+				fill="none"
+				stroke="var(--hm-glucose)"
+				stroke-width="1.5"
+				stroke-dasharray="4 3"
+				opacity="0.5"
+			/>
+		{/if}
+		<path
+			d={path(shown, (p) => p.g, syG)}
+			fill="none"
+			stroke="var(--hm-glucose)"
+			stroke-width="2.6"
+			stroke-linejoin="round"
+		/>
+
+		<!-- reference-line labels, above the curves so that their halo keeps them legible -->
+		{#if lines === 'ogtt'}
+			<Readout id="key-140" order={24} label="Dashed 140: normal limit 2 h after">
+				<Label
+					x={X1 - 4}
+					y={syG(140) - 6}
+					text="140: normal limit 2 h after"
+					size={11}
+					anchor="end"
+					muted
+				/>
+			</Readout>
+		{/if}
+		{#if lines === 'diagnosis'}
+			<Readout
+				id="key-126"
+				order={24}
+				label="Dashed 126: diabetes if fasting"
+				color="var(--hm-glucose)"
+			>
+				<Label
+					x={X1 - 4}
+					y={syG(126) - 6}
+					text="126: diabetes if fasting"
+					size={11}
+					anchor="end"
+					color="var(--hm-glucose)"
+				/>
+			</Readout>
+		{/if}
+		{#if lines === 'hypo'}
+			<Readout id="key-target" order={24} label="Target 70–180" color="var(--hm-glucagon)">
+				<Label x={X1 - 4} y={syG(180) - 6} text="target 70–180" size={11} anchor="end" muted />
+			</Readout>
+		{/if}
+
+		<!-- insulin -->
+		<Axes {sx} sy={syI} xTicks={[]} yTicks={iTicks} yLabel="insulin, µU/mL" />
+		{#if ghost}
+			<path
+				d={path(ghost, (p) => p.i, syI)}
+				fill="none"
+				stroke="var(--hm-insulin)"
+				stroke-width="1.5"
+				stroke-dasharray="4 3"
+				opacity="0.5"
+			/>
+		{/if}
+		<path
+			d={path(shown, (p) => p.i, syI)}
+			fill="none"
+			stroke="var(--hm-insulin)"
+			stroke-width="2.4"
+			stroke-linejoin="round"
+		/>
+
+		<!-- glucagon -->
+		<Axes
+			{sx}
+			sy={syC}
+			xTicks={hours}
+			yTicks={[0, 1, 2, 3]}
+			xFormat={hourText}
+			yFormat={(v) => `×${v}`}
+			xLabel={sc.carbs > 0 ? 'time after the meal' : 'time'}
+			yLabel="glucagon, × fasting level"
+		/>
+		{#if ghost}
+			<path
+				d={path(ghost, (p) => p.gcg, syC)}
+				fill="none"
+				stroke="var(--hm-glucagon)"
+				stroke-width="1.5"
+				stroke-dasharray="4 3"
+				opacity="0.5"
+			/>
+		{/if}
+		<path
+			d={path(shown, (p) => p.gcg, syC)}
+			fill="none"
+			stroke="var(--hm-glucagon)"
+			stroke-width="2.4"
+			stroke-linejoin="round"
+		/>
+
+		<!-- legend for the faint curves -->
+		{#if ghost}
+			<line
+				x1={X1 - 150}
+				x2={X1 - 128}
+				y1={36}
+				y2={36}
+				stroke="var(--stage-ink-muted)"
+				stroke-width="1.5"
+				stroke-dasharray="4 3"
+			/>
+			<Readout id="key-ghost" order={25} label="Faint dashed: {cfg.ghostLabel}">
+				<text x={X1 - 122} y={40} font-size="12" class="muted">{cfg.ghostLabel}</text>
+			</Readout>
+		{/if}
+
+		<!-- cursor -->
+		{#if !done}
+			{#each panels as pn (pn.y0)}
+				<line
+					x1={sx(minute)}
+					x2={sx(minute)}
+					y1={pn.y0}
+					y2={pn.y1}
+					stroke="var(--stage-ink-muted)"
+					stroke-dasharray="2 3"
+					opacity="0.7"
+				/>
+			{/each}
+			<circle cx={sx(minute)} cy={syG(now.g)} r="4" fill="var(--hm-glucose)" />
+			<circle cx={sx(minute)} cy={syI(now.i)} r="3.5" fill="var(--hm-insulin)" />
+			<circle cx={sx(minute)} cy={syC(Math.min(3, now.gcg))} r="3.5" fill="var(--hm-glucagon)" />
+		{/if}
+	</g>
 </g>

@@ -103,7 +103,7 @@
 		{xFormat}
 		yTicks={[-200, -100, 0, 100, 200, 300]}
 		yFormat={(v) => `${v}`.replace('-', '−')}
-		xLabel="carbons in the chain (log scale)"
+		xLabel="carbons (log)"
 		yLabel="°C"
 	/>
 

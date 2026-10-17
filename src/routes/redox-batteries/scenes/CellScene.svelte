@@ -36,11 +36,18 @@
 		type Point
 	} from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
+	import { useReadouts } from '#lib/explainer/readouts.svelte.ts';
 	import { M50, cellVoltage, lithiumGrams, voltageCurve } from '../model';
 	import { material } from '../electrodes';
 	import { fmtV } from '../look';
 
 	let { step, t, params, reduced }: StageProps = $props();
+
+	// On phones (≤ 640 px) the voltage chart moves up a little (its readouts above it are
+	// listed under the stage there), so that <Axes> has room to put the x title a row below
+	// the tick labels instead of over 60, 80 and 100.
+	const readouts = useReadouts();
+	const lift = $derived(readouts?.out ? 'translate(0 -28)' : undefined);
 
 	const NMC = material('nmc', 'cathode');
 	const GRAPHITE = material('graphite', 'anode');
@@ -480,7 +487,7 @@
 	{/if}
 
 	{#if plotOpacity > 0.01}
-		<g opacity={plotOpacity}>
+		<g opacity={plotOpacity} transform={lift}>
 			<Axes
 				sx={px}
 				sy={py}

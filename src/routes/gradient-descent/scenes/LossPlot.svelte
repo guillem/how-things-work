@@ -3,9 +3,15 @@
 	 * The loss after every step so far, one curve per run. The step axis grows
 	 * with the run; a loss above the top of the plot (a diverging run) leaves
 	 * through the top, with a note.
+	 *
+	 * On phones (≤ 640 px, the readouts' breakpoint) the stage is drawn at ~0.37 scale and the
+	 * wide-screen labels would be ~4 px tall, so they are left out there (the `<Readout>`) and
+	 * drawn instead at a real ~10 px, the way <Axes> draws its own: every k-th tick label is
+	 * kept so that none collide, and "step →" takes the place of the last ones in the tick row.
 	 */
 	import { Readout } from '#lib/explainer/index.ts';
-	import { Label, niceMax, scale, ticks } from '#lib/draw/index.ts';
+	import { useReadouts } from '#lib/explainer/readouts.svelte.ts';
+	import { Label, niceMax, scale, spacedLabels, ticks } from '#lib/draw/index.ts';
 	import { LOSS, fmt } from './shared';
 
 	interface Series {
@@ -44,9 +50,59 @@
 		})
 	);
 	const anyOver = $derived(curves.some((c) => c.over));
+
+	// ---- phones ----------------------------------------------------------------------
+	const readouts = useReadouts();
+	const narrow = $derived(readouts?.out ?? false);
+	let frame = $state<SVGGElement>();
+	/** CSS px per drawing unit, measured on phones. */
+	let unit = $state(0.37);
+	$effect(() => {
+		const g = frame;
+		const svg = g?.ownerSVGElement;
+		if (!narrow || !g || !svg) return;
+		const measure = () => {
+			const m = g.getScreenCTM();
+			const k = m ? Math.hypot(m.a, m.b) : 0;
+			if (k > 0) unit = k;
+		};
+		measure();
+		const ro = new ResizeObserver(measure);
+		ro.observe(svg);
+		return () => ro.disconnect();
+	});
+	const fs = $derived(Math.max(11, 10 / unit));
+	const fsTitle = $derived(Math.max(12, 9.5 / unit));
+	const width = (s: string, size: number) => s.length * 0.58 * size;
+	const bottom = LOSS.y + LOSS.h;
+	const right = LOSS.x + LOSS.w;
+	const rowY = $derived(bottom + 4 + 0.95 * fs);
+	const STEP_TITLE = 'step →';
+	/** x tick labels drawn on phones: spaced, and clear of the title at the end of the row. */
+	const xPhone = $derived.by(() => {
+		if (!narrow) return [];
+		const keep = spacedLabels(
+			xTicks.map((v) => sx(v)),
+			xTicks.map((v) => width(String(v), fs)),
+			0.8 * fs
+		);
+		const titleLeft = right - width(STEP_TITLE, fsTitle) - 0.8 * fs;
+		return keep.map((i) => xTicks[i]).filter((v) => sx(v) + width(String(v), fs) / 2 < titleLeft);
+	});
+	/** y tick labels on phones; one at the foot stays above the x axis line. */
+	const yPhone = $derived.by(() => {
+		if (!narrow) return [];
+		const base = yTicks.map((v) => Math.min(sy(v) + 0.35 * fs, bottom - 0.3 * fs));
+		const keep = spacedLabels(
+			base.map((b) => b - 0.35 * fs),
+			yTicks.map(() => fs),
+			0.35 * fs
+		);
+		return keep.map((i) => ({ v: yTicks[i], y: base[i] }));
+	});
 </script>
 
-<g style:pointer-events="none">
+<g style:pointer-events="none" bind:this={frame}>
 	<defs>
 		<clipPath id="gd-loss-clip">
 			<rect x={LOSS.x} y={LOSS.y} width={LOSS.w + 4} height={LOSS.h + 2} />
@@ -112,4 +168,34 @@
 			/>
 		{/if}
 	</Readout>
+	{#if narrow}
+		{#each yPhone as p (p.v)}
+			<text x={LOSS.x - 0.45 * fs} y={p.y} text-anchor="end" font-size={fs} class="muted tick"
+				>{fmt(p.v)}</text
+			>
+		{/each}
+		{#each xPhone as v (v)}
+			<text x={sx(v)} y={rowY} text-anchor="middle" font-size={fs} class="muted tick">{v}</text>
+		{/each}
+		<text x={right} y={rowY} text-anchor="end" font-size={fsTitle} class="muted axis-title"
+			>{STEP_TITLE}</text
+		>
+		<text
+			x={LOSS.x}
+			y={LOSS.y - 0.35 * fsTitle}
+			text-anchor="start"
+			font-size={fsTitle}
+			class="muted axis-title">loss after each step</text
+		>
+		{#if anyOver}
+			<Label
+				x={right - 4}
+				y={LOSS.y + fsTitle}
+				text="↑ off the top"
+				anchor="end"
+				size={fsTitle}
+				color="var(--gd-run3)"
+			/>
+		{/if}
+	{/if}
 </g>

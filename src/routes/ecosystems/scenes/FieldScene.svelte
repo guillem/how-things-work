@@ -610,7 +610,7 @@
 			xFormat={(v) => String(v)}
 		/>
 		{#if !growth}
-			<Axes {sx} sy={syPLabels} yRight grid={false} yTicks={pTicks} />
+			<Axes {sx} sy={syPLabels} yRight grid={false} xTicks={[]} yTicks={pTicks} />
 		{/if}
 
 		{#if growth}
