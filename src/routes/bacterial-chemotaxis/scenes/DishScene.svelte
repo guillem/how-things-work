@@ -3,20 +3,20 @@
 	 * 300 cells released evenly over a chamber 1.8 mm × 0.88 mm with a drop of MeAsp (../model.ts
 	 * `dish`: each cell runs, tumbles and adapts on its own). The attractant is shaded, the
 	 * dashed circle marks 0.3 mm around the drop, and every cell leaves a short trail (its last
-	 * 2 s). The drop is a handle (and two sliders): moving it releases the cells again. Underneath,
-	 * the share of cells near the drop against time.
+	 * 2 s). The drop is a handle (and two sliders): moving it moves the attractant from that
+	 * moment, and the cells, as they were, find it again. Underneath, the share of cells near the
+	 * drop against time.
 	 *
 	 * Focus (`step.hints.focus`): 'gather'; 'runs' (cells heading towards the drop coloured, and
 	 * the mean length of the runs that start towards and away from it); 'tune' (controls `speed`
 	 * and `tau`, with the standard cell dashed on the chart); 'off' (control `adapt`, the same).
 	 *
 	 * The simulation is computed lazily as the clock advances (SPEED times real time) and restarts
-	 * when a setting changes or "Release again" is pressed: the clock reading at that moment is
+	 * when another setting changes or "Release again" is pressed: the clock reading at that moment is
 	 * remembered in a frame-to-frame memo inside a `$derived` (the guide's sanctioned exception,
 	 * as in atmosphere-weather/CoriolisScene). Reduced motion: the state after STILL seconds.
 	 */
-	import { Handle, Label, clamp, linePath, scale } from '#lib/draw/index.ts';
-	import { Axes, type Point } from '#lib/draw/index.ts';
+	import { Axes, Handle, Label, clamp, linePath, scale, type Point } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { DISH, DROP, FRAME, NEAR, TAU, SWIM, dish } from '../model';
 
@@ -52,34 +52,52 @@
 	const shownDrop = $derived(drag ?? { x: dropX, y: dropY });
 
 	// ---- the simulation, restarted on a new setting (memo: see the header comment) ------------
-	const key = $derived(`${dropX}|${dropY}|${speed}|${tau}|${adapt}|${releases}`);
-	let memo: { key: string; start: number; last: number; sim: ReturnType<typeof dish> | null } = {
+	/** Moving the drop keeps the swarm, except under reduced motion (a fresh settled frame). */
+	const at = $derived(reduced ? `|${dropX}|${dropY}` : '');
+	const key = $derived(`${speed}|${tau}|${adapt}|${releases}${at}`);
+	type Dish = ReturnType<typeof dish>;
+	let memo: { key: string; start: number; last: number; sim: Dish | null; drop: string } = {
 		key: '',
 		start: 0,
 		last: 0,
-		sim: null
+		sim: null,
+		drop: ''
 	};
-	let ghostMemo: { key: string; sim: ReturnType<typeof dish> | null } = { key: '', sim: null };
+	let ghostMemo: { key: string; sim: Dish | null; drop: string } = {
+		key: '',
+		sim: null,
+		drop: ''
+	};
 	const run = $derived.by(() => {
+		const drop = `${dropX}|${dropY}`;
 		if (memo.key !== key || t < memo.last || !memo.sim) {
 			const fresh = memo.key === '' || t < memo.last;
 			memo = {
 				key,
 				start: fresh ? 0 : t,
 				last: t,
-				sim: dish({ dropX, dropY, v: speed, tau, adapt })
+				sim: dish({ dropX, dropY, v: speed, tau, adapt }),
+				drop
 			};
+		}
+		const sim = memo.sim!;
+		if (memo.drop !== drop) {
+			sim.moveDrop(dropX, dropY);
+			memo.drop = drop;
 		}
 		memo.last = t;
 		const simT = reduced ? STILL : Math.min(MAXT, (t - memo.start) * SPEED);
-		const sim = memo.sim!;
 		const k = sim.at(simT + FRAME);
 		const u = clamp(simT / FRAME - (k - 1), 0, 1);
 		let ghost: number[] | null = null;
 		if (ghostOn) {
-			const gk = `${dropX}|${dropY}|${releases}`;
+			const gk = `${releases}${at}`;
 			if (ghostMemo.key !== gk || !ghostMemo.sim)
-				ghostMemo = { key: gk, sim: dish({ dropX, dropY }) };
+				ghostMemo = { key: gk, sim: dish({ dropX, dropY }), drop };
+			if (ghostMemo.drop !== drop) {
+				ghostMemo.sim!.moveDrop(dropX, dropY);
+				ghostMemo.drop = drop;
+			}
 			ghostMemo.sim!.at(simT);
 			ghost = ghostMemo.sim!.near;
 		}
@@ -118,7 +136,9 @@
 
 	// ---- read-outs ----------------------------------------------------------------------------
 	const nearNow = $derived(run.sim.near[run.k]);
-	const nearStart = $derived(run.sim.near[0]);
+	const moved = $derived(run.sim.movedAt >= 0 && run.sim.movedAt <= run.k);
+	const nearStart = $derived(run.sim.near[moved ? run.sim.movedAt : 0]);
+	const since = $derived(moved ? 'when the drop moved' : 'at release');
 	const runs = $derived(run.sim.runs[run.k]);
 	const upMean = $derived(runs.upCount ? runs.upTime / runs.upCount : 0);
 	const downMean = $derived(runs.downCount ? runs.downTime / runs.downCount : 0);
@@ -292,13 +312,13 @@
 		id="near"
 		order={2}
 		label="Near the drop (0.3 mm)"
-		value="{pct(nearNow)} of the cells (at release {pct(nearStart)})"
+		value="{pct(nearNow)} of the cells ({since} {pct(nearStart)})"
 		color="var(--bc-attract)"
 	>
 		<Label
 			x={CX0}
 			y={CY0 + CH + 52}
-			text="within 0.3 mm of the drop: {pct(nearNow)} of the cells (at release {pct(nearStart)})"
+			text="within 0.3 mm of the drop: {pct(nearNow)} of the cells ({since} {pct(nearStart)})"
 			size={12}
 			anchor="start"
 			tabular

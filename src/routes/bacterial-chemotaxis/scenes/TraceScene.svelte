@@ -5,11 +5,11 @@
 	 * tumbles of 1000 cells counted in 2 s windows (bars) with the rate the model expects (line).
 	 *
 	 * Focus (`step.hints.focus`): 'flood' (20 µM, then the `dose` control from 10 s), 'stairs'
-	 * (20 → 40 → 80 µM, then washed back to 20; controls `tau` and `adapt`), 'ramp' (a rise of
+	 * (20 → 40 → 80 µM, then washed back to 20; controls `tau` and `adapt`), 'ramp' (a rise from 100 µM by
 	 * `ramp` % per second from 10 s to 130 s). The plots draw themselves SPEED times faster than
 	 * real time and then hold; reduced motion shows the whole run.
 	 */
-	import { Axes, Label, linePath, scale } from '#lib/draw/index.ts';
+	import { Axes, Label, linePath, niceMax, scale } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { MWC, TAU, uniformResponse } from '../model';
 
@@ -38,7 +38,7 @@
 			return {
 				until: 200,
 				speed: 6,
-				c: (s: number) => 20 * Math.exp(ramp * Math.min(120, Math.max(0, s - 10))),
+				c: (s: number) => 100 * Math.exp(ramp * Math.min(120, Math.max(0, s - 10))),
 				events: [
 					{ at: 10, text: 'rise starts' },
 					{ at: 130, text: 'rise stops' }
@@ -78,7 +78,7 @@
 	const VX = X1 + 40;
 	const sx = $derived(scale([0, plan.until], [X0, X1]));
 	const cMax = $derived(Math.max(...data.map((d) => d.c)));
-	const cTop = $derived(cMax <= 50 ? 50 : cMax <= 100 ? 100 : cMax <= 200 ? 200 : 400);
+	const cTop = $derived(niceMax(cMax));
 	const syC = $derived(scale([0, cTop], [140, 56]));
 	const aTop = $derived(Math.max(...data.map((d) => d.a)) > 0.48 ? 1 : 0.5);
 	const syA = $derived(scale([0, aTop], [318, 196]));

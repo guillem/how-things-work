@@ -412,7 +412,7 @@ export function uniformResponse(o: {
 				}
 			}
 		}
-		expectedCount += lam * (running / n) * dt;
+		expectedCount += pStart * (running / n);
 		if ((k + 1) % per === 0) {
 			out.push({
 				t: t + dt,
@@ -438,12 +438,6 @@ export const DISH = { w: 1800, h: 880 } as const;
 /** The drop: peak concentration (µM) and width (µm) of its Gaussian spread. */
 export const DROP = { peak: 1000, width: 500 } as const;
 
-/** Attractant around a drop at (dx, dy): a Gaussian 500 µm wide, 1 mM at the centre. */
-export const dropField =
-	(dx: number, dy: number): Field =>
-	(x, y) =>
-		DROP.peak * Math.exp(-((x - dx) ** 2 + (y - dy) ** 2) / (2 * DROP.width ** 2));
-
 export interface DishOptions {
 	dropX: number;
 	dropY: number;
@@ -463,7 +457,10 @@ export const FRAME = 0.25;
  */
 export function dish(o: DishOptions) {
 	const n = o.n ?? 300;
-	const field = dropField(o.dropX, o.dropY);
+	/** Where the drop is now: the reader can move it while the cells swim. */
+	const drop = { x: o.dropX, y: o.dropY };
+	const field: Field = (x, y) =>
+		DROP.peak * Math.exp(-((x - drop.x) ** 2 + (y - drop.y) ** 2) / (2 * DROP.width ** 2));
 	const swarm = new Swarm({
 		n,
 		seed: o.seed ?? 11,
@@ -489,10 +486,9 @@ export function dish(o: DishOptions) {
 		for (let i = 0; i < n; i++) {
 			x[i] = swarm.x[i];
 			y[i] = swarm.y[i];
-			const toward =
-				(o.dropX - swarm.x[i]) * swarm.ex[i] + (o.dropY - swarm.y[i]) * swarm.ey[i] > 0;
+			const toward = (drop.x - swarm.x[i]) * swarm.ex[i] + (drop.y - swarm.y[i]) * swarm.ey[i] > 0;
 			s[i] = swarm.tumbleLeft[i] > 0 ? 1 : toward ? 2 : 0;
-			if (Math.hypot(swarm.x[i] - o.dropX, swarm.y[i] - o.dropY) < NEAR) k++;
+			if (Math.hypot(swarm.x[i] - drop.x, swarm.y[i] - drop.y) < NEAR) k++;
 		}
 		xs.push(x);
 		ys.push(y);
@@ -518,6 +514,14 @@ export function dish(o: DishOptions) {
 		near,
 		/** Runs completed by each frame, toward and away from the drop. */
 		runs,
+		/** Moves the drop from now on; the cells keep swimming (and remembering) as they were. */
+		moveDrop(x: number, y: number) {
+			drop.x = x;
+			drop.y = y;
+			this.movedAt = near.length - 1;
+		},
+		/** The frame at which the drop was last moved (−1: never). */
+		movedAt: -1,
 		/**
 		 * Simulates up to time t (s) and returns the index of the frame at or before it. Positions
 		 * are kept for the last KEEP frames only.

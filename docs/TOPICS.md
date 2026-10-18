@@ -143,7 +143,7 @@ A topic is done when:
 - [x] evolution
 - [x] ecosystems
 - [x] crispr
-- [ ] bacterial-chemotaxis
+- [x] bacterial-chemotaxis
 
 **Body & Medicine**
 - [x] heart-circulation
@@ -610,7 +610,7 @@ A topic is done when:
 - **Level:** 3
 - **Kind:** simulate
 - **Interaction:** Release a few hundred E. coli into a dish with a drop of attractant and watch each one run straight, tumble, and run again; inside each cell a receptor cluster (the MWC model of Tu, Shimizu & Berg) with Barkai–Leibler-style methylation feedback sets the tumble rate, and the swarm drifts up the gradient. Move the drop, flood the dish with a uniform dose and watch the tumble rate dip then recover exactly (perfect adaptation), and change the adaptation time or the swim speed to see the biased random walk fail.
-- **Takeaway:** A bacterium is too small to sense a gradient across its body, so it compares now with a moment ago and tumbles less when things are getting better; that biased random walk is enough to climb a gradient.
+- **Takeaway:** A bacterium is too small to read a shallow gradient across its body against the noise of counting molecules, so it compares now with a moment ago and tumbles less when things are getting better; that biased random walk is enough to climb a gradient.
 - **Prerequisites:** the-cell
 - **Related:** feedback-control, homeostasis
 - **Pitfall:** The cell does not steer toward the attractant: it cannot tell direction, it only changes how often it tumbles, and the page must not draw it turning toward the source.
