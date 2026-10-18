@@ -271,6 +271,50 @@
 				? 'var(--de-unstable)'
 				: 'var(--de-semi)';
 
+	/**
+	 * Labels of the level lines: over or under the line, at the left or the right end,
+	 * wherever the curves on the plot leave the most room (a box about 120 × 14 units).
+	 */
+	const eqLabels = $derived(
+		eqs
+			.filter((e) => e.y > rule.y[0] + 1e-9)
+			.map((e) => {
+				const text = `${TEXT[ruleId].sym} = ${eqNum(e.y)}: ${e.stability}`;
+				const w = text.length * 6.6;
+				const y0 = sy(e.y);
+				const spots = [
+					{ x: PLOT.left + 20, ty: y0 - 8, anchor: 'start' as const, x0: PLOT.left + 20 },
+					{ x: PLOT.right - 10, ty: y0 + 18, anchor: 'end' as const, x0: PLOT.right - 10 - w },
+					{ x: PLOT.left + 20, ty: y0 + 18, anchor: 'start' as const, x0: PLOT.left + 20 },
+					{ x: PLOT.right - 10, ty: y0 - 8, anchor: 'end' as const, x0: PLOT.right - 10 - w }
+				];
+				const room = (s: (typeof spots)[number]) => {
+					let best = Infinity;
+					for (const tr of traces)
+						for (let i = 0; i < tr.t.length; i += 3) {
+							const px = sx(tr.t[i]);
+							const py = sy(tr.y[i]);
+							const dx = Math.max(s.x0 - px, 0, px - (s.x0 + w));
+							const dy = Math.max(s.ty - 13 - py, 0, py - (s.ty + 2));
+							best = Math.min(best, Math.hypot(dx, dy));
+						}
+					return best;
+				};
+				// The first spot with 6 units of room, else the roomiest.
+				const scored = spots.map((s) => ({ ...s, room: room(s) }));
+				const pick =
+					scored.find((s) => s.room >= 6) ?? scored.reduce((a, b) => (b.room > a.room ? b : a));
+				return {
+					y: e.y,
+					stability: e.stability,
+					text,
+					x: pick.x,
+					ty: pick.ty,
+					anchor: pick.anchor
+				};
+			})
+	);
+
 	// ---- the chart of f ------------------------------------------------------------------------
 	const showChart = $derived(showStrip);
 	const fx = $derived(scale(rule.y, [CHART.left, CHART.right]));
@@ -442,15 +486,15 @@
 	{#if wEq.current > 0.01 && phase !== 'cross'}
 		<Readout id="eq-labels">
 			<!-- a level line on the bottom axis (0 for a population) is left to the panel -->
-			{#each eqs.filter((e) => e.y > rule.y[0] + 1e-9) as e (e.y)}
+			{#each eqLabels as l (l.y)}
 				<Label
-					x={PLOT.left + 20}
-					y={sy(e.y) - 8}
-					text="{text.sym} = {eqNum(e.y)}: {e.stability}"
-					anchor="start"
+					x={l.x}
+					y={l.ty}
+					text={l.text}
+					anchor={l.anchor}
 					size={12}
 					weight={600}
-					color={eqColor(e.stability)}
+					color={eqColor(l.stability)}
 					opacity={wEq.current}
 				/>
 			{/each}

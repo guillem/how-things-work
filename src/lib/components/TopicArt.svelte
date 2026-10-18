@@ -441,7 +441,7 @@
 				const x = 18 + i * 21;
 				const y = 18 + j * 21;
 				const n = (104 - y) / 70;
-				const slope = ((0.9 * n * (1 - n) * 70) / 21) * 1.4;
+				const slope = ((7 * 70) / 184) * n * (1 - n);
 				const len = Math.hypot(1, slope);
 				const dx = 6 / len;
 				const dy = (6 * slope) / len;
