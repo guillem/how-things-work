@@ -4240,3 +4240,36 @@ kbd {
 	--popgen-band: #3a3214;
 	--popgen-band-text: #ffd43b;
 }
+
+/* turing-patterns: the coat ramp (activator low → uniform level → high), the inhibitor, the
+   growth-rate curve and its unstable band, and the three levels of evidence */
+:root {
+	--tp-low: #f6ecdc;
+	--tp-mid: #d9b48a;
+	--tp-high: #7a3b16;
+	--tp-high-line: #a0522d;
+	--tp-high-text: #8a4221;
+	--tp-on-high: #ffffff;
+	--tp-inh: #3b6ea8;
+	--tp-curve: #2f7d6d;
+	--tp-curve-text: #23685a;
+	--tp-band: rgba(47, 125, 109, 0.16);
+	--tp-good: #2b8a3e;
+	--tp-mixed: #c77c02;
+	--tp-contested: #c2410c;
+}
+:root[data-theme='dark'] {
+	--tp-low: #1f1914;
+	--tp-mid: #6b4a2c;
+	--tp-high: #f2b872;
+	--tp-high-line: #e8a066;
+	--tp-high-text: #f0b98a;
+	--tp-on-high: #1f1914;
+	--tp-inh: #7fb0e8;
+	--tp-curve: #5fcfb6;
+	--tp-curve-text: #7fdcc6;
+	--tp-band: rgba(95, 207, 182, 0.18);
+	--tp-good: #69db7c;
+	--tp-mixed: #ffc14d;
+	--tp-contested: #ff8a5c;
+}

@@ -51,7 +51,7 @@ export interface Params extends Rates {
 }
 
 /** The page's reaction rates: the inhibitor is removed twice as fast as the activator. */
-export const RATES: Rates = { mu: 1, nu: 2, rho: 1, s: 0.1, kappa: 0.04 };
+export const RATES: Rates = { mu: 1, nu: 2, rho: 1, s: 0.1, kappa: 0.02 };
 /** The page's default parameters. */
 export const DEFAULTS: Params = { ...RATES, Da: 1, d: 40 };
 /** The diffusion ratio of the step that varies the saturation (above d_c for every κ ≤ 0.15). */

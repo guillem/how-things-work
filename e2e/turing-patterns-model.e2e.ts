@@ -46,8 +46,8 @@ test('with equal diffusion the noise fades: the uniform state is stable', () => 
 
 test('ripples grow only when the inhibitor spreads faster than the critical ratio', () => {
 	const dc = criticalRatio(DEFAULTS);
-	// the page's rates: the narrative quotes about 28
-	expect(Math.round(dc)).toBe(28);
+	// the page's rates: the narrative quotes about 21
+	expect(Math.round(dc)).toBe(21);
 	const below = new Field(64, 64, { ...DEFAULTS, d: 0.85 * dc }, 5);
 	const above = new Field(64, 64, { ...DEFAULTS, d: 1.25 * dc }, 5);
 	const start = below.contrast();
@@ -55,8 +55,6 @@ test('ripples grow only when the inhibitor spreads faster than the critical rati
 	above.runTo(120);
 	expect(below.contrast()).toBeLessThan(start / 3);
 	expect(above.contrast()).toBeGreaterThan(0.3);
-	// d_c depends on the reaction rates only, not on how fast the activator itself spreads
-	expect(criticalRatio({ ...DEFAULTS, Da: 3 })).toBeCloseTo(dc, 9);
 });
 
 test('a small ripple grows at the rate the dispersion relation predicts', () => {

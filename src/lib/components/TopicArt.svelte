@@ -4644,6 +4644,32 @@
 				opacity={i < 3 ? 0.9 : i < 7 ? 0.6 : 0.35}
 			/>
 		{/each}
+	{:else if slug === 'turing-patterns'}
+		<!-- a spotted body that tapers into a tail ringed with bands -->
+		<path
+			d="M16 34 Q16 22 30 22 H96 Q112 22 124 46 L182 56 Q188 60 182 64 L124 74 Q112 98 96 98 H30 Q16 98 16 86 Z"
+			fill="none"
+			stroke="currentColor"
+			stroke-width="1.2"
+			opacity="0.55"
+		/>
+		{#each [0, 1, 2, 3, 4] as r (r)}
+			{#each [0, 1, 2, 3, 4, 5] as c (c)}
+				{#if !(r % 2 === 1 && c === 5)}
+					<circle cx={30 + c * 15 + (r % 2) * 7.5} cy={33 + r * 13.5} r="4.2" fill={accent} />
+				{/if}
+			{/each}
+		{/each}
+		{#each [132, 146, 160, 173] as x (x)}
+			<rect
+				x={x - 3}
+				y={47 + (x - 124) * 0.17}
+				width="6"
+				height={26 - (x - 124) * 0.34}
+				rx="2"
+				fill={accent}
+			/>
+		{/each}
 	{:else}
 		<circle cx="100" cy="60" r="30" fill="none" stroke={accent} stroke-width="2" />
 		<circle cx="100" cy="60" r="5" fill={accent} />

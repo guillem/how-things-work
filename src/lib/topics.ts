@@ -1257,6 +1257,15 @@ const explainers: Explainer[] = [
 		accent: '#3f7d5a',
 		steps: 8,
 		minutes: 16
+	},
+	{
+		slug: 'turing-patterns',
+		title: 'Turing patterns',
+		summary:
+			'Two chemicals, an activator that makes more of itself and a faster-spreading inhibitor, turn a uniform field into spots or stripes. Raise the inhibitor’s diffusion past the critical ratio and watch noise crystallise at the wavelength linear stability predicts, saturate the activator to turn spots into stripes, grow the domain to insert new stripes, taper it into a tail to get bands, and see where nature is known to use the mechanism.',
+		accent: '#a0522d',
+		steps: 7,
+		minutes: 20
 	}
 ];
 
