@@ -1,6 +1,6 @@
 # Topic catalog
 
-Source of truth for the content of an interactive web learning tool that shows how things work. It defines 122 topics in 11 categories, each built around one interactive graphic. Readers range from high-school students to university majors.
+Source of truth for the content of an interactive web learning tool that shows how things work. It defines 123 topics in 11 categories, each built around one interactive graphic. Readers range from high-school students to university majors.
 
 This file covers content only. It does not choose the stack, the visual design or the project layout; take those from the repository's own instructions.
 
@@ -82,7 +82,7 @@ A topic is done when:
 
 | Category | Id | Topics |
 |---|---|---|
-| Mathematics | `math` | 17 |
+| Mathematics | `math` | 18 |
 | Physics | `physics` | 10 |
 | Chemistry & Materials | `chemistry` | 10 |
 | Biology | `biology` | 10 |
@@ -114,6 +114,7 @@ A topic is done when:
 - [x] calculus-of-variations
 - [x] random-graphs
 - [x] phase-portraits
+- [ ] resampling-inference
 
 **Physics**
 - [x] newtons-laws
@@ -403,6 +404,16 @@ A topic is done when:
 - **Prerequisites:** linear-transformations, calculus, differential-equations
 - **Related:** oscillations-resonance, ecosystems, feedback-control, chaos-fractals
 - **Pitfall:** A center predicted by the linearization is not conclusive: the nonlinear terms decide (Hartman–Grobman covers only hyperbolic points). Show the frictionless pendulum beside the damped one rather than claiming linearization settles every case.
+
+#### resampling-inference
+- **Title:** The bootstrap & permutation tests
+- **Level:** 3
+- **Kind:** simulate
+- **Interaction:** Compare flipper length between two species of real penguins: shuffle the group labels thousands of times to build the histogram of differences that chance alone produces, and read the p-value as where the observed difference falls in it. Resample each group with replacement to build a bootstrap distribution and a confidence interval for the difference and for a regression slope. Then switch to a known simulated population, repeat the whole procedure hundreds of times, and count how often the interval catches the true value: drag the sample size down, skew the population or ask for the maximum instead of the mean, and watch the coverage fall below 95%.
+- **Takeaway:** Resampling rebuilds the chance distribution from the data itself, and it works only as well as the sample stands in for the population: with small or skewed samples the intervals miss the truth more often than they claim.
+- **Prerequisites:** central-limit-theorem, bayes-theorem, learning-from-data
+- **Needs:** The Palmer penguins dataset (344 penguins, bill and flipper measurements by species; palmerpenguins, CC0).
+- **Pitfall:** A p-value is not the probability that the null hypothesis is true, and a bootstrap interval is not guaranteed to have its stated coverage: the bootstrap does not cure a small sample. The coverage counter must show the shortfall, not a reassuring 95%.
 
 ### Physics
 
