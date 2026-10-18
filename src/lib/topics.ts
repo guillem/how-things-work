@@ -1167,6 +1167,15 @@ const explainers: Explainer[] = [
 		accent: '#c8102e',
 		steps: 10,
 		minutes: 18
+	},
+	{
+		slug: 'ising-model',
+		title: 'The Ising model & phase transitions',
+		summary:
+			'Spins on a lattice that only want to agree with their neighbours, run by the Metropolis and Wolff algorithms: cool them through Onsager’s critical temperature and domains grow out of noise, the magnetisation rises continuously from zero and the susceptibility and heat capacity spike, sharper as the lattice grows; sweep a field for a hysteresis loop, and watch a one-dimensional chain never order.',
+		accent: '#b5179e',
+		steps: 8,
+		minutes: 20
 	}
 ];
 

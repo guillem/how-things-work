@@ -512,6 +512,16 @@
 		white: Array.from({ length: 8 }, (_, i) => ({ i, x: 24 + i * 19, on: i === 0 || i === 4 })),
 		black: [0, 1, 3, 4, 5].map((i) => 24 + (i + 1) * 19 - 5.5)
 	};
+
+	// Ising model: a 16 × 9 lattice of spins in two smooth domains (up in the accent), with a
+	// few lone spins flipped against their neighbours.
+	const isingArt = Array.from({ length: 16 * 9 }, (_, i) => {
+		const x = i % 16;
+		const y = Math.floor(i / 16);
+		const f = Math.sin(x * 0.45 + 0.6) + Math.cos(y * 0.7 - x * 0.18) - 0.15;
+		const lone = (x * 7 + y * 11) % 23 === 0;
+		return { i, x: 20 + x * 10, y: 15 + y * 10, up: f > 0 !== lone };
+	});
 </script>
 
 <svg viewBox="0 0 200 120" class="art" style:--accent={accent} aria-hidden="true">
@@ -4233,6 +4243,19 @@
 		{/each}
 		{#each [[30, 100], [40, 22], [160, 12], [186, 64], [112, 106]] as [cx, cy], i (i)}
 			<circle {cx} {cy} r="3" fill="currentColor" opacity="0.4" />
+		{/each}
+	{:else if slug === 'ising-model'}
+		<!-- a lattice of spins ordering into domains: up in the accent, down faint -->
+		{#each isingArt as c (c.i)}
+			<rect
+				x={c.x}
+				y={c.y}
+				width="9"
+				height="9"
+				rx="1.5"
+				fill={c.up ? accent : 'currentColor'}
+				opacity={c.up ? 0.85 : 0.22}
+			/>
 		{/each}
 	{:else if slug === 'resampling-inference'}
 		<!-- the histogram chance alone produces, the observed difference and the tail beyond it -->
