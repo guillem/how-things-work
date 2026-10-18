@@ -4545,3 +4545,49 @@ kbd {
 	--cst-sun: #ffc046;
 	--cst-frozen: rgba(116, 192, 252, 0.12);
 }
+
+/* radiative-convective-column: troposphere and stratosphere profiles, the reference column,
+   unstable layers, the upward and downward infrared, sunlight, the window, the emission level,
+   ground and sky */
+:root {
+	--rc-tropo: #d9480f;
+	--rc-tropo-text: #b23a0c;
+	--rc-strat: #5f3dc4;
+	--rc-strat-text: #5235a8;
+	--rc-ref: #868e96;
+	--rc-unstable: #e03131;
+	--rc-unstable-text: #c92a2a;
+	--rc-ir: #e8590c;
+	--rc-ir-text: #b8460a;
+	--rc-down: #1c7ed6;
+	--rc-down-text: #1864ab;
+	--rc-sun: #f59f00;
+	--rc-sun-text: #a86b00;
+	--rc-window: #0c8599;
+	--rc-window-text: #0b7285;
+	--rc-emission: #c2255c;
+	--rc-emission-text: #a61e4d;
+	--rc-ground: #c9b48a;
+	--rc-sky: #eef4fa;
+}
+:root[data-theme='dark'] {
+	--rc-tropo: #ff8a4c;
+	--rc-tropo-text: #ffa36e;
+	--rc-strat: #9775fa;
+	--rc-strat-text: #b197fc;
+	--rc-ref: #adb5bd;
+	--rc-unstable: #ff6b6b;
+	--rc-unstable-text: #ff8787;
+	--rc-ir: #ff922b;
+	--rc-ir-text: #ffa94d;
+	--rc-down: #4dabf7;
+	--rc-down-text: #74c0fc;
+	--rc-sun: #fcc419;
+	--rc-sun-text: #ffd43b;
+	--rc-window: #3bc9db;
+	--rc-window-text: #66d9e8;
+	--rc-emission: #f06595;
+	--rc-emission-text: #faa2c1;
+	--rc-ground: #5c4d33;
+	--rc-sky: #141c26;
+}

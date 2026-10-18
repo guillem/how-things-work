@@ -296,7 +296,7 @@ export function initial(settings: Settings, grid = GRID): Column {
 
 /**
  * The equilibrium column: steps a pseudo-time in which every layer has the same radiative
- * relaxation time (heat capacities proportional to emissivity), adjusting convection after
+ * relaxation time (heat capacities proportional to emissivity and T³), adjusting convection after
  * every step, until nothing changes by more than `tol` kelvin. The equilibrium does not depend on
  * those capacities: in it every radiative layer has zero net heating, and the convecting region
  * (surface included) has zero net heating in total.
@@ -314,13 +314,14 @@ export function equilibrium(
 	const band = Math.max(0.05, 1 - settings.window);
 	const tauI = tauAt(grid, settings.tau);
 	const emis = c.T.map((_, k) => 1 - Math.exp(-(tauI[k] - tauI[k + 1])));
-	// relaxation: a layer's emission changes by 8 band σ T³ ε per kelvin
-	const k0 = 8 * band * SIGMA * 260 ** 3;
-	const C = emis.map((e) => Math.max(e, 1e-9) * k0);
-	const cs = 4 * SIGMA * 290 ** 3;
 	const dt = 0.45;
 	for (let it = 0; it < maxIter; it++) {
 		const f = fluxes(c);
+		// capacities that give every layer the same relaxation time: a layer's emission (up and
+		// down) changes by 8 band σ T³ ε per kelvin, the ground's by 4σT³. Taken afresh at every
+		// step, they keep the steps stable however hot the column gets.
+		const cs = 4 * SIGMA * c.ts ** 3;
+		const C = emis.map((e, k) => Math.max(e, 1e-9) * 8 * band * SIGMA * c.T[k] ** 3);
 		let ts = c.ts + (dt * f.surfaceHeating) / cs;
 		let T = c.T.map((t, k) => t + (dt * f.heating[k]) / C[k]);
 		ts = Math.max(ts, 50);

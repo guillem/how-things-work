@@ -4878,6 +4878,38 @@
 			opacity="0.3"
 			stroke-dasharray="3 3"
 		/>
+	{:else if slug === 'radiative-convective-column'}
+		<!-- a temperature profile: the troposphere on its lapse rate, the stratosphere nearly
+		     isothermal, the emission level, and infrared leaving upward -->
+		<line x1="40" x2="40" y1="12" y2="106" stroke="currentColor" stroke-width="0.8" opacity="0.4" />
+		<line
+			x1="40"
+			x2="176"
+			y1="106"
+			y2="106"
+			stroke="currentColor"
+			stroke-width="0.8"
+			opacity="0.4"
+		/>
+		<path d="M150 106 L84 46 L80 12" fill="none" stroke={accent} stroke-width="2.4" />
+		<path
+			d="M140 106 L72 46 L66 12"
+			fill="none"
+			stroke="currentColor"
+			stroke-width="1.4"
+			stroke-dasharray="4 3"
+			opacity="0.55"
+		/>
+		<line x1="40" x2="176" y1="76" y2="76" stroke="currentColor" stroke-width="1.2" opacity="0.6" />
+		{#each [126, 144, 162] as x (x)}
+			<path
+				d="M{x} 70 l0 -26 m-4 6 l4 -6 l4 6"
+				fill="none"
+				stroke={accent}
+				stroke-width="1.6"
+				opacity="0.8"
+			/>
+		{/each}
 	{:else}
 		<circle cx="100" cy="60" r="30" fill="none" stroke={accent} stroke-width="2" />
 		<circle cx="100" cy="60" r="5" fill={accent} />

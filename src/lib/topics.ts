@@ -1329,6 +1329,15 @@ const explainers: Explainer[] = [
 		accent: '#3f7d6e',
 		steps: 10,
 		minutes: 20
+	},
+	{
+		slug: 'radiative-convective-column',
+		title: 'Radiative transfer and the climate column',
+		summary:
+			'A column of air from the ground to the stratosphere, solved with the two-stream equations for a grey gas with an infrared window and with convection to a chosen lapse rate. Add absorber and the level the planet radiates from climbs into colder air, the column below warms until the balance is back, and the stratosphere cools, but only because part of the infrared escapes through the window.',
+		accent: '#c2410c',
+		steps: 9,
+		minutes: 22
 	}
 ];
 

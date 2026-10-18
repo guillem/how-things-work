@@ -48,7 +48,7 @@ test('Earth absorbs about 238 W/m² of sunlight, an emission temperature of abou
 
 test('grey radiative equilibrium follows σT⁴ = (OLR/2)(1 + τ)', () => {
 	const grid = makeGrid(2);
-	for (const tau of [1, 4, 10]) {
+	for (const tau of [1, 4, 12]) {
 		const c = equilibrium(grey(tau), grid);
 		const d = diagnose(c);
 		c.T.forEach((T, k) => {
