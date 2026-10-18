@@ -4260,6 +4260,45 @@
 		{#each [[122, 60], [134, 76], [126, 90], [139, 54]] as p, i (i)}
 			<circle cx={p[0]} cy={p[1]} r="3" fill="currentColor" opacity="0.7" />
 		{/each}
+	{:else if slug === 'carbonate-silicate-thermostat'}
+		<!-- a volcano breathing CO₂ into the air, rain on rock, and the CO₂ curve settling to its balance -->
+		<path d="M14 104 L44 70 L52 70 L82 104 Z" fill="currentColor" opacity="0.25" />
+		{#each [0, 1, 2] as i (i)}
+			<circle
+				cx={48 + i * 6}
+				cy={60 - i * 12}
+				r={4 + i * 2}
+				fill={accent}
+				opacity={0.5 - i * 0.1}
+			/>
+		{/each}
+		{#each [96, 108, 120] as x (x)}
+			<line x1={x} y1="58" x2={x - 5} y2="74" stroke={accent} stroke-width="1.6" opacity="0.7" />
+		{/each}
+		<path d="M88 104 L100 84 L120 80 L134 104 Z" fill="currentColor" opacity="0.4" />
+		<line
+			x1="140"
+			y1="72"
+			x2="186"
+			y2="72"
+			stroke="currentColor"
+			stroke-width="1"
+			stroke-dasharray="3 3"
+			opacity="0.6"
+		/>
+		<path
+			d="M140 30 C150 30 154 56 164 66 S180 72 186 72"
+			fill="none"
+			stroke={accent}
+			stroke-width="2.2"
+		/>
+		<path
+			d="M140 104 C150 104 154 82 164 77 S180 72 186 72"
+			fill="none"
+			stroke="currentColor"
+			stroke-width="1.6"
+			opacity="0.7"
+		/>
 	{:else if slug === 'ensemble-weather-forecasting'}
 		<!-- a fan of forecasts opening from one start, the truth running through it, and the odds -->
 		{#each [-3, -2, -1, 0, 1, 2, 3] as m (m)}

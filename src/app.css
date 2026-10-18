@@ -4512,3 +4512,36 @@ kbd {
 	--tsu-buoy: #ffd43b;
 	--tsu-ship: #ced4da;
 }
+
+/* carbonate-silicate-thermostat: CO₂, temperature, volcanoes, weathering and rain, rock,
+   limestone, land, ocean, ice, the Sun, the frozen band of the charts */
+:root {
+	--cst-co2: #2b8a3e;
+	--cst-temp: #c92a2a;
+	--cst-volc: #e8590c;
+	--cst-weather: #1971c2;
+	--cst-rock: #8c7356;
+	--cst-lime: #e6dcc3;
+	--cst-lime-edge: #b8a77e;
+	--cst-land: #d9caa6;
+	--cst-ocean: #a5d8ff;
+	--cst-ice: #eef6fc;
+	--cst-ice-edge: #8fb3d6;
+	--cst-sun: #f59f00;
+	--cst-frozen: rgba(116, 192, 252, 0.16);
+}
+:root[data-theme='dark'] {
+	--cst-co2: #69db7c;
+	--cst-temp: #ff8787;
+	--cst-volc: #ff922b;
+	--cst-weather: #4dabf7;
+	--cst-rock: #8d7a63;
+	--cst-lime: #4a4436;
+	--cst-lime-edge: #7d7158;
+	--cst-land: #4b4234;
+	--cst-ocean: #1f4f7a;
+	--cst-ice: #dbe7f3;
+	--cst-ice-edge: #6f95ba;
+	--cst-sun: #ffc046;
+	--cst-frozen: rgba(116, 192, 252, 0.12);
+}

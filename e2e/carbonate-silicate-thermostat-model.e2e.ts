@@ -17,6 +17,7 @@ import {
 	history,
 	openEquilibrium,
 	openTemperature,
+	outerEdge,
 	run,
 	sunlightAgo,
 	sunlightAt,
@@ -89,14 +90,17 @@ test('dimmed by 15 % at once, the planet freezes before the weathering can respo
 });
 
 test('under the brightening Sun the thermostat keeps the planet open while fixed CO₂ would freeze it', () => {
-	const lively = history(2, 4.5, 45);
-	// with twice today's volcanism, open from 4 billion years ago, never far below 0 °C
-	for (const h of lively.filter((p) => p.ga <= 4.0)) {
+	const lively = history(3, 4.5, 45);
+	// with three times today's volcanism early on, declining to today's, open throughout and
+	// never below 0 °C, ending at today's 280 ppm and 15 °C
+	for (const h of lively) {
 		expect(h.k).not.toBeNull();
 		expect(toC(h.k!)).toBeGreaterThan(0);
 	}
+	expect(lively.at(-1)!.ppm!).toBeCloseTo(P0, 0);
+	expect(toC(lively.at(-1)!.k!)).toBeCloseTo(15, 0);
 	// CO₂ falls as the Sun brightens, from tens of thousands of ppm
-	expect(lively.find((p) => p.ga <= 4.0)!.ppm!).toBeGreaterThan(20_000);
+	expect(lively[0].ppm!).toBeGreaterThan(50_000);
 	const ppms = lively.filter((p) => p.ppm !== null).map((p) => p.ppm!);
 	for (let i = 1; i < ppms.length; i++) expect(ppms[i]).toBeLessThan(ppms[i - 1]);
 	// with CO₂ held at 280 ppm the planet is a snowball two billion years ago
@@ -142,6 +146,9 @@ test('moved outward, the planet keeps an open balance to about 1.1 AU and loses 
 	expect(openEquilibrium(sunlightAt(1.3), 1)).toBeNull();
 	// livelier volcanoes push the limit outward
 	expect(openEquilibrium(sunlightAt(1.15), 3)).not.toBeNull();
+	expect(outerEdge(1)!).toBeCloseTo(1.13, 2);
+	expect(outerEdge(3)!).toBeGreaterThan(outerEdge(1)!);
+	expect(outerEdge(0)).toBeNull();
 });
 
 test('a frozen planet with today’s air is a stable snowball near −45 °C', () => {

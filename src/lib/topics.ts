@@ -1320,6 +1320,15 @@ const explainers: Explainer[] = [
 		accent: '#0b5d8c',
 		steps: 9,
 		minutes: 20
+	},
+	{
+		slug: 'carbonate-silicate-thermostat',
+		title: 'The carbonate-silicate thermostat',
+		summary:
+			'Volcanoes breathe out CO₂ and rain dissolves it into rock, faster on a warm planet: the Walker, Hays and Kasting feedback, run as a box model for millions of years. Knock it off balance, dim the Sun, follow the faint young Sun’s brightening, freeze the planet into a snowball and watch the CO₂ thaw it, and find where the thermostat gives out.',
+		accent: '#3f7d6e',
+		steps: 10,
+		minutes: 20
 	}
 ];
 

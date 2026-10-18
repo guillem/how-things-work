@@ -78,6 +78,8 @@ export const OPEN_RATE = P0 / DOUBLING_YEARS;
 export const SEALED_RATE = 1e6 / 20e6;
 /** Today's volcanic release, Pg (billion tonnes) of carbon a year: 3.3 × 10¹⁴ g CO₂ × 12/44. */
 export const VOLCANIC_PGC = (3.3e14 * 12) / 44 / 1e15;
+/** Sunlight of the snowball glaciations, about 700 million years ago (Gough 1981). */
+export const SNOWBALL_SUN = 0.94;
 /** Age of the Sun at present, Gyr, for Gough's law. */
 const SUN_AGE = 4.57;
 
@@ -187,6 +189,25 @@ export function openEquilibrium(s: number, volcanoes = 1): { ppm: number; k: num
 	return { ppm, k };
 }
 
+/**
+ * The farthest distance from today's Sun, in Earth's distances, at which an open balance
+ * exists with volcanoes `volcanoes` × today's, searched between `near` and `far`: null if
+ * there is none even at `near`, `far` if there is one all the way.
+ */
+export function outerEdge(volcanoes: number, near = 0.95, far = 1.3): number | null {
+	const open = (au: number) => openEquilibrium(sunlightAt(au), volcanoes) !== null;
+	if (!open(near)) return null;
+	if (open(far)) return far;
+	let lo = near;
+	let hi = far;
+	for (let i = 0; i < 30; i++) {
+		const m = (lo + hi) / 2;
+		if (open(m)) lo = m;
+		else hi = m;
+	}
+	return lo;
+}
+
 // ------------------------------------------------------------------ running it
 
 export interface Sample {
@@ -288,18 +309,22 @@ export interface HistoryPoint {
 	fixedK: number;
 }
 
+/** Volcanic release `ga` billion years ago, relative to today's, falling linearly from `early` at 4.5 Ga. */
+export const volcanoesAgo = (ga: number, early: number) => 1 + ((early - 1) * ga) / 4.5;
+
 /**
- * The thermostat's balance as the Sun brightens, from `from` billion years ago to today. The
- * carbon settles in about half a million years, while the Sun brightens by 1 % in about 100
+ * The thermostat's balance as the Sun brightens, from `from` billion years ago to today, with
+ * volcanoes `early` times today's 4.5 billion years ago, declining steadily to today's. The
+ * carbon settles in about half a million years while the Sun brightens by 1 % in about 100
  * million, so at each moment the planet sits at its balance for that sunlight (if an open one
  * exists). `fixedK` is the planet without the thermostat: CO₂ held at 280 ppm.
  */
-export function history(volcanoes: number, from = 4.5, steps = 90): HistoryPoint[] {
+export function history(early: number, from = 4.5, steps = 90): HistoryPoint[] {
 	const out: HistoryPoint[] = [];
 	for (let i = 0; i <= steps; i++) {
 		const ga = from * (1 - i / steps);
 		const sun = sunlightAgo(ga);
-		const eq = openEquilibrium(sun, volcanoes);
+		const eq = openEquilibrium(sun, volcanoesAgo(ga, early));
 		const open = openTemperature(P0, sun);
 		out.push({
 			ga,
