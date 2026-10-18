@@ -32,7 +32,8 @@
 		radii,
 		runCached,
 		sx,
-		sy
+		sy,
+		the
 	} from './shared';
 
 	let { step, t, params, reduced, setParam }: StageProps = $props();
@@ -141,7 +142,7 @@
 	const sX = $derived(sx(MAIN, 1 - mu));
 	const sY = $derived(sy(MAIN, 0));
 	const bigR = $derived(clamp(9 + 8 * (1 - mu), 9, 16));
-	const smallR = $derived(clamp(4 + 14 * Math.cbrt(mu), 4, 14));
+	const smallR = $derived(clamp(4 + 14 * Math.cbrt(mu), 4, Math.min(14, bigR)));
 
 	const periodText = $derived(
 		P.sys
@@ -492,7 +493,7 @@
 				x={INSET_BOX.x0 + 4}
 				y={INSET_BOX.y0 - 12}
 				anchor="start"
-				text="round the {P.small}, {(INSET_BOX.x1 - INSET_BOX.x0) / inset.k < 0.1
+				text="round {the(P.small)}, {(INSET_BOX.x1 - INSET_BOX.x0) / inset.k < 0.1
 					? 'zoomed in'
 					: 'closer'}"
 				size={12}
@@ -514,19 +515,19 @@
 			<Readout
 				id="pt-l1"
 				order={2}
-				label="L1 from the {P.small}"
+				label="L1 from {the(P.small)}"
 				value={fmtDist(P, 1 - mu - L.L1.x)}
 			>
 				<Label
 					x={INSET_BOX.x0}
 					y={360}
 					anchor="start"
-					text="L1: {fmtDist(P, 1 - mu - L.L1.x)} from the {P.small}"
+					text="L1: {fmtDist(P, 1 - mu - L.L1.x)} from {the(P.small)}"
 					size={13}
 					tabular
 				/>
 			</Readout>
-			<Readout id="pt-l2" order={3} label="L2 beyond the {P.small}" value={fmtDist(P, gamma)}>
+			<Readout id="pt-l2" order={3} label="L2 beyond {the(P.small)}" value={fmtDist(P, gamma)}>
 				<Label
 					x={INSET_BOX.x0}
 					y={384}
@@ -536,12 +537,12 @@
 					tabular
 				/>
 			</Readout>
-			<Readout id="pt-l3" order={4} label="L3 from the {P.big}" value={fmtDist(P, -mu - L.L3.x)}>
+			<Readout id="pt-l3" order={4} label="L3 from {the(P.big)}" value={fmtDist(P, -mu - L.L3.x)}>
 				<Label
 					x={INSET_BOX.x0}
 					y={408}
 					anchor="start"
-					text="L3: {fmtDist(P, -mu - L.L3.x)} from the {P.big}"
+					text="L3: {fmtDist(P, -mu - L.L3.x)} from {the(P.big)}"
 					size={13}
 					tabular
 				/>
@@ -556,7 +557,7 @@
 					x={INSET_BOX.x0}
 					y={432}
 					anchor="start"
-					text="L4, L5: 60° ahead and behind"
+					text="L4, L5: 60° ahead and behind{mu < ROUTH ? '' : ', unstable'}"
 					size={13}
 				/>
 			</Readout>

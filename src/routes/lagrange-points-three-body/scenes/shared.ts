@@ -19,6 +19,10 @@ const num = (v: unknown, fallback: number) => {
 	return Number.isFinite(x) ? x : fallback;
 };
 
+/** A body's name as it reads after "from": "the Sun", "the Moon", "Earth", "Jupiter". */
+export const the = (name: string) =>
+	name === 'Sun' || name === 'Moon' || name.endsWith('body') ? `the ${name}` : name;
+
 export interface Picked {
 	/** The real pair, or null for a mass ratio set on the slider. */
 	sys: System | null;
@@ -311,7 +315,26 @@ export function fmtTime(p: Picked, t: number): string {
 	if (days < 730) return `${(days / 30.44).toFixed(1)} months`;
 	return `${group(days / 365.25)} years`;
 }
-export const fmtMu = (mu: number) =>
-	mu >= 0.01 ? mu.toFixed(4) : mu >= 1e-4 ? mu.toPrecision(3) : mu.toExponential(2);
+const SUP: Record<string, string> = {
+	'-': '⁻',
+	'0': '⁰',
+	'1': '¹',
+	'2': '²',
+	'3': '³',
+	'4': '⁴',
+	'5': '⁵',
+	'6': '⁶',
+	'7': '⁷',
+	'8': '⁸',
+	'9': '⁹'
+};
+/** "10⁻⁶" for an integer power. */
+export const pow10 = (n: number) => `10${String(n).replace(/./g, (c) => SUP[c] ?? c)}`;
+export function fmtMu(mu: number): string {
+	if (mu >= 0.01) return mu.toFixed(4);
+	if (mu >= 1e-4) return mu.toPrecision(3);
+	const e = Math.floor(Math.log10(mu));
+	return `${(mu / 10 ** e).toFixed(2)} × ${pow10(e)}`;
+}
 /** μ as "1 in N" (the small body's share of the total mass). */
 export const oneIn = (mu: number) => `1 in ${group(1 / mu)}`;

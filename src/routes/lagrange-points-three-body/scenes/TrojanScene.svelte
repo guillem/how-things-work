@@ -25,6 +25,7 @@
 		runCached,
 		sx,
 		sy,
+		the,
 		type Picked,
 		type View
 	} from './shared';
@@ -56,14 +57,30 @@
 	const tEnd = $derived(
 		mode === 'routh' ? 2 * Math.PI * 120 : Math.min(6000, 4 * tLib * (1 + (lead - 60) / 120))
 	);
-	const N = 2401;
+	const N = $derived(mode === 'routh' ? 6001 : 2401);
 	const path = $derived(
 		runCached(mu, onOrbit(mu, lead), tEnd, N, { ...radii(P), far: 3, k: 0.02 })
 	);
 
+	/**
+	 * Has the probe strayed at sample i? routh: it has left L4's neighbourhood; tadpole: it has
+	 * left the orbit (a tadpole or a horseshoe stays close to it).
+	 */
+	const strayed = (i: number) => {
+		const x = path.xy[2 * i];
+		const y = path.xy[2 * i + 1];
+		return mode === 'routh'
+			? Math.hypot(x - L.L4.x, y - L.L4.y) > 0.5
+			: Math.abs(Math.hypot(x + mu, y) - 1) > 0.25;
+	};
+	/** The run is drawn until a few orbits after the probe strays (after that it only scribbles). */
+	const last = $derived.by(() => {
+		for (let i = 0; i < path.n; i++) if (strayed(i)) return Math.min(path.n, i + (N - 1) / 30);
+		return path.n;
+	});
 	const RUN_SECONDS = $derived(mode === 'routh' ? 24 : 40);
 	const shown = $derived(
-		reduced ? path.n : Math.max(2, Math.ceil(clamp((t - 0.5) / RUN_SECONDS) * path.n))
+		reduced ? last : Math.min(last, Math.max(2, Math.ceil(clamp((t - 0.5) / RUN_SECONDS) * path.n)))
 	);
 	const iNow = $derived(Math.max(0, shown - 1));
 	const head = $derived({ X: sx(MAIN, path.xy[2 * iNow]), Y: sy(MAIN, path.xy[2 * iNow + 1]) });
@@ -81,13 +98,15 @@
 			if (a < -90) a += 360;
 			lo = Math.min(lo, a);
 			hi = Math.max(hi, a);
-			const d = Math.hypot(x - L.L4.x, y - L.L4.y);
-			far = Math.max(far, d);
-			if (leftAt < 0 && d > 0.5) leftAt = i;
+			far = Math.max(far, Math.hypot(x - L.L4.x, y - L.L4.y));
+			if (leftAt < 0 && strayed(i)) leftAt = i;
 		}
 		return { lo, hi, far, leftAt };
 	});
-	const escaped = $derived(sweep.leftAt >= 0 || path.end !== null);
+	const crashed = $derived(path.end !== null && last === path.n && shown >= path.n);
+	const escaped = $derived(sweep.leftAt >= 0 || crashed);
+	/** Past L3 onto the L5 side: a horseshoe. */
+	const horseshoe = $derived(!escaped && sweep.hi > 190);
 	const turnsAt = (i: number) => path.t[i] / (2 * Math.PI);
 
 	// ---- the drop handle on the orbit -------------------------------------------
@@ -116,7 +135,7 @@
 	);
 
 	const bigR = $derived(clamp(9 + 8 * (1 - mu), 9, 16));
-	const smallR = $derived(clamp(4 + 14 * Math.cbrt(mu), 4, 14));
+	const smallR = $derived(clamp(4 + 14 * Math.cbrt(mu), 4, Math.min(14, bigR)));
 	const product = $derived(27 * mu * (1 - mu));
 	const elapsed = $derived(fmtTime(P, path.t[iNow]));
 </script>
@@ -174,7 +193,7 @@
 			value={lead}
 			min={61}
 			max={175}
-			valuetext="{lead} degrees ahead of the {P.small}"
+			valuetext="{lead} degrees ahead of {the(P.small)}"
 			color={C.probe}
 			r={8}
 			onmove={(p: { x: number; y: number }) => setParam('lead', angleOfPointer(p))}
@@ -266,12 +285,12 @@
 				tabular
 			/>
 		</Readout>
-		<Readout id="tad-drop" order={2} label="Dropped" value="{lead}° ahead of the {P.small}">
+		<Readout id="tad-drop" order={2} label="Dropped" value="{lead}° ahead of {the(P.small)}">
 			<Label
 				x={668}
 				y={150}
 				anchor="start"
-				text="dropped {lead}° ahead of the {P.small}"
+				text="dropped {lead}° ahead of {the(P.small)}"
 				size={13}
 				halo={false}
 				tabular
@@ -307,16 +326,19 @@
 			id="tro-fate"
 			order={4}
 			label="Probe"
-			value="left L4 after {fmtTime(P, path.t[Math.max(0, sweep.leftAt)])}"
+			value="left {mode === 'routh' ? 'L4' : 'the orbit'} after {fmtTime(
+				P,
+				path.t[Math.max(0, sweep.leftAt)]
+			)}"
 			color={C.point}
 		>
 			<Label
 				x={668}
 				y={242}
 				anchor="start"
-				text={path.end === 'hit-big' || path.end === 'hit-small'
+				text={crashed && (path.end === 'hit-big' || path.end === 'hit-small')
 					? `it hit the ${path.end === 'hit-big' ? P.big : P.small}`
-					: `it left L4 after ${fmtTime(P, path.t[Math.max(0, sweep.leftAt)])}`}
+					: `it left ${mode === 'routh' ? 'L4' : 'the orbit'} after ${fmtTime(P, path.t[Math.max(0, sweep.leftAt)])}`}
 				size={13}
 				weight={600}
 				color={C.pointText}
@@ -327,7 +349,9 @@
 				x={668}
 				y={262}
 				anchor="start"
-				text="({turnsAt(Math.max(0, sweep.leftAt)).toFixed(0)} orbits of the {P.small})"
+				text="({turnsAt(Math.max(0, sweep.leftAt)).toFixed(
+					turnsAt(Math.max(0, sweep.leftAt)) < 10 ? 1 : 0
+				)} orbits of {the(P.small)})"
 				size={12}
 				muted
 				halo={false}
@@ -339,14 +363,16 @@
 			id="tro-fate"
 			order={4}
 			label="Probe"
-			value="still round L4, between {sweep.lo.toFixed(0)}° and {sweep.hi.toFixed(0)}°"
+			value={horseshoe
+				? 'a horseshoe, past L3 to L5 and back'
+				: `still round L4, between ${sweep.lo.toFixed(0)}° and ${sweep.hi.toFixed(0)}°`}
 			color={C.stable}
 		>
 			<Label
 				x={668}
 				y={242}
 				anchor="start"
-				text="still circling L4"
+				text={horseshoe ? 'a horseshoe: past L3 to L5 and back' : 'still circling L4'}
 				size={13}
 				weight={600}
 				color={C.stableText}
@@ -356,7 +382,9 @@
 				x={668}
 				y={262}
 				anchor="start"
-				text="between {sweep.lo.toFixed(0)}° and {sweep.hi.toFixed(0)}° ahead of the {P.small}"
+				text={horseshoe
+					? `from ${sweep.lo.toFixed(0)}° ahead of ${the(P.small)} to ${(360 - sweep.hi).toFixed(0)}° behind`
+					: `between ${sweep.lo.toFixed(0)}° and ${sweep.hi.toFixed(0)}° ahead of ${the(P.small)}`}
 				size={12}
 				muted
 				halo={false}

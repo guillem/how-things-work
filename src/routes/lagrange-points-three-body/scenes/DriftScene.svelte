@@ -22,7 +22,9 @@
 		radii,
 		runCached,
 		sx,
-		sy
+		sy,
+		the,
+		pow10
 	} from './shared';
 
 	let { t, params, reduced, setParam }: StageProps = $props();
@@ -76,21 +78,8 @@
 			(_, i) => Math.ceil(dMin) + i
 		).filter((_, i, a) => a.length <= 6 || i % 2 === (a.length - 1) % 2)
 	);
-	const SUP: Record<string, string> = {
-		'-': '⁻',
-		'0': '⁰',
-		'1': '¹',
-		'2': '²',
-		'3': '³',
-		'4': '⁴',
-		'5': '⁵',
-		'6': '⁶',
-		'7': '⁷',
-		'8': '⁸',
-		'9': '⁹'
-	};
 	const yFmt = (lv: number) => {
-		if (!P.sys) return `10${String(lv).replace(/./g, (c) => SUP[c] ?? c)}`;
+		if (!P.sys) return pow10(lv);
 		const km = 10 ** lv;
 		if (km >= 1e6) return `${km / 1e6}M km`;
 		return `${km.toLocaleString('en-US')} km`;
@@ -99,7 +88,7 @@
 	const series = $derived(
 		Array.from({ length: shown }, (_, i) => ({
 			t: path.t[i],
-			d: Math.log10(Math.max(1e-15, dist(i)))
+			d: lg(dist(i))
 		}))
 	);
 	/** The linear theory: δ e^{λt}. */
@@ -172,7 +161,7 @@
 			x={BOX.x0 + 14}
 			y={BOX.y1 - 14}
 			anchor="start"
-			text="← towards the {P.big}"
+			text="← towards {the(P.big)}"
 			size={11}
 			muted
 		/>

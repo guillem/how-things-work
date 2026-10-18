@@ -7,13 +7,13 @@ const system: Control = {
 	label: 'The two large bodies',
 	default: 'earth-moon',
 	options: [
-		{ value: 'earth-moon', label: 'Earth–Moon (μ = 0.0122)' },
-		{ value: 'sun-earth', label: 'Sun–Earth (μ = 3.0 × 10⁻⁶)' },
-		{ value: 'sun-jupiter', label: 'Sun–Jupiter (μ = 0.00095)' },
-		{ value: 'pluto-charon', label: 'Pluto–Charon (μ = 0.109)' },
-		{ value: 'custom', label: 'Set the mass ratio' }
+		{ value: 'earth-moon', label: 'Earth–Moon' },
+		{ value: 'sun-earth', label: 'Sun–Earth' },
+		{ value: 'sun-jupiter', label: 'Sun–Jupiter' },
+		{ value: 'pluto-charon', label: 'Pluto–Charon' },
+		{ value: 'custom', label: 'Set μ' }
 	],
-	help: 'μ is the small body’s share of the two masses: m₂ / (m₁ + m₂).'
+	help: 'μ, the small body’s share of the two masses m₂ / (m₁ + m₂): 0.0122 for Earth–Moon, 3.0 × 10⁻⁶ for Sun–Earth, 0.00095 for Sun–Jupiter, 0.109 for Pluto–Charon.'
 };
 
 const logmu: Control = {
@@ -29,7 +29,7 @@ const logmu: Control = {
 		return mu >= 0.01 ? mu.toFixed(3) : mu.toExponential(1);
 	},
 	disabled: (p) => p.system !== 'custom',
-	help: 'On a logarithmic scale, from a millionth to equal masses. Pick “Set the mass ratio” above to move it.'
+	help: 'On a logarithmic scale, from a millionth to equal masses. Pick “Set μ” above to move it.'
 };
 
 const rotating: Control = {
@@ -58,8 +58,8 @@ const drop: Control = {
 	label: 'Drop the probe at',
 	default: 'L1',
 	options: [
-		{ value: 'L1', label: 'L1, between the two' },
-		{ value: 'L2', label: 'L2, beyond the small body' }
+		{ value: 'L1', label: 'L1' },
+		{ value: 'L2', label: 'L2' }
 	]
 };
 
@@ -211,7 +211,7 @@ export const spec: ExplainerSpec = {
 			controls: [lead, system, logmu],
 			body: `
 <p>Drop a probe a few degrees ahead of L4 instead, at rest in the turning frame (drag it along the orbit). It does not stay, but it does not leave either: it creeps along the orbit, turns back, and swings round L4 in a long loop shaped like a <dfn data-def="A loop round L4 or L5, elongated along the small body's orbit, traced by a body that librates about the point.">tadpole</dfn>, for as long as you wait. L4 is a hilltop of the potential energy, not a pass, and there the Coriolis force turns a probe that starts to slide off it sideways, into a loop round the point.</p>
-<p>Jupiter’s <dfn data-def="Asteroids that share Jupiter's orbit, librating round its L4 or L5 point: the Greeks ahead of it, the Trojans behind.">Trojan asteroids</dfn>, more than 10,000 of them known, do exactly this round the Sun–Jupiter L4 and L5, each swing taking about 150 years, a dozen of Jupiter’s orbits. Drop the probe farther from L4 and the tadpole grows, until it almost reaches L3.</p>`,
+<p>Jupiter’s <dfn data-def="Asteroids that share Jupiter's orbit, librating round its L4 or L5 point: the Greeks ahead of it, the Trojans behind.">Trojan asteroids</dfn>, more than 10,000 of them known, do exactly this round the Sun–Jupiter L4 and L5, each swing taking about 150 years, a dozen of Jupiter’s orbits. Drop the probe farther from L4 and the tadpole grows. For Sun–Jupiter, dropped close enough to L3 it becomes a <dfn data-def="A path that swings from near L4, round past L3, to near L5 and back, never passing the small body: in the turning frame it looks like a horseshoe.">horseshoe</dfn>, swinging past L3 to the L5 side and back, as Saturn’s moons Janus and Epimetheus do round each other; next to the much heavier Moon, the same drop is soon flung away.</p>`,
 			notes: `<p>Small swings about L4 have two periods: a fast one, close to the orbital period, and the slow libration, 2π/√(27μ/4) to first order in μ: 12.5 Jupiter years, 148 years, for Sun–Jupiter. NASA’s Lucy spacecraft, launched in 2021, is on its way to visit several Trojans. Earth has known Trojans too (2010 TK7 and 2020 XL5), on wide, eccentric loops. For the Earth–Moon pair the restricted problem leaves out the Sun, whose pull makes the Earth–Moon L4 and L5 far less stable than this model shows.</p>`
 		},
 		{
