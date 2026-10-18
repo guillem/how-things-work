@@ -3597,3 +3597,25 @@ kbd {
 	--ewf-b: #ffa94d;
 	--ewf-c: #f783ac;
 }
+
+/* tcp-congestion-control: two flows, the router's queue, acknowledgements, drops, CUBIC and Vegas */
+:root {
+	--tcp-flow1: #1c7ed6;
+	--tcp-flow2: #e8590c;
+	--tcp-queue: #7048e8;
+	--tcp-ack: #2f9e44;
+	--tcp-drop: #e03131;
+	--tcp-cubic: #c2255c;
+	--tcp-vegas: #0c8599;
+	--tcp-link: #dee2e6;
+}
+:root[data-theme='dark'] {
+	--tcp-flow1: #74c0fc;
+	--tcp-flow2: #ffa94d;
+	--tcp-queue: #b197fc;
+	--tcp-ack: #69db7c;
+	--tcp-drop: #ff8787;
+	--tcp-cubic: #f783ac;
+	--tcp-vegas: #66d9e8;
+	--tcp-link: #343a40;
+}

@@ -3946,6 +3946,35 @@
 		{#each [0.2, 0.55, 0.9, 0.6, 0.3] as p, i (i)}
 			<rect x={128 + i * 11} y={112 - p * 18} width="8" height={p * 18} rx="1.5" fill={accent} />
 		{/each}
+	{:else if slug === 'tcp-congestion-control'}
+		<!-- the AIMD sawtooth of a congestion window, with a drop at each peak -->
+		<line x1="14" y1="102" x2="186" y2="102" stroke="currentColor" stroke-width="1" opacity="0.5" />
+		<line
+			x1="14"
+			y1="30"
+			x2="186"
+			y2="30"
+			stroke={accent}
+			stroke-width="1"
+			stroke-dasharray="3 3"
+			opacity="0.6"
+		/>
+		<path
+			d="M14 102 C24 100 30 60 34 30 L34 66 L72 30 L72 66 L110 30 L110 66 L148 30 L148 66 L186 30"
+			fill="none"
+			stroke="currentColor"
+			stroke-width="1.8"
+			stroke-linejoin="round"
+			opacity="0.75"
+		/>
+		{#each [34, 72, 110, 148] as x (x)}
+			<circle cx={x} cy="22" r="3.2" fill={accent} />
+		{/each}
+		<path
+			d="M34 66 L72 30 L72 66 L110 30 L110 66 L148 30 L148 66 L186 30 V102 H34 Z"
+			fill={accent}
+			opacity="0.14"
+		/>
 	{:else}
 		<circle cx="100" cy="60" r="30" fill="none" stroke={accent} stroke-width="2" />
 		<circle cx="100" cy="60" r="5" fill={accent} />

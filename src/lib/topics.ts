@@ -1068,6 +1068,15 @@ const explainers: Explainer[] = [
 		accent: '#22729b',
 		steps: 9,
 		minutes: 18
+	},
+	{
+		slug: 'tcp-congestion-control',
+		title: 'TCP congestion control: probing for a share',
+		summary:
+			'Send a file through a bottleneck router and watch the sender feel for the link: slow start, a lost packet, the AIMD sawtooth. Add flows, enlarge the queue, lose packets to noise, remove the backoff, and compare Reno, CUBIC and Vegas.',
+		accent: '#8a6d00',
+		steps: 9,
+		minutes: 20
 	}
 ];
 

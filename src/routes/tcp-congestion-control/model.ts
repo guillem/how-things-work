@@ -845,6 +845,8 @@ export function crowd(n: number, backoff: boolean, until = 30) {
 			goodput,
 			/** Share of what crossed the bottleneck that the receiver already had. */
 			duplicates: 1 - delivered / Math.max(1, received),
+			/** Packets per second crossing the bottleneck, copies included (whole-run share). */
+			throughput: Math.min(LINK_RATE, goodput / Math.max(1e-9, delivered / Math.max(1, received))),
 			/** Offered load: the senders' full windows over their mean base round trip, as a
 			 * multiple of the link's rate. */
 			offered: (n * RWND) / 0.075 / LINK_RATE
@@ -873,5 +875,22 @@ export const versus = (algo: Algo, rival: boolean, until = 90) =>
 			until,
 			every: 0.1,
 			seed: 5
+		})
+	);
+
+/** The animated pipe: one Reno flow, finely sampled, with its packets logged over a window. */
+export const PIPE = {
+	start: { from: 0, to: 1.8 },
+	window: { from: 8.5, to: 10.5 }
+};
+export const pipeRun = (focus: 'start' | 'window') =>
+	cached(`pipe:${focus}`, () =>
+		simulate({
+			link: { rate: LINK_RATE, buffer: 60 },
+			flows: [{ rtt: BASE_RTT }],
+			until: focus === 'window' ? 14 : PIPE[focus].to + 0.5,
+			every: 0.005,
+			logFrom: PIPE[focus].from,
+			logUntil: PIPE[focus].to
 		})
 	);
