@@ -62,6 +62,10 @@ test('reaches carry across steps until cleared; the aftereffect block hides the 
 	await page.keyboard.press('Enter');
 	await expect(stage(page)).toContainText('recorded (no cursor)');
 	await expect(stage(page)).toContainText('your reaches (2)');
+	// the chart doesn't give away the hidden reach until asked
+	await expect(stage(page)).toContainText('kept hidden until you ask');
+	await page.getByRole('button', { name: 'Show my hidden reaches' }).click();
+	await expect(stage(page)).not.toContainText('kept hidden until you ask');
 	await page.getByRole('button', { name: 'Clear my reaches' }).click();
 	await expect(stage(page)).toContainText('your reaches (0)');
 });
@@ -89,19 +93,25 @@ test('the one-rate chart follows retention and error sensitivity', async ({ page
 	await page.goto('./cerebellum-motor-learning/#error-rule');
 	await expect(stage(page)).toContainText('time constant: 43 reaches');
 	await expect(stage(page)).toContainText('plateau: 17° of 30°');
-	await range(page, 'A').focus();
-	await page.keyboard.press('End');
-	await expect(stage(page)).toContainText('plateau: 30° of 30°');
+	// no error sensitivity, no learning, whatever the retention
 	await range(page, 'B').focus();
 	await page.keyboard.press('Home');
-	await expect(stage(page)).toContainText('no learning');
+	await expect(stage(page)).toContainText('time constant: no learning');
+	await expect(stage(page)).toContainText('plateau: 0° of 30°');
+	await range(page, 'A').focus();
+	await page.keyboard.press('End');
+	await expect(stage(page)).toContainText('plateau: 0° of 30°');
+	// perfect retention closes the whole gap
+	await range(page, 'B').focus();
+	await page.keyboard.press('End');
+	await expect(stage(page)).toContainText('plateau: 30° of 30°');
 });
 
 test('the two-rate model rebounds when the errors are hidden; a patient learns less', async ({
 	page
 }) => {
 	await page.goto('./cerebellum-motor-learning/#recovery');
-	await expect(stage(page)).toContainText('reversed 4 reaches: sum back to 0');
+	await expect(stage(page)).toContainText('reversed 4 reaches: sum crossed zero (−0.7°)');
 	await expect(stage(page)).toContainText('rebound: 13°');
 	await page.goto('./cerebellum-motor-learning/#patients');
 	await expect(stage(page)).toContainText('patient: 14° after 150 reaches');

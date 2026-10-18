@@ -133,20 +133,22 @@ export const scaleB = (r: TwoRates, k: number): TwoRates => ({
  * Mazzoni & Krakauer 2006: told about the rotation, a person aims `ROTATION` degrees the other
  * way and hits the target at once. The implicit learner still learns from the gap between where
  * it aimed and where the cursor went, which the strategy does not remove: its correction adds to
- * the aim, and the cursor drifts past the target. Returns the target error (cursor − target, in
- * degrees, positive in the rotation's direction) before each trial, with and without the
- * strategy.
+ * the aim, and the cursor drifts past the target. The fast process tracks deliberate aiming in
+ * rotation tasks (McDougle, Bond & Taylor 2015), so with a strategy the slow learner alone is
+ * taken as the implicit one. Returns the target error (cursor − target, in degrees, positive in
+ * the rotation's direction) before each trial: without a strategy (the whole two-rate model) and
+ * with one (the slow learner under the fixed aim).
  */
 export function strategyErrors(
 	trials: number,
 	r: TwoRates = SMITH_FIT
 ): { plain: number[]; strategy: number[] } {
-	const s = runTwoRate(block(trials, ROTATION), r).slice(0, trials);
-	// The aim error the implicit learner sees is the same in both cases (rotation − correction):
-	// without a strategy it is also the target error; with one, the aim already cancels the
-	// rotation and the target error is minus the implicit correction.
+	const both = runTwoRate(block(trials, ROTATION), r).slice(0, trials);
+	// The aim error the slow learner sees is rotation − its correction, as without a strategy;
+	// the aim already cancels the rotation, so the target error is minus the correction.
+	const slow = runOneRate(block(trials, ROTATION), r.As, r.Bs).slice(0, trials);
 	return {
-		plain: s.map((st) => ROTATION - st.total),
-		strategy: s.map((st) => -st.total)
+		plain: both.map((st) => ROTATION - st.total),
+		strategy: slow.map((x) => -x)
 	};
 }

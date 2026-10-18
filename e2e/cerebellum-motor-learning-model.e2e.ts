@@ -170,9 +170,9 @@ test('an explicit strategy works at once, then the implicit learner pushes past 
 	expect(strategy[0]).toBeCloseTo(0, 9);
 	// The error without a strategy shrinks; with it, it grows the other way.
 	expect(plain[ADAPT - 1]).toBeLessThan(10);
-	expect(strategy[10]).toBeLessThan(-10);
+	expect(strategy[10]).toBeLessThan(-3);
 	expect(strategy[ADAPT - 1]).toBeLessThan(strategy[10]);
-	expect(Math.round(-strategy[ADAPT - 1])).toBe(22);
+	expect(Math.round(-strategy[ADAPT - 1])).toBe(21);
 });
 
 test('the recovery step reverses the rotation until the hand is back to straight', () => {
@@ -200,6 +200,11 @@ test('the recovery step reverses the rotation until the hand is back to straight
 		phaseOf('recover', [...none, ...Array.from({ length: REVERSE_MIN }, () => reach(-ROTATION, 0))])
 			.feedback
 	).toBe(false);
+
+	// A hand that never comes back: the reversal stops at its limit, and says so.
+	const stuck = [...adapted, ...Array.from({ length: 15 }, () => reach(-ROTATION, -20))];
+	expect(phaseOf('recover', stuck)).toMatchObject({ rotation: 0, feedback: false });
+	expect(phaseOf('recover', stuck).name).toContain('not back to straight');
 
 	// The model doing the whole step itself shows the rebound.
 	const f = forecast('recover', [], { fast: 0, slow: 0, total: 0 }, 70).map((s) => s.total);

@@ -31,6 +31,11 @@ export interface Phase extends Trial {
 }
 
 const hidden: Phase = { name: 'cursor hidden', rotation: 0, feedback: false };
+const limit: Phase = {
+	name: 'cursor hidden (reversal limit reached, not back to straight)',
+	rotation: 0,
+	feedback: false
+};
 
 /** Reaches at the start of the recovery step with the rotation back on. */
 export const READAPT = 30;
@@ -59,7 +64,8 @@ export function phaseOf(step: string, done: readonly Reach[]): Phase {
 			while (n < rev.length && rev[n].rotation < 0) {
 				n++;
 				const back = n >= REVERSE_MIN && correctionOf(rev[n - 1]) <= 0;
-				if (back || n >= REVERSE_MAX) return hidden;
+				if (back) return hidden;
+				if (n >= REVERSE_MAX) return limit;
 			}
 			if (n < rev.length) return hidden;
 			return { name: 'rotated 30° the other way', rotation: -ROTATION, feedback: true };

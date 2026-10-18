@@ -54,17 +54,35 @@
 	}
 
 	const recovery = recoveryProtocol();
-	/** The single rate run through the recovery protocol, with its own reversal until zero. */
+	/**
+	 * The single rate through the same protocol, with its own (longer) reversal until zero: its
+	 * adaptation is shortened by the difference so that its hidden block starts on the same reach.
+	 */
 	const oneRecovery = (() => {
-		const head = [...block(BASELINE, 0), ...block(ADAPT, ROTATION)];
-		let k = 0;
-		let x: number[];
-		do {
-			k++;
-			x = runOneRate([...head, ...block(k, -ROTATION)], ONE_RATE.A, ONE_RATE.B);
-		} while (x[x.length - 1] > 0 && k < 200);
-		const trials = [...head, ...block(k, -ROTATION), ...block(60, 0, false)];
-		return runOneRate(trials, ONE_RATE.A, ONE_RATE.B).slice(0, trials.length);
+		const reverseOf = (adapt: number) => {
+			const head = [...block(BASELINE, 0), ...block(adapt, ROTATION)];
+			let k = 0;
+			let x: number[];
+			do {
+				k++;
+				x = runOneRate([...head, ...block(k, -ROTATION)], ONE_RATE.A, ONE_RATE.B);
+			} while (x[x.length - 1] > 0 && k < 200);
+			return k;
+		};
+		let adapt = ADAPT;
+		for (let i = 0; i < 5; i++) adapt = ADAPT + recovery.reverse - reverseOf(adapt);
+		const k = ADAPT + recovery.reverse - adapt;
+		const trials = [
+			...block(BASELINE, 0),
+			...block(adapt, ROTATION),
+			...block(k, -ROTATION),
+			...block(60, 0, false)
+		];
+		return {
+			values: runOneRate(trials, ONE_RATE.A, ONE_RATE.B).slice(0, trials.length),
+			from: BASELINE + adapt,
+			reverse: k
+		};
 	})();
 	const strategy = strategyErrors(ADAPT);
 
@@ -156,7 +174,7 @@
 		if (mode === 'recovery' && showOne)
 			out.unshift({
 				id: 'one',
-				values: oneRecovery,
+				values: oneRecovery.values,
 				color: 'var(--stage-ink-muted)',
 				width: 2,
 				dash: '6 4',
@@ -196,11 +214,12 @@
 	/** The trials with no cursor, shaded. */
 	const hiddenFrom = $derived(schedule.findIndex((tr) => !tr.feedback));
 
+	const fmt1 = (v: number) => `${v < 0 ? '−' : ''}${Math.abs(v).toFixed(1)}°`;
 	const fmt = (v: number) => `${v < 0 ? '−' : ''}${Math.abs(v).toFixed(0)}°`;
 
 	// single: plateau and time constant
-	const tau = $derived(timeConstant(A, B));
-	const top = $derived(plateau(A, B));
+	const tau = $derived(B > 0 ? timeConstant(A, B) : Infinity);
+	const top = $derived(B > 0 ? plateau(A, B) : 0);
 	const tauText = $derived(
 		Number.isFinite(tau) ? `${tau < 10 ? tau.toFixed(1) : Math.round(tau)} reaches` : 'no learning'
 	);
@@ -263,6 +282,26 @@
 			fill="var(--cb-fast)"
 			opacity="0.12"
 		/>
+		{#if showOne}
+			<rect
+				x={sx(oneRecovery.from)}
+				y={sy.range[0] - 10}
+				width={sx(oneRecovery.from + oneRecovery.reverse) - sx(oneRecovery.from)}
+				height="10"
+				fill="var(--stage-ink-muted)"
+				opacity="0.35"
+			/>
+			<Readout id="one-rev">
+				<Label
+					x={sx(oneRecovery.from) - 6}
+					y={sy.range[0] - 2}
+					anchor="end"
+					size={11}
+					muted
+					text="one rate's reversal: {oneRecovery.reverse} reaches"
+				/>
+			</Readout>
+		{/if}
 	{/if}
 
 	<Axes
@@ -431,7 +470,9 @@
 				y={sy(-24)}
 				anchor="end"
 				size={12}
-				text="reversed {recovery.reverse} reaches: sum back to 0"
+				text="reversed {recovery.reverse} reaches: sum crossed zero ({fmt1(
+					series.find((s) => s.id === 'total')?.values[rec.from] ?? 0
+				)})"
 				opacity={grow > 0.8 ? 1 : 0}
 			/>
 		</Readout>

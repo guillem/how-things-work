@@ -49,6 +49,22 @@
 	/** The last reach, if it was made on this step (its feedback stays until the next). */
 	const shown = $derived(last && last.step === stepId ? last : undefined);
 
+	const revealCount = $derived(Number(params.reveal ?? 0));
+	$effect(() => {
+		const c = revealCount;
+		untrack(() => {
+			if (c !== reaches.shown) {
+				reaches.shown = c;
+				reaches.reveal();
+			}
+		});
+	});
+	/**
+	 * A reach made without a cursor stays off the chart while its block goes on (the chart would
+	 * otherwise be the feedback the block removes), until the reader asks to see it.
+	 */
+	const concealed = (r: Reach, i: number) =>
+		!r.feedback && i >= reaches.revealed && r.step === stepId && !phase.feedback;
 	const clearCount = $derived(Number(params.clear ?? 0));
 	$effect(() => {
 		const c = clearCount;
@@ -183,7 +199,23 @@
 	const n = $derived(list.length);
 	const xMax = $derived(Math.max(40, Math.ceil((n + ahead) / 10) * 10));
 	const sx = $derived(scale([0, xMax], [596, 934]));
-	const sy = scale([-35, 40], [520, 150]);
+	/** The vertical range: −35° to 40°, widened to fit every shown correction. */
+	const sy = $derived.by(() => {
+		let lo = -35;
+		let hi = 40;
+		list.forEach((r, i) => {
+			if (concealed(r, i)) return;
+			lo = Math.min(lo, Math.floor((correctionOf(r) - 5) / 15) * 15);
+			hi = Math.max(hi, Math.ceil((correctionOf(r) + 5) / 15) * 15);
+		});
+		return scale([lo, hi], [520, 150]);
+	});
+	const yTicks = $derived(
+		Array.from(
+			{ length: Math.floor(sy.domain[1] / 15) - Math.ceil(sy.domain[0] / 15) + 1 },
+			(_, k) => (Math.ceil(sy.domain[0] / 15) + k) * 15
+		)
+	);
 
 	const rotPath = $derived.by(() => {
 		const rots = [...list.map((r) => r.rotation), ...futurePhases];
@@ -328,7 +360,12 @@
 			stroke-dasharray="2 4"
 		/>
 		<Readout id="aim">
-			<Label x={S.x} y={S.y + 62} size={12} text="aim {fmt(aim)} · arrows turn, Enter reaches" />
+			<Label
+				x={S.x}
+				y={S.y + 62}
+				size={12}
+				text="aim {fmt(aim)} · keyboard reaches set the hand: they show the task, not your learning"
+			/>
 		</Readout>
 	{/if}
 
@@ -364,14 +401,7 @@
 	/>
 
 	<!-- chart -->
-	<Axes
-		{sx}
-		{sy}
-		yTicks={[-30, -15, 0, 15, 30]}
-		yFormat={(v) => `${v}°`}
-		xLabel="reach"
-		yLabel="correction (°)"
-	/>
+	<Axes {sx} {sy} {yTicks} yFormat={(v) => `${v}°`} xLabel="reach" yLabel="correction (°)" />
 	<line
 		x1={sx(0)}
 		x2={sx(xMax)}
@@ -400,15 +430,43 @@
 		<path d={modelPath} fill="none" stroke="var(--cb-model)" stroke-width="2.5" />
 	{/if}
 	{#each list as r, i (i)}
-		<circle
-			cx={sx(i + 1)}
-			cy={sy(clamp(correctionOf(r), -35, 40))}
-			r="4"
-			fill={r.feedback ? 'var(--cb-hand)' : 'var(--stage-bg)'}
-			stroke="var(--cb-hand)"
-			stroke-width="1.5"
-		/>
+		{#if concealed(r, i)}
+			<line
+				x1={sx(i + 1)}
+				x2={sx(i + 1)}
+				y1={sy.range[0] - 8}
+				y2={sy.range[0]}
+				stroke="var(--cb-hand)"
+				stroke-width="1.5"
+			/>
+		{:else}
+			<circle
+				cx={sx(i + 1)}
+				cy={sy(correctionOf(r))}
+				r="4"
+				fill={r.feedback ? 'var(--cb-hand)' : 'var(--stage-bg)'}
+				stroke="var(--cb-hand)"
+				stroke-width="1.5"
+			/>
+		{/if}
 	{/each}
+	{#if list.some(concealed)}
+		<Readout
+			id="concealed"
+			order={5}
+			label="No-cursor reaches"
+			value="kept off the chart until you press “Show my hidden reaches”"
+		>
+			<Label
+				x={sx(0) + 8}
+				y={sy.range[0] - 14}
+				anchor="start"
+				size={11}
+				muted
+				text="ticks: reaches without a cursor, kept hidden until you ask"
+			/>
+		</Readout>
+	{/if}
 	<Readout
 		id="key-hand"
 		order={2}

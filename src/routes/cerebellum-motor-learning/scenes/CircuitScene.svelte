@@ -305,7 +305,7 @@
 		id="ltd"
 		order={4}
 		label="Active synapses"
-		value="{Math.round(weight * 100)}% after {volleys} error volley{volleys === 1 ? '' : 's'}"
+		value="weakened after {volleys} error volley{volleys === 1 ? '' : 's'} (schematic)"
 	>
 		<Label
 			x={240}
@@ -313,12 +313,17 @@
 			anchor="middle"
 			size={12}
 			tabular
-			text="active synapses: {Math.round(weight * 100)}% · error volleys: {volleys}"
+			text="error volleys: {volleys} · active synapses shrink (schematic sizes)"
 		/>
 	</Readout>
 
 	<!-- the mapping -->
-	<Readout id="map">
+	<Readout
+		id="map"
+		order={5}
+		label="x(n+1) = A·x(n) + B·e(n)"
+		value="e: a climbing-fibre volley; B·e: active synapses weaken; x: the correction the changed weights produce"
+	>
 		<rect
 			x="640"
 			y="120"
@@ -379,7 +384,7 @@
 			anchor="start"
 			size={12}
 			halo={false}
-			text="x: the weights; A: their slow drift back"
+			text="x: the correction the weights produce"
 		/>
 		<Label
 			x={656}

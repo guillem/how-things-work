@@ -155,7 +155,7 @@ A topic is done when:
 - [x] mrna-vaccines
 - [x] cancer
 - [x] medical-imaging
-- [ ] cerebellum-motor-learning
+- [x] cerebellum-motor-learning
 
 **Earth & Climate**
 - [x] plate-tectonics
