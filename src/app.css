@@ -3676,3 +3676,48 @@ kbd {
 	--xl-body: #2e2a22;
 	--xl-slide: #3a352b;
 }
+
+/* game-theory-cooperation: cooperate and cheat, you and the page, two players, the score table,
+   the seven strategies and Nowak & May's four grid colours */
+:root {
+	--gt-coop: #1c7ed6;
+	--gt-cheat: #e03131;
+	--gt-you: #1864ab;
+	--gt-them: #d9480f;
+	--gt-a: #1864ab;
+	--gt-b: #d9480f;
+	--gt-heat: #0f766e;
+	--gt-heat-ink: #ffffff;
+	--gt-tft: #1971c2;
+	--gt-alld: #c92a2a;
+	--gt-allc: #2f9e44;
+	--gt-grim: #6741d9;
+	--gt-random: #868e96;
+	--gt-tf2t: #0c8599;
+	--gt-gtft: #e67700;
+	--gt-cc: #1c7ed6;
+	--gt-dd: #e03131;
+	--gt-dc: #2f9e44;
+	--gt-cd: #f59f00;
+}
+:root[data-theme='dark'] {
+	--gt-coop: #4dabf7;
+	--gt-cheat: #ff6b6b;
+	--gt-you: #74c0fc;
+	--gt-them: #ffa94d;
+	--gt-a: #74c0fc;
+	--gt-b: #ffa94d;
+	--gt-heat: #38d9a9;
+	--gt-heat-ink: #0b1f1a;
+	--gt-tft: #74c0fc;
+	--gt-alld: #ff8787;
+	--gt-allc: #69db7c;
+	--gt-grim: #b197fc;
+	--gt-random: #adb5bd;
+	--gt-tf2t: #66d9e8;
+	--gt-gtft: #ffa94d;
+	--gt-cc: #4dabf7;
+	--gt-dd: #ff6b6b;
+	--gt-dc: #69db7c;
+	--gt-cd: #ffd43b;
+}

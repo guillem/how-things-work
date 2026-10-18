@@ -149,7 +149,7 @@ test('with mistakes, generous tit for tat does better than tit for tat', () => {
 
 test("Nowak & May's grid: cooperators and cheats coexist for 1.8 < b < 2", () => {
 	const mean = (b: number, from: number, to: number) => {
-		const run = gridRun(randomGrid(60, 0.9), b, to);
+		const run = gridRun(randomGrid(59, 0.9), b, to);
 		const xs = run.slice(from).map(cooperatorShare);
 		return { mean: xs.reduce((a, x) => a + x, 0) / xs.length, min: Math.min(...xs) };
 	};

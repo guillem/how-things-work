@@ -1095,6 +1095,15 @@ const explainers: Explainer[] = [
 		accent: '#099268',
 		steps: 10,
 		minutes: 16
+	},
+	{
+		slug: 'game-theory-cooperation',
+		title: 'Game theory: why cooperate?',
+		summary:
+			"Play the prisoner's dilemma against the page, run Axelrod's tournament of strategies, let them evolve, add mistakes, and watch cooperators and cheats battle on a grid.",
+		accent: '#0f766e',
+		steps: 12,
+		minutes: 18
 	}
 ];
 

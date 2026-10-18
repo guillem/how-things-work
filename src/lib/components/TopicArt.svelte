@@ -4054,6 +4054,49 @@
 			fill={accent}
 			opacity="0.14"
 		/>
+	{:else if slug === 'game-theory-cooperation'}
+		<!-- two players' moves, round by round: a slip, tit for tat's echo, then cooperation again -->
+		{#each ['C', 'C', 'D', 'C', 'D', 'C', 'C', 'C'] as m, i (i)}
+			<circle
+				cx={30 + i * 20}
+				cy="42"
+				r="7"
+				fill={m === 'C' ? accent : 'none'}
+				stroke={m === 'C' ? accent : 'currentColor'}
+				stroke-width="1.6"
+			/>
+		{/each}
+		{#each ['C', 'C', 'C', 'D', 'C', 'D', 'C', 'C'] as m, i (i)}
+			<circle
+				cx={30 + i * 20}
+				cy="78"
+				r="7"
+				fill={m === 'C' ? accent : 'none'}
+				stroke={m === 'C' ? accent : 'currentColor'}
+				stroke-width="1.6"
+				opacity="0.7"
+			/>
+		{/each}
+		{#each [2, 3, 4] as i (i)}
+			<line
+				x1={30 + i * 20 + 5}
+				y1="48"
+				x2={30 + (i + 1) * 20 - 5}
+				y2="72"
+				stroke="currentColor"
+				stroke-width="1"
+				opacity="0.45"
+			/>
+		{/each}
+		<circle
+			cx="70"
+			cy="42"
+			r="11"
+			fill="none"
+			stroke="currentColor"
+			stroke-width="1"
+			stroke-dasharray="2 2"
+		/>
 	{:else}
 		<circle cx="100" cy="60" r="30" fill="none" stroke={accent} stroke-width="2" />
 		<circle cx="100" cy="60" r="5" fill={accent} />
