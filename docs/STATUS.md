@@ -78,6 +78,13 @@ questions for the user are at the end of that file. How it was made, and every a
 in [`proposals/topics-200/README.md`](proposals/topics-200/README.md). `TOPICS.md` is untouched;
 nothing is built or released.
 
+**Building the proposal (from 2026-10-18, the user's go-ahead).** One builder agent per topic
+(brief: [`proposals/topics-200/build-brief.md`](proposals/topics-200/build-brief.md)), three at a
+time in worktrees, each fact-checked by Codex (`scripts/local-review.mjs`) and pushed to `main`;
+the entry is promoted into `TOPICS.md` when its build starts. Order:
+`proposals/topics-200/data/build-order.json` (the LLM ladder first, then the level 1–3 topics;
+level 0 last, pending the user's answer on its definition). Built so far: 17 of the 100.
+
 **Released as v1.0.0 (2026-10-17): the backlog round (overnight) and the index work below.** Before
 releasing 1.0 the user asked to clear the backlog. One agent per package in a local worktree,
 each branch merged into `main` with `make check` and its topics' tests; worktrees removed.
