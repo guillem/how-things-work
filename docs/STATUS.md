@@ -86,7 +86,7 @@ promoted into `TOPICS.md` as their builds start (next paragraph).
 time in worktrees, each fact-checked by Codex (`scripts/local-review.mjs`) and pushed to `main`;
 the entry is promoted into `TOPICS.md` when its build starts. Order:
 `proposals/topics-200/data/build-order.json` (the LLM ladder first, then the level 1–3 topics;
-level 0 last, pending the user's answer on its definition). Built so far: 24 of the 100.
+level 0 last, pending the user's answer on its definition). Built so far: 37 of the 100.
 
 **Released as v1.0.0 (2026-10-17): the backlog round (overnight) and the index work below.** Before
 releasing 1.0 the user asked to clear the backlog. One agent per package in a local worktree,

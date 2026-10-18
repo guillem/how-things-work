@@ -99,5 +99,7 @@ node_modules` (a copy-on-write clone; a symlink makes `make check` refuse). Use 
     `docs/TIMELOG.md`, `docs/DATA-SOURCES.md`: keep both sides.
   - Then `make check` and your topic's tests again, and `git push origin HEAD:main`. If the push
     is rejected because someone landed meanwhile, fetch, rebase and push again.
+- Scratch files (screenshots, helper scripts) go in a directory named after your slug
+  (`<scratchpad>/<slug>/`), never at the scratchpad's top level: builders share it.
 - Never touch another builder's topic files. Leave the worktree as it is when you finish (the
   lead removes it).
