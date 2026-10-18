@@ -1,6 +1,6 @@
 # Topic catalog
 
-Source of truth for the content of an interactive web learning tool that shows how things work. It defines 108 topics in 11 categories, each built around one interactive graphic. Readers range from high-school students to university majors.
+Source of truth for the content of an interactive web learning tool that shows how things work. It defines 109 topics in 11 categories, each built around one interactive graphic. Readers range from high-school students to university majors.
 
 This file covers content only. It does not choose the stack, the visual design or the project layout; take those from the repository's own instructions.
 
@@ -84,7 +84,7 @@ A topic is done when:
 |---|---|---|
 | Mathematics | `math` | 11 |
 | Physics | `physics` | 10 |
-| Chemistry & Materials | `chemistry` | 9 |
+| Chemistry & Materials | `chemistry` | 10 |
 | Biology | `biology` | 9 |
 | Body & Medicine | `medicine` | 9 |
 | Earth & Climate | `earth` | 8 |
@@ -131,6 +131,7 @@ A topic is done when:
 - [x] redox-batteries
 - [x] carbon-polymers
 - [x] semiconductors
+- [ ] chromatography
 
 **Biology**
 - [x] the-cell
@@ -508,6 +509,15 @@ A topic is done when:
 - **Takeaway:** A semiconductor's conductivity can be set by its impurities and changed by a voltage, which makes it a material that can be switched.
 - **Prerequisites:** chemical-bonds, electric-circuits
 - **Related:** quantum-mechanics
+
+#### chromatography
+- **Title:** Chromatography: separating by stickiness
+- **Level:** 3
+- **Kind:** simulate
+- **Interaction:** Inject a mixture at the top of a column and watch each molecule hop at random between the moving phase and the stationary phase. The time each one spends stuck is set by its partition coefficient, so the bands separate and broaden, and a detector at the end draws the chromatogram. Slide the flow rate and the measured plate height traces the van Deemter curve: diffusion along the column dominates at slow flow, slow exchange at fast flow, and the uneven paths through the packing add a floor that the flow does not change. Lengthen the column or use finer packing to see the resolution improve.
+- **Takeaway:** A column separates molecules by how much of the time each spends stuck rather than moving, and there is a best flow speed: slower and diffusion blurs the bands, faster and the molecules cannot keep up with the exchange.
+- **Prerequisites:** central-limit-theorem, reaction-rates-equilibrium
+- **Pitfall:** Most chromatography is not a sieve by size: two molecules of the same size separate because they stick differently. The bands are close to Gaussian only because each molecule makes many random hops that add up; with few exchanges or uneven sticky sites, real peaks tail.
 
 ### Biology
 
