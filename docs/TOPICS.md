@@ -1,6 +1,6 @@
 # Topic catalog
 
-Source of truth for the content of an interactive web learning tool that shows how things work. It defines 137 topics in 11 categories, each built around one interactive graphic. Readers range from high-school students to university majors.
+Source of truth for the content of an interactive web learning tool that shows how things work. It defines 138 topics in 11 categories, each built around one interactive graphic. Readers range from high-school students to university majors.
 
 This file covers content only. It does not choose the stack, the visual design or the project layout; take those from the repository's own instructions.
 
@@ -86,7 +86,7 @@ A topic is done when:
 | Physics | `physics` | 13 |
 | Chemistry & Materials | `chemistry` | 14 |
 | Biology | `biology` | 16 |
-| Body & Medicine | `medicine` | 10 |
+| Body & Medicine | `medicine` | 11 |
 | Earth & Climate | `earth` | 9 |
 | Space | `space` | 9 |
 | Computing | `computing` | 10 |
@@ -176,6 +176,7 @@ A topic is done when:
 - [x] cancer
 - [x] medical-imaging
 - [x] cerebellum-motor-learning
+- [ ] pharmacokinetics-dosing
 
 **Earth & Climate**
 - [x] plate-tectonics
@@ -861,7 +862,7 @@ A topic is done when:
 - **Interaction:** Give a virtual person a meal or send them for a run and plot blood glucose, insulin and glucagon over the following hours. Reduce insulin production or the body's sensitivity to it to model the two main types of diabetes, then try dosing insulin by hand.
 - **Takeaway:** The body holds its internal conditions steady with negative feedback loops, and many diseases are a broken loop.
 - **Prerequisites:** none
-- **Related:** heart-circulation, feedback-control, bacterial-chemotaxis
+- **Related:** heart-circulation, feedback-control, bacterial-chemotaxis, pharmacokinetics-dosing
 
 #### neurons
 - **Title:** Neurons & the brain
@@ -935,6 +936,17 @@ A topic is done when:
 - **Prerequisites:** neurons, feedback-control
 - **Related:** gradient-descent, reinforcement-learning
 - **Pitfall:** Not all of the reader's correction comes from the cerebellum: much of the quick early improvement under a large rotation is deliberate re-aiming, and only the slow, implicit part persists as an aftereffect when the reader is told the rotation is gone.
+
+#### pharmacokinetics-dosing
+- **Title:** Pharmacokinetics & dosing
+- **Level:** 2
+- **Kind:** build
+- **Interaction:** Place doses on a timeline from a palette (an injection, a tablet, a steady drip, a loading dose) and run them through a one-compartment model whose clearance, volume of distribution and absorption rate are sliders; the blood level is plotted against the drug's therapeutic window. Change the interval, miss a dose or halve the clearance to model a failing kidney, and watch the level, the time to steady state and the peaks and troughs respond; a last switch makes elimination saturable and shows the rules break.
+- **Takeaway:** Repeated doses pile up until elimination balances intake, and for most drugs that steady state arrives after about four or five half-lives whatever the dose, so the dose sets the level and the half-life sets how long it takes to get there.
+- **Prerequisites:** calculus, radioactivity
+- **Related:** homeostasis
+- **Needs:** Clearance, volume of distribution and half-life for four or five example drugs, taken from their US prescribing information.
+- **Pitfall:** Doubling the dose of a normally eliminated drug doubles the steady-state level but does not reach it any sooner; only a loading dose shortens the wait. For drugs with saturable elimination (phenytoin, alcohol) neither rule holds.
 
 ### Earth & Climate
 
