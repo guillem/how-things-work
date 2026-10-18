@@ -209,9 +209,7 @@
 	const kPlayed = $derived(
 		cleanPlaying ? Math.min(3000, Math.max(0, Math.round(10 ** (tt / 3)) - 1)) : null
 	);
-	const kIndexShown = $derived(
-		kPlayed === null ? null : ITERATIONS.findLastIndex((v) => v <= kPlayed)
-	);
+	const kIndexShown = $derived(kPlayed === null ? null : ITERATIONS.findIndex((v) => v >= kPlayed));
 	$effect(() => {
 		const v = kIndexShown;
 		if (v !== null) untrack(() => setParam('cleanStep', v));

@@ -93,8 +93,10 @@ test('dishes can be added and removed', async ({ page }) => {
 	await press(page, 'remove');
 	await press(page, 'remove');
 	await expect(stage(page)).toContainText('11 dishes, 55 pairs');
-	// a click on an empty part of the map puts a dish there
-	await page.getByTestId('map').click({ position: { x: 20, y: 60 } });
+	// a click on an empty part of the map (480 m south of the centre, between the arms) adds a dish
+	const box = await page.getByTestId('map').boundingBox();
+	if (!box) throw new Error('no map');
+	await page.mouse.click(box.x + box.width / 2, box.y + box.height * 0.8);
 	await expect(stage(page)).toContainText('12 dishes, 66 pairs');
 });
 
