@@ -70,7 +70,7 @@ test('a perfect model’s fan is honest; a wrong model’s is too narrow', async
 
 test('the chance of rain sinks to the climate’s 17 % at long range', async ({ page }) => {
 	await page.goto('./ensemble-weather-forecasting/#odds');
-	await expect(stage(page)).toContainText('your town 71 %');
+	await expect(stage(page)).toContainText('your town 69 %');
 	await range(page, 'lead').fill('30');
 	await expect(stage(page)).toContainText('chance of rain on day 30');
 	const town = await read(page, 'your town');

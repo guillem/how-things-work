@@ -101,14 +101,14 @@ export function l96Run(x0: Vec, steps: number, F = F_TRUE) {
 }
 
 /**
- * A state on the attractor: start at rest with one cell nudged and run 50 days, then a
- * seeded number of extra days so different seeds give different weather.
+ * A state on the attractor: every cell starts at F plus a seeded random nudge, and the model
+ * runs for 50 days, long enough for chaos to forget the start, so different seeds give
+ * independent weather.
  */
 export function weather(seed: number) {
-	const x = new Float64Array(K).fill(F_TRUE);
-	x[K / 2] += 0.01;
-	const days = 50 + Math.floor(rng(seed * 7919 + 1)() * 400);
-	for (let s = 0; s < days * STEPS_PER_DAY; s++) l96Step(x);
+	const g = gauss(seed * 7919 + 1);
+	const x = Float64Array.from({ length: K }, () => F_TRUE + g());
+	for (let s = 0; s < 50 * STEPS_PER_DAY; s++) l96Step(x);
 	return x;
 }
 
@@ -213,6 +213,7 @@ export function forecast(o: ForecastSetup): Forecast {
  * standard deviation, the error of simply forecasting the average weather.
  */
 export function horizon(err: readonly number[], limit = CLIMATE.sd) {
+	if (err.length > 0 && err[0] >= limit) return 0;
 	for (let s = 1; s < err.length; s++)
 		if (err[s] >= limit) {
 			const f = (limit - err[s - 1]) / (err[s] - err[s - 1]);
@@ -326,14 +327,16 @@ export interface ReliabilityBin {
  * lead from 1 to `days`: every cell of every start day is one forecast; the forecasts are
  * grouped by their probability (the fraction of members above the threshold) in `bins` bins,
  * and each bin gets the fraction of times it rained. Also the frequency of rain in the truth
- * and the mean forecast probability, per day.
+ * and the mean forecast probability, per day. `stride` > 1 uses only every stride-th cell, so
+ * that the cells counted are far enough apart to be nearly independent.
  */
 export function reliabilityByDay(
 	o: Omit<ForecastSetup, 'seed' | 'days'>,
 	days: number,
 	cases: number,
 	bins = 11,
-	seed0 = 1000
+	seed0 = 1000,
+	stride = 1
 ) {
 	const n = Array.from({ length: days }, () => new Array<number>(bins).fill(0));
 	const hits = Array.from({ length: days }, () => new Array<number>(bins).fill(0));
@@ -344,7 +347,7 @@ export function reliabilityByDay(
 		for (let d = 1; d <= days; d++) {
 			const s = d * STEPS_PER_DAY;
 			const pk = chances(all, s);
-			for (let k = 0; k < K; k++) {
+			for (let k = 0; k < K; k += stride) {
 				const p = pk[k];
 				const b = Math.min(bins - 1, Math.round(p * (bins - 1)));
 				n[d - 1][b]++;
@@ -366,21 +369,10 @@ export function reliabilityByDay(
 	});
 }
 
-/** Reliability at one lead (whole days): see `reliabilityByDay`. */
-export function reliability(
-	o: Omit<ForecastSetup, 'seed' | 'days'>,
-	lead: number,
-	cases: number,
-	bins = 11,
-	seed0 = 1000
-) {
-	return reliabilityByDay(o, lead, cases, bins, seed0)[lead - 1].bins;
-}
-
 // ---- forecast, observe, correct --------------------------------------------------------------
 
 /** Gaspari–Cohn (1999) fifth-order compactly supported correlation, zero beyond 2c. */
-export function gaspariCohn(d: number, c: number) {
+function gaspariCohn(d: number, c: number) {
 	const r = Math.abs(d) / c;
 	if (r >= 2) return 0;
 	if (r <= 1) return -0.25 * r ** 5 + 0.5 * r ** 4 + 0.625 * r ** 3 - (5 / 3) * r ** 2 + 1;

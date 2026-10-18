@@ -73,7 +73,6 @@
 					.filter((b) => b.count >= 10)
 					.map((b) => ({
 						...b,
-						se: Math.sqrt((b.p * (1 - b.p)) / b.count),
 						r: Math.min(9, 2.5 + Math.sqrt(b.count) / 6)
 					}))
 			: []
@@ -280,16 +279,6 @@
 			stroke-dasharray="4 4"
 		/>
 		{#each pts as b (b.p)}
-			<line
-				x1={rx(b.p)}
-				x2={rx(b.p)}
-				y1={ry(Math.max(0, b.p - 2 * b.se))}
-				y2={ry(Math.min(1, b.p + 2 * b.se))}
-				stroke="var(--stage-ink-muted)"
-				stroke-width="5"
-				stroke-linecap="round"
-				opacity="0.35"
-			/>
 			<circle
 				cx={rx(b.p)}
 				cy={ry(b.observed)}
@@ -356,27 +345,9 @@
 				muted
 				anchor="start"
 			/>
-			<line
-				x1={426}
-				x2={426}
-				y1={506}
-				y2={520}
-				stroke="var(--stage-ink-muted)"
-				stroke-width="5"
-				stroke-linecap="round"
-				opacity="0.35"
-			/>
 			<Label
 				x={438}
-				y={518}
-				text="bar: where chance alone would put it (±2 s.e.)"
-				size={11}
-				muted
-				anchor="start"
-			/>
-			<Label
-				x={438}
-				y={540}
+				y={516}
 				text="on the diagonal: the odds come true"
 				size={11}
 				muted

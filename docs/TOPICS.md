@@ -166,7 +166,7 @@ A topic is done when:
 - [x] ice-ages
 - [x] carbon-cycle
 - [x] greenhouse-effect
-- [ ] ensemble-weather-forecasting
+- [x] ensemble-weather-forecasting
 
 **Space**
 - [x] sun-earth-moon

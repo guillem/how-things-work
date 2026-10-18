@@ -23,7 +23,6 @@ import {
 	l63Step,
 	l96Step,
 	lyapunov,
-	reliability,
 	reliabilityByDay,
 	verify,
 	weather
@@ -96,7 +95,9 @@ test("in a perfect model the spread matches the mean's error; a wrong model's fa
 });
 
 test('perfect-model probabilities come true as often as they say, within sampling error', () => {
-	const bins = reliability({ obsErr: 0.3, members: 51, F: 8 }, 5, 300, 6);
+	// Independent cases: every start day is its own weather, and only cells 10 apart are counted
+	// (neighbouring cells of one day are correlated), so a binomial error bar is fair.
+	const bins = reliabilityByDay({ obsErr: 0.3, members: 51, F: 8 }, 5, 600, 6, 1000, 10)[4].bins;
 	let checked = 0;
 	for (const b of bins) {
 		if (b.count < 30) continue;
@@ -150,17 +151,25 @@ test("Palmer's picture: the same tiny cloud grows ten times more from some state
 	// on average a small error doubles in ln 2 / 0.906 ≈ 0.77 time units: about ×2 in 0.8
 });
 
-test('the narrative numbers of the wrong model: overconfident and with too little rain', () => {
+test('the narrative numbers of the wrong model (heating 20 % weak, day 5)', () => {
 	const day5 = reliabilityByDay({ obsErr: 0.3, members: 51, F: 6.4 }, 5, 100)[4];
-	// when it gives no chance of rain, it rains about 7 % of the time
-	expect(day5.bins[0].observed).toBeGreaterThan(0.04);
-	expect(day5.bins[0].observed).toBeLessThan(0.1);
-	// when it is sure, it rains only about three times in four
-	expect(day5.bins[10].observed).toBeGreaterThan(0.6);
-	expect(day5.bins[10].observed).toBeLessThan(0.85);
-	// it forecasts rain about 11 % of the time where it rains 17 %
+	const [low] = day5.bins;
+	const top = day5.bins.slice(-2);
+	// when it gives under 5 %, it still rains about 6 % of the time
+	expect(low.observed).toBeGreaterThan(0.03);
+	expect(low.observed).toBeLessThan(0.1);
+	// when it gives 90 % or more, it rains only about four times in five
+	const sure = top.reduce((a, b) => a + b.observed * b.count, 0) / (top[0].count + top[1].count);
+	expect(sure).toBeGreaterThan(0.7);
+	expect(sure).toBeLessThan(0.88);
+	// on average it forecasts rain about 11 % of the time where it rains 17 %
 	expect(day5.meanP).toBeGreaterThan(0.09);
 	expect(day5.meanP).toBeLessThan(0.13);
 	expect(day5.rainFreq).toBeGreaterThan(0.15);
 	expect(day5.rainFreq).toBeLessThan(0.19);
+});
+
+test('a forecast that starts out worse than the climate has no useful range', () => {
+	expect(horizon([5, 6, 7])).toBe(0);
+	expect(horizon([1, 2, 3])).toBe(Infinity);
 });
