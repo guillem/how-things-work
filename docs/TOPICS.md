@@ -1,6 +1,6 @@
 # Topic catalog
 
-Source of truth for the content of an interactive web learning tool that shows how things work. It defines 118 topics in 11 categories, each built around one interactive graphic. Readers range from high-school students to university majors.
+Source of truth for the content of an interactive web learning tool that shows how things work. It defines 119 topics in 11 categories, each built around one interactive graphic. Readers range from high-school students to university majors.
 
 This file covers content only. It does not choose the stack, the visual design or the project layout; take those from the repository's own instructions.
 
@@ -82,7 +82,7 @@ A topic is done when:
 
 | Category | Id | Topics |
 |---|---|---|
-| Mathematics | `math` | 13 |
+| Mathematics | `math` | 14 |
 | Physics | `physics` | 10 |
 | Chemistry & Materials | `chemistry` | 10 |
 | Biology | `biology` | 10 |
@@ -110,6 +110,7 @@ A topic is done when:
 - [x] taylor-series
 - [x] exponentials-logarithms
 - [x] game-theory-cooperation
+- [ ] differential-equations
 
 **Physics**
 - [x] newtons-laws
@@ -359,6 +360,16 @@ A topic is done when:
 - **Prerequisites:** none
 - **Related:** evolution, ecosystems, reinforcement-learning
 - **Pitfall:** Tit for tat never beat an opponent in a single game; it won the tournaments by scoring well with everyone. There is no best strategy independent of the population it plays in, and the result changes with the payoff numbers and with noise.
+
+#### differential-equations
+- **Title:** Differential equations
+- **Level:** 2
+- **Kind:** manipulate
+- **Interaction:** Choose a rule for the slope at every point (growth in proportion to the amount, cooling toward room temperature, logistic growth with a ceiling, a fish stock under steady harvesting) and the plane of time against amount fills with small slope arrows; click anywhere to drop a starting value and watch a solution curve thread through the arrows. Drop several starts and see that curves never cross, that some settle on a level line and others run away from it, and raise the harvest until the level line vanishes and every curve crashes; where an exact formula exists, overlay it on the traced curve.
+- **Takeaway:** A differential equation says how fast something changes given where it is, and that rule plus a starting point fixes one curve through the field of arrows, which can be followed even when no formula exists.
+- **Prerequisites:** calculus
+- **Related:** epidemics, ecosystems, feedback-control
+- **Pitfall:** Not every differential equation can be solved with a formula: most cannot, and the slope field still fixes each solution. Solution curves of one equation never cross, so two different futures cannot start from the same state.
 
 ### Physics
 
@@ -621,7 +632,7 @@ A topic is done when:
 - **Interaction:** Set birth, death and predation rates for a predator and its prey and watch the populations cycle, both as animals on a field and as curves. In a small food web, remove or add a species and follow the knock-on effects.
 - **Takeaway:** Populations are tied together by feedback, so a change to one species ripples through the others in ways that are hard to guess.
 - **Prerequisites:** none
-- **Related:** chaos-fractals, epidemics, game-theory-cooperation
+- **Related:** chaos-fractals, epidemics, game-theory-cooperation, differential-equations
 
 #### crispr
 - **Title:** CRISPR: how bacteria remember viruses
@@ -695,7 +706,7 @@ A topic is done when:
 - **Interaction:** Set how many people each case infects, how long a case stays infectious and what share of people are vaccinated. Watch the infection spread through a moving crowd and plot the susceptible, infected and recovered counts over time.
 - **Takeaway:** An outbreak grows exponentially while each case infects more than one other person, and it dies out once enough people are immune.
 - **Prerequisites:** none
-- **Related:** ecosystems, mrna-vaccines, exponentials-logarithms
+- **Related:** ecosystems, mrna-vaccines, exponentials-logarithms, differential-equations
 
 #### mrna-vaccines
 - **Title:** Vaccines & mRNA
@@ -1359,7 +1370,7 @@ A topic is done when:
 - **Interaction:** Tune the three gains of a PID controller to balance an inverted pendulum, hold a drone at a set height or keep a car at a set speed over hills, with the response plotted against the target. Add delay, sensor noise and gusts, then chain joints into a robot arm that reaches for a point.
 - **Takeaway:** A machine stays on target by measuring its error and correcting in proportion to it; too little correction is sluggish and too much makes it oscillate.
 - **Prerequisites:** oscillations-resonance
-- **Related:** homeostasis, reinforcement-learning, bacterial-chemotaxis
+- **Related:** homeostasis, reinforcement-learning, bacterial-chemotaxis, differential-equations
 
 #### wind-turbine-aerodynamics
 - **Title:** Wind turbines & the Betz limit
@@ -1376,7 +1387,6 @@ A topic is done when:
 
 Strong candidates that are not in the catalog. Do not build them unless the user promotes one to replace a topic above.
 
-- Differential equations
 - Fluid dynamics
 - Embryo development & pattern formation
 - DNA sequencing
