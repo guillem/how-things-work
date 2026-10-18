@@ -100,7 +100,7 @@
 		return { co2: base[0], co3: base[1], hco3: base[2] };
 	});
 	const WX = 74;
-	const WY = 300;
+	const WY = 312;
 	const DX = 36;
 	const DY = 26;
 	const dots = $derived.by(() => {
@@ -123,7 +123,7 @@
 		{
 			id: 'co2',
 			name: 'dissolved CO₂',
-			max: 50,
+			max: 100,
 			now: s.co2,
 			then: s0.co2,
 			fill: C.co2,
@@ -151,6 +151,9 @@
 			op: o.current.ions
 		}
 	]);
+	/** Which bars are listed under the stage on phones (the step's own, to keep the panel short). */
+	const listed = (id: string) =>
+		focus === 'react' || (focus === 'dissolve' ? id === 'co2' : id === 'co3');
 	const rowY = (i: number) => 104 + i * 64;
 
 	// ---------------------------------------------------------------- the cards
@@ -218,7 +221,7 @@
 	<Readout id="sea">
 		<Label
 			x={LEFT + 16}
-			y={SURF + 32}
+			y={SURF + 58}
 			anchor="start"
 			text="surface seawater · {fmtT(T)} · salinity 35"
 			size={13}
@@ -277,7 +280,7 @@
 			<Readout
 				id="bar-{r.id}"
 				order={2 + i}
-				label={r.name}
+				label={listed(r.id) ? r.name : undefined}
 				value="{fmtUmol(r.now)} µmol/kg ({change(r.now, r.then)})"
 				color={r.fill}
 			>
@@ -445,7 +448,7 @@
 				x={CX + 20}
 				y={CY + 260}
 				anchor="start"
-				text="each CO₂ that reacts uses up one carbonate ion"
+				text="added CO₂ turns carbonate ion into bicarbonate"
 				size={12}
 				muted
 			/>

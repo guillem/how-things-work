@@ -53,13 +53,15 @@
 	const color = $derived(tempColor(T));
 
 	// carbon gained per 100 ppm
-	const STEPS = Array.from({ length: 9 }, (_, i) => PPM_MIN + 100 * i);
+	const STEPS = Array.from({ length: 10 }, (_, i) => PPM_MIN + 100 * i);
 	const gains = $derived(
 		STEPS.map((a) => ({ a, g: fromAir(a + 100, water).dic - fromAir(a, water).dic }))
 	);
-	const bx = scale([0, 9], [B.x0, B.x1]);
+	const bx = scale([0, 10], [B.x0, B.x1]);
 	const by = scale([0, 100], [Y1, Y0]);
-	const active = $derived(Math.min(8, Math.floor((ppm - PPM_MIN) / 100)));
+	/** What the next 100 ppm from the reader's own CO₂ adds. */
+	const nextGain = $derived(fromAir(ppm + 100, water).dic - s.dic);
+	const active = $derived(Math.min(9, Math.floor((ppm - PPM_MIN) / 100)));
 	const bw = (bx(1) - bx(0)) * 0.72;
 </script>
 
@@ -167,16 +169,6 @@
 		/>
 		<Readout id="bar-{b.a}">
 			<Label x={bx(i + 0.5)} y={Y1 + 18} text={String(b.a)} size={11} muted />
-			{#if i === active}
-				<Label
-					x={bx(i + 0.5)}
-					y={by(b.g) - 8}
-					text={Math.round(b.g).toString()}
-					size={12}
-					weight={600}
-					tabular
-				/>
-			{/if}
 		</Readout>
 	{/each}
 	<Readout id="bars-x">
@@ -193,14 +185,16 @@
 		id="gain"
 		order={2}
 		label="Next 100 ppm"
-		value="+{Math.round(gains[active].g)} µmol/kg (first 100 ppm: +{Math.round(gains[0].g)})"
+		value="+{Math.round(nextGain)} µmol/kg from {fmtPpm(ppm)} (from 280 ppm: +{Math.round(
+			gains[0].g
+		)})"
 		color={C.hco3}
 	>
 		<Label
 			x={B.x0}
 			y={Y0 - 26}
 			anchor="start"
-			text="next 100 ppm: +{Math.round(gains[active].g)} µmol/kg"
+			text="next 100 ppm: +{Math.round(nextGain)} µmol/kg"
 			size={16}
 			weight={700}
 			tabular

@@ -191,7 +191,7 @@ A topic is done when:
 - [x] carbon-cycle
 - [x] greenhouse-effect
 - [x] ensemble-weather-forecasting
-- [ ] ocean-acidification
+- [x] ocean-acidification
 
 **Space**
 - [x] sun-earth-moon
@@ -1082,7 +1082,7 @@ A topic is done when:
 - **Takeaway:** Adding CO2 to seawater does not just lower its pH, it consumes carbonate ions, the building block of shells, and cold water runs short of them first.
 - **Prerequisites:** acids-bases, carbon-cycle, reaction-rates-equilibrium
 - **Related:** ocean-currents
-- **Needs:** Published empirical fits for seawater equilibrium constants as functions of temperature and salinity, the same ones CO2SYS uses: K0 (Weiss 1974), K1 and K2 of carbonic acid (Lueker et al. 2000), borate KB (Dickson 1990) and total boron (Uppström 1974) for the alkalinity, and aragonite and calcite solubility (Mucci 1983). These are published coefficients, retyped and cited. Cross-check the solver against PyCO2SYS (open source, GPL-3) in a model test.
+- **Needs:** Published empirical fits for seawater equilibrium constants as functions of temperature and salinity, the same ones CO2SYS uses: K0 (Weiss 1974), K1 and K2 of carbonic acid (Lueker et al. 2000), borate KB (Dickson 1990) and total boron (Uppström 1974) for the alkalinity, and aragonite and calcite solubility (Mucci 1983). These are published coefficients, retyped and cited. Cross-check the solver in a model test against the published intercomparison of carbonate packages (Orr, Epitalon & Gattuso 2015: check values of every constant, a standard water's dissolved carbon and its sensitivities, computed with CO2SYS, seacarb and mocsy).
 - **Pitfall:** The ocean is not becoming acid (its pH stays above 7); acidification means moving toward acid, and the harm is the loss of carbonate ion, not corrosive water.
 
 ### Space

@@ -59,7 +59,6 @@
 		{ id: 'warm', T: T_MAX, pts: sweep(T_MAX) }
 	];
 	const pts = $derived(sweep(T));
-	const color = $derived(tempColor(T));
 
 	const marks = $derived(
 		mode === 'today'
@@ -80,7 +79,7 @@
 		width={L.x1 - L.x0}
 		height={Y1 - syPH(7)}
 		fill={C.acid}
-		opacity="0.14"
+		opacity="0.07"
 	/>
 	<Axes
 		sx={sxL}
@@ -100,12 +99,12 @@
 		stroke-width="1.5"
 		stroke-dasharray="6 4"
 	/>
-	<Readout id="neutral" order={9} label="Dashed line" value="pH 7, neutral; acid below">
+	<Readout id="neutral" order={9} label="Dashed line" value="pH 7; the water stays above it">
 		<Label
 			x={L.x1 - 8}
 			y={syPH(7) - 8}
 			anchor="end"
-			text="pH 7: neutral"
+			text="pH 7"
 			size={12}
 			weight={600}
 			color={C.acidText}
@@ -114,7 +113,7 @@
 			x={L.x1 - 8}
 			y={syPH(6.8) + 4}
 			anchor="end"
-			text="acid (below 7): never reached"
+			text="pH stays above 7 throughout"
 			size={12}
 			color={C.acidText}
 		/>
@@ -259,7 +258,7 @@
 		order={1}
 		label="pH"
 		value="{s.pH.toFixed(2)} ({signedPH(s.pH - s0.pH)} since 280 ppm)"
-		{color}
+		color={C.ph}
 	>
 		<Label
 			x={L.x0}
@@ -354,16 +353,19 @@
 			id="compare"
 			order={3}
 			label="Since 280 ppm"
-			value="pH {change(s.pH, s0.pH)}, carbonate ion {change(s.co3, s0.co3)}"
+			value="pH {signedPH(s.pH - s0.pH)} (H⁺ {change(s.h, s0.h)}), carbonate ion {change(
+				s.co3,
+				s0.co3
+			)}"
 		>
 			<Label
 				x={112}
 				y={526}
 				anchor="start"
-				text="Since 280 ppm the pH has changed by {change(
-					s.pH,
-					s0.pH
-				)} of its value; the carbonate ion by {change(s.co3, s0.co3)}."
+				text="Since 280 ppm: pH {signedPH(s.pH - s0.pH)} units (hydrogen ions {change(
+					s.h,
+					s0.h
+				)}); carbonate ion {change(s.co3, s0.co3)}."
 				size={13}
 				tabular
 			/>
@@ -371,7 +373,7 @@
 				x={112}
 				y={552}
 				anchor="start"
-				text="Basic all the way: the harm is the carbonate ion lost, not acid water."
+				text="Still basic: the carbonate ion lost is what threatens shell building."
 				size={13}
 				weight={600}
 			/>

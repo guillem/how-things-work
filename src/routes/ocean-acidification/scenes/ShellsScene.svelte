@@ -37,7 +37,7 @@
 	const Y0 = 64;
 	const Y1 = 470;
 	const sx = scale([PPM_MIN, PPM_MAX], [X0, X1]);
-	const sy = scale([0, 5.5], [Y1, Y0]);
+	const sy = scale([0, 8], [Y1, Y0]);
 
 	const sweep = (T: number) => {
 		const w = waterAt(T);
@@ -76,7 +76,7 @@
 		{sx}
 		{sy}
 		xTicks={[280, 400, 600, 800, 1000, 1200]}
-		yTicks={[0, 1, 2, 3, 4, 5]}
+		yTicks={[0, 1, 2, 4, 6, 8]}
 		xLabel="CO₂ in the air (ppm)"
 		yLabel="aragonite saturation Ω"
 	/>
@@ -117,7 +117,7 @@
 		/>
 		<Readout id="ghost-{g.T}">
 			<Label
-				x={X1 + 6}
+				x={X1 + 20}
 				y={sy(g.pts[g.pts.length - 1].ar) + 4}
 				anchor="start"
 				text={fmtT(g.T).replace('.0', '')}
