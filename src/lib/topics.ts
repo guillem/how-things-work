@@ -1230,6 +1230,15 @@ const explainers: Explainer[] = [
 		accent: '#b8327a',
 		steps: 8,
 		minutes: 14
+	},
+	{
+		slug: 'morphogen-gradients',
+		title: 'Morphogen gradients & positional information',
+		summary:
+			'A substance made at one end of a row of cells spreads and decays into an exponential gradient: set its diffusion and lifetime and watch the length scale √(D·τ), paint a French flag with two thresholds, test the model against the fly’s Bicoid gradient, watch the flag fail to stretch in a longer tissue until an expansion–repression circuit makes it scale, and see why boundaries are sharp where the gradient is steep.',
+		accent: '#7a3e9d',
+		steps: 7,
+		minutes: 18
 	}
 ];
 

@@ -4544,6 +4544,48 @@
 		{/each}
 		<path d={tstArt.path} fill="none" stroke={accent} stroke-width="2.2" stroke-linejoin="round" />
 		<circle cx="58" cy="76" r="3.5" fill={accent} />
+	{:else if slug === 'morphogen-gradients'}
+		<!-- an exponential gradient falling from a source, read by two thresholds into a French
+		     flag of cells -->
+		<line x1="20" y1="92" x2="186" y2="92" stroke="currentColor" stroke-width="1" opacity="0.5" />
+		<line
+			x1="20"
+			y1="44"
+			x2="186"
+			y2="44"
+			stroke="currentColor"
+			stroke-dasharray="4 3"
+			opacity="0.5"
+		/>
+		<line
+			x1="20"
+			y1="74"
+			x2="186"
+			y2="74"
+			stroke="currentColor"
+			stroke-dasharray="4 3"
+			opacity="0.5"
+		/>
+		<path
+			d="M20.0 24.0 L28.2 36.6 L36.4 46.9 L44.6 55.2 L52.8 62.1 L61.0 67.6 L69.2 72.1 L77.4 75.8 L85.6 78.8 L93.8 81.3 L102.0 83.2 L110.2 84.9 L118.4 86.2 L126.6 87.3 L134.8 88.1 L143.0 88.9 L151.2 89.4 L159.4 89.9 L167.6 90.3 L175.8 90.6 L184.0 90.9"
+			fill="none"
+			stroke={accent}
+			stroke-width="2.6"
+		/>
+		<rect x="8" y="98" width="8" height="14" rx="2" fill={accent} />
+		{#each Array.from({ length: 17 }, (_, i) => i) as i (i)}
+			<rect
+				x={20 + i * 9.8}
+				y="98"
+				width="8.6"
+				height="14"
+				rx="2"
+				fill={i < 5 ? accent : i < 9 ? 'none' : 'currentColor'}
+				stroke="currentColor"
+				stroke-width="0.8"
+				opacity={i < 5 ? 0.9 : i < 9 ? 0.6 : 0.35}
+			/>
+		{/each}
 	{:else}
 		<circle cx="100" cy="60" r="30" fill="none" stroke={accent} stroke-width="2" />
 		<circle cx="100" cy="60" r="5" fill={accent} />

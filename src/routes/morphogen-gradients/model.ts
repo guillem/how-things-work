@@ -36,6 +36,10 @@ export const DX = 4;
 export const DT = 10;
 /** Simulated seconds per second of the page's clock. */
 export const SIM_RATE = 360;
+/** The same, on steps that start from the settled profile (a slider's effect shows quickly). */
+export const SIM_FAST = 1800;
+/** Simulated seconds per second of the clock in the scaling scene (the expander is slow). */
+export const SCALE_RATE = 3600;
 
 /**
  * Default morphogen: D = 3.6 µm²/s and a half-life of 26 min, Bicoid's best fit from its
@@ -182,6 +186,13 @@ export class Tissue {
 		this.p = { ...p };
 	}
 
+	/** Fill the tissue with a state of the same length (its clock restarts at 0). */
+	load(s: TissueState) {
+		this.s.M.set(s.M);
+		this.s.E.set(s.E);
+		this.s.t = 0;
+	}
+
 	/** Restart the tissue's clock at 0, keeping its contents. */
 	resetClock() {
 		this.s.t = 0;
@@ -259,24 +270,9 @@ export class Tissue {
 		return this.s;
 	}
 
-	/** The morphogen's apparent length scale: −1/slope of ln M over the first 40 % of the row. */
+	/** The morphogen's apparent length scale (see `fitLength`). */
 	fitLength(): number {
-		const { M } = this.s;
-		const m = Math.max(3, Math.floor(this.n * 0.4));
-		let sx = 0;
-		let sy = 0;
-		let sxx = 0;
-		let sxy = 0;
-		for (let i = 0; i < m; i++) {
-			const x = this.x(i);
-			const y = Math.log(Math.max(M[i], 1e-12));
-			sx += x;
-			sy += y;
-			sxx += x * x;
-			sxy += x * y;
-		}
-		const slope = (m * sxy - sx * sy) / (m * sxx - sx * sx);
-		return -1 / slope;
+		return fitLength(this.s.M);
 	}
 
 	/** The morphogen at x µm, interpolated between cell centres. */
@@ -288,6 +284,27 @@ export class Tissue {
 		const i = Math.floor(u);
 		return M[i] + (M[i + 1] - M[i]) * (u - i);
 	}
+}
+
+/**
+ * A profile's apparent length scale: −1/slope of a straight-line fit to ln M over the first 40 %
+ * of the row, µm.
+ */
+export function fitLength(M: ArrayLike<number>): number {
+	const m = Math.max(3, Math.floor(M.length * 0.4));
+	let sx = 0;
+	let sy = 0;
+	let sxx = 0;
+	let sxy = 0;
+	for (let i = 0; i < m; i++) {
+		const x = (i + 0.5) * DX;
+		const y = Math.log(Math.max(M[i], 1e-12));
+		sx += x;
+		sy += y;
+		sxx += x * x;
+		sxy += x * y;
+	}
+	return -1 / ((m * sxy - sx * sy) / (m * sxx - sx * sx));
 }
 
 /** Mean of the expander over the tissue. */

@@ -4157,3 +4157,32 @@ kbd {
 	--pcr-liquid: #1d2a31;
 	--pcr-line: #ff8787;
 }
+
+/* morphogen-gradients: the morphogen (and its text), the cells, their nuclei and edges, the
+   egg, the French flag's blue, white and red, and the expander */
+:root {
+	--mg-morph: #7a3e9d;
+	--mg-morph-text: #6a2f8c;
+	--mg-cell: #f8f4fb;
+	--mg-cell-edge: #9a8aa6;
+	--mg-nucleus: #5c4a6b;
+	--mg-egg: #fbf6ec;
+	--mg-blue: #1c64c4;
+	--mg-white: #f1f3f5;
+	--mg-red: #d6342f;
+	--mg-expander: #2b8a3e;
+	--mg-expander-text: #237032;
+}
+:root[data-theme='dark'] {
+	--mg-morph: #c58ae6;
+	--mg-morph-text: #dcb3f2;
+	--mg-cell: #221a29;
+	--mg-cell-edge: #7d6c8a;
+	--mg-nucleus: #c9b8d6;
+	--mg-egg: #262019;
+	--mg-blue: #4d94ff;
+	--mg-white: #e9ecef;
+	--mg-red: #ff6b61;
+	--mg-expander: #69db7c;
+	--mg-expander-text: #8ce99a;
+}
