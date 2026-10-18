@@ -1,6 +1,6 @@
 # Topic catalog
 
-Source of truth for the content of an interactive web learning tool that shows how things work. It defines 114 topics in 11 categories, each built around one interactive graphic. Readers range from high-school students to university majors.
+Source of truth for the content of an interactive web learning tool that shows how things work. It defines 115 topics in 11 categories, each built around one interactive graphic. Readers range from high-school students to university majors.
 
 This file covers content only. It does not choose the stack, the visual design or the project layout; take those from the repository's own instructions.
 
@@ -90,7 +90,7 @@ A topic is done when:
 | Earth & Climate | `earth` | 9 |
 | Space | `space` | 9 |
 | Computing | `computing` | 10 |
-| Information & Networks | `networks` | 8 |
+| Information & Networks | `networks` | 9 |
 | Artificial Intelligence | `ai` | 19 |
 | Energy & Machines | `energy` | 9 |
 
@@ -200,6 +200,7 @@ A topic is done when:
 - [x] gps
 - [x] pagerank
 - [x] consensus-blockchains
+- [ ] tcp-congestion-control
 
 **Artificial Intelligence**
 - [x] learning-from-data
@@ -1010,7 +1011,7 @@ A topic is done when:
 - **Interaction:** Encode a bit stream onto a carrier wave by changing its amplitude, frequency or phase, shown as a waveform, a spectrum and a constellation of points. Add noise, distance and a second transmitter until bits are misread, then pack more bits into each symbol and see the trade-off.
 - **Takeaway:** Data rides on radio waves as controlled changes to a carrier, and noise and bandwidth together set a hard limit on how fast it can be sent.
 - **Prerequisites:** waves-interference, fourier-transform, binary
-- **Related:** electromagnetism, error-correction, internet
+- **Related:** electromagnetism, error-correction, internet, tcp-congestion-control
 
 #### internet
 - **Title:** The Internet
@@ -1047,6 +1048,16 @@ A topic is done when:
 - **Interaction:** A cluster of nodes elects a leader and replicates a log; crash nodes or cut the network and watch the cluster keep agreeing or stall. Then chain blocks by hash, tamper with an old block to invalidate every later one, and mine a block by searching for a nonce at adjustable difficulty.
 - **Takeaway:** Getting independent machines to agree on one history is hard; voting among a known set of machines handles failures, and proof-of-work extends agreement to strangers who may cheat.
 - **Prerequisites:** cryptography, internet
+
+#### tcp-congestion-control
+- **Title:** TCP congestion control
+- **Level:** 3
+- **Kind:** simulate
+- **Interaction:** Send a file across a link with a bottleneck and a queue of adjustable size, and watch the sender's window grow in slow start, collapse on a loss and resume with additive increase, tracing the sawtooth of throughput against time. Add a second flow and see the two converge to a fair share; oversize the buffer and watch delay balloon while throughput does not improve; compare Reno, CUBIC and a delay-based sender on the same link.
+- **Takeaway:** The Internet has no traffic police: each classic TCP sender probes for its share of the bottleneck by speeding up until the queue overflows and packets drop, then backs off, and that simple rule is what keeps the network from collapsing.
+- **Prerequisites:** internet, feedback-control
+- **Related:** wireless-signals
+- **Pitfall:** Congestion control is not flow control: the receiver's window protects the receiver, and the congestion window protects the network. A loss on a wireless link is often noise rather than congestion, and classic TCP misreads it as a signal to slow down. AIMD's 'fair share' is fair only between flows with similar round-trip times; a flow with a short round-trip time grabs more.
 
 ### Artificial Intelligence
 
