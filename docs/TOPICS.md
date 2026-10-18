@@ -1,6 +1,6 @@
 # Topic catalog
 
-Source of truth for the content of an interactive web learning tool that shows how things work. It defines 146 topics in 11 categories, each built around one interactive graphic. Readers range from high-school students to university majors.
+Source of truth for the content of an interactive web learning tool that shows how things work. It defines 147 topics in 11 categories, each built around one interactive graphic. Readers range from high-school students to university majors.
 
 This file covers content only. It does not choose the stack, the visual design or the project layout; take those from the repository's own instructions.
 
@@ -88,7 +88,7 @@ A topic is done when:
 | Biology | `biology` | 16 |
 | Body & Medicine | `medicine` | 14 |
 | Earth & Climate | `earth` | 13 |
-| Space | `space` | 9 |
+| Space | `space` | 10 |
 | Computing | `computing` | 11 |
 | Information & Networks | `networks` | 9 |
 | Artificial Intelligence | `ai` | 19 |
@@ -206,6 +206,7 @@ A topic is done when:
 - [x] dark-matter
 - [x] big-bang
 - [x] exoplanets
+- [ ] lagrange-points-three-body
 
 **Computing**
 - [x] binary
@@ -355,7 +356,7 @@ A topic is done when:
 - **Interaction:** Start two double pendulums with almost identical angles and watch their paths separate. Slide the growth rate of the logistic map through its period-doubling cascade, and zoom deep into the Mandelbrot set.
 - **Takeaway:** Simple deterministic rules can produce behavior that is unpredictable in the long run and structure that repeats at every scale.
 - **Prerequisites:** none
-- **Related:** complex-numbers, ecosystems, atmosphere-weather, phase-portraits, turing-patterns
+- **Related:** complex-numbers, ecosystems, atmosphere-weather, phase-portraits, turing-patterns, lagrange-points-three-body
 
 #### taylor-series
 - **Title:** Taylor series & where they stop working
@@ -1149,6 +1150,7 @@ A topic is done when:
 - **Interaction:** Design a rocket by choosing fuel mass, exhaust speed and number of stages and see whether it reaches orbit. Then plan burns to raise an orbit, transfer to Mars within a launch window, and gain speed from a planetary flyby.
 - **Takeaway:** Spaceflight is a budget of velocity changes, and because fuel must lift more fuel, each extra bit of speed costs exponentially more.
 - **Prerequisites:** orbits-kepler
+- **Related:** lagrange-points-three-body
 
 #### stars
 - **Title:** Life cycle of stars
@@ -1206,6 +1208,16 @@ A topic is done when:
 - **Takeaway:** Most planets around other stars are found without being seen, through the small effects they have on the light of their star.
 - **Prerequisites:** orbits-kepler
 - **Related:** waves-interference
+
+#### lagrange-points-three-body
+- **Title:** The three-body problem & Lagrange points
+- **Level:** 3
+- **Kind:** manipulate
+- **Interaction:** The circular restricted three-body problem, drawn in the frame that rotates with the two large bodies. Set the mass ratio (Sun-Jupiter, Sun-Earth, Earth-Moon, or a slider) and the five Lagrange points appear. Set the probe's energy (the Jacobi constant) and the forbidden regions shade in, opening gates at L1 and L2 as the energy rises. Drop a probe at L1 or L2 and it drifts away within months. Drop one near L4 and it wanders in a tadpole around the point for as long as the reader waits, as Jupiter's Trojans do. Push the mass ratio past about 1 in 26 and the same probe escapes. Nudge a starting position by a hair to run two probes side by side and watch their paths split.
+- **Takeaway:** Three bodies have no general closed-form solution and nearby paths split apart, but there are five points where a small body can keep pace with the other two: three balanced on a knife edge, and two that are stable while the smaller mass is light enough.
+- **Prerequisites:** orbits-kepler
+- **Related:** rockets, chaos-fractals
+- **Pitfall:** L1 and L2 are not places where gravity cancels. A spacecraft there circles the Sun in exactly one Earth year because the combined pull (Earth's pull partly offsets the Sun's at L1 and adds to it at L2) is exactly what that orbit needs, and it still needs station-keeping. The general three-body problem is not 'unsolvable': Sundman found a convergent series, but no closed formula and no long-term predictability.
 
 ### Computing
 
