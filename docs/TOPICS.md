@@ -1,6 +1,6 @@
 # Topic catalog
 
-Source of truth for the content of an interactive web learning tool that shows how things work. It defines 115 topics in 11 categories, each built around one interactive graphic. Readers range from high-school students to university majors.
+Source of truth for the content of an interactive web learning tool that shows how things work. It defines 116 topics in 11 categories, each built around one interactive graphic. Readers range from high-school students to university majors.
 
 This file covers content only. It does not choose the stack, the visual design or the project layout; take those from the repository's own instructions.
 
@@ -92,7 +92,7 @@ A topic is done when:
 | Computing | `computing` | 10 |
 | Information & Networks | `networks` | 9 |
 | Artificial Intelligence | `ai` | 19 |
-| Energy & Machines | `energy` | 9 |
+| Energy & Machines | `energy` | 10 |
 
 ## Checklist
 
@@ -233,6 +233,7 @@ A topic is done when:
 - [x] flight
 - [x] bridges-structures
 - [x] feedback-control
+- [ ] wind-turbine-aerodynamics
 
 ## Topics
 
@@ -1279,7 +1280,7 @@ A topic is done when:
 - **Interaction:** Run a small grid through a day: demand rises and falls while the reader dispatches gas, nuclear, hydro, solar, wind and batteries to keep the frequency on target. Step the voltage up and down with transformers to see transmission losses, then trip a plant or send a cloud over the solar farm.
 - **Takeaway:** Supply must match demand on a grid at every instant, so running one is a continuous balancing act, and high voltage is what makes it affordable to send power long distances.
 - **Prerequisites:** motors-generators
-- **Related:** redox-batteries, heat-engines, solar-cells
+- **Related:** redox-batteries, heat-engines, solar-cells, wind-turbine-aerodynamics
 
 #### solar-cells
 - **Title:** Solar cells
@@ -1335,6 +1336,17 @@ A topic is done when:
 - **Takeaway:** A machine stays on target by measuring its error and correcting in proportion to it; too little correction is sluggish and too much makes it oscillate.
 - **Prerequisites:** oscillations-resonance
 - **Related:** homeostasis, reinforcement-learning, bacterial-chemotaxis
+
+#### wind-turbine-aerodynamics
+- **Title:** Wind turbines & the Betz limit
+- **Level:** 3
+- **Kind:** manipulate
+- **Interaction:** Start with an actuator disc: drag how much the air slows through the rotor and watch the stream tube widen, the thrust and power change, and the power coefficient peak at 16/27 when the air leaving is slowed to a third. Then replace the disc with real blades: set the tip-speed ratio and the blade pitch, and a blade-element-momentum model (with tip-loss and the high-induction correction) using measured airfoil polars computes the angle of attack along the blade, the power coefficient against tip-speed ratio, and the power curve against wind speed with pitch control holding power at rated above rated wind.
+- **Takeaway:** No rotor can take more than 59 percent of the wind's power because the air must keep moving to get out of the way, and real blades approach that only near one tip-speed ratio.
+- **Prerequisites:** flight
+- **Related:** power-grid
+- **Needs:** Lift and drag polars of wind-turbine airfoils: the NREL 5-MW reference turbine's AeroData tables (DU and NACA64 sections) as distributed in the OpenFAST r-test repository (github.com/OpenFAST/r-test, Apache-2.0), with blade chord and twist from the same reference turbine; NACA airfoil data (public domain) as a fallback.
+- **Pitfall:** The Betz limit is not a design shortcoming of today's turbines; it applies to any device that takes energy from a free stream, so a rotor near 50 percent is close to perfect.
 
 ## Reserve
 
