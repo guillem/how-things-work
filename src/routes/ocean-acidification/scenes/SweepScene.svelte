@@ -73,14 +73,6 @@
 
 <g>
 	<!-- left: pH -->
-	<rect
-		x={L.x0}
-		y={syPH(7)}
-		width={L.x1 - L.x0}
-		height={Y1 - syPH(7)}
-		fill={C.acid}
-		opacity="0.07"
-	/>
 	<Axes
 		sx={sxL}
 		sy={syPH}
