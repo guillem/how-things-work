@@ -1,6 +1,6 @@
 # Topic catalog
 
-Source of truth for the content of an interactive web learning tool that shows how things work. It defines 117 topics in 11 categories, each built around one interactive graphic. Readers range from high-school students to university majors.
+Source of truth for the content of an interactive web learning tool that shows how things work. It defines 118 topics in 11 categories, each built around one interactive graphic. Readers range from high-school students to university majors.
 
 This file covers content only. It does not choose the stack, the visual design or the project layout; take those from the repository's own instructions.
 
@@ -82,7 +82,7 @@ A topic is done when:
 
 | Category | Id | Topics |
 |---|---|---|
-| Mathematics | `math` | 12 |
+| Mathematics | `math` | 13 |
 | Physics | `physics` | 10 |
 | Chemistry & Materials | `chemistry` | 10 |
 | Biology | `biology` | 10 |
@@ -109,6 +109,7 @@ A topic is done when:
 - [x] chaos-fractals
 - [x] taylor-series
 - [x] exponentials-logarithms
+- [ ] game-theory-cooperation
 
 **Physics**
 - [x] newtons-laws
@@ -348,6 +349,16 @@ A topic is done when:
 - **Prerequisites:** none
 - **Related:** radioactivity, epidemics, acids-bases, earthquakes, sorting
 - **Pitfall:** Exponential does not mean fast: with a factor just above 1 it starts slowly. And a log-scale line that looks tame is not growth slowing down; say that the rate stays the same.
+
+#### game-theory-cooperation
+- **Title:** Game theory: why cooperate?
+- **Level:** 1
+- **Kind:** simulate
+- **Interaction:** Play the prisoner's dilemma against the page with a payoff table whose four numbers can be edited, and find that cheating pays once but not when the same two players meet again. Enter strategies (always cheat, always cooperate, tit for tat, grudger, random) into a round-robin tournament of repeated games and watch the scores; let the population evolve, with well-scoring strategies copied more often, and add a little noise to the signals to see which strategies survive it. Finish on a grid where each cell plays its neighbours, so that clusters of cooperators grow or are eaten.
+- **Takeaway:** When the same players meet again and again, strategies that start nice, hit back and forgive can outscore pure selfishness, so cooperation can take hold among players who each look after only themselves, unless the games are too short or too few others cooperate.
+- **Prerequisites:** none
+- **Related:** evolution, ecosystems, reinforcement-learning
+- **Pitfall:** Tit for tat never beat an opponent in a single game; it won the tournaments by scoring well with everyone. There is no best strategy independent of the population it plays in, and the result changes with the payoff numbers and with noise.
 
 ### Physics
 
@@ -600,7 +611,7 @@ A topic is done when:
 - **Interaction:** Run a population whose members vary in a heritable trait. Set the mutation rate, the population size and the environment (predators, food supply or an antibiotic dose) and watch the distribution of the trait shift over generations.
 - **Takeaway:** Variation, inheritance and unequal survival are enough to make a population adapt, with no foresight involved.
 - **Prerequisites:** meiosis-inheritance
-- **Related:** deep-time
+- **Related:** deep-time, game-theory-cooperation
 - **Pitfall:** Individuals do not adapt, and mutations do not arise because they are needed; selection acts on variation that already exists.
 
 #### ecosystems
@@ -610,7 +621,7 @@ A topic is done when:
 - **Interaction:** Set birth, death and predation rates for a predator and its prey and watch the populations cycle, both as animals on a field and as curves. In a small food web, remove or add a species and follow the knock-on effects.
 - **Takeaway:** Populations are tied together by feedback, so a change to one species ripples through the others in ways that are hard to guess.
 - **Prerequisites:** none
-- **Related:** chaos-fractals, epidemics
+- **Related:** chaos-fractals, epidemics, game-theory-cooperation
 
 #### crispr
 - **Title:** CRISPR: how bacteria remember viruses
@@ -1159,7 +1170,7 @@ A topic is done when:
 - **Interaction:** Paint rewards, penalties and walls onto a grid world and release an agent. Watch its value estimate for each cell and action update as it explores; adjust the exploration rate, the discount factor and the learning rate, and compare early episodes with late ones.
 - **Takeaway:** An agent can learn a skill from rewards alone by trying actions and gradually crediting the ones that led to good outcomes, balancing exploration against using what it already knows.
 - **Prerequisites:** learning-from-data
-- **Related:** feedback-control, cerebellum-motor-learning
+- **Related:** feedback-control, cerebellum-motor-learning, game-theory-cooperation
 
 #### ngram-text-models
 - **Title:** N-gram text models & their limits
@@ -1366,7 +1377,6 @@ A topic is done when:
 Strong candidates that are not in the catalog. Do not build them unless the user promotes one to replace a topic above.
 
 - Differential equations
-- Game theory
 - Fluid dynamics
 - Embryo development & pattern formation
 - DNA sequencing
