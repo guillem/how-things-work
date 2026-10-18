@@ -76,3 +76,28 @@ pull --rebase origin main` and push again. Do not release.
 The commit hashes; one paragraph on what the page does and its model; the fact-check (findings
 applied, rejected and why); any change to the catalogue entry; anything knowingly left imperfect;
 and whether `make e2e-full` passed. Keep it under 250 words.
+
+## Parallel builds (from 2026-10-18, at the user's request)
+
+Up to three builders run at once, each in its own git worktree on its own branch, and each is
+given a number N (1, 2 or 3) by the lead.
+
+- **Setup:** in the worktree, `cp -cR /Users/guillem/Development/how-things-work/node_modules
+node_modules` (a copy-on-write clone; a symlink makes `make check` refuse). Use the dev-server
+  port `519N` and run every Playwright command with `PW_PORT=418N` (`make e2e-full` too), so
+  builders don't collide. Run `make e2e-full` with `--workers=4`
+  (`PW_PORT=418N npx playwright test --workers=4`), not the default.
+- **Paths:** the brief's commands are relative to the repository root, which is your worktree.
+  The fact-check script, the promotion script and the data all live in the worktree too.
+- **Landing your topic** (instead of a plain push): `git fetch origin && git rebase origin/main`.
+  Shared files conflict when another builder landed first:
+  - `docs/TOPICS.md`: take `origin/main`'s version (`git checkout --theirs docs/TOPICS.md` during
+    the rebase of the commit that promoted the entry, or `git show origin/main:docs/TOPICS.md`),
+    re-run `node docs/proposals/topics-200/scripts/promote.mjs <slug>`, then re-apply your own
+    later edits to the file (the tick, any change to your entry).
+  - `src/lib/topics.ts`, `src/lib/components/TopicArt.svelte`, `src/app.css`,
+    `docs/TIMELOG.md`, `docs/DATA-SOURCES.md`: keep both sides.
+  - Then `make check` and your topic's tests again, and `git push origin HEAD:main`. If the push
+    is rejected because someone landed meanwhile, fetch, rebase and push again.
+- Never touch another builder's topic files. Leave the worktree as it is when you finish (the
+  lead removes it).
