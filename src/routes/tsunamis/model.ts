@@ -11,8 +11,8 @@
  * (η at cell centres, u at the faces between them) with forward-backward time steps, which is
  * stable while √(g h) dt < dx. The coasts are walls (no flow through them): the shallowest wet
  * cell is MIN_DEPTH deep, and the wave reflects there. What the model leaves out, and the page
- * says: the wave's spreading sideways (one slice of the ocean: far-away heights are an upper
- * bound), the slight dispersion of the shortest parts, friction, breaking and run-up on land.
+ * says: the wave's spreading sideways (one slice of the ocean: far-away heights come out too
+ * large), the slight dispersion of the shortest parts, friction, breaking and run-up on land.
  */
 import { DEPTH, DX_KM, GAUGE_KM, START_KM, STATIONS, type Station } from './data';
 

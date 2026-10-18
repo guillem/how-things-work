@@ -192,7 +192,7 @@ A topic is done when:
 - [x] greenhouse-effect
 - [x] ensemble-weather-forecasting
 - [x] ocean-acidification
-- [ ] tsunamis
+- [x] tsunamis
 
 **Space**
 - [x] sun-earth-moon
@@ -1095,7 +1095,7 @@ A topic is done when:
 - **Takeaway:** A tsunami is a shallow-water wave even over the deepest ocean, so its speed is set by the depth alone: it crosses an ocean in hours, is barely visible at sea, and rears up only when it reaches the shallows.
 - **Prerequisites:** waves-interference, earthquakes
 - **Related:** plate-tectonics
-- **Needs:** An ocean depth transect from NOAA's ETOPO 2022 relief model; the one-dimensional shallow-water equations run on that profile (a single transect ignores spreading across the ocean, so the far-shore height is an upper bound: state it on the page).
+- **Needs:** An ocean depth transect from NOAA's ETOPO 2022 relief model; the one-dimensional shallow-water equations run on that profile. State on the page that a single transect omits sideways spreading and focusing, so its heights far from the source come out too large (not a guaranteed upper bound) and are illustrative rather than coastal predictions.
 - **Pitfall:** A tsunami is not a towering surf wave: at the coast it arrives as a fast-rising flood lasting minutes, often after the sea draws back; and it is not a tidal wave, tides have nothing to do with it.
 
 ### Space

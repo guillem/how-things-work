@@ -113,7 +113,7 @@
 	<Axes
 		{sx}
 		{sy}
-		xLabel="hours after the earthquake"
+		xLabel="hours"
 		yLabel="sea level, m"
 		xTicks={[8, 10, 12, 14, 16, 18, 20, 22]}
 		yTicks={[-2, 0, 2, 4]}
@@ -142,12 +142,7 @@
 			anchor="middle"
 		/>
 	</Readout>
-	<Readout
-		id="arrive"
-		order={4}
-		label="First wave"
-		value="{hoursMinutes(cc.onsetMin * 60)} after the earthquake"
-	>
+	<Readout id="arrive">
 		<Label
 			x={sx(cc.onsetMin / 60) + 6}
 			y={sy(4.1)}
@@ -263,7 +258,7 @@
 		<Label
 			x={jx(japanPeak) + 8}
 			y={jy(japan[japanPeak] ?? 0) + 4}
-			text="then floods: {nf(japan[japanPeak] ?? 0)} m at {japanPeak} min"
+			text="then rises {nf(japan[japanPeak] ?? 0)} m, {japanPeak} min"
 			size={12}
 			color="var(--tsu-wave-text)"
 			weight={600}

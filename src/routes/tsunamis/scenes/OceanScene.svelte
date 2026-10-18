@@ -733,7 +733,7 @@
 			<Label
 				x={480}
 				y={532}
-				text="One slice of the ocean: the wave can’t spread sideways, so heights far away are an upper bound"
+				text="One slice of the ocean: the wave can’t spread sideways, so far from the source its heights come out too large"
 				size={11}
 				muted
 				anchor="middle"

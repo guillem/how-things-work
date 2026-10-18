@@ -254,8 +254,8 @@
 					opacity="0.6"
 				/>
 				<circle
-					cx={x0 + A * ax * Math.cos(th)}
-					cy={y0 - (tsunami ? 8 : A) * az * Math.sin(th)}
+					cx={x0 - A * ax * Math.sin(th)}
+					cy={y0 - (tsunami ? 8 : A) * az * Math.cos(th)}
 					r="3.4"
 					fill={tsunami ? 'var(--tsu-wave)' : 'var(--tsu-wind)'}
 				/>

@@ -2,9 +2,9 @@
 // water; a wind wave's speed, which hardly depends on the depth; a hump splitting into two
 // halves that run at √(g h); Green's law for the growth of a wave over shallower water; and the
 // 2011 Tōhoku tsunami itself, whose first crests reached three DART buoys and the Crescent City
-// tide gauge within minutes of the times the model gives on the real sea floor (ETOPO 2022),
-// rising first, as the records do, while the model's heights are an upper bound (a slice of the
-// ocean cannot spread sideways). Runs the page's own model, in Node.
+// tide gauge within seven minutes of the times the model gives on the real sea floor (ETOPO
+// 2022), rising first, as the records do, while the model's crests there are higher than the
+// observed ones (a slice of the ocean cannot spread sideways). Runs the page's own model, in Node.
 import { expect, test } from '@playwright/test';
 import {
 	COAST_KM,
@@ -84,9 +84,8 @@ test('the 2011 tsunami’s first crests arrive when the real records show them',
 	for (const [k, s] of STATIONS.entries()) {
 		const crest = firstCrest(o.records[k], 0.05);
 		expect(crest, s.name).not.toBeNull();
-		// within 3 % of the travel time, or 5 minutes
-		const tolerance = Math.max(5, 0.03 * s.crestMin);
-		expect(Math.abs(crest!.minute - s.crestMin), s.name).toBeLessThanOrEqual(tolerance);
+		// the page says: at most seven minutes apart with the starting settings
+		expect(Math.abs(crest!.minute - s.crestMin), s.name).toBeLessThanOrEqual(7);
 	}
 	// Crescent City: just under ten hours after the earthquake
 	const cc = STATIONS.at(-1)!;
@@ -111,7 +110,7 @@ test('the sea rises first out in the Pacific and draws back first on the Japanes
 	expect(first).toBeLessThan(0);
 });
 
-test('a slice of the ocean overestimates far-away heights: an upper bound', () => {
+test('the slice overestimates the four observed first crests', () => {
 	const o = realRun(11);
 	for (const [k, s] of STATIONS.entries()) {
 		const crest = firstCrest(o.records[k], 0.05)!;

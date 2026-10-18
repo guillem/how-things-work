@@ -27,7 +27,7 @@ test(
 		await expect(stage(page)).toContainText('10 h 20 min');
 		await expect(stage(page)).toContainText('model 1 h 29 min · real 1 h 29 min');
 		await expect(stage(page)).toContainText('model 10 h 06 min · real 10 h 05 min');
-		await expect(stage(page)).toContainText('upper bound');
+		await expect(stage(page)).toContainText('its heights come out too large');
 	}
 );
 
