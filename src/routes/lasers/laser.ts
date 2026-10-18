@@ -24,7 +24,7 @@
  * Threshold is K·ΔN·τc = 1: gain per round trip equal to loss per round trip.
  *
  * Constants are Nd:YAG's (Koechner, Solid-State Laser Engineering, 6th ed., 2006: σ = 2.8·10⁻¹⁹
- * cm², τ = 230 µs, 1.38·10²⁰ Nd ions per cm³ at 1 at.%) in a 10 cm cavity with a 5 cm rod and a
+ * cm², τ = 230 µs, 1.38·10²⁰ Nd ions per cm³ at 1 at.%) in a cavity of 10 cm optical length (one way; the rod's refractive index is folded into it) with a 5 cm rod and a
  * 0.5 mm mode radius; the three- and two-level media keep the same atoms and change only the level
  * scheme, so that the scheme alone makes the difference. Every pump photon (808 nm) is assumed
  * to put one atom in the upper level.
@@ -48,7 +48,7 @@ const DENSITY = 1.38e20;
 const ROD_CM = 5;
 const MODE_RADIUS_CM = 0.05;
 const AREA = Math.PI * MODE_RADIUS_CM ** 2;
-/** Round-trip time of a 10 cm cavity, s. */
+/** Round-trip time for an optical length of 10 cm each way, s. */
 export const T_RT = (2 * 0.1) / C;
 /** Atoms inside the mode. */
 export const N_ATOMS = DENSITY * AREA * ROD_CM;

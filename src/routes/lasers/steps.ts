@@ -38,6 +38,18 @@ const mirror: Control = {
 	format: (v) => `${(v * 100).toFixed(1)}%`
 };
 
+const cavityMedium: Control = {
+	type: 'select',
+	id: 'cavityMedium',
+	label: 'Medium',
+	default: 'four',
+	options: [
+		{ value: 'four', label: 'four-level' },
+		{ value: 'three', label: 'three-level' },
+		{ value: 'two', label: 'two-level' }
+	]
+};
+
 const mirrorPump: Control = { ...pump, id: 'mirrorPump', default: 5 };
 
 const spikePump: Control = {
@@ -91,8 +103,8 @@ export const spec: ExplainerSpec = {
 <li><strong>Spontaneous emission:</strong> an atom in level 2 drops on its own, after a lifetime τ on average, and emits a photon in a random direction.</li>
 <li><strong>Stimulated emission:</strong> a photon passing an atom in level 2 makes it drop, and the new photon is a copy of the first: same direction, frequency, phase and polarisation.</li>
 </ul>
-<p>Absorption and stimulated emission have <em>the same</em> coefficient: a photon is as likely to be absorbed by an atom in level 1 as to be copied by one in level 2. So light passing through the medium grows only if <i>N</i>₂ &gt; <i>N</i>₁, a <dfn data-def="More atoms in the upper level of a transition than in the lower one, N₂ > N₁. Only then does stimulated emission outrun absorption.">population inversion</dfn>; its gain goes as <i>N</i>₂ − <i>N</i>₁. In a medium left alone almost every atom sits in the lower level, and a beam sent through (left to right) is absorbed.</p>`,
-			notes: `<p>In thermal equilibrium <i>N</i>₂/<i>N</i>₁ = e<sup>−hν/kT</sup>; for a near-infrared transition at room temperature that is about e<sup>−45</sup>. Einstein's argument: with spontaneous emission alone, atoms could not stay in equilibrium with black-body radiation; it takes a stimulated process with the same coefficient as absorption to give Planck's law.</p>`
+<p>For two levels with the same number of states (equal degeneracy, assumed here), absorption and stimulated emission have <em>the same</em> coefficient: a photon is as likely to be absorbed by an atom in level 1 as to be copied by one in level 2. So light passing through the medium grows only if <i>N</i>₂ &gt; <i>N</i>₁, a <dfn data-def="More atoms in the upper level of a transition than in the lower one, N₂ > N₁. Only then does stimulated emission outrun absorption.">population inversion</dfn>; its gain goes as <i>N</i>₂ − <i>N</i>₁. In a medium left alone almost every atom sits in the lower level, and a beam sent through (left to right) is absorbed.</p>`,
+			notes: `<p>In general, with level degeneracies <i>g</i>₁ and <i>g</i>₂, <i>g</i>₁<i>B</i>₁₂ = <i>g</i>₂<i>B</i>₂₁, and in thermal equilibrium <i>N</i>₂/<i>N</i>₁ = (<i>g</i>₂/<i>g</i>₁)e<sup>−hν/kT</sup>; for a near-infrared transition at room temperature that is about e<sup>−45</sup>. Einstein's argument: with spontaneous emission alone, atoms could not stay in equilibrium with black-body radiation; it takes a stimulated process with the same coefficient as absorption to give Planck's law.</p>`
 		},
 		{
 			id: 'two-level',
@@ -106,7 +118,7 @@ export const spec: ExplainerSpec = {
 <p class="formula"><strong>dN₂/dt = W·(N₁ − N₂) − N₂/τ</strong></p>
 <p>The pump moves atoms only while there are more below than above. At steady state <i>N</i>₂/<i>N</i> = <i>W</i>τ/(1 + 2<i>W</i>τ): it climbs towards <strong>one half</strong> and never gets there. The medium becomes transparent (as many photons copied as absorbed), never amplifying.</p>
 <p>No steady pumping of two levels, at any power, inverts them. The curve on the right is the inversion (<i>N</i>₂ − <i>N</i>₁)/<i>N</i>: it rises towards the line of zero from below and stays under it.</p>`,
-			notes: `<p>This holds for steady, incoherent pumping, which is what a lamp or a diode does. A short coherent pulse of exactly the right area can flip two-level atoms for a moment (a Rabi π pulse), and ammonia's beam maser (1954) used a different trick: it sorted the excited molecules out of the beam with an electric field rather than pumping them. Neither gives a medium that stays inverted.</p>`
+			notes: `<p>This holds for steady, incoherent pumping, which is what a lamp or a diode does. A short coherent pulse of exactly the right area can flip two-level atoms for a moment (a Rabi π pulse), and ammonia's beam maser (1954) used a different trick: it sorted the excited molecules out of the beam with an electric field rather than pumping them. The π pulse gives only a transient inversion; the beam maser keeps one by continually supplying freshly selected excited molecules, not by pumping a closed set of two-level atoms.</p>`
 		},
 		{
 			id: 'three-level',
@@ -130,7 +142,7 @@ export const spec: ExplainerSpec = {
 			body: `
 <p>Add a fourth level: the laser transition ends on a lower level 1 that sits above the ground state and empties into it within nanoseconds. Level 1 stays practically empty, so every atom in level 2 is inverted: <i>N</i>₂ − <i>N</i>₁ ≈ <i>N</i>₂, at any pump.</p>
 <p>This is neodymium in YAG crystal (Nd:YAG), pumped by diode lasers at 808 nm and lasing at 1064 nm, with an upper-level lifetime τ = 230 µs. Drag the pump down to <i>W</i>τ = 10⁻⁴: one ion in ten thousand is excited, and a beam through 5 cm of rod already comes out 2% stronger. The panel's gain factor is per pass of the rod.</p>
-<p>The chart compares the three schemes: the four-level curve is above zero everywhere, the three-level one crosses at <i>W</i>τ = 1, and the two-level one never does. Every laser and amplifier you meet in practice uses a four-level scheme or something close to it.</p>`,
+<p>The chart compares the three schemes: the four-level curve is above zero everywhere, the three-level one crosses at <i>W</i>τ = 1, and the two-level one never does. Many lasers use four-level schemes. Others, such as Yb:YAG lasers and erbium-doped fibre amplifiers, are quasi-three-level: their lower laser level is partly filled, so they must be pumped just to become transparent.</p>`,
 			notes: `<p>The energy lost on the way (808 nm photons in, 1064 nm out, a "quantum defect" of 24%) heats the crystal. At high pump strength the gains on the panel become absurd: in a real rod, spontaneous photons amplified along its length (amplified spontaneous emission) would drain the upper level long before.</p>`
 		},
 		// ------------------------------------------------------------------ threshold
@@ -142,7 +154,7 @@ export const spec: ExplainerSpec = {
 			hints: { phase: 'cavity' },
 			controls: [pump],
 			body: `
-<p>Put the rod between two mirrors: one reflects everything, the other (the output mirror) 95% at 1064 nm. Light in one <dfn data-def="One pattern of light that fits the cavity: a standing wave along the axis. A laser usually runs on one or a few of them.">mode</dfn> of the cavity bounces back and forth, gaining from the inverted atoms on each pass and losing through the output mirror and to scattering. The photons last τ<sub>c</sub> ≈ 9.4 ns on average before they leave. For <i>q</i> photons in the mode:</p>
+<p>Put the rod between two mirrors: one reflects everything, the other (the output mirror) 95% at 1064 nm. Light in one <dfn data-def="One pattern of light that fits the cavity: a standing wave along the axis. A laser usually runs on one or a few of them.">mode</dfn> of the cavity bounces back and forth, gaining from the inverted atoms on each pass and losing through the output mirror and to scattering. The photons last τ<sub>c</sub> ≈ 9.4 ns on average before they leave. Write ΔN = N₂ − N₁, and let K be the stimulated rate per photon per inverted atom: K = 2σ/(A·t<sub>rt</sub>), with σ the transition's cross-section, A the mode's area (radius 0.5 mm) and t<sub>rt</sub> the round-trip time (an optical length of 10 cm each way). For <i>q</i> photons in the mode:</p>
 <p class="formula"><strong>dq/dt = K·ΔN·(q + 1) − q/τ<sub>c</sub></strong>,&nbsp; <strong>dN₂/dt = pump − N₂/τ − K·ΔN·q</strong></p>
 <p>The "+1" is spontaneous emission into this mode: an atom emits into a mode holding <i>q</i> photons at a rate proportional to <i>q</i> + 1. It seeds the mode with a photon now and then; the rest of the spontaneous light goes out sideways.</p>
 <p>Below <dfn data-def="The inversion at which the gain per round trip equals the loss per round trip: K·ΔN·τ_c = 1.">threshold</dfn>, K·ΔN·τ<sub>c</sub> &lt; 1: each seeded photon makes fewer than one copy before it leaves, and the mode holds only a few photons. At 0.8 W of pump, about 3.</p>`
@@ -153,11 +165,12 @@ export const spec: ExplainerSpec = {
 			title: 'Threshold: the inversion clamps',
 			scene: 'cavity',
 			hints: { phase: 'threshold' },
-			controls: [pump],
+			controls: [pump, cavityMedium],
 			body: `
 <p>Raise the pump. Near threshold (1.07 W here) each photon is copied almost once before it leaves; the photon number q ≈ <i>x</i>/(1 − <i>x</i>), with <i>x</i> = K·ΔN·τ<sub>c</sub>, shoots up. Above it the mode fills with about 10¹¹ photons (the left-hand chart is logarithmic: the jump spans ten powers of ten).</p>
 <p>And the inversion stops growing (right-hand chart, dashed). It can't rise past the threshold value: if it did, gain would beat loss and the photons would multiply until stimulated emission brought it back down. Above threshold, ΔN sits at <i>N</i><sub>th</sub> = 1/(Kτ<sub>c</sub>), about 10¹⁵ ions, 0.02% of them, whatever the pump. This is <dfn data-def="Above threshold, the steady-state inversion stays at its threshold value whatever the pump; the extra pump goes into stimulated emission.">gain clamping</dfn>.</p>
-<p>That is the laser's defining trick. Spontaneous emission from the clamped inversion stays fixed too, so every extra atom the pump raises can only leave level 2 by stimulated emission, into the same mode.</p>`
+<p>That is the laser's defining trick. Spontaneous emission from the clamped inversion stays fixed too, so every extra atom the pump raises can only leave level 2 by stimulated emission, into the same mode.</p>
+<p>Switch the medium to three or two levels, with the same atoms and cavity: up to 10 W the inversion stays far below zero, off the chart, and the mode holds almost no photons: the same pump that runs the four-level laser does nothing.</p>`
 		},
 		{
 			id: 'output',
@@ -169,9 +182,9 @@ export const spec: ExplainerSpec = {
 			body: `
 <p>With the inversion clamped, the arithmetic is simple. Pump atoms in at the rate P/<i>h</i>ν<sub>pump</sub>; <i>N</i><sub>th</sub>/τ of them per second still decay spontaneously; all the rest become photons in the mode. The output climbs on a straight line from the threshold pump:</p>
 <p class="formula"><strong>P<sub>out</sub> = (ν<sub>laser</sub>/ν<sub>pump</sub>) · T/(T + L) · (P − P<sub>th</sub>)</strong></p>
-<p>Nearly every extra pumped atom adds one photon to the mode, and the photons leave through the output mirror in the share T/(T + L): its transmission (−ln R = 0.051 per round trip) against the internal loss (L = 0.02). Here that is 72%, and 1064 nm photons carry 76% of an 808 nm pump photon's energy, so the slope is 55%: 5 W of pump gives 2.15 W of laser light.</p>
+<p>Nearly every extra pumped atom adds one photon to the mode, and the photons leave through the output mirror in the share T/(T + L): its logarithmic loss T = −ln R = 0.051 per round trip (the mirror's actual transmission is 1 − R = 0.050) against the internal loss (L = 0.02); the page spreads both losses evenly over the round trip. Here that is 72%, and 1064 nm photons carry 76% of an 808 nm pump photon's energy, so the slope is 55%: 5 W of pump gives 2.15 W of laser light.</p>
 <p>Below threshold the mode's few photons give less than a nanowatt. The straight line and its sharp knee are what a measured laser's output looks like.</p>`,
-			notes: `<p>The page assumes every absorbed pump photon puts one ion in the upper level; real Nd:YAG is close (about 0.9), and real lasers lose more to the mode's imperfect overlap with the pumped region, so their slopes are lower. A diode laser runs on the same equations: the pump is the current through a forward-biased <a href="../semiconductors/#forward">p-n junction</a>, the inversion is electrons and holes meeting in it, and below threshold it glows like an LED. Strictly, the inversion keeps creeping up by about one part in 10¹¹ above threshold; that tiny excess is the spontaneous emission into the mode (the +1).</p>`
+			notes: `<p>The page assumes every absorbed pump photon puts one ion in the upper level; real Nd:YAG is close (about 0.9), and real lasers lose more to the mode's imperfect overlap with the pumped region, so their slopes are lower. A diode laser runs on the same equations: the pump is the current through a forward-biased <a href="../semiconductors/#forward">p-n junction</a>, the inversion is electrons and holes meeting in it, and below threshold it glows like an LED. Strictly, the steady inversion approaches threshold from below: the +1 of spontaneous emission gives ΔN/<i>N</i><sub>th</sub> = <i>q</i>/(<i>q</i> + 1), short by about one part in 10¹¹ at 10¹¹ photons.</p>`
 		},
 		{
 			id: 'mirror',
@@ -209,9 +222,9 @@ export const spec: ExplainerSpec = {
 			controls: [hold, qPump],
 			body: `
 <p>Clamping caps the inversion only while the cavity works. Put a fast shutter in it (in practice a <dfn data-def="A crystal whose birefringence an applied voltage switches in nanoseconds; between polarisers it blocks or passes the light.">Pockels cell</dfn>) and keep it closed: no feedback, no lasing, and the pump piles atoms into level 2 for hundreds of microseconds, to several times the threshold inversion.</p>
-<p>Open it: the gain is now far above the loss, the photon number grows from its few spontaneous photons by a large factor every round trip, and the stored energy leaves in one <strong>giant pulse</strong> of about 20 ns. The pulse peaks as the inversion falls through threshold and ends with the inversion left below it, at the value Wagner and Lengyel's relation gives (panel). At 5 W of pump it reaches about 22 kW, ten thousand times the continuous output, in a pulse of half a millijoule.</p>
+<p>Open it: the gain is now far above the loss, the photon number grows from its few spontaneous photons by a large factor every round trip, and the stored energy leaves in one <strong>giant pulse</strong> of about 20 ns. The pulse peaks as the inversion falls through threshold and ends with the inversion left below it, close to the value Wagner and Lengyel's relation gives (panel). At 5 W of pump it reaches about 22 kW, ten thousand times the continuous output, in a pulse of half a millijoule.</p>
 <p>Set the shutter to never close and the same laser only spikes. Close it for longer and the pulse grows, until the stored inversion levels off after a few lifetimes. Pulsed lasers repeat this thousands of times a second; one pulse is followed here by the laser's ring-down to its steady output.</p>`,
-			notes: `<p>Wagner and Lengyel (1963): a pulse that starts from an inversion <i>N</i>ᵢ ends at <i>N</i><sub>f</sub> with <i>N</i>ᵢ − <i>N</i><sub>f</sub> = <i>N</i><sub>th</sub> ln(<i>N</i>ᵢ/<i>N</i><sub>f</sub>), and the photon number peaks at <i>N</i>ᵢ − <i>N</i><sub>th</sub> − <i>N</i><sub>th</sub> ln(<i>N</i>ᵢ/<i>N</i><sub>th</sub>). The page's integration matches both. The pulse is a few tens of photon lifetimes long, which is why short cavities give short Q-switched pulses; to go to picoseconds and femtoseconds, lasers lock many modes in phase instead.</p>`
+			notes: `<p>Wagner and Lengyel (1963): a pulse that starts from an inversion <i>N</i>ᵢ ends at <i>N</i><sub>f</sub> with <i>N</i>ᵢ − <i>N</i><sub>f</sub> = <i>N</i><sub>th</sub> ln(<i>N</i>ᵢ/<i>N</i><sub>f</sub>), and the photon number peaks at <i>N</i>ᵢ − <i>N</i><sub>th</sub> − <i>N</i><sub>th</sub> ln(<i>N</i>ᵢ/<i>N</i><sub>th</sub>). Both neglect pumping and spontaneous decay during the pulse: they describe the default pulse closely, while for long, slow pulses (weak pump, short hold) the integration's final inversion drifts from the prediction. At the default settings the pulse is about two photon lifetimes wide at half height (its width also depends on the stored inversion), which is why short cavities give short Q-switched pulses; to go to picoseconds and femtoseconds, lasers lock many modes in phase instead.</p>`
 		}
 	]
 };

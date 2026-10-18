@@ -128,7 +128,7 @@ A topic is done when:
 - [x] quantum-mechanics
 - [x] standard-model
 - [x] musical-scales-ratios
-- [ ] lasers
+- [x] lasers
 
 **Chemistry & Materials**
 - [x] atoms-periodic-table

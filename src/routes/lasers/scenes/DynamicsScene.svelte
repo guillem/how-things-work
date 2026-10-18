@@ -57,18 +57,31 @@
 		q ? syLog(clamp(Math.log10(Math.max(w, 1e-30)), LOG_LO, LOG_HI)) : syLin(w)
 	);
 	const outPath = $derived(tracePath(tUs, trace.out, sx, yOut, 0, windowUs));
-	const invMax = $derived(q ? 5 : 2);
+	const invMax = $derived(q ? niceMax(Math.max(1, ...inv) * 1.05) : 2);
 	const syInv = $derived(scale([0, invMax], [560, 420]));
 	const invPath = $derived(tracePath(tUs, inv, sx, (v) => syInv(Math.min(v, invMax)), 0, windowUs));
 
 	// spiking: the period of the late, small oscillations against the linearised formula
 	const r = $derived(pump / thresholdPump(R));
 	const theory = $derived(relaxation(R, r));
+	/** Period of the spikes in the last 30% of the trace, and whether they are small by then. */
 	const measured = $derived.by(() => {
 		const late = peaks(trace, windowUs * 0.7e-6);
 		if (late.length < 3) return null;
-		return ((late[late.length - 1].t - late[0].t) / (late.length - 1)) * 1e6;
+		const swing = Math.max(...late.map((p) => p.out)) / cw - 1;
+		return {
+			period: ((late[late.length - 1].t - late[0].t) / (late.length - 1)) * 1e6,
+			small: swing < 0.3
+		};
 	});
+	const formula = $derived(`2π/ω = ${(1e6 / theory.freq).toFixed(2)} µs`);
+	const spikeText = $derived(
+		!measured
+			? ''
+			: measured.small
+				? `late spikes every ${measured.period.toFixed(2)} µs · formula ${formula}`
+				: `spikes every ${measured.period.toFixed(2)} µs: still too large for ${formula}`
+	);
 	const firstSpike = $derived(peaks(trace)[0] ?? null);
 
 	// Q-switch: the pulse, its numbers and Wagner–Lengyel's prediction
@@ -77,8 +90,11 @@
 		const ni = trace.n2[indexAt(trace, holdUs * 1e-6)];
 		if (ni <= nth) return null;
 		const th = qSwitchTheory(ni, nth);
-		const i0 = indexAt(trace, trace.peak.t - 80e-9);
-		const i1 = indexAt(trace, trace.peak.t + 80e-9);
+		const width = pulseWidth(trace) * 1e9;
+		/** Half the zoom window, ns: two widths either side of the peak. */
+		const span = niceMax(Math.max(40, 2 * width));
+		const i0 = indexAt(trace, trace.peak.t - span * 1e-9);
+		const i1 = indexAt(trace, trace.peak.t + span * 1e-9);
 		let nf = Infinity;
 		for (let i = i0; i < Math.min(trace.t.length, i1 + 2000); i++) nf = Math.min(nf, trace.n2[i]);
 		const rel = Float64Array.from(trace.t.subarray(i0, i1 + 1), (v) => (v - trace.peak.t) * 1e9);
@@ -89,14 +105,18 @@
 			nfTheory: th.nf,
 			rel,
 			pw,
-			width: pulseWidth(trace) * 1e9,
+			width,
+			span,
 			energy: energyBetween(trace, holdUs * 1e-6, trace.peak.t + 1e-6)
 		};
 	});
-	const zx = scale([-80, 80], [690, 920]);
-	const zy = $derived(scale([0, niceMax(trace.peak.out / 1e3)], [360, 196]));
+	const span = $derived(pulse?.span ?? 80);
+	const zx = $derived(scale([-span, span], [690, 920]));
+	/** The zoom's power unit: kW for a giant pulse, W for a weak one. */
+	const zUnit = $derived(trace.peak.out >= 1e3 ? 1e3 : 1);
+	const zy = $derived(scale([0, niceMax(trace.peak.out / zUnit)], [360, 196]));
 	const pulsePath = $derived(
-		pulse ? tracePath(pulse.rel, pulse.pw, zx, (v) => zy(v / 1e3), -80, 80) : ''
+		pulse ? tracePath(pulse.rel, pulse.pw, zx, (v) => zy(v / zUnit), -span, span) : ''
 	);
 	const pulseShown = $derived(pulse !== null && nowUs * 1e-6 >= trace.peak.t);
 
@@ -250,7 +270,7 @@
 		/>
 		<Readout id="steadylbl"
 			><Label
-				x={X0 + 210}
+				x={X0 + 60}
 				y={186}
 				text="- - - steady output {watts(cw)}"
 				size={11}
@@ -264,7 +284,7 @@
 	</g>
 
 	<!-- inversion against time -->
-	<Axes {sx} sy={syInv} xLabel="µs" yLabel="ΔN / Nₜₕ" yTicks={q ? [0, 1, 2, 3, 4, 5] : [0, 1, 2]} />
+	<Axes {sx} sy={syInv} xLabel="µs" yLabel="ΔN / Nₜₕ" yTicks={q ? undefined : [0, 1, 2]} />
 	<line
 		x1={X0}
 		x2={X1}
@@ -295,7 +315,13 @@
 		<!-- the pulse, zoomed -->
 		{#if pulse}
 			<g opacity={pulseShown ? 1 : 0.25}>
-				<Axes sx={zx} sy={zy} xLabel="ns" yLabel="kW" xTicks={[-80, -40, 0, 40, 80]} />
+				<Axes
+					sx={zx}
+					sy={zy}
+					xLabel="ns"
+					yLabel={zUnit === 1 ? 'W' : 'kW'}
+					xTicks={[-span, -span / 2, 0, span / 2, span]}
+				/>
 				{#if pulseShown}
 					<path d={pulsePath} fill="none" stroke="var(--ls-beam)" stroke-width="2.2" />
 				{/if}
@@ -350,9 +376,9 @@
 				id="wagner"
 				order={4}
 				label="Inversion before / after"
-				value="{(pulse.ni / nth).toFixed(2)} → {(pulse.nf / nth).toFixed(3)} Nₜₕ (Wagner–Lengyel: {(
-					pulse.nfTheory / nth
-				).toFixed(3)})"
+				value="{(pulse.ni / nth).toFixed(2)} → {(pulse.nf / nth).toFixed(
+					3
+				)} Nₜₕ (Wagner–Lengyel, pump and decay neglected: {(pulse.nfTheory / nth).toFixed(3)})"
 				opacity={pulseShown ? 1 : 0}
 			>
 				<Label
@@ -372,6 +398,15 @@
 					muted
 					anchor="start"
 					tabular
+					opacity={pulseShown ? 1 : 0}
+				/>
+				<Label
+					x={690}
+					y={540}
+					text="(neglecting pump and decay during the pulse)"
+					size={11}
+					muted
+					anchor="start"
 					opacity={pulseShown ? 1 : 0}
 				/>
 			</Readout>
@@ -403,17 +438,13 @@
 			id="period"
 			order={2}
 			label="Spike period, late in the trace"
-			value={measured
-				? `${measured.toFixed(2)} µs measured; formula ${(1e6 / theory.freq).toFixed(2)} µs`
-				: '—'}
+			value={spikeText || '—'}
 			opacity={nowUs > windowUs * 0.95 ? 1 : 0}
 		>
 			<Label
 				x={X1}
 				y={186}
-				text={measured
-					? `late spikes every ${measured.toFixed(2)} µs · formula 2π/ω = ${(1e6 / theory.freq).toFixed(2)} µs`
-					: ''}
+				text={spikeText}
 				size={12}
 				anchor="end"
 				tabular

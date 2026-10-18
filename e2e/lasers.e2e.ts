@@ -35,6 +35,10 @@ test('below threshold a few photons; above it the inversion clamps and the outpu
 	await expect(stage(page)).toContainText('inversion: 1.0000 × Nₜₕ');
 	await slide(page, 'pump', '10');
 	await expect(stage(page)).toContainText('inversion: 1.0000 × Nₜₕ');
+	// the same atoms with three levels: 10 W is nowhere near threshold
+	await page.locator('button[data-control="cavityMedium"][data-value="three"]').click();
+	await expect(stage(page)).toContainText('threshold far above 10 W');
+	await expect(stage(page)).toContainText('inversion: −');
 
 	await page.goto('./lasers/#output');
 	await slide(page, 'pump', '2');
@@ -65,6 +69,9 @@ test('switched on, the laser spikes at the relaxation frequency', async ({ page 
 	expect(m).not.toBeNull();
 	const [measured, formula] = [Number(m?.[1]), Number(m?.[2])];
 	expect(Math.abs(measured / formula - 1)).toBeLessThan(0.03);
+	// just above threshold the spikes are still large by the end: no small-signal comparison
+	await slide(page, 'spikePump', '1.5');
+	await expect(stage(page)).toContainText('still too large for 2π/ω');
 });
 
 test('a closed shutter stores the inversion, and opening it gives a giant pulse', async ({

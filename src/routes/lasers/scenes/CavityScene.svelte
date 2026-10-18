@@ -14,7 +14,8 @@
 		pumpRate,
 		steadyState,
 		thresholdInversion,
-		thresholdPump
+		thresholdPump,
+		type Medium
 	} from '../laser';
 	import { curvePath, pow10, sci, watts } from './shared';
 
@@ -25,11 +26,15 @@
 		phase === 'mirror' ? Number(params.mirrorPump ?? 5) : Number(params.pump ?? 0.8)
 	);
 	const R = $derived(phase === 'mirror' ? Number(params.R ?? 0.95) : 0.95);
-	const st = $derived(steadyState({ medium: 'four', R }, pumpRate(P)));
+	/** The medium: four-level, except where the threshold step lets the reader switch it. */
+	const medium = $derived(
+		phase === 'threshold' ? (String(params.cavityMedium ?? 'four') as Medium) : 'four'
+	);
+	const st = $derived(steadyState({ medium, R }, pumpRate(P)));
 	const nth = $derived(thresholdInversion(R));
 	const Pth = $derived(thresholdPump(R));
 	const tc = $derived(photonLifetime(R));
-	const lasing = $derived(P > Pth);
+	const lasing = $derived(st.q > 1e6);
 
 	// ---------------------------------------------------------------- the cavity
 	const M1 = 64;
@@ -63,14 +68,7 @@
 	const syL = scale([-1, 13], [510, 270]);
 	const logq = (q: number) => Math.log10(Math.max(q, 0.1));
 	const photonCurve = $derived(
-		curvePath(
-			200,
-			0,
-			PMAX,
-			(p) => logq(steadyState({ medium: 'four', R }, pumpRate(p)).q),
-			sxL,
-			syL
-		)
+		curvePath(200, 0, PMAX, (p) => logq(steadyState({ medium, R }, pumpRate(p)).q), sxL, syL)
 	);
 	const sxR = $derived(
 		phase === 'mirror' ? scale([0.7, 1], [560, 870]) : scale([0, PMAX], [560, 870])
@@ -87,14 +85,7 @@
 					sxR,
 					syR
 				)
-			: curvePath(
-					200,
-					0,
-					PMAX,
-					(p) => steadyState({ medium: 'four', R }, pumpRate(p)).out,
-					sxR,
-					syR
-				)
+			: curvePath(200, 0, PMAX, (p) => steadyState({ medium, R }, pumpRate(p)).out, sxR, syR)
 	);
 	/** Output per watt of pump above threshold, from the model itself. */
 	const slope = $derived.by(() => {
@@ -107,7 +98,7 @@
 			200,
 			0,
 			PMAX,
-			(p) => steadyState({ medium: 'four', R }, pumpRate(p)).dn / thresholdInversion(R),
+			(p) => steadyState({ medium, R }, pumpRate(p)).dn / thresholdInversion(R),
 			sxR,
 			syInv
 		)
@@ -124,7 +115,14 @@
 
 	const leftOpacity = $derived(phase === 'output' ? 0.5 : 1);
 	const rightOpacity = $derived(phase === 'cavity' ? 0.5 : 1);
-	const invText = $derived(`${(st.dn / nth).toFixed(st.dn / nth > 0.999 ? 4 : 3)} × Nₜₕ`);
+	const invText = $derived(
+		Math.abs(st.dn / nth) >= 10
+			? `${sci(st.dn / nth, 3).replace('-', '−')} × Nₜₕ`
+			: `${(st.dn / nth).toFixed(st.dn / nth > 0.999 ? 4 : 3)} × Nₜₕ`
+	);
+	const thText = $derived(
+		medium === 'four' ? `threshold ${Pth.toFixed(2)} W` : 'threshold far above 10 W'
+	);
 </script>
 
 <g>
@@ -182,11 +180,11 @@
 			opacity={0.25 + 0.75 * clamp(P / PMAX)}
 		/>
 	{/each}
-	<Readout id="pump" order={1} label="Pump" value="{P.toFixed(2)} W (threshold {Pth.toFixed(2)} W)">
+	<Readout id="pump" order={1} label="Pump" value="{P.toFixed(2)} W ({thText})">
 		<Label
 			x={ROD.x0 + 10}
 			y={176}
-			text="pump {P.toFixed(2)} W · threshold {Pth.toFixed(2)} W"
+			text="pump {P.toFixed(2)} W · {thText}"
 			size={12}
 			anchor="start"
 		/>
@@ -265,17 +263,17 @@
 			yTicks={[0, 3, 6, 9, 12]}
 			yFormat={(v: number) => pow10(v)}
 		/>
-		<line
-			x1={sxL(Pth)}
-			x2={sxL(Pth)}
-			y1="270"
-			y2="510"
-			stroke="var(--stage-ink-muted)"
-			stroke-dasharray="4 4"
-		/>
-		<Readout id="thl"
-			><Label x={sxL(Pth) + 6} y={284} text="threshold" size={11} muted anchor="start" /></Readout
-		>
+		{#if medium === 'four'}<line
+				x1={sxL(Pth)}
+				x2={sxL(Pth)}
+				y1="270"
+				y2="510"
+				stroke="var(--stage-ink-muted)"
+				stroke-dasharray="4 4"
+			/>
+			<Readout id="thl"
+				><Label x={sxL(Pth) + 6} y={284} text="threshold" size={11} muted anchor="start" /></Readout
+			>{/if}
 		<path d={photonCurve} fill="none" stroke="var(--ls-beam)" stroke-width="2.5" />
 		<circle
 			cx={sxL(P)}
@@ -342,32 +340,44 @@
 				yLabel="ΔN / Nₜₕ"
 				yTicks={[0, 0.5, 1]}
 			/>
-			<path
-				d={invCurve}
-				fill="none"
-				stroke="var(--ls-inv)"
-				stroke-width="2"
-				stroke-dasharray="6 4"
-			/>
-			<path d={outCurve} fill="none" stroke="var(--ls-beam)" stroke-width="2.5" />
-			<Readout id="clamped"
-				><Label
+			{#if medium === 'four'}
+				<path
+					d={invCurve}
+					fill="none"
+					stroke="var(--ls-inv)"
+					stroke-width="2"
+					stroke-dasharray="6 4"
+				/>
+
+				<Readout id="clamped"
+					><Label
+						x={sxR(PMAX) - 6}
+						y={syInv(1) + 18}
+						text="inversion, clamped"
+						size={11}
+						color="var(--ls-inv)"
+						anchor="end"
+					/></Readout
+				>
+				<circle
+					cx={sxR(P)}
+					cy={syInv(st.dn / nth)}
+					r="5"
+					fill="var(--stage-bg)"
+					stroke="var(--ls-inv)"
+					stroke-width="2"
+				/>
+			{:else}
+				<Label
 					x={sxR(PMAX) - 6}
-					y={syInv(1) + 18}
-					text="inversion, clamped"
+					y={syInv(0) - 14}
+					text="inversion below zero at every pump: off the chart"
 					size={11}
 					color="var(--ls-inv)"
 					anchor="end"
-				/></Readout
-			>
-			<circle
-				cx={sxR(P)}
-				cy={syInv(st.dn / nth)}
-				r="5"
-				fill="var(--stage-bg)"
-				stroke="var(--ls-inv)"
-				stroke-width="2"
-			/>
+				/>
+			{/if}
+			<path d={outCurve} fill="none" stroke="var(--ls-beam)" stroke-width="2.5" />
 			<circle
 				cx={sxR(P)}
 				cy={syR(st.out)}
