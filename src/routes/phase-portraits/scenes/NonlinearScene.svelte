@@ -229,7 +229,9 @@
 	const choose = (id: string) => {
 		if (atId && atValue !== id) setParam(atId, id);
 	};
-	const fpLabel = (f: FixedPoint) => `${pointName(f)}: ${f.kind}`;
+	/** A non-hyperbolic kind is only what the linearisation says. */
+	const kindSays = (f: FixedPoint) => (f.hyperbolic ? f.kind : `linearisation says ${f.kind}`);
+	const fpLabel = (f: FixedPoint) => `${pointName(f)}: ${kindSays(f)}`;
 	const verdict = $derived(
 		chosen
 			? chosen.hyperbolic
@@ -429,13 +431,13 @@
 			id="origin"
 			order={2}
 			label="Origin"
-			value="{origin.kind}; λ = {eigenText(origin.eigen)}"
+			value="{kindSays(origin)}; λ = {eigenText(origin.eigen)}"
 			color={kindColor(origin.kind)}
 		>
 			<Label
 				x={PANEL}
 				y={136}
-				text="origin: {origin.kind}"
+				text="origin: {kindSays(origin)}"
 				anchor="start"
 				size={14}
 				weight={700}

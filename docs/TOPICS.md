@@ -113,7 +113,7 @@ A topic is done when:
 - [x] differential-equations
 - [x] calculus-of-variations
 - [x] random-graphs
-- [ ] phase-portraits
+- [x] phase-portraits
 
 **Physics**
 - [x] newtons-laws

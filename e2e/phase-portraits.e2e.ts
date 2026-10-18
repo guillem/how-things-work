@@ -56,7 +56,7 @@ test('eigenvalues dragged with the keyboard: meet on the axis, then leave it as 
 	// slide λ₂ (−2) up to λ₁ (−0.5): a double root
 	await l2.focus();
 	for (let i = 0; i < 30; i++) await page.keyboard.press('ArrowRight');
-	await expect(stage(page)).toContainText('origin: stable degenerate node');
+	await expect(stage(page)).toContainText('origin: stable star');
 	// now the pair can leave the axis: a stable spiral
 	await l1.focus();
 	for (let i = 0; i < 10; i++) await page.keyboard.press('ArrowUp');
@@ -65,6 +65,12 @@ test('eigenvalues dragged with the keyboard: meet on the axis, then leave it as 
 	// and across the imaginary axis: unstable
 	for (let i = 0; i < 20; i++) await page.keyboard.press('ArrowRight');
 	await expect(stage(page)).toContainText('origin: unstable spiral');
+	// back to the real axis, and the double root splits again with one key press
+	for (let i = 0; i < 30; i++) await page.keyboard.press('ArrowLeft');
+	for (let i = 0; i < 10; i++) await page.keyboard.press('ArrowDown');
+	await expect(stage(page)).toContainText('origin: stable star');
+	await page.keyboard.press('ArrowLeft');
+	await expect(stage(page)).toContainText('λ = −1.00, −1.05');
 });
 
 test('pointing at a fixed point of the pendulum linearises there', async ({ page }) => {
@@ -87,7 +93,7 @@ test('a smaller circle: the real flow and its linearisation close up', async ({ 
 
 test('predators and prey: a centre the linearisation can’t confirm', async ({ page }) => {
 	await page.goto('./phase-portraits/#predator');
-	await expect(stage(page)).toContainText('(3, 2): centre');
+	await expect(stage(page)).toContainText('(3, 2): linearisation says centre');
 	await expect(stage(page)).toContainText('linearisation can’t decide');
 	await choice(page, 'atP', 'origin').click();
 	await expect(stage(page)).toContainText('(0, 0): saddle');
@@ -112,6 +118,10 @@ test('past the Hopf bifurcation a cycle of radius √μ is born', async ({ page 
 	await expect(stage(page)).toContainText('orbits settle at r = 0.500; √μ = 0.500');
 	await range(page, 'muH').fill('0.64');
 	await expect(stage(page)).toContainText('orbits settle at r = 0.800; √μ = 0.800');
+	// at μ = 0 the linearisation says centre, but the orbits spiral in
+	await range(page, 'muH').fill('0');
+	await expect(stage(page)).toContainText('origin: linearisation says centre');
+	await expect(stage(page)).toContainText('no cycle: orbits spiral in, slowly');
 	await range(page, 'muH').fill('-0.2');
 	await expect(stage(page)).toContainText('origin: stable spiral');
 	await expect(stage(page)).toContainText('no cycle');
@@ -121,5 +131,5 @@ test('van der Pol: a cycle of amplitude about 2', async ({ page }) => {
 	await page.goto('./phase-portraits/#vanderpol');
 	await expect(stage(page)).toContainText('limit cycle: amplitude 2.01, period 6.66');
 	await range(page, 'muV').fill('0');
-	await expect(stage(page)).toContainText('origin: centre');
+	await expect(stage(page)).toContainText('origin: linearisation says centre');
 });

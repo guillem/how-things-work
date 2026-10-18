@@ -90,17 +90,15 @@
 			const end = { x: sc.sx(v[0] * s), y: sc.sy(v[1] * s) };
 			// label the end that sits higher on the stage (away from the axis titles)
 			const sign = end.y < sc.sy(0) || (end.y === sc.sy(0) && end.x > sc.sx(0)) ? 1 : -1;
-			// beside the line, not on it: 14 units along its normal, on the upper side
+			// a short tag beside the line, 16 units along its normal, on the upper side
 			const ex = end.x - sc.sx(0);
 			const ey = end.y - sc.sy(0);
 			const n = Math.hypot(ex, ey) || 1;
 			let nx = -ey / n;
 			let ny = ex / n;
 			if (ny > 0) [nx, ny] = [-nx, -ny];
-			const lx = sc.sx(sign * v[0] * s * 0.7) + nx * 20;
-			const ly = sc.sy(sign * v[1] * s * 0.7) + ny * 16;
-			const anchor: 'start' | 'middle' | 'end' =
-				Math.abs(nx) > 0.6 ? (nx > 0 ? 'start' : 'end') : 'middle';
+			const lx = sc.sx(sign * v[0] * s * 0.82) + nx * 16;
+			const ly = sc.sy(sign * v[1] * s * 0.82) + ny * 16;
 			return [
 				{
 					k,
@@ -110,7 +108,7 @@
 					y2: end.y,
 					lx,
 					ly,
-					anchor,
+					tag: `λ${k ? '₂' : '₁'}`,
 					text: `λ${k ? '₂' : '₁'} = ${fixed(eig.re[k])}: ${eig.re[k] > 0 ? 'out' : eig.re[k] < 0 ? 'in' : 'still'}`
 				}
 			];
@@ -129,7 +127,7 @@
 		top: a.top + (b.top - a.top) * u,
 		bottom: a.bottom + (b.bottom - a.bottom) * u
 	});
-	const CHART_BIG: Rect = { left: 652, right: 930, top: 216, bottom: 520 };
+	const CHART_BIG: Rect = { left: 652, right: 930, top: 232, bottom: 524 };
 	const CHART_SMALL: Rect = { left: 652, right: 930, top: 420, bottom: 550 };
 	const chartRect = $derived(lerp(CHART_BIG, CHART_SMALL, k.current));
 	const EIG: Rect = { left: 652, right: 930, top: 212, bottom: 366 };
@@ -149,7 +147,7 @@
 			return;
 		}
 		const other = which === 1 ? l2 : l1;
-		if (Math.abs(x - other) < 0.06) {
+		if (Math.abs(x - other) < 0.025) {
 			// on the other eigenvalue: a double root, which can leave the axis as a pair
 			setParam('l1', other);
 			setParam('l2', other);
@@ -172,8 +170,18 @@
 				? 'built as λ·I'
 				: 'built as P·diag(λ₁, λ₂)·P⁻¹'
 	);
+	/** A = λ·I: every direction is an eigenvector, a star (trace and determinant can't tell it apart). */
+	const star = $derived(
+		Math.abs(A[1]) < 1e-9 && Math.abs(A[2]) < 1e-9 && Math.abs(A[0] - A[3]) < 1e-9 && A[0] !== 0
+	);
 	const kindLine = $derived(
-		cls.kind === 'non-isolated' ? 'Δ = 0: a line of fixed points' : `origin: ${cls.kind}`
+		cls.kind === 'non-isolated'
+			? A.every((v) => Math.abs(v) < 1e-12)
+				? 'A = 0: every point is fixed'
+				: 'Δ = 0: a line of fixed points'
+			: star
+				? `origin: ${A[0] < 0 ? 'stable' : 'unstable'} star (all directions eigenvectors)`
+				: `origin: ${cls.kind}`
 	);
 	const periodText = $derived(
 		cls.kind === 'centre' ? `closed orbits, period 2π/ω = ${fixed((2 * Math.PI) / eig.im[0])}` : ''
@@ -224,7 +232,7 @@
 	<Portrait rect={PLANE} box={BOX} {field} starts={LINEAR_STARTS} {t} id="pp-lin" tMax={10} />
 	{#each vecs as v (v.k)}
 		<Readout id="vec-{v.k}">
-			<Label x={v.lx} y={v.ly - 10} text={v.text} size={12} weight={600} color="var(--pp-eig)" />
+			<Label x={v.lx} y={v.ly + 5} text={v.tag} size={13} weight={700} color="var(--pp-eig)" />
 		</Readout>
 	{/each}
 	<circle
@@ -273,6 +281,26 @@
 			muted
 		/>
 	</Readout>
+	{#if vecs.length && phase === 'eigen'}
+		<Readout
+			id="vecs"
+			order={5}
+			label="Eigenvector lines"
+			value={vecs.map((v) => v.text).join(', ')}
+			color="var(--pp-eig)"
+		>
+			<Label
+				x={PANEL}
+				y={198}
+				text="eigenvector lines: {vecs.map((v) => v.text).join(', ')}"
+				anchor="start"
+				size={12}
+				weight={600}
+				color="var(--pp-eig)"
+				tabular
+			/>
+		</Readout>
+	{/if}
 	{#if periodText && phase !== 'kinds'}
 		<Readout id="period" order={5} label="Centre" value={periodText}>
 			<Label x={PANEL} y={196} text={periodText} anchor="start" size={12} muted tabular />
