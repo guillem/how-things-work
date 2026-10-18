@@ -62,7 +62,7 @@ test.describe('the model crystal', () => {
 		expect(Math.min(...after)).toBeLessThan(peak / 2);
 	});
 
-	test('one dislocation glides at a few hundredths of the perfect crystal’s strength', () => {
+	test('one dislocation glides at a few thousandths of the perfect crystal’s strength', () => {
 		const c = new Crystal(specFor('one'));
 		const start = cores(c, c.frame(0));
 		expect(start).toHaveLength(1);

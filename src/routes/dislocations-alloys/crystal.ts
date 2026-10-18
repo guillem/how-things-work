@@ -314,7 +314,9 @@ export class Crystal {
 	private maybeRebuild() {
 		let m = 0;
 		for (let i = 0; i < this.n; i++) {
-			const dx = this.x[i] - this.xList[i];
+			// how far each atom moved since the list was built (nearest periodic image)
+			const dx0 = this.x[i] - this.xList[i];
+			const dx = dx0 - this.width * Math.round(dx0 / this.width);
 			const dy = this.y[i] - this.yList[i];
 			m = Math.max(m, dx * dx + dy * dy);
 		}
@@ -377,9 +379,7 @@ export class Crystal {
 		b.atoms.forEach((i, k) => {
 			let nx = b.x + c * b.ox[k] - sn * b.oy[k];
 			nx -= W * Math.floor(nx / W);
-			const dx = nx - this.x[i];
 			this.x[i] = nx;
-			this.xList[i] += dx - W * Math.round(dx / W);
 			this.y[i] = b.y + sn * b.ox[k] + c * b.oy[k];
 		});
 	}
@@ -410,22 +410,15 @@ export class Crystal {
 			vy[i] += h * (fy[i] - damp * vy[i]);
 			x[i] += DT * vx[i];
 			y[i] += DT * vy[i];
-			if (x[i] >= W) {
-				x[i] -= W;
-				this.xList[i] -= W;
-			} else if (x[i] < 0) {
-				x[i] += W;
-				this.xList[i] += W;
-			}
+			if (x[i] >= W) x[i] -= W;
+			else if (x[i] < 0) x[i] += W;
 		}
 		this.grip += v * DT;
 		for (let i = 0; i < n; i++) {
 			if (role[i] !== TOP) continue;
 			let nx = this.x0[i] + this.grip;
 			nx -= W * Math.floor(nx / W);
-			const dx = nx - x[i];
 			x[i] = nx;
-			this.xList[i] += dx - W * Math.round(dx / W);
 		}
 		this.maybeRebuild();
 		this.forces();

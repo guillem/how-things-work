@@ -304,10 +304,12 @@
 		(Math.min(DECADES, Math.max(0, -Math.log10(Math.max(v, 1e-9)))) / DECADES) *
 			(GAUGE.bottom - GAUGE.top);
 	const now = $derived(smoothed(fi));
+	/** The highest stress recorded so far (not averaged: the bar and the curve are). */
 	const peak = $derived.by(() => {
+		const s = c.curve.stress;
 		let m = -Infinity;
-		for (let i = 0; i <= fi; i++) m = Math.max(m, smoothed(i));
-		return m;
+		for (let i = 0; i <= fi; i++) m = Math.max(m, s[i]);
+		return m / G;
 	});
 	const TICKS = [
 		{ v: 1, label: 'G' },

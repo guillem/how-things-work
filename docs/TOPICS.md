@@ -142,7 +142,7 @@ A topic is done when:
 - [x] carbon-polymers
 - [x] semiconductors
 - [x] chromatography
-- [ ] dislocations-alloys
+- [x] dislocations-alloys
 
 **Biology**
 - [x] the-cell
@@ -646,7 +646,7 @@ A topic is done when:
 - **Takeaway:** A crystal with a dislocation yields at a small fraction of the stress a perfect crystal needs, because the defect breaks one row of bonds at a time, and foreign atoms raise that stress by pinning it.
 - **Prerequisites:** semiconductors, states-of-matter
 - **Related:** bridges-structures
-- **Pitfall:** Crystals do not deform by whole planes sliding at once; the theoretical strength computed that way is a thousand times higher than what any real metal shows.
+- **Pitfall:** Crystals do not deform by whole planes sliding at once; the theoretical strength computed that way is often a thousand times higher than what ordinary, soft metal crystals show (only tiny, nearly defect-free crystals come close to it).
 
 ### Biology
 
