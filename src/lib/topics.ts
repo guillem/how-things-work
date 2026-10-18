@@ -969,6 +969,15 @@ const explainers: Explainer[] = [
 		accent: '#7048e8',
 		steps: 7,
 		minutes: 16
+	},
+	{
+		slug: 'training-a-tiny-language-model',
+		title: 'Training a tiny language model',
+		summary:
+			'Train a two-layer character-level transformer on Shakespeare, in the page or from stored runs made by the same code: watch the average surprise at the next character fall below the bigram and trigram lines, the samples turn from random letters into words and speeches, and, with too little text, the model start to memorise.',
+		accent: '#e8590c',
+		steps: 8,
+		minutes: 18
 	}
 ];
 

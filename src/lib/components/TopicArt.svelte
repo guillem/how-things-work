@@ -2985,6 +2985,62 @@
 			stroke="currentColor"
 			stroke-width="1.4"
 		/>
+	{:else if slug === 'training-a-tiny-language-model'}
+		<!-- a loss curve falling below a dashed n-gram line, the training curve just under it -->
+		<line x1="22" y1="12" x2="22" y2="100" stroke="currentColor" stroke-width="1.2" opacity="0.5" />
+		<line
+			x1="22"
+			y1="100"
+			x2="186"
+			y2="100"
+			stroke="currentColor"
+			stroke-width="1.2"
+			opacity="0.5"
+		/>
+		<line
+			x1="22"
+			y1="62"
+			x2="186"
+			y2="62"
+			stroke="var(--ttlm-baseline)"
+			stroke-width="1.5"
+			stroke-dasharray="5 3"
+		/>
+		<path
+			d="M24 14 C30 50 36 58 50 64 S90 72 120 76 S165 80 184 81"
+			fill="none"
+			stroke="var(--ttlm-train)"
+			stroke-width="2.5"
+			stroke-linecap="round"
+		/>
+		<path
+			d="M24 14 C30 48 36 56 50 61 S90 68 120 71 S165 74 184 75"
+			fill="none"
+			stroke="var(--ttlm-val)"
+			stroke-width="2.5"
+			stroke-linecap="round"
+		/>
+		{#each ['t', 'h', 'e', '␣', '?'] as c, i (i)}
+			<rect
+				x={96 + i * 18}
+				y="18"
+				width="15"
+				height="18"
+				rx="3"
+				fill="var(--surface)"
+				stroke={i === 4 ? accent : 'currentColor'}
+				stroke-width={i === 4 ? 1.8 : 1}
+				opacity={i === 4 ? 1 : 0.6}
+			/>
+			<text
+				x={103.5 + i * 18}
+				y="31"
+				text-anchor="middle"
+				font-size="11"
+				font-family="ui-monospace, monospace"
+				fill="currentColor">{c}</text
+			>
+		{/each}
 	{:else if slug === 'stars'}
 		<!-- a massive star cut open: onion layers round an iron core, and a track on the HR diagram -->
 		<circle cx="62" cy="60" r="44" fill="var(--st-h)" />

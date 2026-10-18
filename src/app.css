@@ -3279,3 +3279,35 @@ kbd {
 	--rs-attn-box: #d9480f;
 	--rs-mlp-box: #2f9e44;
 }
+
+/* training-a-tiny-language-model: training and held-out curves, the n-gram lines, the stored run
+   behind a live or compared one, the picked character, probability bars, the read characters,
+   the blocks, forward and backward passes, copied text */
+:root {
+	--ttlm-train: #e8590c;
+	--ttlm-val: #1971c2;
+	--ttlm-baseline: #868e96;
+	--ttlm-ghost: #ced4da;
+	--ttlm-pick: #c2255c;
+	--ttlm-pick-bg: #ffdeeb;
+	--ttlm-bar: #74c0fc;
+	--ttlm-context: #e7f5ff;
+	--ttlm-block: #f3f0ff;
+	--ttlm-forward: #1971c2;
+	--ttlm-backward: #c2255c;
+	--ttlm-copy: #c2255c;
+}
+:root[data-theme='dark'] {
+	--ttlm-train: #ff922b;
+	--ttlm-val: #74c0fc;
+	--ttlm-baseline: #adb5bd;
+	--ttlm-ghost: #495057;
+	--ttlm-pick: #f783ac;
+	--ttlm-pick-bg: #5a1f36;
+	--ttlm-bar: #1c7ed6;
+	--ttlm-context: #1b2a3a;
+	--ttlm-block: #28213f;
+	--ttlm-forward: #74c0fc;
+	--ttlm-backward: #f783ac;
+	--ttlm-copy: #f783ac;
+}
