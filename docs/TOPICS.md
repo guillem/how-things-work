@@ -1,6 +1,6 @@
 # Topic catalog
 
-Source of truth for the content of an interactive web learning tool that shows how things work. It defines 131 topics in 11 categories, each built around one interactive graphic. Readers range from high-school students to university majors.
+Source of truth for the content of an interactive web learning tool that shows how things work. It defines 132 topics in 11 categories, each built around one interactive graphic. Readers range from high-school students to university majors.
 
 This file covers content only. It does not choose the stack, the visual design or the project layout; take those from the repository's own instructions.
 
@@ -85,7 +85,7 @@ A topic is done when:
 | Mathematics | `math` | 18 |
 | Physics | `physics` | 13 |
 | Chemistry & Materials | `chemistry` | 14 |
-| Biology | `biology` | 10 |
+| Biology | `biology` | 11 |
 | Body & Medicine | `medicine` | 10 |
 | Earth & Climate | `earth` | 9 |
 | Space | `space` | 9 |
@@ -158,6 +158,7 @@ A topic is done when:
 - [x] ecosystems
 - [x] crispr
 - [x] bacterial-chemotaxis
+- [ ] diffusion-osmosis
 
 **Body & Medicine**
 - [x] heart-circulation
@@ -485,7 +486,7 @@ A topic is done when:
 - **Interaction:** Fill the two halves of a box with fast and slow particles and remove the wall. Watch the temperatures equalize, count the arrangements consistent with each state, and try to run the film backward.
 - **Takeaway:** Heat flows and things mix because mixed states vastly outnumber ordered ones, and that imbalance is what gives time its direction.
 - **Prerequisites:** newtons-laws
-- **Related:** states-of-matter, compression
+- **Related:** states-of-matter, compression, diffusion-osmosis
 - **Pitfall:** "Disorder" is only a metaphor; define entropy by counting microstates.
 
 #### special-relativity
@@ -729,7 +730,7 @@ A topic is done when:
 - **Interaction:** Follow one glucose molecule through glycolysis, the citric acid cycle and the electron transport chain. Electrons pump protons across the mitochondrial membrane; let the protons flow back through ATP synthase and watch its rotor turn and make ATP. Remove oxygen to see the chain back up.
 - **Takeaway:** Cells release the energy in food in small steps and store it as a proton gradient, which a rotating enzyme converts into ATP.
 - **Prerequisites:** the-cell
-- **Related:** redox-batteries, photosynthesis
+- **Related:** redox-batteries, photosynthesis, diffusion-osmosis
 
 #### meiosis-inheritance
 - **Title:** Meiosis & inheritance
@@ -775,6 +776,16 @@ A topic is done when:
 - **Prerequisites:** the-cell
 - **Related:** feedback-control, homeostasis
 - **Pitfall:** The cell does not steer toward the attractant: it cannot tell direction, it only changes how often it tumbles, and the page must not draw it turning toward the source.
+
+#### diffusion-osmosis
+- **Title:** Diffusion, osmosis & active transport
+- **Level:** 1
+- **Kind:** simulate
+- **Interaction:** Drop dye into one corner of a box of jiggling particles and watch it spread, faster when warmer, while a concentration graph flattens. Put a membrane down the middle with pores that pass water but not sugar, set the sugar concentration on each side and watch the water level rise on the sugary side; then make the box a cell, place it in pure water, salt water and something in between, and see it swell, shrink or hold, as a potato slice does in the classroom experiment. Finally switch on a pump that carries particles against the gradient and watch its ATP meter drain.
+- **Takeaway:** Particles spread from where they are crowded to where they are not by random motion alone; a membrane that holds dissolved particles back makes water flow toward the side with more of them; and moving anything the other way costs energy.
+- **Prerequisites:** the-cell, states-of-matter
+- **Related:** entropy, respiration-atp
+- **Pitfall:** Osmosis moves water toward the side with more dissolved particles, but not because those particles 'dilute' the water so that fewer water molecules reach the pore: the flow is far larger than water's own diffusion would give, and it comes from the trapped particles pushing on the membrane. Diffusion needs no force or pump; particles have no direction of their own, and the net flow is a counting effect. A plant cell in pure water becomes firm rather than bursting, because of its wall.
 
 ### Body & Medicine
 
