@@ -103,7 +103,7 @@ test('two rates show spontaneous recovery after a brief reversal; one rate canno
 	// One rate run through the same protocol (its own reversal until zero) stays at zero.
 	const head = [...block(BASELINE, 0), ...block(ADAPT, ROTATION)];
 	let n = 0;
-	let x: number[] = [];
+	let x: number[];
 	do {
 		n++;
 		x = runOneRate([...head, ...block(n, -ROTATION)], A, B);
@@ -128,7 +128,7 @@ test('two rates relearn faster after a reversal (savings); one rate does not', (
 	const one = runOneRate(block(ADAPT, ROTATION), A, B);
 	const oneLevel = one[ADAPT] / 2;
 	let n = 0;
-	let x: number[] = [];
+	let x: number[];
 	do {
 		n++;
 		x = runOneRate([...block(ADAPT, ROTATION), ...block(n, -ROTATION)], A, B);
@@ -144,7 +144,7 @@ test('two rates relearn faster after a reversal (savings); one rate does not', (
 
 test('weaker error sensitivity (cerebellar damage) adapts slowly and keeps less', () => {
 	const healthy = runTwoRate(adaptThenHide());
-	const patient = runTwoRate(adaptThenHide(), scaleB(SMITH_FIT, 1 / 3));
+	const patient = runTwoRate(adaptThenHide(), scaleB(SMITH_FIT, 0.33));
 	const end = BASELINE + ADAPT;
 	const half = healthy[end].total / 2;
 	const reach = (s: typeof healthy) => s.slice(BASELINE).findIndex((st) => st.total >= half);
@@ -157,6 +157,9 @@ test('weaker error sensitivity (cerebellar damage) adapts slowly and keeps less'
 	// Narrative: healthy reaches 13° in 10 reaches and 22° by the end; at a third, 6° and 14°.
 	expect(Math.round(healthy[BASELINE + 10].total)).toBe(13);
 	expect(Math.round(healthy[end].total)).toBe(22);
+	// ...of which 9 fast after ten reaches, and 18 slow at the end.
+	expect(Math.round(healthy[BASELINE + 10].fast)).toBe(9);
+	expect(Math.round(healthy[end].slow)).toBe(18);
 	expect(Math.round(patient[BASELINE + 10].total)).toBe(6);
 	expect(Math.round(patient[end].total)).toBe(14);
 });

@@ -3281,6 +3281,66 @@
 				opacity={i < 3 ? 0.55 : 0.18}
 			/>
 		{/each}
+	{:else if slug === 'cerebellum-motor-learning'}
+		<!-- a reach under a rotated cursor (hand dashed, cursor solid), and corrections rising toward the rotation -->
+		<path
+			d="M20 106 A 78 78 0 0 1 98 28"
+			fill="none"
+			stroke="currentColor"
+			stroke-width="1"
+			stroke-dasharray="2 4"
+			opacity="0.45"
+		/>
+		<circle cx="20" cy="106" r="5" fill="none" stroke="currentColor" stroke-width="1.5" />
+		<circle
+			cx="75"
+			cy="51"
+			r="9"
+			fill="var(--cb-target)"
+			fill-opacity="0.25"
+			stroke="var(--cb-target)"
+			stroke-width="2"
+		/>
+		<line
+			x1="20"
+			y1="106"
+			x2="75"
+			y2="51"
+			stroke="currentColor"
+			stroke-width="1.5"
+			stroke-dasharray="4 3"
+			opacity="0.6"
+		/>
+		<line x1="20" y1="106" x2="48" y2="31" stroke={accent} stroke-width="2" />
+		<circle cx="48" cy="31" r="5" fill={accent} />
+		<line
+			x1="112"
+			y1="34"
+			x2="192"
+			y2="34"
+			stroke="currentColor"
+			stroke-width="1"
+			stroke-dasharray="4 3"
+			opacity="0.5"
+		/>
+		<line
+			x1="112"
+			y1="104"
+			x2="192"
+			y2="104"
+			stroke="currentColor"
+			stroke-width="1"
+			opacity="0.4"
+		/>
+		{#each [100, 80, 66, 58, 52, 48, 45, 43, 42, 41] as y, i (i)}
+			<circle cx={116 + i * 8.4} cy={y} r="3" fill={accent} />
+		{/each}
+		<path
+			d="M116 100 C 130 70, 150 52, 192 46"
+			fill="none"
+			stroke="var(--cb-model)"
+			stroke-width="2"
+		/>
 	{:else if slug === 'stars'}
 		<!-- a massive star cut open: onion layers round an iron core, and a track on the HR diagram -->
 		<circle cx="62" cy="60" r="44" fill="var(--st-h)" />

@@ -3513,6 +3513,30 @@ kbd {
 	--cot-wrong-bg: #3b1d1d;
 	--cot-question: #25282c;
 	--cot-beyond: #232629;
+/* cerebellum-motor-learning: the reader's reaches and cursor, the target, the two-rate model,
+   its fast and slow learners, the weaker-B patient (and the strategy), the circuit's parallel
+   fibres, Purkinje cell and climbing fibre */
+:root {
+	--cb-hand: #b0306f;
+	--cb-target: #2f9e44;
+	--cb-model: #1864ab;
+	--cb-fast: #e67700;
+	--cb-slow: #6741d9;
+	--cb-patient: #c92a2a;
+	--cb-pf: #1c7ed6;
+	--cb-pc: #8f3f71;
+	--cb-cf: #e03131;
+}
+:root[data-theme='dark'] {
+	--cb-hand: #f06fae;
+	--cb-target: #69db7c;
+	--cb-model: #74c0fc;
+	--cb-fast: #ffa94d;
+	--cb-slow: #b197fc;
+	--cb-patient: #ff8787;
+	--cb-pf: #4dabf7;
+	--cb-pc: #e599c0;
+	--cb-cf: #ff6b6b;
 }
 
 /* bacterial-chemotaxis: the cells, cells heading toward the drop, the attractant, the chamber's

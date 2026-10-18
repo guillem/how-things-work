@@ -1050,6 +1050,15 @@ const explainers: Explainer[] = [
 		accent: '#66a80f',
 		steps: 9,
 		minutes: 18
+	},
+	{
+		slug: 'cerebellum-motor-learning',
+		title: 'The cerebellum & motor learning',
+		summary:
+			'Reach for targets while the cursor is secretly turned by 30°, and watch your errors shrink and an aftereffect remain; a two-rate error-driven model (Smith, Ghazizadeh & Shadmehr 2006) does the same reaches beside you, and predicts the spontaneous recovery you can then test on your own hand.',
+		accent: '#8f3f71',
+		steps: 10,
+		minutes: 20
 	}
 ];
 
