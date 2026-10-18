@@ -46,6 +46,11 @@ test('the radius read off the coefficients is the distance to the nearest singul
 		expect(radius(runge, a)).toBeCloseTo(Math.sqrt(1 + a * a), 12);
 		expect(radiusFromCoefficients(runge, a) / Math.sqrt(1 + a * a)).toBeCloseTo(1, 1);
 	}
+	// Taylor's bound with M = (n + 1)! (the derivative bound in the narrative) gives |x|^(n+1).
+	for (const x of [0.5, -0.9])
+		for (const n of [3, 10, 25]) {
+			expect(err(runge, 0, n, x)).toBeLessThanOrEqual(Math.abs(x) ** (n + 1) + 1e-15);
+		}
 	// log(1 + x) blows up at −1: about a the radius is 1 + a.
 	for (const a of [-0.5, 0, 0.5, 2]) {
 		expect(radius(log, a)).toBeCloseTo(1 + a, 12);
@@ -60,7 +65,7 @@ test('the radius read off the coefficients is the distance to the nearest singul
 	}
 });
 
-test('inside the radius more terms help; outside, each term makes it worse', () => {
+test('inside the radius more terms help; outside, about 0, each nonzero term makes it worse', () => {
 	// 1/(1 + x²) about 0, radius 1.
 	for (const x of [0.5, -0.8, 0.95]) {
 		expect(err(runge, 0, 40, x)).toBeLessThan(err(runge, 0, 20, x));
@@ -84,6 +89,17 @@ test('inside the radius more terms help; outside, each term makes it worse', () 
 	expect(log.f(1.5)).toBeCloseTo(0.92, 2);
 	// at x = 2, degree 30 is about −8.6 × 10⁸
 	expect(taylor(runge, 0, 30)(2) / -8.6e8).toBeCloseTo(1, 2);
+});
+
+test('outside the radius a single term can still help: the trend fails, not every step', () => {
+	// About a = 1 (R = √2), at x = −1: the error is 2 at degree 2 and 0 at degree 4 ...
+	expect(err(runge, 1, 2, -1)).toBeCloseTo(2, 9);
+	expect(err(runge, 1, 4, -1)).toBeCloseTo(0, 9);
+	// ... and at every fourth degree after it, while the degrees in between swing ever wider:
+	// the partial sums do not converge there.
+	expect(err(runge, 1, 40, -1)).toBeLessThan(1e-6);
+	expect(err(runge, 1, 38, -1)).toBeGreaterThan(1e5);
+	expect(err(runge, 1, 38, -1)).toBeGreaterThan(err(runge, 1, 18, -1));
 });
 
 test('on the boundary circle the series of 1/(1 + x²) does not converge', () => {
@@ -125,6 +141,8 @@ test('Chebyshev interpolation fits 1/(1 + x²) on the whole interval, at the ell
 	const rho = bernsteinRho(runge, -4, 4);
 	expect(rho).toBeCloseTo((1 + Math.sqrt(17)) / 4, 12);
 	expect(Math.pow(errAt(20) / errAt(40), 1 / 20)).toBeCloseTo(rho, 1);
+	// On average, not at every step: one more degree, from 20 to 21, makes it worse.
+	expect(errAt(21)).toBeGreaterThan(errAt(20));
 	// The narrative: degree 20 is within 0.007 everywhere on [−4, 4], where the Taylor
 	// polynomial of degree 20 is off by about 10¹² at the ends.
 	expect(errAt(20)).toBeLessThan(0.007);

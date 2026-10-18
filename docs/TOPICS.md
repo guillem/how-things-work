@@ -107,7 +107,7 @@ A topic is done when:
 - [x] central-limit-theorem
 - [x] primes-modular-arithmetic
 - [x] chaos-fractals
-- [ ] taylor-series
+- [x] taylor-series
 
 **Physics**
 - [x] newtons-laws
@@ -327,7 +327,7 @@ A topic is done when:
 - **Takeaway:** The Taylor series of a function converges exactly out to its nearest singularity in the complex plane, even when nothing goes wrong on the real line.
 - **Prerequisites:** calculus, complex-numbers
 - **Related:** fourier-transform
-- **Pitfall:** More terms do not always mean a better fit: outside the radius each new term makes the polynomial worse, and a function can be smooth everywhere on the real line and still have a finite radius. Do not claim convergence on the boundary circle: for 1/(1 + x²) the series diverges at x = ±1.
+- **Pitfall:** More terms do not always mean a better fit: outside the radius the partial sums do not converge (individual added terms can improve or worsen the approximation; for 1/(1 + x²) about 0, each additional nonzero term increases the error when |x| > 1), and a function can be smooth everywhere on the real line and still have a finite radius. Do not claim convergence on the boundary circle: for 1/(1 + x²) the series diverges at x = ±1.
 
 ### Physics
 

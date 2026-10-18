@@ -143,7 +143,9 @@
 	const DEG = Array.from({ length: 31 }, (_, k) => k);
 	const LOG_FLOOR = -14;
 	const LOG_CEIL = 10;
-	const lg = (v: number) => clamp(v > 0 ? Math.log10(v) : LOG_FLOOR, LOG_FLOOR, LOG_CEIL);
+	/** log₁₀ for the chart, clamped; an exact 0 sits on the floor, an undefined error is NaN. */
+	const lg = (v: number) =>
+		Number.isFinite(v) ? clamp(v > 0 ? Math.log10(v) : LOG_FLOOR, LOG_FLOOR, LOG_CEIL) : NaN;
 	const errs = $derived(probe === null ? [] : DEG.map((k) => errAt(k, probe)));
 	const bounds = $derived(
 		probe === null || phase !== 'bound' ? [] : DEG.map((k) => remainderBound(fn, a, probe, k))
@@ -151,8 +153,17 @@
 	const CH = { left: 734, right: 930, top: 250, bottom: 508 };
 	const ex = scale([0, 30], [CH.left, CH.right]);
 	const ey = scale([LOG_FLOOR, LOG_CEIL], [CH.bottom, CH.top]);
-	const linePts = (vals: number[]) =>
-		vals.map((v, k) => `${k ? 'L' : 'M'}${ex(k).toFixed(1)} ${ey(lg(v)).toFixed(1)}`).join('');
+	const linePts = (vals: number[]) => {
+		let d = '';
+		let pen = false;
+		vals.forEach((v, k) => {
+			const y = lg(v);
+			if (!Number.isFinite(y)) return void (pen = false);
+			d += `${pen ? 'L' : 'M'}${ex(k).toFixed(1)} ${ey(y).toFixed(1)}`;
+			pen = true;
+		});
+		return d;
+	};
 
 	// ---- the coefficients: |c_k|^(1/k) tends to 1/R --------------------------------------
 	const KMAX = 60;
@@ -212,15 +223,22 @@
 
 	// ---- panel text -------------------------------------------------------------------------
 	const aText = $derived(fixed(a, 2));
-	const polyText = $derived(`P${sub(n)}: degree ${n} about a = ${aText}`);
+	const polyText = $derived(`P${sub(n)}: degree ≤ ${n} about a = ${aText}`);
+	// The series of log(1 + x) also converges at its right end (an alternating series).
 	const fitText = $derived(
-		Number.isFinite(R) ? `${fixed(a - R)} < x < ${fixed(a + R)}` : 'the whole real line'
+		fn.id === 'log'
+			? `−1 < x ≤ ${fixed(a + R)}`
+			: Number.isFinite(R)
+				? `${fixed(a - R)} < x < ${fixed(a + R)}`
+				: 'the whole real line'
 	);
 	const pAt = $derived(probe === null ? NaN : P(probe));
 	const fAt = $derived(probe === null ? NaN : fn.f(probe));
 	const errNow = $derived(errs[n] ?? NaN);
 	const boundNow = $derived(bounds[n] ?? NaN);
 	const pText = $derived(probe === null ? '' : fixed(probe));
+	/** log(1 + x) at x ≤ −1: no real value, so no error to measure. */
+	const undefinedHere = $derived(probe !== null && !Number.isFinite(fAt));
 	const worstNow = $derived(worst[n]);
 </script>
 
@@ -668,13 +686,15 @@
 				id="err"
 				order={4}
 				label="Error"
-				value={num(errNow) + (phase === 'bound' ? ` (bound ${num(boundNow)})` : '')}
+				value={undefinedHere
+					? 'none: log(1 + x) is undefined for x ≤ −1'
+					: num(errNow) + (phase === 'bound' ? ` (bound ${num(boundNow)})` : '')}
 				opacity={pe}
 			>
 				<Label
 					x={PANEL}
 					y={194}
-					text="error {num(errNow)}"
+					text={undefinedHere ? 'no real value for x ≤ −1' : `error ${num(errNow)}`}
 					anchor="start"
 					size={13}
 					tabular
@@ -695,7 +715,7 @@
 					<Label
 						x={PANEL}
 						y={214}
-						text="fits for {fitText}"
+						text="series converges for {fitText}"
 						anchor="start"
 						size={13}
 						color="var(--ts-disk)"
@@ -704,7 +724,35 @@
 					/>
 				{/if}
 			</Readout>
-			<g opacity={pe}>
+			{#if undefinedHere}
+				<Readout id="undefined">
+					<Label
+						x={(CH.left + CH.right) / 2}
+						y={(CH.top + CH.bottom) / 2 - 10}
+						text="The real logarithm is"
+						size={12}
+						muted
+						opacity={pe}
+					/>
+					<Label
+						x={(CH.left + CH.right) / 2}
+						y={(CH.top + CH.bottom) / 2 + 8}
+						text="undefined for x ≤ −1:"
+						size={12}
+						muted
+						opacity={pe}
+					/>
+					<Label
+						x={(CH.left + CH.right) / 2}
+						y={(CH.top + CH.bottom) / 2 + 26}
+						text="no error to measure"
+						size={12}
+						muted
+						opacity={pe}
+					/>
+				</Readout>
+			{/if}
+			<g opacity={undefinedHere ? 0 : pe}>
 				<Axes
 					sx={ex}
 					sy={ey}
@@ -726,7 +774,7 @@
 				<path d={linePts(errs)} fill="none" stroke="var(--ts-taylor)" stroke-width="2" />
 				<circle
 					cx={ex(n)}
-					cy={ey(lg(errNow))}
+					cy={Number.isFinite(lg(errNow)) ? ey(lg(errNow)) : -100}
 					r="5"
 					fill="var(--ts-taylor)"
 					stroke="var(--stage-bg)"
@@ -792,11 +840,11 @@
 					opacity={pk}
 				/>
 			</Readout>
-			<Readout id="fits" order={5} label="Fits for" value={fitText} opacity={pk}>
+			<Readout id="fits" order={5} label="Series converges for" value={fitText} opacity={pk}>
 				<Label
 					x={PANEL}
 					y={172}
-					text="fits for {fitText}"
+					text="series converges for {fitText}"
 					anchor="start"
 					size={13}
 					muted
@@ -840,7 +888,7 @@
 				id="cheb"
 				order={3}
 				label="Chebyshev interpolant"
-				value="degree {n}, {n + 1} points"
+				value="degree ≤ {n}, {n + 1} points"
 				color="var(--ts-cheb)"
 				opacity={pw * wCheb.current}
 			>
@@ -856,7 +904,7 @@
 				<Label
 					x={PANEL + 30}
 					y={121}
-					text="Chebyshev, {n + 1} points"
+					text="Chebyshev: degree ≤ {n}, {n + 1} points"
 					anchor="start"
 					size={13}
 					opacity={pw * wCheb.current}

@@ -16,7 +16,7 @@ test(
 	async ({ page }) => {
 		await page.goto('./taylor-series/#wall');
 		await expect(stage(page)).toContainText('at x = 1.50');
-		await expect(stage(page)).toContainText('fits for −1.00 < x < 1.00');
+		await expect(stage(page)).toContainText('series converges for −1.00 < x < 1.00');
 		await range(page, 'n').fill('10');
 		await expect(stage(page)).toContainText('error 39.9');
 		await range(page, 'n').fill('20');
@@ -43,7 +43,7 @@ test('moving the centre resizes the disk to the distance to ±i', async ({ page 
 	await expect(stage(page)).toContainText('R = 1.00: distance to ±i');
 	await range(page, 'a').fill('2');
 	await expect(stage(page)).toContainText('R = 2.24: distance to ±i');
-	await expect(stage(page)).toContainText('fits for −0.24 < x < 4.24');
+	await expect(stage(page)).toContainText('series converges for −0.24 < x < 4.24');
 	// log(1 + x): the distance to −1
 	await page.locator('button[data-control=fn][data-value=log]').click();
 	await expect(stage(page)).toContainText('R = 3.00: distance to −1');
@@ -57,4 +57,13 @@ test('Chebyshev interpolation fits the whole interval where Taylor cannot', asyn
 	await range(page, 'n').fill('20');
 	await expect(stage(page)).toContainText(/Chebyshev 0\.006\d/);
 	await expect(stage(page)).toContainText('Taylor 1.0 × 10¹²');
+});
+
+test('left of −1 the logarithm has no real value, so no error is shown', async ({ page }) => {
+	await page.goto('./taylor-series/#log');
+	await expect(stage(page)).toContainText('series converges for −1 < x ≤ 1.00');
+	await range(page, 'probeOut').fill('-1.5');
+	await expect(stage(page)).toContainText('no real value for x ≤ −1');
+	await expect(stage(page)).toContainText('undefined for x ≤ −1');
+	await expect(stage(page)).not.toContainText('error ');
 });
