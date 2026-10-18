@@ -69,7 +69,11 @@
 	const taken = $derived(Math.min(RESAMPLES, Math.max(1, Math.floor(elapsed * RATE))));
 	const sofar = $derived(slopes.subarray(0, taken).filter((v) => !Number.isNaN(v)));
 	const bootSe = $derived(sofar.length > 2 ? sdOf(sofar) : NaN);
-	const ci = $derived(sofar.length >= 40 ? percentileInterval(sofar) : null);
+	/** Resamples with a single flipper length have no slope; then no honest interval either. */
+	const undefinedSlopes = $derived(taken - sofar.length);
+	const ci = $derived(
+		sofar.length >= 40 && undefinedSlopes === 0 ? percentileInterval(sofar) : null
+	);
 
 	// ---- geometry: the scatter plot ------------------------------------------------------------------
 	const X0 = 96;
@@ -359,6 +363,15 @@
 			color="var(--ri-boot)"
 			text={ci ? `${f1(ci[0])} to ${f1(ci[1])}` : '…'}
 		/>
-		<Label x={PL} y={438} anchor="start" size={12} muted text="g of body mass per mm of flipper" />
+		<Label
+			x={PL}
+			y={438}
+			anchor="start"
+			size={12}
+			muted
+			text={undefinedSlopes > 0
+				? `${undefinedSlopes} resamples had one flipper length: no slope`
+				: 'g of body mass per mm of flipper'}
+		/>
 	</Readout>
 </g>

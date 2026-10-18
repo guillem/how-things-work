@@ -297,6 +297,45 @@ export function population(skew: number, seed = 7) {
 	return { values, mean, max, min, sd: Math.sqrt(m2), skewness: m3 / m2 ** 1.5 };
 }
 
+/** P(X ≤ k) for X binomial(n, p), summed in log space (no underflow for n in the hundreds). */
+function binomialCdf(k: number, n: number, p: number) {
+	if (k < 0) return 0;
+	if (k >= n) return 1;
+	if (p <= 0) return 1;
+	if (p >= 1) return 0;
+	const logs: number[] = [];
+	let l = n * Math.log(1 - p);
+	for (let i = 0; i <= k; i++) {
+		logs.push(l);
+		l += Math.log((n - i) / (i + 1)) + Math.log(p / (1 - p));
+	}
+	const top = Math.max(...logs);
+	return Math.min(1, Math.exp(top) * logs.reduce((s, v) => s + Math.exp(v - top), 0));
+}
+
+/**
+ * The exact (Clopper–Pearson) `level` confidence interval for a proportion after `hits`
+ * successes in `n` trials: the coverage counter's own uncertainty, which is lopsided near 0 and 1.
+ */
+export function proportionInterval(hits: number, n: number, level = 0.95): [number, number] {
+	const a = (1 - level) / 2;
+	const solve = (f: (p: number) => number) => {
+		// f is increasing in p; find f(p) = 0 by bisection
+		let lo = 0;
+		let hi = 1;
+		for (let i = 0; i < 60; i++) {
+			const mid = (lo + hi) / 2;
+			if (f(mid) < 0) lo = mid;
+			else hi = mid;
+		}
+		return (lo + hi) / 2;
+	};
+	// lower: P(X ≥ hits) = a; upper: P(X ≤ hits) = a
+	const lower = hits === 0 ? 0 : solve((p) => 1 - binomialCdf(hits - 1, n, p) - a);
+	const upper = hits === n ? 1 : solve((p) => a - binomialCdf(hits, n, p));
+	return [lower, upper];
+}
+
 export type Statistic = 'mean' | 'max';
 
 const statOf = (stat: Statistic, x: Float64Array) => {

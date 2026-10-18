@@ -18,6 +18,7 @@ import {
 	permutationTest,
 	pick,
 	population,
+	proportionInterval,
 	sdOf
 } from '../src/routes/resampling-inference/resample';
 
@@ -157,4 +158,28 @@ test('coverage: badly off for the maximum, because no resample exceeds the sampl
 	const run = coverageRun(pop.values, 50, 'max', 300, 500, 1);
 	expect(coverage(run.caught)).toBeLessThan(0.1);
 	run.hi.forEach((h, r) => expect(h).toBeLessThanOrEqual(run.est[r]));
+});
+
+test('a resample whose flippers are all the same length has no slope: (4/5)⁵ of them when one of five differs', () => {
+	const x = [187, 187, 187, 174, 187];
+	const y = [3600, 3900, 3300, 3400, 4100];
+	const slopes = bootstrapSlopes(x, y, 20_000, 4);
+	const undefinedShare = slopes.filter((s) => Number.isNaN(s)).length / slopes.length;
+	// left out: the one 174 mm penguin, (4/5)^5; or drawn five times, (1/5)^5
+	expect(Math.abs(undefinedShare - (0.8 ** 5 + 0.2 ** 5))).toBeLessThan(0.015);
+});
+
+test('the coverage counter’s own range is exact at the extremes: 0 or all of n caught', () => {
+	// Clopper–Pearson closed forms: 0 of n gives [0, 1 − 0.025^(1/n)], n of n gives [0.025^(1/n), 1]
+	const [lo0, hi0] = proportionInterval(0, 300);
+	expect(lo0).toBe(0);
+	expect(hi0).toBeCloseTo(1 - 0.025 ** (1 / 300), 6);
+	const [loN, hiN] = proportionInterval(300, 300);
+	expect(loN).toBeCloseTo(0.025 ** (1 / 300), 6);
+	expect(hiN).toBe(1);
+	// in between, the range brackets the observed share and is wider than the Wald ±1.96·SE
+	const [lo, hi] = proportionInterval(252, 300);
+	expect(lo).toBeLessThan(0.84);
+	expect(hi).toBeGreaterThan(0.84);
+	expect(hi - lo).toBeGreaterThan(2 * 1.96 * Math.sqrt((0.84 * 0.16) / 300));
 });

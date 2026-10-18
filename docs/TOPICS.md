@@ -114,7 +114,7 @@ A topic is done when:
 - [x] calculus-of-variations
 - [x] random-graphs
 - [x] phase-portraits
-- [ ] resampling-inference
+- [x] resampling-inference
 
 **Physics**
 - [x] newtons-laws

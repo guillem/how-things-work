@@ -3,8 +3,8 @@
 	 * The coverage experiment: a simulated population of 5,000 values (top histogram) with its
 	 * true mean or maximum marked, and below it one line per repeat: the 95% percentile interval
 	 * from one sample of n, drawn in the hit colour if it contains the truth and the miss colour
-	 * if not. The panel counts the hits over all the repeats so far, with the counter's own
-	 * Monte Carlo margin, against the 95% the interval claims.
+	 * if not. The panel counts the hits over all the repeats so far, with the counter's own exact
+	 * (Clopper–Pearson) 95% range, against the 95% the interval claims.
 	 *
 	 * Phases (`step.hints.phase`) only pick the controls: `coverage` reads n, skew and stat; the
 	 * other steps read `n:<phase>`, `skew:<phase>` and `stat:<phase>`, which start elsewhere.
@@ -18,7 +18,7 @@
 	import { cubicInOut } from 'svelte/easing';
 	import { Axes, Label, clamp, scale } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
-	import { POP_SIZE, coverageRun, population } from '../resample';
+	import { POP_SIZE, coverageRun, population, proportionInterval, quantile } from '../resample';
 	import { fmt } from './shared';
 
 	let { step, t, params, reduced }: StageProps = $props();
@@ -61,10 +61,11 @@
 			else high++;
 		}
 		const c = hit / taken;
-		return { hit, low, high, c, margin: 1.96 * Math.sqrt(Math.max(c * (1 - c), 0.0025) / taken) };
+		const [cLo, cHi] = proportionInterval(hit, taken);
+		return { hit, low, high, c, cLo, cHi };
 	});
-	/** The counter is short of 95% by more than its own margin. */
-	const short = $derived(tally.c + tally.margin < 0.95);
+	/** Even the top of the counter's own 95% range is below the claimed 95%. */
+	const short = $derived(tally.cHi < 0.95);
 
 	// ---- geometry ------------------------------------------------------------------------------
 	const X0 = 72;
@@ -94,6 +95,23 @@
 		return Array.from(c, (k, i) => ({ i, x0: a + i * w, x1: a + (i + 1) * w, h: k / m }));
 	});
 
+	// The intervals get a magnified axis of their own (a zoom on the population's axis, drawn as
+	// a funnel): from the 1st percentile of the lower ends to the 99th of the upper ends, truth
+	// included, padded by 10%.
+	const zoom = $derived.by(() => {
+		const l = Float64Array.from(run.lo).sort();
+		const h = Float64Array.from(run.hi).sort();
+		const a = Math.min(run.truth, quantile(l, 0.01));
+		const b = Math.max(run.truth, quantile(h, 0.99));
+		const pad = 0.1 * Math.max(b - a, 0.5);
+		return [a - pad, b + pad] as const;
+	});
+	const zlo = Tween.of(() => zoom[0], { duration: 600, easing: cubicInOut });
+	const zhi = Tween.of(() => zoom[1], { duration: 600, easing: cubicInOut });
+	const zx = $derived(scale([zlo.current, zhi.current], [X0, X1]));
+	const FUNNEL = I_TOP - 10;
+	const I_BOT = I_TOP + ROWS * GAP;
+
 	const rows = $derived.by(() => {
 		const out: { k: number; y: number; lo: number; hi: number; hit: boolean }[] = [];
 		for (let k = Math.max(0, taken - ROWS); k < taken; k++)
@@ -112,6 +130,8 @@
 	const PW = 296;
 	const meter = scale([0.5, 1], [PL, PL + PW]);
 	const pct = (v: number) => `${(100 * v).toFixed(1)}%`;
+	/** The counter's own exact 95% range, in percent. */
+	const range = $derived(`${(100 * tally.cLo).toFixed(1)}–${(100 * tally.cHi).toFixed(1)}%`);
 	const truthName = $derived(stat === 'mean' ? 'true mean' : 'true maximum');
 </script>
 
@@ -143,31 +163,51 @@
 		/>
 	</Readout>
 
-	<!-- the intervals -->
-	<Readout id="rows-label">
+	<!-- the zoom from the population's axis to the intervals' -->
+	<path
+		d="M{sx(zlo.current)} {P_BOT} L{sx(zhi.current)} {P_BOT} L{X1} {FUNNEL} L{X0} {FUNNEL} Z"
+		fill="var(--stage-grid)"
+		opacity="0.45"
+	/>
+	<rect
+		x={X0}
+		y={FUNNEL}
+		width={X1 - X0}
+		height={I_BOT - FUNNEL + 6}
+		fill="var(--stage-grid)"
+		opacity="0.2"
+	/>
+	<Readout id="zoom-ends">
 		<Label
-			x={X0}
-			y={I_TOP - 14}
+			x={X0 + 4}
+			y={FUNNEL + 14}
 			anchor="start"
-			size={12}
+			size={11}
 			muted
-			text="each line: the 95% interval from one sample of {n} (newest {Math.min(
-				ROWS,
-				taken
-			)} of {REPEATS})"
+			text={zlo.current.toFixed(1)}
 		/>
+		<Label x={X1 - 4} y={FUNNEL + 14} anchor="end" size={11} muted text={zhi.current.toFixed(1)} />
 	</Readout>
-	{#each rows as r (r.k)}
-		<line
-			x1={sx(r.lo)}
-			x2={Math.max(sx(r.hi), sx(r.lo) + 1.5)}
-			y1={r.y}
-			y2={r.y}
-			stroke={r.hit ? 'var(--ri-hit)' : 'var(--ri-miss)'}
-			stroke-width={r.k === newest?.k ? 3 : 2}
-			opacity={r.hit ? 0.75 : 1}
-		/>
-	{/each}
+
+	<!-- the intervals -->
+	<defs>
+		<clipPath id="coverage-clip">
+			<rect x={X0} y={FUNNEL} width={X1 - X0} height={I_BOT - FUNNEL + 6} />
+		</clipPath>
+	</defs>
+	<g clip-path="url(#coverage-clip)">
+		{#each rows as r (r.k)}
+			<line
+				x1={zx(r.lo)}
+				x2={Math.max(zx(r.hi), zx(r.lo) + 1.5)}
+				y1={r.y}
+				y2={r.y}
+				stroke={r.hit ? 'var(--ri-hit)' : 'var(--ri-miss)'}
+				stroke-width={r.k === newest?.k ? 3 : 2}
+				opacity={r.hit ? 0.75 : 1}
+			/>
+		{/each}
+	</g>
 	{#if newest && !reduced}
 		<path
 			d="M{X0 - 14} {newest.y - 4} L{X0 - 6} {newest.y} L{X0 - 14} {newest.y + 4} Z"
@@ -175,21 +215,38 @@
 		/>
 	{/if}
 
-	<!-- the truth -->
+	<!-- the truth, on both axes -->
 	<line
 		x1={sx(run.truth)}
 		x2={sx(run.truth)}
 		y1={P_TOP - 6}
-		y2={I_TOP + ROWS * GAP}
+		y2={P_BOT}
+		stroke="var(--stage-ink)"
+		stroke-width="2"
+	/>
+	<line
+		x1={sx(run.truth)}
+		x2={zx(run.truth)}
+		y1={P_BOT}
+		y2={FUNNEL}
+		stroke="var(--stage-ink)"
+		stroke-width="1.2"
+		stroke-dasharray="3 3"
+	/>
+	<line
+		x1={zx(run.truth)}
+		x2={zx(run.truth)}
+		y1={FUNNEL}
+		y2={I_BOT + 4}
 		stroke="var(--stage-ink)"
 		stroke-width="2"
 	/>
 	<Label
-		x={sx(run.truth)}
-		y={I_TOP + ROWS * GAP + 18}
+		x={zx(run.truth)}
+		y={I_BOT + 22}
 		size={13}
 		weight={700}
-		anchor={sx(run.truth) > X1 - 60 ? 'end' : 'middle'}
+		anchor={zx(run.truth) > X1 - 70 ? 'end' : zx(run.truth) < X0 + 70 ? 'start' : 'middle'}
 		text="{truthName} {run.truth.toFixed(1)}"
 	/>
 
@@ -221,8 +278,8 @@
 		id="coverage"
 		order={3}
 		label="Real coverage"
-		value="{pct(tally.c)} ± {(100 * tally.margin).toFixed(1)}"
-		note="claimed: 95%"
+		value={pct(tally.c)}
+		note="claimed 95% · likely range {range}"
 		color={short ? 'var(--ri-miss)' : 'var(--ri-hit)'}
 	>
 		<Label x={PL} y={222} anchor="start" muted text="real coverage" />
@@ -236,15 +293,7 @@
 			color={short ? 'var(--ri-miss)' : 'var(--ri-hit)'}
 			text={pct(tally.c)}
 		/>
-		<Label
-			x={PL + 150}
-			y={256}
-			anchor="start"
-			size={13}
-			muted
-			tabular
-			text="± {(100 * tally.margin).toFixed(1)} points"
-		/>
+		<Label x={PL + 150} y={256} anchor="start" size={13} muted tabular text="likely {range}" />
 	</Readout>
 
 	<!-- the meter: 50% to 100%, the claimed 95% and the measured coverage with its margin -->
@@ -260,8 +309,8 @@
 			opacity="0.85"
 		/>
 		<line
-			x1={meter(clamp(tally.c - tally.margin, 0.5, 1))}
-			x2={meter(clamp(tally.c + tally.margin, 0.5, 1))}
+			x1={meter(clamp(tally.cLo, 0.5, 1))}
+			x2={meter(clamp(tally.cHi, 0.5, 1))}
 			y1={304}
 			y2={304}
 			stroke="var(--stage-ink)"
@@ -329,10 +378,28 @@
 		</Readout>
 	{/if}
 
+	<Readout id="rows-label">
+		<Label
+			x={PL}
+			y={504}
+			anchor="start"
+			size={12}
+			muted
+			text="each line: one sample’s 95% interval"
+		/>
+		<Label
+			x={PL}
+			y={521}
+			anchor="start"
+			size={12}
+			muted
+			text="(newest {Math.min(ROWS, taken)} of {REPEATS}), on a magnified axis"
+		/>
+	</Readout>
 	<Readout id="key">
-		<line x1={PL} x2={PL + 24} y1={530} y2={530} stroke="var(--ri-hit)" stroke-width="3" />
-		<Label x={PL + 32} y={534} anchor="start" size={12} text="caught" />
-		<line x1={PL + 100} x2={PL + 124} y1={530} y2={530} stroke="var(--ri-miss)" stroke-width="3" />
-		<Label x={PL + 132} y={534} anchor="start" size={12} text="missed" />
+		<line x1={PL} x2={PL + 24} y1={548} y2={548} stroke="var(--ri-hit)" stroke-width="3" />
+		<Label x={PL + 32} y={552} anchor="start" size={12} text="caught" />
+		<line x1={PL + 100} x2={PL + 124} y1={548} y2={548} stroke="var(--ri-miss)" stroke-width="3" />
+		<Label x={PL + 132} y={552} anchor="start" size={12} text="missed" />
 	</Readout>
 </g>

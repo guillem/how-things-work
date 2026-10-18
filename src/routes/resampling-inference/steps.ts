@@ -7,8 +7,8 @@ const comparison: Control = {
 	default: 'species',
 	options: [
 		{ value: 'species', label: 'Adelie vs Chinstrap' },
-		{ value: 'torgersen', label: 'Adelie on Biscoe vs on Torgersen' },
-		{ value: 'dream', label: 'Adelie on Biscoe vs on Dream' }
+		{ value: 'torgersen', label: 'Adelie: Biscoe vs Torgersen' },
+		{ value: 'dream', label: 'Adelie: Biscoe vs Dream' }
 	]
 };
 
@@ -22,7 +22,7 @@ const perGroup: Control = {
 		{ value: '10', label: '10' },
 		{ value: '20', label: '20' },
 		{ value: '40', label: '40' },
-		{ value: 'all', label: 'all of them' }
+		{ value: 'all', label: 'all' }
 	],
 	help: 'A smaller sample of the same penguins, drawn at random.'
 };
@@ -46,10 +46,12 @@ const species: Control = {
 	]
 };
 
+// No 5 here: with so few penguins a resample often repeats one flipper length, and has no slope.
 const perSpecies: Control = {
 	...perGroup,
 	id: 'perSpecies',
-	label: 'Penguins'
+	label: 'Penguins',
+	options: perGroup.options.filter((o) => o.value !== '5')
 };
 
 /** The coverage controls; the later steps get their own copies with other starting values. */
@@ -107,7 +109,7 @@ export const spec: ExplainerSpec = {
 			body: `
 <p>Between 2007 and 2009 researchers of the Palmer Station programme in Antarctica measured 342 penguins of three species. Each dot is one penguin's flipper. The 68 <b>Chinstrap</b> penguins' flippers are on average <strong>5.9 mm longer</strong> than the 151 <b>Adelie</b> penguins'.</p>
 <p>But the groups overlap a lot, and these are only the penguins that happened to be caught. Could a gap of 5.9 mm come from the luck of which birds were measured, with no real difference between the species? A textbook answers with a formula and its assumptions (a t-test). <dfn data-def="Methods that answer questions about uncertainty by drawing new samples from the data itself, many times over, instead of from a formula.">Resampling</dfn> answers by rebuilding chance from the data itself.</p>`,
-			notes: `<p>The data are the Palmer penguins (Gorman, Williams &amp; Fraser 2014), collected by Kristen Gorman with the Palmer Station Long Term Ecological Research Program and published by Horst, Hill &amp; Gorman as the <i>palmerpenguins</i> package (CC0). The two penguins without measurements are left out. The other comparisons pit Adelie penguins from different islands against each other.</p>`
+			notes: `<p>The data are the Palmer penguins (Gorman, Williams &amp; Fraser 2014), collected by Kristen Gorman with the Palmer Station Long Term Ecological Research Program and published by Horst, Hill &amp; Gorman as the <i>palmerpenguins</i> package (CC0). The two penguins without measurements are left out. The page treats the penguins as independent, representative draws from each group; the study actually sampled the pairs at selected nests on each island, over three seasons, and these calculations ignore that structure, so their uncertainty need not carry over to the wider populations. The other comparisons pit Adelie penguins from different islands against each other.</p>`
 		},
 		{
 			id: 'shuffle',
@@ -131,7 +133,7 @@ export const spec: ExplainerSpec = {
 			controls: [comparison, perGroup, redraw],
 			body: `
 <p>The <dfn data-def="The chance, if the null hypothesis were true, of a result at least as extreme as the one observed.">p-value</dfn> is the share of shuffles at least as far from zero as the real gap (either way, so the test is two-sided). Count them, add one, and divide by the number of shuffles plus one: <b>p = (count + 1) / (9,999 + 1)</b>. The +1 counts the real labelling, which is itself one of the possible shuffles, so the estimate is never an impossible 0. With all the penguins, <strong>not one</strong> of 9,999 shuffles reaches 5.9 mm: p = 1/10,000, the smallest that this many shuffles can report.</p>
-<p>A p-value is <strong>not the chance that the null hypothesis is true</strong>. It is the chance of the data <em>given</em> the null, and as <a href="../bayes-theorem/#positives">Bayes' theorem</a> shows, turning that around needs a prior. Set <b>5 per group</b>: the species really do differ, yet p comes out at 0.053, and most other draws of five penguins (New random draw) give far larger values, some above 0.5. A large p means the data can't tell, not that there is no difference. Adelie penguins from Biscoe and from Torgersen give p ≈ 0.07.</p>`,
+<p>A p-value is <strong>not the chance that the null hypothesis is true</strong>. It is the chance, <em>if</em> the null were true, of a gap at least as far from zero as the one observed; as <a href="../bayes-theorem/#positives">Bayes' theorem</a> shows, turning that around into the chance that the null is true needs a prior. Set <b>5 per group</b>: the species really do differ, yet p comes out at 0.053, and most other draws of five penguins (New random draw) give far larger values, some above 0.5. A large p means the data can't tell, not that there is no difference. Adelie penguins from Biscoe and from Torgersen give p ≈ 0.07.</p>`,
 			notes: `<p>With 4 penguins per group there are only 70 ways to hand out the labels, and the exact p-value counts them all; the shuffles approximate it. For large groups the permutation distribution is close to a normal curve (the <a href="../central-limit-theorem/#clt">central limit theorem</a>), and the p-value agrees with Welch's t-test: 0.072 against 0.073 for Biscoe and Torgersen. The +1 rule is the one recommended by Phipson &amp; Smyth (2010). Strictly, the test asks whether the two groups could share one distribution, not only one mean.</p>`
 		},
 		// ------------------------------------------------------------------ bootstrap
@@ -204,7 +206,7 @@ export const spec: ExplainerSpec = {
 				rerun
 			],
 			body: `
-<p>Ask for an interval for the population's <strong>largest</strong> value instead. No resample can contain a value bigger than the sample's own largest, so every interval stops at or below it, short of the truth unless the sample happened to include the single largest of the 5,000 (a chance of about <i>n</i> in 5,000). The coverage collapses to <strong>near zero</strong>, at any sample size.</p>
+<p>Ask for an interval for the population's <strong>largest</strong> value instead. No resample can contain a value bigger than the sample's own largest, so every interval stops at or below it, short of the truth unless the sample happened to include the single largest of the 5,000 (a chance of about <i>n</i> in 5,000). The coverage collapses to <strong>near zero</strong> at every sample size offered here, 5 to 200.</p>
 <p>The bootstrap works for statistics that depend smoothly on the whole sample, like the mean, a difference of means or a slope. The maximum hangs on one extreme value the sample rarely contains. Resampling rebuilds the chance distribution from the data, and it is only as good as the data are as a stand-in for the population.</p>`,
 			notes: `<p>The failure for the maximum is a classical example (Bickel &amp; Freedman 1981): about 63% (1 − 1/e) of resamples contain the sample's largest value, so the bootstrap distribution of the maximum piles up on a single point instead of mimicking the real sampling distribution.</p>`
 		}

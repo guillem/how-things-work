@@ -23,7 +23,7 @@
 	import { cubicInOut } from 'svelte/easing';
 	import { Axes, Label, clamp, hash, lerp, scale, smoothstep } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
-	import { meanOf, permutationTest, shuffleLabels } from '../resample';
+	import { meanOf, permutationTest, quantile, shuffleLabels } from '../resample';
 	import { chosenGroups, fmt, pText, signed } from './shared';
 
 	let { step, t, params, reduced }: StageProps = $props();
@@ -61,6 +61,8 @@
 		return c;
 	});
 	const nullSd = $derived(Math.sqrt(meanOf(test.diffs.map((d) => d * d))));
+	/** Half-width that holds 95% of all the shuffled differences (the 95th percentile of |d|). */
+	const within95 = $derived(quantile(test.diffs.map(Math.abs).sort(), 0.95));
 
 	// ---- the run --------------------------------------------------------------------------------
 	let lastKey = '';
@@ -411,7 +413,7 @@
 				anchor="start"
 				size={12}
 				muted
-				text="95% of them within ±{(1.96 * nullSd).toFixed(1)} mm"
+				text="95% of them within ±{within95.toFixed(1)} mm"
 			/>
 		</Readout>
 	</g>
