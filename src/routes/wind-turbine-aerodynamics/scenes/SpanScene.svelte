@@ -11,7 +11,7 @@
 	import { cubicOut } from 'svelte/easing';
 	import { Axes, Label, scale } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
-	import { bem, stallAngle, TURBINE } from '../model';
+	import { bem, isStalled, negativeStallAngle, stallAngle, TURBINE } from '../model';
 	import { BLADE } from '../nrel5mw';
 	import Card from './Card.svelte';
 	import Row from './Row.svelte';
@@ -25,8 +25,10 @@
 	const sol = $derived(bem(lambda, pitch, { tipLoss }));
 
 	const sx = scale([0, 63], [90, 690]);
-	const ya = scale([-10, 45], [335, 168]);
-	const yi = scale([0, 1], [552, 392]);
+	const ya = scale([-25, 45], [335, 168]);
+	const yi = scale([-0.2, 1], [552, 392]);
+	/** Induction kept on the chart: a rotor driven as a fan (a < 0) is drawn at the floor. */
+	const clampI = (v: number) => Math.max(-0.2, Math.min(1, v));
 
 	const alphas = Tween.of(() => sol.elements.map((e) => e.alpha), {
 		duration: () => (reduced ? 0 : 350),
@@ -36,8 +38,9 @@
 		duration: () => (reduced ? 0 : 350),
 		easing: cubicOut
 	});
-	const clampA = (v: number) => Math.max(-10, Math.min(45, v));
+	const clampA = (v: number) => Math.max(-25, Math.min(45, v));
 	const stalls = BLADE.map((n) => stallAngle(n.af));
+	const stallsNeg = BLADE.map((n) => negativeStallAngle(n.af));
 	/** Elements whose section has a stall angle (not the cylinders, nor the DU40). */
 	const nStallable = stalls.filter((s) => Number.isFinite(s)).length;
 
@@ -67,9 +70,7 @@
 	);
 	const aPath = $derived(
 		inds.current
-			.map(
-				(v, i) => `${i ? 'L' : 'M'}${sx(BLADE[i].r).toFixed(1)} ${yi(Math.min(1, v)).toFixed(1)}`
-			)
+			.map((v, i) => `${i ? 'L' : 'M'}${sx(BLADE[i].r).toFixed(1)} ${yi(clampI(v)).toFixed(1)}`)
 			.join(' ')
 	);
 	const alphaPath = $derived(
@@ -77,9 +78,7 @@
 			.map((v, i) => `${i ? 'L' : 'M'}${sx(BLADE[i].r).toFixed(1)} ${ya(clampA(v)).toFixed(1)}`)
 			.join(' ')
 	);
-	const nStalled = $derived(
-		sol.elements.filter((e, i) => Number.isFinite(stalls[i]) && e.alpha > stalls[i]).length
-	);
+	const nStalled = $derived(sol.elements.filter((e) => isStalled(e.af, e.alpha)).length);
 	const nHigh = $derived(sol.elements.filter((e) => e.a > 0.4).length);
 </script>
 
@@ -127,12 +126,23 @@
 	<Axes
 		{sx}
 		sy={ya}
-		yTicks={[-10, 0, 10, 20, 30, 40]}
+		yTicks={[-20, -10, 0, 10, 20, 30, 40]}
 		xTicks={[]}
 		yFormat={(v) => `${v}°`}
 		yLabel="α"
 	/>
 	{#each BLADE as n, i (n.r)}
+		{#if Number.isFinite(stallsNeg[i]) && stallsNeg[i] >= -25}
+			<line
+				x1={sx(n.r) - 9}
+				x2={sx(n.r) + 9}
+				y1={ya(stallsNeg[i])}
+				y2={ya(stallsNeg[i])}
+				stroke="var(--wt-stall)"
+				stroke-width="2"
+				opacity="0.45"
+			/>
+		{/if}
 		{#if Number.isFinite(stalls[i])}
 			<line
 				x1={sx(n.r) - 9}
@@ -147,7 +157,7 @@
 	{/each}
 	<path d={alphaPath} fill="none" stroke="var(--wt-lift)" stroke-width="2" />
 	{#each alphas.current as v, i (BLADE[i].r)}
-		{@const st = Number.isFinite(stalls[i]) && sol.elements[i].alpha > stalls[i]}
+		{@const st = isStalled(BLADE[i].af, sol.elements[i].alpha)}
 		<circle
 			cx={sx(BLADE[i].r)}
 			cy={ya(clampA(v))}
@@ -176,7 +186,7 @@
 	<Axes
 		{sx}
 		sy={yi}
-		yTicks={[0, 0.2, 0.4, 0.6, 0.8, 1]}
+		yTicks={[-0.2, 0, 0.2, 0.4, 0.6, 0.8, 1]}
 		xLabel="radius (m)"
 		yFormat={(v: number) => num(v, 1)}
 		yLabel="a"
@@ -229,7 +239,7 @@
 	{/if}
 	<path d={aPath} fill="none" stroke="var(--wt-air)" stroke-width="2.5" />
 	{#each inds.current as v, i (BLADE[i].r)}
-		<circle cx={sx(BLADE[i].r)} cy={yi(Math.min(1, v))} r="3.5" fill="var(--wt-air)" />
+		<circle cx={sx(BLADE[i].r)} cy={yi(clampI(v))} r="3.5" fill="var(--wt-air)" />
 	{/each}
 
 	<!-- readouts -->

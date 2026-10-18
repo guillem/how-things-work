@@ -13,7 +13,7 @@
 	 */
 	import { Label } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
-	import { bem, stallAngle, TURBINE } from '../model';
+	import { bem, isStalled, negativeStallAngle, stallAngle, TURBINE } from '../model';
 	import { BLADE } from '../nrel5mw';
 	import Card from './Card.svelte';
 	import Row from './Row.svelte';
@@ -34,7 +34,8 @@
 	});
 	const el = $derived(sol.elements[idx]);
 	const stall = $derived(stallAngle(el.af));
-	const stalled = $derived(Number.isFinite(stall) && el.alpha > stall);
+	const stallNeg = $derived(negativeStallAngle(el.af));
+	const stalled = $derived(isStalled(el.af, el.alpha));
 	const AF_NAMES = [
 		'cylinder',
 		'cylinder',
@@ -436,12 +437,24 @@
 		value="{num(el.a, 3)}, {num(el.ap, 4)}"
 		minor
 	/>
+	<Readout id="schematic">
+		<Label
+			x={940}
+			y={566}
+			anchor="end"
+			text="schematic profile, not the selected airfoil's shape"
+			size={11}
+			muted
+		/>
+	</Readout>
 	<Readout id="stall-note">
 		<Label
 			x={38}
 			y={562}
 			anchor="start"
-			text={Number.isFinite(stall) ? `this section stalls near α = ${stall.toFixed(1)}°` : ''}
+			text={Number.isFinite(stall)
+				? `this section stalls beyond α = ${stall.toFixed(1)}°${Number.isFinite(stallNeg) ? ` or ${deg(stallNeg)}` : ''}`
+				: ''}
 			size={11}
 			muted
 		/>

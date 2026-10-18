@@ -45,7 +45,7 @@ test('above a = 0.4 the measured thrust leaves momentum theory', async ({ page }
 	await range(page, 'a').fill('0.3');
 	await expect(stage(page)).toContainText(/Thrust coefficient CT\s*0\.840/);
 	await range(page, 'a').fill('0.45');
-	await expect(stage(page)).toContainText(/CT theory \/ measured\s*0\.99 \/ 1\.00/);
+	await expect(stage(page)).toContainText(/CT theory \/ empirical\s*0\.99 \/ 1\.00/);
 });
 
 test('a blade section stalls at a low tip-speed ratio', async ({ page }) => {

@@ -3618,6 +3618,8 @@ kbd {
 	--tcp-cubic: #f783ac;
 	--tcp-vegas: #66d9e8;
 	--tcp-link: #343a40;
+}
+
 /* wind-turbine-aerodynamics: the air and its stream tube, the rotor disc and blades, power,
    thrust, the measured (turbulent-wake) thrust, the Betz limit, lift and drag, the wind, blade
    and relative velocities, stall, and the electrical output */

@@ -129,6 +129,30 @@ export function stallAngle(af: number): number {
 	return top < 0.5 || best >= 25 ? Number.NaN : best;
 }
 
+/**
+ * Angle of attack (deg) at which a section's lift is most negative between −25° and 0°: where it
+ * stalls with the flow hitting its upper side. NaN for a section with no such trough.
+ */
+export function negativeStallAngle(af: number): number {
+	let best = Number.NaN;
+	let low = Infinity;
+	for (let al = 0; al >= -25; al -= 0.25) {
+		const { cl } = polar(af, al);
+		if (cl < low - 1e-9) {
+			low = cl;
+			best = al;
+		}
+	}
+	return low > -0.3 || best <= -25 ? Number.NaN : best;
+}
+
+/** Whether angle of attack α (deg) is past either of a section's stall angles. */
+export function isStalled(af: number, alphaDeg: number): boolean {
+	const pos = stallAngle(af);
+	const neg = negativeStallAngle(af);
+	return (Number.isFinite(pos) && alphaDeg > pos) || (Number.isFinite(neg) && alphaDeg < neg);
+}
+
 // ---------------------------------------------------------------- blade-element momentum
 
 export interface BemOptions {
@@ -286,10 +310,10 @@ export function cpCurve(pitchDeg: number, l0 = 1, l1 = 14, n = 66, options: BemO
 	});
 }
 
-/** The tip-speed ratio of highest CP at a pitch, to ±0.01. */
+/** The tip-speed ratio of highest CP at a pitch over λ from 1 to 14, to ±0.01. */
 export function bestLambda(pitchDeg: number, options: BemOptions = {}) {
-	let lo = 3;
-	let hi = 13;
+	let lo = 1;
+	let hi = 14;
 	const cp = (l: number) => bem(l, pitchDeg, options).cp;
 	while (hi - lo > 0.01) {
 		const m1 = lo + (hi - lo) / 3;
@@ -303,7 +327,7 @@ export function bestLambda(pitchDeg: number, options: BemOptions = {}) {
 
 // ---------------------------------------------------------------- operating the turbine
 
-export type Region = 'parked' | 'below-rated' | 'speed-limit' | 'rated';
+export type Region = 'parked' | 'min-speed' | 'below-rated' | 'speed-limit' | 'rated';
 
 export interface Operating {
 	v: number;
@@ -352,7 +376,12 @@ export function operate(v: number): Operating {
 	const lambda = (omega * R) / v;
 	const at = (pitch: number) => bem(lambda, pitch);
 	let sol = at(0);
-	let region: Region = omegaOpt > TURBINE.rpmRated * RPM ? 'speed-limit' : 'below-rated';
+	let region: Region =
+		omegaOpt > TURBINE.rpmRated * RPM
+			? 'speed-limit'
+			: omegaOpt < TURBINE.rpmMin * RPM
+				? 'min-speed'
+				: 'below-rated';
 	const target = rated / efficiency;
 	if (sol.cp * wind > target) {
 		region = 'rated';
@@ -391,3 +420,12 @@ export function ratedWindSpeed() {
 	}
 	return (lo + hi) / 2;
 }
+
+/**
+ * The wind speeds (m/s) between which the controller holds the optimal tip-speed ratio: below
+ * the first the rotor is held at its minimum speed, above the second at its rated speed.
+ */
+export const optimalBand = () => ({
+	from: (TURBINE.rpmMin * RPM * TURBINE.radius) / TURBINE.lambdaOpt,
+	to: (TURBINE.rpmRated * RPM * TURBINE.radius) / TURBINE.lambdaOpt
+});

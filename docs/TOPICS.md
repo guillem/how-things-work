@@ -233,7 +233,7 @@ A topic is done when:
 - [x] flight
 - [x] bridges-structures
 - [x] feedback-control
-- [ ] wind-turbine-aerodynamics
+- [x] wind-turbine-aerodynamics
 
 ## Topics
 

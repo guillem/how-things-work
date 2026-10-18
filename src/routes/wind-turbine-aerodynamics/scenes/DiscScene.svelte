@@ -11,7 +11,7 @@
 	 *   disc   — the disc slows the air by a (handle or slider): the speed and pressure along the
 	 *            axis, the pressure step (= CT), and CP, CT as functions of a.
 	 *   betz   — the same, with CP(a) emphasised, the 16/27 line and a > 1/2 marked invalid.
-	 *   thrust — CT(a) from momentum theory and the measured (Glauert–Buhl) thrust above a = 0.4.
+	 *   thrust — CT(a) from momentum theory and Buhl's empirical fit (after Glauert) above a = 0.4.
 	 *
 	 * Motion: the parcels' travel is a frame-to-frame accumulator of the flow speed (the scene
 	 * guide's sanctioned exception), since the wind speed slider changes the rate; static under
@@ -97,7 +97,7 @@
 	};
 
 	/** Flow clock: distance (px) a free-stream parcel has travelled. */
-	const vDraw = $derived(mode === 'wind' ? 14 * Math.min(2.2, Math.max(0.25, V / 10)) * 7 : 98);
+	const vDraw = $derived(mode === 'wind' ? 9.8 * V : 98);
 	let acc = { t: 0, s: 0 };
 	const flow = $derived.by(() => {
 		if (reduced) return 2.5 * 98;
@@ -527,13 +527,13 @@
 				id="measured-key"
 				order={7}
 				label="Purple line"
-				value="measured thrust (Glauert, Buhl)"
+				value="empirical fit (Glauert, Buhl)"
 			>
 				<Label
 					x={cx(1) - 2}
 					y={cy(2) + 18}
 					anchor="end"
-					text="measured"
+					text="empirical fit"
 					size={12}
 					color="var(--wt-measured)"
 				/>
@@ -630,7 +630,7 @@
 			x={680}
 			y={514}
 			w={236}
-			label={mode === 'thrust' && a > 0.4 ? 'CT theory / measured' : 'Thrust coefficient CT'}
+			label={mode === 'thrust' && a > 0.4 ? 'CT theory / empirical' : 'Thrust coefficient CT'}
 			value={mode === 'thrust' && a > 0.4
 				? `${d.ct.toFixed(2)} / ${thrustCorrected(a).toFixed(2)}`
 				: d.ct.toFixed(3)}

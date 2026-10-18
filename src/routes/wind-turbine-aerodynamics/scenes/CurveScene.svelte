@@ -5,7 +5,7 @@
 	 *
 	 * Modes (`step.hints.mode`):
 	 *   power  — electrical output, with the power in the wind and the Betz limit's share of it,
-	 *            the operating regions (parked, cube law, rated by pitch), and a handle on the
+	 *            the operating regions (parked, cube law at constant λ, rated by pitch), and a handle on the
 	 *            wind speed; a small rotor turning at its real speed with its pitch shown.
 	 *   budget — the same as fractions of the wind's power: the Betz limit, the rotor's CP and
 	 *            the electrical output after the 94.4% drivetrain and generator efficiency.
@@ -18,6 +18,7 @@
 	import {
 		BETZ,
 		operate,
+		optimalBand,
 		ratedWindSpeed,
 		ROTOR_AREA,
 		TURBINE,
@@ -36,6 +37,8 @@
 
 	/** The operating curve, computed once: every 0.25 m/s, with the switch points added. */
 	const vr = ratedWindSpeed();
+	/** Where the controller holds the optimal λ, so that the power follows V³. */
+	const band = optimalBand();
 	const curve: Operating[] = (() => {
 		const vs = Array.from({ length: 121 }, (_, i) => i * 0.25);
 		vs.push(2.999, vr - 0.001, vr, 25.001);
@@ -95,6 +98,7 @@
 
 	const regionText: Record<Operating['region'], string> = {
 		parked: 'parked',
+		'min-speed': 'at minimum rotor speed',
 		'below-rated': 'holding the best λ',
 		'speed-limit': 'at top rotor speed',
 		rated: 'pitching to hold 5 MW'
@@ -136,10 +140,18 @@
 		fill="var(--wt-blade)"
 		opacity="0.07"
 	/>
+	<rect
+		x={sx(band.from)}
+		y={84}
+		width={sx(band.to) - sx(band.from)}
+		height={436}
+		fill="var(--wt-power)"
+		opacity="0.07"
+	/>
 	<Readout id="regions">
 		<Label x={sx(1.5)} y={100} text="parked" size={11} muted />
 		<Label x={sx(27.5)} y={100} text="cut out" size={11} muted />
-		<Label x={(sx(3) + sx(vr)) / 2} y={100} text="cube law" size={11} muted />
+		<Label x={(sx(band.from) + sx(band.to)) / 2} y={100} text="cube law" size={11} muted />
 		<Label x={(sx(vr) + sx(25)) / 2} y={100} text="pitch control" size={11} muted />
 	</Readout>
 

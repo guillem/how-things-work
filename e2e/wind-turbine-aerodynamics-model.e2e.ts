@@ -17,6 +17,8 @@ import {
 	disc,
 	operate,
 	ratedWindSpeed,
+	isStalled,
+	optimalBand,
 	stallAngle,
 	thrustCorrected,
 	TURBINE,
@@ -89,6 +91,29 @@ test('the NREL 5-MW rotor peaks near its design tip-speed ratio, near Cp = 0.48'
 	expect(bestLambda(5).cp).toBeLessThan(best.cp - 0.05);
 });
 
+test('the best tip-speed ratio is found over the whole range, even at high pitch', () => {
+	for (const pitch of [20, 25, 30]) {
+		const best = bestLambda(pitch);
+		for (let lambda = 1; lambda <= 14; lambda += 0.25) {
+			expect(bem(lambda, pitch).cp).toBeLessThanOrEqual(best.cp + 1e-3);
+		}
+	}
+	// At 25° the peak lies below λ = 3, at a positive power coefficient.
+	expect(bestLambda(25).lambda).toBeLessThan(3);
+	expect(bestLambda(25).cp).toBeGreaterThan(0.05);
+});
+
+test('a section driven to large negative angles of attack stalls too', () => {
+	// At λ = 14 with the blades pitched 30°, the outer NACA 64 sections see α ≈ −25°, beyond
+	// their most negative lift (near −16° in the shipped table).
+	const tip = bem(14, 30).elements.filter((e) => e.af === 7);
+	for (const e of tip) {
+		expect(e.alpha).toBeLessThan(-16);
+		expect(isStalled(e.af, e.alpha)).toBe(true);
+	}
+	expect(isStalled(7, 4)).toBe(false);
+});
+
 test('tip losses and drag each cost power', () => {
 	const real = bestLambda(0).cp;
 	expect(bestLambda(0, { tipLoss: false }).cp).toBeGreaterThan(real + 0.02);
@@ -110,8 +135,7 @@ test('near the optimum the outer blade slows the air by about a third', () => {
 test('at a low tip-speed ratio the blade stalls; at a high one it blocks the flow', () => {
 	const slow = bem(3, 0);
 	for (const e of slow.elements) {
-		const stall = stallAngle(e.af);
-		if (Number.isFinite(stall)) expect(e.alpha).toBeGreaterThan(stall);
+		if (Number.isFinite(stallAngle(e.af))) expect(isStalled(e.af, e.alpha)).toBe(true);
 	}
 	const fast = bem(12, 0);
 	const outer = fast.elements.filter((e) => e.r > 50);
@@ -121,6 +145,11 @@ test('at a low tip-speed ratio the blade stalls; at a high one it blocks the flo
 });
 
 test('below rated wind the power grows with the cube of the wind speed', () => {
+	// The controller holds λ at its optimum between about 6.0 and 10.6 m/s.
+	const band = optimalBand();
+	expect(band.from.toFixed(1)).toBe('6.0');
+	expect(band.to.toFixed(1)).toBe('10.6');
+	expect(operate(5).region).toBe('min-speed');
 	const p7 = operate(7);
 	const p10 = operate(10);
 	expect(p7.region).toBe('below-rated');
