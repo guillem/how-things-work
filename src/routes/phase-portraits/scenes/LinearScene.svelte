@@ -35,7 +35,7 @@
 		matText,
 		scales,
 		type Rect
-	} from './layout';
+	} from './frame';
 	import EigenPlane from './EigenPlane.svelte';
 	import Portrait from './Portrait.svelte';
 	import TraceDet from './TraceDet.svelte';

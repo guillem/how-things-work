@@ -8,7 +8,7 @@
 	import { Axes, Label } from '#lib/draw/index.ts';
 	import { Readout } from '#lib/explainer/index.ts';
 	import type { Eigen } from '../phase';
-	import { fixed, scales, type Rect } from './layout';
+	import { fixed, scales, type Rect } from './frame';
 
 	interface Props {
 		rect: Rect;

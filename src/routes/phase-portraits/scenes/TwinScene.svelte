@@ -21,7 +21,7 @@
 		type SystemParams,
 		type Vec
 	} from '../phase';
-	import { eigenText, fixed, kindColor, matText, scales, type Rect } from './layout';
+	import { eigenText, fixed, kindColor, matText, scales, type Rect } from './frame';
 	import Portrait from './Portrait.svelte';
 
 	let { t, params }: StageProps = $props();

@@ -7,7 +7,7 @@
 	 */
 	import { Axes, Label, scale } from '#lib/draw/index.ts';
 	import { Readout } from '#lib/explainer/index.ts';
-	import { fixed, type Rect } from './layout';
+	import { fixed, type Rect } from './frame';
 
 	interface Props {
 		rect: Rect;

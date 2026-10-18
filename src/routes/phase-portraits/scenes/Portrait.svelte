@@ -12,7 +12,7 @@
 	 */
 	import { smoothstep } from '#lib/draw/index.ts';
 	import { at, orbit, type Box, type Field, type Orbit, type Vec } from '../phase';
-	import { scales, type Rect } from './layout';
+	import { scales, type Rect } from './frame';
 
 	interface Props {
 		rect: Rect;
