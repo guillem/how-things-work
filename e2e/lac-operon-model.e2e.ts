@@ -61,20 +61,23 @@ test('with lactose instead of TMG there is no hysteresis, at any glucose level',
 	const lo = steadyStates({ inducer: 'lactose', c: 10, glucose: 0 })[0].y;
 	const hi = steadyStates({ inducer: 'lactose', c: 2000, glucose: 0 })[0].y;
 	expect(lo).toBeLessThan(2);
-	expect(hi).toBeGreaterThan(80);
+	expect(hi).toBeGreaterThan(50);
 });
 
 test('the operon is on only with lactose and without glucose', () => {
 	const mM = 1000;
-	expect(cultureSteady(0, 2 * mM)).toBeGreaterThan(80);
+	const on = cultureSteady(0, 2 * mM);
+	expect(on).toBeGreaterThan(50);
 	expect(cultureSteady(0, 0)).toBeLessThan(2);
 	expect(cultureSteady(2 * mM, 0)).toBeLessThan(2);
-	expect(cultureSteady(2 * mM, 2 * mM)).toBeLessThan(2);
+	// Glucose blocks at most five-sixths of the permeases (Aggarwal & Narang 2022), yet the loop
+	// turns that into a far larger drop in output.
+	expect(cultureSteady(2 * mM, 2 * mM)).toBeLessThan(on / 10);
 	// Without the repressor, glucose barely lowers it (Inada et al. 1996).
 	expect(cultureSteady(2 * mM, 2 * mM, 'lacI')).toBeGreaterThan(50);
 });
 
-const grow = (strain: Strain) => culture({ glucose: 1, lactose: 2, hours: 10, strain });
+const grow = (strain: Strain) => culture({ glucose: 1, lactose: 2, hours: 12, strain });
 const whenGlucoseRunsOut = (trace: ReturnType<typeof grow>) =>
 	trace.find((p) => p.glucose < 0.001)!;
 
@@ -90,7 +93,7 @@ test('on glucose and lactose a culture eats the glucose first, pauses, then grow
 });
 
 test('a promoter that ignores CRP-cAMP still pauses; without the repressor or the permease block it does not', () => {
-	// Kimata et al. 1997: lacUV5 cells still show diauxie.
+	// Kimata et al. 1997: lacL8UV5 cells still show diauxie.
 	expect(pause(grow('uv5'))).toBeGreaterThan(0.3);
 	// Inada et al. 1996: no repressor, no glucose effect.
 	expect(pause(grow('lacI'))).toBe(0);
@@ -98,4 +101,15 @@ test('a promoter that ignores CRP-cAMP still pauses; without the repressor or th
 	const free = grow('noexcl');
 	expect(pause(free)).toBe(0);
 	expect(whenGlucoseRunsOut(free).lactose).toBeLessThan(1.9);
+});
+
+test('a culture on lactose alone has no diauxic pause, and without growth its lac enzymes stay', () => {
+	expect(pause(culture({ glucose: 0, lactose: 2, hours: 12 }))).toBe(0);
+	// Once the lactose is gone the cells stop growing; their stable enzymes are not diluted.
+	const trace = culture({ glucose: 1, lactose: 2, hours: 16 });
+	const done = trace.findIndex((p) => p.lactose < 0.001 && p.mu < 0.01);
+	expect(done).toBeGreaterThan(0);
+	const later = trace.at(-1)!;
+	expect(later.t - trace[done].t).toBeGreaterThan(1);
+	expect(later.y).toBeGreaterThan(0.9 * trace[done].y);
 });

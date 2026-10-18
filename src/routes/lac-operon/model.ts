@@ -22,7 +22,7 @@
 
 /** Repression factor ρ: the ratio of fully induced to fully repressed output (fitted, ±20%). */
 export const RHO = 167.1;
-/** Hill coefficient of the repressor's release by inducer (two inducers per tetramer). */
+/** Effective Hill coefficient of LacI inactivation in this reduced model. */
 export const HILL = 2;
 /** Measured switching thresholds without glucose, µM TMG (Ozbudak et al. 2004, Fig. 2b). */
 export const MEASURED = { off: 3, on: 30 };
@@ -60,10 +60,12 @@ export interface Medium {
 /**
  * Lactose → allolactose (chosen constants). Uptake by LacY saturates with half-saturation
  * `K` µM; allolactose made per LacY is `b`; β-galactosidase (∝ y) breaks it down as fast as
- * dilution removes it when y = `yc`. So x = b·s·y / (1 + y/yc): once a cell has more than a few
- * % of its full lac enzymes, adding more barely raises its inducer.
+ * dilution removes it when y = `yc`. So x = b·s·y / (1 + y/yc): the inducer still rises with the
+ * lac enzymes (the feedback remains), but less and less, and with these constants the switch
+ * has a single steady state at every lactose and glucose level, as Ozbudak et al. and Zander
+ * et al. (2017) found for wild-type cells.
  */
-export const LACTOSE = { b: 120, K: 500, yc: 0.5 };
+export const LACTOSE = { b: 30, K: 500, yc: 0.7 };
 
 /**
  * Internal inducer x for a cell with lac expression y in `m`. `active` is the fraction of its
@@ -213,10 +215,12 @@ export function sweep(opts: {
  * The culture's constants (chosen typical values, not fitted to a data set): growth rates (per
  * hour) on glucose and, fully induced, on lactose; Monod half-saturation constants (µM); yields
  * (OD₆₀₀ per mM of sugar, ≈ 0.5 g of dry cells per g of sugar); how strongly glucose uptake
- * blocks LacY in cells growing on glucose (`exclusion`, chosen so that lactose stays out); how
+ * blocks LacY in cells growing on glucose (`exclusion`: 83%, the sixfold upper bound measured by
+ * Aggarwal & Narang 2022 in partially induced cells; the loop amplifies it); how
  * much higher the output is without glucose through CRP-cAMP in such cells (`cap`, small, as
  * Inada et al. 1996 found cAMP levels barely differ); and the rate at which a cell can still
- * make protein while it is not growing (`k0`, per hour).
+ * make protein while it is not growing (`k0`, per hour). LacY and β-galactosidase are stable: they
+ * are lost only by dilution as the cells grow.
  */
 export const CULTURE = {
 	muG: 0.8,
@@ -225,13 +229,13 @@ export const CULTURE = {
 	KL: 200,
 	yieldG: 0.22,
 	yieldL: 0.43,
-	exclusion: 0.97,
+	exclusion: 0.83,
 	cap: 0.3,
 	k0: 0.4
 };
 
 /**
- * Which cell grows: the wild type; a cell whose lac promoter ignores CRP-cAMP (the lacUV5
+ * Which cell grows: the wild type; a cell whose lac promoter ignores CRP-cAMP (the lacL8UV5
  * mutation used by Kimata et al. 1997); one without the repressor (lacI⁻, Inada et al. 1996);
  * and a what-if cell whose permease glucose cannot block.
  */
@@ -317,7 +321,8 @@ export function culture(opts: {
 		}
 		const x = inducer(y, { inducer: 'lactose', c: L, glucose: G }, active);
 		const target = alphaCulture(G, strain) * (strain === 'lacI' ? 1 : release(x));
-		y += (mu + CULTURE.k0) * (target - y) * dt;
+		// Made at the growth rate (or slowly, at k0, while not growing); lost only by dilution.
+		y += (target > y ? Math.max(mu, CULTURE.k0) * (target - y) : mu * (target - y)) * dt;
 		const growth = mu * od * dt;
 		G = Math.max(0, G - ((muG / mu || 0) * growth * 1000) / CULTURE.yieldG);
 		L = Math.max(0, L - ((muL / mu || 0) * growth * 1000) / CULTURE.yieldL);
@@ -332,6 +337,8 @@ export function culture(opts: {
  * drops that low (no pause).
  */
 export function pauseWindow(trace: readonly CulturePoint[]): { start: number; end: number } | null {
+	// A diauxic shift needs a glucose phase first.
+	if (trace.length === 0 || trace[0].glucose < 0.001) return null;
 	const gone = trace.findIndex((p) => p.glucose < 0.001);
 	if (gone < 0) return null;
 	let best = 0;

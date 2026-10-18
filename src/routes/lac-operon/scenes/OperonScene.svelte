@@ -39,7 +39,7 @@
 			out.set(c.y);
 			bound.set(c.bound);
 			block.set(c.blocked);
-			capOn.set(g ? 0 : 1);
+			capOn.set(g ? 0.7 : 1);
 			loopOn.set(l);
 		});
 	});
@@ -371,10 +371,7 @@
 	</Readout>
 
 	<!-- CAP-cAMP -->
-	<g
-		transform="translate({102} {DNA_Y - 24 - (1 - capOn.current) * 70})"
-		opacity={0.45 + 0.55 * capOn.current}
-	>
+	<g transform="translate({102} {DNA_Y - 24})" opacity={0.45 + 0.55 * capOn.current}>
 		<ellipse rx={20} ry={12} fill="var(--lo-cap)" />
 		<circle
 			cx={14}
@@ -390,13 +387,15 @@
 		id="cap"
 		order={4}
 		label="CAP-cAMP"
-		value={glc ? 'less cAMP: CAP mostly off its site' : 'on its site, helping polymerase'}
+		value={glc
+			? 'still on its site (a little less cAMP); the block at the membrane keeps lac low'
+			: 'on its site, helping polymerase'}
 		color="var(--lo-cap)"
 	>
 		<Label
 			x={88}
-			y={DNA_Y - 44 - (1 - capOn.current) * 70}
-			text={glc ? 'CAP (little cAMP)' : 'CAP-cAMP'}
+			y={DNA_Y - 44}
+			text={glc ? 'CAP-cAMP (a little less)' : 'CAP-cAMP'}
 			size={11}
 			color="var(--lo-cap)"
 			weight={600}

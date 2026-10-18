@@ -25,7 +25,7 @@ test(
 		await page.goto('./lac-operon/#operon');
 		await expect(stage(page)).toContainText('medium: lactose only');
 		// The output glides to its new value; wait for it.
-		await expect(stage(page)).toContainText(/lac output: 9\d % of full/);
+		await expect(stage(page)).toContainText(/lac output: [5-9]\d % of full/);
 		await expect(stage(page)).toContainText('LacI let go');
 		const glucose = page.locator('input[type=checkbox][data-control=glc]');
 		await glucose.focus();
@@ -33,7 +33,7 @@ test(
 		await expect(stage(page)).toContainText('medium: glucose + lactose');
 		await expect(stage(page)).toContainText('LacY blocked by EIIA-Glc');
 		await expect(stage(page)).toContainText('LacI on the operator');
-		await expect(stage(page)).toContainText(/lac output: [01]\.\d % of full/);
+		await expect(stage(page)).toContainText(/lac output: [0-4]\.\d % of full/);
 	}
 );
 
@@ -80,7 +80,7 @@ test('a culture on two sugars pauses; without the repressor it does not', async 
 	expect(minutes).toBeLessThan(90);
 	await page.goto('./lac-operon/#mutants');
 	await page.locator('button[data-control=strain][data-value=uv5]').click();
-	await expect(stage(page)).toContainText('promoter blind to CAP-cAMP');
+	await expect(stage(page)).toContainText('lacL8UV5, blind to CAP-cAMP');
 	expect(await read(page, 'pause:')).toBeGreaterThan(20);
 	await page.locator('button[data-control=strain][data-value=lacI]').click();
 	await expect(stage(page)).toContainText('no repressor');

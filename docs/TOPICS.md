@@ -161,7 +161,7 @@ A topic is done when:
 - [x] diffusion-osmosis
 - [x] pcr-copying-dna
 - [x] morphogen-gradients
-- [ ] lac-operon
+- [x] lac-operon
 
 **Body & Medicine**
 - [x] heart-circulation

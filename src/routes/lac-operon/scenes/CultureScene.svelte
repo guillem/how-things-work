@@ -18,7 +18,7 @@
 	const l0 = $derived(offers('l0') ? Number(params.l0 ?? 2) : 2);
 	const strain = $derived((offers('strain') ? String(params.strain ?? 'wild') : 'wild') as Strain);
 
-	const HOURS = 10;
+	const HOURS = 12;
 	const SPEED = 0.5;
 	const run = (s: Strain) => culture({ glucose: g0, lactose: l0, hours: HOURS, strain: s });
 	const trace = $derived(run(strain));
@@ -78,7 +78,7 @@
 
 	const strainName: Record<Strain, string> = {
 		wild: 'wild type',
-		uv5: 'promoter blind to CAP-cAMP',
+		uv5: 'lacL8UV5, blind to CAP-cAMP',
 		lacI: 'no repressor',
 		noexcl: 'permease glucose cannot block'
 	};
