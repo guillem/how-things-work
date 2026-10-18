@@ -4,7 +4,8 @@ import { expect, test } from '@playwright/test';
 import fs from 'node:fs';
 import { parseCatalog } from '../src/lib/catalog-parse';
 
-const catalog = parseCatalog(fs.readFileSync('docs/TOPICS.md', 'utf8'));
+const source = fs.readFileSync('docs/TOPICS.md', 'utf8');
+const catalog = parseCatalog(source);
 const { entries, bySlug, categories, checklist } = catalog;
 
 test('every slug is unique and the checklist lists exactly the entries, in order', () => {
@@ -68,6 +69,15 @@ test('category counts match the entries', () => {
 	expect(categories.length).toBeGreaterThan(0);
 	for (const c of categories) expect(c.slugs.length, c.name).toBe(c.declared);
 	expect(categories.reduce((n, c) => n + c.slugs.length, 0)).toBe(entries.length);
+});
+
+test('the preamble states the topic and category counts', () => {
+	// promote.mjs adds one to this sentence when it promotes an entry; a landing that took the
+	// other side of the file would leave it behind.
+	const stated = source.match(/It defines (\d+) topics in (\d+) categories/);
+	expect(stated, 'the preamble names the counts').not.toBeNull();
+	expect(Number(stated![1])).toBe(entries.length);
+	expect(Number(stated![2])).toBe(categories.length);
 });
 
 test('every built explainer has a catalogue entry and its route', () => {

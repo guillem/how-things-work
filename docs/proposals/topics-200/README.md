@@ -5,8 +5,9 @@ self-handover for any re-run. Read it top to bottom before changing anything her
 
 Last updated: 2026-10-18. **All phases are done.** `docs/TOPICS-PROPOSAL.md` holds 100 entries
 that pass `scripts/render.mjs` with no problems and no warnings. Waiting on the user's review of
-the open questions listed at the end of that file. Nothing is built or released, and `TOPICS.md`
-is untouched.
+the open questions listed at the end of that file. Building started on 2026-10-18
+([`build-brief.md`](build-brief.md), [`data/build-order.json`](data/build-order.json)): 24 of the
+100 are on `main` as of 2026-10-18, their entries promoted into `TOPICS.md`; none released.
 
 ## What the user asked for
 

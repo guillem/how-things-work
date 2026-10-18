@@ -2,7 +2,7 @@
 
 Interactive, animated explanations of how complex things work — science, technology, anything.
 Everything runs in the browser; there is no backend. The site is a static build published to
-GitHub Pages: **https://guillem.github.io/how-things-work/** (100 explainers).
+GitHub Pages: **https://guillem.github.io/how-things-work/** (100 explainers released; 24 more on `main`).
 
 **Stack:** [SvelteKit](https://svelte.dev/docs/kit) (static adapter, every page prerendered),
 Svelte 5, TypeScript, plain SVG for the illustrations, [Playwright](https://playwright.dev) for
@@ -83,7 +83,7 @@ src/
       steps.ts             the narrative: chapters, steps, controls
       PhotosynthesisStage.svelte   picks and lazy-loads a scene per step
       scenes/*.svelte      the animated SVG scenes
-docs/TOPICS.md             the topic catalogue: 100 topics in 11 categories (content only)
+docs/TOPICS.md             the topic catalogue: 124 topics in 11 categories (content only)
 docs/STATUS.md             where the work stands and how to resume it (the self-handover)
 docs/BACKLOG.md            what to build next, known gaps
 docs/full-picture.html     the one-glance status dashboard (open in a browser)

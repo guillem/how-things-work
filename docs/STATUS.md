@@ -4,13 +4,15 @@ The self-handover. If work is interrupted, this file alone must be enough to con
 top to bottom, then run the commands under "Resume". **Update it at every commit**, not just at
 the end of a development.
 
-Last updated: 2026-10-17 22:50 UTC, after v1.0.0.
+Last updated: 2026-10-18 12:30 UTC, 24 of the proposal's topics built (unreleased).
 
 ## How we work
 
-- [`TOPICS.md`](TOPICS.md) is the catalogue (100 topics, 11 categories; content only). Do not
-  change its topics or categories; the only edit we make is ticking a topic in its checklist once
-  it meets the catalogue's definition of done. Prettier is told to leave it alone.
+- [`TOPICS.md`](TOPICS.md) is the catalogue (124 topics, 11 categories; content only): the first
+  100, plus the proposal's entries as `proposals/topics-200/scripts/promote.mjs` promotes them
+  when their build starts. Do not change its topics or categories otherwise; the only edits we
+  make are promoting an entry and ticking it once it meets the catalogue's definition of done.
+  Prettier is told to leave it alone.
 - [`BACKLOG.md`](BACKLOG.md) says what to build next and lists known gaps.
   [`TIMELOG.md`](TIMELOG.md) records how long each development took (log each phase as it ends).
 - [`full-picture.html`](full-picture.html) is the user's one-glance dashboard; keep it in sync at
@@ -37,9 +39,10 @@ Last updated: 2026-10-17 22:50 UTC, after v1.0.0.
   deployed as **v1.0.0** (2026-10-17): the 100 topics plus the index search and filters (a sticky
   sidebar on wide screens), faster browser tests and the overnight backlog round described below.
   Earlier: v0.1.21 (2026-10-15) the housekeeping, stage-text fix and public polish; v0.1.19 the
-  user's external audit (`docs/codex-fact-check-complete.md`). **The project is in maintenance:**
-  what is left open, and the decisions left for the user, are in [`BACKLOG.md`](BACKLOG.md)
-  ("Open after the backlog round").
+  user's external audit (`docs/codex-fact-check-complete.md`). **Since then the proposal's topics
+  are being built onto `main` (24 so far, none released; see "Current development").** What is
+  left open, and the decisions left for the user, are in [`BACKLOG.md`](BACKLOG.md) ("Open after
+  the backlog round").
 - Licence: MIT code, CC BY 4.0 content, third-party data under its own terms (`LICENSE`,
   `LICENSE-CONTENT.md`, `docs/DATA-SOURCES.md`).
 - Tooling: `scripts/cloud-setup.sh` and `docs/cloud.md` for building in cloud sessions;
@@ -75,8 +78,8 @@ more even (level 3 has 6 topics today), 100 new entries. Done:
 LLMs and to take those slots from level 0), the Reserve dispositions, the links to add to existing
 entries, suggested first waves and the runners-up; the invariants hold over all 200. The open
 questions for the user are at the end of that file. How it was made, and every agent's output, is
-in [`proposals/topics-200/README.md`](proposals/topics-200/README.md). `TOPICS.md` is untouched;
-nothing is built or released.
+in [`proposals/topics-200/README.md`](proposals/topics-200/README.md). Its entries are
+promoted into `TOPICS.md` as their builds start (next paragraph).
 
 **Building the proposal (from 2026-10-18, the user's go-ahead).** One builder agent per topic
 (brief: [`proposals/topics-200/build-brief.md`](proposals/topics-200/build-brief.md)), three at a

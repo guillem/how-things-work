@@ -103,13 +103,16 @@ and then applies the fixes.
 
 ## Next topics (after v1.0.0)
 
-A level 0 and 100 new topics are proposed, not built: [`TOPICS-PROPOSAL.md`](TOPICS-PROPOSAL.md)
-(how it was made: [`proposals/topics-200/README.md`](proposals/topics-200/README.md)). Waiting on
-the user's review of its open questions (the level-0 definition, the 39 / 10 / 3 / 48 split and
+A level 0 and 100 new topics are proposed: [`TOPICS-PROPOSAL.md`](TOPICS-PROPOSAL.md) (how it was
+made: [`proposals/topics-200/README.md`](proposals/topics-200/README.md)). Being built since
+2026-10-18 in the order of `proposals/topics-200/data/build-order.json` (the brief:
+`proposals/topics-200/build-brief.md`): 24 of the 100 are on `main` as of 2026-10-18, none
+released; each entry is promoted into `TOPICS.md` when its build starts. Still waiting on the
+user's review of the open questions (the level-0 definition, the 39 / 10 / 3 / 48 split and
 the LLM ladder's second wave, the optional Everyday things category, the re-levelling footnote,
-the Reserve dispositions, the water cycle). Nothing is built until the user promotes entries into
-`TOPICS.md`; promoting the first level-0 entry also needs the parser change under "Index search
-and filters" below (level 0 in `Level`, `levelNames` and the level check).
+the Reserve dispositions, the water cycle). The level-0 entries come last in the build order;
+promoting the first one also needs the parser change under "Index search and filters" below
+(level 0 in `Level`, `levelNames` and the level check).
 
 ## Site and framework work
 

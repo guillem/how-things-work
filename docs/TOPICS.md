@@ -1,13 +1,13 @@
 # Topic catalog
 
-Source of truth for the content of an interactive web learning tool that shows how things work. It defines 123 topics in 11 categories, each built around one interactive graphic. Readers range from high-school students to university majors.
+Source of truth for the content of an interactive web learning tool that shows how things work. It defines 124 topics in 11 categories, each built around one interactive graphic. Readers range from high-school students to university majors.
 
 This file covers content only. It does not choose the stack, the visual design or the project layout; take those from the repository's own instructions.
 
 ## How to use this file
 
 - **Read everything above "Checklist" before working on any topic.** Those sections are short and apply to every page.
-- **Work on one topic at a time.** Find its entry under the heading `#### <slug>` and read that entry and the entries of its prerequisites. There is no need to read all 100 for one topic.
+- **Work on one topic at a time.** Find its entry under the heading `#### <slug>` and read that entry and the entries of its prerequisites. There is no need to read them all for one topic.
 - **Treat slugs as stable identifiers.** Use them for routes, directory names and cross-links. If a slug has to change, update every reference to it in this file in the same change.
 - **Derive, don't duplicate.** If the site needs this metadata as data (routes, navigation, the prerequisite graph), generate it from this file with a script, so that the two cannot drift apart.
 - **Keep the catalog fixed.** Add, remove, merge or rename topics only when the user asks. Topics under "Reserve" are out of scope until the user promotes one.
