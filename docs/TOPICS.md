@@ -194,7 +194,7 @@ A topic is done when:
 - [x] ocean-acidification
 - [x] tsunamis
 - [x] carbonate-silicate-thermostat
-- [ ] radiative-convective-column
+- [x] radiative-convective-column
 
 **Space**
 - [x] sun-earth-moon
@@ -1118,7 +1118,7 @@ A topic is done when:
 - **Takeaway:** Adding greenhouse gas raises the height from which the planet radiates to space, and because air is colder higher up the whole column below must warm to restore the balance, while the stratosphere above it cools.
 - **Prerequisites:** greenhouse-effect, atmosphere-weather
 - **Related:** carbonate-silicate-thermostat
-- **Pitfall:** Greenhouse gases do not trap heat like a lid or reflect infrared; the column warms because the effective emission level rises into colder air. A band that is saturated at the surface still warms the planet, because emission from higher, thinner layers is what matters. Stratospheric cooling is not automatic for any absorber: in a perfectly grey atmosphere the stratosphere's temperature does not change, and it cools here because part of the infrared escapes through the window.
+- **Pitfall:** Greenhouse gases do not trap heat like a lid or reflect infrared; the column warms because the effective emission level rises into colder air. A band that is saturated at the surface still warms the planet, because emission from higher, thinner layers is what matters. Stratospheric cooling is not automatic for any absorber: in a perfectly grey atmosphere with no solar heating aloft the stratosphere does not cool (its top stays at the skin temperature, its lower layers warm slightly), and it cools here because part of the infrared escapes through the window.
 
 ### Space
 

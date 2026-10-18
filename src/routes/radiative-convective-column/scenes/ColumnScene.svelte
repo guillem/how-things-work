@@ -35,8 +35,16 @@
 	const T_HI = 380;
 	const sxT = scale([170, T_HI], [96, 560]);
 	const P = { x0: 650, x1: 900 };
-	const SHARE_MAX = 0.3;
-	const sxS = scale([0, SHARE_MAX], [P.x0, P.x1]);
+	/** The share axis reaches 30%, or further when the ground's share is larger (a thin band). */
+	const SHARE_MAX = $derived(
+		Math.max(0.3, Math.ceil((now.d.shareWindow + now.d.shareSurfaceBand) * 10) / 10)
+	);
+	const sxS = $derived(scale([0, SHARE_MAX], [P.x0, P.x1]));
+	const shareTicks = $derived(
+		Array.from({ length: Math.round(SHARE_MAX * 10) + 1 }, (_, i) => i / 10).filter(
+			(_, i) => SHARE_MAX <= 0.5 || i % 2 === 0
+		)
+	);
 
 	// The profile (layer temperatures and heights, ground first) eases between steps and settings.
 	const target = $derived([now.column.ts, ...now.column.T, ...now.d.z]);
@@ -370,7 +378,7 @@
 	<Axes
 		sx={sxS}
 		{sy}
-		xTicks={[0, 0.1, 0.2, 0.3]}
+		xTicks={shareTicks}
 		yTicks={[0, 10, 20, 30, 40]}
 		xFormat={(v: number) => `${Math.round(v * 100)}%`}
 		grid={false}
@@ -380,7 +388,7 @@
 			<rect
 				x={P.x0}
 				y={sy(b.i + 1) + 1}
-				width={Math.max(0, sxS(Math.min(SHARE_MAX, b.share)) - P.x0)}
+				width={Math.max(0, sxS(b.share) - P.x0)}
 				height={Math.max(1, sy(b.i) - sy(b.i + 1) - 2)}
 				rx="2"
 				fill={C.ir}
@@ -392,19 +400,15 @@
 	<rect
 		x={P.x0}
 		y={Y0 + 24}
-		width={Math.max(0, sxS(Math.min(SHARE_MAX, now.d.shareWindow)) - P.x0)}
+		width={Math.max(0, sxS(now.d.shareWindow) - P.x0)}
 		height="12"
 		rx="2"
 		fill={C.window}
 	/>
 	<rect
-		x={sxS(Math.min(SHARE_MAX, now.d.shareWindow))}
+		x={sxS(now.d.shareWindow)}
 		y={Y0 + 24}
-		width={Math.max(
-			0,
-			sxS(Math.min(SHARE_MAX, now.d.shareWindow + now.d.shareSurfaceBand)) -
-				sxS(Math.min(SHARE_MAX, now.d.shareWindow))
-		)}
+		width={Math.max(0, sxS(now.d.shareWindow + now.d.shareSurfaceBand) - sxS(now.d.shareWindow))}
 		height="12"
 		rx="2"
 		fill={C.ir}

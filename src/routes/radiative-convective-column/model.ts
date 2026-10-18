@@ -368,7 +368,7 @@ export function evolve(
 		{ length: count },
 		(_, i) => firstDay * (lastDay / firstDay) ** (i / (count - 1))
 	);
-	const band = 1 - settings.window;
+	const band = Math.max(0.05, 1 - settings.window);
 	const tauI = tauAt(grid, settings.tau);
 	const emis = from.T.map((_, k) => 1 - Math.exp(-(tauI[k] - tauI[k + 1])));
 	let time = 0;
@@ -376,17 +376,16 @@ export function evolve(
 	let top = -1;
 	for (const target of targets) {
 		while (time < target * 86400 - 1) {
-			// steps of a tenth of the time elapsed, from an hour up to five days. A radiative layer's
-			// own emission is treated implicitly (linearised), which keeps long steps stable; the
-			// convecting layers, mixed with the ocean's large heat capacity, step explicitly, so that
-			// the convecting region still comes to rest only when its net heating is zero.
-			const dt = Math.min(Math.max(3600, time / 10), 5 * 86400, target * 86400 - time);
+			// explicit steps, so that every exchange between layers conserves energy: a tenth of
+			// the time elapsed, at most five days, and under 0.4 of the shortest radiative
+			// relaxation time of a layer outside the convecting region (those are tied to the ocean)
+			let fastest = Infinity;
+			for (let k = top + 1; k < c.T.length; k++)
+				fastest = Math.min(fastest, C[k] / (8 * band * SIGMA * emis[k] * c.T[k] ** 3));
+			const dt = Math.min(time / 10 || 600, 0.4 * fastest, 5 * 86400, target * 86400 - time);
 			const f = fluxes(c);
 			let ts = c.ts + (dt * f.surfaceHeating) / C_SURFACE;
-			let T = c.T.map((t, k) => {
-				const damp = k <= top ? 0 : dt * 8 * band * SIGMA * emis[k] * t ** 3;
-				return t + (dt * f.heating[k]) / (C[k] + damp);
-			});
+			let T = c.T.map((t, k) => t + (dt * f.heating[k]) / C[k]);
 			if (settings.convection) {
 				const a = adjust(ts, T, C_SURFACE, C, grid.p, settings.lapse);
 				({ ts, T } = a);

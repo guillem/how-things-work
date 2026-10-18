@@ -23,14 +23,17 @@ const num = (v: unknown, fallback: number) => {
 	return Number.isFinite(x) ? x : fallback;
 };
 
-/** The reader's column. A step can hold convection off (`radiative` hint). */
+/**
+ * The reader's column. A step can hold convection off (`radiative` hint) or on (`convective`:
+ * the real-time run, which follows a troposphere tied to the ocean by convection).
+ */
 export function settingsOf(p: Params, step?: Step): Settings {
 	const radiative = step?.hints?.radiative === true;
 	return {
 		tau: Math.min(TAU_MAX, Math.max(TAU_MIN, num(p.tau, TAU_REF))),
 		window: p.window === false ? 0 : WINDOW,
 		lapse: Math.min(LAPSE_MAX, Math.max(LAPSE_MIN, num(p.lapse, LAPSE_REF))),
-		convection: radiative ? false : p.convection !== false
+		convection: radiative ? false : step?.hints?.convective === true || p.convection !== false
 	};
 }
 

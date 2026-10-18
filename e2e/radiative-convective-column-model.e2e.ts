@@ -21,6 +21,9 @@ import {
 	equilibrium,
 	evolve,
 	instantOLR,
+	C_SURFACE,
+	CP,
+	G,
 	makeGrid,
 	temperatureAt,
 	type Settings
@@ -59,6 +62,15 @@ test('grey radiative equilibrium follows σT⁴ = (OLR/2)(1 + τ)', () => {
 		// the surface: σTs⁴ = (OLR/2)(2 + τ∞)
 		expect(Math.abs((SIGMA * c.ts ** 4) / ((d.olr / 2) * (2 + tau)) - 1)).toBeLessThan(0.002);
 	}
+});
+
+test('on the page’s own grid the profile is within 0.5% of the analytic one', () => {
+	const c = equilibrium(grey(12));
+	const d = diagnose(c);
+	c.T.forEach((T, k) => {
+		const tauHere = 12 * (c.grid.p[k] / 1000) ** 2;
+		expect(Math.abs((SIGMA * T ** 4) / ((d.olr / 2) * (1 + tauHere)) - 1)).toBeLessThan(0.005);
+	});
 });
 
 test('the skin temperature is 2^(−1/4) of the emission temperature, whatever τ', () => {
@@ -189,4 +201,26 @@ test('more absorber first cuts the outgoing infrared, then the column warms back
 	for (let i = 1; i < run.length; i++) expect(run[i].ts).toBeGreaterThanOrEqual(run[i - 1].ts);
 	const half = run.find((s) => s.ts - before.ts > (target.ts - before.ts) / 2)!;
 	expect(half.days).toBeGreaterThan(365);
+});
+
+test('the real-time run conserves energy, with and without convection', () => {
+	for (const convection of [true, false]) {
+		const before = equilibrium(earth(TAU_REF, { convection }));
+		const after = earth(2 * TAU_REF, { convection });
+		const run = evolve(before, after, 400, 400, 0.05);
+		// heat held by the ocean layer and the air (cₚ Δp / g per layer), J/m²
+		const grid = before.grid;
+		const heat = (ts: number, T: number[]) =>
+			C_SURFACE * ts +
+			T.reduce((a, t, k) => a + (CP * (grid.ph[k] - grid.ph[k + 1]) * 100 * t) / G, 0);
+		// what came in minus what went out, by the trapezoid rule over the snapshots
+		let net = 0;
+		for (let i = 1; i < run.length; i++)
+			net +=
+				(absorbedSolar() - (run[i].olr + run[i - 1].olr) / 2) *
+				(run[i].days - run[i - 1].days) *
+				86400;
+		const gained = heat(run[run.length - 1].ts, run[run.length - 1].T) - heat(before.ts, before.T);
+		expect(Math.abs(gained / net - 1)).toBeLessThan(0.01);
+	}
 });

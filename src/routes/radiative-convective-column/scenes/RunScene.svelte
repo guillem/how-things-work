@@ -81,8 +81,28 @@
 	const sxTime = scale([0, logLast], [R.x0, R.x1]);
 	const timeTicks = [1, 7, 30.44, 365.25, 3652.5, LAST_DAY].map(Math.log10);
 	const timeNames = ['1 d', 'wk', 'mo', '1 yr', '10 yr', '30 yr'];
-	const syOLR = scale([180, 250], [236, 96]);
-	const syDT = scale([-10, 20], [494, 312]);
+	// axes that hold every value of the run: steps of 20 W/m² and 10 K
+	const olrLo = $derived(Math.min(180, 20 * Math.floor(Math.min(...run.map((r) => r.olr)) / 20)));
+	const syOLR = $derived(scale([olrLo, 250], [236, 96]));
+	const olrTicks = $derived(
+		Array.from({ length: Math.floor((240 - olrLo) / 20) + 1 }, (_, i) => olrLo + 20 * i)
+	);
+	const dtRange = $derived.by(() => {
+		let lo = -10;
+		let hi = 20;
+		for (const r of series) {
+			lo = Math.min(lo, 10 * Math.floor(Math.min(r.ground, r.strat) / 10));
+			hi = Math.max(hi, 10 * Math.ceil(Math.max(r.ground, r.strat) / 10));
+		}
+		return [lo, hi] as [number, number];
+	});
+	const syDT = $derived(scale(dtRange, [494, 312]));
+	const dtTicks = $derived(
+		Array.from(
+			{ length: (dtRange[1] - dtRange[0]) / 10 + 1 },
+			(_, i) => dtRange[0] + 10 * i
+		).filter((_, i, a) => a.length <= 6 || i % 2 === 0)
+	);
 	const series = $derived(
 		run.slice(1).map((r) => ({
 			x: Math.log10(r.days),
@@ -312,13 +332,7 @@
 		</Readout>
 	{:else}
 		<!-- outgoing infrared -->
-		<Axes
-			sx={sxTime}
-			sy={syOLR}
-			xTicks={timeTicks}
-			xFormat={() => ''}
-			yTicks={[180, 200, 220, 240]}
-		/>
+		<Axes sx={sxTime} sy={syOLR} xTicks={timeTicks} xFormat={() => ''} yTicks={olrTicks} />
 		<line
 			x1={R.x0}
 			x2={R.x1}
@@ -342,7 +356,7 @@
 			d={linePath(
 				shownSeries,
 				(p) => p.x,
-				(p) => clamp(p.olr, 180, 250),
+				(p) => p.olr,
 				sxTime,
 				syOLR
 			)}
@@ -369,13 +383,13 @@
 			sy={syDT}
 			xTicks={timeTicks}
 			xFormat={(v: number) => timeNames[timeTicks.indexOf(v)] ?? ''}
-			yTicks={[-10, 0, 10, 20]}
+			yTicks={dtTicks}
 		/>
 		<path
 			d={linePath(
 				shownSeries,
 				(p) => p.x,
-				(p) => clamp(p.ground, -10, 20),
+				(p) => p.ground,
 				sxTime,
 				syDT
 			)}
@@ -387,7 +401,7 @@
 			d={linePath(
 				shownSeries,
 				(p) => p.x,
-				(p) => clamp(p.strat, -10, 20),
+				(p) => p.strat,
 				sxTime,
 				syDT
 			)}

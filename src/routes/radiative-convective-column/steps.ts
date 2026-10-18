@@ -70,10 +70,10 @@ export const spec: ExplainerSpec = {
 			duration: 24,
 			controls: [tau, window],
 			body: `
-<p>Earth absorbs about 238 W of sunlight per square metre, averaged over the globe and the day: a fifth of the 1,361 W/m² arriving at the top of the air spread over a sphere, less the 30% reflected. In a steady state it must send the same 238 W/m² back out as infrared, which a blackbody does at the <dfn data-def="The temperature at which a blackbody would emit the planet's outgoing infrared flux: T = (OLR/σ)^¼.">emission temperature</dfn> <span class="formula">(238/σ)^¼ ≈ 255 K</span>.</p>
+<p>Earth absorbs about 238 W of sunlight per square metre, averaged over the globe and the day: a quarter of the 1,361 W/m² falling on a surface facing the Sun (a sphere has four times the area of its shadow), less the 30% reflected: (1 − 0.30) × 1,361 / 4 ≈ 238. In a steady state it must send the same 238 W/m² back out as infrared, which a blackbody does at the <dfn data-def="The temperature at which a blackbody would emit the planet's outgoing infrared flux: T = (OLR/σ)^¼.">emission temperature</dfn> <span class="formula">(238/σ)^¼ ≈ 255 K</span>.</p>
 <p>Here the air lets all the sunlight through to the ground. In the infrared it absorbs: a tenth of the emission lies in a <dfn data-def="A range of infrared wavelengths (about 8–12 µm on Earth) where the clear air absorbs little, so the ground radiates straight to space.">window</dfn> it does not absorb at all, the rest in a <dfn data-def="A band in which the gas absorbs equally at every wavelength, described by one optical depth.">grey band</dfn> with optical depth τ∞ from the top of the air to the ground. Through every level two streams cross: <strong>U</strong>, the infrared going up, and <strong>D</strong>, going down. Counting τ downward from the top, each stream loses what the layer absorbs and gains what it emits:</p>
 <p class="formula"><strong>dU/dτ = U − B, dD/dτ = B − D, B = (1 − window) σT⁴</strong></p>`,
-			notes: `<p>These are the two-stream (Schwarzschild) equations in the hemi-isotropic form Pierrehumbert uses in <i>Principles of Planetary Climate</i>, chapter 4, with the diffusivity factor (about 1.66, for the slanting paths) folded into τ. The column is cut into 131 layers, each isothermal, and each passes e<sup>−Δτ</sup> of what enters it. The absorber is well mixed and its lines are pressure-broadened, so τ grows as the square of pressure: τ = τ∞ (p/1000 hPa)². The real atmosphere has no single τ: CO₂, water vapour and ozone absorb in bands of very different strength. A grey band keeps the physics of emission and absorption and drops the spectrum, which is why τ∞ here is not a CO₂ concentration. The window fraction stays a tenth at every temperature, a simplification.</p>`
+			notes: `<p>These are the two-stream (Schwarzschild) equations in the hemi-isotropic form Pierrehumbert uses in <i>Principles of Planetary Climate</i>, chapter 4, with the diffusivity factor for slanting paths folded into τ (2 for this hemi-isotropic form; detailed models use about 1.66). The column is cut into 131 layers, each isothermal, and each passes e<sup>−Δτ</sup> of what enters it. The absorber is well mixed and its lines are pressure-broadened, so τ grows as the square of pressure: τ = τ∞ (p/1000 hPa)². The real atmosphere has no single τ: CO₂, water vapour and ozone absorb in bands of very different strength. A grey band keeps the physics of emission and absorption and drops the spectrum, which is why τ∞ here is not a CO₂ concentration. The window fraction stays a tenth at every temperature, a simplification.</p>`
 		},
 		{
 			id: 'radiative',
@@ -88,7 +88,7 @@ export const spec: ExplainerSpec = {
 <p class="formula"><strong>σT⁴(τ) = (OLR/2)(1 + τ)</strong></p>
 <p>Temperature rises with depth into the absorber. At the very top, where τ → 0, the air settles at the <dfn data-def="The temperature of the thin top of a grey atmosphere: it absorbs from the upward stream and emits both up and down, so σT⁴ = OLR/2.">skin temperature</dfn>, 2<sup>−¼</sup> × 255 ≈ 214 K, whatever τ∞ is. The ground, which also takes the sunlight, is warmer still: <span class="formula">σTₛ⁴ = (OLR/2)(2 + τ∞)</span>, 328 K at τ∞ = 3.5 with the window closed, and 17 K warmer than the air touching it.</p>
 <p>Slide τ∞: the whole lower column heats up, the top hardly changes.</p>`,
-			notes: `<p>Check the solution: in radiative equilibrium the net upward flux U − D is the same at every level, the OLR. Subtract the two equations: d(U − D)/dτ = U + D − 2B = 0, so B = (U + D)/2; add them: d(U + D)/dτ = U − D = OLR, so U + D grows linearly with τ from its top value OLR (nothing comes down from space). Hence B = (OLR/2)(1 + τ). The model's layers reproduce it within 0.2%. With the window open, the band carries only part of the OLR and the skin is set by that part: (1 − w)σT⁴ = (OLR − window flux)/2.</p>`
+			notes: `<p>Check the solution: in radiative equilibrium the net upward flux U − D is the same at every level, the OLR. Subtract the two equations: d(U − D)/dτ = U + D − 2B = 0, so B = (U + D)/2; add them: d(U + D)/dτ = U − D = OLR, so U + D grows linearly with τ from its top value OLR (nothing comes down from space). Hence B = (OLR/2)(1 + τ). The model's layers reproduce σT⁴ to within 0.5% over the slider's range. With the window open, the band carries only part of the OLR and the skin is set by that part: (1 − w)σT⁴ = (OLR − window flux)/2.</p>`
 		},
 		{
 			id: 'unstable',
@@ -97,7 +97,7 @@ export const spec: ExplainerSpec = {
 			scene: 'column',
 			hints: { focus: 'unstable', radiative: true },
 			duration: 24,
-			controls: [tau, lapse],
+			controls: [tau, lapse, window],
 			body: `
 <p>Radiative equilibrium puts a hot ground under air that cools very fast with height: at τ∞ = 3.5 (window open) the lowest kilometre cools by about 13 K per km, more than the 9.8 K/km of the <dfn data-def="How fast a rising parcel of dry air cools by expanding: g/cₚ = 9.8 K per km.">dry adiabat</dfn>.</p>
 <p>Air that cools faster with height than a rising parcel would is <strong>unstable</strong>: a parcel nudged upward stays warmer than its surroundings and keeps rising, as in the <a href="../atmosphere-weather/#convection">convection</a> that drives the weather. The red stretch of the profile marks the layers steeper than the lapse rate on the slider. A real atmosphere could not stay like this for an hour: it would overturn.</p>`,
@@ -111,7 +111,7 @@ export const spec: ExplainerSpec = {
 			scene: 'column',
 			hints: { focus: 'convection' },
 			duration: 26,
-			controls: [convection, lapse, tau],
+			controls: [convection, lapse, tau, window],
 			body: `
 <p>Now let convection act. Wherever the profile is steeper than the chosen <dfn data-def="The fall of temperature with height, in K per km. Convection keeps the lower atmosphere close to the lapse rate of rising moist air.">lapse rate</dfn> Γ, the air mixes it back to exactly Γ, keeping its heat: the ground, which was too hot, gives heat to the air above. Radiation keeps working on every layer, and the column settles again.</p>
 <p>The result has two parts. Below, a <strong>troposphere</strong> on the lapse rate, the ground no warmer than the air touching it; above, a <strong>stratosphere</strong> in radiative equilibrium. The <dfn data-def="The top of the convecting region, where the temperature profile stops following the lapse rate.">tropopause</dfn> between them lies where the radiative profile becomes stable on its own: about 10.7 km at τ∞ = 3.5 and 6.5 K/km, with a surface of 288.7 K, 26 K cooler than without convection.</p>
@@ -129,7 +129,7 @@ export const spec: ExplainerSpec = {
 			controls: [tau, window],
 			body: `
 <p>Infrared emitted deep in the column is absorbed again before it gets out. What reaches space leaves from layers with little absorber above them, and most of it from around the level where the optical depth from the top is 1: the <dfn data-def="The level from which the planet's escaping infrared mostly leaves; for a grey band, about where the optical depth from the top is 1.">emission level</dfn>. The bars on the right show how much of the outgoing 238 W/m² leaves from each kilometre of height.</p>
-<p>In the reference column the emission level is about 5 km up, where the air is near 255 K: the planet's emission temperature is the temperature of its emission level, not of its ground. The ground's own infrared reaches space only through the window (about 39 W/m², the bar at the bottom) and as the few per cent of the band that gets through.</p>`,
+<p>In the reference column the emission level is about 5 km up, where the air is at 256 K, close to the planet's emission temperature of 255 K. The planet radiates at roughly the temperature of its emission level, not of its ground; since the escaping infrared comes from a range of heights (and partly from the ground), the two need not match exactly. The ground's own infrared reaches space only through the window (about 39 W/m², the bar at the bottom) and as the few per cent of the band that gets through.</p>`,
 			notes: `<p>A layer's share of the outgoing infrared is its emission times the fraction that reaches the top, e<sup>−τ</sup>. For τ growing as p² that product peaks near τ = 1. In pure grey radiative equilibrium the temperature at τ = 1 is exactly the emission temperature: (OLR/2)(1 + 1) = OLR. Measured, about 40 W/m² of Earth's outgoing infrared leaves through the window (Trenberth, Fasullo and Kiehl 2009); the window here was set to match.</p>`
 		},
 		{
@@ -137,9 +137,9 @@ export const spec: ExplainerSpec = {
 			chapter: 'emission',
 			title: 'Add absorber: the planet radiates from higher up',
 			scene: 'run',
-			hints: { phase: 'instant' },
+			hints: { phase: 'instant', convective: true },
 			duration: 24,
-			controls: [tau],
+			controls: [tau, window, lapse],
 			body: `
 <p>Double τ∞ and, for a moment, hold every temperature where it was. The emission level climbs: at τ∞ = 7 it sits where the old optical depth was ½, about 3 km higher. The air there is colder, it emits less, and the planet now sends out only about 198 W/m² while still absorbing 238: an imbalance, or <dfn data-def="The change in the planet's energy balance (W/m²) caused by a change such as more greenhouse gas, before the temperatures respond.">radiative forcing</dfn>, of 40 W/m².</p>
 <p>This is the greenhouse effect, seen from the column. The gas does not reflect infrared or put a lid on the heat: every layer still emits. The planet loses less because its escaping infrared now comes from higher, colder air.</p>`,
@@ -150,9 +150,9 @@ export const spec: ExplainerSpec = {
 			chapter: 'emission',
 			title: 'The column warms until the balance is back',
 			scene: 'run',
-			hints: { phase: 'run' },
+			hints: { phase: 'run', convective: true },
 			duration: 30,
-			controls: [tau],
+			controls: [tau, window, lapse],
 			body: `
 <p>Now let time run. The column, given twice the absorber, starts out short of 40 W/m² and warms. The troposphere is tied to the ground by convection, and the ground here is 50 m of ocean, so it warms over years. Once the new, higher emission level has warmed to within a few kelvin of what the old one was, the planet sends out 238 W/m² again (a little more now leaves through the window from the warmer ground). The lapse rate has not changed, so the whole troposphere and the ground below have warmed together: by about 15.6 K at the ground here.</p>
 <p>The stratosphere answers first: within months it has cooled by several kelvin, because it now holds more absorber and gets less infrared from the colder emission level below. As the troposphere warms, part of that cooling goes again; what is left over depends on the window, the subject of the last chapter.</p>`,
@@ -181,9 +181,9 @@ export const spec: ExplainerSpec = {
 			duration: 30,
 			controls: [tau, window, lapse],
 			body: `
-<p>Above the tropopause the air is in radiative balance with the infrared coming up through the band, roughly <span class="formula">(1 − window) σT⁴ = U<sub>band, top</sub>/2</span>. Close the window and all 238 W/m² must leave through the band: the stratosphere sits at the skin temperature, 214 K, and adding absorber does <strong>not</strong> cool it (it warms by a fraction of a kelvin).</p>
+<p>Above the tropopause the air is in radiative balance with the infrared coming up through the band, roughly <span class="formula">(1 − window) σT⁴ = U<sub>band, top</sub>/2</span>. Close the window and all 238 W/m² must leave through the band: the top of the stratosphere stays at the skin temperature, 214 K, whatever τ∞, and adding absorber does <strong>not</strong> cool the stratosphere (its lower layers even warm by a fraction of a kelvin).</p>
 <p>Open the window and the warming ground sends more of its infrared straight out through it, so less needs to leave through the band: the band's upward flux falls, and so does the stratosphere's temperature. From τ∞ = 3.5 to 7 it cools by about 2.5 K while the ground warms by 15.6 K. Stratospheric cooling is not automatic for any absorber; here it comes from the part of the spectrum the gas leaves open.</p>`,
-			notes: `<p>This is the window-grey model of Goessling and Bathiany (2016). Satellites have measured the stratosphere cooling as CO₂ has risen, while the troposphere warmed: a fingerprint of greenhouse warming, since a brighter Sun would warm both. In the real stratosphere the cooling also comes from CO₂ emitting more strongly in its own band, a spectral effect a grey gas cannot show, and how much a gas cools the stratosphere depends on where in the spectrum it absorbs. The real stratosphere warms with height, because ozone absorbs the Sun's ultraviolet; this column has no ozone, so its stratosphere is nearly isothermal.</p>`
+			notes: `<p>This is the window-grey model of Goessling and Bathiany (2016). Satellites have measured the stratosphere cooling as CO₂ has risen, while the troposphere warmed: a fingerprint of greenhouse warming, since a brighter Sun would warm both. Real CO₂-induced cooling has more than one cause: the blocking of upward infrared in CO₂'s band, a spectral effect a grey gas cannot show, and an indirect solar effect, in which extra CO₂ lets air heated by ozone's absorption of sunlight shed that heat faster (this one works even for a grey absorber). How much a gas cools the stratosphere depends on where in the spectrum it absorbs. The real stratosphere warms with height, because ozone absorbs the Sun's ultraviolet; this column has no ozone, so its stratosphere is nearly isothermal.</p>`
 		}
 	]
 };
