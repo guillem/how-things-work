@@ -2865,6 +2865,84 @@
 			font-family="ui-monospace, monospace"
 			fill="currentColor">er</text
 		>
+	{:else if slug === 'positional-encoding'}
+		<!-- three clock hands turning at different speeds, each with its sine, and the position line -->
+		<circle
+			cx="30"
+			cy="22"
+			r="14"
+			fill="none"
+			stroke="currentColor"
+			stroke-width="1.4"
+			opacity="0.55"
+		/>
+		<line
+			x1="30"
+			y1="22"
+			x2="26.9"
+			y2="35.6"
+			stroke={accent}
+			stroke-width="2.5"
+			stroke-linecap="round"
+		/>
+		<path
+			d="M60.0 22.0L62.2 12.8L64.4 11.9L66.6 20.0L68.8 30.0L71.0 32.7L73.2 25.9L75.4 15.5L77.6 11.0L79.8 16.4L82.0 26.8L84.2 32.9L86.4 29.2L88.6 19.1L90.8 11.5L93.0 13.4L95.2 23.0L97.4 31.7L99.6 31.7L101.8 23.0L104.0 13.4L106.2 11.5L108.4 19.1L110.6 29.2L112.8 32.9L115.0 26.8L117.2 16.4L119.4 11.0L121.6 15.5L123.8 25.9L126.0 32.7L128.2 30.0L130.4 20.0L132.6 11.9L134.8 12.8L137.0 22.0L139.2 31.2L141.4 32.1L143.6 24.0L145.8 14.0L148.0 11.3L150.2 18.1L152.4 28.5L154.6 33.0L156.8 27.6L159.0 17.2L161.2 11.1L163.4 14.8L165.6 24.9L167.8 32.5L170.0 30.6L172.2 21.0L174.4 12.3L176.6 12.3L178.8 21.0L181.0 30.6L183.2 32.5L185.4 24.9L187.6 14.8L189.8 11.1L192.0 17.2"
+			fill="none"
+			stroke="currentColor"
+			stroke-width="1.4"
+			opacity="0.6"
+		/>
+		<circle
+			cx="30"
+			cy="60"
+			r="14"
+			fill="none"
+			stroke="currentColor"
+			stroke-width="1.4"
+			opacity="0.55"
+		/>
+		<line
+			x1="30"
+			y1="60"
+			x2="17.4"
+			y2="66.1"
+			stroke={accent}
+			stroke-width="2.5"
+			stroke-linecap="round"
+		/>
+		<path
+			d="M60.0 60.0L62.2 56.4L64.4 53.3L66.6 50.8L68.8 49.4L71.0 49.0L73.2 49.9L75.4 51.8L77.6 54.6L79.8 58.0L82.0 61.6L84.2 65.1L86.4 68.0L88.6 70.0L90.8 70.9L93.0 70.7L95.2 69.4L97.4 67.0L99.6 63.9L101.8 60.3L104.0 56.8L106.2 53.5L108.4 51.0L110.6 49.4L112.8 49.0L115.0 49.8L117.2 51.6L119.4 54.4L121.6 57.7L123.8 61.3L126.0 64.8L128.2 67.7L130.4 69.8L132.6 70.9L134.8 70.8L137.0 69.5L139.2 67.2L141.4 64.2L143.6 60.7L145.8 57.1L148.0 53.8L150.2 51.2L152.4 49.5L154.6 49.0L156.8 49.6L159.0 51.4L161.2 54.1L163.4 57.4L165.6 61.0L167.8 64.5L170.0 67.5L172.2 69.7L174.4 70.9L176.6 70.9L178.8 69.7L181.0 67.5L183.2 64.5L185.4 61.0L187.6 57.4L189.8 54.1L192.0 51.4"
+			fill="none"
+			stroke="currentColor"
+			stroke-width="1.4"
+			opacity="0.6"
+		/>
+		<circle
+			cx="30"
+			cy="98"
+			r="14"
+			fill="none"
+			stroke="currentColor"
+			stroke-width="1.4"
+			opacity="0.55"
+		/>
+		<line
+			x1="30"
+			y1="98"
+			x2="16.0"
+			y2="98.7"
+			stroke={accent}
+			stroke-width="2.5"
+			stroke-linecap="round"
+		/>
+		<path
+			d="M60.0 98.0L62.2 96.8L64.4 95.7L66.6 94.6L68.8 93.5L71.0 92.4L73.2 91.4L75.4 90.5L77.6 89.7L79.8 89.0L82.0 88.4L84.2 87.9L86.4 87.5L88.6 87.2L90.8 87.0L93.0 87.0L95.2 87.1L97.4 87.3L99.6 87.6L101.8 88.1L104.0 88.7L106.2 89.3L108.4 90.1L110.6 90.9L112.8 91.9L115.0 92.9L117.2 94.0L119.4 95.1L121.6 96.2L123.8 97.4L126.0 98.5L128.2 99.7L130.4 100.8L132.6 102.0L134.8 103.0L137.0 104.0L139.2 105.0L141.4 105.8L143.6 106.6L145.8 107.3L148.0 107.9L150.2 108.3L152.4 108.7L154.6 108.9L156.8 109.0L159.0 109.0L161.2 108.8L163.4 108.6L165.6 108.2L167.8 107.7L170.0 107.1L172.2 106.3L174.4 105.5L176.6 104.6L178.8 103.7L181.0 102.6L183.2 101.6L185.4 100.4L187.6 99.3L189.8 98.1L192.0 96.9"
+			fill="none"
+			stroke="currentColor"
+			stroke-width="1.4"
+			opacity="0.6"
+		/>
+		<line x1="126" y1="6" x2="126" y2="114" stroke={accent} stroke-width="2" />
 	{:else if slug === 'stars'}
 		<!-- a massive star cut open: onion layers round an iron core, and a track on the HR diagram -->
 		<circle cx="62" cy="60" r="44" fill="var(--st-h)" />

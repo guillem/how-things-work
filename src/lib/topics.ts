@@ -951,6 +951,15 @@ const explainers: Explainer[] = [
 		accent: '#6741d9',
 		steps: 9,
 		minutes: 18
+	},
+	{
+		slug: 'positional-encoding',
+		title: 'Position in a transformer: sinusoids & RoPE',
+		summary:
+			'Shuffle a sentence and watch attention fail to notice, then give each position a set of clock hands turning at different speeds: added to the embedding as sinusoids, or turning the queries and keys themselves, as in RoPE, so that an attention score depends only on how far apart two tokens are.',
+		accent: '#d9480f',
+		steps: 7,
+		minutes: 15
 	}
 ];
 

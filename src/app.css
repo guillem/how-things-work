@@ -3221,3 +3221,34 @@ kbd {
 	--tk-bar: #9775fa;
 	--tk-bar-alt: #7048e8;
 }
+
+/* positional-encoding: the query, the key, the value, outputs that stayed or changed, the clock
+   hands, the arcs met in training and the new ones, the two schemes' curves */
+:root {
+	--pe-q: #e8590c;
+	--pe-k: #1971c2;
+	--pe-v: #2f9e44;
+	--pe-out: #6741d9;
+	--pe-same: #2f9e44;
+	--pe-changed: #e03131;
+	--pe-hand: #495057;
+	--pe-seen: #a5d8ff;
+	--pe-new: #e03131;
+	--pe-new-bg: #ffc9c9;
+	--pe-rope: #e8590c;
+	--pe-sin: #1971c2;
+}
+:root[data-theme='dark'] {
+	--pe-q: #ff922b;
+	--pe-k: #74c0fc;
+	--pe-v: #69db7c;
+	--pe-out: #b197fc;
+	--pe-same: #69db7c;
+	--pe-changed: #ff6b6b;
+	--pe-hand: #ced4da;
+	--pe-seen: #1f4e79;
+	--pe-new: #ff6b6b;
+	--pe-new-bg: #5c1f22;
+	--pe-rope: #ff922b;
+	--pe-sin: #74c0fc;
+}
