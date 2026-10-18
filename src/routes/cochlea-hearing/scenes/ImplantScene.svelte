@@ -3,7 +3,7 @@
 	 * A cochlear implant. Top: the spectrum of the chosen vowel (`params.vowel`) drawn along the
 	 * cochlea's place axis (each harmonic at the place tuned to it), the processor's
 	 * `params.channels` bands (equal lengths of the cochlea from 200 Hz to 7 kHz) and the one level
-	 * each band keeps (the power sum of the harmonics inside it). Lines run from each band to its
+	 * each band keeps (measured with the vocoder's own band filters). Lines run from each band to its
 	 * electrode. Below: the uncoiled cochlea with the electrode array in the lower channel,
 	 * reaching 24 mm from the base, each contact lit by its band's level. The actions play the
 	 * vowel and the noise-vocoded vowel, quietly.
@@ -18,6 +18,7 @@
 		INSERTION_MM,
 		VOWELS,
 		bandEdges,
+		bandLevels,
 		electrodePlaces,
 		vocode,
 		vowelHarmonics,
@@ -36,15 +37,16 @@
 
 	const harmonics = $derived(vowelHarmonics(vowel));
 	const edges = $derived(bandEdges(n));
-	/** Level of each band (dB re the strongest band). */
+	/** The vowel as a sound (cached per vowel). */
+	const sample = $derived(vowelSound(vowel));
+	/**
+	 * Level of each band (dB re the strongest band), measured with the simulation's own band
+	 * filters, so the bars and the electrodes show what the vocoder uses.
+	 */
 	const bands = $derived.by(() => {
-		const power = Array.from({ length: n }, (_, i) =>
-			harmonics
-				.filter((h) => h.f >= edges[i] && h.f < edges[i + 1])
-				.reduce((s, h) => s + h.a * h.a, 0)
-		);
-		const top = Math.max(...power) || 1;
-		return power.map((p) => (p > 0 ? 10 * Math.log10(p / top) : -Infinity));
+		const levels = bandLevels(sample, n);
+		const top = Math.max(...levels) || 1;
+		return levels.map((v) => (v > 0 ? 20 * Math.log10(v / top) : -Infinity));
 	});
 	const electrodes = $derived(electrodePlaces(n));
 
@@ -54,8 +56,8 @@
 		const v = Number(params.playVowel ?? 0);
 		const i = Number(params.playImplant ?? 0);
 		untrack(() => {
-			if (last && v !== last.v) playSamples(vowelSound(vowel));
-			else if (last && i !== last.i) playSamples(vocode(vowelSound(vowel), n).sound);
+			if (last && v !== last.v) playSamples(sample);
+			else if (last && i !== last.i) playSamples(vocode(sample, n).sound);
 			last = { v, i };
 		});
 	});

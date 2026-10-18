@@ -177,7 +177,7 @@ A topic is done when:
 - [x] medical-imaging
 - [x] cerebellum-motor-learning
 - [x] pharmacokinetics-dosing
-- [ ] cochlea-hearing
+- [x] cochlea-hearing
 
 **Earth & Climate**
 - [x] plate-tectonics
@@ -957,7 +957,7 @@ A topic is done when:
 - **Takeaway:** The cochlea sorts sound by frequency along its length, so pitch is a place, and a cochlear implant works by stimulating those places with a handful of electrodes.
 - **Prerequisites:** waves-interference, fourier-transform, neurons
 - **Related:** vision-color, compression
-- **Needs:** Speech for the implant demonstration: synthesized vowels (source–filter synthesis on published formant frequencies); the cochlear model itself is a standard one-dimensional transmission-line model with published parameters.
+- **Needs:** Speech for the implant demonstration: synthesized vowels (source–filter synthesis on published formant frequencies); the cochlear model itself is a standard one-dimensional transmission-line model, with its damping, amplifier saturation and input calibration fitted to published measurements.
 - **Pitfall:** Noise damage does not simply turn the volume down: the lost hair cells remove the amplification, so soft sounds vanish while loud ones still hurt.
 
 ### Earth & Climate

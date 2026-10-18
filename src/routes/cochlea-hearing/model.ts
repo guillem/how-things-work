@@ -38,6 +38,15 @@
  * velocity at the threshold of the nerve fibres tuned to that place (Robles & Ruggero 2001,
  * Physiol. Rev. 81:1305, Table 1). The healthy model's gain, compression and level-dependent
  * shift of the peak are checked against the same review in `e2e/cochlea-hearing-model.e2e.ts`.
+ *
+ * Provenance of the parameters. Published: Greenwood's map and length; the fluid density; the
+ * threshold velocity. Typical modelling values (as in Neely 1981 and later one-dimensional
+ * models): the membrane's mass per area and the channels' height. Illustrative values fitted for
+ * this page, not taken from a publication: the passive damping (Q_PASSIVE, chosen so that the
+ * passive peak sits about 0.6–0.7 octave basal of the live one), the amplifier's residual damping
+ * (chosen for a soft-tone Q₁₀ of about 4–15, as measured), its saturation (V_SAT, chosen so that
+ * compression starts at about 30 dB SPL and the live and passive peaks meet near 100 dB SPL), and
+ * the input calibration (U_REF, chosen so that the healthy thresholds fall at about 0–15 dB SPL).
  */
 
 // ------------------------------------------------------------------------------- the place map
@@ -76,8 +85,8 @@ const V_SAT = 0.01;
 const U_REF = 2e-7;
 /** Membrane velocity at the threshold of hearing, m/s (≈ 100 µm/s). */
 export const V_THRESHOLD = 1e-4;
-/** Number of membrane sections. */
-export const SECTIONS = 1200;
+/** Number of membrane sections (converged: doubling it changes no peak by more than 0.1 dB). */
+export const SECTIONS = 4800;
 
 const DX = LENGTH_MM / 1000 / SECTIONS;
 /** Centre of each section, mm from the base. */
@@ -240,7 +249,7 @@ export function respond(
 	if (ear.active) {
 		for (let j = 0; j < SECTIONS; j++) g0[j] = GAMMA_PLACE[j] * (1 - loss[j]);
 	}
-	const gamma = start ? Float64Array.from(start) : Float64Array.from(g0);
+	const gamma = ear.active && start ? Float64Array.from(start) : Float64Array.from(g0);
 	const re = new Float64Array(SECTIONS);
 	const im = new Float64Array(SECTIONS);
 	let iterations = 0;

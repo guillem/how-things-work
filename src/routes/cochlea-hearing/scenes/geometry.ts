@@ -10,7 +10,7 @@ export const xAt = (mm: number) => X0 + (mm / LENGTH_MM) * (X1 - X0);
 export const membraneWidth = (mm: number) => 2.5 + (7.5 * mm) / LENGTH_MM;
 
 /** Every k-th section, for drawing. */
-export const STRIDE = 3;
+export const STRIDE = 12;
 export const DRAWN = Array.from({ length: Math.ceil(SECTIONS / STRIDE) }, (_, i) => i * STRIDE);
 
 /** Tick frequencies of the "tuned to" row, Hz, with their labels. */

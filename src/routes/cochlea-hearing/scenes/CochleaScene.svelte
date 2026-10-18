@@ -85,14 +85,25 @@
 
 	// ---- the moving membrane -------------------------------------------------------------------
 	const fmin = $derived(Math.min(...tones.map((x) => x.f)));
-	/** Drawing rate of each tone (cycles per second of `t`). */
-	const rates = $derived(responses.map((r) => 0.6 * (1 + 0.5 * Math.log2(r.f / fmin))));
-	/** The largest envelope, to scale the drawing. */
+	const fmax = $derived(Math.max(...tones.map((x) => x.f)));
+	/**
+	 * Drawing rate of each tone (cycles per second of `t`): the real frequencies slowed down by one
+	 * factor, so that tones keep their ratios; for the vowels, whose harmonics span more than three
+	 * octaves, each harmonic turns at its own slow rate instead (schematic timing).
+	 */
+	const rates = $derived(
+		responses.map((r) =>
+			fmax / fmin <= 8 ? (0.6 * r.f) / fmin : 0.6 * (1 + 0.5 * Math.log2(r.f / fmin))
+		)
+	);
+	/** Displacement amplitude per unit velocity of each tone: 1/ω. */
+	const inv = $derived(responses.map((r) => 1 / (2 * Math.PI * r.f)));
+	/** The largest displacement envelope, to scale the drawing. */
 	const top = $derived.by(() => {
 		let m = 0;
 		for (const j of DRAWN) {
 			let s = 0;
-			for (const r of responses) s += r.mag[j] * r.mag[j];
+			for (let k = 0; k < responses.length; k++) s += (responses[k].mag[j] * inv[k]) ** 2;
 			m = Math.max(m, Math.sqrt(s));
 		}
 		return m || 1;
@@ -109,7 +120,8 @@
 			if (!still) {
 				for (let k = 0; k < responses.length; k++) {
 					const r = responses[k];
-					d += r.re[j] * cs[k] - r.im[j] * sn[k];
+					// displacement X = V / (iω): Re(X e^{iφ}) = (Im V cos φ + Re V sin φ) / ω
+					d += (r.im[j] * cs[k] + r.re[j] * sn[k]) * inv[k];
 				}
 			}
 			const y = MID - (AMP * d) / top;
@@ -126,7 +138,7 @@
 		const dn: string[] = [];
 		for (const j of DRAWN) {
 			let s = 0;
-			for (const r of responses) s += r.mag[j] * r.mag[j];
+			for (let k = 0; k < responses.length; k++) s += (responses[k].mag[j] * inv[k]) ** 2;
 			const e = (AMP * Math.sqrt(s)) / top;
 			const x = xAt(PLACES[j]).toFixed(1);
 			up.push(`${x} ${(MID - e).toFixed(1)}`);
