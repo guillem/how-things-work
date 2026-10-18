@@ -1,6 +1,6 @@
 # Topic catalog
 
-Source of truth for the content of an interactive web learning tool that shows how things work. It defines 113 topics in 11 categories, each built around one interactive graphic. Readers range from high-school students to university majors.
+Source of truth for the content of an interactive web learning tool that shows how things work. It defines 114 topics in 11 categories, each built around one interactive graphic. Readers range from high-school students to university majors.
 
 This file covers content only. It does not choose the stack, the visual design or the project layout; take those from the repository's own instructions.
 
@@ -87,7 +87,7 @@ A topic is done when:
 | Chemistry & Materials | `chemistry` | 10 |
 | Biology | `biology` | 10 |
 | Body & Medicine | `medicine` | 10 |
-| Earth & Climate | `earth` | 8 |
+| Earth & Climate | `earth` | 9 |
 | Space | `space` | 9 |
 | Computing | `computing` | 10 |
 | Information & Networks | `networks` | 8 |
@@ -166,6 +166,7 @@ A topic is done when:
 - [x] ice-ages
 - [x] carbon-cycle
 - [x] greenhouse-effect
+- [ ] ensemble-weather-forecasting
 
 **Space**
 - [x] sun-earth-moon
@@ -297,7 +298,7 @@ A topic is done when:
 - **Interaction:** Sliders set how common a disease is and how often the test is right for sick and for healthy people. A grid of 1,000 people is colored into true and false positives and negatives, and the chance that a positive result is real is read off by counting.
 - **Takeaway:** What a piece of evidence means depends on the base rate: a positive result from an accurate test for a rare condition can still be more likely false than true.
 - **Prerequisites:** none
-- **Related:** central-limit-theorem, learning-from-data
+- **Related:** central-limit-theorem, learning-from-data, ensemble-weather-forecasting
 
 #### central-limit-theorem
 - **Title:** Distributions & the central limit theorem
@@ -786,6 +787,16 @@ A topic is done when:
 - **Related:** ice-ages
 - **Needs:** Published emission scenarios and the warming they project.
 - **Pitfall:** Greenhouse gases absorb and re-emit infrared; they do not reflect it, and the mechanism is not the one that warms a glass greenhouse.
+
+#### ensemble-weather-forecasting
+- **Title:** Weather forecasts: why they come as odds
+- **Level:** 3
+- **Kind:** simulate
+- **Interaction:** A ring of forty weather cells round a latitude circle (the Lorenz-96 model) runs as a strip of colour, the true weather on top and the reader's forecast started from a measurement of it with adjustable error. Launch one forecast and watch it track the truth for a few days and then diverge; launch fifty from slightly different starts and watch the fan open, narrow on some days and wide on others, with the spread plotted against the actual error. Shrink the measurement error tenfold and the useful range grows only a few days; make the model slightly wrong and the fan goes confident and wrong; then run the forecast-observe-correct cycle and watch the analysis stay close.
+- **Takeaway:** Because small errors in today's weather keep doubling every few days, a single forecast loses its skill after a week or two; forecasters run many from slightly different starts, and where the runs agree the forecast is sure and where they fan out it is not.
+- **Prerequisites:** chaos-fractals, atmosphere-weather
+- **Related:** bayes-theorem
+- **Pitfall:** Chaos does not make forecasting useless: the useful range differs from day to day, and the ensemble shows which days are which. But an ensemble's spread is not automatically a trustworthy probability: a slightly wrong model gives a narrow, confident fan that misses, which is why forecasters check spread against error and calibrate. A '70% chance of rain' means a 70% chance at any one spot, not rain over 70% of the area or 70% of the day.
 
 ### Space
 
