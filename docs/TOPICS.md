@@ -145,7 +145,7 @@ A topic is done when:
 - [x] dislocations-alloys
 - [x] huckel-molecular-orbitals
 - [x] surface-catalysis
-- [ ] transition-state-theory
+- [x] transition-state-theory
 
 **Biology**
 - [x] the-cell

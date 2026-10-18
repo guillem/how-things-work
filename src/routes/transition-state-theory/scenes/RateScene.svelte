@@ -253,7 +253,7 @@
 			<Label
 				x={PROF.x + PROF.w - 8}
 				y={PROF.y + PROF.h - 12}
-				text="↓ 1.39 eV down to HF + H"
+				text="↓ HF + H: valley floor 1.38 eV lower"
 				anchor="end"
 				muted
 				size={11}
@@ -265,7 +265,7 @@
 	<Label
 		x={PLOT.x + PLOT.w / 2}
 		y={PLOT.y - 26}
-		text="Eyring rate (kT/h)·e^(−E₀/kT), per second"
+		text="Energy-only Eyring factor (kT/h)·e^(−E₀/kT)"
 		weight={600}
 		size={12}
 	/>
@@ -273,7 +273,7 @@
 		sx={ax}
 		sy={ay}
 		xLabel="1000 / T (1/K)"
-		yLabel="rate (s⁻¹)"
+		yLabel="factor (s⁻¹), partition functions left out"
 		yTicks={[4, 6, 8, 10, 12, 14]}
 		yFormat={tickFmt}
 	/>
@@ -333,32 +333,32 @@
 			tabular
 		/>
 	</Readout>
-	<Readout id="share" order={4} label="Share over E₀" value="e^(−E₀/kT) = {sci(share)}">
+	<Readout id="share" order={4} label="Boltzmann factor" value="e^(−E₀/kT) = {sci(share)}">
 		<Label
 			x={560}
 			y={420}
-			text="{reactionName}: share over the barrier e^(−E₀/kT) = {sci(share)}"
+			text="{reactionName}: Boltzmann factor e^(−E₀/kT) = {sci(share)}"
 			anchor="start"
 			muted
 			tabular
 		/>
 	</Readout>
-	<Readout id="rate" order={5} label="Rate" value="{sci(heavy ? kD : kH)} s⁻¹">
+	<Readout id="rate" order={5} label="Energy-only factor" value="{sci(heavy ? kD : kH)} s⁻¹">
 		<Label
 			x={560}
 			y={448}
-			text="rate = {sci(heavy ? kD : kH)} per second"
+			text="energy-only factor = {sci(heavy ? kD : kH)} per second"
 			anchor="start"
 			weight={600}
 			tabular
 		/>
 	</Readout>
 	{#if isotope}
-		<Readout id="ratio" order={6} label="k(H) / k(D)" value={(kH / kD).toFixed(2)}>
+		<Readout id="ratio" order={6} label="k(H) / k(D) from E₀ alone" value={(kH / kD).toFixed(2)}>
 			<Label
 				x={560}
 				y={484}
-				text="k(H) / k(D) = {(kH / kD).toFixed(2)}"
+				text="k(H) / k(D) from E₀ alone = {(kH / kD).toFixed(2)}"
 				anchor="start"
 				pill
 				weight={700}

@@ -120,8 +120,7 @@ function bondAt(pair: Pair, mu: number, e: number, phase: number): [number, numb
 	// one period: integrate until the velocity turns from positive back to ≤ 0 at the inner side
 	const dt = DT / 4;
 	let r = rIn,
-		v = 0,
-		t = 0;
+		v = 0;
 	const rs: number[] = [r],
 		vs: number[] = [v];
 	let a = (force(r) / mu) * ACC;
@@ -131,7 +130,6 @@ function bondAt(pair: Pair, mu: number, e: number, phase: number): [number, numb
 		r += v * dt;
 		a = (force(r) / mu) * ACC;
 		v += 0.5 * a * dt;
-		t += dt;
 		rs.push(r);
 		vs.push(v);
 		if (v < 0) wentOut = true;

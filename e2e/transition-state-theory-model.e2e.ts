@@ -94,10 +94,13 @@ test.describe('trajectories', () => {
 		expect(probability(REACTIONS['h-h2'], { trans: 0.45, v: 0 })).toBeGreaterThan(0.8);
 	});
 
-	test('an early pass is crossed by translation, not by vibration (F + H₂)', () => {
+	test('an early pass is crossed by translation; extra vibration does not help (F + H₂)', () => {
 		const r = REACTIONS['f-h2'];
-		expect(probability(r, { trans: 0.1, v: 0 })).toBeGreaterThan(0.6);
-		// three quanta of vibration (1.4 eV more than the pass) and no translation: nothing
+		const ground = probability(r, { trans: 0.1, v: 0 });
+		expect(ground).toBeGreaterThan(0.6);
+		// the same translation with extra vibration crosses less often, not more
+		for (const v of [1, 2, 3]) expect(probability(r, { trans: 0.1, v })).toBeLessThan(ground / 2);
+		// with no relative motion at all the fluorine never arrives, whatever the vibration
 		expect(probability(r, { trans: 0, v: 3 })).toBe(0);
 	});
 

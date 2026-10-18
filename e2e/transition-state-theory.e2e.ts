@@ -36,16 +36,17 @@ test('H + H₂: too little translation turns back, enough crosses', async ({ pag
 	expect(await crossing(page)).toBe(0);
 });
 
-test('the early pass of F + H₂ wants translation; vibration alone does nothing', async ({
+test('the early pass of F + H₂ wants translation; extra vibration does not help', async ({
 	page
 }) => {
 	await page.goto('./transition-state-theory/#early');
 	await expect(stage(page)).toContainText('Crossed: HF + H');
-	await range(page, 'fTrans').fill('0');
+	const ground = await crossing(page);
+	expect(ground).toBeGreaterThan(15);
+	// the same translation with three quanta of vibration crosses less often
 	await range(page, 'fV').fill('3');
 	await expect(stage(page)).toContainText('vibration v = 3');
-	await expect(stage(page)).toContainText('No reaction: F + H₂');
-	expect(await crossing(page)).toBe(0);
+	expect(await crossing(page)).toBeLessThan(ground / 2);
 });
 
 test('the late pass of H + HF wants vibration; translation alone bounces off', async ({ page }) => {
@@ -73,22 +74,22 @@ test('the Eyring rate climbs steeply with temperature, and deuterium is slower',
 }) => {
 	await page.goto('./transition-state-theory/#eyring');
 	await expect(stage(page)).toContainText('At 300 K: kT/h = 6.3 × 10¹² per second');
-	const cold = await sci(page, 'rate');
+	const cold = await sci(page, 'energy-only factor');
 	await range(page, 'temp').fill('600');
 	await expect(stage(page)).toContainText('At 600 K');
-	expect((await sci(page, 'rate')) / cold).toBeGreaterThan(100);
+	expect((await sci(page, 'energy-only factor')) / cold).toBeGreaterThan(100);
 
 	await page.goto('./transition-state-theory/#isotope');
 	// the temperature carries over from the step before: back to room temperature
 	await range(page, 'temp').fill('300');
 	await expect(stage(page)).toContainText('At 300 K');
 	const text = (await stage(page).textContent()) ?? '';
-	const ratio = Number(/k\(H\) \/ k\(D\) = ([\d.]+)/.exec(text)![1]);
+	const ratio = Number(/k\(H\) \/ k\(D\) from E₀ alone = ([\d.]+)/.exec(text)![1]);
 	expect(ratio).toBeGreaterThan(3);
 	await page.locator('button[data-control=reaction][data-value=f-h2]').click();
 	await expect(stage(page)).toContainText('E₀ (F + D₂)');
 	const fText = (await stage(page).textContent()) ?? '';
-	const fRatio = Number(/k\(H\) \/ k\(D\) = ([\d.]+)/.exec(fText)![1]);
+	const fRatio = Number(/k\(H\) \/ k\(D\) from E₀ alone = ([\d.]+)/.exec(fText)![1]);
 	expect(fRatio).toBeGreaterThan(1);
 	expect(fRatio).toBeLessThan(ratio);
 });
