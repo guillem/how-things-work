@@ -73,7 +73,7 @@
 	<Readout id="eig-halves">
 		<Label
 			x={rect.left + 8}
-			y={rect.top + 14}
+			y={sc.sy(0) - 7}
 			text="decay"
 			size={11}
 			anchor="start"
@@ -81,7 +81,7 @@
 		/>
 		<Label
 			x={rect.right - 8}
-			y={rect.top + 14}
+			y={sc.sy(0) - 7}
 			text="growth"
 			size={11}
 			anchor="end"
