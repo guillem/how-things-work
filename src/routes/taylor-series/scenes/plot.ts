@@ -27,7 +27,7 @@ export const PLANE_Y0 = (PLANE.top + PLANE.bottom) / 2;
 export const Y_RANGE: Record<FnId, [number, number]> = {
 	exp: [-2, 12],
 	sin: [-2.5, 2.5],
-	runge: [-1, 2],
+	runge: [-1, 1.5],
 	log: [-3, 2.5]
 };
 

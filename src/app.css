@@ -3398,6 +3398,7 @@ kbd {
 	--ts-taylor: #e8590c;
 	--ts-bound: #868e96;
 	--ts-disk: #0c8599;
+	--ts-disk-fill: rgba(12, 133, 153, 0.16);
 	--ts-sing: #e03131;
 	--ts-cheb: #6741d9;
 	--ts-plane: #f8f9fa;
@@ -3407,6 +3408,7 @@ kbd {
 	--ts-taylor: #ff922b;
 	--ts-bound: #adb5bd;
 	--ts-disk: #3bc9db;
+	--ts-disk-fill: rgba(59, 201, 219, 0.24);
 	--ts-sing: #ff6b6b;
 	--ts-cheb: #b197fc;
 	--ts-plane: #1a1d21;

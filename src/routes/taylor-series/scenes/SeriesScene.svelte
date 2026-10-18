@@ -84,6 +84,8 @@
 	const showCheb = $derived(phase === 'chebyshev' && params.cheb !== false);
 
 	const R = $derived(radius(fn, a));
+	/** On the disk step the disk grows out from the centre (complete at t = 1.8 s). */
+	const grow = $derived(phase === 'disk' ? smoothstep(0.3, 1.8, reduced ? 2.5 : t) : 1);
 	const P = $derived(taylor(fn, a, n));
 
 	// ---- cross-fades -----------------------------------------------------------------
@@ -122,13 +124,17 @@
 	const cPath = $derived(cheby ? fnPath(cheby.at, sy) : '');
 	const inPlot = (y: number) => Number.isFinite(y) && y >= sy.domain[0] && y <= sy.domain[1];
 
-	/** The band of the real line where the series converges, clipped to the plot. */
+	/**
+	 * The band of the real line where the series converges, clipped to the plot;
+	 * on the disk step it grows with the disk.
+	 */
+	const Rb = $derived(R * grow);
 	const band = $derived({
-		x0: Number.isFinite(R) ? Math.max(LEFT, sx(a - R)) : LEFT,
-		x1: Number.isFinite(R) ? Math.min(RIGHT, sx(a + R)) : RIGHT
+		x0: Number.isFinite(R) ? Math.max(LEFT, sx(a - Rb)) : LEFT,
+		x1: Number.isFinite(R) ? Math.min(RIGHT, sx(a + Rb)) : RIGHT
 	});
 	const bandEdges = $derived(
-		Number.isFinite(R) ? [a - R, a + R].filter((v) => v > X0 && v < X1) : []
+		Number.isFinite(R) ? [a - Rb, a + Rb].filter((v) => v > X0 && v < X1) : []
 	);
 
 	// ---- the probe and the error chart ---------------------------------------------------
@@ -152,11 +158,12 @@
 	const KMAX = 60;
 	const coefPts = $derived.by(() => {
 		const c = fn.coefficients(a, KMAX);
-		const big = Math.max(...c.map((v) => Math.abs(v)));
 		const out: { k: number; v: number }[] = [];
-		for (let k = 1; k <= KMAX; k++) {
-			// coefficients that are 0 up to rounding (the odd ones of 1/(1 + x²) about 0)
-			if (Math.abs(c[k]) > big * 1e-13) out.push({ k, v: Math.pow(Math.abs(c[k]), 1 / k) });
+		for (let k = 1; k < KMAX; k++) {
+			// Skip coefficients that are 0 up to rounding (the odd ones of 1/(1 + x²) about 0,
+			// the even ones of sin about 0): far smaller than both neighbours.
+			const side = Math.max(Math.abs(c[k - 1]), Math.abs(c[k + 1]));
+			if (Math.abs(c[k]) > side * 1e-9) out.push({ k, v: Math.pow(Math.abs(c[k]), 1 / k) });
 		}
 		return out;
 	});
@@ -187,7 +194,6 @@
 
 	// ---- the complex plane ------------------------------------------------------------------
 	const Y0 = PLANE_Y0;
-	const grow = $derived(phase === 'disk' ? smoothstep(0.3, 1.8, reduced ? 2.5 : t) : 1);
 	const diskR = $derived(Number.isFinite(R) ? R * U * grow : 0);
 	const nearest = $derived.by(() => {
 		let best: { re: number; im: number } | null = null;
@@ -240,7 +246,7 @@
 				fill="var(--ts-disk)"
 				opacity="0.12"
 			/>
-			{#each bandEdges as v (v)}
+			{#each bandEdges as v, i (i)}
 				<line
 					x1={sx(v)}
 					x2={sx(v)}
@@ -369,8 +375,7 @@
 						cx={sx(a)}
 						cy={Y0}
 						r={diskR}
-						fill="var(--ts-disk)"
-						fill-opacity="0.16"
+						fill="var(--ts-disk-fill)"
 						stroke="var(--ts-disk)"
 						stroke-width="2"
 					/>
@@ -424,7 +429,7 @@
 				{/if}
 			</g>
 			<!-- links from the disk to the band on the curve's plot -->
-			{#each bandEdges as v (v)}
+			{#each bandEdges as v, i (i)}
 				<line
 					x1={sx(v)}
 					x2={sx(v)}
@@ -463,8 +468,8 @@
 					muted
 				/>
 				<Label x={RIGHT - 8} y={Y0 - 7} text="real axis" anchor="end" size={11} muted />
-				<Label x={sx(0) - 7} y={Y0 - U + 4} text="i" anchor="end" size={12} italic muted />
-				<Label x={sx(0) - 7} y={Y0 + U + 4} text="−i" anchor="end" size={12} italic muted />
+				<Label x={sx(0) - 14} y={Y0 - U + 4} text="i" anchor="end" size={12} italic muted />
+				<Label x={sx(0) - 14} y={Y0 + U + 4} text="−i" anchor="end" size={12} italic muted />
 				{#if fn.id === 'runge'}
 					<Label
 						x={sx(0) + 14}
@@ -513,7 +518,7 @@
 				<Readout id="plane-r">
 					<Label
 						x={(sx(a) + near.x) / 2 + (fn.id === 'log' ? 0 : 10)}
-						y={(Y0 + near.y) / 2 + (fn.id === 'log' ? 20 : 4)}
+						y={(Y0 + near.y) / 2 + (fn.id === 'log' ? 34 : 4)}
 						text="R = {fixed(R)}"
 						anchor={fn.id === 'log' ? 'middle' : 'start'}
 						size={13}
