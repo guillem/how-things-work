@@ -264,6 +264,7 @@
 					y={tickY(e.r) + 4}
 					text="{e.n} stripes"
 					size={11}
+					pill
 					color="var(--tp-high-text)"
 				/>
 			</Readout>
