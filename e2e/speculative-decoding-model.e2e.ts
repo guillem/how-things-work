@@ -23,11 +23,13 @@ import {
 	expectedPerPass,
 	HIST_CONTEXT,
 	histogram,
+	pooledAlpha,
 	probsAfter,
 	runOf,
 	SAMPLES,
 	speedsOf
 } from '../src/routes/speculative-decoding/results';
+import { RUN_SEEDS } from '../src/routes/speculative-decoding/steps';
 import {
 	argmax,
 	overlap,
@@ -211,4 +213,76 @@ test('a speculative run fills the window like plain decoding: 58 characters', ()
 		expect(run.tokens.length).toBe(58);
 		expect(run.rounds.length).toBeLessThan(30);
 	}
+});
+
+test('the numbers the narrative quotes', () => {
+	// the default run: the small GPT drafting 4 guesses, at the first seed of "Write another"
+	const run = runOf('small', 4, RUN_SEEDS[0]);
+	expect(run.tokens.length).toBe(58);
+	expect(run.rounds.length).toBe(20);
+	const [r1, r2] = run.rounds;
+	expect(decode(r1.drafted)).toBe('Whag');
+	const at = (i: number) => {
+		const g = r1.checked[i];
+		return { p: g.p[g.token], q: g.q[g.token], u: g.u, kept: g.accepted };
+	};
+	expect(at(0).q).toBeCloseTo(0.066, 3);
+	expect(at(0).p).toBeCloseTo(0.097, 3);
+	expect(at(2).q).toBeCloseTo(0.284, 3);
+	expect(at(2).p).toBeCloseTo(0.252, 3);
+	expect(at(2).p / at(2).q).toBeCloseTo(0.89, 2);
+	expect(at(2).u).toBeCloseTo(0.08, 2);
+	expect(at(3).q).toBeCloseTo(0.005, 3);
+	expect(at(3).p).toBeLessThan(0.001);
+	expect(at(3).kept).toBe(false);
+	expect(chars[r1.extra]).toBe('t');
+	expect(r1.from[r1.extra]).toBeGreaterThan(0.95);
+	expect(decode(r2.drafted)).toBe(' thi');
+	expect(r2.kind).toBe('bonus');
+	expect(chars[r2.extra]).toBe('s');
+	expect(r2.from[r2.extra]).toBeCloseTo(0.574, 3);
+	// plain decoding: one pass per character
+	expect(runOf('small', 0, RUN_SEEDS[0]).rounds.length).toBe(58);
+
+	// the histogram's context
+	const p = probsAfter(makeTarget(), HIST_CONTEXT);
+	const pc = (c: string) => p[chars.indexOf(c)];
+	expect(pc('e')).toBeCloseTo(0.27, 2);
+	expect(pc('a')).toBeCloseTo(0.25, 2);
+	expect(pc('o')).toBeCloseTo(0.18, 2);
+	expect(pc('y')).toBeCloseTo(0.16, 1);
+	expect(pc('i')).toBeCloseTo(0.14, 2);
+	const qUni = probsAfter(makeDraft('unigram'), HIST_CONTEXT);
+	expect(qUni[chars.indexOf(' ')]).toBeCloseTo(0.15, 2);
+	const beta = (d: 'unigram' | 'bigram' | 'small') =>
+		overlap(p, probsAfter(makeDraft(d), HIST_CONTEXT));
+	expect(beta('small')).toBeCloseTo(0.88, 2);
+	expect(beta('bigram')).toBeCloseTo(0.73, 2);
+	expect(beta('unigram')).toBeCloseTo(0.26, 2);
+	// the wrong rule writes "e" about half the time
+	const wrong = histogram('small', 'top-match', 1);
+	const e = wrong.draws.filter((x) => x === chars.indexOf('e')).length / SAMPLES;
+	expect(e).toBeGreaterThan(0.45);
+	expect(e).toBeLessThan(0.55);
+
+	// keep rates, and the most a round can average
+	expect(pooledAlpha('unigram')).toBeCloseTo(0.33, 2);
+	expect(pooledAlpha('bigram')).toBeCloseTo(0.55, 2);
+	expect(pooledAlpha('small')).toBeCloseTo(0.76, 2);
+	expect(1 / (1 - pooledAlpha('small'))).toBeCloseTo(4.2, 1);
+	expect(1 / (1 - pooledAlpha('bigram'))).toBeCloseTo(2.2, 1);
+
+	// a step of the small GPT reads 28% of the bytes of a target step
+	const t = makeTarget();
+	const s = makeDraft('small');
+	t.step(0);
+	s.step(0);
+	expect(s.lastBytes / t.lastBytes).toBeCloseTo(0.28, 2);
+	// at k = 4: the small GPT reads 1.25 times fewer bytes per character for about twice the
+	// arithmetic; the bigram about 2 times fewer; the target as its own draft more than plain
+	const small = speedsOf('small')[3];
+	expect(1 / small.bytesShare).toBeCloseTo(1.25, 2);
+	expect(small.macsShare).toBeCloseTo(2.1, 1);
+	expect(1 / speedsOf('bigram')[3].bytesShare).toBeCloseTo(2, 0);
+	expect(speedsOf('self')[3].bytesShare).toBeGreaterThan(1);
 });

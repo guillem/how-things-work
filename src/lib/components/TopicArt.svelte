@@ -3189,6 +3189,42 @@
 		/>
 		<circle cx="38" cy="94" r="5.5" fill={accent} />
 		<circle cx="160" cy="54" r="5.5" fill="var(--kv-prefill)" />
+	{:else if slug === 'speculative-decoding'}
+		<!-- four drafted guesses, three kept and one turned down, then a target's bar over a draft's -->
+		{#each [0, 1, 2, 3] as i (i)}
+			<rect
+				x={22 + i * 26}
+				y="16"
+				width="20"
+				height="24"
+				rx="3"
+				fill={i < 3 ? 'var(--sd-kept)' : 'var(--sd-reject)'}
+				fill-opacity="0.25"
+				stroke={i < 3 ? 'var(--sd-kept)' : 'var(--sd-reject)'}
+				stroke-width="1.5"
+			/>
+		{/each}
+		<path d="M104 36 L118 20" stroke="var(--sd-reject)" stroke-width="2" />
+		<rect x="130" y="16" width="20" height="24" rx="3" fill="var(--sd-left)" opacity="0.7" />
+		{#each [44, 30, 22, 14] as h, i (i)}
+			<rect
+				x={34 + i * 38}
+				y={104 - h - 8}
+				width="26"
+				height={h + 8}
+				fill="var(--sd-draft)"
+				fill-opacity="0.12"
+				stroke="var(--sd-draft)"
+				stroke-dasharray="3 2"
+			/>
+			<rect
+				x={40 + i * 38}
+				y={104 - [40, 38, 18, 20][i]}
+				width="14"
+				height={[40, 38, 18, 20][i]}
+				fill={accent}
+			/>
+		{/each}
 	{:else if slug === 'stars'}
 		<!-- a massive star cut open: onion layers round an iron core, and a track on the HR diagram -->
 		<circle cx="62" cy="60" r="44" fill="var(--st-h)" />

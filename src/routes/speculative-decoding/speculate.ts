@@ -125,23 +125,6 @@ export function keep(rule: Rule, p: ArrayLike<number>, q: ArrayLike<number>, x: 
 }
 
 /**
- * One character from a fixed context, the way a speculative round writes its first one: a guess
- * from q (uniform number u1), checked (u2), and if turned down a draw from the leftover (u3).
- */
-export function firstChar(
-	rule: Rule,
-	p: Float64Array,
-	q: Float64Array,
-	u1: number,
-	u2: number,
-	u3: number
-) {
-	const x = draw(q, u1);
-	if (keep(rule, p, q, x, u2)) return x;
-	return draw(rule === 'top-match' ? p : residual(p, q), u3);
-}
-
-/**
  * Writes after `prompt` until the target's context is full (or at least `max` characters are
  * written), k guesses per round. Each round is one pass of the target. Uniform numbers come from
  * `seed`, in order: the guesses, their checks, the extra character.
@@ -184,7 +167,7 @@ export function speculate(
 		// the draft catches up with the committed text, then guesses
 		const qs: Float64Array[] = [];
 		if (kk > 0) {
-			let q = new Float64Array(0);
+			let q: Float64Array = new Float64Array(0);
 			while (draft.length < n) {
 				q = draft.step(text[draft.length]);
 				round.draftMacs += draft.lastMacs;

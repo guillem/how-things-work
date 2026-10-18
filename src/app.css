@@ -3466,3 +3466,22 @@ kbd {
 	--ch-term-B: #b197fc;
 	--ch-term-C: #3bc9db;
 }
+
+/* speculative-decoding: the target model (p), the draft (q), a kept guess, a turned-down guess,
+   the leftover max(0, p − q) and the character the target adds, the strip's cells */
+:root {
+	--sd-target: #1c7ed6;
+	--sd-draft: #e8590c;
+	--sd-kept: #2b8a3e;
+	--sd-reject: #c92a2a;
+	--sd-left: #7048e8;
+	--sd-chip: #f1f3f5;
+}
+:root[data-theme='dark'] {
+	--sd-target: #4dabf7;
+	--sd-draft: #ff922b;
+	--sd-kept: #69db7c;
+	--sd-reject: #ff6b6b;
+	--sd-left: #b197fc;
+	--sd-chip: #25282c;
+}

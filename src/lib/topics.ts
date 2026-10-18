@@ -1023,6 +1023,15 @@ const explainers: Explainer[] = [
 		accent: '#e8590c',
 		steps: 8,
 		minutes: 16
+	},
+	{
+		slug: 'speculative-decoding',
+		title: 'Speculative decoding',
+		summary:
+			'A small model guesses the next few characters and the tiny GPT checks them all in one pass, keeping each guess with probability min(1, p/q) and redrawing the first one it turns down from the leftover; ten thousand samples show the output is exactly the big model’s, and the counted passes and bytes show when the guessing pays.',
+		accent: '#1c7ed6',
+		steps: 10,
+		minutes: 20
 	}
 ];
 

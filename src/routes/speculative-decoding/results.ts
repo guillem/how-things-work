@@ -5,7 +5,16 @@
  */
 import { rng } from '#lib/draw/math.ts';
 import { decode, encode, makeDraft, makeTarget, PROMPT, type DraftId } from './models.ts';
-import { firstChar, speculate, stats, type CharModel, type Rule, type Run } from './speculate.ts';
+import {
+	draw,
+	keep,
+	residual,
+	speculate,
+	stats,
+	type CharModel,
+	type Rule,
+	type Run
+} from './speculate.ts';
 
 export const K_MAX = 8;
 
@@ -24,7 +33,7 @@ export function runOf(draft: DraftId, k: number, seed: number, rule: Rule = 'exa
 /** Probabilities of the next character after `context`, from a fresh copy of a model. */
 export function probsAfter(model: CharModel, context: string): Float64Array {
 	model.length = 0;
-	let p = new Float64Array(0);
+	let p: Float64Array = new Float64Array(0);
 	for (const c of encode(context)) p = model.step(c);
 	return p;
 }
@@ -38,24 +47,56 @@ export interface Histogram {
 	q: Float64Array;
 	/** The character each of the `SAMPLES` speculative draws wrote. */
 	draws: Uint8Array;
+	/** 1 where it was the draft's guess, kept; 0 where it came from the leftover (or from p). */
+	kept: Uint8Array;
 }
 
 const hists = new Map<string, Histogram>();
-/** 10,000 first characters written after `HIST_CONTEXT` by speculative rounds of `draft`. */
+/**
+ * 10,000 first characters written after `HIST_CONTEXT` by speculative rounds of `draft`: a guess
+ * from q, checked by `rule`, and if turned down a draw from the normalised leftover (from p under
+ * the wrong top-choice rule). Three uniform numbers per draw, from `seed`.
+ */
 export function histogram(draft: DraftId, rule: Rule, seed: number): Histogram {
 	const key = `${draft}/${rule}/${seed}`;
 	let h = hists.get(key);
 	if (!h) {
 		const p = probsAfter(makeTarget(), HIST_CONTEXT);
 		const q = probsAfter(makeDraft(draft), HIST_CONTEXT);
+		const r = rule === 'top-match' ? p : residual(p, q);
 		const random = rng(seed);
 		const draws = new Uint8Array(SAMPLES);
-		for (let i = 0; i < SAMPLES; i++)
-			draws[i] = firstChar(rule, p, q, random(), random(), random());
-		h = { p, q, draws };
+		const kept = new Uint8Array(SAMPLES);
+		for (let i = 0; i < SAMPLES; i++) {
+			const x = draw(q, random());
+			const ok = keep(rule, p, q, x, random());
+			const u = random();
+			draws[i] = ok ? x : draw(r, u);
+			kept[i] = ok ? 1 : 0;
+		}
+		h = { p, q, draws, kept };
 		hists.set(key, h);
 	}
 	return h;
+}
+
+/**
+ * The total-variation distance that sampling noise alone gives `n` draws from `p`, on average:
+ * ½ Σ E|f − p| with each frequency f about normal, of standard deviation √(p(1 − p)/n).
+ */
+export function noiseDistance(p: ArrayLike<number>, n: number): number {
+	let s = 0;
+	for (let v = 0; v < p.length; v++) s += Math.sqrt((2 * p[v] * (1 - p[v])) / (Math.PI * n));
+	return s / 2;
+}
+
+/** Total-variation distance between the first `n` draws' frequencies and `p`. */
+export function distance(draws: Uint8Array, n: number, p: ArrayLike<number>): number {
+	const c = new Float64Array(p.length);
+	for (let i = 0; i < n; i++) c[draws[i]]++;
+	let s = 0;
+	for (let v = 0; v < p.length; v++) s += Math.abs(c[v] / n - p[v]);
+	return s / 2;
 }
 
 /** What plain decoding (one target step per character) reads and computes to write `run`'s text. */
@@ -80,8 +121,10 @@ export interface Speed {
 	k: number;
 	/** Characters written per target pass, measured over the rounds that drafted k guesses. */
 	perPass: number;
-	/** Share of the checked guesses that were kept. */
+	/** Share of the checked guesses that were kept, and the counts. */
 	alpha: number;
+	kept: number;
+	checked: number;
 	/** (1 − α^(k+1)) / (1 − α): the expected characters per pass if every guess were kept with chance α. */
 	predicted: number;
 	/** Bytes read per character (target and draft), as a share of plain decoding's. */
@@ -133,6 +176,8 @@ export function speedsOf(draft: DraftId): Speed[] {
 			k,
 			perPass: written / passes,
 			alpha,
+			kept,
+			checked,
 			predicted: expectedPerPass(alpha, k),
 			bytesShare: bytes / plainBytes,
 			macsShare: macs / plainMacs
@@ -140,6 +185,12 @@ export function speedsOf(draft: DraftId): Speed[] {
 	}
 	speeds.set(draft, out);
 	return out;
+}
+
+/** The draft's keep rate over all its runs, k = 1 … K_MAX together. */
+export function pooledAlpha(draft: DraftId): number {
+	const rows = speedsOf(draft);
+	return rows.reduce((s, r) => s + r.kept, 0) / rows.reduce((s, r) => s + r.checked, 0);
 }
 
 export { decode };
