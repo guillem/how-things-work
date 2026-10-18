@@ -1059,6 +1059,15 @@ const explainers: Explainer[] = [
 		accent: '#8f3f71',
 		steps: 10,
 		minutes: 20
+	},
+	{
+		slug: 'ensemble-weather-forecasting',
+		title: 'Weather forecasts: why they come as odds',
+		summary:
+			'Forecast a ring of forty chaotic weather cells (Lorenz 96) from a slightly wrong measurement and watch the error double every two days; launch fifty-one forecasts and read the odds off the fan, check them against what happened, see a wrong model go confident and wrong, and keep the forecast on track by observing and correcting.',
+		accent: '#22729b',
+		steps: 9,
+		minutes: 18
 	}
 ];
 

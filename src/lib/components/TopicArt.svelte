@@ -3925,6 +3925,27 @@
 				opacity="0.6"
 			/>
 		</g>
+	{:else if slug === 'ensemble-weather-forecasting'}
+		<!-- a fan of forecasts opening from one start, the truth running through it, and the odds -->
+		{#each [-3, -2, -1, 0, 1, 2, 3] as m (m)}
+			<path
+				d="M16 64 C60 64 84 {62 + m * 2} 110 {60 + m * 6} S160 {52 + m * 13} 184 {56 + m * 15}"
+				fill="none"
+				stroke={accent}
+				stroke-width="1.3"
+				opacity="0.55"
+			/>
+		{/each}
+		<path
+			d="M16 64 C60 64 84 64 110 66 S158 82 184 74"
+			fill="none"
+			stroke="currentColor"
+			stroke-width="2"
+		/>
+		<circle cx="16" cy="64" r="3.5" fill="currentColor" />
+		{#each [0.2, 0.55, 0.9, 0.6, 0.3] as p, i (i)}
+			<rect x={128 + i * 11} y={112 - p * 18} width="8" height={p * 18} rx="1.5" fill={accent} />
+		{/each}
 	{:else}
 		<circle cx="100" cy="60" r="30" fill="none" stroke={accent} stroke-width="2" />
 		<circle cx="100" cy="60" r="5" fill={accent} />

@@ -11,14 +11,20 @@ import {
 	DT63,
 	PER_DAY,
 	STEPS_PER_DAY,
+	PALMER_MEMBERS,
+	PALMER_STARTS,
+	PALMER_STEPS,
 	climate,
+	cloudSpread,
 	cycle,
 	forecast,
 	horizon,
+	l63Cloud,
 	l63Step,
 	l96Step,
 	lyapunov,
 	reliability,
+	reliabilityByDay,
 	verify,
 	weather
 } from '../src/routes/ensemble-weather-forecasting/model';
@@ -101,13 +107,6 @@ test('perfect-model probabilities come true as often as they say, within samplin
 	expect(checked).toBeGreaterThanOrEqual(5);
 });
 
-test("a wrong model's probabilities are overconfident: when it says 0 %, rain still comes", () => {
-	const bins = reliability({ obsErr: 0.3, members: 51, F: 6.4 }, 5, 300, 6);
-	const low = bins[0];
-	// when the wrong model says 0 %, rain (x above the threshold) still happens often
-	expect(low.observed - low.p).toBeGreaterThan(0.04);
-});
-
 test('the forecast–observe–correct cycle keeps the analysis closer than the observations', () => {
 	let ana = 0;
 	let free = 0;
@@ -138,4 +137,30 @@ test('the same seed gives the same weather and the same forecast', () => {
 	const b = forecast({ seed: 5, obsErr: 0.3, members: 3, F: 8, days: 2 });
 	expect(Array.from(a.members[1][8])).toEqual(Array.from(b.members[1][8]));
 	expect(Array.from(a.truth[8])).toEqual(Array.from(b.truth[8]));
+});
+
+test("Palmer's picture: the same tiny cloud grows ten times more from some states than others", () => {
+	const growth = PALMER_STARTS.map((start, i) => {
+		const frames = l63Cloud(start, PALMER_MEMBERS, 0.4, 1, PALMER_STEPS, i + 1);
+		return cloudSpread(frames[1]) / cloudSpread(frames[0]);
+	});
+	expect(growth[0]).toBeLessThan(2);
+	expect(growth[1]).toBeGreaterThan(growth[0]);
+	expect(growth[2]).toBeGreaterThan(10 * growth[0]);
+	// on average a small error doubles in ln 2 / 0.906 ≈ 0.77 time units: about ×2 in 0.8
+});
+
+test('the narrative numbers of the wrong model: overconfident and with too little rain', () => {
+	const day5 = reliabilityByDay({ obsErr: 0.3, members: 51, F: 6.4 }, 5, 100)[4];
+	// when it gives no chance of rain, it rains about 7 % of the time
+	expect(day5.bins[0].observed).toBeGreaterThan(0.04);
+	expect(day5.bins[0].observed).toBeLessThan(0.1);
+	// when it is sure, it rains only about three times in four
+	expect(day5.bins[10].observed).toBeGreaterThan(0.6);
+	expect(day5.bins[10].observed).toBeLessThan(0.85);
+	// it forecasts rain about 11 % of the time where it rains 17 %
+	expect(day5.meanP).toBeGreaterThan(0.09);
+	expect(day5.meanP).toBeLessThan(0.13);
+	expect(day5.rainFreq).toBeGreaterThan(0.15);
+	expect(day5.rainFreq).toBeLessThan(0.19);
 });

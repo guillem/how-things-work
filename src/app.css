@@ -3563,3 +3563,37 @@ kbd {
 	--bc-tumble: #ff922b;
 	--bc-noise: #adb5bd;
 }
+
+/* ensemble-weather-forecasting: the weather strips (cold, middling, warm), the error strip, the
+   truth, the members, their mean, spread and error, rain, observations and the three clouds of
+   the Lorenz 63 scene */
+:root {
+	--ewf-cold: #1864ab;
+	--ewf-mid: #f8f9fa;
+	--ewf-warm: #c92a2a;
+	--ewf-hot: #862e9c;
+	--ewf-member: #4c8fb8;
+	--ewf-mean: #e8590c;
+	--ewf-spread: #22729b;
+	--ewf-error: #212529;
+	--ewf-rain: #1971c2;
+	--ewf-obs: #2b8a3e;
+	--ewf-a: #2b8a3e;
+	--ewf-b: #e67700;
+	--ewf-c: #c2255c;
+}
+:root[data-theme='dark'] {
+	--ewf-cold: #4dabf7;
+	--ewf-mid: #1a1d21;
+	--ewf-warm: #ff6b6b;
+	--ewf-hot: #e599f7;
+	--ewf-member: #74c0fc;
+	--ewf-mean: #ff922b;
+	--ewf-spread: #66d9e8;
+	--ewf-error: #f1f3f5;
+	--ewf-rain: #4dabf7;
+	--ewf-obs: #69db7c;
+	--ewf-a: #69db7c;
+	--ewf-b: #ffa94d;
+	--ewf-c: #f783ac;
+}

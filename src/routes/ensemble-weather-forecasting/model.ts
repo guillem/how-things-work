@@ -304,12 +304,69 @@ export function verify(o: Omit<ForecastSetup, 'seed'>, cases: number, seed0 = 1)
 /** The event the probabilities are about: a cell's value above this. */
 export const EVENT = 6;
 
+/** The chance of rain (a value above EVENT) in each cell: the fraction of members above it. */
+export function chances(runs: readonly Vec[][], step: number) {
+	const out = new Float64Array(K);
+	for (const run of runs) for (let k = 0; k < K; k++) if (run[step][k] > EVENT) out[k]++;
+	for (let k = 0; k < K; k++) out[k] /= runs.length;
+	return out;
+}
+
+export interface ReliabilityBin {
+	/** Number of forecasts (cell × start day) in the bin. */
+	count: number;
+	/** Their mean forecast probability. */
+	p: number;
+	/** The fraction of them in which it rained. */
+	observed: number;
+}
+
 /**
- * Reliability of ensemble probabilities of `x > EVENT` at a lead of `lead` days: every cell of
- * every case is one forecast; the forecasts are grouped by their probability (the fraction of
- * members above the threshold) in `bins` bins, and each bin gets the fraction of times the
- * event happened.
+ * Reliability of ensemble probabilities of rain (a value above EVENT) at every whole day of
+ * lead from 1 to `days`: every cell of every start day is one forecast; the forecasts are
+ * grouped by their probability (the fraction of members above the threshold) in `bins` bins,
+ * and each bin gets the fraction of times it rained. Also the frequency of rain in the truth
+ * and the mean forecast probability, per day.
  */
+export function reliabilityByDay(
+	o: Omit<ForecastSetup, 'seed' | 'days'>,
+	days: number,
+	cases: number,
+	bins = 11,
+	seed0 = 1000
+) {
+	const n = Array.from({ length: days }, () => new Array<number>(bins).fill(0));
+	const hits = Array.from({ length: days }, () => new Array<number>(bins).fill(0));
+	const prob = Array.from({ length: days }, () => new Array<number>(bins).fill(0));
+	for (let c = 0; c < cases; c++) {
+		const f = forecast({ ...o, days, seed: seed0 + c });
+		const all = [f.control, ...f.members];
+		for (let d = 1; d <= days; d++) {
+			const s = d * STEPS_PER_DAY;
+			const pk = chances(all, s);
+			for (let k = 0; k < K; k++) {
+				const p = pk[k];
+				const b = Math.min(bins - 1, Math.round(p * (bins - 1)));
+				n[d - 1][b]++;
+				prob[d - 1][b] += p;
+				if (f.truth[s][k] > EVENT) hits[d - 1][b]++;
+			}
+		}
+	}
+	return n.map((counts, d) => {
+		const total = counts.reduce((a, v) => a + v, 0);
+		const rained = hits[d].reduce((a, v) => a + v, 0);
+		const meanP = prob[d].reduce((a, v) => a + v, 0) / total;
+		const binned: ReliabilityBin[] = counts.map((count, b) => ({
+			count,
+			p: count ? prob[d][b] / count : b / (bins - 1),
+			observed: count ? hits[d][b] / count : NaN
+		}));
+		return { day: d + 1, bins: binned, rainFreq: rained / total, meanP };
+	});
+}
+
+/** Reliability at one lead (whole days): see `reliabilityByDay`. */
 export function reliability(
 	o: Omit<ForecastSetup, 'seed' | 'days'>,
 	lead: number,
@@ -317,28 +374,7 @@ export function reliability(
 	bins = 11,
 	seed0 = 1000
 ) {
-	const n = new Array<number>(bins).fill(0);
-	const hits = new Array<number>(bins).fill(0);
-	const prob = new Array<number>(bins).fill(0);
-	const s = Math.round(lead * STEPS_PER_DAY);
-	for (let c = 0; c < cases; c++) {
-		const f = forecast({ ...o, days: lead, seed: seed0 + c });
-		const all = [f.control, ...f.members];
-		for (let k = 0; k < K; k++) {
-			let above = 0;
-			for (const run of all) if (run[s][k] > EVENT) above++;
-			const p = above / all.length;
-			const b = Math.min(bins - 1, Math.round(p * (bins - 1)));
-			n[b]++;
-			prob[b] += p;
-			if (f.truth[s][k] > EVENT) hits[b]++;
-		}
-	}
-	return n.map((count, b) => ({
-		count,
-		p: count ? prob[b] / count : b / (bins - 1),
-		observed: count ? hits[b] / count : NaN
-	}));
+	return reliabilityByDay(o, lead, cases, bins, seed0)[lead - 1].bins;
 }
 
 // ---- forecast, observe, correct --------------------------------------------------------------
@@ -457,3 +493,65 @@ export function cycle(o: CycleSetup) {
 	}
 	return { truth, free, analysis, obs, freeErr, anaErr, spread };
 }
+
+/** Points along the Lorenz 63 attractor, every `every` steps after a spin-up. */
+export function l63Orbit(n: number, every = 2) {
+	const s = Float64Array.from([1, 1, 1]);
+	for (let i = 0; i < 2000; i++) l63Step(s);
+	const out: [number, number, number][] = [];
+	for (let i = 0; i < n * every; i++) {
+		l63Step(s);
+		if (i % every === 0) out.push([s[0], s[1], s[2]]);
+	}
+	return out;
+}
+
+/**
+ * A cloud of `n` starts within `radius` of `centre` (a seeded Gaussian ball), run forward:
+ * returns every member's state at each of `frames + 1` times `dt·every` apart.
+ */
+export function l63Cloud(
+	centre: readonly number[],
+	n: number,
+	radius: number,
+	frames: number,
+	every: number,
+	seed: number
+) {
+	const g = gauss(seed);
+	const members = Array.from({ length: n }, () =>
+		Float64Array.from(centre, (v) => v + radius * g())
+	);
+	const out: [number, number, number][][] = [];
+	const snap = () => out.push(members.map((m) => [m[0], m[1], m[2]] as [number, number, number]));
+	snap();
+	for (let f = 0; f < frames; f++) {
+		for (let i = 0; i < every; i++) for (const m of members) l63Step(m);
+		snap();
+	}
+	return out;
+}
+
+/** Root-mean-square distance of a cloud's members from their mean. */
+export function cloudSpread(points: readonly (readonly number[])[]) {
+	const d = points[0].length;
+	const mean = new Array<number>(d).fill(0);
+	for (const p of points) for (let i = 0; i < d; i++) mean[i] += p[i] / points.length;
+	let v = 0;
+	for (const p of points) for (let i = 0; i < d; i++) v += (p[i] - mean[i]) ** 2;
+	return Math.sqrt(v / points.length);
+}
+
+/**
+ * Three starts on the Lorenz 63 attractor for Palmer's picture, picked from 400 points along an
+ * orbit by how much a cloud of 40 starts (radius 0.4) grows in 0.8 time units: a slow, a
+ * middling and a fast grower.
+ */
+export const PALMER_STARTS: readonly (readonly [number, number, number])[] = [
+	[16.546, 21.493, 33.112],
+	[3.102, 4.924, 14.776],
+	[-14.183, -9.929, 38.494]
+];
+/** Time steps (of DT63) the clouds run for, and members per cloud. */
+export const PALMER_STEPS = 80;
+export const PALMER_MEMBERS = 40;
