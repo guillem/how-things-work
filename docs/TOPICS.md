@@ -82,7 +82,7 @@ A topic is done when:
 
 | Category | Id | Topics |
 |---|---|---|
-| Mathematics | `math` | 11 |
+| Mathematics | `math` | 12 |
 | Physics | `physics` | 10 |
 | Chemistry & Materials | `chemistry` | 10 |
 | Biology | `biology` | 10 |
@@ -108,6 +108,7 @@ A topic is done when:
 - [x] primes-modular-arithmetic
 - [x] chaos-fractals
 - [x] taylor-series
+- [ ] exponentials-logarithms
 
 **Physics**
 - [x] newtons-laws
@@ -338,6 +339,16 @@ A topic is done when:
 - **Related:** fourier-transform
 - **Pitfall:** More terms do not always mean a better fit: outside the radius the partial sums do not converge (individual added terms can improve or worsen the approximation; for 1/(1 + x²) about 0, each additional nonzero term increases the error when |x| > 1), and a function can be smooth everywhere on the real line and still have a finite radius. Do not claim convergence on the boundary circle: for 1/(1 + x²) the series diverges at x = ±1.
 
+#### exponentials-logarithms
+- **Title:** Exponentials & logarithms
+- **Level:** 1
+- **Kind:** manipulate
+- **Interaction:** Fold a strip of paper, breed bacteria or compound interest: a slider sets the growth factor, a counter of doublings runs and the curve shoots off the chart; switch the vertical axis to a log scale and the curve becomes a straight line whose slope is the logarithm of the growth factor per step. Compare 'add the same amount each step' with 'multiply by the same factor each step' on one chart, read a logarithm as the number of doublings needed, and build a slide rule that multiplies by adding lengths.
+- **Takeaway:** Growing by a fixed factor each step outruns growing by a fixed amount, and a logarithm just counts how many of those steps it took.
+- **Prerequisites:** none
+- **Related:** radioactivity, epidemics, acids-bases, earthquakes, sorting
+- **Pitfall:** Exponential does not mean fast: with a factor just above 1 it starts slowly. And a log-scale line that looks tame is not growth slowing down; say that the rate stays the same.
+
 ### Physics
 
 #### newtons-laws
@@ -450,7 +461,7 @@ A topic is done when:
 - **Interaction:** Watch a grid of 1,000 unstable nuclei decay at random while a plot of the survivors follows an exponential curve. Change the half-life, switch between alpha, beta and gamma decay, and date a sample from its remaining carbon-14.
 - **Takeaway:** Nobody can say when a given nucleus will decay, yet a large number of them halve on a precise schedule.
 - **Prerequisites:** atoms-periodic-table
-- **Related:** central-limit-theorem, standard-model
+- **Related:** central-limit-theorem, standard-model, exponentials-logarithms
 - **Pitfall:** After two half-lives a quarter of the nuclei remain, not none.
 
 #### chemical-bonds
@@ -487,7 +498,7 @@ A topic is done when:
 - **Interaction:** Add a strong base to an acid drop by drop while a pH curve is plotted and an indicator changes color; compare strong and weak acids. A zoomed view counts the hydrogen ions, and a scale places everyday liquids from pH 0 to 14.
 - **Takeaway:** pH counts hydrogen ions on a logarithmic scale, so each step is a tenfold change, and in a titration it jumps abruptly at the point where the base added exactly matches the acid.
 - **Prerequisites:** chemical-bonds
-- **Related:** reaction-rates-equilibrium
+- **Related:** reaction-rates-equilibrium, exponentials-logarithms
 - **Pitfall:** That matching point is at pH 7 only for a strong acid with a strong base; for a weak acid it lies above 7.
 
 #### redox-batteries
@@ -673,7 +684,7 @@ A topic is done when:
 - **Interaction:** Set how many people each case infects, how long a case stays infectious and what share of people are vaccinated. Watch the infection spread through a moving crowd and plot the susceptible, infected and recovered counts over time.
 - **Takeaway:** An outbreak grows exponentially while each case infects more than one other person, and it dies out once enough people are immune.
 - **Prerequisites:** none
-- **Related:** ecosystems, mrna-vaccines
+- **Related:** ecosystems, mrna-vaccines, exponentials-logarithms
 
 #### mrna-vaccines
 - **Title:** Vaccines & mRNA
@@ -729,6 +740,7 @@ A topic is done when:
 - **Interaction:** Trigger an earthquake and watch P and S waves spread through a cross-section of the Earth, bending with depth, with S waves stopping at the liquid outer core. Read arrival times at three stations to locate the epicenter, and compare magnitudes on a logarithmic scale.
 - **Takeaway:** Seismic waves cross the whole planet, so the recordings that locate an earthquake also reveal the layers inside the Earth.
 - **Prerequisites:** plate-tectonics, waves-interference
+- **Related:** exponentials-logarithms
 - **Needs:** A reference model of seismic wave speeds inside the Earth.
 
 #### deep-time
@@ -946,6 +958,7 @@ A topic is done when:
 - **Interaction:** Run bubble, insertion, merge and quick sort side by side on the same shuffled bars, stepping or playing at speed, with comparisons counted. Grow the input and plot operations against size on a shared chart; try already-sorted and reversed inputs.
 - **Takeaway:** Algorithms that solve the same problem can differ enormously in how their cost grows with input size, and that growth rate matters more than the speed of the machine.
 - **Prerequisites:** none
+- **Related:** exponentials-logarithms
 
 #### graph-search
 - **Title:** Graph search & shortest paths
@@ -1352,7 +1365,6 @@ A topic is done when:
 
 Strong candidates that are not in the catalog. Do not build them unless the user promotes one to replace a topic above.
 
-- Exponentials & logarithms
 - Differential equations
 - Game theory
 - Fluid dynamics
