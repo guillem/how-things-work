@@ -4956,6 +4956,38 @@
 		{#each [130, 166] as x (x)}
 			<circle cx={x} cy="96" r="5" fill="none" stroke="currentColor" opacity="0.3" />
 		{/each}
+	{:else if slug === 'lagrange-points-three-body'}
+		<!-- the two bodies on their line, the small body's orbit, the five points, and a tadpole
+		     round L4 -->
+		<circle
+			cx="84"
+			cy="62"
+			r="46"
+			fill="none"
+			stroke="currentColor"
+			stroke-width="0.8"
+			stroke-dasharray="3 3"
+			opacity="0.4"
+		/>
+		<circle cx="84" cy="62" r="8" fill={accent} />
+		<circle cx="130" cy="62" r="4" fill="currentColor" opacity="0.7" />
+		{#each [[121, 62], [140, 62], [38, 62], [107, 22], [107, 102]] as [x, y], i (i)}
+			<circle cx={x} cy={y} r="3" fill="none" stroke={accent} stroke-width="1.4" />
+		{/each}
+		<path
+			d="M96 25 Q100 14 112 16 Q122 20 118 28 Q110 32 96 25"
+			fill="none"
+			stroke={accent}
+			stroke-width="1.8"
+			opacity="0.85"
+		/>
+		<path
+			d="M150 30 l20 -10 M150 94 l20 10"
+			fill="none"
+			stroke="currentColor"
+			stroke-width="0.8"
+			opacity="0.3"
+		/>
 	{:else}
 		<circle cx="100" cy="60" r="30" fill="none" stroke={accent} stroke-width="2" />
 		<circle cx="100" cy="60" r="5" fill={accent} />

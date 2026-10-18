@@ -1347,6 +1347,15 @@ const explainers: Explainer[] = [
 		accent: '#3b5bdb',
 		steps: 11,
 		minutes: 20
+	},
+	{
+		slug: 'lagrange-points-three-body',
+		title: 'The three-body problem and the Lagrange points',
+		summary:
+			'Two large bodies and a probe too light to pull on them, seen from the frame that turns with the two: the five points where the probe keeps pace, the forbidden regions its energy sets and the gates that open at L1 and L2, a knife edge at L1, tadpoles round L4 like Jupiter’s Trojans until the mass ratio passes Routh’s 1 in 26, and two probes a metre apart whose paths split.',
+		accent: '#4c6ef5',
+		steps: 9,
+		minutes: 22
 	}
 ];
 

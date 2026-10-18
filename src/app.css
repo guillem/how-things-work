@@ -4624,3 +4624,47 @@ kbd {
 	--gt-yellow: #ffd43b;
 	--gt-pruned: #495057;
 }
+
+/* lagrange-points-three-body: the Lagrange points (unstable, and stable L4/L5), the forbidden
+   region and its zero-velocity curve, probes A and B, orbits, the pulls of the two bodies and
+   what a circular orbit needs, stars */
+:root {
+	--lg-point: #c2255c;
+	--lg-point-text: #a61e4d;
+	--lg-stable: #2b8a3e;
+	--lg-stable-text: #237032;
+	--lg-forbidden: #e5dff3;
+	--lg-forbidden-edge: #6741d9;
+	--lg-probe: #1971c2;
+	--lg-probe-text: #1864ab;
+	--lg-probe-b: #e8590c;
+	--lg-probe-b-text: #c2410c;
+	--lg-orbit: #adb5bd;
+	--lg-pull-big: #f59f00;
+	--lg-pull-big-text: #a86b00;
+	--lg-pull-small: #1c7ed6;
+	--lg-pull-small-text: #1864ab;
+	--lg-needed: #2b8a3e;
+	--lg-needed-text: #237032;
+	--lg-star: #adb5bd;
+}
+:root[data-theme='dark'] {
+	--lg-point: #f06595;
+	--lg-point-text: #faa2c1;
+	--lg-stable: #69db7c;
+	--lg-stable-text: #8ce99a;
+	--lg-forbidden: #2a2340;
+	--lg-forbidden-edge: #b197fc;
+	--lg-probe: #4dabf7;
+	--lg-probe-text: #74c0fc;
+	--lg-probe-b: #ff922b;
+	--lg-probe-b-text: #ffa94d;
+	--lg-orbit: #5c636a;
+	--lg-pull-big: #fcc419;
+	--lg-pull-big-text: #ffd43b;
+	--lg-pull-small: #4dabf7;
+	--lg-pull-small-text: #74c0fc;
+	--lg-needed: #69db7c;
+	--lg-needed-text: #8ce99a;
+	--lg-star: #868e96;
+}
