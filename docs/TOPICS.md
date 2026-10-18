@@ -1,6 +1,6 @@
 # Topic catalog
 
-Source of truth for the content of an interactive web learning tool that shows how things work. It defines 121 topics in 11 categories, each built around one interactive graphic. Readers range from high-school students to university majors.
+Source of truth for the content of an interactive web learning tool that shows how things work. It defines 122 topics in 11 categories, each built around one interactive graphic. Readers range from high-school students to university majors.
 
 This file covers content only. It does not choose the stack, the visual design or the project layout; take those from the repository's own instructions.
 
@@ -82,7 +82,7 @@ A topic is done when:
 
 | Category | Id | Topics |
 |---|---|---|
-| Mathematics | `math` | 16 |
+| Mathematics | `math` | 17 |
 | Physics | `physics` | 10 |
 | Chemistry & Materials | `chemistry` | 10 |
 | Biology | `biology` | 10 |
@@ -113,6 +113,7 @@ A topic is done when:
 - [x] differential-equations
 - [x] calculus-of-variations
 - [x] random-graphs
+- [ ] phase-portraits
 
 **Physics**
 - [x] newtons-laws
@@ -331,7 +332,7 @@ A topic is done when:
 - **Interaction:** Start two double pendulums with almost identical angles and watch their paths separate. Slide the growth rate of the logistic map through its period-doubling cascade, and zoom deep into the Mandelbrot set.
 - **Takeaway:** Simple deterministic rules can produce behavior that is unpredictable in the long run and structure that repeats at every scale.
 - **Prerequisites:** none
-- **Related:** complex-numbers, ecosystems, atmosphere-weather
+- **Related:** complex-numbers, ecosystems, atmosphere-weather, phase-portraits
 
 #### taylor-series
 - **Title:** Taylor series & where they stop working
@@ -393,6 +394,16 @@ A topic is done when:
 - **Related:** epidemics, internet, pagerank, states-of-matter
 - **Pitfall:** The sharp threshold is a large-graph limit; with a few hundred nodes the curve is rounded. Show the knee sharpening as n grows instead of drawing a step.
 
+#### phase-portraits
+- **Title:** Phase portraits & stability
+- **Level:** 3
+- **Kind:** manipulate
+- **Interaction:** Drag the four entries of a 2×2 linear system, or move its two eigenvalues on the complex plane, and the phase plane redraws as a node, saddle, spiral or center while a trace–determinant chart marks where you are. Switch to a nonlinear system (damped pendulum, predator–prey, van der Pol) and hover a critical point to see its linearization laid over the real flow; drag a parameter through a Hopf bifurcation and watch a limit cycle be born.
+- **Takeaway:** Near a fixed point whose eigenvalues have nonzero real parts, the real flow looks like its linearization, so a few fixed points and their eigenvalues sketch the whole portrait; when the eigenvalues reach the imaginary axis, as at a Hopf bifurcation, the nonlinear terms take over and a limit cycle can appear that no fixed point predicts.
+- **Prerequisites:** linear-transformations, calculus, differential-equations
+- **Related:** oscillations-resonance, ecosystems, feedback-control, chaos-fractals
+- **Pitfall:** A center predicted by the linearization is not conclusive: the nonlinear terms decide (Hartman–Grobman covers only hyperbolic points). Show the frictionless pendulum beside the damped one rather than claiming linearization settles every case.
+
 ### Physics
 
 #### newtons-laws
@@ -411,6 +422,7 @@ A topic is done when:
 - **Interaction:** Set the mass, stiffness and damping of a spring, or the length of a pendulum, and watch it oscillate. Add a periodic push with adjustable frequency and plot the resulting amplitude against that frequency.
 - **Takeaway:** Every oscillator has a natural frequency, and pushing it at that frequency makes the motion build up.
 - **Prerequisites:** newtons-laws
+- **Related:** phase-portraits
 
 #### waves-interference
 - **Title:** Waves, sound & interference
@@ -654,7 +666,7 @@ A topic is done when:
 - **Interaction:** Set birth, death and predation rates for a predator and its prey and watch the populations cycle, both as animals on a field and as curves. In a small food web, remove or add a species and follow the knock-on effects.
 - **Takeaway:** Populations are tied together by feedback, so a change to one species ripples through the others in ways that are hard to guess.
 - **Prerequisites:** none
-- **Related:** chaos-fractals, epidemics, game-theory-cooperation, differential-equations
+- **Related:** chaos-fractals, epidemics, game-theory-cooperation, differential-equations, phase-portraits
 
 #### crispr
 - **Title:** CRISPR: how bacteria remember viruses
@@ -1392,7 +1404,7 @@ A topic is done when:
 - **Interaction:** Tune the three gains of a PID controller to balance an inverted pendulum, hold a drone at a set height or keep a car at a set speed over hills, with the response plotted against the target. Add delay, sensor noise and gusts, then chain joints into a robot arm that reaches for a point.
 - **Takeaway:** A machine stays on target by measuring its error and correcting in proportion to it; too little correction is sluggish and too much makes it oscillate.
 - **Prerequisites:** oscillations-resonance
-- **Related:** homeostasis, reinforcement-learning, bacterial-chemotaxis, differential-equations
+- **Related:** homeostasis, reinforcement-learning, bacterial-chemotaxis, differential-equations, phase-portraits
 
 #### wind-turbine-aerodynamics
 - **Title:** Wind turbines & the Betz limit
