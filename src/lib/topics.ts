@@ -1158,6 +1158,15 @@ const explainers: Explainer[] = [
 		accent: '#b5487a',
 		steps: 9,
 		minutes: 16
+	},
+	{
+		slug: 'lasers',
+		title: 'Lasers',
+		summary:
+			'Pump a gain medium between two mirrors and follow its populations and photons under the rate equations: two levels never invert, four levels do at any pump, the inversion clamps at threshold while the output climbs in a straight line, and a shutter turns the same laser into nanosecond pulses of kilowatts.',
+		accent: '#c8102e',
+		steps: 10,
+		minutes: 18
 	}
 ];
 

@@ -4276,6 +4276,26 @@
 		{#each scalesArt.black as x (x)}
 			<rect {x} y="62" width="11" height="28" rx="1.5" fill="currentColor" opacity="0.55" />
 		{/each}
+	{:else if slug === 'lasers'}
+		<!-- a cavity: two mirrors, the rod, the beam inside and the beam leaving -->
+		<rect x="22" y="26" width="6" height="68" rx="2" fill="currentColor" opacity="0.6" />
+		<rect x="140" y="26" width="6" height="68" rx="2" fill="currentColor" opacity="0.45" />
+		<rect
+			x="52"
+			y="44"
+			width="64"
+			height="32"
+			rx="8"
+			fill={accent}
+			fill-opacity="0.15"
+			stroke={accent}
+			stroke-width="1.5"
+		/>
+		<rect x="28" y="57" width="112" height="6" fill={accent} opacity="0.45" />
+		<rect x="146" y="55" width="40" height="10" fill={accent} />
+		{#each [60, 74, 88, 102] as x (x)}
+			<line x1={x} x2={x} y1="98" y2="82" stroke="currentColor" stroke-width="1.5" opacity="0.5" />
+		{/each}
 	{:else}
 		<circle cx="100" cy="60" r="30" fill="none" stroke={accent} stroke-width="2" />
 		<circle cx="100" cy="60" r="5" fill={accent} />

@@ -3869,3 +3869,34 @@ kbd {
 	--ms-white-key: #d8d5cb;
 	--ms-black-key: #101114;
 }
+
+/* lasers: the laser beam, the pump, the upper and lower laser levels, the inversion, the rod and
+   mirrors, the shutter, and the three level schemes on the inversion chart */
+:root {
+	--ls-beam: #d6282e;
+	--ls-pump: #e67700;
+	--ls-upper: #c8102e;
+	--ls-lower: #1c7ed6;
+	--ls-inv: #2b8a3e;
+	--ls-rod: #fbe9ec;
+	--ls-rod-edge: #e3a3ae;
+	--ls-mirror: #6c7a89;
+	--ls-shutter: #862e9c;
+	--ls-four: #c8102e;
+	--ls-three: #e8590c;
+	--ls-two: #5c6b7a;
+}
+:root[data-theme='dark'] {
+	--ls-beam: #ff6b6b;
+	--ls-pump: #ffa94d;
+	--ls-upper: #ff8787;
+	--ls-lower: #74c0fc;
+	--ls-inv: #69db7c;
+	--ls-rod: #3a2329;
+	--ls-rod-edge: #8a4b57;
+	--ls-mirror: #adb5bd;
+	--ls-shutter: #da77f2;
+	--ls-four: #ff8787;
+	--ls-three: #ffa94d;
+	--ls-two: #a5b1bd;
+}
