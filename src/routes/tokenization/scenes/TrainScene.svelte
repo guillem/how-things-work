@@ -12,7 +12,7 @@
 	import { trained } from '../bpe-train';
 	import { corpusOf, DEFAULT_CORPUS, MAX_CORPUS } from '../steps';
 	import TextBox from './TextBox.svelte';
-	import { chipWidth, FILLS, fmt, show } from './shared';
+	import { chipWidth, clip, FILLS, fmt, show } from './shared';
 
 	let { step, t, params, setParam }: StageProps = $props();
 
@@ -52,7 +52,8 @@
 	const latest = $derived(k > 0 ? tr.merges[k - 1] : null);
 	const pairs = $derived(tr.pairs(k, 6));
 	const next = $derived(pairs.length && pairs[0].count >= 2 ? pairs[0] : null);
-	const tok = (id: number) => show(tr.text(id));
+	const tok = (id: number) => clip(show(tr.text(id)), 9);
+	const chipText = (id: number) => clip(show(tr.text(id)), 30);
 
 	// ---- left: the most frequent pieces
 	const LX = 24;
@@ -73,7 +74,7 @@
 			let cut = false;
 			const chips: { j: number; x: number; w: number; text: string; id: number }[] = [];
 			for (let j = 0; j < toks.length; j++) {
-				const text = tok(toks[j]);
+				const text = chipText(toks[j]);
 				const cw = chipWidth(text, F, 18);
 				if (x + cw > LX + LW - 14) {
 					cut = true;
@@ -113,7 +114,16 @@
 					? `No merge yet; first: ${tok(next.a)} + ${tok(next.b)}`
 					: 'No pair occurs twice: nothing to merge'
 	);
-	const done = $derived(phase === 'merge' && k === N);
+	const done = $derived(phase === 'merge' && k === N && !next);
+	/** Training was cut short by the page's limit while pairs still repeat. */
+	const capped = $derived(phase === 'merge' && k === N && next !== null);
+	const ending = $derived(
+		done
+			? ' · no pair occurs twice any more: training stops'
+			: capped
+				? ` · this page stops at ${N} merges; pairs still repeat`
+				: ''
+	);
 </script>
 
 <g>
@@ -307,7 +317,7 @@
 		id="count"
 		order={3}
 		label="Your text"
-		value="{fmt(bytes)} bytes → {fmt(tokens)} tokens{done ? ' · no pair left twice' : ''}"
+		value="{fmt(bytes)} bytes → {fmt(tokens)} tokens{ending}"
 	>
 		<Label
 			anchor="start"
@@ -316,9 +326,7 @@
 			size={12}
 			muted
 			tabular
-			text="Your text: {fmt(bytes)} bytes → {fmt(tokens)} tokens{done
-				? ' · no pair occurs twice any more: training stops'
-				: ''}"
+			text="Your text: {fmt(bytes)} bytes → {fmt(tokens)} tokens{ending}"
 		/>
 	</Readout>
 </g>

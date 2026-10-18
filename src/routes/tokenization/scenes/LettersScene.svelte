@@ -156,7 +156,7 @@
 				anchor="end"
 				size={12}
 				muted
-				text="Three numbers, none of them the first one."
+				text="Three other numbers for the same word."
 			/>
 			<Label
 				x={936}

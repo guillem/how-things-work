@@ -13,12 +13,28 @@ export const show = (t: string) =>
 		.replace(/\t/g, '⇥')
 		.replace(/ (?= |$)/g, '␣');
 
+/** Is this a wide (full-width) character: Chinese, Japanese, Korean? */
+const wide = (c: string) =>
+	/[\u1100-\u115f\u2e80-\ua4cf\uac00-\ud7a3\uf900-\ufaff\uff00-\uff60]/.test(c);
+
+/** Rough width of monospace text at `size` px: CJK characters are about twice as wide. */
+export const textWidth = (text: string, size: number) =>
+	[...text].reduce((a, c) => a + (wide(c) ? 1.0 : 0.6) * size, 0);
+
 /** Width of a chip for `text` at `size` px (monospace; ⟨ ⟩ of byte tokens come from a wider font). */
 export const chipWidth = (text: string, size = 13, min = 20) =>
-	Math.max(
-		min,
-		Math.round([...text].length * size * 0.6 + 10 + (text.startsWith('⟨') ? size * 0.5 : 0))
-	);
+	Math.max(min, Math.round(textWidth(text, size) + 10 + (text.startsWith('⟨') ? size * 0.5 : 0)));
+
+/** The start of `text` that fits in `width` px at `size`, with an ellipsis if cut. */
+export function fit(text: string, size: number, width: number) {
+	if (textWidth(text, size) <= width) return text;
+	let out = '';
+	for (const c of text) {
+		if (textWidth(out + c + '…', size) > width) break;
+		out += c;
+	}
+	return out + '…';
+}
 
 /** Lay chips out left to right, wrapping at `width`. */
 export function flow<T extends { w: number }>(
@@ -52,3 +68,9 @@ export const FILLS = [
 
 /** 1,234 */
 export const fmt = (n: number) => n.toLocaleString('en-US');
+
+/** A long token cut to n characters, with an ellipsis. */
+export const clip = (t: string, n = 14) => {
+	const c = [...t];
+	return c.length > n ? c.slice(0, n - 1).join('') + '…' : t;
+};

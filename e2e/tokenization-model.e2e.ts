@@ -121,6 +121,12 @@ test.describe('GPT-2’s tokenizer', () => {
 		expect(gpt2.longestMatch(s)).toEqual(gpt2.bpe.encode(s));
 	});
 
+	test('the pre-split uses Unicode whitespace, as Python’s regex and tiktoken do', () => {
+		// U+0085 (next line) is whitespace there but not in JavaScript's \s; U+FEFF is the reverse
+		expect(gpt2.bpe.pieces(' \u0085!').map((p) => p.text)).toEqual([' ', '\u0085', '!']);
+		expect(gpt2.bpe.pieces(' \ufeff!').map((p) => p.text)).toEqual([' \ufeff!']);
+	});
+
 	test('common words are one token, rare ones several', () => {
 		expect(cut(' the')).toEqual([' the']);
 		expect(cut(' unbelievable')).toEqual([' unbelievable']);

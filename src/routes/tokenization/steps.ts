@@ -50,7 +50,7 @@ const number: Control = {
 	format: (v) => `␣${Math.round(v)}`
 };
 
-const BYTE = `<dfn data-def="Eight bits, a number from 0 to 255. Text is stored as bytes with the UTF-8 code: one byte for each plain English letter, digit or space, two for an accented letter, three for most Chinese and Japanese characters, four for most emoji.">byte</dfn>`;
+const BYTE = `<dfn data-def="Eight bits, a number from 0 to 255. Text is stored as bytes with the UTF-8 code, one to four bytes per Unicode character: one for a plain English letter, digit or space, two for é or a Greek or Russian letter, three for most Chinese, Japanese and Hindi characters, four for 🙂. Some symbols on screen are several Unicode characters (an accent added to a letter, a skin tone added to an emoji).">byte</dfn>`;
 const PIECES = `<dfn data-def="GPT-2 first cuts text with a fixed pattern: a word with the space in front of it, a run of digits, a run of punctuation, a run of spaces, or one of the endings 's 't 're 've 'm 'll 'd. Pairs are counted, and merged, only inside a piece.">pieces</dfn>`;
 const RANK = `<dfn data-def="A merge's place in the list of merges, counting from 0: the order in which they were learned. A merge learned early joined a pair that was very frequent in the training text.">rank</dfn>`;
 
@@ -77,7 +77,7 @@ export const spec: ExplainerSpec = {
 <p>A language model reads a list of numbers, one per token, from a fixed vocabulary. What should a token be? Whole words would need a vocabulary of millions and still meet words it has never seen. Single ${BYTE}s cover any text with only 256 tokens, but make every text long, and a transformer's work grows with the length of its input, faster than in proportion.</p>
 <p><dfn data-def="BPE: start from single symbols, find the neighbouring pair that is most frequent in a training text, make it a new symbol, replace it everywhere, and repeat a fixed number of times. Philip Gage used it in 1994 to compress data; Sennrich, Haddow and Birch adapted it to cutting words in 2016.">Byte-pair encoding</dfn> learns something in between from a text. Type one in the box, or keep Hamlet. It is first cut into ${PIECES}, as GPT-2 does: a word keeps the space in front of it (shown ␣). Each piece starts as its bytes, one token each.</p>
 <p>Then every pair of neighbouring tokens inside a piece is counted, each piece weighted by how often it occurs. In Hamlet, ␣ followed by <em>t</em> comes first, 19 times: ␣to, ␣the, ␣that, ␣take… That pair will be the first merge.</p>`,
-			notes: `<p>Plain English letters are one byte each, so for this text bytes and characters are the same: 384 of each. Type an accented letter or an emoji and it starts as two to four byte tokens, shown in hexadecimal, ⟨C3⟩ ⟨A9⟩ for é, until a merge joins them.</p>`
+			notes: `<p>Plain English letters are one byte each, so for this text bytes and characters are the same: 384 of each. Type é and it starts as two byte tokens, shown in hexadecimal, ⟨C3⟩ ⟨A9⟩, until a merge joins them; 🙂 starts as four.</p>`
 		},
 		{
 			id: 'merge',
@@ -90,7 +90,7 @@ export const spec: ExplainerSpec = {
 			body: `
 <p>The most frequent pair becomes a new token, number 256, and replaces the pair everywhere in the text. Then the pairs are counted again, now including pairs with the new token, and the next winner becomes token 257. Each merge adds one token to the vocabulary.</p>
 <p>Move the slider, or press play. Hamlet's first merges are ␣t, then <em>he</em>, ␣a, then ␣t + <em>o</em> = ␣to; by the eighth, ␣t + <em>he</em> = ␣the. Pieces that occur often are soon a single token; rare ones stay in fragments.</p>
-<p>When two pairs are equally frequent, this page takes the one that occurs first in the text, so the same text always gives the same merges. Training stops when no pair occurs twice: a pair seen once would only memorise the text. Here that is after 49 merges.</p>`,
+<p>When two pairs are equally frequent, this page takes the one that occurs first in the text, so the same text always gives the same merges. Training stops when no pair occurs twice: a pair seen once would only memorise the text. Here that is after 49 merges. (On a long text this page also stops after 300 merges.)</p>`,
 			notes: `<p>A real tokenizer is trained on gigabytes of text and stops at a chosen vocabulary size rather than when pairs run out. Implementations differ in how they break ties; any fixed rule makes training repeatable. Counting overlapping pairs (<em>aaa</em> holds <em>aa</em> twice) and replacing left to right is the usual convention.</p>`
 		},
 		{
@@ -102,9 +102,9 @@ export const spec: ExplainerSpec = {
 			controls: [merges, play],
 			body: `
 <p>Every merge shortens the text it was learned from. The curve shows the number of tokens as a share of the bytes, merge after merge: Hamlet's 384 bytes become 196 tokens after 49 merges, a little over half.</p>
-<p>The second curve is a sentence the tokenizer never saw, the next line of the speech. To cut it, its bytes are merged with the merges already learned, always the earliest-learned merge first. It shrinks less, from 49 tokens to 33: merges help new text only where it repeats the training text's pairs, here ␣sleep, ␣to and ␣the. <em>perchance</em> and <em>dream</em> stay in single letters.</p>
+<p>The second curve is a comparison sentence, the next line of the speech, which is not in the Hamlet text the merges were learned from. To cut it, its bytes are merged with the merges already learned, always the earliest-learned merge first. It shrinks less, from 49 tokens to 33: merges help new text only where it repeats the training text's pairs, here ␣sleep, ␣to and ␣the. <em>perchance</em> and <em>dream</em> stay in single letters.</p>
 <p>That is the trade-off of a vocabulary: more merges, shorter texts, but a larger table for the model to learn, and merges that fit the training text best.</p>`,
-			notes: `<p>BPE is compression: like Gage's scheme, it replaces frequent pairs by new symbols. Gage's own example, <em>aaabdaaabac</em>, is the third example in the box: three merges turn its 11 bytes into 5 tokens. Unlike a compressor, a tokenizer keeps its merge list fixed after training and applies it to any new text.</p>`
+			notes: `<p>BPE is compression: like Gage's scheme, it replaces frequent pairs by new symbols. The worked example often used to explain his scheme, <em>aaabdaaabac</em>, is the third example in the box: three merges turn its 11 bytes into 5 tokens. Unlike a compressor, a tokenizer keeps its merge list fixed after training and applies it to any new text.</p>`
 		},
 		// ------------------------------------------------------------------ gpt2
 		{
@@ -166,7 +166,7 @@ export const spec: ExplainerSpec = {
 			scene: 'languages',
 			duration: 26,
 			body: `
-<p>GPT-2's merges were learned from web pages that were mostly in English, so English words got merges and other scripts mostly did not. The same request costs 10 tokens in English, 13 in Spanish, 21 in French, and 40 in Russian, 44 in Greek, 47 in Hindi.</p>
+<p>GPT-2's merges were learned from web pages that were mostly in English, so English words got merges and other scripts mostly did not. The same request costs 10 tokens in English, 13 in Spanish, 21 in French, and 40 in Russian, 44 in Greek, 47 in Hindi. Japanese and Chinese write it in only 12 and 8 characters, yet need 13 and 17 tokens, more than one per character.</p>
 <p>Part of this is bytes: a Cyrillic or Greek letter takes two bytes in UTF-8, a Devanagari, Chinese or Japanese character three. But the bigger part is merges. With few merges for its script, a Russian or Hindi word stays in single letters, or even in single bytes that are only part of a letter (shown in hexadecimal on the stage).</p>
 <p>A model's input and output are counted in tokens, so this is a real cost: the same text in Hindi fills nearly five times as much of the model's context, takes nearly five times as many steps to write, and costs more where use is billed per token.</p>`,
 			notes: `<p>Tokenizers trained on more languages, with larger vocabularies (about 100,000 tokens for GPT-4's, about 200,000 for GPT-4o's), narrow the gap but do not close it. The sentences on the stage are simple translations of one request; counts vary with wording.</p>`
@@ -178,9 +178,9 @@ export const spec: ExplainerSpec = {
 			scene: 'letters',
 			duration: 26,
 			body: `
-<p>The model receives the numbers in the bottom row, not the letters. ␣strawberry is one token in GPT-2: a single number. The letters inside it are not part of the input; whatever the model knows about its spelling, it must have picked up from text where the word was spelled out, rhymed or discussed.</p>
-<p>The same word is a different input in other places: at the start of a text, without its space, it is <em>st</em> + <em>raw</em> + <em>berry</em>, three numbers that share nothing with the first. Spelled with spaces, it becomes ten tokens, one per letter: single letters are tokens too, and then the model does see each one.</p>
-<p>This is why questions about letters (how many r's in strawberry, what is this word backwards) are hard for language models that answer instantly, while the same models handle meaning well: inside a merged token the spelling is invisible to them.</p>`,
+<p>The model receives the numbers in the bottom row, not the letters. ␣strawberry is one token in GPT-2: a single number. The letters inside it are not part of the input. Models do learn something about the spelling of their tokens, indirectly, from how words and their pieces are used in ordinary text, but nothing in the input spells the token out.</p>
+<p>The same word is a different input in other places: at the start of a text, without its space, it is <em>st</em> + <em>raw</em> + <em>berry</em>, three different numbers (what the model has learned about them may still be related). Spelled with spaces, it becomes ten tokens, one per letter: single letters are tokens too, and then the model does see each one.</p>
+<p>This is one reason why questions about letters (how many r's in strawberry, what is this word backwards) are harder for language models than questions about meaning: inside a merged token the spelling is not in the input, and has to be recalled rather than read. Tokenization alone does not decide whether a model gets them right.</p>`,
 			notes: `<p>Models can work around it: writing the word out letter by letter first, as in the last row, turns a spelling question into one about separate tokens. That is one reason why letting a model write out intermediate steps helps.</p>`
 		}
 	]

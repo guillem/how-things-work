@@ -50,9 +50,11 @@
 			.map((v, j) => `${j ? 'L' : 'M'}${sx(j).toFixed(1)} ${sy((100 * v) / base).toFixed(1)}`)
 			.join(' ');
 	};
-	const corpusPath = $derived(path(tr.total, tr.total[0]));
+	/** An empty text has no bytes: no curve, and no percentage. */
+	const empty = $derived(tr.total[0] === 0);
+	const corpusPath = $derived(empty ? '' : path(tr.total, tr.total[0]));
 	const samplePath = $derived(path(sampleCounts, sampleBytes));
-	const pc = (v: number, base: number) => Math.round((100 * v) / base);
+	const pc = (v: number, base: number) => (base ? Math.round((100 * v) / base) : 0);
 	const cNow = $derived(tr.total[k]);
 	const sNow = $derived(sampleCounts[k]);
 
@@ -110,17 +112,19 @@
 		stroke-dasharray="7 4"
 	/>
 	{#if reveal > 0.98}
-		<Readout id="end-corpus">
-			<Label
-				anchor="start"
-				x={X1 + 10}
-				y={sy(pc(tr.total[N], tr.total[0])) + 4}
-				size={12}
-				weight={650}
-				color="var(--tk-corpus)"
-				text="your text"
-			/>
-		</Readout>
+		{#if !empty}
+			<Readout id="end-corpus">
+				<Label
+					anchor="start"
+					x={X1 + 10}
+					y={sy(pc(tr.total[N], tr.total[0])) + 4}
+					size={12}
+					weight={650}
+					color="var(--tk-corpus)"
+					text="your text"
+				/>
+			</Readout>
+		{/if}
 		<Readout id="end-sample">
 			<Label
 				anchor="start"
@@ -129,7 +133,7 @@
 				size={12}
 				weight={650}
 				color="var(--tk-sample)"
-				text="new sentence"
+				text="next line"
 			/>
 		</Readout>
 	{/if}
@@ -144,7 +148,9 @@
 		stroke-width="1.5"
 		stroke-dasharray="3 3"
 	/>
-	<circle cx={sx(k)} cy={sy(pc(cNow, tr.total[0]))} r="5" fill="var(--tk-corpus)" />
+	{#if !empty}
+		<circle cx={sx(k)} cy={sy(pc(cNow, tr.total[0]))} r="5" fill="var(--tk-corpus)" />
+	{/if}
 	<circle cx={sx(k)} cy={sy(pc(sNow, sampleBytes))} r="5" fill="var(--tk-sample)" />
 
 	<Readout
@@ -167,7 +173,7 @@
 		id="corpus-count"
 		order={2}
 		label="Your text"
-		value="{tr.total[0]} bytes → {cNow} tokens ({pc(cNow, tr.total[0])}%)"
+		value="{tr.total[0]} bytes → {cNow} tokens{empty ? '' : ` (${pc(cNow, tr.total[0])}%)`}"
 		color="var(--tk-corpus)"
 	>
 		<Label
@@ -177,7 +183,9 @@
 			size={12}
 			tabular
 			color="var(--tk-corpus)"
-			text="your text: {tr.total[0]} bytes → {cNow} tokens ({pc(cNow, tr.total[0])}%)"
+			text="your text: {tr.total[0]} bytes → {cNow} tokens{empty
+				? ''
+				: ` (${pc(cNow, tr.total[0])}%)`}"
 		/>
 	</Readout>
 
@@ -185,7 +193,7 @@
 	<Readout
 		id="sample-count"
 		order={3}
-		label="New sentence"
+		label="Next line of the speech"
 		value="{sampleBytes} bytes → {sNow} tokens ({pc(sNow, sampleBytes)}%)"
 		color="var(--tk-sample)"
 	>
@@ -197,7 +205,7 @@
 			weight={650}
 			tabular
 			color="var(--tk-sample)"
-			text="New sentence, never seen in training: {sampleBytes} bytes → {sNow} tokens"
+			text="Comparison sentence, the next line of the speech: {sampleBytes} bytes → {sNow} tokens"
 		/>
 	</Readout>
 	{#each chips as c (c.i)}

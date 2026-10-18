@@ -47,12 +47,21 @@ test('the curve: the text and a new sentence both get shorter', async ({ page })
 	await page.goto('./tokenization/#shorter');
 	await range(page, 'k').fill('0');
 	await expect(stage(page)).toContainText(
-		'New sentence, never seen in training: 49 bytes → 49 tokens'
+		'Comparison sentence, the next line of the speech: 49 bytes → 49 tokens'
 	);
 	await range(page, 'k').press('End');
 	await expect(stage(page)).toContainText('49 merges · vocabulary 305');
 	await expect(stage(page)).toContainText('49 bytes → 33 tokens');
 	await expect(stage(page)).toContainText('384 bytes → 196 tokens (51%)');
+});
+
+test('an empty text: nothing to learn, and no percentage', async ({ page }) => {
+	await page.goto('./tokenization/#merge');
+	await page.getByRole('textbox', { name: 'Text to learn the merges from' }).fill('');
+	await expect(stage(page)).toContainText('No pair occurs twice: nothing to merge');
+	await page.goto('./tokenization/#shorter');
+	await expect(stage(page)).toContainText('your text: 0 bytes → 0 tokens');
+	await expect(stage(page)).not.toContainText('NaN');
 });
 
 test('GPT-2: the pre-split, rank order against longest match, and ranks', async ({ page }) => {

@@ -207,7 +207,7 @@ A topic is done when:
 - [x] diffusion-models
 - [x] reinforcement-learning
 - [x] ngram-text-models
-- [ ] tokenization
+- [x] tokenization
 
 **Energy & Machines**
 - [x] heat-engines

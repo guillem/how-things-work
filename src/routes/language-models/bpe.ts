@@ -13,9 +13,13 @@
  * checks this tokenizer against the Python one on tricky strings.
  */
 
-/** GPT-2's split pattern (from its encoder.py), with the `u` flag for \p{L} and \p{N}. */
+/**
+ * GPT-2's split pattern (from its encoder.py), with the `u` flag for \p{L} and \p{N}. Its `\s`
+ * is written \p{White_Space}, the Unicode whitespace of Python's `regex` and of tiktoken: in
+ * JavaScript `\s` also matches U+FEFF and misses U+0085.
+ */
 export const PATTERN =
-	/'s|'t|'re|'ve|'m|'ll|'d| ?\p{L}+| ?\p{N}+| ?[^\s\p{L}\p{N}]+|\s+(?!\S)|\s+/gu;
+	/'s|'t|'re|'ve|'m|'ll|'d| ?\p{L}+| ?\p{N}+| ?[^\p{White_Space}\p{L}\p{N}]+|\p{White_Space}+(?!\P{White_Space})|\p{White_Space}+/gu;
 
 /** The byte value of tokens 0–255, in GPT-2's vocabulary order (bytes_to_unicode). */
 function byteOrder(): number[] {
