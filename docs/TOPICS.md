@@ -1,6 +1,6 @@
 # Topic catalog
 
-Source of truth for the content of an interactive web learning tool that shows how things work. It defines 141 topics in 11 categories, each built around one interactive graphic. Readers range from high-school students to university majors.
+Source of truth for the content of an interactive web learning tool that shows how things work. It defines 142 topics in 11 categories, each built around one interactive graphic. Readers range from high-school students to university majors.
 
 This file covers content only. It does not choose the stack, the visual design or the project layout; take those from the repository's own instructions.
 
@@ -87,7 +87,7 @@ A topic is done when:
 | Chemistry & Materials | `chemistry` | 14 |
 | Biology | `biology` | 16 |
 | Body & Medicine | `medicine` | 14 |
-| Earth & Climate | `earth` | 9 |
+| Earth & Climate | `earth` | 10 |
 | Space | `space` | 9 |
 | Computing | `computing` | 10 |
 | Information & Networks | `networks` | 9 |
@@ -191,6 +191,7 @@ A topic is done when:
 - [x] carbon-cycle
 - [x] greenhouse-effect
 - [x] ensemble-weather-forecasting
+- [ ] ocean-acidification
 
 **Space**
 - [x] sun-earth-moon
@@ -1031,6 +1032,7 @@ A topic is done when:
 - **Interaction:** Change the winds over an ocean basin and watch the surface gyres form. Change temperature and salinity at high latitudes to speed up or stall the deep overturning circulation, and weaken the Pacific trade winds to set off an El Niño.
 - **Takeaway:** The ocean moves heat around the planet through wind-driven surface currents and a slow, density-driven deep circulation, and a shift in either changes weather far away.
 - **Prerequisites:** atmosphere-weather
+- **Related:** ocean-acidification
 
 #### ice-ages
 - **Title:** Ice ages & orbital cycles
@@ -1071,6 +1073,17 @@ A topic is done when:
 - **Prerequisites:** chaos-fractals, atmosphere-weather
 - **Related:** bayes-theorem
 - **Pitfall:** Chaos does not make forecasting useless: the useful range differs from day to day, and the ensemble shows which days are which. But an ensemble's spread is not automatically a trustworthy probability: a slightly wrong model gives a narrow, confident fan that misses, which is why forecasters check spread against error and calibrate. A '70% chance of rain' means a 70% chance at any one spot, not rain over 70% of the area or 70% of the day.
+
+#### ocean-acidification
+- **Title:** Ocean acidification & carbonate chemistry
+- **Level:** 3
+- **Kind:** manipulate
+- **Interaction:** Slide atmospheric CO2 from the pre-industrial 280 ppm past 1,000 ppm while the page solves the seawater carbonate system (the dissociation constants of carbonic acid in seawater, with alkalinity held fixed): pH falls, dissolved CO2 and bicarbonate rise, carbonate ion falls, and the aragonite saturation state drops below one first in cold water. A Bjerrum plot shows the species shifting with pH, a temperature slider shows why polar seas get there first, and the Revelle factor shows why the ocean's uptake slows as it fills.
+- **Takeaway:** Adding CO2 to seawater does not just lower its pH, it consumes carbonate ions, the building block of shells, and cold water runs short of them first.
+- **Prerequisites:** acids-bases, carbon-cycle, reaction-rates-equilibrium
+- **Related:** ocean-currents
+- **Needs:** Published empirical fits for seawater equilibrium constants as functions of temperature and salinity, the same ones CO2SYS uses: K0 (Weiss 1974), K1 and K2 of carbonic acid (Lueker et al. 2000), borate KB (Dickson 1990) and total boron (Uppström 1974) for the alkalinity, and aragonite and calcite solubility (Mucci 1983). These are published coefficients, retyped and cited. Cross-check the solver against PyCO2SYS (open source, GPL-3) in a model test.
+- **Pitfall:** The ocean is not becoming acid (its pH stays above 7); acidification means moving toward acid, and the harm is the loss of carbonate ion, not corrosive water.
 
 ### Space
 
