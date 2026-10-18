@@ -1,6 +1,6 @@
 # Topic catalog
 
-Source of truth for the content of an interactive web learning tool that shows how things work. It defines 138 topics in 11 categories, each built around one interactive graphic. Readers range from high-school students to university majors.
+Source of truth for the content of an interactive web learning tool that shows how things work. It defines 139 topics in 11 categories, each built around one interactive graphic. Readers range from high-school students to university majors.
 
 This file covers content only. It does not choose the stack, the visual design or the project layout; take those from the repository's own instructions.
 
@@ -86,7 +86,7 @@ A topic is done when:
 | Physics | `physics` | 13 |
 | Chemistry & Materials | `chemistry` | 14 |
 | Biology | `biology` | 16 |
-| Body & Medicine | `medicine` | 11 |
+| Body & Medicine | `medicine` | 12 |
 | Earth & Climate | `earth` | 9 |
 | Space | `space` | 9 |
 | Computing | `computing` | 10 |
@@ -177,6 +177,7 @@ A topic is done when:
 - [x] medical-imaging
 - [x] cerebellum-motor-learning
 - [x] pharmacokinetics-dosing
+- [ ] cochlea-hearing
 
 **Earth & Climate**
 - [x] plate-tectonics
@@ -880,7 +881,7 @@ A topic is done when:
 - **Interaction:** Change the shape of the eye's lens to focus near and far objects on the retina, and add glasses to correct a blurred eye. Mix red, green and blue light to match a target color while the responses of the three cone types are shown; try classic illusions.
 - **Takeaway:** The eye forms an image like a camera, but color is constructed by the brain from the signals of just three kinds of sensor.
 - **Prerequisites:** light-optics
-- **Related:** convolution-vision
+- **Related:** convolution-vision, cochlea-hearing
 - **Needs:** Measured sensitivity curves for the three cone types.
 
 #### immune-system
@@ -947,6 +948,17 @@ A topic is done when:
 - **Related:** homeostasis
 - **Needs:** Clearance, volume of distribution and half-life for four or five example drugs, taken from their US prescribing information.
 - **Pitfall:** Doubling the dose of a normally eliminated drug doubles the steady-state level but does not reach it any sooner; only a loading dose shortens the wait. For drugs with saturable elimination (phenytoin, alcohol) neither rule holds.
+
+#### cochlea-hearing
+- **Title:** Hearing & the cochlea
+- **Level:** 3
+- **Kind:** manipulate
+- **Interaction:** Play a tone, a chord or a spoken word into a cochlea modelled as a chain of coupled resonators whose stiffness falls along the basilar membrane, and watch the travelling wave peak at a place that depends on frequency. Drag the frequency and the peak moves; switch on the outer hair cells' amplification and the peak sharpens; kill the outer hair cells at the place tuned near 4 kHz, as loud noise does, and the audiogram develops the classic notch. Then replace the cochlea with a cochlear implant: split the sound into a few bands, drive one electrode per band, and hear the result.
+- **Takeaway:** The cochlea sorts sound by frequency along its length, so pitch is a place, and a cochlear implant works by stimulating those places with a handful of electrodes.
+- **Prerequisites:** waves-interference, fourier-transform, neurons
+- **Related:** vision-color, compression
+- **Needs:** A short openly licensed speech clip for the implant demonstration (a LibriSpeech utterance, CC BY 4.0, or synthesized speech); the cochlear model itself is a standard one-dimensional transmission-line model with published parameters.
+- **Pitfall:** Noise damage does not simply turn the volume down: the lost hair cells remove the amplification, so soft sounds vanish while loud ones still hurt.
 
 ### Earth & Climate
 
@@ -1224,7 +1236,7 @@ A topic is done when:
 - **Interaction:** Type a message and see how many bits each symbol deserves given its frequency, then build the Huffman tree and compare the encoded size. Load an image, split it into 8×8 blocks and discard high-frequency detail with a quality slider until the damage shows.
 - **Takeaway:** Information is measured by surprise, so predictable data fits in fewer bits, and lossy formats go further by dropping what the senses will not miss.
 - **Prerequisites:** binary, fourier-transform
-- **Related:** entropy, ngram-text-models, training-a-tiny-language-model
+- **Related:** entropy, ngram-text-models, training-a-tiny-language-model, cochlea-hearing
 
 #### error-correction
 - **Title:** Error-correcting codes
@@ -1594,7 +1606,6 @@ Strong candidates that are not in the catalog. Do not build them unless the user
 
 - Fluid dynamics
 - DNA sequencing
-- Hearing & the cochlea
 - Telescopes
 - Operating systems
 - Compilers
