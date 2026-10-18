@@ -155,7 +155,9 @@
 		stroke-width="2"
 		marker-end="url(#arrowhead)"
 	/>
-	<Label x={24} y={88} text="waves from the source" anchor="start" size={12} />
+	<Readout id="waves">
+		<Label x={24} y={88} text="waves from the source" anchor="start" size={12} />
+	</Readout>
 	<Readout id="schematic">
 		<Label x={24} y={56} text="schematic: angles not to scale" anchor="start" size={11} muted />
 	</Readout>
@@ -189,14 +191,16 @@
 		stroke-width="4"
 		stroke-linecap="round"
 	/>
-	<Label
-		x={exB.x + 12}
-		y={exB.y - 2}
-		text="extra path b sin θ"
-		anchor="start"
-		size={12}
-		color="var(--as-delay-text)"
-	/>
+	<Readout id="extra">
+		<Label
+			x={exB.x + 12}
+			y={exB.y - 2}
+			text="extra path b sin θ"
+			anchor="start"
+			size={12}
+			color="var(--as-delay-text)"
+		/>
+	</Readout>
 	<!-- baseline -->
 	<line
 		x1={xa}
@@ -208,7 +212,9 @@
 	/>
 	<line x1={xa} y1={GROUND + 8} x2={xa} y2={GROUND + 20} stroke="var(--stage-ink)" />
 	<line x1={xb} y1={GROUND + 8} x2={xb} y2={GROUND + 20} stroke="var(--stage-ink)" />
-	<Label x={GX} y={GROUND + 32} text="b = {b} m" anchor="middle" size={13} tabular />
+	<Readout id="b" order={0} label="Distance between the dishes" value="{b} m">
+		<Label x={GX} y={GROUND + 32} text="b = {b} m" anchor="middle" size={13} tabular />
+	</Readout>
 
 	<!-- correlator -->
 	<path
@@ -226,7 +232,9 @@
 		fill="var(--surface)"
 		stroke="var(--border)"
 	/>
-	<Label x={GX} y={GROUND + 58} text="× and average" anchor="middle" size={12} />
+	<Readout id="corr">
+		<Label x={GX} y={GROUND + 58} text="× and average" anchor="middle" size={12} />
+	</Readout>
 	<line
 		x1={GX}
 		y1={GROUND + 70}
@@ -266,14 +274,22 @@
 	</Readout>
 
 	<!-- ===== right top: the fringes on the sky ===== -->
-	<Label
-		anchor="start"
-		x={SX0}
-		y={SY0 - 26}
-		text="the pair’s view of the sky: fringes λ/b apart"
-		size={14}
-		weight={600}
-	/>
+	<Readout
+		id="t-sky"
+		order={20}
+		label="The pair’s view of the sky"
+		marker={1}
+		at={[SX0 + 12, SY0 + 12]}
+	>
+		<Label
+			anchor="start"
+			x={SX0}
+			y={SY0 - 26}
+			text="the pair’s view of the sky: fringes λ/b apart"
+			size={14}
+			weight={600}
+		/>
+	</Readout>
 	{#each stripes as s, i (i)}
 		<rect
 			x={s.x}
@@ -319,14 +335,16 @@
 	</Readout>
 
 	<!-- ===== right bottom: the output over time ===== -->
-	<Label
-		anchor="start"
-		x={SX0}
-		y={250}
-		text="the output over the last 10 s (sped up)"
-		size={13}
-		weight={600}
-	/>
+	<Readout id="t-out" order={21} label="The output over 10 s" marker={2} at={[SX0 + 12, 272]}>
+		<Label
+			anchor="start"
+			x={SX0}
+			y={250}
+			text="the output over the last 10 s (sped up)"
+			size={13}
+			weight={600}
+		/>
+	</Readout>
 	<line x1={tx(-WINDOW)} y1={ty(0)} x2={tx(0)} y2={ty(0)} stroke="var(--stage-grid)" />
 	<line
 		x1={tx(-WINDOW)}
@@ -363,14 +381,16 @@
 	</Readout>
 
 	{#if mode === 'double'}
-		<Label
-			anchor="start"
-			x={SX0}
-			y={428}
-			text="fringe height |V| for every baseline"
-			size={13}
-			weight={600}
-		/>
+		<Readout id="t-vis" order={22} label="|V| for every baseline" marker={3} at={[SX0 + 12, 446]}>
+			<Label
+				anchor="start"
+				x={SX0}
+				y={428}
+				text="fringe height |V| for every baseline"
+				size={13}
+				weight={600}
+			/>
+		</Readout>
 		<Axes
 			sx={vx}
 			sy={vy}

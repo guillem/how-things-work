@@ -249,8 +249,9 @@
 	const area = $derived(dishes.length * Math.PI * (DISH / 2) ** 2);
 	const bigArea = $derived(Math.PI * (sp.max / 2) ** 2);
 
-	/** Stretch of the images: below about a fifth of the peak nearly linear. */
-	const SOFT = 0.2;
+	/** Stretch of the images (and the true sky): nearly linear below a fifth of the peak, or a
+	 * twenty-fifth for the faint disc beside its bright point. */
+	const SOFT = $derived(skyKind === 'disc' ? 0.04 : 0.2);
 	// ---- pictures ------------------------------------------------------------------------------
 	const beamUrl = $derived(
 		panels.includes('beam') ? paint(beam, 1, 0.5, mode === 'dish' ? 1 : 2) : ''
@@ -263,7 +264,7 @@
 			: truth
 	);
 	const truthUrl = $derived(
-		panels.includes('truth') ? paint(truthShown, peak(truthShown).value, 0.01) : ''
+		panels.includes('truth') ? paint(truthShown, peak(truthShown).value, SOFT) : ''
 	);
 	const residualUrl = $derived(cleaned ? paint(cleaned.c.residual, dirtyPeak || 1, SOFT) : '');
 	const restoredUrl = $derived(cleaned ? paint(cleaned.restored, dirtyPeak || 1, SOFT) : '');
@@ -344,6 +345,12 @@
 			: arcsec >= 90
 				? `${(arcsec / 60).toFixed(1)}′`
 				: `${Math.round(arcsec)}″`;
+	/** The central peak's size, or its one sharp direction when the samples lie on a line. */
+	const beamText = $derived(
+		Number.isFinite(cb.major)
+			? `${fmtAngle(beamMajor)} × ${fmtAngle(beamMinor)}`
+			: `${fmtAngle(beamMinor)} one way, unresolved the other`
+	);
 	/** The beam is sharp in both directions (not a line of samples). */
 	const twoD = $derived(Number.isFinite(cb.major) && cb.minor / cb.major > 0.4);
 	const fmtInt = (v: number) => Math.round(v).toLocaleString('en-US');
@@ -450,7 +457,7 @@
 					`${fmtInt(c.iterations)} CLEAN iterations: the components hold ${c.flux.toFixed(2)} of the sky’s ${truthSum.toFixed(2)} Jy`,
 					'Flux in components',
 					`${c.flux.toFixed(2)} of ${truthSum.toFixed(2)} Jy`,
-					`loop gain 0.1 · brightest residual ${c.residualPeak.toFixed(3)} Jy/beam · clean beam ${fmtAngle(beamMajor)} × ${fmtAngle(beamMinor)}`,
+					`loop gain 0.1 · brightest residual ${c.residualPeak.toFixed(3)} Jy/beam · clean beam ${beamText}`,
 					'Brightest residual',
 					`${c.residualPeak.toFixed(3)} Jy/beam`
 				);
@@ -479,10 +486,10 @@
 					'Array',
 					`${count(dishes.length, 'dish')}, ${count(pairs(dishes.length), 'pair')}`,
 					S.cells > 2
-						? `central peak ${fmtAngle(beamMajor)} × ${fmtAngle(beamMinor)}; λ/B for the longest spacing = ${fmtAngle(LAMBDA / sp.max / ARCSEC)}`
+						? `central peak ${beamText}; λ/B for the longest spacing = ${fmtAngle(LAMBDA / sp.max / ARCSEC)}`
 						: '',
 					'Resolution',
-					`${fmtAngle(beamMajor)} × ${fmtAngle(beamMinor)}`
+					`${beamText}`
 				);
 		}
 	});
@@ -541,7 +548,7 @@
 				if (S.cells <= 2)
 					return { text: `stripes ${(1 / (S.uvMax || 1) / ARCMIN).toFixed(1)}′ apart` };
 				return {
-					text: `central peak ${fmtAngle(beamMajor)} × ${fmtAngle(beamMinor)}`,
+					text: `central peak ${beamText}`,
 					more: twoD ? '' : 'long and thin: the samples lie along one direction'
 				};
 			case 'dirty':
@@ -576,7 +583,9 @@
 	<!-- panels -->
 	{#each panels as p, i (p)}
 		{@const x = XS[i]}
-		<Label anchor="start" {x} y={Y0 - 12} text={title(p)} size={14} weight={600} />
+		<Readout id="title-{p}" order={20 + i} label={title(p)} marker={i + 1} at={[x + 12, Y0 + 14]}>
+			<Label anchor="start" {x} y={Y0 - 12} text={title(p)} size={14} weight={600} />
+		</Readout>
 		{#if p === 'map'}
 			<!-- svelte-ignore a11y_no_static_element_interactions -->
 			<rect
@@ -793,14 +802,14 @@
 		{@const x1 = XS[i] + P / 2 + 24}
 		{@const x2 = XS[i + 1] + P / 2 - 24}
 		{@const y = Y0 + P + 86}
-		<path
-			d="M{x1} {y - 14} Q {(x1 + x2) / 2} {y + 12} {x2} {y - 14}"
-			fill="none"
-			stroke="var(--stage-ink-muted)"
-			stroke-width="1.5"
-			marker-end="url(#arrowhead)"
-		/>
 		<Readout id="flow-{i}">
+			<path
+				d="M{x1} {y - 14} Q {(x1 + x2) / 2} {y + 12} {x2} {y - 14}"
+				fill="none"
+				stroke="var(--stage-ink-muted)"
+				stroke-width="1.5"
+				marker-end="url(#arrowhead)"
+			/>
 			<Label x={(x1 + x2) / 2} y={y + 18} text={f} anchor="middle" size={11} muted />
 		</Readout>
 	{/each}
