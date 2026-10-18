@@ -523,20 +523,19 @@
 		return { i, x: 20 + x * 10, y: 15 + y * 10, up: f > 0 !== lone };
 	});
 
-	// Dislocations: a triangular lattice, 8 atoms per row below the slip plane and 9 above
-	// (an extra half-plane wedged in at x = 100), the ⊥ at the end of the half-plane.
+	// Dislocations: rows of atoms, 8 per row below the slip plane (y 63) and 9 above, where an
+	// extra half-plane (the accent column at x 100) is wedged in and its neighbours squeezed.
 	const disArt = (() => {
 		const out: { x: number; y: number; extra: boolean }[] = [];
+		const squeezed = [0, 13, 29, 47, 65];
 		for (let r = 0; r < 6; r++) {
-			const y = 100 - r * 15;
-			const upper = r >= 3;
-			const n = upper ? 9 : 8;
-			for (let k = 0; k < n; k++) {
-				const shift = r % 2 ? 0.5 : 0;
-				// lower rows evenly 18 apart; upper rows squeeze one more atom in near the middle
-				const u = (k + shift) / (n - 1 + 0.5);
-				const x = 30 + u * 140 + (upper ? Math.sin(u * Math.PI * 2) * (5 - r) : 0);
-				out.push({ x, y, extra: upper && k === 4 });
+			const y = 100 - r * 15 - (r >= 3 ? 4 : 0);
+			if (r < 3) {
+				for (let k = 0; k < 8; k++)
+					out.push({ x: 37 + k * 18 + (r % 2 ? 9 : 0) - 4.5, y, extra: false });
+			} else {
+				for (let j = -4; j <= 4; j++)
+					out.push({ x: 100 + Math.sign(j) * squeezed[Math.abs(j)], y, extra: j === 0 });
 			}
 		}
 		return out;
@@ -4339,7 +4338,7 @@
 			<line x1={x} x2={x} y1="98" y2="82" stroke="currentColor" stroke-width="1.5" opacity="0.5" />
 		{/each}
 	{:else if slug === 'dislocations-alloys'}
-		<!-- an edge dislocation: an extra half-plane ending at the slip plane, marked ⊥ -->
+		<!-- an edge dislocation: an extra half-plane (accent) ending on the slip plane, the ⊥'s bar -->
 		<line
 			x1="22"
 			x2="178"
@@ -4359,13 +4358,7 @@
 				opacity={a.extra ? 0.9 : 0.3}
 			/>
 		{/each}
-		<path
-			d="M89 63h22M100 63v-14"
-			stroke={accent}
-			stroke-width="3.5"
-			stroke-linecap="round"
-			fill="none"
-		/>
+		<path d="M88 63h24" stroke={accent} stroke-width="3.5" stroke-linecap="round" />
 	{:else}
 		<circle cx="100" cy="60" r="30" fill="none" stroke={accent} stroke-width="2" />
 		<circle cx="100" cy="60" r="5" fill={accent} />

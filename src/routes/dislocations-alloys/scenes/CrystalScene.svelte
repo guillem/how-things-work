@@ -258,7 +258,21 @@
 		const hi = Math.max(span, strainNow);
 		return scale([hi - span, hi], [CHART.x, CHART.x + CHART.w]);
 	});
-	const sy = $derived(scale(Y_RANGE[setup], [CHART.y + CHART.h, CHART.y]));
+	/** The chart's stress range: the setup's, widened (in steps of 0.005) to hold the whole curve. */
+	const yDomain = $derived.by((): [number, number] => {
+		const [lo, hi] = Y_RANGE[setup];
+		if (setup === 'perfect' || setup === 'one') return [lo, hi];
+		let mn = lo;
+		let mx = hi;
+		for (let i = 0; i <= fi; i++) {
+			const v = smoothed(i);
+			if (v > mx) mx = v;
+			if (v < mn) mn = v;
+		}
+		const q = 0.005;
+		return [Math.floor(mn / q) * q, Math.ceil(mx / q) * q];
+	});
+	const sy = $derived(scale(yDomain, [CHART.y + CHART.h, CHART.y]));
 	const curvePath = $derived.by(() => {
 		const [lo] = sx.domain;
 		const strain = c.curve.strain;
@@ -535,7 +549,7 @@
 
 	<!-- the curve -->
 	<Axes {sx} {sy} xLabel="shear strain" yLabel="stress / G" xFormat={xFmt} yFormat={fmtStress} />
-	{#if Y_RANGE[setup][0] < 0}
+	{#if yDomain[0] < 0}
 		<line
 			x1={CHART.x}
 			x2={CHART.x + CHART.w}
