@@ -111,11 +111,15 @@ test.describe('trajectories', () => {
 		expect(probability(r, { trans: 0.2, v: 3 })).toBeGreaterThan(0.3);
 	});
 
-	test('the pass is crossed in about one vibration, not lingered at', () => {
-		const tr = fire(REACTIONS['h-h2'], { trans: 0.5, v: 0, phase: 0.3 });
-		expect(tr.reacted).toBe(true);
+	test('the pass is crossed in less than a vibration or two, not lingered at', () => {
 		const period = (2 * Math.PI) / morseOmega(SURFACES.h3.yz, MASS.H / 2); // 7.6 fs
-		expect(tr.nearPass).toBeLessThan(2 * period);
+		const times = Array.from(
+			{ length: 24 },
+			(_, i) => fire(REACTIONS['h-h2'], { trans: 0.45, v: 0, phase: (i + 0.5) / 24 }).nearPass
+		);
+		const mean = times.reduce((a, b) => a + b, 0) / times.length;
+		expect(mean).toBeLessThan(period);
+		expect(Math.max(...times)).toBeLessThan(2 * period);
 	});
 });
 

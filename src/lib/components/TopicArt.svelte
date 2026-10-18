@@ -552,6 +552,30 @@
 			d < -1 ? 'o' : d > 1 ? 'co' : (x * 5 + y * 3) % 3 === 0 ? 'o' : (x + y) % 2 ? 'empty' : 'co';
 		return { i, x: 30 + x * 10, y: 34 + y * 10, kind };
 	});
+	// Transition state: contours (x − 28)(106 − y) = c of an L-shaped pair of valleys meeting at
+	// a pass, and a trajectory that comes in along the bottom valley, swinging across it, turns
+	// the corner and leaves up the left one.
+	const tstArt = (() => {
+		const lines = [140, 360, 700, 1150, 1700].map((c) => {
+			let d = '';
+			for (let x = 28 + c / 92; x <= 186; x += 2) {
+				const y = 106 - c / (x - 28);
+				if (y < 10) continue;
+				d += `${d ? 'L' : 'M'}${x.toFixed(1)} ${y.toFixed(1)}`;
+			}
+			return d;
+		});
+		let path = '';
+		for (let i = 0; i <= 60; i++) {
+			const u = i / 60;
+			// along the bottom valley (y ≈ 98) from x 184 to the corner, then up the left (x ≈ 36)
+			const x = u < 0.6 ? 184 - (u / 0.6) * 132 : 52 - ((u - 0.6) / 0.4) * 14;
+			const y = u < 0.6 ? 97 + 3 * Math.sin(u * 40) : 97 - ((u - 0.6) / 0.4) * 84;
+			const wob = u > 0.6 ? 5 * Math.sin(u * 55) : 0;
+			path += `${i ? 'L' : 'M'}${(x + wob).toFixed(1)} ${y.toFixed(1)}`;
+		}
+		return { lines, path };
+	})();
 </script>
 
 <svg viewBox="0 0 200 120" class="art" style:--accent={accent} aria-hidden="true">
@@ -4431,6 +4455,13 @@
 				opacity={lv <= 2 ? 1 : 0.45}
 			/>
 		{/each}
+	{:else if slug === 'transition-state-theory'}
+		<!-- a pass between two valleys on a contour map, and a trajectory turning the corner -->
+		{#each tstArt.lines as d, i (i)}
+			<path {d} fill="none" stroke="currentColor" stroke-width="1.2" opacity={0.2 + i * 0.07} />
+		{/each}
+		<path d={tstArt.path} fill="none" stroke={accent} stroke-width="2.2" stroke-linejoin="round" />
+		<circle cx="58" cy="76" r="3.5" fill={accent} />
 	{:else}
 		<circle cx="100" cy="60" r="30" fill="none" stroke={accent} stroke-width="2" />
 		<circle cx="100" cy="60" r="5" fill={accent} />

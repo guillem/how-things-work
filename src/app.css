@@ -4026,3 +4026,43 @@ kbd {
 	--sc-empty: #3a3527;
 	--sc-rate: #a9e34b;
 }
+
+/* transition-state-theory: the contour map from low to high ground, the pass ‡, the path of least
+   energy, the trajectory and the fan (crossed, turned back), the atoms (H, D, F), the two bond
+   lengths, and the zero-point levels of H and D */
+:root {
+	--tst-low: #1c4f80;
+	--tst-high: #e8a33d;
+	--tst-pass: #c92a2a;
+	--tst-path: #495057;
+	--tst-shot: #2a6f97;
+	--tst-react: #2b8a3e;
+	--tst-bounce: #d9480f;
+	--tst-h: #dee2e6;
+	--tst-h-edge: #868e96;
+	--tst-d: #a5d8ff;
+	--tst-f: #94d82d;
+	--tst-r1: #7048e8;
+	--tst-r2: #0c8599;
+	--tst-zpe-h: #2a6f97;
+	--tst-zpe-d: #b5179e;
+	--tst-region: rgba(201, 42, 42, 0.1);
+}
+:root[data-theme='dark'] {
+	--tst-low: #74c0fc;
+	--tst-high: #ffc078;
+	--tst-pass: #ff6b6b;
+	--tst-path: #ced4da;
+	--tst-shot: #66b2e0;
+	--tst-react: #69db7c;
+	--tst-bounce: #ff922b;
+	--tst-h: #f1f3f5;
+	--tst-h-edge: #adb5bd;
+	--tst-d: #74c0fc;
+	--tst-f: #a9e34b;
+	--tst-r1: #b197fc;
+	--tst-r2: #3bc9db;
+	--tst-zpe-h: #66b2e0;
+	--tst-zpe-d: #f783ac;
+	--tst-region: rgba(255, 107, 107, 0.14);
+}

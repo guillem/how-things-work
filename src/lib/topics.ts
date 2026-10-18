@@ -1203,6 +1203,15 @@ const explainers: Explainer[] = [
 		accent: '#6a7f10',
 		steps: 7,
 		minutes: 16
+	},
+	{
+		slug: 'transition-state-theory',
+		title: 'Reaction trajectories & the transition state',
+		summary:
+			'Fire three atoms at each other across a computed energy landscape and watch them cross a mountain pass or turn back; see why translation carries molecules over an early pass and vibration over a late one, then sweep the temperature through Eyring’s rate and swap hydrogen for deuterium.',
+		accent: '#2a6f97',
+		steps: 7,
+		minutes: 18
 	}
 ];
 
