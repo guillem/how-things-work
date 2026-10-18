@@ -14,7 +14,8 @@
  */
 
 /** GPT-2's split pattern (from its encoder.py), with the `u` flag for \p{L} and \p{N}. */
-const PATTERN = /'s|'t|'re|'ve|'m|'ll|'d| ?\p{L}+| ?\p{N}+| ?[^\s\p{L}\p{N}]+|\s+(?!\S)|\s+/gu;
+export const PATTERN =
+	/'s|'t|'re|'ve|'m|'ll|'d| ?\p{L}+| ?\p{N}+| ?[^\s\p{L}\p{N}]+|\s+(?!\S)|\s+/gu;
 
 /** The byte value of tokens 0–255, in GPT-2's vocabulary order (bytes_to_unicode). */
 function byteOrder(): number[] {

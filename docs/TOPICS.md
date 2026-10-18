@@ -1,6 +1,6 @@
 # Topic catalog
 
-Source of truth for the content of an interactive web learning tool that shows how things work. It defines 101 topics in 11 categories, each built around one interactive graphic. Readers range from high-school students to university majors.
+Source of truth for the content of an interactive web learning tool that shows how things work. It defines 102 topics in 11 categories, each built around one interactive graphic. Readers range from high-school students to university majors.
 
 This file covers content only. It does not choose the stack, the visual design or the project layout; take those from the repository's own instructions.
 
@@ -91,7 +91,7 @@ A topic is done when:
 | Space | `space` | 9 |
 | Computing | `computing` | 10 |
 | Information & Networks | `networks` | 8 |
-| Artificial Intelligence | `ai` | 10 |
+| Artificial Intelligence | `ai` | 11 |
 | Energy & Machines | `energy` | 9 |
 
 ## Checklist
@@ -207,6 +207,7 @@ A topic is done when:
 - [x] diffusion-models
 - [x] reinforcement-learning
 - [x] ngram-text-models
+- [ ] tokenization
 
 **Energy & Machines**
 - [x] heat-engines
@@ -1029,7 +1030,7 @@ A topic is done when:
 - **Interaction:** Pan and zoom a 2D map of thousands of words in which related words cluster; search for a word to see its nearest neighbors. Add and subtract word vectors (king − man + woman) to see which other word lands closest, and compare two sentences by the angle between their vectors.
 - **Takeaway:** Meaning can be represented as position in a high-dimensional space, where distance stands for similarity and directions stand for relationships.
 - **Prerequisites:** linear-transformations
-- **Related:** tensors
+- **Related:** tensors, tokenization
 - **Needs:** Pretrained word vectors (a subset of a few thousand words) and a 2D projection of them.
 - **Pitfall:** The 2D map is a projection that distorts distances; compute neighbors and analogies in the full space. The vector nearest to king − man + woman is usually king itself, and queen comes first only when the three input words are excluded; exclude them and say so on the page.
 
@@ -1040,7 +1041,7 @@ A topic is done when:
 - **Interaction:** Pick one of several example sentences and hover over any token to see, layer by layer and head by head, which other tokens a real small transformer attends to (weights precomputed from the model). Step through one attention operation: queries are matched against keys, the scores become weights, and values are mixed into a new vector for each token.
 - **Takeaway:** Attention lets every token gather information from every other token in one step, with learned weights deciding what is relevant, and a transformer is that operation stacked many times.
 - **Prerequisites:** embeddings, neural-networks
-- **Related:** language-models
+- **Related:** language-models, tokenization
 - **Needs:** Attention weights from a real small transformer, computed in the browser or precomputed.
 
 #### language-models
@@ -1078,9 +1079,20 @@ A topic is done when:
 - **Interaction:** Feed a text into a counting machine that records which letter (or word) follows each run of the previous n, then let it write by sampling from those counts. Slide n from 1 to 10 and watch the samples go from gibberish to word-like to Shakespeare-like, while two meters track what goes wrong: the share of contexts in held-out text that were never seen climbs toward all of them, and the longest stretch copied verbatim from the source grows until the model only recites.
 - **Takeaway:** Counting what followed the last few symbols gives more fluent text as the window grows, but the number of possible contexts explodes so fast that long windows are almost never seen, and the model can only copy; a model that reaches far back has to generalise instead of count.
 - **Prerequisites:** learning-from-data
-- **Related:** language-models, compression
+- **Related:** language-models, compression, tokenization
 - **Needs:** About 1 MB of Shakespeare's plays (the 'Tiny Shakespeare' extract popularised by Karpathy's char-rnn, or the same plays taken from Project Gutenberg) and the reader's own text.
 - **Pitfall:** Unseen contexts are not a problem solved by more data alone: the count of possible contexts grows exponentially with n. Smoothing and back-off fix the zero counts but not the lack of long-range structure.
+
+#### tokenization
+- **Title:** Tokenization & byte-pair encoding
+- **Level:** 3
+- **Kind:** step
+- **Interaction:** Type a small corpus and run byte-pair encoding one merge at a time: the most frequent adjacent pair fuses, the vocabulary grows by one and the token count of a sample sentence falls, plotted as a curve. Then type any text and watch GPT-2's real byte-level tokenizer apply its merges in rank order after the regex pre-split: common English words become one token, a rare word breaks into several pieces, numbers split oddly, and the same sentence in another language or script costs far more tokens.
+- **Takeaway:** Tokens are built by greedily merging the most frequent pairs in the training text, so a model sees whole words where text is common and fragments where it is rare, and cannot see the letters inside a token.
+- **Prerequisites:** language-models, compression
+- **Related:** transformers, embeddings, ngram-text-models
+- **Needs:** GPT-2's merge list and vocabulary (OpenAI; shipped by tiktoken under MIT, the GPT-2 release under a modified MIT licence).
+- **Pitfall:** Merges apply in rank order, not by longest match, so the split is deterministic given the merge list; byte-level BPE never needs an unknown token. Do not say models never see letters (single characters are tokens too), nor that they count letters: inside a merged token the spelling is invisible to them.
 
 ### Energy & Machines
 
