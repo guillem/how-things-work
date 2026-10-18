@@ -3514,3 +3514,26 @@ kbd {
 	--cot-question: #25282c;
 	--cot-beyond: #232629;
 }
+
+/* bacterial-chemotaxis: the cells, cells heading toward the drop, the attractant, the chamber's
+   liquid, and the traces of activity, methylation and tumbles */
+:root {
+	--bc-cell: #1971c2;
+	--bc-toward: #e8590c;
+	--bc-attract: #9c36b5;
+	--bc-liquid: #f4f8ef;
+	--bc-activity: #c2255c;
+	--bc-methyl: #2f9e44;
+	--bc-tumble: #e8590c;
+	--bc-noise: #868e96;
+}
+:root[data-theme='dark'] {
+	--bc-cell: #74c0fc;
+	--bc-toward: #ff922b;
+	--bc-attract: #da77f2;
+	--bc-liquid: #141b12;
+	--bc-activity: #f06595;
+	--bc-methyl: #69db7c;
+	--bc-tumble: #ff922b;
+	--bc-noise: #adb5bd;
+}

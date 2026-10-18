@@ -499,6 +499,13 @@ export function dish(o: DishOptions) {
 		states.push(s);
 		near.push(k / n);
 		runs.push({ ...swarm.runs });
+		// keep only the recent frames' positions (enough for trails)
+		const old = xs.length - 1 - KEEP;
+		if (old >= 0) {
+			xs[old] = EMPTY;
+			ys[old] = EMPTY;
+			states[old] = EMPTY_STATES;
+		}
 	};
 	record();
 	return {
@@ -511,7 +518,10 @@ export function dish(o: DishOptions) {
 		near,
 		/** Runs completed by each frame, toward and away from the drop. */
 		runs,
-		/** Simulates up to time t (s) and returns the index of the frame at or before it. */
+		/**
+		 * Simulates up to time t (s) and returns the index of the frame at or before it. Positions
+		 * are kept for the last KEEP frames only.
+		 */
 		at(t: number) {
 			const k = Math.max(0, Math.floor(t / FRAME + 1e-9));
 			while (xs.length <= k) {
@@ -529,6 +539,11 @@ export function dish(o: DishOptions) {
  * receptors keep one methylation level. Each cell's tumble rate then depends only on where it is.
  */
 export const FROZEN_C = 300;
+
+/** Frames whose positions the dish keeps. */
+export const KEEP = 16;
+const EMPTY = new Float32Array(0);
+const EMPTY_STATES = new Uint8Array(0);
 
 /** "Near the drop": within this distance of its centre, µm. */
 export const NEAR = 300;

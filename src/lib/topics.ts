@@ -1041,6 +1041,15 @@ const explainers: Explainer[] = [
 		accent: '#0b7285',
 		steps: 8,
 		minutes: 16
+	},
+	{
+		slug: 'bacterial-chemotaxis',
+		title: 'Bacterial chemotaxis: climbing a gradient by memory',
+		summary:
+			'Release a few hundred E. coli by a drop of attractant: each runs, tumbles at random and runs again, and a receptor cluster with a slow methylation memory makes it tumble less while things improve. The swarm gathers at the drop without any cell knowing where it is.',
+		accent: '#66a80f',
+		steps: 9,
+		minutes: 18
 	}
 ];
 

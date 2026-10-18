@@ -3839,6 +3839,32 @@
 			fill={accent}
 			opacity="0.35"
 		/>
+	{:else if slug === 'bacterial-chemotaxis'}
+		<!-- a drop of attractant and a run-and-tumble path that wanders, by chance, into it -->
+		<circle cx="150" cy="58" r="40" fill={accent} opacity="0.1" />
+		<circle cx="150" cy="58" r="24" fill={accent} opacity="0.18" />
+		<circle cx="150" cy="58" r="9" fill={accent} opacity="0.45" />
+		<path
+			d="M18 96 L52 84 L44 60 L76 70 L92 46 L104 76 L128 64 L120 42 L146 56"
+			fill="none"
+			stroke="currentColor"
+			stroke-width="1.4"
+			stroke-linejoin="round"
+			opacity="0.55"
+		/>
+		{#each [[52, 84], [44, 60], [76, 70], [92, 46], [104, 76], [128, 64], [120, 42]] as p, i (i)}
+			<circle cx={p[0]} cy={p[1]} r="2.2" fill={accent} />
+		{/each}
+		<g transform="translate(146 56) rotate(28)">
+			<rect x="-7" y="-3.5" width="14" height="7" rx="3.5" fill="currentColor" opacity="0.85" />
+			<path
+				d="M-7 0 q-3 -3 -6 0 t-6 0"
+				fill="none"
+				stroke="currentColor"
+				stroke-width="1"
+				opacity="0.6"
+			/>
+		</g>
 	{:else}
 		<circle cx="100" cy="60" r="30" fill="none" stroke={accent} stroke-width="2" />
 		<circle cx="100" cy="60" r="5" fill={accent} />
