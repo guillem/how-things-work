@@ -22,6 +22,12 @@ test('pressing keys on the stage picks the pair; a fifth nearly repeats every tw
 	await page.getByRole('button', { name: 'C4 key' }).click();
 	await expect(stage(page)).toContainText('perfect fifth');
 	await expect(page.locator('input[data-control="keyB"]')).toHaveValue('0');
+	// pressing a held key keeps it: C4 then A4 makes C4–A4, not A4–G4
+	await page.getByRole('button', { name: 'C4 key' }).click();
+	await page.getByRole('button', { name: 'A4 key' }).click();
+	await expect(stage(page)).toContainText('major sixth');
+	await page.getByRole('button', { name: 'G4 key' }).click();
+	await page.getByRole('button', { name: 'C4 key' }).click();
 	// on a piano it is 2 cents short of 3 : 2 and only nearly repeats
 	await expect(stage(page)).toContainText('1.4983');
 	await expect(stage(page)).toContainText('nearly repeats');
@@ -47,12 +53,12 @@ test('neighbouring keys beat 15.6 times a second; the piano’s major third abou
 	await expect(stage(page)).toContainText('15.6 per second');
 	// a major third of sine tones does not beat; with harmonics, the 5th of C and 4th of E do
 	await slide(page, 'keyB', '4');
-	await expect(stage(page)).toContainText('too far apart to interfere');
+	await expect(stage(page)).toContainText('none slower than 40 a second');
 	await pick(page, 'timbre', 'rich');
 	await expect(stage(page)).toContainText('10.4 per second');
 	await expect(stage(page)).toContainText('harmonic 5 of C4 against 4 of E4');
 	await pick(page, 'tuning', 'pure');
-	await expect(stage(page)).toContainText('no nearly matching harmonics');
+	await expect(stage(page)).toContainText('none slower than 40 a second');
 });
 
 test('the roughness curve dips at simple ratios only when the notes have harmonics', async ({

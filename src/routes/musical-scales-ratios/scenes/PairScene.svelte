@@ -58,7 +58,10 @@
 	function press(k: number) {
 		let a = keyA;
 		let b = keyB;
-		if (k !== a && k !== b) {
+		// pressing a key already held makes the other one the next to be replaced
+		if (k === a) older = 'keyB';
+		else if (k === b) older = 'keyA';
+		else {
 			if (older === 'keyA') a = k;
 			else b = k;
 			setParam(older, k);
@@ -197,16 +200,14 @@
 			{
 				id: 'beat',
 				label: 'Beats',
-				value: beat ? `${fmt(beat.rate, 1)} per second` : 'none',
+				value: beat ? `${fmt(beat.rate, 1)} per second` : 'none slower than 40 a second',
 				sub: beat
 					? timbre === 'sine'
 						? `${fmt(freqs[1], 1)} − ${fmt(freqs[0], 1)} Hz`
 						: `harmonic ${beat.m} of ${nameOf(lo)} against ${beat.n} of ${nameOf(hi)}`
 					: lo === hi
 						? 'the same note'
-						: timbre === 'sine'
-							? 'too far apart to interfere'
-							: 'no nearly matching harmonics',
+						: 'faster ones still count in the roughness',
 				color: 'var(--ms-sum)'
 			},
 			{

@@ -1,7 +1,7 @@
 import type { Control, ExplainerSpec } from '#lib/explainer/index.ts';
-import { KEY_NAMES, LADDERS, etFrequency } from './scales';
+import { KEY_NAMES, LADDERS } from './scales';
 
-const keyName = (k: number) => `${KEY_NAMES[k]} · ${etFrequency(k).toFixed(1)} Hz`;
+const keyName = (k: number) => KEY_NAMES[k];
 
 const keyA: Control = {
 	type: 'range',
@@ -148,7 +148,7 @@ export const spec: ExplainerSpec = {
 <p>A note is a sound wave that repeats at a steady rate: its <dfn data-def="How many times a second the wave repeats, in hertz (Hz).">frequency</dfn>. The keyboard on the stage runs from middle C, 261.6 Hz, up to the next C, 523.3 Hz. Above it, each pressed key is drawn as its wave, slowed down enormously so that you can see it.</p>
 <p>Press C4 and C5. The upper C repeats exactly twice as often as the lower one: two of its cycles fit in each of the lower C's. That jump, a doubling of the frequency, is an <dfn data-def="Two notes whose frequencies are in the ratio 2 : 1. They sound so alike that they get the same letter name.">octave</dfn>, and the two notes sound so alike that they share a name.</p>
 <p>A piano cuts each octave into twelve equal steps called <dfn data-def="The step between neighbouring keys of a piano (white or black): a frequency ratio of the twelfth root of 2, about 1.0595.">semitones</dfn>: each key is 1.0595 times the frequency of the one below, and twelve of those steps make exactly 2. Why twelve, and not ten or twenty, is the question of this page.</p>`,
-			notes: `<p>The frequencies are those of a modern piano tuned to the standard concert pitch A4 = 440 Hz. A real note from an instrument is not a single clean wave but a mix of frequencies, as you saw on the guitar string: we come back to that in step 3. Musicians measure intervals in <em>cents</em>, a hundredth of a semitone: an octave is 1,200 cents. Differences of about 5 cents are near the limit of what trained ears notice between two notes played one after the other.</p>`
+			notes: `<p>This page models ideal equal temperament at the standard concert pitch A4 = 440 Hz, with sine tones or six exact harmonics. Real pianos differ slightly: their strings' overtones are not exact multiples, and tuners stretch the octaves a little to match. A real note from an instrument is not a single clean wave but a mix of frequencies, as you saw on the guitar string: we come back to that in step 3. Musicians measure intervals in <em>cents</em>, a hundredth of a semitone: an octave is 1,200 cents. Differences of about 5 cents are near the limit of what trained ears notice between two notes played one after the other.</p>`
 		},
 		{
 			id: 'line-up',
@@ -161,8 +161,8 @@ export const spec: ExplainerSpec = {
 			body: `
 <p>The bottom trace adds the two waves together, which is what your ear receives. For an octave, 2 : 1, the sum repeats after every cycle of the lower note. Now press C4 and G4, a <dfn data-def="Two notes whose frequencies are in the ratio 3 : 2 (seven semitones on a piano). After the octave, the smoothest interval.">fifth</dfn>: three cycles of G fit exactly in two of C, so the sum repeats every two cycles. A major third, C–E, is 5 : 4 and repeats every four.</p>
 <p>The simpler the ratio, the sooner the pattern repeats, and these are the pairs that sound smooth together. Switch the tuning to <em>Pure</em> to place the upper note exactly on its ratio.</p>
-<p>On a piano they are not exact. Twelve equal steps put G at 1.4983 times C, not 1.5: the pattern drifts a little at every repeat. For the fifth the drift is tiny; for the major third, 1.2599 instead of 1.25, much less so.</p>`,
-			notes: `<p>The pure ratios used here are those of <em>just intonation</em>: 16:15, 9:8, 6:5, 5:4, 4:3, 3:2, 8:5, 5:3, 15:8 and 2:1. Two of the twelve have no simple ratio: the tritone (C–F♯; 45:32 is used here) and the minor seventh (9:5 here, though 16:9 is also used). In pure tuning the lower key keeps its piano pitch and only the upper one moves, the way a violinist or a choir tunes a single interval.</p>`
+<p>In equal temperament they are not exact. Twelve equal steps put G at 1.4983 times C, not 1.5: the pattern drifts a little at every repeat. For the fifth the drift is tiny; for the major third, 1.2599 instead of 1.25, much less so.</p>`,
+			notes: `<p>The pure ratios used here are those of <em>just intonation</em>: 16:15, 9:8, 6:5, 5:4, 4:3, 3:2, 8:5, 5:3, 15:8 and 2:1. For the tritone (C–F♯) this page uses 45:32; for the minor seventh it uses 9:5, though 16:9 is another common choice. Just intonation can assign different ratios according to the musical context. In pure tuning the lower key keeps its piano pitch and only the upper one moves, the way a violinist or a choir tunes a single interval.</p>`
 		},
 		{
 			id: 'rough',
@@ -173,10 +173,10 @@ export const spec: ExplainerSpec = {
 			duration: 24,
 			controls: [keyA, keyB, tuning, timbre, playPair],
 			body: `
-<p>Press two neighbouring keys, C4 and C♯4, and keep the sound a <em>Pure sine tone</em>. Their frequencies differ by 15.6 Hz, so the two waves slide in and out of step 15.6 times a second: the sum swells and fades. These are <dfn data-def="A regular swelling and fading of loudness when two tones of nearly the same frequency sound together; it happens as many times a second as the frequencies differ.">beats</dfn>, the interference you met with waves. Slow beats sound like a wobble; fast ones like these sound rough and grating.</p>
+<p>Choose <em>Equal-tempered</em> tuning, press two neighbouring keys, C4 and C♯4, and keep the sound a <em>Pure sine tone</em>. Their frequencies differ by 15.6 Hz, so the two waves slide in and out of step 15.6 times a second: the sum swells and fades. These are <dfn data-def="A regular swelling and fading of loudness when two tones of nearly the same frequency sound together; it happens as many times a second as the frequencies differ.">beats</dfn>, the interference you met with waves. Slow beats sound like a wobble; fast ones like these sound rough and grating.</p>
 <p>In 1965 Reinier Plomp and Willem Levelt asked listeners to rate pairs of pure tones. Roughness peaked when the tones were about a quarter of a <dfn data-def="The range of frequencies the inner ear cannot fully separate: roughly 100 Hz wide at low pitches and about a sixth of the frequency higher up. Two tones closer than this interfere inside the ear.">critical band</dfn> apart (around 20 Hz near middle C) and faded once they were further apart. The meter on the stage follows their curve.</p>
 <p>Switch to <em>Rich</em>. A real instrument's note also contains its <dfn data-def="Frequencies at whole-number multiples of the note's frequency, sounding together with it.">harmonics</dfn>, 2, 3, 4… times its frequency, and harmonics of the two notes can beat against each other even when the notes are far apart. The meter adds up every pair.</p>`,
-			notes: `<p>The meter uses William Sethares' fit to Plomp and Levelt's data: two pure tones a frequency difference Δf apart add a roughness proportional to e<sup>−3.51·s·Δf</sup> − e<sup>−5.75·s·Δf</sup>, where s = 0.24 ÷ (0.0207·f + 18.96) shrinks as the lower frequency f grows (wider critical bands at higher pitch). Each pair of harmonics counts with the smaller of their two loudnesses, and the rich tone's harmonics are each 0.88 times as loud as the one below. Roughness is not the whole story of how pleasant a pair sounds: the listeners in such experiments also respond to familiarity, context and musical training.</p>`
+			notes: `<p>The meter uses William Sethares' fit to Plomp and Levelt's data: two pure tones a frequency difference Δf apart add a roughness proportional to e<sup>−3.51·s·Δf</sup> − e<sup>−5.75·s·Δf</sup>, where s = 0.24 ÷ (0.0207·f + 18.96) shrinks as the lower frequency f grows (wider critical bands at higher pitch). Each pair of harmonics counts with the smaller of their two amplitudes, and each of the rich tone's harmonics has 0.88 times the amplitude of the one below. Roughness is not the whole story of how pleasant a pair sounds: the listeners in such experiments also respond to familiarity, context and musical training.</p>`
 		},
 		// ------------------------------------------------------------------ map
 		{
@@ -191,7 +191,7 @@ export const spec: ExplainerSpec = {
 <p>Keep the lower note on C4 and slide the upper one smoothly across the octave, not just from key to key. The curve is the roughness of the pair at every position, for notes with six harmonics.</p>
 <p>It is high just above the unison, where everything beats, and it falls into sharp <strong>valleys</strong> at the simple ratios: 6 : 5, 5 : 4, 4 : 3, 3 : 2, 5 : 3 and the octave. In a valley a harmonic of one note lands exactly on a harmonic of the other, so the two cannot beat; nudge the note off the valley and they start to.</p>
 <p>The ticks along the bottom are the twelve keys of a piano. Several sit almost in a valley: the fifth G misses its valley by 2 cents, the fourth F by 2 cents; the thirds and sixths miss theirs by 14 to 16 cents.</p>`,
-			notes: `<p>A valley at 7 : 4 (969 cents) also appears, between the keys A and B♭: the "harmonic seventh", which no piano key reaches (it is 31 cents flat of B♭). Barbershop quartets tune their seventh chords to it.</p>`
+			notes: `<p>With a seventh harmonic included, a further valley appears at 7 : 4 (969 cents), between the keys A and B♭: the "harmonic seventh", which no piano key reaches (it is 31 cents flat of B♭). The six-harmonic sound drawn here has no seventh harmonic, so its curve only flattens there.</p>`
 		},
 		{
 			id: 'timbre',
@@ -264,8 +264,8 @@ export const spec: ExplainerSpec = {
 			controls: [tuning, playEqual, playPure],
 			body: `
 <p>A major chord, C–E–G, stacks a major third and a fifth: in pure tuning its frequencies are in the ratio 4 : 5 : 6. Each row on the stage is one note's harmonics. Where harmonics of two notes nearly coincide, they beat.</p>
-<p>On a piano, the 5th harmonic of C and the 4th of E are 10.4 Hz apart: the chord shimmers about ten times a second. The 6th of E and the 5th of G beat 17.8 times; C's 3rd and G's 2nd drift by less than once a second. In pure tuning all those pairs land exactly on each other, and nothing beats.</p>
-<p>Play both. The equal-tempered chord is what nearly all Western music since the nineteenth century has been played on; the pure one is what an unaccompanied choir drifts towards.</p>
+<p>In equal temperament, the 5th harmonic of C and the 4th of E are 10.4 Hz apart: the chord shimmers about ten times a second. The 6th of E and the 5th of G beat 17.8 times; C's 3rd and G's 2nd drift by less than once a second. In pure tuning all those pairs land exactly on each other, and nothing beats.</p>
+<p>Play both. Equal temperament became the usual tuning of Western keyboards during the nineteenth century; singers and players of instruments whose pitch they can bend often move single intervals towards the pure ratios.</p>
 <p><strong>Notes sound smooth together when their frequencies are in simple ratios, and twelve equal steps is the first ladder whose fifth lands within 2 cents of the pure 3 : 2.</strong></p>`,
 			notes: `<p>Pure tuning has its own price: tune C–E–G pure, then the chord on D built from the same notes comes out wrong, because pure intervals don't add up consistently around the circle of fifths (the comma again). Choirs and string quartets adjust each chord as they go; a keyboard, with one fixed pitch per key, cannot, which is why it settled on equal steps.</p>`
 		}

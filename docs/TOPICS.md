@@ -127,7 +127,7 @@ A topic is done when:
 - [x] special-relativity
 - [x] quantum-mechanics
 - [x] standard-model
-- [ ] musical-scales-ratios
+- [x] musical-scales-ratios
 
 **Chemistry & Materials**
 - [x] atoms-periodic-table

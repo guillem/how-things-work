@@ -4,7 +4,7 @@
 	 * note's frequency) on a logarithmic frequency axis. Harmonics of two notes
 	 * that come within 25 Hz of each other are joined and labelled with their
 	 * beat rate; in pure tuning (4 : 5 : 6) they coincide exactly. Below, the
-	 * loudness of the strongest clash (C's 5th harmonic with E's 4th) over one
+	 * amplitude envelope of the strongest clash (C's 5th harmonic with E's 4th) over one
 	 * second, scrolling at a quarter of real speed.
 	 *
 	 * Params: `tuning` ('equal' | 'pure'); `playEqual` and `playPure` (actions)
@@ -118,7 +118,7 @@
 		const N = 300;
 		for (let i = 0; i <= N; i++) {
 			const s = i / N;
-			// the two harmonics' summed loudness: it swells and fades at their difference
+			// the envelope of the two harmonics' sum: it swells and fades at their difference
 			const cos = Math.cos(2 * Math.PI * rate * k * (s + shift));
 			const env = Math.sqrt(a5 * a5 + a4 * a4 + 2 * a5 * a4 * cos) / (a5 + a4);
 			const x = BX0 + s * (BX1 - BX0);
@@ -218,14 +218,14 @@
 			</Readout>
 		{/each}
 
-		<!-- the loudness of C's 5th + E's 4th over one second -->
+		<!-- the envelope of C's 5th + E's 4th over one second -->
 		<path d={band} fill="var(--ms-sum)" opacity="0.35" />
 		<line x1={BX0} x2={BX1} y1={BY} y2={BY} stroke="var(--ms-sum)" opacity="0.6" />
 		<Readout id="band-title">
 			<Label
 				x={BX0}
 				y={BY - BH - 12}
-				text="Loudness of C’s 5th and E’s 4th harmonic together, over one second"
+				text="Amplitude envelope of C’s 5th and E’s 4th harmonic together, over one second"
 				anchor="start"
 				size={12}
 				weight={600}
