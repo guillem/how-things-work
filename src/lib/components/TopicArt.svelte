@@ -4815,6 +4815,30 @@
 			stroke-dasharray="4 3"
 			opacity="0.6"
 		/>
+	{:else if slug === 'tsunamis'}
+		<!-- a slice of ocean: the sea floor with a trench, a long low hump far out, a tall one at the shore -->
+		<path
+			d="M8 40 L8 104 L192 104 L192 44 L184 44 L176 62 L160 84 L120 92 L80 96 L44 98 L30 112 L24 96 L14 70 Z"
+			fill="currentColor"
+			opacity="0.14"
+		/>
+		<path
+			d="M8 44 H70 Q96 34 122 44 H160 Q172 44 176 22 Q180 40 184 44"
+			fill="none"
+			stroke={accent}
+			stroke-width="2.4"
+			stroke-linejoin="round"
+		/>
+		<line
+			x1="8"
+			x2="192"
+			y1="44"
+			y2="44"
+			stroke="currentColor"
+			stroke-width="0.8"
+			opacity="0.3"
+			stroke-dasharray="3 3"
+		/>
 	{:else}
 		<circle cx="100" cy="60" r="30" fill="none" stroke={accent} stroke-width="2" />
 		<circle cx="100" cy="60" r="5" fill={accent} />

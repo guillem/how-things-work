@@ -4473,3 +4473,42 @@ kbd {
 	--oa-mark: #dee2e6;
 	--oa-mark-text: #f1f3f5;
 }
+
+/* tsunamis: the sea, the sea floor, the land, the model's wave, the uplift, the real records,
+   a wind wave, the tide, buoys and the ship */
+:root {
+	--tsu-sea: #d6eaf3;
+	--tsu-floor: #d5c4a6;
+	--tsu-floor-edge: #8a7356;
+	--tsu-land: #b5c79a;
+	--tsu-wave: #0b5d8c;
+	--tsu-wave-text: #0b5d8c;
+	--tsu-uplift: #d9480f;
+	--tsu-uplift-text: #b8410c;
+	--tsu-real: #c2255c;
+	--tsu-real-text: #a61e4d;
+	--tsu-wind: #2f9e44;
+	--tsu-wind-text: #2b8a3e;
+	--tsu-tide: #7048e8;
+	--tsu-tide-text: #6741d9;
+	--tsu-buoy: #f59f00;
+	--tsu-ship: #495057;
+}
+:root[data-theme='dark'] {
+	--tsu-sea: #12303f;
+	--tsu-floor: #4b4033;
+	--tsu-floor-edge: #a08a6a;
+	--tsu-land: #3e4c35;
+	--tsu-wave: #6cc4f0;
+	--tsu-wave-text: #8fd3f5;
+	--tsu-uplift: #ff922b;
+	--tsu-uplift-text: #ffa94d;
+	--tsu-real: #f783ac;
+	--tsu-real-text: #faa2c1;
+	--tsu-wind: #69db7c;
+	--tsu-wind-text: #8ce99a;
+	--tsu-tide: #b197fc;
+	--tsu-tide-text: #c0abfd;
+	--tsu-buoy: #ffd43b;
+	--tsu-ship: #ced4da;
+}

@@ -1311,6 +1311,15 @@ const explainers: Explainer[] = [
 		accent: '#1c7c99',
 		steps: 9,
 		minutes: 20
+	},
+	{
+		slug: 'tsunamis',
+		title: 'Tsunamis: a wave as long as the ocean is deep',
+		summary:
+			'A slice of the North Pacific from Japan to California with the real sea floor under it. Jolt the floor off Japan and watch the 2011 tsunami run as fast as an airliner over the abyss, slow and grow over the shelf, and reach the real buoys and the Crescent City tide gauge when they recorded it; compare a wind wave, reshape the shelf, raise a ridge.',
+		accent: '#0b5d8c',
+		steps: 9,
+		minutes: 20
 	}
 ];
 

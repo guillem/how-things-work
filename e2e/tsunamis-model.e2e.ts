@@ -102,7 +102,7 @@ test('the sea rises first out in the Pacific and draws back first on the Japanes
 		const first = r.find((v) => Math.abs(v) > 0.05)!;
 		expect(first, s.name).toBeGreaterThan(0);
 		// and so does the real record
-		const real = s.record.find((v) => Math.abs(v) > 10)!;
+		const real = s.record.find((v) => Math.abs(v ?? 0) > 10)!;
 		expect(real, s.name).toBeGreaterThan(0);
 	}
 	const japan = new Ocean(floorDepths(), 5, [JAPAN_KM]);
