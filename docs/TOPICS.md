@@ -1,6 +1,6 @@
 # Topic catalog
 
-Source of truth for the content of an interactive web learning tool that shows how things work. It defines 105 topics in 11 categories, each built around one interactive graphic. Readers range from high-school students to university majors.
+Source of truth for the content of an interactive web learning tool that shows how things work. It defines 106 topics in 11 categories, each built around one interactive graphic. Readers range from high-school students to university majors.
 
 This file covers content only. It does not choose the stack, the visual design or the project layout; take those from the repository's own instructions.
 
@@ -91,7 +91,7 @@ A topic is done when:
 | Space | `space` | 9 |
 | Computing | `computing` | 10 |
 | Information & Networks | `networks` | 8 |
-| Artificial Intelligence | `ai` | 14 |
+| Artificial Intelligence | `ai` | 15 |
 | Energy & Machines | `energy` | 9 |
 
 ## Checklist
@@ -211,6 +211,7 @@ A topic is done when:
 - [x] positional-encoding
 - [x] residual-stream-logit-lens
 - [x] training-a-tiny-language-model
+- [ ] scaling-laws
 
 **Energy & Machines**
 - [x] heat-engines
@@ -1055,7 +1056,7 @@ A topic is done when:
 - **Interaction:** Type any text to see it split into tokens; for a set of example prompts, view a real small model's probability for each candidate next token as a bar chart (precomputed). Pick tokens one at a time while adjusting temperature and top-p, and compare several sampled continuations of the same prompt.
 - **Takeaway:** A language model does one thing, predict the next token, and fluent text, answers and code emerge from doing that repeatedly with a very large network trained on a very large amount of text.
 - **Prerequisites:** embeddings, neural-networks
-- **Related:** transformers, ngram-text-models
+- **Related:** transformers, ngram-text-models, scaling-laws
 - **Needs:** A small language model that runs in the browser, or precomputed next-token probabilities.
 
 #### diffusion-models
@@ -1125,9 +1126,20 @@ A topic is done when:
 - **Interaction:** Press train and a small character-level transformer (two layers, a few tens of thousands of weights) learns Tiny Shakespeare live in the page, with a fixed seed: the training and validation cross-entropy fall on a loss curve with smoothed bigram and trigram models' validation scores drawn as horizontal lines, perplexity is read off beside it, and a sample is written every few hundred steps. Change the model width, the context length and the amount of data to load precomputed runs of the same model (trained offline with the same code) and compare them: bigger models end lower, a longer context helps up to a point (8 to 32 characters, not 32 to 64 at this size), and with too little data the two curves split as it starts memorising.
 - **Takeaway:** Training a language model is gradient descent on one number, the average surprise at the next character, and as that number falls the samples go from random letters to plausible spelling to words and line structure.
 - **Prerequisites:** language-models, gradient-descent, ngram-text-models
-- **Related:** compression
+- **Related:** compression, scaling-laws
 - **Needs:** Tiny Shakespeare; a tiny char-level transformer trained by the page itself for the default configuration (nanoGPT's character-level configuration is the reference), plus the project's own precomputed loss curves and samples for the other settings, trained offline with the same code; smoothed n-gram baselines counted from the same train/validation split.
 - **Pitfall:** Perplexity is the exponential of the average cross-entropy per token and is comparable only between models with the same tokenizer and the same validation text; a training loss near zero is memorisation, not success. The order in which samples improve is a typical pattern, not a guaranteed sequence.
+
+#### scaling-laws
+- **Title:** Scaling laws
+- **Level:** 3
+- **Kind:** explore
+- **Interaction:** Scrub a precomputed sweep of small networks trained with growing width and data on one task and watch the loss fall as a straight line on log-log axes until the data or the model runs out, then retrain one point of the sweep live and see it land on the line. Switch to the Chinchilla parametric law and drag a compute budget: the page solves for the model size and token count that minimize the fitted loss, drawing the iso-compute curves and the optimal frontier.
+- **Takeaway:** Loss falls as a power law in model size and in data, each saturating when the other is the bottleneck, so a given compute budget has an optimal split between the two.
+- **Prerequisites:** neural-networks, gradient-descent, learning-from-data
+- **Related:** language-models, training-a-tiny-language-model
+- **Needs:** The project's own precomputed sweep of small character-level transformers (the training-a-tiny-language-model architecture) trained on Tiny Shakespeare at several widths and data sizes; the Chinchilla parametric fit L = E + A/N^a + B/D^b with Hoffmann et al. 2022's published constants and Epoch AI's corrected constants (Besiroglu et al. 2024), shown side by side.
+- **Pitfall:** Scaling laws are empirical fits with disputed constants (Epoch AI's replication found Hoffmann's parametric fit inconsistent with the paper's own other methods); do not present them as physics, and say the loss never reaches zero but approaches an irreducible floor E. Compute-optimal minimizes training cost only; models meant for heavy use are deliberately trained on far more tokens than the optimum. The live retrain must be tiny and labelled as such, not a per-slider sweep.
 
 ### Energy & Machines
 
