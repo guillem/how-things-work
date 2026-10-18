@@ -65,17 +65,17 @@ test('a loading dose of digoxin is near the plateau after one day', async ({ pag
 	await expect(stage(page)).toContainText('after day 1: 36% of the plateau');
 	await toggle(page, 'load6').check({ force: true });
 	await expect(stage(page)).toContainText(
-		/after day 1: (9\d|10\d)% of the plateau \(without loading: 36%\)/
+		/after day 1: (9\d|1[01]\d)% of the plateau \(without loading: 36%\)/
 	);
 });
 
 test('kidneys at half: lithium’s level and half-life double', async ({ page }) => {
 	await page.goto('./pharmacokinetics-dosing/#kidney');
-	await expect(stage(page)).toContainText('kidneys at 100%: average 0.84 mEq/L');
-	await expect(stage(page)).toContainText('half-life 24 hours');
+	await expect(stage(page)).toContainText('kidneys at 100%: average 1.0 mEq/L');
+	await expect(stage(page)).toContainText('half-life 30 hours');
 	await key(page, 'kid7', 'ArrowLeft', 2);
-	await expect(stage(page)).toContainText('kidneys at 50%: average 1.7 mEq/L');
-	await expect(stage(page)).toContainText('half-life 2.0 days: 94% of the way after 8.0 days');
+	await expect(stage(page)).toContainText('kidneys at 50%: average 2.1 mEq/L');
+	await expect(stage(page)).toContainText('half-life 2.5 days: 94% of the way after 10 days');
 });
 
 test('phenytoin: a third more drug, more than twice the level', async ({ page }) => {
@@ -108,14 +108,14 @@ test('the palette places and removes doses at the cursor', { tag: '@smoke' }, as
 	await expect(stage(page)).toContainText('theophylline (asthma): 9 doses');
 	// vancomycin is not absorbed by mouth and has no target range on its label
 	await choose(page, 'drug8', 'vancomycin');
-	await expect(stage(page)).toContainText('vancomycin (antibiotic, by vein): 6 doses');
+	await expect(stage(page)).toContainText('vancomycin (antibiotic, IV): 6 doses');
 	await expect(stage(page)).toContainText('the label gives no target range');
 	await expect(page.getByRole('button', { name: /tablet: not absorbed by mouth/ })).toHaveAttribute(
 		'aria-disabled',
 		'true'
 	);
 	await page.getByRole('button', { name: 'Remove every dose' }).click();
-	await expect(stage(page)).toContainText('vancomycin (antibiotic, by vein): 0 doses');
+	await expect(stage(page)).toContainText('vancomycin (antibiotic, IV): 0 doses');
 	await page.getByRole('button', { name: 'Restore the usual regimen' }).click();
-	await expect(stage(page)).toContainText('vancomycin (antibiotic, by vein): 6 doses');
+	await expect(stage(page)).toContainText('vancomycin (antibiotic, IV): 6 doses');
 });

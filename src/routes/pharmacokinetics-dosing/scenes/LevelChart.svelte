@@ -27,7 +27,7 @@
 
 	/** The legend under the chart: swatch and text, laid out left to right. */
 	const LY = 536;
-	const CH = 5.6;
+	const CH = 4.9;
 	const items = $derived.by(() => {
 		const out: { id: string; kind: 'band' | 'toxic' | 'ghost'; text: string; x: number }[] = [];
 		let x = L.PX0;
@@ -39,7 +39,7 @@
 			push(
 				'window',
 				'band',
-				`target range (label): ${level(win[0], drug, false)}–${level(win[1], drug)}`
+				`target ${drug.windowSample ? `${drug.windowSample} ` : ''}(label): ${level(win[0], drug, false)}–${level(win[1], drug)}`
 			);
 		else push('window', 'band', 'the label gives no target range');
 		if (drug.toxic !== null) push('toxic', 'toxic', `toxic above ${level(drug.toxic, drug)}`);

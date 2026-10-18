@@ -132,8 +132,14 @@ export function planFor(mode: string, params: Record<string, ParamValue>): Plan 
 			const base = curve(bodyOf(d), plain, span, '250 mcg a day');
 			const p = { plateau: steadyAverage(base.body, 250, 24, 'tablet') };
 			if (!load) return { ...plan(mode, d, span, base, null), ...p };
-			const loaded: Dose[] = [{ t: 0, form: 'tablet', amount: 750 }, ...plain.slice(1)];
-			const main = curve(bodyOf(d), loaded, span, '750 mcg, then 250 a day');
+			// the label's loading: half, then two quarters six hours apart; maintenance from day 2
+			const parts: Dose[] = (d.loading?.parts ?? []).map(([t, amount]) => ({
+				t,
+				form: 'tablet',
+				amount
+			}));
+			const loaded: Dose[] = [...parts, ...plain.slice(1)];
+			const main = curve(bodyOf(d), loaded, span, '750 mcg on day 1, then 250 a day');
 			return { ...plan(mode, d, span, main, base), ...p };
 		}
 		case 'kidney': {

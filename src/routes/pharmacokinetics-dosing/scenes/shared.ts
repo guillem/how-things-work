@@ -54,9 +54,9 @@ export function timeAxis(span: number): TimeAxis {
 /** A duration in hours, in hours or days as fits: "8.0 hours", "1.8 days". */
 export function duration(h: number): string {
 	if (!Number.isFinite(h)) return '—';
-	if (h < 48) return `${h < 10 ? h.toFixed(1) : Math.round(h)} hours`;
-	const d = h / 24;
-	return `${d < 10 ? d.toFixed(1) : Math.round(d)} days`;
+	const short = (v: number) => (Math.round(v * 10) / 10 < 10 ? v.toFixed(1) : `${Math.round(v)}`);
+	if (h < 48) return `${short(h)} hours`;
+	return `${short(h / 24)} days`;
 }
 
 /** A level with sensible digits and the label's unit: "12 mcg/mL", "0.90 ng/mL". */

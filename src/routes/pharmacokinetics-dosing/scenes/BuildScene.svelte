@@ -370,9 +370,11 @@
 			text="highest {level(peak, drug)} · last day {level(lastDay.min, drug, false)}–{level(
 				lastDay.max,
 				drug
-			)}{drug.window
-				? ` · in the target range ${pctText(inRange)} of the time after the first dose`
-				: ' · the label gives no target range'}"
+			)}{drug.windowSample
+				? ` · the label’s target is for a sample ${drug.windowSample}`
+				: drug.window
+					? ` · in the target range ${pctText(inRange)} of the time after the first dose`
+					: ' · the label gives no target range'}"
 			size={13}
 			tabular
 		/>

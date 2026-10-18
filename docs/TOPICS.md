@@ -176,7 +176,7 @@ A topic is done when:
 - [x] cancer
 - [x] medical-imaging
 - [x] cerebellum-motor-learning
-- [ ] pharmacokinetics-dosing
+- [x] pharmacokinetics-dosing
 
 **Earth & Climate**
 - [x] plate-tectonics

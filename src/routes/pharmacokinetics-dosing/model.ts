@@ -96,6 +96,8 @@ export function simulate(b: Body, doses: readonly Dose[], tEnd: number, samples 
 
 	// breakpoints where something starts or stops: doses land on them exactly
 	const sorted = [...doses].sort((x, y) => x.t - y.t);
+	// only injections spread over time and drips add a rate; tablets go to the gut
+	const spread = sorted.filter((d) => d.form !== 'tablet' && (d.duration ?? 0) > 0);
 	const breaks = new Set<number>();
 	for (const d of sorted) {
 		breaks.add(d.t);
@@ -111,7 +113,7 @@ export function simulate(b: Body, doses: readonly Dose[], tEnd: number, samples 
 		return [-b.ka * g, b.ka * g + rate - elimination(b, cc)];
 	};
 	const rk4 = (from: number, h: number) => {
-		const rate = infusionAt(sorted, from + h / 2);
+		const rate = infusionAt(spread, from + h / 2);
 		const [g1, a1] = deriv(gut, body, rate);
 		const [g2, a2] = deriv(gut + (h / 2) * g1, body + (h / 2) * a1, rate);
 		const [g3, a3] = deriv(gut + (h / 2) * g2, body + (h / 2) * a2, rate);
@@ -160,7 +162,12 @@ export function simulate(b: Body, doses: readonly Dose[], tEnd: number, samples 
 	return { t, c, g, dt };
 }
 
-/** The level at time `time`, interpolated from a series. */
+/**
+ * The level at time `time`, interpolated linearly between the series' samples. A sample at the
+ * time of an injection holds the level just before it (the jump shows from the next sample), so
+ * `levelAt(s, dose.t)` is the trough before that dose; between samples, an injection's jump is
+ * spread over one sample interval.
+ */
 export function levelAt(s: Series, time: number): number {
 	const n = s.t.length - 1;
 	const x = Math.min(n, Math.max(0, time / s.dt));
@@ -206,9 +213,12 @@ export function repeated(opts: {
 /** Elimination rate constant k = CL / V, 1/h. */
 export const rateConstant = (b: Body) => b.CL / b.V;
 
-/** Half-life, h: ln 2 · V / CL (for a saturable drug, its value at concentration c). */
+/**
+ * Half-life, h: ln 2 · V / CL. For a saturable drug, the time to fall from c to c/2 once intake
+ * stops, from integrating the Michaelis–Menten law: V (Km ln 2 + c/2) / Vmax.
+ */
 export function halfLifeAt(b: Body, c = 0): number {
-	if (b.saturable) return (LN2 * b.V * (b.saturable.Km + c)) / b.saturable.Vmax;
+	if (b.saturable) return (b.V * (b.saturable.Km * LN2 + c / 2)) / b.saturable.Vmax;
 	return (LN2 * b.V) / b.CL;
 }
 
@@ -231,7 +241,8 @@ export function oralPeakTime(b: Body): number {
 }
 
 /**
- * Average level at steady state for `amount` every `interval` hours (or a drip of
+ * Average level at steady state (for a saturable drug: the level under the same intake as a
+ * constant rate, an approximation for separate doses; see `settle`) for `amount` every `interval` hours (or a drip of
  * `amount` per hour with interval 1): F·dose / (CL·τ) for linear elimination; for saturable
  * elimination Km·R / (Vmax − R), with R the rate that reaches the blood, and Infinity when the
  * intake reaches Vmax (no steady state).
@@ -243,6 +254,49 @@ export function steadyAverage(b: Body, amount: number, interval: number, form: F
 		return R >= Vmax ? Infinity : (Km * R) / (Vmax - R);
 	}
 	return R / b.CL;
+}
+
+/**
+ * Runs a regimen repeated every `cycle` hours until it settles: the level at the start of each
+ * cycle changes by less than 0.2% over the second half of the run. Returns the settled average and trough, and the
+ * first cycle start at which the trough reached `share` of its settled value; `settled` is false
+ * if that did not happen within `maxDays`.
+ */
+export function settle(
+	b: Body,
+	oneCycle: readonly Dose[],
+	cycle: number,
+	share = 0.9,
+	maxDays = 1500
+): { settled: boolean; average: number; trough: number; reached: number } {
+	const nMax = Math.ceil((maxDays * 24) / cycle);
+	const troughs: number[] = [];
+	// run in blocks of cycles, carrying nothing over: re-simulate from 0 with more cycles
+	for (let n = 16; ; n = Math.min(nMax, n * 2)) {
+		const doses: Dose[] = [];
+		for (let k = 0; k < n; k++) for (const d of oneCycle) doses.push({ ...d, t: d.t + k * cycle });
+		const tEnd = n * cycle;
+		const s = simulate(b, doses, tEnd, Math.min(20000, n * 48));
+		troughs.length = 0;
+		for (let k = 1; k <= n; k++) troughs.push(levelAt(s, k * cycle - 1e-6));
+		const last = troughs[n - 1];
+		// settled: the trough has moved by less than 0.2% over the second half of the run
+		const prev = troughs[Math.floor(n / 2) - 1];
+		const done = Math.abs(last - prev) <= 2e-3 * last;
+		if (done || n >= nMax) {
+			let sum = 0;
+			let m = 0;
+			for (let i = 0; i < s.t.length; i++)
+				if (s.t[i] >= tEnd - cycle) {
+					sum += s.c[i];
+					m++;
+				}
+			const average = sum / Math.max(1, m);
+			const settled = done;
+			const k = troughs.findIndex((x) => x >= share * last);
+			return { settled, average, trough: last, reached: settled ? (k + 1) * cycle : NaN };
+		}
+	}
 }
 
 /** Share of the steady state reached after n half-lives (linear elimination): 1 − 2⁻ⁿ. */

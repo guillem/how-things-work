@@ -17,14 +17,13 @@
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { DRUGS } from '../drugs';
 	import {
+		settle,
 		bodyOf,
 		elimination,
 		halfLifeAt,
 		levelAt,
 		range,
-		repeated,
 		shareAfter,
-		simulate,
 		steadyAverage,
 		timeToShare,
 		type Dose,
@@ -103,6 +102,10 @@
 	const t12 = $derived(plan.halfLife);
 	const halfMarks = $derived.by(() => {
 		if (!['repeat', 'drip', 'double', 'loading', 'kidney'].includes(mode)) return [];
+		// the marks describe an uninterrupted climb from nothing: not after a loading dose or a miss
+		if (params.load4 === true && mode === 'drip') return [];
+		if (params.load6 === true && mode === 'loading') return [];
+		if (params.miss3 === true && mode === 'repeat') return [];
 		const out: { t: number; n: number; text: string }[] = [];
 		for (let n = 1; n <= 5; n++) {
 			const time = n * t12;
@@ -156,6 +159,13 @@
 		return timeToShare(main.series, main.doses, p, 0.9);
 	});
 
+	/** Lithium: the steady level 12 hours after a dose, the sample the label's target is for. */
+	const sample12 = $derived(
+		mode === 'kidney'
+			? settle(main.body, [{ t: 0, form: 'tablet', amount: drug.dose }], 12).trough
+			: NaN
+	);
+
 	const loadingInfo = $derived.by(() => {
 		if (mode !== 'loading') return null;
 		const day1 = levelAt(main.series, 24 - 1e-6);
@@ -169,12 +179,10 @@
 	const satInfo = $derived.by(() => {
 		if (mode !== 'saturable') return null;
 		const daily = Number(params.dose9 ?? 300);
-		const long = 90 * 24;
-		const doses = repeated({ amount: daily / 3, interval: 8, form: 'tablet', until: long });
-		const s = simulate(main.body, doses, long, 2400);
-		const trough = levelAt(s, long - 8 - 1e-6);
-		const t90 = timeToShare(s, doses, trough, 0.9);
-		const css = steadyAverage(main.body, daily, 24, 'tablet');
+		const day: Dose[] = [0, 8, 16].map((h) => ({ t: h, form: 'tablet', amount: daily / 3 }));
+		const run = settle(main.body, day, 24, 0.9);
+		const css = run.settled ? run.average : Infinity;
+		const t90 = run.reached;
 		return { daily, css, t90, halfLife: halfLifeAt(main.body, Number.isFinite(css) ? css : 0) };
 	});
 
@@ -665,6 +673,21 @@
 				y={60}
 				anchor="start"
 				text="half-life {fmtH(t12)}: 94% of the way after {fmtH(4 * t12)}"
+				size={13}
+				tabular
+			/>
+		</Readout>
+		<Readout
+			id="r3"
+			order={2}
+			label="12 hours after a dose"
+			value="{level(sample12, drug)} once settled"
+		>
+			<Label
+				x={24}
+				y={84}
+				anchor="start"
+				text="once settled, 12 hours after a dose (the label’s sample): {level(sample12, drug)}"
 				size={13}
 				tabular
 			/>

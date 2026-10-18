@@ -23,7 +23,7 @@
  *   clearance 100 mL/min) to 19 (10 mL/min).
  * - Lithium carbonate: Camber capsules, 04518b80-7563-4544-bf05-04f286223faa v9 (2022-12-26):
  *   "completely absorbed", peak 0.25 to 3 hours, volume 0.7 to 1 L/kg, half-life 18 to 36 hours,
- *   acute goal 0.8–1.2 mEq/L with 600 mg two to three times daily, toxic at 1.5 mEq/L and above.
+ *   acute goal 0.8–1.2 mEq/L (a sample 12 hours after a dose) with 600 mg two to three times daily, toxic at 1.5 mEq/L and above.
  *   300 mg of lithium carbonate (Li₂CO₃, 73.9 g/mol) holds 8.12 mEq of lithium.
  * - Vancomycin: Fresenius Kabi injection, 0576803d-95de-4a48-806a-69ae3fcaf6b0 v8 (2023-08-17):
  *   plasma clearance about 0.058 L/kg/h, half-life 4 to 6 hours, volume ("distribution
@@ -35,7 +35,7 @@
  *   maintenance one capsule three to four times a day, oral loading 1 g in three doses; the salt
  *   has about 8% less phenytoin than the free acid (salt factor 0.92). Saturable constants
  *   Vmax = 7 mg/kg/day and Km = 4 mg/L: the reference means quoted by Salehifar et al., Iranian
- *   Journal of Pharmaceutical Research 8, 37 (2010), CC BY 4.0, doi:10.22037/ijpr.2010.786.
+ *   Journal of Pharmaceutical Research 8, 37 (2009), CC BY 4.0, doi:10.22037/ijpr.2010.786.
  *   Volume 0.7 L/kg: Noval, Seung & Armahizer, Drugs in R&D 20, 17 (2020), CC BY 4.0,
  *   doi:10.1007/s40268-019-00292-1. Absorption from the capsule is taken as complete.
  *
@@ -64,6 +64,8 @@ export interface Drug {
 	ka: number;
 	/** Target range on the label, or null when it gives none. */
 	window: [number, number] | null;
+	/** When the label's target applies to one sample rather than the whole curve. */
+	windowSample?: string;
 	/** Level above which the label says toxicity becomes likely. */
 	toxic: number | null;
 	/** The forms the palette offers for this drug. */
@@ -139,7 +141,15 @@ const digoxin: Drug = {
 	dose: 250,
 	doseForm: 'tablet',
 	interval: 24,
-	loading: { form: 'tablet', parts: [[0, 750]], minutes: 0 },
+	loading: {
+		form: 'tablet',
+		parts: [
+			[0, 375],
+			[6, 187.5],
+			[12, 187.5]
+		],
+		minutes: 0
+	},
 	span: 14 * 24,
 	source: 'Lanoxin US label (via openFDA)'
 };
@@ -154,10 +164,11 @@ const lithium: Drug = {
 	amountUnit: 'mEq',
 	concUnit: 'mEq/L',
 	V: 0.8 * KG,
-	CL: (LN2 * 0.8 * KG) / 24,
+	CL: (LN2 * 0.8 * KG) / 30,
 	F: 1,
 	ka: 2,
 	window: [0.8, 1.2],
+	windowSample: '12 h after a dose',
 	toxic: 1.5,
 	forms: ['tablet'],
 	tablet: 2 * LITHIUM_MEQ_PER_300MG,
@@ -175,7 +186,7 @@ const lithium: Drug = {
 const vancomycin: Drug = {
 	id: 'vancomycin',
 	name: 'vancomycin',
-	what: 'vancomycin (antibiotic, by vein)',
+	what: 'vancomycin (antibiotic, IV)',
 	amountUnit: 'mg',
 	concUnit: 'mcg/mL',
 	V: 0.4 * KG,
@@ -216,9 +227,9 @@ const phenytoin: Drug = {
 	injection: 0,
 	injectionMinutes: 0,
 	drip: 0,
-	dose: 400,
+	dose: 100,
 	doseForm: 'tablet',
-	interval: 24,
+	interval: 6,
 	loading: {
 		form: 'tablet',
 		parts: [
@@ -230,7 +241,7 @@ const phenytoin: Drug = {
 	},
 	saturable: { Vmax: VMAX, Km: KM },
 	span: 28 * 24,
-	source: 'Dilantin US label (via openFDA); Vmax, Km: Salehifar et al. 2010; V: Noval et al. 2020'
+	source: 'Dilantin US label (via openFDA); Vmax, Km: Salehifar et al. 2009; V: Noval et al. 2020'
 };
 
 export const DRUGS: Record<string, Drug> = {

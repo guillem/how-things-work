@@ -22,6 +22,7 @@ import {
 	oralPeakTime,
 	range,
 	repeated,
+	settle,
 	shareAfter,
 	simulate,
 	steadyAverage,
@@ -151,7 +152,15 @@ test('a loading dose of digoxin reaches the plateau at once', () => {
 	const b = bodyOf(digoxin);
 	const tEnd = 14 * 24;
 	const plain = repeated({ amount: 250, interval: 24, form: 'tablet', until: tEnd });
-	const loaded = [{ t: 0, form: 'tablet' as const, amount: 750 }, ...plain.slice(1)];
+	// the label's way: half, then two quarters six hours apart; maintenance from day 2
+	const parts = (digoxin.loading?.parts ?? []).map(([t, amount]) => ({
+		t,
+		form: 'tablet' as const,
+		amount
+	}));
+	expect(parts.reduce((x, p) => x + p.amount, 0) / 70).toBeGreaterThanOrEqual(10);
+	expect(parts.reduce((x, p) => x + p.amount, 0) / 70).toBeLessThanOrEqual(15);
+	const loaded = [...parts, ...plain.slice(1)];
 	const sp = simulate(b, plain, tEnd, 3000);
 	const sl = simulate(b, loaded, tEnd, 3000);
 	const plateau = levelAt(sp, tEnd - 1e-3);
@@ -186,8 +195,19 @@ test('lithium: 600 mg twice a day sits in the acute range; halving the clearance
 	const failing = steadyAverage(kidney, lithium.dose, 12, 'tablet');
 	expect(failing / normal).toBeCloseTo(2, 6);
 	expect(failing).toBeGreaterThan(lithium.toxic ?? Infinity);
+	// the label's target is for a sample 12 hours after a dose: there, in the acute range
+	const sample = settle(bodyOf(lithium), [{ t: 0, form: 'tablet', amount: lithium.dose }], 12);
+	expect(sample.trough).toBeGreaterThan(0.8);
+	expect(sample.trough).toBeLessThan(1.2);
 	// and it takes twice as long to get there
 	expect(halfLifeAt(kidney)).toBeCloseTo(2 * t12, 6);
+});
+
+test('a sample at the time of an injection is the level just before it', () => {
+	const b = bodyOf(digoxin);
+	const s = simulate(b, [{ t: 24, form: 'injection', amount: 250 }], 48, 480);
+	expect(levelAt(s, 24)).toBe(0);
+	expect(levelAt(s, 24.2)).toBeCloseTo(ivLevel(b, 250, 0.2), 3);
 });
 
 test('vancomycin: the label’s clearance and volume give its 4–6 hour half-life', () => {
@@ -220,17 +240,24 @@ test('phenytoin: a saturable elimination breaks both rules', () => {
 	expect(halfLifeAt(b, 10)).toBeGreaterThan(7);
 	expect(halfLifeAt(b, 20)).toBeLessThan(42);
 	expect(halfLifeAt(b, 20)).toBeGreaterThan(halfLifeAt(b, 5));
-	// the integrator settles on Km·R / (Vmax − R)
-	const tEnd = 60 * 24;
-	const doses = repeated({ amount: 400, interval: 24, form: 'tablet', until: tEnd });
-	const s = simulate(b, doses, tEnd, 6000);
-	const day = range(s, tEnd - 24, tEnd);
-	expect(day.min).toBeLessThan(css(b, 400));
-	expect(day.max).toBeGreaterThan(css(b, 400));
-	// and the higher dose takes longer to settle, unlike a linear drug
-	const doses5 = repeated({ amount: 500, interval: 24, form: 'tablet', until: tEnd });
-	const s5 = simulate(b, doses5, tEnd, 6000);
-	const t4 = timeToShare(s, doses, day.min, 0.9);
-	const t5 = timeToShare(s5, doses5, range(s5, tEnd - 24, tEnd).min, 0.9);
-	expect(t5).toBeGreaterThan(1.5 * t4);
+	// three doses a day, run until they settle: the average sits on Km·R / (Vmax − R)
+	const day = (mg: number) =>
+		[0, 8, 16].map((h) => ({ t: h, form: 'tablet' as const, amount: mg / 3 }));
+	const r4 = settle(b, day(400), 24);
+	const r5 = settle(b, day(500), 24);
+	expect(r4.settled && r5.settled).toBe(true);
+	expect(r4.average / css(b, 400)).toBeCloseTo(1, 2);
+	expect(r5.average / css(b, 500)).toBeCloseTo(1, 1);
+	// and the higher dose takes far longer to settle, unlike a linear drug: months at 500 mg
+	expect(r5.reached).toBeGreaterThan(5 * r4.reached);
+	expect(r5.reached / 24).toBeGreaterThan(120);
+	// regression: a run cut short must not be taken for the plateau; a run twice as long agrees
+	const doses = repeated({ amount: 500 / 3, interval: 8, form: 'tablet', until: 600 * 24 });
+	const long = simulate(b, doses, 600 * 24, 20000);
+	expect(levelAt(long, 600 * 24 - 1e-6) / r5.trough).toBeCloseTo(1, 2);
+	// the time to halve once intake stops, at 20 mcg/mL, against a run of the model
+	const fall = simulate(b, [{ t: 0, form: 'injection', amount: 20 * b.V }], 60, 6000);
+	let th = 0;
+	while (levelAt(fall, th) > 10) th += 0.01;
+	expect(th).toBeCloseTo(halfLifeAt(b, 20), 0);
 });
