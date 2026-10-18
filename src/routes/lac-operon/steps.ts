@@ -66,9 +66,9 @@ const strain: Control = {
 	default: 'wild',
 	options: [
 		{ value: 'wild', label: 'Wild type' },
-		{ value: 'uv5', label: 'Promoter blind to CAP-cAMP (lacUV5)' },
-		{ value: 'lacI', label: 'No repressor (lacI⁻)' },
-		{ value: 'noexcl', label: 'Permease glucose cannot block (what if)' }
+		{ value: 'uv5', label: 'lacUV5: no CAP needed' },
+		{ value: 'lacI', label: 'lacI⁻: no repressor' },
+		{ value: 'noexcl', label: 'What if: unblockable permease' }
 	]
 };
 
