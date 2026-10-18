@@ -9,8 +9,9 @@
  *   third explanation of their Supplementary Information for why they never saw hysteresis
  *   with lactose). Its two constants are chosen, not measured.
  * - **a culture** growing on glucose and lactose (Monod growth on each sugar, coupled to the
- *   operon), to show the diauxic pause. Its growth rates, yields and the strength of inducer
- *   exclusion in cells living on glucose are typical values chosen for the illustration.
+ *   operon), to show the diauxic pause. Its growth rates, yields and CRP-cAMP effect are typical
+ *   values chosen for the illustration; inducer exclusion is set to the sixfold upper bound
+ *   measured by Aggarwal & Narang (2022).
  *
  * Units: lac expression y in Ozbudak's green-fluorescence units, in which a fully induced cell
  * without glucose reads about 100 (so y reads as "% of full induction"); concentrations of TMG,
