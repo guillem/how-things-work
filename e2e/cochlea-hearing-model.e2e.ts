@@ -20,6 +20,7 @@ import {
 	bestPlace,
 	cfAt,
 	dbRe,
+	peakWidth,
 	placeOf,
 	respond
 } from '../src/routes/cochlea-hearing/model';
@@ -95,10 +96,29 @@ test('the live cochlea is sharply tuned at low levels and broadly at high levels
 });
 
 test('without the amplifier the peak is lower, broader and further towards the base', () => {
-	const live = respond(4000, 20);
-	const dead = respond(4000, 20, PASSIVE);
-	expect(dbRe(live.mag[live.peak]) - dbRe(dead.mag[dead.peak])).toBeGreaterThan(20);
-	expect(placeOf(4000) - PLACES[dead.peak]).toBeGreaterThan(2);
+	// the page quotes, for a soft tone (20 dB SPL) anywhere from 200 Hz to 12 kHz: 22 to 27 dB
+	// lower, 1.5 to 3.5 mm towards the base; about a millimetre against about two octaves wide
+	for (const f of [200, 500, 1000, 2000, 4000, 8000, 12000]) {
+		const live = respond(f, 20);
+		const dead = respond(f, 20, PASSIVE);
+		const drop = dbRe(live.mag[live.peak]) - dbRe(dead.mag[dead.peak]);
+		expect(drop).toBeGreaterThan(21.5);
+		expect(drop).toBeLessThan(27.5);
+		const shift = PLACES[live.peak] - PLACES[dead.peak];
+		expect(shift).toBeGreaterThan(1.4);
+		expect(shift).toBeLessThan(3.8);
+	}
+	const w = peakWidth(respond(1000, 20));
+	expect(w.mm).toBeGreaterThan(0.8);
+	expect(w.mm).toBeLessThan(1.5);
+	expect(peakWidth(respond(1000, 20, PASSIVE)).octaves).toBeGreaterThan(1.8);
+});
+
+test('losing every outer hair cell raises every threshold by 22–28 dB', () => {
+	for (const p of audiogram(PASSIVE)) {
+		expect(p.hl).toBeGreaterThan(21.5);
+		expect(p.hl).toBeLessThan(28.5);
+	}
 });
 
 test('the response grows compressively and meets the passive one at very high levels', () => {

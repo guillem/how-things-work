@@ -1275,6 +1275,15 @@ const explainers: Explainer[] = [
 		accent: '#8f3985',
 		steps: 9,
 		minutes: 18
+	},
+	{
+		slug: 'cochlea-hearing',
+		title: 'Hearing & the cochlea',
+		summary:
+			'Play a tone, a chord or a vowel into a model cochlea and watch a travelling wave peak at the place tuned to each frequency. Switch the outer hair cells’ amplifier off, turn the sound up until it saturates, kill the amplifier near the 5 kHz place to notch the audiogram, and hear a vowel through a cochlear implant.',
+		accent: '#9d4b73',
+		steps: 8,
+		minutes: 22
 	}
 ];
 

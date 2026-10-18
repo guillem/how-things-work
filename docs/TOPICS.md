@@ -953,11 +953,11 @@ A topic is done when:
 - **Title:** Hearing & the cochlea
 - **Level:** 3
 - **Kind:** manipulate
-- **Interaction:** Play a tone, a chord or a spoken word into a cochlea modelled as a chain of coupled resonators whose stiffness falls along the basilar membrane, and watch the travelling wave peak at a place that depends on frequency. Drag the frequency and the peak moves; switch on the outer hair cells' amplification and the peak sharpens; kill the outer hair cells at the place tuned near 4 kHz, as loud noise does, and the audiogram develops the classic notch. Then replace the cochlea with a cochlear implant: split the sound into a few bands, drive one electrode per band, and hear the result.
+- **Interaction:** Play a tone, a chord or a synthesized vowel into a cochlea modelled as a chain of coupled resonators whose stiffness falls along the basilar membrane, and watch the travelling wave peak at a place that depends on frequency. Drag the frequency and the peak moves; switch on the outer hair cells' amplification and the peak sharpens; kill the outer hair cells at the place tuned near 4 kHz, as loud noise does, and the audiogram develops the classic notch. Then replace the cochlea with a cochlear implant: split the sound into a few bands, drive one electrode per band, and hear the result.
 - **Takeaway:** The cochlea sorts sound by frequency along its length, so pitch is a place, and a cochlear implant works by stimulating those places with a handful of electrodes.
 - **Prerequisites:** waves-interference, fourier-transform, neurons
 - **Related:** vision-color, compression
-- **Needs:** A short openly licensed speech clip for the implant demonstration (a LibriSpeech utterance, CC BY 4.0, or synthesized speech); the cochlear model itself is a standard one-dimensional transmission-line model with published parameters.
+- **Needs:** Speech for the implant demonstration: synthesized vowels (source–filter synthesis on published formant frequencies); the cochlear model itself is a standard one-dimensional transmission-line model with published parameters.
 - **Pitfall:** Noise damage does not simply turn the volume down: the lost hair cells remove the amplification, so soft sounds vanish while loud ones still hurt.
 
 ### Earth & Climate

@@ -4300,3 +4300,59 @@ kbd {
 	--pk-drip: #66d9e8;
 	--pk-half: #b197fc;
 }
+
+/* cochlea-hearing: the fluid and the duct, the basilar membrane and its wave, the passive
+   response, the sensory threshold, hair cells (outer, inner, lost), the damaged ear, formants,
+   the implant's bands, array and electrodes */
+:root {
+	--co-fluid: #eef5f9;
+	--co-duct: #8aa1b1;
+	--co-bone: #efe3cf;
+	--co-bone-edge: #c9b48f;
+	--co-membrane: #c97a9d;
+	--co-membrane-edge: #8f3f63;
+	--co-wave: #9d4b73;
+	--co-wave-text: #8a3c63;
+	--co-dead: #6b7a89;
+	--co-threshold: #2f7d6d;
+	--co-threshold-text: #23685a;
+	--co-ohc: #2f9e44;
+	--co-ohc-text: #237a34;
+	--co-ihc: #3b6ea8;
+	--co-ihc-text: #2f5b8c;
+	--co-lost: #c2410c;
+	--co-damaged: #d9480f;
+	--co-damaged-text: #b23c0c;
+	--co-formant: #7048e8;
+	--co-formant-text: #5f3dc4;
+	--co-band: rgba(157, 75, 115, 0.09);
+	--co-array: #8a8f98;
+	--co-electrode: #c77c02;
+	--co-electrode-text: #9a5f00;
+}
+:root[data-theme='dark'] {
+	--co-fluid: #13202a;
+	--co-duct: #5d7486;
+	--co-bone: #4a4234;
+	--co-bone-edge: #8c7a5a;
+	--co-membrane: #b0577f;
+	--co-membrane-edge: #f08cb8;
+	--co-wave: #f08cb8;
+	--co-wave-text: #f5a3c7;
+	--co-dead: #9aa7b4;
+	--co-threshold: #5fcfb6;
+	--co-threshold-text: #7fdcc6;
+	--co-ohc: #69db7c;
+	--co-ohc-text: #8ce99a;
+	--co-ihc: #7fb0e8;
+	--co-ihc-text: #a5c8f0;
+	--co-lost: #ff8a5c;
+	--co-damaged: #ff8a4c;
+	--co-damaged-text: #ffa36e;
+	--co-formant: #b197fc;
+	--co-formant-text: #c5b3fd;
+	--co-band: rgba(240, 140, 184, 0.1);
+	--co-array: #9aa1ab;
+	--co-electrode: #ffc14d;
+	--co-electrode-text: #ffd27a;
+}
