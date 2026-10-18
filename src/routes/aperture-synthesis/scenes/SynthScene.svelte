@@ -30,6 +30,8 @@
 		convolve,
 		dirtyBeam,
 		dirtyImage,
+		dishBeam,
+		dishImage,
 		dishSampling,
 		gaussianImage,
 		grid,
@@ -70,7 +72,7 @@
 	const P = 216;
 	const XS = [18, 254, 490, 726];
 	const Y0 = 136;
-	const MAP_HALF = 700; // metres from the centre to the map's edge
+	const MAP_HALF = 800; // metres from the centre to the map's edge
 	const mk = P / (2 * MAP_HALF);
 	const UV_HALF = (N / 2) * DU; // wavelengths from the centre to the uv panel's edge
 
@@ -191,13 +193,15 @@
 
 	const ts = $derived(mode === 'dish' ? [] : tracks(dishes, decRad, H));
 	const S = $derived(mode === 'dish' ? dishSampling(diameter) : grid(ts));
-	const beam = $derived(dirtyBeam(S));
+	const beam = $derived(mode === 'dish' ? dishBeam(diameter) : dirtyBeam(S));
 	const cb = $derived(cleanBeam(S));
 
 	// ---- the sky ---------------------------------------------------------------------------
 	const skyKind = $derived(String(step.hints?.sky ?? params.sky ?? 'galaxy') as SkyKind);
 	const truth = $derived(sky(skyKind));
-	const dirty = $derived(dirtyImage(skyVisibilities(skyKind), S));
+	const dirty = $derived(
+		mode === 'dish' ? dishImage(truth, diameter) : dirtyImage(skyVisibilities(skyKind), S)
+	);
 	const dirtyPeak = $derived(Math.abs(peak(dirty).value));
 
 	// ---- CLEAN -------------------------------------------------------------------------------
@@ -248,9 +252,19 @@
 	/** Stretch of the images: below about a fifth of the peak nearly linear. */
 	const SOFT = 0.2;
 	// ---- pictures ------------------------------------------------------------------------------
-	const beamUrl = $derived(panels.includes('beam') ? paint(beam, 1, 0.5, 2) : '');
+	const beamUrl = $derived(
+		panels.includes('beam') ? paint(beam, 1, 0.5, mode === 'dish' ? 1 : 2) : ''
+	);
 	const dirtyUrl = $derived(paint(dirty, dirtyPeak || 1, SOFT));
-	const truthUrl = $derived(panels.includes('truth') ? paint(truth, peak(truth).value, 0.004) : '');
+	/** The true sky drawn at 30″ (two pixels), so that its points show at this size. */
+	const truthShown = $derived(
+		panels.includes('truth')
+			? convolve(truth, gaussianImage({ a: 0.69, b: 0, c: 0.69, major: 0, minor: 0 }))
+			: truth
+	);
+	const truthUrl = $derived(
+		panels.includes('truth') ? paint(truthShown, peak(truthShown).value, 0.01) : ''
+	);
 	const residualUrl = $derived(cleaned ? paint(cleaned.c.residual, dirtyPeak || 1, SOFT) : '');
 	const restoredUrl = $derived(cleaned ? paint(cleaned.restored, dirtyPeak || 1, SOFT) : '');
 	const dishUvUrl = $derived(
@@ -325,7 +339,13 @@
 				: TITLES[p];
 
 	const fmtAngle = (arcsec: number) =>
-		arcsec >= 90 ? `${(arcsec / 60).toFixed(1)}′` : `${Math.round(arcsec)}″`;
+		!Number.isFinite(arcsec)
+			? 'unresolved'
+			: arcsec >= 90
+				? `${(arcsec / 60).toFixed(1)}′`
+				: `${Math.round(arcsec)}″`;
+	/** The beam is sharp in both directions (not a line of samples). */
+	const twoD = $derived(Number.isFinite(cb.major) && cb.minor / cb.major > 0.4);
 	const fmtInt = (v: number) => Math.round(v).toLocaleString('en-US');
 	const count = (n: number, word: string) =>
 		`${fmtInt(n)} ${n === 1 ? word : word.endsWith('sh') ? `${word}es` : `${word}s`}`;
@@ -364,13 +384,15 @@
 			subLabel?: string,
 			subValue?: string
 		) => ({ text, label, value, sub, subLabel, subValue });
-		const sharp = `as sharp as one dish ${fmtInt(sp.max)} m across`;
+		const sharp = twoD
+			? `about as sharp as one dish ${fmtInt(sp.max)} m across`
+			: 'sharp in one direction only';
 		switch (mode) {
 			case 'dish': {
 				const blur = fmtAngle((1.22 * LAMBDA) / diameter / ARCSEC);
 				return h(
-					`a ${fmtInt(diameter)} m dish blurs every point of the sky to 1.22 λ/D = ${blur}`,
-					'Blur of the dish',
+					`a ${fmtInt(diameter)} m dish blurs every point: its first dark ring lies 1.22 λ/D = ${blur} out`,
+					'First dark ring, 1.22 λ/D',
 					blur,
 					`21 cm waves · collecting area π D²/4 = ${fmtInt(Math.PI * (diameter / 2) ** 2)} m² · sky: ${SKY_NAMES[skyKind]}`,
 					'Collecting area',
@@ -390,14 +412,14 @@
 						'one pair, one moment: one point of the uv plane, and its mirror image',
 						'One pair',
 						'one point and its mirror',
-						`baseline ${fmtInt(len)} m = ${fmtInt(len / LAMBDA)} wavelengths · stripes λ/b = ${(LAMBDA / len / ARCMIN).toFixed(1)}′ apart`,
+						`baseline ${fmtInt(len)} m, ${fmtInt(S.uvMax)} wavelengths as seen from the source · stripes ${(1 / (S.uvMax || 1) / ARCMIN).toFixed(1)}′ apart`,
 						'Baseline',
 						`${fmtInt(len)} m`
 					);
 				return h(
-					`${hours} h of the Earth’s turn: each pair traces an ellipse ${sinDec.toFixed(2)} times as tall as wide (sin δ)`,
-					'Axis ratio sin δ',
-					sinDec.toFixed(2),
+					`${hours} h of the Earth’s turn: each pair traces an ellipse ${Math.abs(sinDec).toFixed(2)} times as tall as wide (|sin δ|)`,
+					'Axis ratio |sin δ|',
+					Math.abs(sinDec).toFixed(2),
 					`baseline ${fmtInt(len)} m · ${trackText}`,
 					'Track',
 					trackText
@@ -408,8 +430,8 @@
 					`${sharp}, with ${((100 * area) / bigArea).toFixed(1)}% of its collecting area`,
 					'Share of the big dish’s area',
 					`${((100 * area) / bigArea).toFixed(1)}%`,
-					`${dishes.length} × 491 m² = ${fmtInt(area)} m², against ${fmtInt(bigArea)} m²: what that dish sees in a minute takes the array ${duration((bigArea / area) ** 2)}`,
-					'Same signal-to-noise',
+					`${dishes.length} × 491 m² = ${fmtInt(area)} m², against ${fmtInt(bigArea)} m²: by area alone, the dish’s minute on a faint point takes the array ${duration((bigArea / area) ** 2)}`,
+					'Same signal-to-noise (area only)',
 					`a minute for the dish, ${duration((bigArea / area) ** 2)} for the array`
 				);
 			case 'dirty':
@@ -444,8 +466,8 @@
 						`${fmtInt(sp.max)} m`
 					);
 				return h(
-					`shortest baseline ${fmtInt(sp.min)} m: little larger than λ/b = ${(LAMBDA / sp.min / ARCMIN).toFixed(1)}′ survives, and the disc is 6′`,
-					'Largest scale λ/b',
+					`shortest spacing ${fmtInt(sp.min)} m: structure much larger than λ/b ≈ ${(LAMBDA / sp.min / ARCMIN).toFixed(1)}′ fades, and the disc is 6′`,
+					'Ground-spacing scale λ/b_min',
 					`${(LAMBDA / sp.min / ARCMIN).toFixed(1)}′`,
 					`the dirty image keeps ${Math.round(Math.max(0, discKept ?? 0) * 100)}% of the brightness at the disc’s centre (against the true sky at this resolution)`,
 					'Disc’s centre kept',
@@ -453,11 +475,11 @@
 				);
 			default:
 				return h(
-					`${count(dishes.length, 'dish')}, ${count(pairs(dishes.length), 'pair')}: ${S.cells > 2 ? sharp : 'only stripes'}`,
+					`${count(dishes.length, 'dish')}, ${count(pairs(dishes.length), 'pair')}: ${S.cells > 2 ? sharp : S.cells ? 'only stripes' : 'nothing measured'}`,
 					'Array',
 					`${count(dishes.length, 'dish')}, ${count(pairs(dishes.length), 'pair')}`,
 					S.cells > 2
-						? `central peak ${fmtAngle(beamMajor)} × ${fmtAngle(beamMinor)}; λ/B for the longest baseline = ${fmtAngle(LAMBDA / sp.max / ARCSEC)}`
+						? `central peak ${fmtAngle(beamMajor)} × ${fmtAngle(beamMinor)}; λ/B for the longest spacing = ${fmtAngle(LAMBDA / sp.max / ARCSEC)}`
 						: '',
 					'Resolution',
 					`${fmtAngle(beamMajor)} × ${fmtAngle(beamMinor)}`
@@ -506,17 +528,22 @@
 					return { text: `filled out to D/λ = ${fmtInt(diameter / LAMBDA)} wavelengths` };
 				return {
 					text: trackText,
-					more: `${fmtInt(S.cells)} of ${fmtInt(N * N)} cells${S.outside ? ` · ${fmtInt(S.outside)} samples off the grid` : ''}`,
+					more: `${fmtInt(S.cells)} of ${fmtInt(N * N)} cells${S.outside ? ` · ${fmtInt(S.outside)} off the grid` : ''}${S.shadowed ? ` · ${fmtInt(S.shadowed)} shadowed` : ''}`,
 					label: mode === 'pair' ? undefined : 'Track',
 					value: mode === 'pair' ? undefined : trackText
 				};
 			case 'beam':
 				if (mode === 'dish')
-					return { text: `half width ≈ λ/D = ${fmtAngle((1.03 * LAMBDA) / diameter / ARCSEC)}` };
+					return {
+						text: `half-power width 1.03 λ/D = ${fmtAngle((1.03 * LAMBDA) / diameter / ARCSEC)}`
+					};
 				if (S.cells === 0) return { text: 'nothing sampled' };
 				if (S.cells <= 2)
 					return { text: `stripes ${(1 / (S.uvMax || 1) / ARCMIN).toFixed(1)}′ apart` };
-				return { text: `central peak ${fmtAngle(beamMajor)} × ${fmtAngle(beamMinor)}` };
+				return {
+					text: `central peak ${fmtAngle(beamMajor)} × ${fmtAngle(beamMinor)}`,
+					more: twoD ? '' : 'long and thin: the samples lie along one direction'
+				};
 			case 'dirty':
 				if (mode === 'dish') return { text: SKY_NAMES[skyKind] };
 				if (['array', 'build', 'pair', 'area'].includes(mode))
@@ -530,7 +557,10 @@
 			case 'restored':
 				return { text: 'components ⊛ clean beam + residual' };
 			case 'truth':
-				return { text: `${SKY_NAMES[skyKind]}, ${truthSum.toFixed(1)} Jy` };
+				return {
+					text: `${SKY_NAMES[skyKind]}, ${truthSum.toFixed(1)} Jy`,
+					more: 'drawn at 30″'
+				};
 		}
 	}
 
@@ -665,33 +695,38 @@
 						stroke-dasharray="6 4"
 					/>
 				{/if}
-				{#if fullDay}
+				<clipPath id="as-synth-uv">
+					<rect {x} y={Y0} width={P} height={P} />
+				</clipPath>
+				<g clip-path="url(#as-synth-uv)">
+					{#if fullDay}
+						<path
+							d={fullDay}
+							fill="none"
+							stroke="var(--stage-ink-muted)"
+							stroke-width="1"
+							stroke-dasharray="3 4"
+							opacity="0.6"
+						/>
+					{/if}
 					<path
-						d={fullDay}
+						d={uvPaths.mirror}
 						fill="none"
-						stroke="var(--stage-ink-muted)"
-						stroke-width="1"
-						stroke-dasharray="3 4"
-						opacity="0.6"
+						stroke="var(--as-mirror)"
+						stroke-width={snapshot ? 6 : 1.4}
+						stroke-linecap="round"
+						stroke-linejoin="round"
 					/>
-				{/if}
-				<path
-					d={uvPaths.mirror}
-					fill="none"
-					stroke="var(--as-mirror)"
-					stroke-width={snapshot ? 6 : 1.4}
-					stroke-linecap="round"
-					stroke-linejoin="round"
-				/>
-				<path
-					d={uvPaths.main}
-					fill="none"
-					stroke="var(--as-track)"
-					stroke-width={snapshot ? 6 : 1.4}
-					stroke-linecap="round"
-					stroke-linejoin="round"
-					data-testid="uv-tracks"
-				/>
+					<path
+						d={uvPaths.main}
+						fill="none"
+						stroke="var(--as-track)"
+						stroke-width={snapshot ? 6 : 1.4}
+						stroke-linecap="round"
+						stroke-linejoin="round"
+						data-testid="uv-tracks"
+					/>
+				</g>
 			{/if}
 			<Readout id="uv-axes">
 				<Label x={x + P - 8} y={Y0 + P / 2 - 6} text="u" anchor="end" size={11} muted italic />

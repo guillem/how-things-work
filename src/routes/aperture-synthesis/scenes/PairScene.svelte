@@ -76,8 +76,8 @@
 	// ---- right top: the sky strip ------------------------------------------------------------
 	const SX0 = 520;
 	const SX1 = 936;
-	const SY0 = 92;
-	const SY1 = 196;
+	const SY0 = 80;
+	const SY1 = 170;
 	const HALF_ARC = 8; // the strip spans ±8′
 	const sxArc = (arc: number) => SX0 + ((arc + HALF_ARC) / (2 * HALF_ARC)) * (SX1 - SX0);
 	const COLS = 104;
@@ -397,9 +397,9 @@
 			value="b = λ/(2s) = {Math.round(nullB)} m for s = {sepArc}′"
 		>
 			<Label
-				anchor="end"
-				x={SX1}
-				y={428}
+				anchor="start"
+				x={SX0}
+				y={SY1 + 50}
 				text="two 1 Jy sources {sepArc}′ apart · first null (▲) at λ/(2s) = {Math.round(nullB)} m"
 				size={12}
 				muted

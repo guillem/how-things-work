@@ -218,10 +218,10 @@ export function layout(name: Layout): Dish[] {
 	}
 }
 
-/** The pair of the two-dish steps: 400 m east–west. */
+/** The pair of the two-dish steps: 700 m east–west. */
 export const PAIR: Dish[] = [
-	{ e: -200, n: 0 },
-	{ e: 200, n: 0 }
+	{ e: -350, n: 0 },
+	{ e: 350, n: 0 }
 ];
 
 /** Dishes as a parameter string, "e,n;e,n" in whole metres. */

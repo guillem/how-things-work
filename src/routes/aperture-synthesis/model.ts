@@ -21,7 +21,7 @@
  *
  * Angles in radians, lengths in metres, u and v in wavelengths unless a name says otherwise.
  */
-import { dft2 } from '../mri-k-space/model';
+import { besselJ1, dft2 } from '../mri-k-space/model';
 
 // ======================================================================================
 // The instrument
@@ -165,6 +165,11 @@ export interface Sampling {
 	samples: number;
 	/** Samples of baselines too long for the grid, left out. */
 	outside: number;
+	/**
+	 * Samples left out because the baseline, seen from the source, is shorter than a dish: one dish
+	 * stands in the other's shadow (and a spacing that short would land on the zero spacing).
+	 */
+	shadowed: number;
 	/** Shortest and longest sampled distance from the centre, wavelengths (0 if nothing). */
 	uvMin: number;
 	uvMax: number;
@@ -175,6 +180,7 @@ export function grid(ts: readonly Track[]): Sampling {
 	const w = new Float64Array(N * N);
 	let samples = 0;
 	let outside = 0;
+	let shadowed = 0;
 	let uvMin = Infinity;
 	let uvMax = 0;
 	const lim = N / 2 - 1;
@@ -183,6 +189,10 @@ export function grid(ts: readonly Track[]): Sampling {
 			samples++;
 			const iu = Math.round(t.u[i] / DU);
 			const iv = Math.round(t.v[i] / DU);
+			if (Math.hypot(t.u[i], t.v[i]) * LAMBDA < DISH || (iu === 0 && iv === 0)) {
+				shadowed++;
+				continue;
+			}
 			if (Math.abs(iu) > lim || Math.abs(iv) > lim) {
 				outside++;
 				continue;
@@ -196,7 +206,7 @@ export function grid(ts: readonly Track[]): Sampling {
 	}
 	let cells = 0;
 	for (const x of w) cells += x;
-	return { w, cells, samples, outside, uvMin: cells ? uvMin : 0, uvMax };
+	return { w, cells, samples, outside, shadowed, uvMin: cells ? uvMin : 0, uvMax };
 }
 
 /**
@@ -219,7 +229,56 @@ export function dishSampling(D: number): Sampling {
 			uvMax = Math.max(uvMax, q * R);
 		}
 	}
-	return { w, cells, samples: 0, outside: 0, uvMin: 0, uvMax };
+	return { w, cells, samples: 0, outside: 0, shadowed: 0, uvMin: 0, uvMax };
+}
+
+/**
+ * Power pattern of a uniformly lit circular dish of diameter D at angle θ from its axis (the
+ * Airy pattern): [2 J₁(x)/x]² with x = π D θ / λ.
+ */
+export function airy(theta: number, D: number, lambda = LAMBDA): number {
+	const x = (Math.PI * D * theta) / lambda;
+	if (Math.abs(x) < 1e-9) return 1;
+	const a = (2 * besselJ1(x)) / x;
+	return a * a;
+}
+
+/** A dish's beam as an image centred on pixel (0, 0), peak 1 (not periodic: computed directly). */
+export function dishBeam(D: number): Float64Array {
+	const out = new Float64Array(N * N);
+	for (let y = -N / 2; y < N / 2; y++)
+		for (let x = -N / 2; x < N / 2; x++) out[pixel(x, y)] = airy(Math.hypot(x, y) * PIX, D);
+	return out;
+}
+
+/**
+ * What a single dish of diameter D sees: the sky convolved with its Airy pattern (Jy/beam). The
+ * beam of a small dish is as wide as the field, so the convolution is done on a grid twice as
+ * wide, padded with empty sky, rather than wrapping round.
+ */
+export function dishImage(sky: Float64Array, D: number): Float64Array {
+	const M = 2 * N;
+	const at = (x: number, y: number) => (y + M / 2) * M + (x + M / 2);
+	const s = new Float64Array(M * M);
+	const k = new Float64Array(M * M);
+	for (let y = -N / 2; y < N / 2; y++)
+		for (let x = -N / 2; x < N / 2; x++) s[at(x, y)] = sky[pixel(x, y)];
+	for (let y = -M / 2; y < M / 2; y++)
+		for (let x = -M / 2; x < M / 2; x++) k[at(x, y)] = airy(Math.hypot(x, y) * PIX, D);
+	const z = new Float64Array(M * M);
+	const A = dft2(s, z, M, M, -1);
+	const K = dft2(k, z, M, M, -1);
+	const re = new Float64Array(M * M);
+	const im = new Float64Array(M * M);
+	for (let i = 0; i < re.length; i++) {
+		re[i] = A.re[i] * K.re[i] - A.im[i] * K.im[i];
+		im[i] = A.re[i] * K.im[i] + A.im[i] * K.re[i];
+	}
+	const full = dft2(re, im, M, M, 1).re;
+	const out = new Float64Array(N * N);
+	for (let y = -N / 2; y < N / 2; y++)
+		for (let x = -N / 2; x < N / 2; x++) out[pixel(x, y)] = full[at(x, y)] / (M * M);
+	return out;
 }
 
 // ======================================================================================

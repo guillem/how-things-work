@@ -25,6 +25,7 @@ import {
 	convolve,
 	dirtyBeam,
 	dirtyImage,
+	dishImage,
 	dishSampling,
 	gaussianImage,
 	grid,
@@ -129,6 +130,7 @@ test('full coverage of the uv plane gives back the sky exactly', () => {
 		cells: N * N,
 		samples: 0,
 		outside: 0,
+		shadowed: 0,
 		uvMin: 0,
 		uvMax: 0
 	};
@@ -191,6 +193,45 @@ test('one filled dish has its Airy pattern: first null at 1.22 λ/D, half width 
 	expect(g.major / (LAMBDA / D)).toBeGreaterThan(0.95);
 	expect(g.major / (LAMBDA / D)).toBeLessThan(1.15);
 	expect(g.minor / g.major).toBeGreaterThan(0.97);
+});
+
+test('a single dish sees the sky through its Airy pattern, even when it is wider than the field', () => {
+	// a point source at the centre of the field, seen by dishes of 25, 50 and 100 m
+	const point = new Float64Array(N * N);
+	point[pixel(0, 0)] = 1;
+	for (const D of [25, 50, 100]) {
+		const img = dishImage(point, D);
+		expect(img[pixel(0, 0)]).toBeCloseTo(1, 6);
+		// the Airy pattern's tabulated points: half power at x = πDθ/λ = 1.6163, first null at 3.8317
+		const at = (x: number) => {
+			const px = (x * LAMBDA) / (Math.PI * D) / PIX;
+			const lo = Math.floor(px);
+			const f = px - lo;
+			return (1 - f) * img[pixel(lo, 0)] + f * img[pixel(lo + 1, 0)];
+		};
+		if ((1.6163 * LAMBDA) / (Math.PI * D) < (N / 2 - 2) * PIX)
+			expect(at(1.6163)).toBeCloseTo(0.5, 1);
+		if ((3.8317 * LAMBDA) / (Math.PI * D) < (N / 2 - 2) * PIX)
+			expect(at(3.8317)).toBeLessThan(0.03);
+		// no wrap-round: the far edge of the field sees only the beam's own fall-off
+		expect(img[pixel(N / 2 - 1, 0)]).toBeLessThan(img[pixel(N / 4, 0)]);
+	}
+});
+
+test('a baseline that the source sees shorter than a dish is shadowed, and never fills the zero spacing', () => {
+	// two dishes 30 m apart at azimuth 48°, tracked for 12 hours at +40°: low in the sky, one
+	// stands in the other's shadow
+	const az = 48 * deg;
+	const pair = [
+		{ e: 0, n: 0 },
+		{ e: 30 * Math.sin(az), n: 30 * Math.cos(az) }
+	];
+	const dec = 40 * deg;
+	const s = grid(tracks(pair, dec, hourAngles(12, dec)));
+	expect(s.shadowed).toBeGreaterThan(0);
+	expect(s.w[cell(0, 0)]).toBe(0);
+	const d = dirtyImage(visibilities(sky('disc')), s);
+	expect(Math.abs(total(d))).toBeLessThan(1e-9);
 });
 
 test('an array resolves about λ / B_max, the width of a dish as wide as the array', () => {
