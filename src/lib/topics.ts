@@ -1221,6 +1221,15 @@ const explainers: Explainer[] = [
 		accent: '#2a6f97',
 		steps: 7,
 		minutes: 18
+	},
+	{
+		slug: 'pcr-copying-dna',
+		title: 'PCR: copying DNA until there is enough to see',
+		summary:
+			'Heat, cool, warm: follow a stretch of DNA through the cycles of the polymerase chain reaction as two strands become four and thirty cycles make a billion copies, until the primers run out. Then read a COVID-19 test the way the machine does: the fewer copies in the swab, the later the glow crosses the line.',
+		accent: '#b8327a',
+		steps: 8,
+		minutes: 14
 	}
 ];
 

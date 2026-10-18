@@ -124,7 +124,7 @@ export class Tube {
 }
 
 /** The drawing's template: a stretch of 100 positions with the target in the middle. */
-export const LAYOUT: Layout = { length: 100, a: 30, b: 70, lf: 6, lr: 6 };
+export const LAYOUT: Layout = { length: 100, a: 30, b: 70, lf: 9, lr: 9 };
 
 // ------------------------------------------------------------------------------------------
 // 2. Amplification

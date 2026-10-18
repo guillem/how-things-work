@@ -576,6 +576,23 @@
 		}
 		return { lines, path };
 	})();
+
+	// PCR: double strands doubling column by column (1, 2, 4, 8), and three amplification curves
+	// a few cycles apart crossing a dashed detection line before they flatten.
+	const pcrStrands = [0, 1, 2, 3].flatMap((c) =>
+		Array.from({ length: 2 ** c }, (_, j) => ({
+			id: `${c}-${j}`,
+			x: 14 + c * 20,
+			y: 60 + (j - (2 ** c - 1) / 2) * 11
+		}))
+	);
+	const pcrCurves = [104, 118, 132].map((x0) =>
+		Array.from({ length: 41 }, (_, i) => {
+			const x = 100 + i * 2.2;
+			const y = 104 - 78 / (1 + Math.exp(-(x - x0) / 5));
+			return `${i ? 'L' : 'M'}${x.toFixed(1)} ${y.toFixed(1)}`;
+		}).join(' ')
+	);
 </script>
 
 <svg viewBox="0 0 200 120" class="art" style:--accent={accent} aria-hidden="true">
@@ -4372,6 +4389,33 @@
 				fill={i % 3 === 2 ? 'currentColor' : accent}
 				opacity={i < 3 ? 0.75 : 0.45}
 			/>
+		{/each}
+	{:else if slug === 'pcr-copying-dna'}
+		<!-- double strands doubling each cycle; three curves crossing the detection line -->
+		{#each pcrStrands as d (d.id)}
+			<line x1={d.x} x2={d.x + 14} y1={d.y - 1.6} y2={d.y - 1.6} stroke={accent} stroke-width="2" />
+			<line
+				x1={d.x}
+				x2={d.x + 14}
+				y1={d.y + 1.6}
+				y2={d.y + 1.6}
+				stroke="currentColor"
+				stroke-width="2"
+				opacity="0.5"
+			/>
+		{/each}
+		<line
+			x1="98"
+			x2="190"
+			y1="78"
+			y2="78"
+			stroke="currentColor"
+			stroke-width="1.2"
+			stroke-dasharray="4 3"
+			opacity="0.55"
+		/>
+		{#each pcrCurves as d, i (i)}
+			<path {d} fill="none" stroke={accent} stroke-width="2.4" opacity={1 - i * 0.25} />
 		{/each}
 	{:else if slug === 'resampling-inference'}
 		<!-- the histogram chance alone produces, the observed difference and the tail beyond it -->

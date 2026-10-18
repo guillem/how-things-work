@@ -4126,3 +4126,34 @@ kbd {
 	--do-atp: #ff922b;
 	--do-atp-text: #ffa94d;
 }
+
+/* pcr-copying-dna: the three kinds of strand, primers, the glowing probe, the cycle's
+   temperatures, the two targets and the tube's liquid */
+:root {
+	--pcr-template: #868e96;
+	--pcr-long: #e67700;
+	--pcr-target: #7048e8;
+	--pcr-primer: #1c7ed6;
+	--pcr-glow: #2f9e44;
+	--pcr-hot: #e03131;
+	--pcr-cool: #1971c2;
+	--pcr-warm: #e8590c;
+	--pcr-virus: #b8327a;
+	--pcr-human: #0c8599;
+	--pcr-liquid: #e7f1f5;
+	--pcr-line: #c92a2a;
+}
+:root[data-theme='dark'] {
+	--pcr-template: #adb5bd;
+	--pcr-long: #ffa94d;
+	--pcr-target: #b197fc;
+	--pcr-primer: #74c0fc;
+	--pcr-glow: #69db7c;
+	--pcr-hot: #ff8787;
+	--pcr-cool: #74c0fc;
+	--pcr-warm: #ffa94d;
+	--pcr-virus: #f783ac;
+	--pcr-human: #66d9e8;
+	--pcr-liquid: #1d2a31;
+	--pcr-line: #ff8787;
+}
