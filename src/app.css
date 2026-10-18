@@ -3744,3 +3744,24 @@ kbd {
 	--de-semi: #ffc078;
 	--de-f: #b197fc;
 }
+
+/* calculus-of-variations: the straight line, the arc, the reader's curve, the cycloid, the
+   optimiser's curve, the hanging chain and the arch */
+:root {
+	--cv-line: #5c677d;
+	--cv-arc: #e8590c;
+	--cv-yours: #1c7ed6;
+	--cv-cycloid: #b04a8a;
+	--cv-opt: #2b8a3e;
+	--cv-chain: #495057;
+	--cv-arch: #1c7ed6;
+}
+:root[data-theme='dark'] {
+	--cv-line: #adb5bd;
+	--cv-arc: #ff922b;
+	--cv-yours: #4dabf7;
+	--cv-cycloid: #f783ac;
+	--cv-opt: #69db7c;
+	--cv-chain: #ced4da;
+	--cv-arch: #4dabf7;
+}

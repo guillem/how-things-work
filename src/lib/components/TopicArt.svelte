@@ -455,6 +455,27 @@
 			const n = n0 / (n0 + (1 - n0) * Math.exp(-7 * tt));
 			return `${i ? 'L' : 'M'}${(8 + tt * 184).toFixed(1)} ${(104 - 70 * n).toFixed(1)}`;
 		}).join(' ');
+	// Calculus of variations: the cycloid from A (24, 22) to B (176, 82), past the straight
+	// line, traced by a wheel rolling under the line through A; θ solves (θ − sin θ)/(1 − cos θ) = L/h.
+	const brachArt = (() => {
+		const L = 152;
+		const h = 60;
+		let lo = 0.01;
+		let hi = 2 * Math.PI - 1e-6;
+		for (let k = 0; k < 60; k++) {
+			const m = (lo + hi) / 2;
+			if ((m - Math.sin(m)) / (1 - Math.cos(m)) < L / h) lo = m;
+			else hi = m;
+		}
+		const r = h / (1 - Math.cos(lo));
+		const at = (p: number) => ({ x: 24 + r * (p - Math.sin(p)), y: 22 + r * (1 - Math.cos(p)) });
+		const d = Array.from({ length: 49 }, (_, i) => {
+			const p = at((lo * i) / 48);
+			return `${i ? 'L' : 'M'}${p.x.toFixed(1)} ${p.y.toFixed(1)}`;
+		}).join(' ');
+		const phi = 0.45 * lo;
+		return { d, r, bead: at(phi), centre: { x: 24 + r * phi, y: 22 + r } };
+	})();
 </script>
 
 <svg viewBox="0 0 200 120" class="art" style:--accent={accent} aria-hidden="true">
@@ -4135,6 +4156,24 @@
 			stroke-width="1"
 			stroke-dasharray="2 2"
 		/>
+	{:else if slug === 'calculus-of-variations'}
+		<!-- the straight line from A to B, and the faster cycloid traced by a rolling wheel -->
+		<line x1="14" y1="22" x2="190" y2="22" stroke="currentColor" stroke-width="1" opacity="0.4" />
+		<line x1="24" y1="22" x2="176" y2="82" stroke="currentColor" stroke-width="2" opacity="0.6" />
+		<circle
+			cx={brachArt.centre.x}
+			cy={brachArt.centre.y}
+			r={brachArt.r}
+			fill="none"
+			stroke={accent}
+			stroke-width="1"
+			stroke-dasharray="3 3"
+			opacity="0.6"
+		/>
+		<path d={brachArt.d} fill="none" stroke={accent} stroke-width="2.6" stroke-linecap="round" />
+		<circle cx={brachArt.bead.x} cy={brachArt.bead.y} r="5" fill={accent} />
+		<circle cx="24" cy="22" r="3.5" fill="currentColor" />
+		<circle cx="176" cy="82" r="3.5" fill="currentColor" />
 	{:else}
 		<circle cx="100" cy="60" r="30" fill="none" stroke={accent} stroke-width="2" />
 		<circle cx="100" cy="60" r="5" fill={accent} />

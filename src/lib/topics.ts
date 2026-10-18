@@ -1113,6 +1113,15 @@ const explainers: Explainer[] = [
 		accent: '#9a3b8f',
 		steps: 9,
 		minutes: 16
+	},
+	{
+		slug: 'calculus-of-variations',
+		title: 'The brachistochrone & calculus of variations',
+		summary:
+			'Race beads down a straight line, a circular arc and a ramp you shape yourself, then let gradient descent bend the ramp into the fastest curve of all, a cycloid, while the Euler–Lagrange residual falls to zero along it; then hang a chain whose length a Lagrange multiplier holds fixed, and turn it into an arch that is stationary but not the best.',
+		accent: '#b04a8a',
+		steps: 8,
+		minutes: 18
 	}
 ];
 
