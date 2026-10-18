@@ -1,6 +1,6 @@
 # Topic catalog
 
-Source of truth for the content of an interactive web learning tool that shows how things work. It defines 132 topics in 11 categories, each built around one interactive graphic. Readers range from high-school students to university majors.
+Source of truth for the content of an interactive web learning tool that shows how things work. It defines 133 topics in 11 categories, each built around one interactive graphic. Readers range from high-school students to university majors.
 
 This file covers content only. It does not choose the stack, the visual design or the project layout; take those from the repository's own instructions.
 
@@ -85,7 +85,7 @@ A topic is done when:
 | Mathematics | `math` | 18 |
 | Physics | `physics` | 13 |
 | Chemistry & Materials | `chemistry` | 14 |
-| Biology | `biology` | 11 |
+| Biology | `biology` | 12 |
 | Body & Medicine | `medicine` | 10 |
 | Earth & Climate | `earth` | 9 |
 | Space | `space` | 9 |
@@ -159,6 +159,7 @@ A topic is done when:
 - [x] crispr
 - [x] bacterial-chemotaxis
 - [x] diffusion-osmosis
+- [ ] pcr-copying-dna
 
 **Body & Medicine**
 - [x] heart-circulation
@@ -787,6 +788,16 @@ A topic is done when:
 - **Related:** entropy, respiration-atp
 - **Pitfall:** Osmosis moves water toward the side with more dissolved particles, but not because those particles 'dilute' the water so that fewer water molecules reach the pore: the flow is far larger than water's own diffusion would give, and it comes from the trapped particles pushing on the membrane. Diffusion needs no force or pump; particles have no direction of their own, and the net flow is a counting effect. A plant cell in pure water becomes firm rather than bursting, because of its wall.
 
+#### pcr-copying-dna
+- **Title:** PCR: copying DNA until there is enough to see
+- **Level:** 1
+- **Kind:** step
+- **Interaction:** A tube with a few strands of DNA and a thermometer: step through one cycle (heat to split the strands, cool so short primers stick at the ends of the target, warm for the enzyme to extend them) and two strands become four; press play and the count doubles every cycle while the plot shoots up and the primers and building blocks run down. Set the starting number of copies and see when the glowing signal crosses the detection line: one copy takes about ten cycles longer than a thousand, which is how a PCR test reads how much virus was in the swab. Change the primers and a non-matching DNA stays uncopied.
+- **Takeaway:** PCR copies a chosen stretch of DNA by doubling it every heating-and-cooling cycle, so thirty cycles turn a few molecules into a billion, and the cycle at which the signal appears says how many there were to start with.
+- **Prerequisites:** dna-to-protein
+- **Related:** epidemics
+- **Pitfall:** Doubling is not forever: primers and nucleotides run out and the curve flattens, so the plateau says nothing about the starting amount; only the threshold cycle does. A Ct value is not a measure of how ill someone is. Nor is every copy the target from the first cycle: the short piece bounded by both primers only appears from the third cycle, after which it dominates.
+
 ### Body & Medicine
 
 #### heart-circulation
@@ -841,7 +852,7 @@ A topic is done when:
 - **Interaction:** Set how many people each case infects, how long a case stays infectious and what share of people are vaccinated. Watch the infection spread through a moving crowd and plot the susceptible, infected and recovered counts over time.
 - **Takeaway:** An outbreak grows exponentially while each case infects more than one other person, and it dies out once enough people are immune.
 - **Prerequisites:** none
-- **Related:** ecosystems, mrna-vaccines, exponentials-logarithms, differential-equations, random-graphs
+- **Related:** ecosystems, mrna-vaccines, exponentials-logarithms, differential-equations, random-graphs, pcr-copying-dna
 
 #### mrna-vaccines
 - **Title:** Vaccines & mRNA
