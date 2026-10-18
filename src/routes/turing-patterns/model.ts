@@ -24,8 +24,9 @@
  * a = ν/μ, h = ρν/μ², and d_c = (3 + 2√2)·ν/μ.
  *
  * Numerics: cell-centred finite differences with no-flux walls (also around a masked shape);
- * each time step takes the reaction explicitly, then diffusion implicitly along rows and then
- * along columns (locally one-dimensional backward Euler, stable for any diffusion constant).
+ * each time step takes the reaction explicitly, then diffusion implicitly (backward Euler,
+ * stable for any diffusion constant). This semi-implicit step has the same stationary ripples
+ * as the equations, so its instability threshold is exactly the analytic one.
  */
 import { rng } from '#lib/draw/math.ts';
 
@@ -71,7 +72,9 @@ export function bandWidth(p: Params) {
 }
 
 /** Time step, activator lifetimes. */
-export const DT = 0.1;
+export const DT = 0.2;
+/** Correction sweeps of the two-dimensional implicit diffusion step (see `Field.diffuse`). */
+const CORRECTIONS = 2;
 /** Size of the initial noise: each cell starts within ± this share of the uniform level. */
 export const NOISE = 0.05;
 
@@ -218,6 +221,8 @@ export class Field {
 	private runs: [number, number, number][] = [];
 	private cp: Float64Array;
 	private dp: Float64Array;
+	private rhs: Float32Array;
+	private res: Float32Array;
 
 	constructor(w: number, h: number, p: Params, seed: number, mask: Uint8Array | null = null) {
 		this.w = w;
@@ -235,6 +240,8 @@ export class Field {
 		}
 		this.cp = new Float64Array(Math.max(w, h));
 		this.dp = new Float64Array(Math.max(w, h));
+		this.rhs = new Float32Array(n);
+		this.res = new Float32Array(n);
 		const inside = (i: number) => !mask || mask[i] === 1;
 		for (let y = 0; y < h; y++) {
 			let x = 0;
@@ -248,7 +255,6 @@ export class Field {
 				this.runs.push([y * w + start, x - start, 1]);
 			}
 		}
-		const rows = this.runs.length;
 		for (let x = 0; x < w; x++) {
 			let y = 0;
 			while (y < h) {
@@ -261,9 +267,7 @@ export class Field {
 				this.runs.push([start * w + x, y - start, w]);
 			}
 		}
-		this.rowRuns = rows;
 	}
-	private rowRuns: number;
 
 	/** Simulated time, activator lifetimes. */
 	get time() {
@@ -286,11 +290,8 @@ export class Field {
 				a[i] = ai + DT * ((rho * a2) / (hi * (1 + kappa * a2)) - mu * ai + s);
 				inh[i] = hi + DT * (rho * a2 - nu * hi);
 			}
-			// rows first, then columns
-			for (const [off, len, stride] of this.runs) {
-				solveRun(a, ra, len, off, stride, this.cp, this.dp);
-				solveRun(inh, rh, len, off, stride, this.cp, this.dp);
-			}
+			this.diffuse(a, ra);
+			this.diffuse(inh, rh);
 			this.steps++;
 		}
 	}
@@ -299,6 +300,45 @@ export class Field {
 	runTo(time: number) {
 		const target = Math.round(time / DT);
 		if (target > this.steps) this.step(target - this.steps);
+	}
+
+	/** One split solve of (1 − rΔ) u = b: along rows, then along columns, in place. */
+	private splitSolve(u: Float32Array, r: number) {
+		for (const [off, len, stride] of this.runs) solveRun(u, r, len, off, stride, this.cp, this.dp);
+	}
+
+	/**
+	 * Solves (1 − rΔ) u = b for the whole grid, in place (b in, u out). The row-then-column
+	 * split solve alone is off by r²·∂xx∂yy, which shifts the critical ratio for diagonal ripples
+	 * (to about 18 instead of 20.5 at the default rates); a few correction sweeps, each solving
+	 * for the residual with the split solve, converge to the unsplit implicit step, whose
+	 * stationary ripples are exactly those of the equations.
+	 */
+	private diffuse(u: Float32Array, r: number) {
+		const { w, h, mask, res } = this;
+		const b = this.rhs;
+		b.set(u);
+		this.splitSolve(u, r);
+		for (let it = 0; it < CORRECTIONS; it++) {
+			for (let y = 0; y < h; y++) {
+				for (let x = 0; x < w; x++) {
+					const i = y * w + x;
+					if (mask && mask[i] === 0) {
+						res[i] = 0;
+						continue;
+					}
+					const ui = u[i];
+					let lap = 0;
+					if (x > 0 && (!mask || mask[i - 1])) lap += u[i - 1] - ui;
+					if (x < w - 1 && (!mask || mask[i + 1])) lap += u[i + 1] - ui;
+					if (y > 0 && (!mask || mask[i - w])) lap += u[i - w] - ui;
+					if (y < h - 1 && (!mask || mask[i + w])) lap += u[i + w] - ui;
+					res[i] = b[i] - (ui - r * lap);
+				}
+			}
+			this.splitSolve(res, r);
+			for (let i = 0; i < u.length; i++) u[i] += res[i];
+		}
 	}
 
 	/** Mean and standard deviation of the activator over the tissue. */
@@ -327,11 +367,6 @@ export class Field {
 	 */
 	contrast() {
 		return this.stats().sd / uniformState(this.p).a;
-	}
-
-	/** Used by tests: the number of row runs (rows of tissue). */
-	get rowCount() {
-		return this.rowRuns;
 	}
 }
 

@@ -163,7 +163,7 @@ A topic is done when:
 - [x] morphogen-gradients
 - [x] lac-operon
 - [x] population-genetics
-- [ ] turing-patterns
+- [x] turing-patterns
 
 **Body & Medicine**
 - [x] heart-circulation

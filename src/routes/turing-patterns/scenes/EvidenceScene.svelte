@@ -96,9 +96,9 @@
 					icon: 'print',
 					name: 'fingerprints',
 					lines: [
-						'a Turing-type model proposed',
-						'(Glover 2023); skin buckling',
-						'is a rival explanation'
+						'EDAR–WNT–BMP: experiments and',
+						'modelling (Glover 2023); recent,',
+						'and buckling is a rival idea'
 					]
 				}
 			],

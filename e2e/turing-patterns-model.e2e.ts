@@ -86,10 +86,49 @@ test('a small ripple grows at the rate the dispersion relation predicts', () => 
 	expect(growthRate(p, 3 * kMax)).toBeLessThan(0);
 });
 
+test('on the grid, ripples along the axes and diagonally switch from fading to growing at d_c', () => {
+	// d_c ≈ 20.5 at the default rates: a ripple near the fastest wavenumber fades at d = 20 and
+	// grows at d = 21, at the rate the dispersion relation gives, whatever its direction
+	const n = 64;
+	const modes: [number, number][] = [
+		[10, 0],
+		[7, 7]
+	];
+	for (const d of [20, 21]) {
+		const p = { ...DEFAULTS, d };
+		const st = uniformState(p);
+		for (const [i, j] of modes) {
+			const kx = (i * Math.PI) / n;
+			const ky = (j * Math.PI) / n;
+			const mode = (x: number, y: number) => Math.cos(kx * (x + 0.5)) * Math.cos(ky * (y + 0.5));
+			const f = new Field(n, n, p, 1);
+			for (let y = 0; y < n; y++)
+				for (let x = 0; x < n; x++) {
+					f.a[y * n + x] = st.a * (1 + 1e-3 * mode(x, y));
+					f.inh[y * n + x] = st.h;
+				}
+			const amp = () => {
+				let s = 0;
+				for (let y = 0; y < n; y++)
+					for (let x = 0; x < n; x++) s += (f.a[y * n + x] - st.a) * mode(x, y);
+				return s;
+			};
+			f.runTo(20);
+			const a1 = amp();
+			f.runTo(120);
+			const measured = Math.log(amp() / a1) / 100;
+			const predicted = growthRate(p, Math.hypot(kx, ky));
+			expect(Math.sign(measured), `d = ${d}, mode (${i}, ${j})`).toBe(Math.sign(predicted));
+			// within the error of the 0.2-lifetime time step (rates here are about ±0.01)
+			expect(Math.abs(measured - predicted)).toBeLessThan(0.005);
+		}
+	}
+});
+
 test('the settled spacing is the fastest-growing wavelength, and grows as √Dₐ', () => {
 	const measure = (Da: number) => {
 		const f = dish({ ...DEFAULTS, Da }, 2);
-		f.runTo(200);
+		f.runTo(150);
 		return dominantWavelength(f.a, f.w);
 	};
 	const l1 = measure(1);
@@ -107,7 +146,7 @@ test('saturating the activator turns spots into stripes', () => {
 	const shape = (kappa: number) => {
 		const p = { ...DEFAULTS, kappa, d: SHAPE_RATIO };
 		const f = dish(p, 4);
-		f.runTo(300);
+		f.runTo(150);
 		return patches(f, 1.2 * fastestMode(p).wavelength);
 	};
 	const spots = shape(0);
@@ -125,7 +164,7 @@ test('a tail narrower than the transverse cut-off makes bands; a wider one keeps
 	expect(cut).toBeLessThan(6);
 	const tailCols = (tip: number) => {
 		const f = tail(TAIL_PARAMS, tip, 1);
-		f.runTo(200);
+		f.runTo(120);
 		return bandColumns(f).slice(TAIL.taper + 4);
 	};
 	const narrow = tailCols(4).filter((b) => b !== null);

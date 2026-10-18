@@ -26,7 +26,7 @@ test(
 		await expect(stage(page)).toContainText('critical Dₕ/Dₐ ≈ 21');
 		await expect(stage(page)).toContainText('a pattern has formed');
 		await range(page, 'ratio').fill('15');
-		await expect(stage(page)).toContainText('every ripple fades');
+		await expect(stage(page)).toContainText('small ripples fade');
 		await expect(stage(page)).toContainText('Dₕ/Dₐ = 15');
 	}
 );

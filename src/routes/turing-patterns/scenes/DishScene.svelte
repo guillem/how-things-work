@@ -61,7 +61,7 @@
 	const SHAPES_RATE = 15;
 	const REDUCED_TIME = 150;
 	/** The ripple's size is recorded every few steps for the trace. */
-	const EVERY = 5;
+	const EVERY = 2;
 	interface Run {
 		f: Field;
 		trace: [number, number][];
@@ -107,6 +107,12 @@
 		if (!run || key !== runKey || time < lastT - 1e-6) {
 			run = fresh(pp, seed);
 			runKey = key;
+			t0 = time;
+		}
+		// a dish that has gone flat (its last variations lost to rounding) cannot grow a pattern
+		// when the ratio is raised: it starts again from the seeded noise
+		if (pp.d !== run.f.p.d && run.f.contrast() < 1e-4) {
+			run = fresh(pp, seed);
 			t0 = time;
 		}
 		run.f.p = pp;
@@ -224,11 +230,15 @@
 				? `${(v * 100).toFixed(0)} %`
 				: `${(v * 100).toFixed(1)} %`;
 	const verdict = $derived(
-		focus === 'loop' || !grows
+		focus === 'loop'
 			? 'every ripple fades'
-			: now > 0.3
-				? 'a pattern has formed'
-				: 'ripples are growing'
+			: !grows
+				? now > 0.3
+					? 'below the threshold: a pattern can persist'
+					: 'below the threshold: small ripples fade'
+				: now > 0.3
+					? 'a pattern has formed'
+					: 'ripples are growing'
 	);
 
 	// the saturation panel: production ρa²/(1 + κa²) against a
@@ -539,16 +549,22 @@
 
 	<!-- ---------------------------------------------------------------- ripple-size trace -->
 	{#if focus === 'loop' || focus === 'onset'}
-		<Readout id="ripple" order={3} label="Size of the ripple" value={pct(now)} note={verdict}>
+		<Readout
+			id="ripple"
+			order={3}
+			label="Variation across the dish, σ/a₀"
+			value={pct(now)}
+			note={verdict}
+		>
 			<Label
 				anchor="start"
 				x={PX0}
 				y={350}
-				text="size of the ripple (log scale)"
+				text="variation across the dish, σ/a₀ (log scale)"
 				size={13}
 				weight={600}
 			/>
-			<Label x={PX1} y={350} text="± {pct(now)}" size={14} anchor="end" tabular weight={600} />
+			<Label x={PX1} y={350} text={pct(now)} size={14} anchor="end" tabular weight={600} />
 		</Readout>
 		<Axes
 			sx={sxT}
