@@ -1086,6 +1086,15 @@ const explainers: Explainer[] = [
 		accent: '#3d8a9e',
 		steps: 9,
 		minutes: 20
+	},
+	{
+		slug: 'exponentials-logarithms',
+		title: 'Exponentials & logarithms',
+		summary:
+			'Fold a sheet of paper past the Moon in 42 doublings, race adding against multiplying, straighten the curve on a log scale, count doublings and zeros with a logarithm, and multiply on a working slide rule by adding lengths.',
+		accent: '#099268',
+		steps: 10,
+		minutes: 16
 	}
 ];
 

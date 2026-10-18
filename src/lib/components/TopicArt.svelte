@@ -423,6 +423,14 @@
 			const py = Math.max(8, Math.min(112, 92 - 52 * y));
 			return `${i ? 'L' : 'M'}${(68 + x * 24).toFixed(1)} ${py.toFixed(1)}`;
 		}).join(' ');
+	// Exponentials & logarithms: 2ˣ shooting up on an ordinary axis, and the same growth as a
+	// straight line on a log axis.
+	const expArt = (log: boolean) =>
+		Array.from({ length: 41 }, (_, i) => {
+			const x = i / 40;
+			const y = log ? 100 - 84 * x : 100 - (84 * (2 ** (8 * x) - 1)) / 255;
+			return `${i ? 'L' : 'M'}${((log ? 116 : 16) + 70 * x).toFixed(1)} ${y.toFixed(1)}`;
+		}).join(' ');
 </script>
 
 <svg viewBox="0 0 200 120" class="art" style:--accent={accent} aria-hidden="true">
@@ -3081,6 +3089,36 @@
 			stroke-linecap="round"
 		/>
 		<circle cx="141" cy="47" r="4.5" fill={accent} />
+	{:else if slug === 'exponentials-logarithms'}
+		<!-- 2ˣ on an ordinary axis, and as a straight line on a log axis with its decade gridlines -->
+		{#each [16, 116] as x0 (x0)}
+			<line
+				x1={x0}
+				y1="100"
+				x2={x0 + 74}
+				y2="100"
+				stroke="currentColor"
+				stroke-width="1"
+				opacity="0.5"
+			/>
+			<line x1={x0} y1="12" x2={x0} y2="100" stroke="currentColor" stroke-width="1" opacity="0.5" />
+		{/each}
+		{#each [72, 44, 16] as y (y)}
+			<line
+				x1="116"
+				y1={y}
+				x2="190"
+				y2={y}
+				stroke="currentColor"
+				stroke-width="0.8"
+				opacity="0.25"
+			/>
+		{/each}
+		<path d={expArt(false)} fill="none" stroke={accent} stroke-width="2.4" />
+		<path d={expArt(true)} fill="none" stroke={accent} stroke-width="2.4" />
+		{#each [0, 1, 2, 3, 4] as k (k)}
+			<circle cx={116 + 17.5 * k} cy={100 - 21 * k} r="2.6" fill="currentColor" />
+		{/each}
 	{:else if slug === 'taylor-series'}
 		<!-- a bump and its Taylor polynomial leaving it at |x| = 1; a disk stopped by ±i -->
 		<line x1="12" y1="92" x2="124" y2="92" stroke="currentColor" stroke-width="1" opacity="0.5" />

@@ -3655,3 +3655,24 @@ kbd {
 	--wt-stall: #ff8787;
 	--wt-electric: #b197fc;
 }
+
+/* exponentials-logarithms: adding, multiplying, the slowing curve, the slide rule's two numbers,
+   its body and its slide */
+:root {
+	--xl-add: #1971c2;
+	--xl-mul: #099268;
+	--xl-slow: #e8590c;
+	--xl-a: #099268;
+	--xl-b: #c2255c;
+	--xl-body: #efe4cc;
+	--xl-slide: #fbf6ea;
+}
+:root[data-theme='dark'] {
+	--xl-add: #4dabf7;
+	--xl-mul: #38d9a9;
+	--xl-slow: #ff922b;
+	--xl-a: #38d9a9;
+	--xl-b: #f06595;
+	--xl-body: #2e2a22;
+	--xl-slide: #3a352b;
+}
