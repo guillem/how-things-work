@@ -1,6 +1,6 @@
 # Topic catalog
 
-Source of truth for the content of an interactive web learning tool that shows how things work. It defines 110 topics in 11 categories, each built around one interactive graphic. Readers range from high-school students to university majors.
+Source of truth for the content of an interactive web learning tool that shows how things work. It defines 111 topics in 11 categories, each built around one interactive graphic. Readers range from high-school students to university majors.
 
 This file covers content only. It does not choose the stack, the visual design or the project layout; take those from the repository's own instructions.
 
@@ -91,7 +91,7 @@ A topic is done when:
 | Space | `space` | 9 |
 | Computing | `computing` | 10 |
 | Information & Networks | `networks` | 8 |
-| Artificial Intelligence | `ai` | 18 |
+| Artificial Intelligence | `ai` | 19 |
 | Energy & Machines | `energy` | 9 |
 
 ## Checklist
@@ -217,6 +217,7 @@ A topic is done when:
 - [x] rlhf-alignment
 - [x] kv-cache-inference
 - [x] speculative-decoding
+- [ ] chain-of-thought-scratchpad
 
 **Energy & Machines**
 - [x] heat-engines
@@ -928,7 +929,7 @@ A topic is done when:
 - **Interaction:** Program a tape-and-head machine with a small rule table and step it through tasks such as adding one or checking a palindrome. Then explore two limits: a walk-through of why no single program can tell, for every program and input, whether it will halt, and a travelling-salesman puzzle whose search space explodes as cities are added.
 - **Takeaway:** A very simple machine can compute anything that is computable, yet some problems cannot be solved by any program and others cannot be solved quickly by any known method.
 - **Prerequisites:** sorting
-- **Related:** cpu
+- **Related:** cpu, chain-of-thought-scratchpad
 
 #### quantum-computing
 - **Title:** Quantum computing
@@ -1195,6 +1196,17 @@ A topic is done when:
 - **Prerequisites:** kv-cache-inference, language-models
 - **Needs:** Two char-level models sharing one vocabulary, both run in the page: as target, the tiny transformer whose weights are shipped precomputed from training-a-tiny-language-model; as draft, a bigram table counted from the same Tiny Shakespeare text (or a smaller transformer).
 - **Pitfall:** It is not an approximation: with the rejection rule the output distribution equals the target's (a finite sample histogram matches only up to sampling noise). Accepting only exact matches with the target's top choice is valid only for greedy decoding. The speed-up pays off because a decode pass at small batch is memory-bound, so checking several tokens costs about as much as one; the tiny models on the page are not memory-bound, so the page counts target passes, not seconds.
+
+#### chain-of-thought-scratchpad
+- **Title:** Why thinking out loud helps a model
+- **Level:** 3
+- **Kind:** step
+- **Interaction:** Two tiny transformers of the same size were trained by the project on 1- to 8-digit addition with the answer written most-significant digit first: one writes the answer straight away, the other first writes its working (each column's digit sum and carry). Pose sums and step through each model token by token, with the carry chain highlighted: the direct model must settle every carry before its first output digit and errs on long carry chains, while the scratchpad model reads the carry it just wrote back in. An accuracy chart by number of digits and by longest carry chain compares the two, with 9 and 10 digits shown as beyond training, where both fall off but the scratchpad model falls more slowly.
+- **Takeaway:** A transformer does a fixed amount of computation per token, so writing intermediate steps gives the same model more computation and a place to keep partial results, and it then solves carry-heavy sums the direct model gets wrong.
+- **Prerequisites:** training-a-tiny-language-model, transformers
+- **Related:** turing-machines
+- **Needs:** Two tiny transformers trained offline by the project on generated addition problems (with and without a scratchpad), shipped and run in the page; the weights are the project's own, under the site's MIT licence.
+- **Pitfall:** The written steps help because they are computation the model conditions on, not because the model narrates a hidden thought, and in large models the written reasoning is not guaranteed to be a faithful account of how the answer was reached. Do not say transformers cannot add directly (they learn it well when the answer is written least-significant digit first), and do not say a scratchpad solves length generalisation: beyond the trained lengths, both models degrade.
 
 ### Energy & Machines
 
