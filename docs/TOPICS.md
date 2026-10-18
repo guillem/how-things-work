@@ -216,7 +216,7 @@ A topic is done when:
 - [x] scaling-laws
 - [x] rlhf-alignment
 - [x] kv-cache-inference
-- [ ] speculative-decoding
+- [x] speculative-decoding
 
 **Energy & Machines**
 - [x] heat-engines

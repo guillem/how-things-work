@@ -103,7 +103,7 @@
 		if (r.kind === 'bonus') return focus === 'bonus' ? -1 : Math.max(0, nChecked - 1);
 		return nChecked - 1;
 	});
-	const g = $derived(panel >= 0 ? r.checked[panel] : null);
+	const g = $derived(panel >= 0 ? (r.checked[panel] ?? null) : null);
 	const p = $derived(g ? g.p : r.from);
 	const q = $derived(g ? g.q : null);
 	const isRejected = $derived(g !== null && !g.accepted);
@@ -183,7 +183,7 @@
 		order={0}
 		label={mode === 'plain' ? 'Plain decoding' : `Round ${roundIdx + 1} of ${nRounds}`}
 		value={mode === 'plain'
-			? `${charsSoFar + 1} characters, ${passesSoFar} target passes`
+			? `${charsSoFar} characters, ${passesSoFar} target passes`
 			: `${keptN} of ${kk} guesses kept, ${keptN + 1} characters for 1 pass`}
 	>
 		<Label
@@ -779,7 +779,7 @@
 		<Readout
 			id="bonuscard"
 			order={3}
-			label={mode === 'plain' ? 'One pass' : 'All guesses kept'}
+			label={mode === 'plain' ? 'One pass' : kk === 0 ? 'No room for guesses' : 'All guesses kept'}
 			value={mode === 'plain'
 				? 'one character drawn from p'
 				: `${kk} kept + 1 drawn from p = ${kk + 1} characters`}
@@ -791,7 +791,11 @@
 				size={13}
 				weight={700}
 				halo={false}
-				text={mode === 'plain' ? 'One pass, one character' : 'Every guess was kept'}
+				text={mode === 'plain'
+					? 'One pass, one character'
+					: kk === 0
+						? 'No room left for guesses'
+						: 'Every guess was kept'}
 			/>
 			<Label
 				x={696}
@@ -799,7 +803,9 @@
 				anchor="start"
 				size={12}
 				halo={false}
-				text={mode === 'plain' ? 'the target reads the last' : 'the pass already gave p after'}
+				text={mode === 'plain' || kk === 0
+					? 'the target reads the last'
+					: 'the pass already gave p after'}
 			/>
 			<Label
 				x={696}
@@ -809,7 +815,9 @@
 				halo={false}
 				text={mode === 'plain'
 					? 'character and draws the next'
-					: 'the last guess: one more from it'}
+					: kk === 0
+						? 'character and draws the next'
+						: 'the last guess: one more from it'}
 			/>
 			{#if extraOn > 0.5}
 				<Label
@@ -829,7 +837,7 @@
 						anchor="start"
 						size={12}
 						halo={false}
-						text="{kk + 1} characters for one pass"
+						text="{kk + 1} character{kk === 0 ? '' : 's'} for one pass"
 					/>
 				{/if}
 			{/if}

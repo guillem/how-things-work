@@ -78,18 +78,24 @@
 				]
 			: [{ id: 'right', x0: 90, x1: 900, title: '' }]
 	);
-	/** The axis fits p, q and (for the wrong rule) its final frequencies, so it holds still. */
+	const CEILINGS = [0.3, 0.4, 0.6, 0.8, 1];
+	/**
+	 * The axis covers p, q and every frequency drawn so far (the first few draws can wander far
+	 * from p), with the final frequencies of the wrong rule so that panel holds still.
+	 */
 	const yMax = $derived.by(() => {
 		const final = hw ? counts(hw.draws, null, SAMPLES).all.map((x) => x / SAMPLES) : [];
 		const m = Math.max(
-			...shown.map((v) => Math.max(h.p[v], h.q[v])),
+			...shown.map((v) => Math.max(h.p[v], h.q[v], c.all[v] / n, cw ? cw.all[v] / n : 0)),
 			...shown.map((v) => final[v] ?? 0)
 		);
-		return m <= 0.3 ? 0.3 : m <= 0.4 ? 0.4 : 0.6;
+		return CEILINGS.find((x) => m <= x) ?? 1;
 	});
-	const yOf = (v: number) => Y0 - ((Y0 - Y1) * Math.min(v, yMax * 1.05)) / yMax;
+	const yOf = (v: number) => Y0 - ((Y0 - Y1) * v) / yMax;
 	const yTicks = $derived(
-		yMax === 0.6 ? [0, 0.2, 0.4, 0.6] : yMax === 0.4 ? [0, 0.1, 0.2, 0.3, 0.4] : [0, 0.1, 0.2, 0.3]
+		yMax <= 0.4
+			? Array.from({ length: Math.round(yMax * 10) + 1 }, (_, i) => i / 10)
+			: Array.from({ length: Math.round(yMax * 5) + 1 }, (_, i) => i / 5)
 	);
 </script>
 
@@ -205,9 +211,9 @@
 			{#if pv > 0.002}
 				<rect
 					x={cx - slot * 0.36}
-					y={yOf(pv + 2 * se)}
+					y={yOf(Math.min(yMax, pv + 2 * se))}
 					width={slot * 0.72}
-					height={Math.max(1, yOf(Math.max(0, pv - 2 * se)) - yOf(pv + 2 * se))}
+					height={Math.max(1, yOf(Math.max(0, pv - 2 * se)) - yOf(Math.min(yMax, pv + 2 * se)))}
 					fill="var(--sd-target)"
 					opacity="0.2"
 				/>

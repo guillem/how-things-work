@@ -53,6 +53,24 @@ test('more guesses or a better draft take fewer passes', async ({ page }) => {
 	await expect(stage(page)).toContainText('Round 12 of 12');
 });
 
+test('the last round, cut short by the full window, shows the target’s own character', async ({
+	page
+}) => {
+	// regression: a round with no room left for guesses used to throw
+	const errors: string[] = [];
+	page.on('pageerror', (e) => errors.push(e.message));
+	await page.goto('./speculative-decoding/#keep');
+	await page.getByRole('radio', { name: 'The target itself' }).click();
+	await range(page, 'k').focus();
+	await page.keyboard.press('ArrowLeft');
+	await page.keyboard.press('ArrowLeft');
+	await range(page, 'round').focus();
+	await page.keyboard.press('End');
+	await expect(stage(page)).toContainText('Round 20 of 20 · 0 guesses');
+	await expect(stage(page)).toContainText('No room left for guesses');
+	expect(errors).toEqual([]);
+});
+
 test('10,000 speculative draws land on the target’s probabilities, the shortcut does not', async ({
 	page
 }) => {
@@ -79,7 +97,7 @@ test('characters per pass follow the keep rate; the draft’s cost decides the s
 	await expect(stage(page)).toContainText('keep rate α = 0.55');
 	await page.goto('./speculative-decoding/#cost');
 	await page.getByRole('radio', { name: /Smaller tiny GPT/ }).click();
-	await expect(stage(page)).toContainText('1.25× faster if memory-bound');
+	await expect(stage(page)).toContainText('speed-up: 1.25× (ideal)');
 	await expect(stage(page)).toContainText('arithmetic per character: 2.08×');
 	await page.getByRole('radio', { name: 'The target itself' }).click();
 	await expect(stage(page)).toContainText('the bytes: slower');

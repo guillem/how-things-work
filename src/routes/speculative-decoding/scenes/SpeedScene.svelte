@@ -7,7 +7,7 @@
 	 *   passes — characters written per target pass: measured (dots) and (1 − α^(k+1)) / (1 − α)
 	 *            for the draft's keep rate α (curves); plain decoding is 1.
 	 *   cost   — bytes read per character, target and draft together, as a speed-up over plain
-	 *            decoding (what a memory-bound deployment would see): above 1 the guessing pays.
+	 *            decoding (the ideal, bandwidth-only speed-up): above 1 the guessing pays.
 	 *
 	 * The selected draft is drawn in full and the others faintly; the selected k is marked.
 	 * Motion: the selected draft's curve draws itself in over the first second; reduced motion
@@ -82,7 +82,7 @@
 	<Readout
 		id="title"
 		order={0}
-		label={focus === 'passes' ? 'Characters per target pass' : 'Speed-up if memory-bound'}
+		label={focus === 'passes' ? 'Characters per target pass' : 'Ideal bandwidth-only speed-up'}
 		value="draft: {sel.short}, k = {k}"
 	>
 		<Label
@@ -93,7 +93,7 @@
 			weight={700}
 			text={focus === 'passes'
 				? 'Characters written per pass of the target, for k guesses per round'
-				: 'Bytes read per character, plain decoding ÷ speculative (time, when memory-bound)'}
+				: 'Bytes read per character, plain decoding ÷ speculative: the ideal bandwidth-only speed-up'}
 		/>
 	</Readout>
 
@@ -308,7 +308,7 @@
 			label="Bytes read per character"
 			value="{fmt(row.bytesShare)} of plain decoding's: {fmt(
 				1 / row.bytesShare
-			)}× faster if memory-bound"
+			)}× ideal bandwidth-only speed-up"
 		>
 			<Label
 				x={692}
@@ -329,7 +329,7 @@
 				weight={600}
 				color={row.bytesShare < 1 ? 'var(--sd-kept)' : 'var(--sd-reject)'}
 				text={row.bytesShare < 1
-					? `${fmt(1 / row.bytesShare)}× faster if memory-bound`
+					? `speed-up: ${fmt(1 / row.bytesShare)}× (ideal)`
 					: `${fmt(row.bytesShare)}× the bytes: slower`}
 			/>
 		</Readout>

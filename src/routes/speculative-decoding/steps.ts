@@ -54,7 +54,7 @@ const resample: Control = {
 
 const TARGET = `<dfn data-def="The large model whose writing we want: here the tiny GPT of the KV-cache page, 2 layers, 4 heads, 32 numbers wide, trained on Tiny Shakespeare.">target</dfn>`;
 const DRAFT = `<dfn data-def="A cheaper model over the same characters that guesses ahead: here a smaller tiny GPT (16 numbers wide, trained the same way), or counts of characters (bigram, unigram) from the same text.">draft</dfn>`;
-const RESIDUAL = `<dfn data-def="max(0, p − q), divided by its sum: the part of the target's probabilities that the draft's do not cover. Its sum is exactly the chance of a rejection.">leftover distribution</dfn>`;
+const RESIDUAL = `<dfn data-def="max(0, p − q), divided by its sum: the part of the target's probabilities that the draft's do not cover. Before it is normalised, its sum is exactly the chance of a rejection.">leftover distribution</dfn>`;
 const TV = `<dfn data-def="Total-variation distance: half the sum of the absolute differences between two distributions, the largest difference in probability they give to any set of outcomes. 1 − Σ min(p, q) is the total-variation distance between p and q.">distance</dfn>`;
 
 export const spec: ExplainerSpec = {
@@ -78,7 +78,7 @@ export const spec: ExplainerSpec = {
 			duration: 28,
 			controls: [rewrite],
 			body: `
-<p>A <a href="../language-models/">language model</a> writes one token at a time: one pass through the whole model gives the probabilities of the next token, one is drawn, and the model runs again. Here the model, the ${TARGET}, is the tiny GPT of <a href="../kv-cache-inference/">the KV-cache page</a>, writing characters after “ROMEO:” with its cache. Filling its 64-character window takes 58 characters, so 58 passes.</p>
+<p>A <a href="../language-models/">language model</a> writes one token at a time: one pass through the whole model gives the probabilities of the next token, one is drawn, and the model runs again. Here the model, the ${TARGET}, is the tiny GPT of <a href="../kv-cache-inference/">the KV-cache page</a>, writing characters after “ROMEO:” with its cache. The seven-character prompt leaves 57 of its 64 input positions; filling them, and then predicting one last character from the full window, writes 58 characters in 58 passes.</p>
 <p>That page showed why a pass is slow on a real model: at small batch, a decode step is <em>memory-bound</em>. Reading every weight from memory takes far longer than the arithmetic done with it. And a pass over 5 positions reads the weights once, just like a pass over 1. So if someone handed the model the next few characters, checking all of them would cost about as much as writing one.</p>`,
 			notes: `<p>The tiny GPT itself is not memory-bound when it runs in your browser: it is far too small. So this page never times anything. It counts what a real deployment pays for: passes of the target model, and the bytes each pass and each guess read, as the KV-cache page counted them (8 bytes per number, since these models compute in float64).</p>`
 		},
@@ -130,7 +130,7 @@ export const spec: ExplainerSpec = {
 			controls: [draft, k, round, rewrite],
 			body: `
 <p>In the second round the draft guessed “ thi” and all four were kept. The target's pass has already computed <em>p</em> after the last guess, so one more character is drawn from it for free: “s”. Five characters for one pass.</p>
-<p>So a round writes between 1 and k + 1 characters, and it always writes at least the one plain decoding would have. With this draft and k = 4 the whole window took 20 passes instead of 58: 2.9 characters per pass. Change the draft or k, or write another text, and watch the count of passes.</p>`
+<p>So a round writes between 1 and k + 1 characters, and it always writes at least the one plain decoding would have. With this draft and k = 4 the same 58 characters took 20 passes instead of 58: 2.9 characters per pass. Change the draft or k, or write another text, and watch the count of passes.</p>`
 		},
 		// ------------------------------------------------------------------ exact
 		{
@@ -183,7 +183,7 @@ export const spec: ExplainerSpec = {
 			body: `
 <p>The dots are measured: characters written per target pass, over six generations for each k. They depend on the <em>keep rate</em> α, the share of guesses kept: 0.33 for character counts, 0.55 for the bigram, 0.76 for the small GPT.</p>
 <p>If each guess were kept independently with chance α, a round would write on average (1 − α<sup>k+1</sup>) / (1 − α) characters (the curves), never more than 1/(1 − α) however many guesses: 4.2 for the small GPT, 2.2 for the bigram. More guesses help less and less, because a round stops at the first rejection. With the target itself as the draft every guess is kept, and a round writes k + 1.</p>`,
-			notes: `<p>The keep rate is not really constant: it is Σ min(<em>p</em>, <em>q</em>) at each position, high where the text is predictable (the rest of a word, a speaker's name) and low at the start of a word. The formula, from Leviathan et al., uses the average; on these runs it agrees with the measured counts to within a few per cent.</p>`
+			notes: `<p>The keep rate is not really constant: it is Σ min(<em>p</em>, <em>q</em>) at each position, high where the text is predictable (the rest of a word, a speaker's name) and low at the start of a word. The formula, from Leviathan et al., uses the average. The curves use the keep rate pooled over all k; individual dots, from only six generations each, differ from them by up to about 13%. With each k's own keep rate, the formula agrees with the measured counts to within a few per cent.</p>`
 		},
 		{
 			id: 'cost',
@@ -196,7 +196,7 @@ export const spec: ExplainerSpec = {
 			body: `
 <p>Characters per pass is not the speed-up: the draft's own steps cost something too. When the target's pass is memory-bound, time follows the bytes read, so the chart counts the bytes read per character, target and draft together, against plain decoding.</p>
 <p>The small GPT is the better guesser, but each of its steps reads 28% of what a target step reads: at k = 4 it reads 1.25 times fewer bytes per character, not 3. The bigram reads one row of 65 numbers per guess, almost nothing, and comes out ahead at about 2 times fewer. The target as its own draft keeps every guess and is slower than plain decoding. Meanwhile the arithmetic per character goes <em>up</em> (2.1 times for the small GPT at k = 4): rejected guesses are computed and thrown away. Speculative decoding trades spare arithmetic for fewer trips to memory, so it pays at small batches, where decoding is memory-bound, and less in large batches that already keep the GPU busy.</p>`,
-			notes: `<p>Leviathan et al. report 2 to 3 times faster decoding for T5-XXL, and Chen et al. 2 to 2.5 times for Chinchilla 70B, with drafts whose steps cost a few per cent of the target's. Their improvement factor, (1 − α<sup>k+1</sup>) / ((1 − α)(<em>k c</em> + 1)) with <em>c</em> the cost of a draft step relative to a target pass, is what the bytes here measure. The tiny models on this page are not memory-bound in a browser, so its ratios are what a memory-bound deployment would see, not timings.</p>`
+			notes: `<p>Leviathan et al. report 2 to 3 times faster decoding for T5-XXL, and Chen et al. 2 to 2.5 times for Chinchilla 70B, with a draft costing about 2% of a target step in Leviathan et al.'s T5-small setup and about 13% in Chen et al.'s. Their improvement factor, (1 − α<sup>k+1</sup>) / ((1 − α)(<em>k c</em> + 1)) with <em>c</em> the cost of a draft step relative to a target pass, is what the bytes here estimate. The browser checks the guesses one position after another; the counters model a fused pass that reads the weights and the cached keys and values once for all its positions. The byte ratios are ideal, bandwidth-only speed-ups: they predict real speed only if verification stays memory-bound, at comparable effective bandwidth and with negligible overhead. The tiny models on this page are not memory-bound in a browser, so nothing here is timed.</p>`
 		}
 	]
 };
