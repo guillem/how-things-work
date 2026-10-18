@@ -4186,3 +4186,36 @@ kbd {
 	--mg-expander: #69db7c;
 	--mg-expander-text: #8ce99a;
 }
+
+/* lac-operon: the DNA and its three genes, the repressor, CAP-cAMP, RNA polymerase, the two
+   sugars and the inducer, the sweep up and down, the bistable band */
+:root {
+	--lo-dna: #495057;
+	--lo-lacz: #1971c2;
+	--lo-lacy: #0c8599;
+	--lo-laca: #868e96;
+	--lo-repressor: #c92a2a;
+	--lo-cap: #2b8a3e;
+	--lo-rnap: #7048e8;
+	--lo-glucose: #e67700;
+	--lo-lactose: #9c36b5;
+	--lo-inducer: #c2255c;
+	--lo-up: #1971c2;
+	--lo-down: #d9480f;
+	--lo-band: rgba(156, 54, 181, 0.1);
+}
+:root[data-theme='dark'] {
+	--lo-dna: #ced4da;
+	--lo-lacz: #74c0fc;
+	--lo-lacy: #3bc9db;
+	--lo-laca: #adb5bd;
+	--lo-repressor: #ff8787;
+	--lo-cap: #69db7c;
+	--lo-rnap: #b197fc;
+	--lo-glucose: #ffc078;
+	--lo-lactose: #e599f7;
+	--lo-inducer: #f783ac;
+	--lo-up: #74c0fc;
+	--lo-down: #ff922b;
+	--lo-band: rgba(229, 153, 247, 0.12);
+}

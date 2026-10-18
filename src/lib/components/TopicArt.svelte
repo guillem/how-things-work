@@ -4537,6 +4537,28 @@
 				opacity={lv <= 2 ? 1 : 0.45}
 			/>
 		{/each}
+	{:else if slug === 'lac-operon'}
+		<!-- a hysteresis loop (up late, down late) over the operon's three genes -->
+		<path
+			d="M24 78 H112 C122 78 122 22 132 22 H176"
+			fill="none"
+			stroke={accent}
+			stroke-width="2.2"
+		/>
+		<path
+			d="M176 18 H84 C74 18 74 74 64 74 H24"
+			fill="none"
+			stroke="currentColor"
+			stroke-width="1.6"
+			opacity="0.6"
+		/>
+		<path d="M170 17 L180 22 L170 27 Z" fill={accent} />
+		<path d="M30 69 L20 74 L30 79 Z" fill="currentColor" opacity="0.6" />
+		<line x1="16" x2="184" y1="100" y2="100" stroke="currentColor" stroke-width="1" opacity="0.5" />
+		<rect x="22" y="95" width="18" height="10" rx="2" fill="currentColor" opacity="0.35" />
+		<rect x="48" y="94" width="62" height="12" rx="3" fill={accent} opacity="0.85" />
+		<rect x="113" y="94" width="40" height="12" rx="3" fill={accent} opacity="0.6" />
+		<rect x="156" y="94" width="24" height="12" rx="3" fill={accent} opacity="0.35" />
 	{:else if slug === 'transition-state-theory'}
 		<!-- a pass between two valleys on a contour map, and a trajectory turning the corner -->
 		{#each tstArt.lines as d, i (i)}

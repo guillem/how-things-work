@@ -127,8 +127,6 @@ export function thresholds(
 	G: number,
 	inducer: Medium['inducer'] = 'tmg'
 ): { off: number; on: number } | null {
-	let off: number | null = null;
-	let on: number | null = null;
 	const bistable = (c: number) => steadyStates({ inducer, c, glucose: G }).length === 3;
 	// Scan 0.1 µM to 100 mM on a log grid, then refine both edges.
 	const N = 600;
@@ -152,8 +150,8 @@ export function thresholds(
 		}
 		return Math.sqrt(a * b);
 	};
-	off = first > 0 ? refine(at(first), at(first - 1)) : at(0);
-	on = last < N ? refine(at(last), at(last + 1)) : at(N);
+	const off = first > 0 ? refine(at(first), at(first - 1)) : at(0);
+	const on = last < N ? refine(at(last), at(last + 1)) : at(N);
 	return { off, on };
 }
 
@@ -265,6 +263,15 @@ const alphaCulture = (G: number, strain: Strain) =>
  * regime (cells growing on these sugars): the classic four cases of the operon.
  */
 export function cultureSteady(G: number, L: number, strain: Strain = 'wild'): number {
+	return cultureCell(G, L, strain).y;
+}
+
+/**
+ * The settled cell of `cultureSteady` in detail: its lac output y, its inducer x, the chance
+ * that the operator is held by a repressor (1 − the repressor's release), the share of its permeases blocked by
+ * glucose, and its maximal output α (CRP-cAMP's part).
+ */
+export function cultureCell(G: number, L: number, strain: Strain = 'wild') {
 	const a = alphaCulture(G, strain);
 	const active = 1 - blocked(G, strain);
 	const m: Medium = { inducer: 'lactose', c: L, glucose: G };
@@ -273,7 +280,8 @@ export function cultureSteady(G: number, L: number, strain: Strain = 'wild'): nu
 		const r = strain === 'lacI' ? 1 : release(inducer(y, m, active));
 		y += (a * r - y) * 0.05;
 	}
-	return y;
+	const x = inducer(y, m, active);
+	return { y, x, bound: strain === 'lacI' ? 0 : 1 - release(x), blocked: 1 - active, alpha: a };
 }
 
 /**
@@ -319,19 +327,27 @@ export function culture(opts: {
 }
 
 /**
- * The diauxic pause: how long (h) the growth rate stays below a quarter of its rate on glucose
- * after the glucose runs out, before lactose growth takes over. Zero when there is none.
+ * The diauxic pause: when the glucose runs out, the hours during which the growth rate stays
+ * below half of the best rate the culture then reaches on lactose. Null when growth never
+ * drops that low (no pause).
  */
-export function pause(trace: readonly CulturePoint[]): number {
+export function pauseWindow(trace: readonly CulturePoint[]): { start: number; end: number } | null {
 	const gone = trace.findIndex((p) => p.glucose < 0.001);
-	if (gone < 0) return 0;
-	const slow = CULTURE.muG / 4;
+	if (gone < 0) return null;
+	let best = 0;
+	for (let i = gone; i < trace.length; i++) best = Math.max(best, trace[i].mu);
+	const half = best / 2;
 	let start = -1;
 	for (let i = Math.max(0, gone - 20); i < trace.length; i++) {
 		const p = trace[i];
-		if (p.lactose < 0.02) break;
-		if (p.mu < slow && start < 0) start = i;
-		if (p.mu >= slow && start >= 0) return p.t - trace[start].t;
+		if (p.mu < half && start < 0) start = i;
+		if (p.mu >= half && start >= 0) return { start: trace[start].t, end: p.t };
 	}
-	return 0;
+	return null;
+}
+
+/** The length of the diauxic pause in hours (0 when there is none). */
+export function pause(trace: readonly CulturePoint[]): number {
+	const w = pauseWindow(trace);
+	return w ? w.end - w.start : 0;
 }

@@ -1239,6 +1239,15 @@ const explainers: Explainer[] = [
 		accent: '#7a3e9d',
 		steps: 7,
 		minutes: 18
+	},
+	{
+		slug: 'lac-operon',
+		title: 'The lac operon: a switch with a memory',
+		summary:
+			'Set the sugars in a bacterium’s medium and watch the repressor, CAP and the permease decide whether the lac genes are read. Sweep the inducer TMG up and down to trace the hysteresis loop Ozbudak and colleagues measured, see why lactose itself gives no loop, and grow a culture on two sugars to find the diauxic pause.',
+		accent: '#a8519b',
+		steps: 8,
+		minutes: 18
 	}
 ];
 
