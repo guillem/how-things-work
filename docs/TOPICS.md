@@ -1,6 +1,6 @@
 # Topic catalog
 
-Source of truth for the content of an interactive web learning tool that shows how things work. It defines 140 topics in 11 categories, each built around one interactive graphic. Readers range from high-school students to university majors.
+Source of truth for the content of an interactive web learning tool that shows how things work. It defines 141 topics in 11 categories, each built around one interactive graphic. Readers range from high-school students to university majors.
 
 This file covers content only. It does not choose the stack, the visual design or the project layout; take those from the repository's own instructions.
 
@@ -86,7 +86,7 @@ A topic is done when:
 | Physics | `physics` | 13 |
 | Chemistry & Materials | `chemistry` | 14 |
 | Biology | `biology` | 16 |
-| Body & Medicine | `medicine` | 13 |
+| Body & Medicine | `medicine` | 14 |
 | Earth & Climate | `earth` | 9 |
 | Space | `space` | 9 |
 | Computing | `computing` | 10 |
@@ -179,6 +179,7 @@ A topic is done when:
 - [x] pharmacokinetics-dosing
 - [x] cochlea-hearing
 - [x] mri-k-space
+- [ ] ecg-arrhythmias
 
 **Earth & Climate**
 - [x] plate-tectonics
@@ -970,6 +971,16 @@ A topic is done when:
 - **Prerequisites:** medical-imaging, fourier-transform, electromagnetism
 - **Needs:** The Shepp-Logan phantom (a mathematical object), with the MRI tissue values (proton density, T1, T2) of Gach, Tanase and Boada (2008) for its regions; optionally one real T1-weighted brain slice.
 - **Pitfall:** MRI uses no ionizing radiation, and the image is not proton density alone. A point in k-space is not a pixel: every sample holds information about the whole image, which is why dropping lines blurs or ghosts the whole picture instead of leaving holes.
+
+#### ecg-arrhythmias
+- **Title:** The ECG & arrhythmias
+- **Level:** 3
+- **Kind:** simulate
+- **Interaction:** Run a sheet of heart muscle as an excitable medium (the Aliev–Panfilov equations on a grid) with a pacemaker, a fast conduction path and a slow atrioventricular node, and read a pseudo-ECG off it: the tissue's net electrical vector projected onto the three limb leads of Einthoven's triangle. Then break it: slow conduction in a patch, add a scar, fire an early beat into tissue that has only partly recovered and watch a spiral wave take over the trace as tachycardia and then break up into fibrillation; deliver a shock that excites every cell at once and lets the pacemaker take back control. Real annotated recordings from the MIT-BIH database sit beside the simulated traces for comparison.
+- **Takeaway:** An ECG is the shadow of a wave of excitation crossing the heart, and the most dangerous fast rhythms are usually not a faster pacemaker but a wave that finds a loop and chases its own tail.
+- **Prerequisites:** heart-circulation, neurons
+- **Needs:** Annotated ECG records from the MIT-BIH Arrhythmia Database on PhysioNet (Open Data Commons Attribution License v1.0).
+- **Pitfall:** A defibrillator does not restart a stopped heart: it stops a chaotic rhythm so the natural pacemaker can take over, and a flat line is not a shockable rhythm. And not every arrhythmia is re-entry: a heart can also beat too slowly when conduction is blocked.
 
 ### Earth & Climate
 
