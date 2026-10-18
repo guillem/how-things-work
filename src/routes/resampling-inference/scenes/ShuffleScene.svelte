@@ -474,7 +474,9 @@
 						? taken === SHUFFLES
 							? 'none got there: the smallest p 9,999 shuffles can give'
 							: 'no shuffle has got there yet'
-						: `about 1 shuffle in ${fmt(Math.round(taken / extremeBy[taken]))} gets this far`}
+						: extremeBy[taken] > taken / 2
+							? 'most shuffles get this far'
+							: `about 1 shuffle in ${fmt(Math.round(taken / extremeBy[taken]))} gets this far`}
 				/>
 			</Readout>
 			<Readout id="not-null">
