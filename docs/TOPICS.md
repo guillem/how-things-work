@@ -1,6 +1,6 @@
 # Topic catalog
 
-Source of truth for the content of an interactive web learning tool that shows how things work. It defines 124 topics in 11 categories, each built around one interactive graphic. Readers range from high-school students to university majors.
+Source of truth for the content of an interactive web learning tool that shows how things work. It defines 125 topics in 11 categories, each built around one interactive graphic. Readers range from high-school students to university majors.
 
 This file covers content only. It does not choose the stack, the visual design or the project layout; take those from the repository's own instructions.
 
@@ -83,7 +83,7 @@ A topic is done when:
 | Category | Id | Topics |
 |---|---|---|
 | Mathematics | `math` | 18 |
-| Physics | `physics` | 10 |
+| Physics | `physics` | 11 |
 | Chemistry & Materials | `chemistry` | 10 |
 | Biology | `biology` | 10 |
 | Body & Medicine | `medicine` | 10 |
@@ -127,6 +127,7 @@ A topic is done when:
 - [x] special-relativity
 - [x] quantum-mechanics
 - [x] standard-model
+- [ ] musical-scales-ratios
 
 **Chemistry & Materials**
 - [x] atoms-periodic-table
@@ -298,7 +299,7 @@ A topic is done when:
 - **Interaction:** Draw a closed curve or a waveform, then rebuild it from rotating circles or sine waves, adding one frequency at a time with a slider. A bar chart shows the strength of each frequency and can be edited to reshape the signal.
 - **Takeaway:** Any signal can be written as a sum of sine waves, and the transform says how much of each frequency it contains.
 - **Prerequisites:** unit-circle, complex-numbers
-- **Related:** positional-encoding, taylor-series
+- **Related:** positional-encoding, taylor-series, musical-scales-ratios
 
 #### bayes-theorem
 - **Title:** Probability & Bayes' theorem
@@ -507,6 +508,16 @@ A topic is done when:
 - **Takeaway:** All ordinary matter is made of a few kinds of particle, and three of the four known forces arise from exchanging other particles.
 - **Prerequisites:** atoms-periodic-table
 - **Related:** quantum-mechanics, radioactivity
+
+#### musical-scales-ratios
+- **Title:** Why music has twelve notes
+- **Level:** 1
+- **Kind:** explore
+- **Interaction:** A keyboard whose keys play, each note drawn as its wave; press two keys and the page plays them together and draws how the waves line up: an octave (double the frequency) repeats every cycle, a fifth (3:2) every two, while clashing pairs beat and a roughness meter (the Plomp-Levelt curve) rises. Slide a divider to cut the octave into 5, 7, 12, 19, 31 or 53 equal steps and read off how many cents each ladder misses the pure fifth and major third by; twelve is the first small ladder whose fifth lands within 2 cents. Compare an equal-tempered chord with a pure one by ear.
+- **Takeaway:** Notes sound smooth together when their frequencies are in simple ratios, and twelve equal steps per octave is the smallest small ladder whose fifth lands almost exactly on the pure 3:2.
+- **Prerequisites:** waves-interference
+- **Related:** fourier-transform
+- **Pitfall:** Twelve is a good compromise, not a law of nature or of the ear: other traditions divide the octave differently, and equal temperament makes every fifth slightly flat. Consonance also depends on timbre; the roughness model (Plomp-Levelt 1965) is one measurable part of it.
 
 ### Chemistry & Materials
 
