@@ -1,6 +1,6 @@
 # Topic catalog
 
-Source of truth for the content of an interactive web learning tool that shows how things work. It defines 143 topics in 11 categories, each built around one interactive graphic. Readers range from high-school students to university majors.
+Source of truth for the content of an interactive web learning tool that shows how things work. It defines 144 topics in 11 categories, each built around one interactive graphic. Readers range from high-school students to university majors.
 
 This file covers content only. It does not choose the stack, the visual design or the project layout; take those from the repository's own instructions.
 
@@ -87,7 +87,7 @@ A topic is done when:
 | Chemistry & Materials | `chemistry` | 14 |
 | Biology | `biology` | 16 |
 | Body & Medicine | `medicine` | 14 |
-| Earth & Climate | `earth` | 11 |
+| Earth & Climate | `earth` | 12 |
 | Space | `space` | 9 |
 | Computing | `computing` | 10 |
 | Information & Networks | `networks` | 9 |
@@ -193,6 +193,7 @@ A topic is done when:
 - [x] ensemble-weather-forecasting
 - [x] ocean-acidification
 - [x] tsunamis
+- [ ] carbonate-silicate-thermostat
 
 **Space**
 - [x] sun-earth-moon
@@ -1013,7 +1014,7 @@ A topic is done when:
 - **Interaction:** Scrub a timeline of 4.5 billion years while a globe shows the drifting continents and tracks show temperature, oxygen and the major groups of life. Zoom from eons down to the last few thousand years, and map the whole history onto a single calendar year.
 - **Takeaway:** Earth's history is so long that complex life, and humans most of all, occupy only its last sliver.
 - **Prerequisites:** plate-tectonics, radioactivity
-- **Related:** evolution
+- **Related:** evolution, carbonate-silicate-thermostat
 - **Needs:** Reconstructions of past continents, long-term temperature and oxygen records, and a dated timeline of life.
 - **Pitfall:** Continent positions are poorly known for the early Earth; show that uncertainty instead of inventing detail.
 
@@ -1083,7 +1084,7 @@ A topic is done when:
 - **Interaction:** Slide atmospheric CO2 from the pre-industrial 280 ppm past 1,000 ppm while the page solves the seawater carbonate system (the dissociation constants of carbonic acid in seawater, with alkalinity held fixed): pH falls, dissolved CO2 and bicarbonate rise, carbonate ion falls, and the aragonite saturation state drops below one first in cold water. A Bjerrum plot shows the species shifting with pH, a temperature slider shows why polar seas get there first, and the Revelle factor shows why the ocean's uptake slows as it fills.
 - **Takeaway:** Adding CO2 to seawater does not just lower its pH, it consumes carbonate ions, the building block of shells, and cold water runs short of them first.
 - **Prerequisites:** acids-bases, carbon-cycle, reaction-rates-equilibrium
-- **Related:** ocean-currents
+- **Related:** ocean-currents, carbonate-silicate-thermostat
 - **Needs:** Published empirical fits for seawater equilibrium constants as functions of temperature and salinity, the same ones CO2SYS uses: K0 (Weiss 1974), K1 and K2 of carbonic acid (Lueker et al. 2000), borate KB (Dickson 1990) and total boron (Uppström 1974) for the alkalinity, and aragonite and calcite solubility (Mucci 1983). These are published coefficients, retyped and cited. Cross-check the solver in a model test against the published intercomparison of carbonate packages (Orr, Epitalon & Gattuso 2015: check values of every constant, a standard water's dissolved carbon and its sensitivities, computed with CO2SYS, seacarb and mocsy).
 - **Pitfall:** The ocean is not becoming acid (its pH stays above 7); acidification means moving toward acid, and the harm is the loss of carbonate ion, not corrosive water.
 
@@ -1097,6 +1098,16 @@ A topic is done when:
 - **Related:** plate-tectonics
 - **Needs:** An ocean depth transect from NOAA's ETOPO 2022 relief model; the one-dimensional shallow-water equations run on that profile. State on the page that a single transect omits sideways spreading and focusing, so its heights far from the source come out too large (not a guaranteed upper bound) and are illustrative rather than coastal predictions.
 - **Pitfall:** A tsunami is not a towering surf wave: at the coast it arrives as a fast-rising flood lasting minutes, often after the sea draws back; and it is not a tidal wave, tides have nothing to do with it.
+
+#### carbonate-silicate-thermostat
+- **Title:** The carbonate-silicate thermostat
+- **Level:** 3
+- **Kind:** simulate
+- **Interaction:** A box model in which volcanoes outgas CO2, silicate weathering removes it at a rate that rises with temperature and rainfall (the Walker, Hays and Kasting feedback), and a simple energy balance with water vapour and ice sets the temperature. Knock the CO2 off balance and watch it return over hundreds of thousands of years. Dim the Sun by a tenth and run a few million years: CO2 piles up until weathering catches up and the planet wins back about half of the cooling; dim it by more at once and the ice wins first. Follow the thermostat's balance as the Sun brightens from seventy-two percent 4.5 billion years ago (the carbon settles far faster than the Sun changes): CO2 falls as the Sun brightens and the planet stays unfrozen if the young Earth's volcanoes were livelier than today's, while with CO2 held at today's level it freezes and stays frozen. Freeze the planet to stop weathering and watch CO2 climb for millions of years until the ice gives way; move the planet outward or switch off the volcanoes to find where the thermostat fails.
+- **Takeaway:** Over millions of years rock weathering acts as a thermostat, because a warmer, wetter planet draws down CO2 faster, which is why Earth stayed habitable under a brightening Sun and how a Snowball Earth ends.
+- **Prerequisites:** carbon-cycle, greenhouse-effect
+- **Related:** ocean-acidification, deep-time
+- **Pitfall:** This thermostat works over hundreds of thousands to millions of years and does nothing about fossil-fuel CO2 on human timescales; the fast carbon cycle and the slow one are different pages. It is the leading explanation of the faint young Sun paradox, not a settled one: the page should not present a single CO2 history as known.
 
 ### Space
 
