@@ -1,6 +1,6 @@
 # Topic catalog
 
-Source of truth for the content of an interactive web learning tool that shows how things work. It defines 139 topics in 11 categories, each built around one interactive graphic. Readers range from high-school students to university majors.
+Source of truth for the content of an interactive web learning tool that shows how things work. It defines 140 topics in 11 categories, each built around one interactive graphic. Readers range from high-school students to university majors.
 
 This file covers content only. It does not choose the stack, the visual design or the project layout; take those from the repository's own instructions.
 
@@ -86,7 +86,7 @@ A topic is done when:
 | Physics | `physics` | 13 |
 | Chemistry & Materials | `chemistry` | 14 |
 | Biology | `biology` | 16 |
-| Body & Medicine | `medicine` | 12 |
+| Body & Medicine | `medicine` | 13 |
 | Earth & Climate | `earth` | 9 |
 | Space | `space` | 9 |
 | Computing | `computing` | 10 |
@@ -178,6 +178,7 @@ A topic is done when:
 - [x] cerebellum-motor-learning
 - [x] pharmacokinetics-dosing
 - [x] cochlea-hearing
+- [ ] mri-k-space
 
 **Earth & Climate**
 - [x] plate-tectonics
@@ -959,6 +960,16 @@ A topic is done when:
 - **Related:** vision-color, compression
 - **Needs:** Speech for the implant demonstration: synthesized vowels (source–filter synthesis on published formant frequencies); the cochlear model itself is a standard one-dimensional transmission-line model, with its damping, amplifier saturation and input calibration fitted to published measurements.
 - **Pitfall:** Noise damage does not simply turn the volume down: the lost hair cells remove the amplification, so soft sounds vanish while loud ones still hurt.
+
+#### mri-k-space
+- **Title:** MRI: an image from spinning protons
+- **Level:** 3
+- **Kind:** step
+- **Interaction:** Start where Medical imaging stops: one gradient turns position into frequency. Step through a real 2D pulse sequence on a phantom: a slice-selective pulse tips the protons, a phase-encoding gradient gives each row its own twist, and a readout gradient records one line of the slice's 2D Fourier transform. Watch k-space fill line by line beside the image that its inverse transform gives so far. A Bloch-equation view of a few spins shows them fan out and refocus into an echo. Then edit k-space: keep only the centre for a blurred image, only the edges for outlines, skip every other line to fold the image onto itself, or shrink the field of view until the head wraps around.
+- **Takeaway:** An MRI scanner never measures a picture: gradients give each position its own precession frequency and phase, so every echo is one line of the image's 2D Fourier transform, and the centre of k-space carries the contrast while its edges carry the detail.
+- **Prerequisites:** medical-imaging, fourier-transform, electromagnetism
+- **Needs:** The Shepp-Logan phantom (a mathematical object, no data); optionally one real T1-weighted brain slice.
+- **Pitfall:** MRI uses no ionizing radiation, and the image is not proton density alone. A point in k-space is not a pixel: every sample holds information about the whole image, which is why dropping lines blurs or ghosts the whole picture instead of leaving holes.
 
 ### Earth & Climate
 
