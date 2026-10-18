@@ -200,6 +200,35 @@ export function chebyshev(
 }
 
 /**
+ * For comparison (the narrative mentions it): the interpolant of degree n
+ * through n + 1 equally spaced points of [lo, hi], by the barycentric formula
+ * with general weights 1/Π(x_j − x_k).
+ */
+export function equispaced(
+	f: (x: number) => number,
+	lo: number,
+	hi: number,
+	n: number
+): (x: number) => number {
+	const xs = Array.from({ length: n + 1 }, (_, j) =>
+		n === 0 ? (lo + hi) / 2 : lo + ((hi - lo) * j) / n
+	);
+	const w = xs.map((xj, j) => 1 / xs.reduce((p, xk, k) => (k === j ? p : p * (xj - xk)), 1));
+	const v = xs.map(f);
+	return (x) => {
+		let num = 0;
+		let den = 0;
+		for (let j = 0; j <= n; j++) {
+			const d = x - xs[j];
+			if (d === 0) return v[j];
+			num += (w[j] / d) * v[j];
+			den += w[j] / d;
+		}
+		return num / den;
+	};
+}
+
+/**
  * Chebyshev interpolation on [lo, hi] converges like ρ^−n, where ρ is the sum
  * of the semi-axes (rescaled to [−1, 1]) of the largest ellipse with foci at
  * the interval's ends that keeps the singularities outside (Bernstein's

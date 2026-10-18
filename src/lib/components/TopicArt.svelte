@@ -413,6 +413,16 @@
 					});
 		return out;
 	})();
+
+	// Taylor series: 1/(1 + x²) over −2.2…2.2 and its degree-8 polynomial about 0, which hugs the
+	// bump inside |x| < 1 and shoots off beyond it (clamped to the card).
+	const taylorArt = (poly: boolean) =>
+		Array.from({ length: 89 }, (_, i) => {
+			const x = -2.2 + (i / 88) * 4.4;
+			const y = poly ? 1 - x ** 2 + x ** 4 - x ** 6 + x ** 8 : 1 / (1 + x * x);
+			const py = Math.max(8, Math.min(112, 92 - 52 * y));
+			return `${i ? 'L' : 'M'}${(68 + x * 24).toFixed(1)} ${py.toFixed(1)}`;
+		}).join(' ');
 </script>
 
 <svg viewBox="0 0 200 120" class="art" style:--accent={accent} aria-hidden="true">
@@ -3071,6 +3081,30 @@
 			stroke-linecap="round"
 		/>
 		<circle cx="141" cy="47" r="4.5" fill={accent} />
+	{:else if slug === 'taylor-series'}
+		<!-- a bump and its Taylor polynomial leaving it at |x| = 1; a disk stopped by ±i -->
+		<line x1="12" y1="92" x2="124" y2="92" stroke="currentColor" stroke-width="1" opacity="0.5" />
+		<rect x="44" y="12" width="48" height="80" fill={accent} opacity="0.1" />
+		<path d={taylorArt(false)} fill="none" stroke="currentColor" stroke-width="2" />
+		<path d={taylorArt(true)} fill="none" stroke={accent} stroke-width="2.2" />
+		<line x1="134" y1="60" x2="190" y2="60" stroke="currentColor" stroke-width="1" opacity="0.5" />
+		<line x1="162" y1="22" x2="162" y2="98" stroke="currentColor" stroke-width="1" opacity="0.5" />
+		<circle
+			cx="162"
+			cy="60"
+			r="22"
+			fill={accent}
+			fill-opacity="0.15"
+			stroke={accent}
+			stroke-width="1.8"
+		/>
+		{#each [38, 82] as y (y)}
+			<path
+				d="M{158} {y - 4} L{166} {y + 4} M{166} {y - 4} L{158} {y + 4}"
+				stroke="currentColor"
+				stroke-width="2"
+			/>
+		{/each}
 	{:else if slug === 'rlhf-alignment'}
 		<!-- two answer cards with a tick on one, and bars pulled from an even row towards the right -->
 		<rect

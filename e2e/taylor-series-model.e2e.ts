@@ -5,6 +5,7 @@ import { expect, test } from '@playwright/test';
 import {
 	bernsteinRho,
 	chebyshev,
+	equispaced,
 	functions,
 	maxError,
 	radius,
@@ -77,7 +78,12 @@ test('inside the radius more terms help; outside, each term makes it worse', () 
 	expect(err(runge, 2, 60, 4)).toBeLessThan(1e-3);
 	expect(err(runge, 2, 60, 4)).toBeLessThan(err(runge, 2, 20, 4));
 	// log(1 + x) about 0 also fails beyond x = 1, where nothing happens to the function.
-	expect(err(log, 0, 16, 1.5)).toBeGreaterThan(err(log, 0, 8, 1.5));
+	// at x = 1.5, degree 8 gives −0.91 and degree 16 about −23, for the true 0.92
+	expect(taylor(log, 0, 8)(1.5)).toBeCloseTo(-0.91, 2);
+	expect(taylor(log, 0, 16)(1.5)).toBeCloseTo(-23.1, 1);
+	expect(log.f(1.5)).toBeCloseTo(0.92, 2);
+	// at x = 2, degree 30 is about −8.6 × 10⁸
+	expect(taylor(runge, 0, 30)(2) / -8.6e8).toBeCloseTo(1, 2);
 });
 
 test('on the boundary circle the series of 1/(1 + x²) does not converge', () => {
@@ -103,8 +109,8 @@ test("Taylor's error bound holds for eˣ and sin x", () => {
 		}
 	}
 	// The narrative: about 0, degree 10 already gives e² to 4 decimals and sin 4 to 1 in 100.
-	expect(taylor(exp, 0, 10)(2)).toBeCloseTo(Math.exp(2), 3);
-	expect(err(sin, 0, 11, 4)).toBeLessThan(0.02);
+	expect(err(exp, 0, 10, 2)).toBeLessThan(1e-4);
+	expect(err(sin, 0, 11, 4)).toBeCloseTo(0.01, 3);
 	expect(err(sin, 0, 7, 4)).toBeGreaterThan(0.5);
 });
 
@@ -119,7 +125,14 @@ test('Chebyshev interpolation fits 1/(1 + x²) on the whole interval, at the ell
 	const rho = bernsteinRho(runge, -4, 4);
 	expect(rho).toBeCloseTo((1 + Math.sqrt(17)) / 4, 12);
 	expect(Math.pow(errAt(20) / errAt(40), 1 / 20)).toBeCloseTo(rho, 1);
-	// The narrative: degree 20 is within 0.007 everywhere on [−4, 4].
+	// The narrative: degree 20 is within 0.007 everywhere on [−4, 4], where the Taylor
+	// polynomial of degree 20 is off by about 10¹² at the ends.
 	expect(errAt(20)).toBeLessThan(0.007);
+	const taylorErr = maxError(runge.f, taylor(runge, 0, 20), -4, 4);
+	expect(Math.log10(taylorErr)).toBeCloseTo(12, 0);
+	// Equally spaced points instead get worse with the degree (Runge's phenomenon).
+	const equiErr = (n: number) => maxError(runge.f, equispaced(runge.f, -4, 4, n), -4, 4);
+	expect(equiErr(20)).toBeGreaterThan(equiErr(10));
+	expect(equiErr(20)).toBeGreaterThan(1);
 	expect(bernsteinRho(exp, -4, 4)).toBe(Infinity);
 });

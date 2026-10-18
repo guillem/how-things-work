@@ -3390,3 +3390,24 @@ kbd {
 	--rl-pg: #ff922b;
 	--rl-card: #1f2328;
 }
+
+/* taylor-series: the function, its Taylor polynomial, Taylor's bound, the disk of convergence,
+   the singularities, the Chebyshev interpolant and the complex plane's background */
+:root {
+	--ts-f: #343a40;
+	--ts-taylor: #e8590c;
+	--ts-bound: #868e96;
+	--ts-disk: #0c8599;
+	--ts-sing: #e03131;
+	--ts-cheb: #6741d9;
+	--ts-plane: #f8f9fa;
+}
+:root[data-theme='dark'] {
+	--ts-f: #dee2e6;
+	--ts-taylor: #ff922b;
+	--ts-bound: #adb5bd;
+	--ts-disk: #3bc9db;
+	--ts-sing: #ff6b6b;
+	--ts-cheb: #b197fc;
+	--ts-plane: #1a1d21;
+}

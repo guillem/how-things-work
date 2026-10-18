@@ -996,6 +996,15 @@ const explainers: Explainer[] = [
 		accent: '#7048e8',
 		steps: 8,
 		minutes: 18
+	},
+	{
+		slug: 'taylor-series',
+		title: 'Taylor series & where they stop working',
+		summary:
+			'Add terms to a Taylor polynomial and watch it hug eˣ and sin x ever further out but give up at |x| = 1 on the harmless-looking 1/(1 + x²); then find the reason in the complex plane, where the disk of convergence stops at the nearest singularity, and fit the whole interval anyway with Chebyshev interpolation.',
+		accent: '#d9480f',
+		steps: 7,
+		minutes: 16
 	}
 ];
 
