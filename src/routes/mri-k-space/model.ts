@@ -485,14 +485,15 @@ let shape: Float64Array | null = null;
 /**
  * How far the pulse tips the protons at height z (mm) in a gradient of G mT/m, the pulse sent
  * `offsetHz` off the centre frequency: |Mxy| after the pulse, from the Bloch equations (relaxation
- * is negligible in 4 ms).
+ * is negligible in 4 ms). `upTo` (0–1) stops part-way through the pulse.
  */
-export function tipAt(zMm: number, GmTm: number, offsetHz: number): number {
+export function tipAt(zMm: number, GmTm: number, offsetHz: number, upTo = 1): number {
 	shape ??= pulseShape();
+	const n = Math.round(Math.max(0, Math.min(1, upTo)) * shape.length);
 	const dt = PULSE.durationMs / 1000 / PULSE.samples;
 	const dw = 2 * Math.PI * (GAMMA_HZ_T * GmTm * 1e-3 * zMm * 1e-3 - offsetHz); // rad/s
 	let M: Vec3 = [0, 0, 1];
-	for (let i = 0; i < shape.length; i++) {
+	for (let i = 0; i < n; i++) {
 		const w1 = shape[i];
 		M = rotate(M, [w1, 0, dw], Math.hypot(w1, dw) * dt);
 	}

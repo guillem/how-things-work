@@ -1284,6 +1284,15 @@ const explainers: Explainer[] = [
 		accent: '#9d4b73',
 		steps: 8,
 		minutes: 22
+	},
+	{
+		slug: 'mri-k-space',
+		title: 'MRI: an image from spinning protons',
+		summary:
+			'An MRI scanner never measures a picture: gradients give every position its own frequency and phase, so each echo is one line of the slice’s 2-D Fourier transform. Watch k-space fill line by line beside the image, spins refocus into an echo, and edit k-space for blur, outlines, folds and a head that wraps round.',
+		accent: '#36618e',
+		steps: 12,
+		minutes: 24
 	}
 ];
 

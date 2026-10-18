@@ -4465,6 +4465,51 @@
 				opacity={tr.fate === 'down' ? 0.4 : 0.85}
 			/>
 		{/each}
+	{:else if slug === 'mri-k-space'}
+		<!-- k-space filled line by line (bright centre, current line in the accent) beside the head
+		     its inverse transform gives -->
+		<rect x="18" y="14" width="84" height="92" rx="3" fill="currentColor" opacity="0.08" />
+		{#each [22, 30, 38, 46, 54, 62] as y (y)}
+			<line
+				x1="22"
+				x2="98"
+				y1={y}
+				y2={y}
+				stroke="currentColor"
+				stroke-width="3"
+				opacity={0.15 + 0.5 * (1 - Math.abs(y - 60) / 40)}
+			/>
+		{/each}
+		<line x1="22" x2="98" y1="70" y2="70" stroke={accent} stroke-width="3" />
+		<circle cx="60" cy="62" r="5" fill="currentColor" opacity="0.6" />
+		<path d="M110 60 h14" stroke="currentColor" stroke-width="1.5" opacity="0.5" />
+		<path
+			d="M121 56 l4 4 l-4 4"
+			fill="none"
+			stroke="currentColor"
+			stroke-width="1.5"
+			opacity="0.5"
+		/>
+		<ellipse cx="158" cy="60" rx="26" ry="36" fill="none" stroke={accent} stroke-width="3" />
+		<ellipse cx="158" cy="61" rx="21" ry="30" fill="currentColor" opacity="0.15" />
+		<ellipse
+			cx="151"
+			cy="60"
+			rx="4"
+			ry="10"
+			transform="rotate(18 151 60)"
+			fill={accent}
+			opacity="0.6"
+		/>
+		<ellipse
+			cx="165"
+			cy="60"
+			rx="3"
+			ry="8"
+			transform="rotate(-18 165 60)"
+			fill={accent}
+			opacity="0.6"
+		/>
 	{:else if slug === 'pharmacokinetics-dosing'}
 		<!-- tablets every few hours; the level piles up to a steady sawtooth inside the target band -->
 		<rect x="18" y="38" width="172" height="26" fill="currentColor" opacity="0.08" />

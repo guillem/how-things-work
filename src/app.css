@@ -4356,3 +4356,34 @@ kbd {
 	--co-electrode: #ffc14d;
 	--co-electrode-text: #ffd27a;
 }
+
+/* mri-k-space: the radio pulse, the three gradients, the signal (two components), the current
+   line and the k-space mask, the spins, and fast and slow spins of the echo */
+:root {
+	--mk-rf: #c2255c;
+	--mk-gz: #2f9e44;
+	--mk-gy: #7048e8;
+	--mk-gx: #e8590c;
+	--mk-signal: #36618e;
+	--mk-signal-2: #74a5d6;
+	--mk-line: #f08c00;
+	--mk-mask: #ffd43b;
+	--mk-mask-text: #8a6100;
+	--mk-spin: #36618e;
+	--mk-fast: #e8590c;
+	--mk-slow: #1c7ed6;
+}
+:root[data-theme='dark'] {
+	--mk-rf: #f783ac;
+	--mk-gz: #69db7c;
+	--mk-gy: #b197fc;
+	--mk-gx: #ffa94d;
+	--mk-signal: #8fbbe8;
+	--mk-signal-2: #4f7cad;
+	--mk-line: #ffc078;
+	--mk-mask: #ffd43b;
+	--mk-mask-text: #ffe066;
+	--mk-spin: #a5c8ec;
+	--mk-fast: #ffa94d;
+	--mk-slow: #74c0fc;
+}
