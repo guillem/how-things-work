@@ -1,6 +1,6 @@
 # Topic catalog
 
-Source of truth for the content of an interactive web learning tool that shows how things work. It defines 125 topics in 11 categories, each built around one interactive graphic. Readers range from high-school students to university majors.
+Source of truth for the content of an interactive web learning tool that shows how things work. It defines 126 topics in 11 categories, each built around one interactive graphic. Readers range from high-school students to university majors.
 
 This file covers content only. It does not choose the stack, the visual design or the project layout; take those from the repository's own instructions.
 
@@ -83,7 +83,7 @@ A topic is done when:
 | Category | Id | Topics |
 |---|---|---|
 | Mathematics | `math` | 18 |
-| Physics | `physics` | 11 |
+| Physics | `physics` | 12 |
 | Chemistry & Materials | `chemistry` | 10 |
 | Biology | `biology` | 10 |
 | Body & Medicine | `medicine` | 10 |
@@ -128,6 +128,7 @@ A topic is done when:
 - [x] quantum-mechanics
 - [x] standard-model
 - [x] musical-scales-ratios
+- [ ] lasers
 
 **Chemistry & Materials**
 - [x] atoms-periodic-table
@@ -519,6 +520,16 @@ A topic is done when:
 - **Related:** fourier-transform
 - **Pitfall:** Twelve is a good compromise, not a law of nature or of the ear: other traditions divide the octave differently, and equal temperament makes every fifth slightly flat. Consonance also depends on timbre; the roughness model (Plomp-Levelt 1965) is one measurable part of it.
 
+#### lasers
+- **Title:** Lasers
+- **Level:** 3
+- **Kind:** simulate
+- **Interaction:** Pump a four-level gain medium between two mirrors and watch the populations and the photon number evolve under the rate equations: below threshold the cavity holds a few spontaneous photons, and at threshold the inversion clamps while the output climbs linearly with pump power. Lower the mirror reflectivity, switch to a three-level or a two-level medium, or open and close a shutter to see relaxation oscillations and a Q-switched pulse.
+- **Takeaway:** A laser is a cavity in which stimulated emission out-competes loss, and above that threshold the inversion stops growing and nearly every extra pumped atom adds a photon to the same mode.
+- **Prerequisites:** quantum-mechanics, oscillations-resonance
+- **Related:** semiconductors, solar-cells
+- **Pitfall:** Population inversion is impossible by pumping a two-level system at any power; the page must show the two-level case saturating at equal populations.
+
 ### Chemistry & Materials
 
 #### atoms-periodic-table
@@ -604,7 +615,7 @@ A topic is done when:
 - **Interaction:** View metal, insulator and semiconductor lattices beside their energy bands. Add dopant atoms to silicon to create free electrons or holes, join an n-type and a p-type region, and apply a voltage across the junction in each direction.
 - **Takeaway:** A semiconductor's conductivity can be set by its impurities and changed by a voltage, which makes it a material that can be switched.
 - **Prerequisites:** chemical-bonds, electric-circuits
-- **Related:** quantum-mechanics
+- **Related:** quantum-mechanics, lasers
 
 #### chromatography
 - **Title:** Chromatography: separating by stickiness
@@ -1380,7 +1391,7 @@ A topic is done when:
 - **Interaction:** Shine light of adjustable color and intensity on a p-n junction and watch photons free electrons that the junction's field sweeps into a circuit. Change the material's band gap and see how the energy of sunlight divides: photons with too little energy are not absorbed, the excess energy of the others is lost as heat, part of what remains is lost because the cell delivers less voltage than its band gap, and the rest is electrical output.
 - **Takeaway:** A solar cell is a junction that turns absorbed photons directly into moving charge, and its band gap forces a trade-off between absorbing more photons and keeping more of each one's energy; with unavoidable voltage losses, that caps a single-junction cell at roughly one-third efficiency in ordinary sunlight.
 - **Prerequisites:** semiconductors, light-optics
-- **Related:** photosynthesis, power-grid
+- **Related:** photosynthesis, power-grid, lasers
 - **Needs:** A reference solar spectrum.
 - **Pitfall:** The two spectrum losses alone leave a ceiling above 40%. The one-third limit (Shockley-Queisser) also counts the voltage lost to the light the cell must re-emit and to drawing power at its best operating point; leave that out and the graphic contradicts the takeaway.
 
@@ -1451,6 +1462,5 @@ Strong candidates that are not in the catalog. Do not build them unless the user
 - Operating systems
 - Compilers
 - Cellular automata
-- Lasers & LEDs
 - Heat pumps
 - Clustering & dimensionality reduction
