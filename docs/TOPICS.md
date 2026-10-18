@@ -1,6 +1,6 @@
 # Topic catalog
 
-Source of truth for the content of an interactive web learning tool that shows how things work. It defines 144 topics in 11 categories, each built around one interactive graphic. Readers range from high-school students to university majors.
+Source of truth for the content of an interactive web learning tool that shows how things work. It defines 145 topics in 11 categories, each built around one interactive graphic. Readers range from high-school students to university majors.
 
 This file covers content only. It does not choose the stack, the visual design or the project layout; take those from the repository's own instructions.
 
@@ -87,7 +87,7 @@ A topic is done when:
 | Chemistry & Materials | `chemistry` | 14 |
 | Biology | `biology` | 16 |
 | Body & Medicine | `medicine` | 14 |
-| Earth & Climate | `earth` | 12 |
+| Earth & Climate | `earth` | 13 |
 | Space | `space` | 9 |
 | Computing | `computing` | 10 |
 | Information & Networks | `networks` | 9 |
@@ -194,6 +194,7 @@ A topic is done when:
 - [x] ocean-acidification
 - [x] tsunamis
 - [x] carbonate-silicate-thermostat
+- [ ] radiative-convective-column
 
 **Space**
 - [x] sun-earth-moon
@@ -1106,8 +1107,18 @@ A topic is done when:
 - **Interaction:** A box model in which volcanoes outgas CO2, silicate weathering removes it at a rate that rises with temperature and rainfall (the Walker, Hays and Kasting feedback), and a simple energy balance with water vapour and ice sets the temperature. Knock the CO2 off balance and watch it return over hundreds of thousands of years. Dim the Sun by a tenth and run a few million years: CO2 piles up until weathering catches up and the planet wins back about half of the cooling; dim it by more at once and the ice wins first. Follow the thermostat's balance as the Sun brightens from seventy-two percent 4.5 billion years ago (the carbon settles far faster than the Sun changes): CO2 falls as the Sun brightens and the planet stays unfrozen if the young Earth's volcanoes were livelier than today's, while with CO2 held at today's level it freezes and stays frozen. Freeze the planet to stop weathering and watch CO2 climb for millions of years until the ice gives way; move the planet outward or switch off the volcanoes to find where the thermostat fails.
 - **Takeaway:** Over millions of years rock weathering acts as a thermostat, because a warmer, wetter planet draws down CO2 faster, which is why Earth stayed habitable under a brightening Sun and how a Snowball Earth ends.
 - **Prerequisites:** carbon-cycle, greenhouse-effect
-- **Related:** ocean-acidification, deep-time
+- **Related:** ocean-acidification, deep-time, radiative-convective-column
 - **Pitfall:** This thermostat works over hundreds of thousands to millions of years and does nothing about fossil-fuel CO2 on human timescales; the fast carbon cycle and the slow one are different pages. It is the leading explanation of the faint young Sun paradox, not a settled one: the page should not present a single CO2 history as known.
+
+#### radiative-convective-column
+- **Title:** Radiative transfer & the climate column
+- **Level:** 3
+- **Kind:** simulate
+- **Interaction:** A column of air from the surface to the stratosphere, solved with the two-stream radiative transfer equations for a grey gas plus an infrared window, with convection adjusting any layer steeper than the chosen lapse rate. Slide the infrared optical depth (the CO2 amount) and the lapse rate and watch the temperature profile, the tropopause and the emission height move, while a side panel shows which layer the escaping infrared leaves from. Close the window to make the gas fully grey and watch the stratosphere stop cooling as CO2 rises; switch convection off to see pure radiative equilibrium and its unstable lower layers.
+- **Takeaway:** Adding greenhouse gas raises the height from which the planet radiates to space, and because air is colder higher up the whole column below must warm to restore the balance, while the stratosphere above it cools.
+- **Prerequisites:** greenhouse-effect, atmosphere-weather
+- **Related:** carbonate-silicate-thermostat
+- **Pitfall:** Greenhouse gases do not trap heat like a lid or reflect infrared; the column warms because the effective emission level rises into colder air. A band that is saturated at the surface still warms the planet, because emission from higher, thinner layers is what matters. Stratospheric cooling is not automatic for any absorber: in a perfectly grey atmosphere the stratosphere's temperature does not change, and it cools here because part of the infrared escapes through the window.
 
 ### Space
 
