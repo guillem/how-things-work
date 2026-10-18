@@ -1,6 +1,6 @@
 # Topic catalog
 
-Source of truth for the content of an interactive web learning tool that shows how things work. It defines 128 topics in 11 categories, each built around one interactive graphic. Readers range from high-school students to university majors.
+Source of truth for the content of an interactive web learning tool that shows how things work. It defines 129 topics in 11 categories, each built around one interactive graphic. Readers range from high-school students to university majors.
 
 This file covers content only. It does not choose the stack, the visual design or the project layout; take those from the repository's own instructions.
 
@@ -84,7 +84,7 @@ A topic is done when:
 |---|---|---|
 | Mathematics | `math` | 18 |
 | Physics | `physics` | 13 |
-| Chemistry & Materials | `chemistry` | 11 |
+| Chemistry & Materials | `chemistry` | 12 |
 | Biology | `biology` | 10 |
 | Body & Medicine | `medicine` | 10 |
 | Earth & Climate | `earth` | 9 |
@@ -143,6 +143,7 @@ A topic is done when:
 - [x] semiconductors
 - [x] chromatography
 - [x] dislocations-alloys
+- [ ] huckel-molecular-orbitals
 
 **Biology**
 - [x] the-cell
@@ -618,7 +619,7 @@ A topic is done when:
 - **Interaction:** Build carbon chains, rings and functional groups and watch the molecule's name and properties update. Rotate two mirror-image molecules to see that they cannot be superimposed, and link monomers into a polymer whose stiffness depends on chain length and cross-links.
 - **Takeaway:** Carbon's four bonds allow endless chains and rings, so the same few elements arranged differently give fuels, plastics, drugs and the molecules of life.
 - **Prerequisites:** chemical-bonds
-- **Related:** protein-folding
+- **Related:** protein-folding, huckel-molecular-orbitals
 
 #### semiconductors
 - **Title:** Crystals & semiconductors
@@ -627,7 +628,7 @@ A topic is done when:
 - **Interaction:** View metal, insulator and semiconductor lattices beside their energy bands. Add dopant atoms to silicon to create free electrons or holes, join an n-type and a p-type region, and apply a voltage across the junction in each direction.
 - **Takeaway:** A semiconductor's conductivity can be set by its impurities and changed by a voltage, which makes it a material that can be switched.
 - **Prerequisites:** chemical-bonds, electric-circuits
-- **Related:** quantum-mechanics, lasers
+- **Related:** quantum-mechanics, lasers, huckel-molecular-orbitals
 
 #### chromatography
 - **Title:** Chromatography: separating by stickiness
@@ -647,6 +648,17 @@ A topic is done when:
 - **Prerequisites:** semiconductors, states-of-matter
 - **Related:** bridges-structures
 - **Pitfall:** Crystals do not deform by whole planes sliding at once; the theoretical strength computed that way is often a thousand times higher than what ordinary, soft metal crystals show (only tiny, nearly defect-free crystals come close to it).
+
+#### huckel-molecular-orbitals
+- **Title:** Molecular orbitals & conjugation
+- **Level:** 3
+- **Kind:** build
+- **Interaction:** Snap carbon atoms into chains and rings to build a π system (ethene, butadiene, benzene, cyclobutadiene, the cyclopentadienyl anion, a cyanine dye); the page diagonalizes the Hückel matrix and draws the molecular orbitals as signed lobes on the atoms beside an energy ladder filled with the π electrons. Lengthen a cyanine chain and watch the HOMO-LUMO gap shrink beside the dye series' measured absorption maxima and a swatch of the colour it absorbs; close a chain into a ring and add or remove electrons to see which counts fill a closed shell and which leave two electrons alone in a degenerate pair.
+- **Takeaway:** Electrons delocalized over a π system fill a ladder of orbitals whose gap narrows as the system grows, which is why longer dyes absorb redder light, and a ring is stabilized only when its π electrons exactly fill a closed shell (2, 6, 10: benzene) and destabilized when they half-fill a degenerate pair (4, 8: cyclobutadiene).
+- **Prerequisites:** chemical-bonds, linear-transformations, quantum-mechanics
+- **Related:** carbon-polymers, semiconductors
+- **Needs:** Measured absorption maxima of a cyanine dye series for the color panel, to set beside the computed gap.
+- **Pitfall:** Benzene's bonds do not alternate between single and double; the orbitals spread over the whole ring, and the two Kekulé drawings are a convention, not structures it flips between.
 
 ### Biology
 
