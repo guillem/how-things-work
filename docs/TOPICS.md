@@ -1,6 +1,6 @@
 # Topic catalog
 
-Source of truth for the content of an interactive web learning tool that shows how things work. It defines 120 topics in 11 categories, each built around one interactive graphic. Readers range from high-school students to university majors.
+Source of truth for the content of an interactive web learning tool that shows how things work. It defines 121 topics in 11 categories, each built around one interactive graphic. Readers range from high-school students to university majors.
 
 This file covers content only. It does not choose the stack, the visual design or the project layout; take those from the repository's own instructions.
 
@@ -82,7 +82,7 @@ A topic is done when:
 
 | Category | Id | Topics |
 |---|---|---|
-| Mathematics | `math` | 15 |
+| Mathematics | `math` | 16 |
 | Physics | `physics` | 10 |
 | Chemistry & Materials | `chemistry` | 10 |
 | Biology | `biology` | 10 |
@@ -112,6 +112,7 @@ A topic is done when:
 - [x] game-theory-cooperation
 - [x] differential-equations
 - [x] calculus-of-variations
+- [ ] random-graphs
 
 **Physics**
 - [x] newtons-laws
@@ -382,6 +383,16 @@ A topic is done when:
 - **Related:** light-optics, gradient-descent, orbits-kepler
 - **Pitfall:** The best curve can dip below the end point and still win (it does whenever the horizontal distance is more than about π/2 times the drop), and the straight line is not 'almost as good': show it losing to the cycloid by a measured margin. A curve that satisfies the Euler–Lagrange equation is stationary, not automatically the minimum.
 
+#### random-graphs
+- **Title:** Random graphs & the giant component
+- **Level:** 3
+- **Kind:** simulate
+- **Interaction:** Slide the average degree of a random graph and watch components merge, coloured by size: the largest component's share of the nodes stays near zero until the average degree passes 1, then climbs, plotted live against degree. Raise the number of nodes from 50 to a few thousand and rerun the sweep: the curve's knee at degree 1 sharpens toward a corner. A second view opens bonds on a square grid at random and shows a spanning cluster appearing at its own threshold, near half the bonds open.
+- **Takeaway:** In a large random network, adding links does not connect it gradually: a giant connected piece appears abruptly once each node has about one link on average, and the bigger the network, the sharper that switch.
+- **Prerequisites:** graph-search, central-limit-theorem
+- **Related:** epidemics, internet, pagerank, states-of-matter
+- **Pitfall:** The sharp threshold is a large-graph limit; with a few hundred nodes the curve is rounded. Show the knee sharpening as n grows instead of drawing a step.
+
 ### Physics
 
 #### newtons-laws
@@ -512,7 +523,7 @@ A topic is done when:
 - **Interaction:** Control the temperature and pressure of a box of simulated molecules and watch it freeze, melt, boil and condense, with the current state tracked on a phase diagram. Switch the substance to water to see the open lattice of ice.
 - **Takeaway:** Solid, liquid and gas are the same molecules balancing attraction against thermal motion, and water is unusual because its solid is less dense than its liquid.
 - **Prerequisites:** chemical-bonds
-- **Related:** entropy
+- **Related:** entropy, random-graphs
 
 #### reaction-rates-equilibrium
 - **Title:** Reaction rates, catalysts & equilibrium
@@ -717,7 +728,7 @@ A topic is done when:
 - **Interaction:** Set how many people each case infects, how long a case stays infectious and what share of people are vaccinated. Watch the infection spread through a moving crowd and plot the susceptible, infected and recovered counts over time.
 - **Takeaway:** An outbreak grows exponentially while each case infects more than one other person, and it dies out once enough people are immune.
 - **Prerequisites:** none
-- **Related:** ecosystems, mrna-vaccines, exponentials-logarithms, differential-equations
+- **Related:** ecosystems, mrna-vaccines, exponentials-logarithms, differential-equations, random-graphs
 
 #### mrna-vaccines
 - **Title:** Vaccines & mRNA
@@ -1067,7 +1078,7 @@ A topic is done when:
 - **Interaction:** Send a message across a map of routers and watch it split into packets that travel hop by hop, possibly by different routes, and reassemble at the destination. Cut a link, congest a router or drop packets and watch the network reroute and the sender resend; trace a web request from name lookup to response.
 - **Takeaway:** The Internet has no central controller: data is cut into packets that are routed independently, and reliability is added by the two ends of the connection.
 - **Prerequisites:** binary
-- **Related:** graph-search, wireless-signals
+- **Related:** graph-search, wireless-signals, random-graphs
 
 #### gps
 - **Title:** GPS
@@ -1086,7 +1097,7 @@ A topic is done when:
 - **Interaction:** Build a small web by adding pages and links. Release a random surfer who follows links and occasionally jumps to any page, and watch the visit counts converge to each page's rank; add links to try to boost one page.
 - **Takeaway:** A page's importance can be computed from the link structure alone: a page matters if pages that matter link to it.
 - **Prerequisites:** none
-- **Related:** linear-transformations, graph-search
+- **Related:** linear-transformations, graph-search, random-graphs
 
 #### consensus-blockchains
 - **Title:** Blockchains & distributed consensus
