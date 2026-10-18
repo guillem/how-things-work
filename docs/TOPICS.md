@@ -1,6 +1,6 @@
 # Topic catalog
 
-Source of truth for the content of an interactive web learning tool that shows how things work. It defines 126 topics in 11 categories, each built around one interactive graphic. Readers range from high-school students to university majors.
+Source of truth for the content of an interactive web learning tool that shows how things work. It defines 127 topics in 11 categories, each built around one interactive graphic. Readers range from high-school students to university majors.
 
 This file covers content only. It does not choose the stack, the visual design or the project layout; take those from the repository's own instructions.
 
@@ -83,7 +83,7 @@ A topic is done when:
 | Category | Id | Topics |
 |---|---|---|
 | Mathematics | `math` | 18 |
-| Physics | `physics` | 12 |
+| Physics | `physics` | 13 |
 | Chemistry & Materials | `chemistry` | 10 |
 | Biology | `biology` | 10 |
 | Body & Medicine | `medicine` | 10 |
@@ -129,6 +129,7 @@ A topic is done when:
 - [x] standard-model
 - [x] musical-scales-ratios
 - [x] lasers
+- [ ] ising-model
 
 **Chemistry & Materials**
 - [x] atoms-periodic-table
@@ -530,6 +531,16 @@ A topic is done when:
 - **Related:** semiconductors, solar-cells
 - **Pitfall:** Population inversion is impossible by pumping a two-level system at any power; the page must show the two-level case saturating at equal populations.
 
+#### ising-model
+- **Title:** The Ising model & phase transitions
+- **Level:** 3
+- **Kind:** simulate
+- **Interaction:** Run a square lattice of spins with the Metropolis algorithm (or the Wolff cluster update, which stays fast near the critical point) and slide the temperature through Tc: domains grow out of noise, the magnetization rises steeply but continuously from zero as the lattice cools below Tc, and the susceptibility and heat capacity spike. Below Tc, apply a field and sweep it back and forth to trace a hysteresis loop; grow the lattice to see the peaks sharpen, and shrink it to a one-dimensional chain to see the transition vanish.
+- **Takeaway:** In two dimensions, nearest-neighbour alignment alone produces a phase transition at a definite temperature, sharp only in the limit of a large system, while a one-dimensional chain never orders.
+- **Prerequisites:** entropy
+- **Related:** states-of-matter, neural-networks
+- **Pitfall:** A one-dimensional chain has no phase transition at any temperature above zero; show that case so the reader does not believe order is automatic.
+
 ### Chemistry & Materials
 
 #### atoms-periodic-table
@@ -568,7 +579,7 @@ A topic is done when:
 - **Interaction:** Control the temperature and pressure of a box of simulated molecules and watch it freeze, melt, boil and condense, with the current state tracked on a phase diagram. Switch the substance to water to see the open lattice of ice.
 - **Takeaway:** Solid, liquid and gas are the same molecules balancing attraction against thermal motion, and water is unusual because its solid is less dense than its liquid.
 - **Prerequisites:** chemical-bonds
-- **Related:** entropy, random-graphs
+- **Related:** entropy, random-graphs, ising-model
 
 #### reaction-rates-equilibrium
 - **Title:** Reaction rates, catalysts & equilibrium
@@ -1189,7 +1200,7 @@ A topic is done when:
 - **Interaction:** Pick a 2D classification dataset and build a network by adding layers and neurons; train it live and watch the decision boundary and each neuron's output evolve. Then step through one example on a small 2-2-1 network: values flow forward, then error signals flow backward and adjust each weight.
 - **Takeaway:** A neural network is layers of simple units whose weights are tuned by passing the error backward, and stacking layers lets it bend a simple boundary into almost any shape.
 - **Prerequisites:** gradient-descent, linear-transformations
-- **Related:** tensors, protein-folding, neurons, gpu
+- **Related:** tensors, protein-folding, neurons, gpu, ising-model
 
 #### convolution-vision
 - **Title:** Convolution & computer vision
