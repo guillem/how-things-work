@@ -1,6 +1,6 @@
 # Topic catalog
 
-Source of truth for the content of an interactive web learning tool that shows how things work. It defines 102 topics in 11 categories, each built around one interactive graphic. Readers range from high-school students to university majors.
+Source of truth for the content of an interactive web learning tool that shows how things work. It defines 103 topics in 11 categories, each built around one interactive graphic. Readers range from high-school students to university majors.
 
 This file covers content only. It does not choose the stack, the visual design or the project layout; take those from the repository's own instructions.
 
@@ -91,7 +91,7 @@ A topic is done when:
 | Space | `space` | 9 |
 | Computing | `computing` | 10 |
 | Information & Networks | `networks` | 8 |
-| Artificial Intelligence | `ai` | 11 |
+| Artificial Intelligence | `ai` | 12 |
 | Energy & Machines | `energy` | 9 |
 
 ## Checklist
@@ -208,6 +208,7 @@ A topic is done when:
 - [x] reinforcement-learning
 - [x] ngram-text-models
 - [x] tokenization
+- [ ] positional-encoding
 
 **Energy & Machines**
 - [x] heat-engines
@@ -276,6 +277,7 @@ A topic is done when:
 - **Interaction:** Draw a closed curve or a waveform, then rebuild it from rotating circles or sine waves, adding one frequency at a time with a slider. A bar chart shows the strength of each frequency and can be edited to reshape the signal.
 - **Takeaway:** Any signal can be written as a sum of sine waves, and the transform says how much of each frequency it contains.
 - **Prerequisites:** unit-circle, complex-numbers
+- **Related:** positional-encoding
 
 #### bayes-theorem
 - **Title:** Probability & Bayes' theorem
@@ -1093,6 +1095,16 @@ A topic is done when:
 - **Related:** transformers, embeddings, ngram-text-models
 - **Needs:** GPT-2's merge list and vocabulary (OpenAI; shipped by tiktoken under MIT, the GPT-2 release under a modified MIT licence).
 - **Pitfall:** Merges apply in rank order, not by longest match, so the split is deterministic given the merge list; byte-level BPE never needs an unknown token. Do not say models never see letters (single characters are tokens too), nor that they count letters: inside a merged token the spelling is invisible to them.
+
+#### positional-encoding
+- **Title:** Position in a transformer: sinusoids & RoPE
+- **Level:** 3
+- **Kind:** manipulate
+- **Interaction:** Drag a position slider and watch the sinusoidal encoding's dimension pairs turn like clock hands at geometrically spaced speeds, fast pairs telling neighbours apart and slow pairs telling far positions apart. Switch to RoPE, where the query and key themselves are rotated, and drag two tokens along the sentence: their attention score stays fixed while their distance does and changes when it does, whereas with an added sinusoid the score also drifts with absolute position. Extend the sentence past a marked training length and see the slowest pairs reach angles that never occurred in training.
+- **Takeaway:** Rotating each query and key by angles proportional to its position makes their attention score depend only on how far apart the two tokens are, not on where they stand.
+- **Prerequisites:** transformers, unit-circle
+- **Related:** fourier-transform
+- **Pitfall:** RoPE does not add a position vector to the embeddings and is not applied to the values. 'Depends only on relative position' holds for the score of one query-key pair, not for the whole network's behaviour beyond the trained length. Attention with a causal mask is not fully blind to order, since each token sees a different number of predecessors; it is order-blind only without the mask.
 
 ### Energy & Machines
 
