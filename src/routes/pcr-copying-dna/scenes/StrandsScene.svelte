@@ -91,7 +91,7 @@
 			x={x(site.pos)}
 			y={TOP - 14}
 			width={x(site.pos + site.w) - x(site.pos)}
-			height={BOTTOM - TOP + 18}
+			height={rows.length * pitch + 18}
 			fill="var(--pcr-primer)"
 			opacity="0.08"
 		/>
@@ -106,12 +106,19 @@
 			/>
 		</Readout>
 	{/each}
-	<Readout id="title" order={1} label="After cycle {n}" value="{current.total} double strands">
+	<Readout
+		id="title"
+		order={1}
+		label={n === 0 ? 'At the start' : `After cycle ${n}`}
+		value="{current.total} double strand{current.total === 1 ? '' : 's'}"
+	>
 		<Label
 			anchor="start"
 			x={X0 - 40}
 			y={44}
-			text="After cycle {n}: {current.total} double strand{current.total === 1 ? '' : 's'}"
+			text="{n === 0
+				? 'At the start'
+				: `After cycle ${n}`}: {current.total} double strand{current.total === 1 ? '' : 's'}"
 			size={16}
 			weight={700}
 		/>
