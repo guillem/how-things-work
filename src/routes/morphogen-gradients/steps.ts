@@ -61,13 +61,13 @@ const t2: Control = {
 const measure: Control = {
 	type: 'select',
 	id: 'measure',
-	label: 'Bicoid’s D and half-life',
+	label: 'Bicoid’s D and half-life from',
 	default: 'fit',
 	options: [
-		{ value: 'fit', label: 'Fitted to protein age: 3.6 µm²/s, 26 min' },
-		{ value: 'frap', label: 'FRAP’s D: 0.3 µm²/s, 26 min' },
-		{ value: 'frap-slow', label: 'FRAP’s D: 0.3 µm²/s, 6.4 h' },
-		{ value: 'fcs', label: 'FCS’s D: 7.4 µm²/s, 26 min' }
+		{ value: 'fit', label: 'Protein-age fit' },
+		{ value: 'frap', label: 'FRAP' },
+		{ value: 'frap-slow', label: 'FRAP, long-lived' },
+		{ value: 'fcs', label: 'FCS' }
 	]
 };
 
