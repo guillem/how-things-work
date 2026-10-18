@@ -2777,6 +2777,50 @@
 			stroke-width="1.8"
 			stroke-dasharray="4 3"
 		/>
+	{:else if slug === 'ngram-text-models'}
+		<!-- a row of letters, a window over three of them, the next one dashed, and the counts of what came next -->
+		{#each ['t', 'o', ' ', 'b', 'e', '?'] as c, i (i)}
+			<rect
+				x={14 + i * 30}
+				y="20"
+				width="24"
+				height="26"
+				rx="4"
+				fill="none"
+				stroke={i === 5 ? accent : 'currentColor'}
+				stroke-width="1.4"
+				stroke-dasharray={i === 5 ? '3 2' : undefined}
+				opacity={i === 5 ? 1 : 0.55}
+			/>
+			<text
+				x={26 + i * 30}
+				y="38"
+				text-anchor="middle"
+				font-size="14"
+				font-family="ui-monospace, monospace"
+				fill={i === 5 ? accent : 'currentColor'}
+				opacity={i === 5 ? 1 : 0.7}>{c === ' ' ? '␣' : c}</text
+			>
+		{/each}
+		<rect x="68" y="14" width="88" height="38" rx="7" fill={accent} opacity="0.16" />
+		{#each [0.85, 0.45, 0.2] as w, i (i)}
+			<rect
+				x="60"
+				y={66 + i * 14}
+				width={w * 120}
+				height="9"
+				rx="2"
+				fill={accent}
+				opacity={0.9 - i * 0.25}
+			/>
+		{/each}
+		<path
+			d="M170 46 C182 58 176 70 166 70"
+			fill="none"
+			stroke={accent}
+			stroke-width="1.6"
+			stroke-linecap="round"
+		/>
 	{:else if slug === 'stars'}
 		<!-- a massive star cut open: onion layers round an iron core, and a track on the HR diagram -->
 		<circle cx="62" cy="60" r="44" fill="var(--st-h)" />

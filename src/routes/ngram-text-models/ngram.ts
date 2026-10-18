@@ -62,6 +62,8 @@ export interface Draw {
 	count: number;
 	/** The window was always followed by the same character: the model had no choice. */
 	forced: boolean;
+	/** Which of the `count` occurrences was drawn (they are sorted by the character after them). */
+	offset: number;
 }
 
 export interface Sample {
@@ -177,6 +179,24 @@ export class NgramModel {
 	}
 
 	/**
+	 * The spinner for `window`: its next characters in the order the occurrences are sorted (so
+	 * a draw's `offset` falls in the slice of the character it picked), each with the first
+	 * occurrence it covers and its count.
+	 */
+	slices(window: string): { char: string; start: number; count: number }[] {
+		const key = this.alphabet.encode(window);
+		const [lo, hi] = this.range(key, 0, key.length);
+		const out: { char: string; start: number; count: number }[] = [];
+		for (let i = lo; i < hi; i++) {
+			const c = this.alphabet.char(this.codes[this.sorted[i] + key.length]);
+			const last = out[out.length - 1];
+			if (last && last.char === c) last.count++;
+			else out.push({ char: c, start: i - lo, count: 1 });
+		}
+		return out;
+	}
+
+	/**
 	 * Writes `length` characters after `prompt`, each drawn from the counts of what followed the
 	 * last `n` characters. While fewer than `n` characters exist, or if a window never occurred
 	 * with something after it, the model backs off to a shorter window (at worst, n = 0: the
@@ -195,11 +215,12 @@ export class NgramModel {
 				if (hi > lo) break;
 			}
 			if (hi <= lo) break; // an empty training text
-			const pick = this.sorted[lo + Math.floor(random() * (hi - lo))];
+			const offset = Math.floor(random() * (hi - lo));
+			const pick = this.sorted[lo + offset];
 			const first = this.codes[this.sorted[lo] + k];
 			const last = this.codes[this.sorted[hi - 1] + k];
 			out.push(this.codes[pick + k]);
-			draws.push({ window: k, count: hi - lo, forced: first === last });
+			draws.push({ window: k, count: hi - lo, forced: first === last, offset });
 		}
 		const text = out.map((c) => this.alphabet.char(c)).join('');
 		return { text, prompt: chars(prompt).length, draws };
@@ -420,4 +441,48 @@ export function measure(model: NgramModel, n: number, seed: number, length: numb
 		copy: model.longestCopy(sample.text, sample.prompt),
 		forced
 	};
+}
+
+/** One row of the counting table of a short text: a window and every occurrence of it. */
+export interface TableRow {
+	window: string;
+	/** Position of its first occurrence. */
+	first: number;
+	/** Start of each occurrence, and the character after it. */
+	occ: { pos: number; next: string }[];
+}
+
+/**
+ * The counting table of `text` with windows of `n` characters, in order of first appearance:
+ * the table the explainer's first step fills in as the window slides along.
+ */
+export function countTable(text: string, n: number): TableRow[] {
+	const cs = chars(text);
+	const rows = new Map<string, TableRow>();
+	for (let i = 0; i + n < cs.length; i++) {
+		const w = cs.slice(i, i + n).join('');
+		let r = rows.get(w);
+		if (!r) {
+			r = { window: w, first: i, occ: [] };
+			rows.set(w, r);
+		}
+		r.occ.push({ pos: i, next: cs[i + n] });
+	}
+	return [...rows.values()];
+}
+
+/**
+ * The next characters of a row, most frequent first (ties alphabetical), each with its count
+ * among the occurrences before position `upTo` (all of them by default).
+ */
+export function tally(row: TableRow, upTo = Infinity): { char: string; count: number }[] {
+	const total = new Map<string, number>();
+	const sofar = new Map<string, number>();
+	for (const o of row.occ) {
+		total.set(o.next, (total.get(o.next) ?? 0) + 1);
+		if (o.pos < upTo) sofar.set(o.next, (sofar.get(o.next) ?? 0) + 1);
+	}
+	return [...total]
+		.sort((a, b) => b[1] - a[1] || (a[0] < b[0] ? -1 : 1))
+		.map(([char]) => ({ char, count: sofar.get(char) ?? 0 }));
 }

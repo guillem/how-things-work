@@ -3154,3 +3154,29 @@ kbd {
 	--cr-phage-line: #ff6b6b;
 	--cr-on-colour: #1a1b1e;
 }
+
+/* ngram-text-models: the drawn letter, windows, spinner slices, the three meters and their marks */
+:root {
+	--ng-hot: #c2410c;
+	--ng-window: #0b7285;
+	--ng-window-bg: #c5f6fa;
+	--ng-next-bg: #ffe8cc;
+	--ng-slice: #74c0fc;
+	--ng-real: #2f9e44;
+	--ng-unseen: #e03131;
+	--ng-unseen-bg: #ffc9c9;
+	--ng-copy: #e67700;
+	--ng-copy-bg: #ffe066;
+}
+:root[data-theme='dark'] {
+	--ng-hot: #ffa94d;
+	--ng-window: #3bc9db;
+	--ng-window-bg: #0f3d44;
+	--ng-next-bg: #4a2f12;
+	--ng-slice: #339af0;
+	--ng-real: #69db7c;
+	--ng-unseen: #ff6b6b;
+	--ng-unseen-bg: #5c1f22;
+	--ng-copy: #ffc078;
+	--ng-copy-bg: #6b5410;
+}

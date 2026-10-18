@@ -933,6 +933,15 @@ const explainers: Explainer[] = [
 		accent: '#5c940d',
 		steps: 12,
 		minutes: 20
+	},
+	{
+		slug: 'ngram-text-models',
+		title: 'Counting machines that write',
+		summary:
+			'Build a machine that writes by counting which letter followed the last few in a text, then feed it a million letters of Shakespeare and widen its window: its text gets more fluent, while text it has never read becomes a blank and its writing turns into recitation.',
+		accent: '#0b7285',
+		steps: 8,
+		minutes: 16
 	}
 ];
 
