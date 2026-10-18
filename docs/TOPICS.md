@@ -91,7 +91,7 @@ A topic is done when:
 | Space | `space` | 9 |
 | Computing | `computing` | 10 |
 | Information & Networks | `networks` | 8 |
-| Artificial Intelligence | `ai` | 16 |
+| Artificial Intelligence | `ai` | 17 |
 | Energy & Machines | `energy` | 9 |
 
 ## Checklist
@@ -214,6 +214,7 @@ A topic is done when:
 - [x] training-a-tiny-language-model
 - [x] scaling-laws
 - [x] rlhf-alignment
+- [ ] kv-cache-inference
 
 **Energy & Machines**
 - [x] heat-engines
@@ -1163,6 +1164,16 @@ A topic is done when:
 - **Related:** transformers
 - **Needs:** For three prompts, 64 sampled continuations each from GPT-2 small (OpenAI, MIT licence), with GPT-2's mean final hidden state over each continuation reduced to 48 principal components, all precomputed (a reward model is usually a head on the language model's own states, so no separate embedding model is used). The sample is the base model's distribution on the page: π_ref is 1/64 per continuation.
 - **Pitfall:** On this page the policy can only reweight continuations the base model already gives probability to, because the KL-regularised optimum keeps the base model's support; do not generalise that into a claim that RLHF can never change what a model knows. On a finite candidate set that optimum is closed-form, so the page must not pretend PPO is running (a policy-gradient run, labelled as such, may show that it converges to the same optimum); say that DPO is derived from the same closed form. Reward hacking here means over-optimising a learned proxy, not the model 'wanting' to cheat.
+
+#### kv-cache-inference
+- **Title:** Serving a language model: the KV cache
+- **Level:** 3
+- **Kind:** simulate
+- **Interaction:** Generate text with a small transformer running in the page, first recomputing every earlier token at each step and then with a cache that keeps each layer's keys and values; counters show the arithmetic and the bytes read per new token: without the cache the arithmetic grows with the context, with it only attention's small share does, while the bytes read are about the weights either way, plus the cache, which grows. Then scale up to a published model configuration on a published GPU: drag the batch size and the context length and watch the gpu page's roofline place prefill (the whole prompt at once) on the compute ceiling and each decode step far below it, on the memory-bandwidth slope, until a large batch lifts it, while a bar shows the cache overtaking the weights in memory at long contexts.
+- **Takeaway:** After the prompt, generating each token reads every weight and the whole cache from memory for very little arithmetic, so serving speed is set by memory bandwidth, and batching many requests together is what makes it cheap.
+- **Prerequisites:** transformers, gpu
+- **Needs:** A small transformer run in the page (the project's own or GPT-2 small); published model configurations (layers, widths, heads) and GPU datasheet figures for memory bandwidth and peak throughput.
+- **Pitfall:** The cache does not make decoding compute-bound or free: its size grows with context and batch, and at long contexts reading the cache, not the weights, dominates. Prefill and decode are different regimes; one tokens-per-second figure hides both.
 
 ### Energy & Machines
 
