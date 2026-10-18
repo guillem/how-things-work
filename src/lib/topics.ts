@@ -1077,6 +1077,15 @@ const explainers: Explainer[] = [
 		accent: '#8a6d00',
 		steps: 9,
 		minutes: 20
+	},
+	{
+		slug: 'wind-turbine-aerodynamics',
+		title: 'Wind turbines & the Betz limit',
+		summary:
+			'Slow the air through an actuator disc and find the 16/27 that no rotor can beat; then put real blades on it, the NREL 5-MW reference rotor with its published airfoil data, and a blade-element-momentum model shows why it gets close only near one tip-speed ratio, and how pitch holds its power at 5 MW in a gale.',
+		accent: '#3d8a9e',
+		steps: 9,
+		minutes: 20
 	}
 ];
 

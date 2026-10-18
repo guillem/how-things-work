@@ -358,7 +358,7 @@ export function operate(v: number): Operating {
 		region = 'rated';
 		let lo = 0;
 		let hi = 40;
-		for (let i = 0; i < 40; i++) {
+		for (let i = 0; i < 24; i++) {
 			const mid = (lo + hi) / 2;
 			if (at(mid).cp * wind > target) lo = mid;
 			else hi = mid;

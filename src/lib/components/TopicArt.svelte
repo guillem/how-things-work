@@ -3341,6 +3341,47 @@
 			stroke="var(--cb-model)"
 			stroke-width="2"
 		/>
+	{:else if slug === 'wind-turbine-aerodynamics'}
+		<!-- a three-bladed turbine, and the actuator disc's CP = 4a(1 − a)² rising to the dashed
+		     Betz limit 16/27 at a = 1/3 (a over x 104…189 for 0…0.5, CP over y 104…27) -->
+		<line x1="50" y1="46" x2="50" y2="112" stroke="currentColor" stroke-width="3" opacity="0.5" />
+		{#each [90, 210, 330] as d (d)}
+			<line
+				x1="50"
+				y1="46"
+				x2={50 + 34 * Math.cos((d * Math.PI) / 180)}
+				y2={46 - 34 * Math.sin((d * Math.PI) / 180)}
+				stroke={accent}
+				stroke-width="4"
+				stroke-linecap="round"
+			/>
+		{/each}
+		<circle cx="50" cy="46" r="4.5" fill={accent} />
+		<line
+			x1="104"
+			y1="104"
+			x2="192"
+			y2="104"
+			stroke="currentColor"
+			stroke-width="1"
+			opacity="0.4"
+		/>
+		<line
+			x1="104"
+			y1="27"
+			x2="192"
+			y2="27"
+			stroke="var(--wt-betz)"
+			stroke-width="1.5"
+			stroke-dasharray="4 3"
+		/>
+		<path
+			d="M104 104 L112.5 80.5 L121 61.9 L129.5 47.6 L138 37.4 L146.5 30.9 L155 27.6 L163.5 27.1 L172 29.1 L180.5 33.2 L189 39"
+			fill="none"
+			stroke="var(--wt-power)"
+			stroke-width="2"
+		/>
+		<circle cx="160.7" cy="27" r="3.5" fill="var(--wt-power)" />
 	{:else if slug === 'stars'}
 		<!-- a massive star cut open: onion layers round an iron core, and a track on the HR diagram -->
 		<circle cx="62" cy="60" r="44" fill="var(--st-h)" />

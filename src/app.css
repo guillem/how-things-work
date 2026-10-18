@@ -3618,4 +3618,38 @@ kbd {
 	--tcp-cubic: #f783ac;
 	--tcp-vegas: #66d9e8;
 	--tcp-link: #343a40;
+/* wind-turbine-aerodynamics: the air and its stream tube, the rotor disc and blades, power,
+   thrust, the measured (turbulent-wake) thrust, the Betz limit, lift and drag, the wind, blade
+   and relative velocities, stall, and the electrical output */
+:root {
+	--wt-air: #1c7ed6;
+	--wt-tube: #e7f5ff;
+	--wt-blade: #3d8a9e;
+	--wt-power: #e8590c;
+	--wt-thrust: #c2255c;
+	--wt-measured: #7048e8;
+	--wt-betz: #2b8a3e;
+	--wt-lift: #1971c2;
+	--wt-drag: #e03131;
+	--wt-wind: #1c7ed6;
+	--wt-spin: #f08c00;
+	--wt-rel: #343a40;
+	--wt-stall: #fa5252;
+	--wt-electric: #5f3dc4;
+}
+:root[data-theme='dark'] {
+	--wt-air: #74c0fc;
+	--wt-tube: #13283a;
+	--wt-blade: #66c2d6;
+	--wt-power: #ffa94d;
+	--wt-thrust: #f783ac;
+	--wt-measured: #b197fc;
+	--wt-betz: #8ce99a;
+	--wt-lift: #74c0fc;
+	--wt-drag: #ff8787;
+	--wt-wind: #74c0fc;
+	--wt-spin: #ffc078;
+	--wt-rel: #e9ecef;
+	--wt-stall: #ff8787;
+	--wt-electric: #b197fc;
 }
