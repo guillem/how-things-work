@@ -192,6 +192,17 @@ export const sweep = (L: number, d: number, base = BASE) =>
 export const unfinished = (L: number, d: number, base = BASE) =>
 	sweep(L, d, base).filter((a) => a < 2 * Math.PI).length;
 
+/**
+ * Does pair i of position `pos` point outside the arc it swept over positions 0 … L − 1? (Never,
+ * for a pair that completed a turn; for the others, its angle taken round the circle.)
+ */
+export function outsideTraining(pos: number, i: number, L: number, d: number, base = BASE) {
+	const swept = sweep(L, d, base)[i];
+	if (swept >= 2 * Math.PI) return false;
+	const a = (pos * frequencies(d, base)[i]) % (2 * Math.PI);
+	return a > swept;
+}
+
 // ------------------------------------------------------------------------------- the sentence
 
 /** The sentence the first chapter shuffles; repeated words get the same vector. */

@@ -39,7 +39,7 @@
 	const qr = $derived(rope(PAIR.q, m * u));
 	const kr = $derived(rope(PAIR.k, n * u));
 	const shares = $derived(pairShares(qr, kr).map((s) => s / SQ));
-	const score = $derived(PAIR.rope(m, n));
+	const score = $derived(shares.reduce((sum, s) => sum + s, 0));
 	const sinScore = $derived(PAIR.sinusoid(m, n));
 
 	// ---- the track of positions
@@ -296,7 +296,7 @@
 			weight={650}
 			tabular
 			color="var(--pe-rope)"
-			text="RoPE score = sum of the shares = {fix(score)}"
+			text="{u === 1 ? 'RoPE score' : 'score while turning'} = sum of the shares = {fix(score)}"
 		/>
 	</Readout>
 

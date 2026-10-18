@@ -16,7 +16,7 @@
 	import { cubicInOut } from 'svelte/easing';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { Handle, Label, type Point } from '#lib/draw/index.ts';
-	import { frequencies, sweep, TRAIN, wavelengths } from '../position';
+	import { frequencies, outsideTraining, sweep, TRAIN, wavelengths } from '../position';
 	import { MAX_LEN, MAX_POS } from '../steps';
 	import { arc, big, deg, num, onDial, wedge } from './shared';
 
@@ -80,10 +80,13 @@
 	const WAVES_FAR = waves(MAX_LEN);
 	const wavePaths = $derived(beyond ? WAVES_FAR : WAVES_NEAR);
 
-	// ---- the beyond phase: angles met in training and the new ones
+	// ---- the beyond phase: the arcs swept in training and the new ones
 	const seen = sweep(TRAIN, D);
 	const reach = $derived(sweep(len, D));
 	const fresh = $derived(W.filter((_, i) => seen[i] < TAU && reach[i] > seen[i]).length);
+	const legend = $derived(
+		`blue: swept over positions 0–${TRAIN - 1} · red: new angles · ${fresh} of 8 pairs reach new angles`
+	);
 
 	// ---- dragging the position line
 	function onmove(p: Point) {
@@ -115,8 +118,8 @@
 		}
 		if (beyond)
 			return seen[i] >= TAU
-				? 'all angles met'
-				: `met in training: ${deg(seen[i], seen[i] < 0.1 ? 1 : 0)}`;
+				? 'full circle swept'
+				: `swept in training: ${deg(seen[i], seen[i] < 0.1 ? 1 : 0)}`;
 		return `a turn every ${WL[i] < 100 ? WL[i].toFixed(1) : big(WL[i])}`;
 	};
 </script>
@@ -221,7 +224,7 @@
 			y1={cy}
 			x2={tip.x}
 			y2={tip.y}
-			stroke={beyond && seen[i] < TAU && here * w > seen[i] ? 'var(--pe-new)' : 'var(--pe-hand)'}
+			stroke={beyond && outsideTraining(here, i, TRAIN, D) ? 'var(--pe-new)' : 'var(--pe-hand)'}
 			stroke-width="2.5"
 			stroke-linecap="round"
 		/>
@@ -304,18 +307,11 @@
 		<Readout
 			id="new"
 			order={2}
-			label="Pairs reaching angles never met in training"
+			label="Pairs reaching angles not swept in training"
 			value="{fresh} of 8"
 			color="var(--pe-new)"
 		>
-			<Label
-				x={24}
-				y={rowY(7) + 64}
-				anchor="start"
-				size={12}
-				text="blue: angles met at positions 0–{TRAIN -
-					1} · red: new angles · {fresh} of 8 pairs reach new angles"
-			/>
+			<Label x={24} y={rowY(7) + 64} anchor="start" size={12} text={legend} />
 		</Readout>
 	{/if}
 </g>

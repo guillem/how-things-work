@@ -12,6 +12,7 @@ import {
 	HEAD,
 	offsetMap,
 	order,
+	outsideTraining,
 	PAIR,
 	pairOf,
 	random,
@@ -206,6 +207,15 @@ test.describe('past the training length', () => {
 		expect(a[2]).toBeGreaterThan(2 * Math.PI); // the third just completes one
 		expect(a[7]).toBeLessThan(0.05); // the slowest, little more than a degree
 		expect(sweep(1024, 16)[7]).toBeGreaterThan(16 * a[7]); // a longer text reaches new angles
+	});
+
+	test('a hand that has gone round past its trained arc can point back inside it', () => {
+		// pair 4 swept 114° over positions 0–63
+		expect(outsideTraining(63, 3, 64, 16)).toBe(false);
+		expect(outsideTraining(100, 3, 64, 16)).toBe(true); // 181°
+		expect(outsideTraining(1023, 3, 64, 16)).toBe(false); // 32.3 rad, 54° round the circle
+		// a pair that completed a turn in training is never outside
+		expect(outsideTraining(1023, 0, 64, 16)).toBe(false);
 	});
 
 	test('a head of 128 dimensions trained on 4,096 tokens: 18 of its 64 pairs never turn once', () => {

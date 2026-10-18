@@ -208,7 +208,7 @@ A topic is done when:
 - [x] reinforcement-learning
 - [x] ngram-text-models
 - [x] tokenization
-- [ ] positional-encoding
+- [x] positional-encoding
 
 **Energy & Machines**
 - [x] heat-engines

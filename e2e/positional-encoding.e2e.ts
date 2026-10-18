@@ -1,4 +1,5 @@
 import { expect, test, type Page } from '@playwright/test';
+import { playUntil } from './play';
 
 // The positional-encoding explainer: what a visitor sees when they shuffle a sentence under
 // attention, turn the sinusoids' clock hands and move a query and a key under RoPE. The numbers
@@ -59,6 +60,16 @@ test('RoPE: the score follows the distance, not where the pair stands', async ({
 	await page.keyboard.press('Home');
 	await expect(stage(page)).toContainText('0 apart');
 	await expect(stage(page)).toContainText('RoPE score = sum of the shares = 0.83');
+});
+
+test('RoPE: while the arrows turn, the score is the sum of the shares drawn', async ({ page }) => {
+	await page.emulateMedia({ reducedMotion: 'no-preference' });
+	await page.clock.install();
+	await page.goto('./positional-encoding/#rotate');
+	// Before the turn: the plain q·k score of the unturned vectors.
+	await expect(stage(page)).toContainText('sum of the shares = 0.83');
+	// Once turned by m·θ and n·θ: the RoPE score.
+	await playUntil(page, stage(page), 'sum of the shares = 1.57', 6000);
 });
 
 test('past the training length, slow pairs reach new angles', async ({ page }) => {
