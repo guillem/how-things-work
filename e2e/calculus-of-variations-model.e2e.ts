@@ -19,7 +19,10 @@ import {
 	optimise,
 	positionAt,
 	snell,
-	splinePoints
+	speedAt,
+	spline,
+	splinePoints,
+	turningPoint
 } from '../src/routes/calculus-of-variations/brachistochrone';
 import {
 	G as CG,
@@ -133,6 +136,52 @@ test('gradient descent from the line, the arc or a guess converges on the cycloi
 				).at(-1)!.ys
 			)
 		).toBeGreaterThan(c.T);
+	}
+});
+
+test('a track that climbs back to the start: the bead stops at that height and slides back', () => {
+	const pts = [
+		{ x: 0, y: 0 },
+		{ x: 1, y: 1 },
+		{ x: 2, y: -0.2 },
+		{ x: 4, y: 2 }
+	];
+	const times = arrivalTimes(pts);
+	expect(descentTime(pts)).toBe(Infinity);
+	const turn = turningPoint(pts, times);
+	// It turns back where the track crosses the start's height, with no speed left.
+	expect(turn.at.y).toBeCloseTo(0, 12);
+	expect(speedAt(positionAt(pts, times, turn.time).y)).toBeCloseTo(0, 9);
+	// The way back retraces the way out, and it is back at A after twice the time.
+	for (const dt of [0.1, 0.5, 1]) {
+		const out = positionAt(pts, times, turn.time - dt);
+		const back = positionAt(pts, times, turn.time + dt);
+		expect(back.x).toBeCloseTo(out.x, 9);
+		expect(back.y).toBeCloseTo(out.y, 9);
+	}
+	expect(positionAt(pts, times, 2 * turn.time).x).toBeCloseTo(0, 9);
+});
+
+test('the optimiser converges from any start the handles allow', () => {
+	// The page runs 400 steps from the reader's curve (4 m across), whatever its handles.
+	const L = 4;
+	const h = 2;
+	const c = cycloid(L, h);
+	const xs = grid(L);
+	for (const d of [
+		[-0.4, -0.4, -0.4, -0.4],
+		[0.05, 0.05, 0.05, 0.05],
+		[2.8, 2.8, 2.8, 2.8],
+		[-0.4, 2.8, -0.4, 2.8]
+	]) {
+		const f = spline(L, h, d);
+		const best = optimise(
+			xs,
+			xs.map((x) => f(x)),
+			400
+		).at(-1)!;
+		expect(rel(best.T, c.T)).toBeLessThan(1e-3);
+		expect(best.worst).toBeLessThan(1e-4);
 	}
 });
 

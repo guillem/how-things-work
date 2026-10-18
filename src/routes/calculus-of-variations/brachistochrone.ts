@@ -31,8 +31,8 @@ function segmentTime(len: number, y0: number, y1: number): number {
 
 /**
  * Cumulative arrival times at the polyline's points (the first is 0). A point at
- * or above the start's height after the first one stops the bead: from there on
- * the times are Infinity (it never arrives).
+ * or above the start's height after the first one turns the bead back (see
+ * `turningPoint`): from there on the times are Infinity (it never arrives).
  */
 export function arrivalTimes(pts: readonly Pt[]): number[] {
 	const out = [0];
@@ -56,19 +56,23 @@ export function descentTime(pts: readonly Pt[]): number {
  * Where the bead is at time t (s after release), from the polyline and its
  * arrival times: inside a segment the acceleration is constant, so the distance
  * along it is v₀τ + ½aτ². Parks at the end once it has arrived.
+ *
+ * On a track that climbs back to the start's height the bead never arrives: it
+ * runs out of speed exactly at that height, slides back to A, and does it again,
+ * for ever (no friction). Running time backwards retraces the motion, so the way
+ * back is the way out in reverse.
  */
 export function positionAt(pts: readonly Pt[], times: readonly number[], t: number): Pt {
 	if (t <= 0) return pts[0];
+	if (!Number.isFinite(times[times.length - 1])) {
+		const turn = turningPoint(pts, times);
+		if (turn.time <= 0) return pts[0];
+		const phase = t % (2 * turn.time);
+		return positionAt(turn.pts, turn.times, phase <= turn.time ? phase : 2 * turn.time - phase);
+	}
 	let i = 1;
 	while (i < pts.length && times[i] < t) i++;
-	if (i >= pts.length) {
-		const last = times[pts.length - 1];
-		if (Number.isFinite(last)) return pts[pts.length - 1];
-		// Never arrives: stop at the last point it reaches.
-		let j = pts.length - 1;
-		while (j > 0 && !Number.isFinite(times[j])) j--;
-		return pts[j];
-	}
+	if (i >= pts.length) return pts[pts.length - 1];
 	const a = pts[i - 1];
 	const b = pts[i];
 	const len = Math.hypot(b.x - a.x, b.y - a.y);
@@ -78,6 +82,29 @@ export function positionAt(pts: readonly Pt[], times: readonly number[], t: numb
 	const tau = t - times[i - 1];
 	const s = Math.min(len, Math.max(0, v0 * tau + 0.5 * acc * tau * tau));
 	return { x: a.x + ((b.x - a.x) * s) / len, y: a.y + ((b.y - a.y) * s) / len };
+}
+
+/**
+ * Where a bead on a track it cannot finish turns back: the first place the track
+ * comes back up to the start's height, the track up to there, and the time
+ * taken to get there (finite: the last stretch decelerates uniformly to rest).
+ */
+export function turningPoint(
+	pts: readonly Pt[],
+	times: readonly number[] = arrivalTimes(pts)
+): { at: Pt; time: number; pts: Pt[]; times: number[] } {
+	let i = 1;
+	while (i < pts.length && pts[i].y > 0) i++;
+	if (i >= pts.length) {
+		const end = pts[pts.length - 1];
+		return { at: end, time: times[times.length - 1], pts: [...pts], times: [...times] };
+	}
+	const a = pts[i - 1];
+	const b = pts[i];
+	const f = a.y / (a.y - b.y);
+	const at = { x: a.x + (b.x - a.x) * f, y: 0 };
+	const time = times[i - 1] + segmentTime(Math.hypot(at.x - a.x, at.y - a.y), a.y, 0);
+	return { at, time, pts: [...pts.slice(0, i), at], times: [...times.slice(0, i), time] };
 }
 
 /** The speed at depth y (m/s), from energy: ½v² = g·y. */
@@ -306,6 +333,13 @@ function smoothedDescent(
 	return d;
 }
 
+/**
+ * A starting curve the optimiser can work on: depths at or above the start would
+ * turn the bead back, so they are lowered to a micrometre below it.
+ */
+export const passable = (ys: readonly number[]) =>
+	ys.map((y, i) => (i === 0 ? 0 : Math.max(y, 1e-6)));
+
 export interface Iterate {
 	/** Iteration number. */
 	k: number;
@@ -330,8 +364,7 @@ export function optimise(
 ): Iterate[] {
 	const n = xs.length - 1;
 	const w = xs.map((_, i) => (i === 0 || i === n ? 1 : (xs[i + 1] - xs[i - 1]) / 2));
-	// Depths at or above the start would stop the bead: begin from a curve that descends.
-	let ys = start.map((y, i) => (i === 0 ? 0 : Math.max(y, 1e-6)));
+	let ys = passable(start);
 	let T = gridTime(xs, ys);
 	let step = 0.02;
 	const out: Iterate[] = [];

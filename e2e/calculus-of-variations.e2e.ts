@@ -36,7 +36,7 @@ test('the cycloid wins by a measured margin', async ({ page }) => {
 
 test('gradient descent reaches the cycloid time with the residual near zero', async ({ page }) => {
 	await page.goto('./calculus-of-variations/#descend');
-	await expect(stage(page)).toContainText('optimiser, step 150');
+	await expect(stage(page)).toContainText('optimiser, step 400');
 	await expect(stage(page)).toContainText('1.140 s');
 	await expect(stage(page)).toContainText(/largest residual: \d\.\d × 10⁻[⁴⁵⁶⁷⁸⁹] s\/m²/);
 	// From the straight line it gets there too.

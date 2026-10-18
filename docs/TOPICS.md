@@ -111,7 +111,7 @@ A topic is done when:
 - [x] exponentials-logarithms
 - [x] game-theory-cooperation
 - [x] differential-equations
-- [ ] calculus-of-variations
+- [x] calculus-of-variations
 
 **Physics**
 - [x] newtons-laws

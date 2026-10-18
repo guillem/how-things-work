@@ -7,7 +7,7 @@
 	 *   race     — the straight line, the circular arc and the reader's curve (four
 	 *              handles) race; the chart plots each bead's speed against time
 	 *   time     — the same, with a dot on each curve every 0.1 s
-	 *   descend  — gradient descent bends a curve (48 points) towards the cycloid;
+	 *   descend  — gradient descent bends a curve (47 free points) towards the cycloid;
 	 *              the chart plots the Euler–Lagrange residual along it
 	 *   cycloid  — all four race, the cycloid's bead riding the rim of a rolling wheel
 	 *   snell    — sin φ / v along each curve (flat on the cycloid)
@@ -40,6 +40,7 @@
 		cycloidPoints,
 		grid,
 		optimise,
+		passable,
 		positionAt,
 		residual,
 		snell,
@@ -55,8 +56,8 @@
 	const DEFAULT = [0.9, 1.45, 1.8, 2];
 	const HOLD = 0.6; // s at the start before the beads are released
 	const REST = 1.8; // s at the finish before the race restarts
-	const ITERATIONS = 150;
-	const OPT_SECONDS = 7; // the optimiser's animation
+	const ITERATIONS = 400;
+	const OPT_SECONDS = 9; // the optimiser's animation
 	const MIN_DEPTH = -0.4;
 
 	const phase = $derived(String(step.hints?.phase ?? 'race'));
@@ -178,7 +179,7 @@
 
 	// ---- the optimiser -----------------------------------------------------------------
 	const xs = $derived(grid(L));
-	const startYs = $derived.by(() => {
+	const rawStart = $derived.by(() => {
 		if (from === 'line') return xs.map((x) => (DROP * x) / L);
 		if (from === 'arc') {
 			const R = (L * L + DROP * DROP) / (2 * L);
@@ -187,6 +188,8 @@
 		const f = spline(L, DROP, depths);
 		return xs.map((x, i) => (i === 0 ? 0 : f(x)));
 	});
+	// The same passable start for the optimiser, the dashed start curve and its residual.
+	const startYs = $derived(passable(rawStart));
 	const iterates = $derived(phase === 'descend' ? optimise(xs, startYs, ITERATIONS) : []);
 	const kShown = $derived(
 		reduced
@@ -434,7 +437,7 @@
 		{/if}
 	{/each}
 
-	<!-- the optimiser's curve, with its 48 free points -->
+	<!-- the optimiser's curve, with its 47 free points -->
 	{#if phase === 'descend' && current}
 		<path
 			d={pathOf(startPts)}
