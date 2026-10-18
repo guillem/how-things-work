@@ -77,7 +77,9 @@
 		bx,
 		by
 	);
-	const diff = $derived(Math.max(-6, Math.min(6, r[pair[0]] - r[pair[1]])));
+	// the reward model's own prediction uses the raw difference; only the dot is kept on the chart
+	const rawDiff = $derived(r[pair[0]] - r[pair[1]]);
+	const diff = $derived(Math.max(-6, Math.min(6, rawDiff)));
 	const diffT = Tween.of(() => diff, { duration: 600, easing: cubicInOut });
 	const shownDiff = $derived(reduced ? diff : diffT.current);
 
@@ -231,12 +233,12 @@
 			id="pairp"
 			order={2}
 			label="Reward model on this pair"
-			value="{pct(sigmoid(diff))} for the left one"
+			value="{pct(sigmoid(rawDiff))} for the left one"
 		>
 			<Label
 				x={BT.x + BT.w}
 				y={BT.y - 40}
-				text="reward model: {pct(sigmoid(diff))} for the left one"
+				text="reward model: {pct(sigmoid(rawDiff))} for the left one"
 				size={12}
 				anchor="end"
 				color="var(--rl-reward)"

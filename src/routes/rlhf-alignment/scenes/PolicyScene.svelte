@@ -8,6 +8,7 @@
 	 *   press of "Run again") from π_ref, played over 12 s; outlines show the exact optimum. Under
 	 *   reduced motion the finished run is shown.
 	 */
+	import { untrack } from 'svelte';
 	import { Tween } from 'svelte/motion';
 	import { cubicInOut } from 'svelte/easing';
 	import { Axes, Label, scale } from '#lib/draw/index.ts';
@@ -39,9 +40,16 @@
 	const run = $derived(
 		pg ? policyGradient(r, beta, { iters: ITERS, batch: 16, lr: 0.5, seed, every: 5 }) : null
 	);
+	// the step time at which the current run started: each new run (β, question, comparisons or
+	// "Run again") plays from its first iteration. t is read untracked, once per new run.
+	let startedAt = $state(0);
+	$effect(() => {
+		if (!run) return;
+		untrack(() => (startedAt = t));
+	});
 	const frame = $derived.by(() => {
 		if (!run) return 0;
-		const u = reduced ? 1 : Math.min(1, t / RUN_SECONDS);
+		const u = reduced ? 1 : Math.min(1, Math.max(0, t - startedAt) / RUN_SECONDS);
 		return Math.round(u * (run.pis.length - 1));
 	});
 	const pgPi = $derived(run ? run.pis[frame] : exact);
@@ -194,12 +202,27 @@
 			/>
 		</Readout>
 		{#if pg}
-			<Readout id="iter" order={6} label="Policy gradient" value="step {iter} of {ITERS}">
+			<Readout
+				id="iter"
+				order={6}
+				label="Policy gradient"
+				value="step {iter} of {ITERS}, {pct(dist)} from the optimum"
+				note="total-variation distance"
+			>
 				<Label
 					anchor="start"
 					x={0}
 					y={104}
-					text="policy gradient: step {iter} of {ITERS} · distance to the exact optimum {pct(dist)}"
+					text="policy gradient: step {iter} of {ITERS}"
+					size={12}
+					color="var(--rl-pg)"
+					tabular
+				/>
+				<Label
+					anchor="start"
+					x={0}
+					y={122}
+					text="total-variation distance to the exact optimum: {pct(dist)}"
 					size={12}
 					color="var(--rl-pg)"
 					tabular

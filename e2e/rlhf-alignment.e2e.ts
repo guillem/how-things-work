@@ -1,4 +1,5 @@
 import { expect, test, type Page } from '@playwright/test';
+import { playUntil } from './play';
 
 // The rlhf-alignment explainer: what a visitor sees when they compare answers, add or throw away
 // comparisons, and slide the KL leash. The numbers are the page's default (the stand-in rater's
@@ -62,9 +63,21 @@ test('the leash: β large stays on GPT-2, β small puts everything on one answer
 test('the policy-gradient run ends near the exact optimum at β = 1', async ({ page }) => {
 	await page.goto('./rlhf-alignment/#gradient');
 	// reduced motion shows the finished run
+	await expect(stage(page)).toContainText('policy gradient: step 600 of 600');
 	await expect(stage(page)).toContainText(
-		/step 600 of 600 · distance to the exact optimum [0-4]\.\d%/
+		/total-variation distance to the exact optimum: [0-4]\.\d%/
 	);
+});
+
+test('“Run again” plays a new run from its first step', async ({ page }) => {
+	await page.emulateMedia({ reducedMotion: 'no-preference' });
+	await page.clock.install();
+	await page.goto('./rlhf-alignment/#gradient');
+	await playUntil(page, stage(page), 'policy gradient: step 600 of 600', 20_000);
+	await page.locator('button[data-control=rerun]').click();
+	await page.clock.runFor(500);
+	await expect(stage(page)).toContainText(/policy gradient: step \d{1,2} of 600/);
+	await playUntil(page, stage(page), 'policy gradient: step 600 of 600', 20_000);
 });
 
 test('loosening the leash games the reward model', async ({ page }) => {

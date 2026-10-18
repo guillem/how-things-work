@@ -135,9 +135,17 @@
 				halo={false}
 				tabular
 			/>
-			{#each s.lines as line, j (j)}
-				<Label anchor="start" x={78} y={y + 22 + j * 19} text={line} size={13} halo={false} />
-			{/each}
+			<Readout
+				id="ans{k}"
+				order={3 + k}
+				label="Answer #{s.i + 1}{rater ? ` · score ${s.a.score}` : ''}"
+				value={s.a.text}
+				opacity={k < 2 ? fade : 0}
+			>
+				{#each s.lines as line, j (j)}
+					<Label anchor="start" x={78} y={y + 22 + j * 19} text={line} size={13} halo={false} />
+				{/each}
+			</Readout>
 			{#if rater}
 				<Label
 					anchor="start"
@@ -216,7 +224,7 @@
 				tabular
 			/>
 		{/each}
-		<Readout id="mean" order={2} label="Average score" value={mean.toFixed(2)}>
+		<Readout id="mean">
 			<Label
 				anchor="start"
 				x={GRID.x}

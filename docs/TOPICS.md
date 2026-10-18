@@ -212,7 +212,7 @@ A topic is done when:
 - [x] residual-stream-logit-lens
 - [x] training-a-tiny-language-model
 - [x] scaling-laws
-- [ ] rlhf-alignment
+- [x] rlhf-alignment
 
 **Energy & Machines**
 - [x] heat-engines

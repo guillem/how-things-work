@@ -130,6 +130,8 @@ test('the tilted policy maximises E[r] − β·KL, and its limits are π_ref and
 	const top = r.indexOf(Math.max(...r));
 	expect(tilt(r, 1e-4)[top]).toBeGreaterThan(0.999);
 	expect(kl(tilt(r, 1e-4))).toBeCloseTo(Math.log(64), 3);
+	// an answer the reference never gives keeps probability zero, however high its reward
+	expect(tilt([1000, 0], 0.01, [0, 1])).toEqual([0, 1]);
 });
 
 test('policy-gradient ascent converges to the closed form, exactly and from sampled answers', () => {

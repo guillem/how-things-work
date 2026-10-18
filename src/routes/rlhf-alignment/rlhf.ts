@@ -104,8 +104,8 @@ function solve(A: number[][], b: number[]): number[] {
 
 /**
  * Fits the reward model's weights to the comparisons by maximum likelihood under Bradley–Terry,
- * with an L2 penalty `lambda`·|w|²/2 (Newton's method; the loss is convex, so it converges to the
- * one optimum). With no comparisons the weights are zero: every answer scores the same.
+ * with an L2 penalty `lambda`·|w|²/2. With the penalty the loss is strictly convex, so it has one
+ * minimiser; it is approximated by Newton iterations (50 at most). With no comparisons the weights are zero: every answer scores the same.
  */
 export function fitRewardModel(
 	features: readonly (readonly number[])[],
@@ -163,8 +163,10 @@ export const reference = (n: number) => new Array<number>(n).fill(1 / n);
  */
 export function tilt(r: readonly number[], beta: number, ref = reference(r.length)): number[] {
 	if (!Number.isFinite(beta)) return [...ref];
-	const top = Math.max(...r);
-	const u = r.map((v, i) => ref[i] * Math.exp((v - top) / beta));
+	// log-weights; answers outside π_ref's support stay at zero whatever their reward
+	const logu = r.map((v, i) => (ref[i] > 0 ? Math.log(ref[i]) + v / beta : -Infinity));
+	const top = Math.max(...logu);
+	const u = logu.map((v) => Math.exp(v - top));
 	const z = u.reduce((a, b) => a + b, 0);
 	return u.map((v) => v / z);
 }
@@ -245,7 +247,7 @@ export function policyGradient(
 				g[y] += adv;
 			}
 		}
-		// a step of lr/β: the KL term's curvature is β, so a larger step would overshoot
+		// a step of lr/β: a heuristic (it grows as the leash loosens), not a stability bound
 		for (let i = 0; i < n; i++) theta[i] += (lr / beta) * g[i];
 		if (it % every === 0 || it === iters) {
 			pis.push(softmax(theta));
