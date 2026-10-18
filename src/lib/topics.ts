@@ -1176,6 +1176,15 @@ const explainers: Explainer[] = [
 		accent: '#b5179e',
 		steps: 8,
 		minutes: 20
+	},
+	{
+		slug: 'dislocations-alloys',
+		title: 'Dislocations: why metals bend and alloys resist',
+		summary:
+			'Shear a crystal of simulated atoms and watch a defect glide through it one row of bonds at a time, at a few hundredths of the stress a perfect crystal needs; then sprinkle in foreign atoms and drive dislocations into a hard particle, and watch the stress climb.',
+		accent: '#8a5a2b',
+		steps: 8,
+		minutes: 16
 	}
 ];
 

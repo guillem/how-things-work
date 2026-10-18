@@ -522,6 +522,25 @@
 		const lone = (x * 7 + y * 11) % 23 === 0;
 		return { i, x: 20 + x * 10, y: 15 + y * 10, up: f > 0 !== lone };
 	});
+
+	// Dislocations: a triangular lattice, 8 atoms per row below the slip plane and 9 above
+	// (an extra half-plane wedged in at x = 100), the ⊥ at the end of the half-plane.
+	const disArt = (() => {
+		const out: { x: number; y: number; extra: boolean }[] = [];
+		for (let r = 0; r < 6; r++) {
+			const y = 100 - r * 15;
+			const upper = r >= 3;
+			const n = upper ? 9 : 8;
+			for (let k = 0; k < n; k++) {
+				const shift = r % 2 ? 0.5 : 0;
+				// lower rows evenly 18 apart; upper rows squeeze one more atom in near the middle
+				const u = (k + shift) / (n - 1 + 0.5);
+				const x = 30 + u * 140 + (upper ? Math.sin(u * Math.PI * 2) * (5 - r) : 0);
+				out.push({ x, y, extra: upper && k === 4 });
+			}
+		}
+		return out;
+	})();
 </script>
 
 <svg viewBox="0 0 200 120" class="art" style:--accent={accent} aria-hidden="true">
@@ -4319,6 +4338,34 @@
 		{#each [60, 74, 88, 102] as x (x)}
 			<line x1={x} x2={x} y1="98" y2="82" stroke="currentColor" stroke-width="1.5" opacity="0.5" />
 		{/each}
+	{:else if slug === 'dislocations-alloys'}
+		<!-- an edge dislocation: an extra half-plane ending at the slip plane, marked ⊥ -->
+		<line
+			x1="22"
+			x2="178"
+			y1="63"
+			y2="63"
+			stroke="currentColor"
+			stroke-width="1"
+			stroke-dasharray="4 4"
+			opacity="0.45"
+		/>
+		{#each disArt as a, i (i)}
+			<circle
+				cx={a.x}
+				cy={a.y}
+				r="5.5"
+				fill={a.extra ? accent : 'currentColor'}
+				opacity={a.extra ? 0.9 : 0.3}
+			/>
+		{/each}
+		<path
+			d="M89 63h22M100 63v-14"
+			stroke={accent}
+			stroke-width="3.5"
+			stroke-linecap="round"
+			fill="none"
+		/>
 	{:else}
 		<circle cx="100" cy="60" r="30" fill="none" stroke={accent} stroke-width="2" />
 		<circle cx="100" cy="60" r="5" fill={accent} />

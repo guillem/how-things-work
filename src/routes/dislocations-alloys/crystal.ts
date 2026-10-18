@@ -8,8 +8,9 @@
  * the classic model of a simple solid (in 2D it crystallises in a triangular
  * lattice, nearest neighbours a ≈ 1.11σ apart). Foreign atoms (solutes) have a
  * different size σ_s, and a pair uses the mean of the two sizes
- * (Lorentz–Berthelot). The atoms of a hard particle (the obstacle) bind each
- * other ten times as strongly, so a dislocation cannot easily cut through it.
+ * (Lorentz–Berthelot). The hard particle (the obstacle) is a cluster of atoms
+ * that moves as one rigid body: it can be pushed and turned, but not sheared,
+ * so a dislocation cannot cut through it.
  *
  * The box is periodic left to right, with close-packed rows horizontal, so
  * the slip plane is the horizontal line between the two middle rows. The
@@ -43,8 +44,6 @@ const RC = 2.5;
 const SKIN = 0.35;
 export const FPS = 60;
 const DT = 0.01;
-/** Pair-strength multiplier between two atoms of the hard particle. */
-const HARD = 10;
 /** Time over which the grip speeds up to its rate. */
 const START = 5;
 
@@ -117,6 +116,22 @@ export class Crystal {
 	/** Top grip atoms' positions at zero displacement. */
 	private readonly x0: Float64Array;
 	private grip = 0;
+	/** The hard particle as a rigid body: its atoms, their offsets from its centre, its motion. */
+	private readonly body = {
+		atoms: [] as number[],
+		ox: [] as number[],
+		oy: [] as number[],
+		x: 0,
+		y: 0,
+		vx: 0,
+		vy: 0,
+		th: 0,
+		om: 0,
+		fx: 0,
+		fy: 0,
+		torque: 0,
+		inertia: 1
+	};
 	private gripForce = 0;
 	/** Grip force summed over the steps of the frame being computed (the gauge averages it). */
 	private forceSum = 0;
@@ -249,6 +264,18 @@ export class Crystal {
 				dx -= W * Math.round(dx / W);
 				if (Math.abs(dx) < 1.3 * A0 && Math.abs(this.y[i] - this.slipY) < 2.6 * h) this.hard[i] = 1;
 			}
+			const b = this.body;
+			for (let i = 0; i < n; i++) if (this.hard[i]) b.atoms.push(i);
+			// centre (unwrapped round x_o) and offsets
+			const rel = b.atoms.map((i) => {
+				const d = this.x[i] - xo;
+				return d - W * Math.round(d / W);
+			});
+			b.x = xo + rel.reduce((sum, d) => sum + d, 0) / rel.length;
+			b.y = b.atoms.reduce((sum, i) => sum + this.y[i], 0) / b.atoms.length;
+			b.ox = rel.map((d) => xo + d - b.x);
+			b.oy = b.atoms.map((i) => this.y[i] - b.y);
+			b.inertia = b.ox.reduce((sum, ox, k) => sum + ox * ox + b.oy[k] * b.oy[k], 0);
 		}
 		this.x0 = Float64Array.from(this.x);
 		this.buildList();
@@ -295,7 +322,7 @@ export class Crystal {
 	}
 
 	private forces() {
-		const { x, y, fx, fy, n, sigma, hard, role, nbr, nbrStart, width: W } = this;
+		const { x, y, fx, fy, n, sigma, role, nbr, nbrStart, width: W } = this;
 		fx.fill(0);
 		fy.fill(0);
 		let onGrip = 0;
@@ -312,9 +339,8 @@ export class Crystal {
 				if (r2 > RC * RC * s2) continue;
 				const q = s2 / r2;
 				const q6 = q * q * q;
-				const eps = hard[i] && hard[j] ? HARD : 1;
 				// force on j along (dx, dy), divided by r: 24ε(2q¹² − q⁶)/r²
-				const f = (24 * eps * (2 * q6 * q6 - q6)) / r2;
+				const f = (24 * (2 * q6 * q6 - q6)) / r2;
 				fx[j] += f * dx;
 				fy[j] += f * dy;
 				fx[i] -= f * dx;
@@ -324,6 +350,38 @@ export class Crystal {
 			}
 		}
 		this.gripForce = onGrip;
+		const b = this.body;
+		if (b.atoms.length) {
+			// forces between the particle's own atoms cancel in the sum and the torque
+			b.fx = 0;
+			b.fy = 0;
+			b.torque = 0;
+			const c = Math.cos(b.th);
+			const sn = Math.sin(b.th);
+			b.atoms.forEach((i, k) => {
+				b.fx += fx[i];
+				b.fy += fy[i];
+				const rx = c * b.ox[k] - sn * b.oy[k];
+				const ry = sn * b.ox[k] + c * b.oy[k];
+				b.torque += rx * fy[i] - ry * fx[i];
+			});
+		}
+	}
+
+	/** Puts the particle's atoms where the rigid body is. */
+	private placeBody() {
+		const b = this.body;
+		const W = this.width;
+		const c = Math.cos(b.th);
+		const sn = Math.sin(b.th);
+		b.atoms.forEach((i, k) => {
+			let nx = b.x + c * b.ox[k] - sn * b.oy[k];
+			nx -= W * Math.floor(nx / W);
+			const dx = nx - this.x[i];
+			this.x[i] = nx;
+			this.xList[i] += dx - W * Math.round(dx / W);
+			this.y[i] = b.y + sn * b.ox[k] + c * b.oy[k];
+		});
 	}
 
 	/** Damped dynamics at zero load until the forces settle. */
@@ -335,8 +393,19 @@ export class Crystal {
 	private advance(v: number, damp = this.spec.damping) {
 		const { x, y, vx, vy, fx, fy, role, n, width: W } = this;
 		const h = DT / 2;
+		const b = this.body;
+		const m = b.atoms.length;
+		if (m) {
+			b.vx += h * (b.fx / m - damp * b.vx);
+			b.vy += h * (b.fy / m - damp * b.vy);
+			b.om += h * (b.torque / b.inertia - damp * b.om);
+			b.x += DT * b.vx;
+			b.y += DT * b.vy;
+			b.th += DT * b.om;
+			this.placeBody();
+		}
 		for (let i = 0; i < n; i++) {
-			if (role[i] !== MOBILE) continue;
+			if (role[i] !== MOBILE || this.hard[i]) continue;
 			vx[i] += h * (fx[i] - damp * vx[i]);
 			vy[i] += h * (fy[i] - damp * vy[i]);
 			x[i] += DT * vx[i];
@@ -360,8 +429,13 @@ export class Crystal {
 		}
 		this.maybeRebuild();
 		this.forces();
+		if (m) {
+			b.vx = (b.vx + (h * b.fx) / m) / (1 + h * damp);
+			b.vy = (b.vy + (h * b.fy) / m) / (1 + h * damp);
+			b.om = (b.om + (h * b.torque) / b.inertia) / (1 + h * damp);
+		}
 		for (let i = 0; i < n; i++) {
-			if (role[i] !== MOBILE) continue;
+			if (role[i] !== MOBILE || this.hard[i]) continue;
 			vx[i] = (vx[i] + h * fx[i]) / (1 + h * damp);
 			vy[i] = (vy[i] + h * fy[i]) / (1 + h * damp);
 		}

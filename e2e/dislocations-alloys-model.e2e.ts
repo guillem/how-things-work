@@ -110,15 +110,26 @@ test.describe('the model crystal', () => {
 		}
 	});
 
-	test('dislocations stop at the hard particle and the stress climbs', () => {
+	test('a dislocation stops at the hard particle and the stress climbs', () => {
 		const c = new Crystal(specFor('pileup', { count: 1 }));
 		const xo = OBSTACLE_AT * c.width;
-		const { stress } = run(c, 560);
-		const at = cores(c, c.frame(560));
+		const { stress } = run(c, 540);
+		const at = cores(c, c.frame(540));
 		expect(at).toHaveLength(1);
 		// held just before the particle
 		expect(xo - at[0]).toBeGreaterThan(0);
 		expect(xo - at[0]).toBeLessThan(4 * A0);
-		expect(stress[560]).toBeGreaterThan(50 * GLIDE_STRESS);
+		expect(stress[540]).toBeGreaterThan(50 * GLIDE_STRESS);
+	});
+
+	test('a pile-up of three gets through at a lower stress than one dislocation alone', () => {
+		// the dislocations behind push on the front one: the head of a pile-up of n feels
+		// about n times the applied stress (Eshelby, Frank & Nabarro 1951)
+		const peak = (count: number) =>
+			Math.max(...run(new Crystal(specFor('pileup', { count })), 700).stress);
+		const one = peak(1);
+		const three = peak(3);
+		expect(three).toBeLessThan(one / 2);
+		expect(three).toBeGreaterThan(10 * GLIDE_STRESS);
 	});
 });

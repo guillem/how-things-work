@@ -23,7 +23,7 @@ export const IDEAL_STRENGTH = 4.4;
 export const GLIDE_STRESS = 0.017;
 
 /** Position of the hard particle, as a fraction of the box width. */
-export const OBSTACLE_AT = 0.85;
+export const OBSTACLE_AT = 0.95;
 
 export interface SetupParams {
 	/** Fraction of foreign atoms (solutes). */
@@ -60,7 +60,7 @@ export function specFor(setup: Setup, p: SetupParams = {}): CrystalSpec {
 				dislocations: count,
 				rate: 2 * SLOW,
 				// cores start evenly spaced; shift them so that none sits on the particle
-				offset: count === 1 ? -0.3 : count === 2 ? -0.05 : -0.08,
+				offset: count === 1 ? -0.2 : -0.12,
 				obstacle: OBSTACLE_AT
 			};
 		}

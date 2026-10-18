@@ -3941,3 +3941,45 @@ kbd {
 	--im-2d: #69db7c;
 	--im-2d-text: #69db7c;
 }
+
+/* dislocations-alloys: host atoms, the grips and their bands, the marked column, foreign atoms,
+   the hard particle, squeezed and stretched, the bonds across the slip plane, the core ⊥, the
+   stress curve and gauge, its peak, and the marks (perfect crystal, one dislocation, real metals) */
+:root {
+	--da-atom: #c9ced6;
+	--da-grip: #8d96a3;
+	--da-grip-band: rgba(120, 130, 145, 0.14);
+	--da-column: #8a5a2b;
+	--da-solute: #f2b632;
+	--da-hard: #343a40;
+	--da-squeezed: #1c6fd1;
+	--da-stretched: #d6336c;
+	--da-bond: #adb5bd;
+	--da-bond-strained: #e8590c;
+	--da-core: #c92a2a;
+	--da-curve: #0b7285;
+	--da-peak: #e8590c;
+	--da-ideal: #7048e8;
+	--da-glide: #2b8a3e;
+	--da-real: #f08c00;
+	--da-real-text: #b35c00;
+}
+:root[data-theme='dark'] {
+	--da-atom: #5b636e;
+	--da-grip: #3d434b;
+	--da-grip-band: rgba(160, 170, 185, 0.1);
+	--da-column: #e0a35c;
+	--da-solute: #ffd43b;
+	--da-hard: #e9ecef;
+	--da-squeezed: #4dabf7;
+	--da-stretched: #f06595;
+	--da-bond: #6c757d;
+	--da-bond-strained: #ff922b;
+	--da-core: #ff6b6b;
+	--da-curve: #3bc9db;
+	--da-peak: #ff922b;
+	--da-ideal: #b197fc;
+	--da-glide: #69db7c;
+	--da-real: #f59f00;
+	--da-real-text: #ffc078;
+}
