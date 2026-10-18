@@ -1,6 +1,6 @@
 # Topic catalog
 
-Source of truth for the content of an interactive web learning tool that shows how things work. It defines 100 topics in 11 categories, each built around one interactive graphic. Readers range from high-school students to university majors.
+Source of truth for the content of an interactive web learning tool that shows how things work. It defines 101 topics in 11 categories, each built around one interactive graphic. Readers range from high-school students to university majors.
 
 This file covers content only. It does not choose the stack, the visual design or the project layout; take those from the repository's own instructions.
 
@@ -91,7 +91,7 @@ A topic is done when:
 | Space | `space` | 9 |
 | Computing | `computing` | 10 |
 | Information & Networks | `networks` | 8 |
-| Artificial Intelligence | `ai` | 9 |
+| Artificial Intelligence | `ai` | 10 |
 | Energy & Machines | `energy` | 9 |
 
 ## Checklist
@@ -206,6 +206,7 @@ A topic is done when:
 - [x] language-models
 - [x] diffusion-models
 - [x] reinforcement-learning
+- [ ] ngram-text-models
 
 **Energy & Machines**
 - [x] heat-engines
@@ -918,7 +919,7 @@ A topic is done when:
 - **Interaction:** Type a message and see how many bits each symbol deserves given its frequency, then build the Huffman tree and compare the encoded size. Load an image, split it into 8×8 blocks and discard high-frequency detail with a quality slider until the damage shows.
 - **Takeaway:** Information is measured by surprise, so predictable data fits in fewer bits, and lossy formats go further by dropping what the senses will not miss.
 - **Prerequisites:** binary, fourier-transform
-- **Related:** entropy
+- **Related:** entropy, ngram-text-models
 
 #### error-correction
 - **Title:** Error-correcting codes
@@ -1049,7 +1050,7 @@ A topic is done when:
 - **Interaction:** Type any text to see it split into tokens; for a set of example prompts, view a real small model's probability for each candidate next token as a bar chart (precomputed). Pick tokens one at a time while adjusting temperature and top-p, and compare several sampled continuations of the same prompt.
 - **Takeaway:** A language model does one thing, predict the next token, and fluent text, answers and code emerge from doing that repeatedly with a very large network trained on a very large amount of text.
 - **Prerequisites:** embeddings, neural-networks
-- **Related:** transformers
+- **Related:** transformers, ngram-text-models
 - **Needs:** A small language model that runs in the browser, or precomputed next-token probabilities.
 
 #### diffusion-models
@@ -1069,6 +1070,17 @@ A topic is done when:
 - **Takeaway:** An agent can learn a skill from rewards alone by trying actions and gradually crediting the ones that led to good outcomes, balancing exploration against using what it already knows.
 - **Prerequisites:** learning-from-data
 - **Related:** feedback-control
+
+#### ngram-text-models
+- **Title:** N-gram text models & their limits
+- **Level:** 1
+- **Kind:** build
+- **Interaction:** Feed a text into a counting machine that records which letter (or word) follows each run of the previous n, then let it write by sampling from those counts. Slide n from 1 to 10 and watch the samples go from gibberish to word-like to Shakespeare-like, while two meters track what goes wrong: the share of contexts in held-out text that were never seen climbs toward all of them, and the longest stretch copied verbatim from the source grows until the model only recites.
+- **Takeaway:** Counting what followed the last few symbols gives more fluent text as the window grows, but the number of possible contexts explodes so fast that long windows are almost never seen, and the model can only copy; a model that reaches far back has to generalise instead of count.
+- **Prerequisites:** learning-from-data
+- **Related:** language-models, compression
+- **Needs:** About 1 MB of Shakespeare's plays (the 'Tiny Shakespeare' extract popularised by Karpathy's char-rnn, or the same plays taken from Project Gutenberg) and the reader's own text.
+- **Pitfall:** Unseen contexts are not a problem solved by more data alone: the count of possible contexts grows exponentially with n. Smoothing and back-off fix the zero counts but not the lack of long-range structure.
 
 ### Energy & Machines
 
