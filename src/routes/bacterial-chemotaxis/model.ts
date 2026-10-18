@@ -12,8 +12,9 @@
  * Cells swim in three dimensions in a liquid layer deep enough that only x and y matter for
  * the attractant; we show x and y.
  *
- * Receptors (the MWC model of Tu, Shimizu & Berg 2008, PNAS 105:14855, with the constants
- * Shimizu, Tu & Berg 2010, Mol Syst Biol 6:382, measured for the attractant MeAsp on Tar):
+ * Receptors (the MWC model of Tu, Shimizu & Berg 2008, PNAS 105:14855, for the attractant MeAsp
+ * on Tar: K_I and m0 from that paper; N, α and K_I/K_A = 0.0062 as measured by Shimizu, Tu &
+ * Berg 2010, Mol Syst Biol 6:382, whose fit uses m0 ≈ 0.5, a shift of the methylation scale only):
  * a cluster of N = 6 receptors is all-active or all-inactive; its free energy is
  *   F = N [α (m0 − m) + ln((1 + c/K_I) / (1 + c/K_A))],
  * with α = 2 (kT per methyl group), m0 = 1, K_I = 18.2 µM, K_A = K_I/0.0062 ≈ 2.9 mM, and the
