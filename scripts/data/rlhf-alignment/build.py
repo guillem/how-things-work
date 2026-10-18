@@ -14,7 +14,8 @@ use (below; words of the question itself, like "sleep" for the sleep question, a
     -1 if it talks about itself ("I", "me", "my") instead of the reader
     -1 if one word of four letters or more comes three times or more
 
-A word counts as used if a word of the answer starts with it ("relax" covers "relaxing").
+A word counts as used if the answer has it, alone or with one of the endings -s, -es, -ed, -ing,
+-er or -ers ("relax" covers "relaxing", "read" does not cover "ready").
 Comparisons by the rater are then drawn by the page under the Bradley-Terry rule on these scores.
 
 Features. The 768 numbers per answer from sample.py are centred over the prompt's answers and
@@ -35,15 +36,17 @@ import numpy as np
 D = 48
 WORDS = {
     'sleep': ['bed', 'relax', 'breath', 'tired', 'dark', 'caffeine', 'coffee', 'screen', 'phone',
-              'night', 'rest', 'routine', 'quiet', 'calm', 'read', 'warm', 'bath', 'exercise',
-              'alarm', 'nap', 'melatonin', 'meditat', 'light', 'music', 'pillow', 'tea'],
+              'night', 'resting', 'routine', 'quiet', 'calm', 'read', 'warm', 'bath', 'exercise',
+              'alarm', 'nap', 'melatonin', 'meditate', 'meditation', 'light', 'music', 'pillow',
+              'tea', 'book'],
     'hiking': ['water', 'food', 'snack', 'map', 'compass', 'jacket', 'rain', 'layer', 'boot',
                'shoe', 'sock', 'sunscreen', 'hat', 'first aid', 'kit', 'backpack', 'flashlight',
                'torch', 'phone', 'lunch', 'bottle', 'cloth', 'coat', 'trail', 'sandwich', 'fruit',
                'bag', 'gear', 'knife'],
-    'plants': ['water', 'light', 'sun', 'soil', 'pot', 'drain', 'fertil', 'leaf', 'leaves',
+    'plants': ['water', 'light', 'sun', 'sunlight', 'soil', 'pot', 'drain', 'fertilizer', 'leaf',
+               'leaves',
                'window', 'humid', 'mist', 'prune', 'repot', 'root', 'shade', 'temperature',
-               'moist', 'dry', 'feed', 'nutrient', 'compost'],
+               'moist', 'moisture', 'dry', 'feed', 'nutrient', 'compost'],
 }
 SHORT = {
     'sleep': 'How can I fall asleep faster?',
@@ -58,8 +61,10 @@ def words_of(text):
 
 def score(pid, text):
     ws = words_of(text)
-    low = ' ' + ' '.join(ws)
-    used = [w for w in WORDS[pid] if (' ' + w) in low]
+    forms = set(ws)
+    joined = ' ' + ' '.join(ws) + ' '
+    ends = ('', 's', 'es', 'ed', 'ing', 'er', 'ers')
+    used = [w for w in WORDS[pid] if (' ' in w and ' ' + w + ' ' in joined) or any(w + e in forms for e in ends)]
     parts = {'topic': min(3, len(used))}
     end = text.rstrip()[-1:]
     parts['finished'] = 1 if end in ('.', '!') else 0
@@ -70,7 +75,7 @@ def score(pid, text):
         if len(w) >= 4:
             counts[w] = counts.get(w, 0) + 1
     parts['repeat'] = -1 if counts and max(counts.values()) >= 3 else 0
-    return sum(parts.values()), used
+    return sum(parts.values()), used, [parts[k] for k in ('topic', 'finished', 'question', 'self', 'repeat')]
 
 
 def main(src, out):
@@ -92,13 +97,15 @@ def main(src, out):
         answers = []
         for a, z in zip(A, Z):
             assert a['text'].strip()
-            s, used = score(pid, a['text'])
+            s, used, parts = score(pid, a['text'])
             assert -3 <= s <= 4
             answers.append({
                 'text': a['text'].strip(),
                 'tokens': a['tokens'],
                 'logp': round(a['logp'], 2),
                 'score': s,
+                'used': used,
+                'parts': parts,
                 'f': [round(float(v), 2) for v in z],
             })
         print(pid, 'variance kept', round(explained, 3), 'scores', sorted(x['score'] for x in answers))

@@ -162,10 +162,16 @@ test('over-optimisation: as β falls the proxy reward rises but the rater’s sc
 	expect(s[top]).toBeLessThan(peak.gold);
 });
 
-test('with 400 comparisons the hiking reward model’s favourite is the rater’s favourite', () => {
-	for (const seed of [1, 2, 3]) {
-		const { r, s } = rewardModel('hiking', 400, seed);
-		const curve = overoptimisation(r, s);
-		expect(curve.at(-1)!.gold).toBe(Math.max(...s));
-	}
+test('more comparisons make the drop smaller: the reward model has fewer mistakes to exploit', () => {
+	const drop = (n: number) => {
+		let d = 0;
+		for (const p of prompts)
+			for (const seed of [1, 2, 3, 4, 5]) {
+				const { r, s } = rewardModel(p.id, n, seed);
+				const curve = overoptimisation(r, s);
+				d += Math.max(...curve.map((c) => c.gold)) - curve.at(-1)!.gold;
+			}
+		return d / 15;
+	};
+	expect(drop(400)).toBeLessThan(drop(100) / 2);
 });

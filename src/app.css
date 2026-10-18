@@ -3359,3 +3359,34 @@ kbd {
 	--sl-model: #b197fc;
 	--sl-live: #ff922b;
 }
+
+/* rlhf-alignment: the rater's scores (a ramp from poor to good), the reward model's score, the
+   rater's average, GPT-2's 1/64, the policy's bars and the policy-gradient run */
+:root {
+	--rl-s-low: #e03131;
+	--rl-s-0: #f08c00;
+	--rl-s-1: #adb5bd;
+	--rl-s-2: #69db7c;
+	--rl-s-3: #2f9e44;
+	--rl-s-4: #1b5e20;
+	--rl-reward: #7048e8;
+	--rl-gold: #2b8a3e;
+	--rl-ref: #495057;
+	--rl-policy: #1c7ed6;
+	--rl-pg: #e8590c;
+	--rl-card: #f8f9fa;
+}
+:root[data-theme='dark'] {
+	--rl-s-low: #ff6b6b;
+	--rl-s-0: #ffa94d;
+	--rl-s-1: #5c636a;
+	--rl-s-2: #2f9e44;
+	--rl-s-3: #69db7c;
+	--rl-s-4: #b2f2bb;
+	--rl-reward: #b197fc;
+	--rl-gold: #69db7c;
+	--rl-ref: #ced4da;
+	--rl-policy: #4dabf7;
+	--rl-pg: #ff922b;
+	--rl-card: #1f2328;
+}

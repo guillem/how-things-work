@@ -3071,6 +3071,66 @@
 			stroke-linecap="round"
 		/>
 		<circle cx="141" cy="47" r="4.5" fill={accent} />
+	{:else if slug === 'rlhf-alignment'}
+		<!-- two answer cards with a tick on one, and bars pulled from an even row towards the right -->
+		<rect
+			x="18"
+			y="16"
+			width="62"
+			height="36"
+			rx="6"
+			fill="none"
+			stroke="currentColor"
+			stroke-width="1.4"
+			opacity="0.6"
+		/>
+		<rect
+			x="18"
+			y="60"
+			width="62"
+			height="36"
+			rx="6"
+			fill="none"
+			stroke={accent}
+			stroke-width="2"
+		/>
+		<path
+			d="M38 79 L46 87 L62 70"
+			fill="none"
+			stroke={accent}
+			stroke-width="2.5"
+			stroke-linecap="round"
+		/>
+		<line
+			x1="96"
+			y1="100"
+			x2="190"
+			y2="100"
+			stroke="currentColor"
+			stroke-width="1.2"
+			opacity="0.5"
+		/>
+		<line
+			x1="96"
+			y1="84"
+			x2="190"
+			y2="84"
+			stroke="currentColor"
+			stroke-width="1"
+			stroke-dasharray="3 3"
+			opacity="0.6"
+		/>
+		{#each [8, 7, 9, 8, 11, 14, 22, 34, 56, 76] as h, i (i)}
+			<rect
+				x={98 + i * 9.2}
+				y={100 - h}
+				width="7"
+				height={h}
+				rx="1.5"
+				fill="var(--rl-policy)"
+				opacity={0.45 + i * 0.05}
+			/>
+		{/each}
 	{:else if slug === 'stars'}
 		<!-- a massive star cut open: onion layers round an iron core, and a track on the HR diagram -->
 		<circle cx="62" cy="60" r="44" fill="var(--st-h)" />

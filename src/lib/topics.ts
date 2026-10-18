@@ -987,6 +987,15 @@ const explainers: Explainer[] = [
 		accent: '#1864ab',
 		steps: 8,
 		minutes: 18
+	},
+	{
+		slug: 'rlhf-alignment',
+		title: 'RLHF: learning from human preferences',
+		summary:
+			'Compare pairs of answers GPT-2 wrote and watch a Bradley–Terry reward model learn from the choices; then pull the base model towards that reward on a KL leash, exactly and by policy gradient, and loosen the leash until the policy games the reward model’s mistakes.',
+		accent: '#7048e8',
+		steps: 8,
+		minutes: 18
 	}
 ];
 
