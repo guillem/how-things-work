@@ -1,6 +1,6 @@
 # Topic catalog
 
-Source of truth for the content of an interactive web learning tool that shows how things work. It defines 133 topics in 11 categories, each built around one interactive graphic. Readers range from high-school students to university majors.
+Source of truth for the content of an interactive web learning tool that shows how things work. It defines 134 topics in 11 categories, each built around one interactive graphic. Readers range from high-school students to university majors.
 
 This file covers content only. It does not choose the stack, the visual design or the project layout; take those from the repository's own instructions.
 
@@ -85,7 +85,7 @@ A topic is done when:
 | Mathematics | `math` | 18 |
 | Physics | `physics` | 13 |
 | Chemistry & Materials | `chemistry` | 14 |
-| Biology | `biology` | 12 |
+| Biology | `biology` | 13 |
 | Body & Medicine | `medicine` | 10 |
 | Earth & Climate | `earth` | 9 |
 | Space | `space` | 9 |
@@ -160,6 +160,7 @@ A topic is done when:
 - [x] bacterial-chemotaxis
 - [x] diffusion-osmosis
 - [x] pcr-copying-dna
+- [ ] morphogen-gradients
 
 **Body & Medicine**
 - [x] heart-circulation
@@ -797,6 +798,16 @@ A topic is done when:
 - **Prerequisites:** dna-to-protein
 - **Related:** epidemics
 - **Pitfall:** Doubling is not forever: primers and nucleotides run out and the curve flattens, so the plateau says nothing about the starting amount; only the threshold cycle does. A Ct value is not a measure of how ill someone is. Nor is every copy the target from the first cycle: the short piece bounded by both primers only appears from the third cycle, after which it dominates.
+
+#### morphogen-gradients
+- **Title:** Morphogen gradients & positional information
+- **Level:** 3
+- **Kind:** manipulate
+- **Interaction:** Drag the production rate, diffusion constant and lifetime of a morphogen made at one end of a row of cells and watch its concentration profile settle into an exponential whose length scale, the square root of diffusion over decay, the page reports. Set two or three thresholds and the cells paint themselves in bands, Wolpert's French flag. Double the tissue's length and the bands fail to scale; switch on Ben-Zvi and Barkai's expansion-repression circuit (a second diffusing 'expander' that widens the gradient and is shut off by the morphogen) and the bands stay in proportion. Add noise to the concentration and see that boundaries where the gradient is steep stay sharp while those in its flat tail blur.
+- **Takeaway:** A cell can learn where it is from how much of one substance reaches it, and the shape of that gradient, set by diffusion and decay, decides where the boundaries fall.
+- **Prerequisites:** the-cell, dna-to-protein
+- **Needs:** No data needed: a 1D synthesis-diffusion-degradation PDE plus the expansion-repression model (Ben-Zvi & Barkai 2010, PNAS), both run live. Optional comparison: published Bicoid length scales (about 20% of egg length, Gregor et al. 2007), quoted as numbers with citation.
+- **Pitfall:** The synthesis-diffusion-degradation model is a working hypothesis and the Bicoid gradient's formation is still debated; the page must present the exponential as what the model predicts and say where it is tested.
 
 ### Body & Medicine
 
@@ -1535,7 +1546,6 @@ A topic is done when:
 Strong candidates that are not in the catalog. Do not build them unless the user promotes one to replace a topic above.
 
 - Fluid dynamics
-- Embryo development & pattern formation
 - DNA sequencing
 - Hearing & the cochlea
 - Telescopes
