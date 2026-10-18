@@ -10,14 +10,14 @@ import { N, pixel } from '../model';
 let canvas: HTMLCanvasElement | null = null;
 
 /** Centred index → screen row or column, so that the centre pixel lands in the middle. */
-const wrap = (i: number) => ((((N / 2 - i) % N) + N) % N) - N / 2;
+const wrap = (i: number) => ((((N - i) % N) + N) % N) - N / 2;
 
 /**
  * An image (centred pixels, +x east, +y north) as a data URL, with a soft (asinh) stretch:
  * values near `soft × hi` and below are shown nearly linearly, brighter ones compressed, `hi` is
- * white and −hi full blue.
+ * white and −hi full blue. `zoom` 2 shows the central half of the field, magnified.
  */
-export function paint(values: ArrayLike<number>, hi: number, soft = 0.08, mirrorX = true): string {
+export function paint(values: ArrayLike<number>, hi: number, soft = 0.08, zoom = 1): string {
 	if (typeof document === 'undefined') return '';
 	canvas ??= document.createElement('canvas');
 	canvas.width = N;
@@ -29,9 +29,9 @@ export function paint(values: ArrayLike<number>, hi: number, soft = 0.08, mirror
 	const h = hi > 0 ? hi : 1;
 	const norm = Math.asinh(1 / soft);
 	for (let r = 0; r < N; r++) {
-		const y = wrap(r);
+		const y = zoom === 1 ? wrap(r) : Math.floor(N / (2 * zoom) - r / zoom);
 		for (let c = 0; c < N; c++) {
-			const x = mirrorX ? wrap(c) : c - N / 2;
+			const x = zoom === 1 ? wrap(c) : Math.floor(N / (2 * zoom) - c / zoom);
 			const v = Math.max(-1, Math.min(1, Math.asinh(values[pixel(x, y)] / (soft * h)) / norm));
 			const o = 4 * (r * N + c);
 			if (v >= 0) {

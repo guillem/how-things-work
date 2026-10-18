@@ -64,8 +64,9 @@
 	});
 	// extra path: from dish A, along dir, to the wavefront through dish B
 	const extra = $derived(sepPx * Math.sin(TH));
-	const exA = $derived({ x: xa, y: GROUND - 30 });
-	const exB = $derived({ x: xa + dir.x * extra, y: GROUND - 30 + dir.y * extra });
+	// the wave reaches dish A (nearer the source) first: B's signal travels b sin θ further
+	const exA = $derived({ x: xb, y: GROUND - 30 });
+	const exB = $derived({ x: xb + dir.x * extra, y: GROUND - 30 + dir.y * extra });
 
 	function dishPath(x: number) {
 		const y = GROUND - 30;
@@ -146,17 +147,17 @@
 		{/each}
 	</g>
 	<line
-		x1={GX - 150}
-		y1={GROUND - 260}
-		x2={GX - 150 + dir.x * -60}
-		y2={GROUND - 260 + dir.y * -60}
+		x1={40}
+		y1={100}
+		x2={40 - dir.x * 56}
+		y2={100 - dir.y * 56}
 		stroke="var(--as-wave)"
 		stroke-width="2"
 		marker-end="url(#arrowhead)"
 	/>
-	<Label x={GX - 162} y={GROUND - 270} text="waves from the source" anchor="end" size={12} />
+	<Label x={24} y={88} text="waves from the source" anchor="start" size={12} />
 	<Readout id="schematic">
-		<Label x={24} y={56} text="schematic: angles not to scale" size={11} muted />
+		<Label x={24} y={56} text="schematic: angles not to scale" anchor="start" size={11} muted />
 	</Readout>
 
 	<!-- ground and dishes -->
@@ -189,10 +190,10 @@
 		stroke-linecap="round"
 	/>
 	<Label
-		x={exB.x - 8}
-		y={exB.y - 8}
+		x={exB.x + 12}
+		y={exB.y - 2}
 		text="extra path b sin θ"
-		anchor="end"
+		anchor="start"
 		size={12}
 		color="var(--as-delay-text)"
 	/>
@@ -311,9 +312,7 @@
 			anchor="start"
 			x={SX0}
 			y={SY1 + 32}
-			text="λ/b = 0.21 m / {b} m = {spacingArc.toFixed(
-				1
-			)}′ · strip 16′ wide · the fringes sweep the sky as the Earth turns"
+			text="λ/b = 0.21 m / {b} m = {spacingArc.toFixed(1)}′ (the bar) · the strip is 16′ of sky"
 			size={12}
 			tabular
 		/>
@@ -389,24 +388,19 @@
 			stroke-width="1.5"
 		/>
 		{#if nullB <= 600}
-			<Readout id="null" order={4} label="First null" value="b = λ/(2s) = {Math.round(nullB)} m">
-				<Label
-					x={vx(nullB)}
-					y={vy(0) - 8}
-					text="λ/(2s) = {Math.round(nullB)} m"
-					anchor="middle"
-					size={11}
-					muted
-					tabular
-				/>
-			</Readout>
+			<path d="M{vx(nullB)} {vy(0) - 2} l -5 -9 h 10 z" fill="var(--as-delay)" stroke="none" />
 		{/if}
-		<Readout id="sep" order={5} label="Separation" value="{sepArc}′">
+		<Readout
+			id="sep"
+			order={4}
+			label="First null"
+			value="b = λ/(2s) = {Math.round(nullB)} m for s = {sepArc}′"
+		>
 			<Label
 				anchor="end"
 				x={SX1}
 				y={428}
-				text="two 1 Jy sources {sepArc}′ apart"
+				text="two 1 Jy sources {sepArc}′ apart · first null (▲) at λ/(2s) = {Math.round(nullB)} m"
 				size={12}
 				muted
 				tabular

@@ -69,7 +69,7 @@
 	// ---- layout --------------------------------------------------------------------------
 	const P = 216;
 	const XS = [18, 254, 490, 726];
-	const Y0 = 112;
+	const Y0 = 136;
 	const MAP_HALF = 700; // metres from the centre to the map's edge
 	const mk = P / (2 * MAP_HALF);
 	const UV_HALF = (N / 2) * DU; // wavelengths from the centre to the uv panel's edge
@@ -235,7 +235,6 @@
 	const sp = $derived(spacings(dishes));
 	const beamMajor = $derived(cb.major / ARCSEC);
 	const beamMinor = $derived(cb.minor / ARCSEC);
-	const largest = $derived(S.uvMin > 0 ? 1 / S.uvMin / ARCMIN : Infinity);
 	const pixArc = PIX / ARCMIN;
 	const discCentre = pixel(Math.round(DISC_CENTRE.x / pixArc), Math.round(DISC_CENTRE.y / pixArc));
 	const discKept = $derived.by(() => {
@@ -246,12 +245,14 @@
 	const area = $derived(dishes.length * Math.PI * (DISH / 2) ** 2);
 	const bigArea = $derived(Math.PI * (sp.max / 2) ** 2);
 
+	/** Stretch of the images: below about a fifth of the peak nearly linear. */
+	const SOFT = 0.2;
 	// ---- pictures ------------------------------------------------------------------------------
-	const beamUrl = $derived(panels.includes('beam') ? paint(beam, 1, 0.25) : '');
-	const dirtyUrl = $derived(paint(dirty, dirtyPeak || 1));
+	const beamUrl = $derived(panels.includes('beam') ? paint(beam, 1, 0.5, 2) : '');
+	const dirtyUrl = $derived(paint(dirty, dirtyPeak || 1, SOFT));
 	const truthUrl = $derived(panels.includes('truth') ? paint(truth, peak(truth).value, 0.004) : '');
-	const residualUrl = $derived(cleaned ? paint(cleaned.c.residual, dirtyPeak || 1) : '');
-	const restoredUrl = $derived(cleaned ? paint(cleaned.restored, dirtyPeak || 1) : '');
+	const residualUrl = $derived(cleaned ? paint(cleaned.c.residual, dirtyPeak || 1, SOFT) : '');
+	const restoredUrl = $derived(cleaned ? paint(cleaned.restored, dirtyPeak || 1, SOFT) : '');
 	const dishUvUrl = $derived(
 		mode === 'dish' ? uvGrey(S.w, dark ? [255, 169, 77] : [232, 89, 12]) : ''
 	);
@@ -290,12 +291,25 @@
 		return { main, mirror };
 	});
 	const snapshot = $derived(H.length <= 1);
+	/** For the two-dish steps: each pair's whole 24-hour ellipse (ignoring the horizon), dashed. */
+	const fullDay = $derived.by(() => {
+		if (mode !== 'pair') return '';
+		const x0 = xOf('uv') + P / 2;
+		const y0 = Y0 + P / 2;
+		const Hs = Array.from({ length: 97 }, (_, i) => ((-12 + i / 4) * Math.PI) / 12);
+		let d = '';
+		for (const tr of tracks(dishes, decRad, Hs))
+			for (const sgn of [1, -1])
+				for (let i = 0; i < tr.u.length; i++)
+					d += `${i ? 'L' : 'M'}${(x0 + sgn * tr.u[i] * uvk).toFixed(1)} ${(y0 - sgn * tr.v[i] * uvk).toFixed(1)}`;
+		return d;
+	});
 
 	// ---- titles ----------------------------------------------------------------------------------
 	const TITLES: Record<Panel, string> = {
 		map: 'the dishes',
 		uv: 'what they sample: the uv plane',
-		beam: 'the dirty beam',
+		beam: 'the dirty beam (central 16′)',
 		dirty: 'the dirty image',
 		truth: 'the true sky',
 		residual: 'the residual',
@@ -313,6 +327,8 @@
 	const fmtAngle = (arcsec: number) =>
 		arcsec >= 90 ? `${(arcsec / 60).toFixed(1)}′` : `${Math.round(arcsec)}″`;
 	const fmtInt = (v: number) => Math.round(v).toLocaleString('en-US');
+	const count = (n: number, word: string) =>
+		`${fmtInt(n)} ${n === 1 ? word : word.endsWith('sh') ? `${word}es` : `${word}s`}`;
 	const decText = $derived(`${decDeg > 0 ? '+' : decDeg < 0 ? '−' : ''}${Math.abs(decDeg)}°`);
 	const trackText = $derived(
 		H.length === 0
@@ -321,13 +337,208 @@
 				? `a snapshot at transit · δ = ${decText}`
 				: `${hours} h · δ = ${decText}${H.length < Math.round(hours * 12) + 1 ? ' (part below 8°)' : ''}`
 	);
-	const resolved = $derived(cb.major < DOUBLE_SEPARATION * 1.0);
+	/** The double counts as two points when the dirty image dips by 15% between them. */
+	const resolved = $derived.by(() => {
+		if (skyKind !== 'double') return false;
+		const half = Math.round(DOUBLE_SEPARATION / 2 / PIX);
+		const a = dirty[pixel(half, 0)];
+		const b = dirty[pixel(-half, 0)];
+		return dirty[pixel(0, 0)] < 0.85 * Math.min(a, b);
+	});
+	const dirtyMin = $derived(dirty.reduce((m, v) => Math.min(m, v), 0));
+	const dirtySum = $derived(total(dirty));
+	const truthSum = $derived(total(truth));
+	const sinDec = $derived(Math.sin(decRad));
+
+	interface Line {
+		text: string;
+		label?: string;
+		value?: string;
+	}
+	const headline = $derived.by(() => {
+		const h = (
+			text: string,
+			label: string,
+			value: string,
+			sub = '',
+			subLabel?: string,
+			subValue?: string
+		) => ({ text, label, value, sub, subLabel, subValue });
+		const sharp = `as sharp as one dish ${fmtInt(sp.max)} m across`;
+		switch (mode) {
+			case 'dish': {
+				const blur = fmtAngle((1.22 * LAMBDA) / diameter / ARCSEC);
+				return h(
+					`a ${fmtInt(diameter)} m dish blurs every point of the sky to 1.22 λ/D = ${blur}`,
+					'Blur of the dish',
+					blur,
+					`21 cm waves · collecting area π D²/4 = ${fmtInt(Math.PI * (diameter / 2) ** 2)} m² · sky: ${SKY_NAMES[skyKind]}`,
+					'Collecting area',
+					`${fmtInt(Math.PI * (diameter / 2) ** 2)} m²`
+				);
+			}
+			case 'pair': {
+				const len = sp.max;
+				if (H.length === 0)
+					return h(
+						`at δ = ${decText} the source never climbs 8° above the VLA’s horizon: nothing to measure`,
+						'Source',
+						'never up'
+					);
+				if (hours === 0)
+					return h(
+						'one pair, one moment: one point of the uv plane, and its mirror image',
+						'One pair',
+						'one point and its mirror',
+						`baseline ${fmtInt(len)} m = ${fmtInt(len / LAMBDA)} wavelengths · stripes λ/b = ${(LAMBDA / len / ARCMIN).toFixed(1)}′ apart`,
+						'Baseline',
+						`${fmtInt(len)} m`
+					);
+				return h(
+					`${hours} h of the Earth’s turn: each pair traces an ellipse ${sinDec.toFixed(2)} times as tall as wide (sin δ)`,
+					'Axis ratio sin δ',
+					sinDec.toFixed(2),
+					`baseline ${fmtInt(len)} m · ${trackText}`,
+					'Track',
+					trackText
+				);
+			}
+			case 'area':
+				return h(
+					`${sharp}, with ${((100 * area) / bigArea).toFixed(1)}% of its collecting area`,
+					'Share of the big dish’s area',
+					`${((100 * area) / bigArea).toFixed(1)}%`,
+					`${dishes.length} × 491 m² = ${fmtInt(area)} m², against ${fmtInt(bigArea)} m²: what that dish sees in a minute takes the array ${duration((bigArea / area) ** 2)}`,
+					'Same signal-to-noise',
+					`a minute for the dish, ${duration((bigArea / area) ** 2)} for the array`
+				);
+			case 'dirty':
+				return h(
+					`the dirty image adds up to ${Math.abs(dirtySum) < 5e-4 ? '0.000' : dirtySum.toFixed(3)}: the total flux, at the centre of the uv plane, is never measured`,
+					'Sum of the dirty image',
+					Math.abs(dirtySum) < 5e-4 ? '0.000' : dirtySum.toFixed(3),
+					`it dips to ${dirtyMin.toFixed(2)} Jy/beam (blue) where the sky holds nothing; the true sky holds ${truthSum.toFixed(1)} Jy`,
+					'Deepest dip',
+					`${dirtyMin.toFixed(2)} Jy/beam`
+				);
+			case 'clean': {
+				const c = cleaned;
+				if (!c) return h('', '', '');
+				return h(
+					`${fmtInt(c.iterations)} CLEAN iterations: the components hold ${c.flux.toFixed(2)} of the sky’s ${truthSum.toFixed(2)} Jy`,
+					'Flux in components',
+					`${c.flux.toFixed(2)} of ${truthSum.toFixed(2)} Jy`,
+					`loop gain 0.1 · brightest residual ${c.residualPeak.toFixed(3)} Jy/beam · clean beam ${fmtAngle(beamMajor)} × ${fmtAngle(beamMinor)}`,
+					'Brightest residual',
+					`${c.residualPeak.toFixed(3)} Jy/beam`
+				);
+			}
+			case 'size':
+				if (skyKind === 'double')
+					return h(
+						`beam ${fmtAngle(beamMajor)}, double 1.5′ apart: ${resolved ? 'two points' : 'one blob'}`,
+						'Double',
+						resolved ? 'two points' : 'one blob',
+						`longest baseline ${fmtInt(sp.max)} m · λ/B = ${fmtAngle(LAMBDA / sp.max / ARCSEC)}`,
+						'Longest baseline',
+						`${fmtInt(sp.max)} m`
+					);
+				return h(
+					`shortest baseline ${fmtInt(sp.min)} m: little larger than λ/b = ${(LAMBDA / sp.min / ARCMIN).toFixed(1)}′ survives, and the disc is 6′`,
+					'Largest scale λ/b',
+					`${(LAMBDA / sp.min / ARCMIN).toFixed(1)}′`,
+					`the dirty image keeps ${Math.round(Math.max(0, discKept ?? 0) * 100)}% of the brightness at the disc’s centre (against the true sky at this resolution)`,
+					'Disc’s centre kept',
+					`${Math.round(Math.max(0, discKept ?? 0) * 100)}%`
+				);
+			default:
+				return h(
+					`${count(dishes.length, 'dish')}, ${count(pairs(dishes.length), 'pair')}: ${S.cells > 2 ? sharp : 'only stripes'}`,
+					'Array',
+					`${count(dishes.length, 'dish')}, ${count(pairs(dishes.length), 'pair')}`,
+					S.cells > 2
+						? `central peak ${fmtAngle(beamMajor)} × ${fmtAngle(beamMinor)}; λ/B for the longest baseline = ${fmtAngle(LAMBDA / sp.max / ARCSEC)}`
+						: '',
+					'Resolution',
+					`${fmtAngle(beamMajor)} × ${fmtAngle(beamMinor)}`
+				);
+		}
+	});
+
+	const FLOW: Record<string, string[]> = {
+		dish: ['every pair of points on the dish', 'inverse Fourier transform', 'the sky ⊛ the beam'],
+		pair: ['each pair: a point and its mirror', 'inverse Fourier transform', 'the sky ⊛ the beam'],
+		array: ['each pair: a point and its mirror', 'inverse Fourier transform', 'the sky ⊛ the beam'],
+		build: ['each pair: a point and its mirror', 'inverse Fourier transform', 'the sky ⊛ the beam'],
+		area: ['each pair: a point and its mirror', 'inverse Fourier transform', 'the sky ⊛ the beam'],
+		dirty: ['inverse Fourier transform', 'the sky ⊛ the beam', 'compare'],
+		clean: [
+			'subtract the beam at the peak, repeat',
+			'components ⊛ clean beam + residual',
+			'compare'
+		],
+		size: ['each pair: a point and its mirror', 'the sampled sky, transformed back', 'compare']
+	};
+	const flow = $derived(FLOW[mode] ?? FLOW.array);
+
+	function caption(p: Panel): Line & { more?: string } {
+		switch (p) {
+			case 'map':
+				if (mode === 'dish') return { text: `${fmtInt(diameter)} m across, to scale` };
+				if (mode === 'size')
+					return {
+						text: `the 12-dish Y × ${sizeF.toFixed(2)}`,
+						more: `spacings ${fmtInt(sp.min)}–${fmtInt(sp.max)} m`,
+						label: 'Array',
+						value: `× ${sizeF.toFixed(2)}`
+					};
+				return {
+					text: `${count(dishes.length, 'dish')} · ${count(pairs(dishes.length), 'pair')}`,
+					more:
+						dishes.length === 2
+							? `${fmtInt(sp.max)} m apart`
+							: dishes.length > 2
+								? `spacings ${fmtInt(sp.min)}–${fmtInt(sp.max)} m`
+								: ''
+				};
+			case 'uv':
+				if (mode === 'dish')
+					return { text: `filled out to D/λ = ${fmtInt(diameter / LAMBDA)} wavelengths` };
+				return {
+					text: trackText,
+					more: `${fmtInt(S.cells)} of ${fmtInt(N * N)} cells${S.outside ? ` · ${fmtInt(S.outside)} samples off the grid` : ''}`,
+					label: mode === 'pair' ? undefined : 'Track',
+					value: mode === 'pair' ? undefined : trackText
+				};
+			case 'beam':
+				if (mode === 'dish')
+					return { text: `half width ≈ λ/D = ${fmtAngle((1.03 * LAMBDA) / diameter / ARCSEC)}` };
+				if (S.cells === 0) return { text: 'nothing sampled' };
+				if (S.cells <= 2)
+					return { text: `stripes ${(1 / (S.uvMax || 1) / ARCMIN).toFixed(1)}′ apart` };
+				return { text: `central peak ${fmtAngle(beamMajor)} × ${fmtAngle(beamMinor)}` };
+			case 'dirty':
+				if (mode === 'dish') return { text: SKY_NAMES[skyKind] };
+				if (['array', 'build', 'pair', 'area'].includes(mode))
+					return { text: `${count(S.samples, 'sample')}, and their mirrors` };
+				return { text: `peak ${dirtyPeak.toFixed(2)} Jy/beam` };
+			case 'residual':
+				return {
+					text: `after ${fmtInt(cleaned?.iterations ?? 0)} iterations`,
+					more: cleaned && cleaned.last >= 0 ? 'ring: the latest component' : ''
+				};
+			case 'restored':
+				return { text: 'components ⊛ clean beam + residual' };
+			case 'truth':
+				return { text: `${SKY_NAMES[skyKind]}, ${truthSum.toFixed(1)} Jy` };
+		}
+	}
 
 	// pixels → screen (east left, north up)
 	const scr = (x0: number, index: number) => {
 		const y = Math.floor(index / N) - N / 2;
 		const x = (index % N) - N / 2;
-		return { x: x0 + ((N / 2 - x) / N) * P, y: Y0 + ((N / 2 - y) / N) * P };
+		return { x: x0 + ((N / 2 - x + 0.5) / N) * P, y: Y0 + ((N / 2 - y + 0.5) / N) * P };
 	};
 </script>
 
@@ -454,6 +665,16 @@
 						stroke-dasharray="6 4"
 					/>
 				{/if}
+				{#if fullDay}
+					<path
+						d={fullDay}
+						fill="none"
+						stroke="var(--stage-ink-muted)"
+						stroke-width="1"
+						stroke-dasharray="3 4"
+						opacity="0.6"
+					/>
+				{/if}
 				<path
 					d={uvPaths.mirror}
 					fill="none"
@@ -509,394 +730,55 @@
 		<circle cx={at.x} cy={at.y} r="7" fill="none" stroke="#4dabf7" stroke-width="1.5" />
 	{/if}
 
+	<!-- the headline of the step -->
+	<Readout id="headline" order={0} label={headline.label} value={headline.value}>
+		<Label anchor="start" x={XS[0]} y={58} text={headline.text} size={16} weight={600} tabular />
+	</Readout>
+	{#if headline.sub}
+		<Readout id="subline" order={1} label={headline.subLabel} value={headline.subValue}>
+			<Label anchor="start" x={XS[0]} y={82} text={headline.sub} size={12} muted tabular />
+		</Readout>
+	{/if}
+
 	<!-- captions under the panels -->
-	{#if panels.includes('map')}
-		{@const x = xOf('map')}
-		{#if mode === 'dish'}
-			<Readout id="dish" order={1} label="Dish" value="{diameter} m across">
-				<Label
-					anchor="start"
-					{x}
-					y={Y0 + P + 22}
-					text="{fmtInt(diameter)} m across"
-					size={13}
-					tabular
-				/>
-			</Readout>
-		{:else}
-			<Readout
-				id="dishes"
-				order={1}
-				label="Array"
-				value="{dishes.length} dishes · {fmtInt(pairs(dishes.length))} pairs"
-			>
-				<Label
-					anchor="start"
-					{x}
-					y={Y0 + P + 22}
-					text="{dishes.length} dishes · {fmtInt(pairs(dishes.length))} pairs"
-					size={13}
-					tabular
-				/>
-			</Readout>
-			<Readout id="spacing">
-				<Label
-					anchor="start"
-					{x}
-					y={Y0 + P + 40}
-					text="spacings {fmtInt(sp.min)}–{fmtInt(sp.max)} m"
-					size={11}
-					muted
-					tabular
-				/>
+	{#each panels as p, i (p)}
+		{@const c = caption(p)}
+		<Readout id="cap-{p}" order={10 + i} label={c.label} value={c.value}>
+			<Label anchor="start" x={XS[i]} y={Y0 + P + 20} text={c.text} size={13} tabular />
+		</Readout>
+		{#if c.more}
+			<Readout id="more-{p}">
+				<Label anchor="start" x={XS[i]} y={Y0 + P + 38} text={c.more} size={11} muted tabular />
 			</Readout>
 		{/if}
-	{/if}
-	{#if panels.includes('uv')}
-		{@const x = xOf('uv')}
-		{#if mode === 'dish'}
-			<Readout id="uvdisc">
-				<Label
-					anchor="start"
-					{x}
-					y={Y0 + P + 22}
-					text="filled out to D/λ = {fmtInt(diameter / LAMBDA)} λ"
-					size={13}
-					tabular
-				/>
-			</Readout>
-		{:else}
-			<Readout id="track" order={2} label="Track" value={trackText}>
-				<Label anchor="start" {x} y={Y0 + P + 22} text={trackText} size={13} tabular />
-			</Readout>
-			<Readout id="cells">
-				<Label
-					anchor="start"
-					{x}
-					y={Y0 + P + 40}
-					text="{fmtInt(S.cells)} of {fmtInt(N * N)} cells sampled{S.outside
-						? ` · ${fmtInt(S.outside)} samples off the grid`
-						: ''}"
-					size={11}
-					muted
-					tabular
-				/>
-			</Readout>
-		{/if}
-	{/if}
-	{#if panels.includes('beam')}
-		{@const x = xOf('beam')}
-		<Readout
-			id="beam"
-			order={3}
-			label="Resolution"
-			value={S.cells > 2 ? `${fmtAngle(beamMajor)} × ${fmtAngle(beamMinor)}` : 'stripes only'}
-		>
-			<Label
-				anchor="start"
-				{x}
-				y={Y0 + P + 22}
-				text={S.cells === 0
-					? 'nothing sampled'
-					: S.cells <= 2
-						? `stripes ${(1 / (S.uvMax || 1) / ARCMIN).toFixed(1)}′ apart`
-						: `central peak ${fmtAngle(beamMajor)} × ${fmtAngle(beamMinor)}`}
-				size={13}
-				tabular
-			/>
+	{/each}
+
+	<!-- how each panel follows from the one before -->
+	{#each flow as f, i (i)}
+		{@const x1 = XS[i] + P / 2 + 24}
+		{@const x2 = XS[i + 1] + P / 2 - 24}
+		{@const y = Y0 + P + 86}
+		<path
+			d="M{x1} {y - 14} Q {(x1 + x2) / 2} {y + 12} {x2} {y - 14}"
+			fill="none"
+			stroke="var(--stage-ink-muted)"
+			stroke-width="1.5"
+			marker-end="url(#arrowhead)"
+		/>
+		<Readout id="flow-{i}">
+			<Label x={(x1 + x2) / 2} y={y + 18} text={f} anchor="middle" size={11} muted />
 		</Readout>
-	{/if}
-	{#if mode === 'dish'}
-		<Readout
-			id="rayleigh"
-			order={2}
-			label="Blur, 1.22 λ/D"
-			value={fmtAngle((1.22 * LAMBDA) / diameter / ARCSEC)}
-		>
-			<Label
-				anchor="start"
-				x={xOf('dirty')}
-				y={Y0 + P + 22}
-				text="blur 1.22 λ/D = {fmtAngle((1.22 * LAMBDA) / diameter / ARCSEC)}"
-				size={13}
-				tabular
-			/>
-		</Readout>
-		<Readout
-			id="dish-area"
-			order={4}
-			label="Collecting area"
-			value="{fmtInt(Math.PI * (diameter / 2) ** 2)} m²"
-		>
+	{/each}
+
+	{#if mode === 'build'}
+		<Readout id="hint">
 			<Label
 				anchor="start"
 				x={XS[0]}
-				y={Y0 + P + 64}
-				text="collecting area π D²/4 = {fmtInt(Math.PI * (diameter / 2) ** 2)} m² · sky: {SKY_NAMES[
-					skyKind
-				]}"
+				y={Y0 + P + 136}
+				text="click the map to add a dish (up to {MAX_DISHES}) · drag a dish to move it · arrow keys move a focused dish 10 m"
 				size={12}
 				muted
-				tabular
-			/>
-		</Readout>
-	{/if}
-
-	{#if mode === 'array' || mode === 'build' || mode === 'pair'}
-		<Readout id="samples" order={4} label="Samples" value="{fmtInt(S.samples)} (and their mirrors)">
-			<Label
-				anchor="start"
-				x={xOf('dirty')}
-				y={Y0 + P + 22}
-				text="{fmtInt(S.samples)} samples, and their mirrors"
-				size={13}
-				tabular
-			/>
-		</Readout>
-		{#if mode !== 'pair' && S.cells > 2}
-			<Readout id="sharp" order={5} label="As sharp as a dish" value="{fmtInt(sp.max)} m across">
-				<Label
-					anchor="start"
-					x={XS[0]}
-					y={Y0 + P + 70}
-					text="as sharp as one dish {fmtInt(
-						sp.max
-					)} m across, the longest baseline (λ/B = {fmtAngle(LAMBDA / sp.max / ARCSEC)})"
-					size={14}
-					weight={600}
-					tabular
-				/>
-			</Readout>
-		{/if}
-		{#if mode === 'build'}
-			<Readout id="hint">
-				<Label
-					anchor="start"
-					x={XS[0]}
-					y={Y0 + P + 94}
-					text="click the map to add a dish (up to {MAX_DISHES}) · drag a dish to move it"
-					size={12}
-					muted
-				/>
-			</Readout>
-		{/if}
-	{/if}
-
-	{#if mode === 'dirty'}
-		<Readout
-			id="noflux"
-			order={4}
-			label="Total flux in the dirty image"
-			value="{total(dirty).toFixed(3)} (true sky {total(truth).toFixed(1)} Jy)"
-		>
-			<Label
-				anchor="start"
-				x={xOf('dirty')}
-				y={Y0 + P + 22}
-				text="sum of all pixels: {Math.abs(total(dirty)) < 5e-4
-					? '0.000'
-					: total(dirty).toFixed(3)}"
-				size={13}
-				tabular
-			/>
-		</Readout>
-		<Readout id="truthflux">
-			<Label
-				anchor="start"
-				x={xOf('truth')}
-				y={Y0 + P + 22}
-				text="{SKY_NAMES[skyKind]} · {total(truth).toFixed(1)} Jy in all"
-				size={13}
-				tabular
-			/>
-		</Readout>
-		<Readout
-			id="bowl"
-			order={5}
-			label="Deepest negative"
-			value="{Math.min(...dirty).toFixed(2)} Jy/beam"
-		>
-			<Label
-				anchor="start"
-				x={XS[0]}
-				y={Y0 + P + 70}
-				text="the zero spacing is never measured: the dirty image adds up to zero, and dips to {Math.min(
-					...dirty
-				).toFixed(2)} Jy/beam (blue)"
-				size={13}
-				tabular
-			/>
-		</Readout>
-	{/if}
-
-	{#if mode === 'clean' && cleaned}
-		<Readout id="iter" order={1} label="Iterations" value={fmtInt(cleaned.iterations)}>
-			<Label
-				anchor="start"
-				x={xOf('residual')}
-				y={Y0 + P + 22}
-				text="{fmtInt(cleaned.iterations)} iterations · gain 0.1"
-				size={13}
-				tabular
-			/>
-		</Readout>
-		<Readout
-			id="left"
-			order={2}
-			label="Brightest residual"
-			value="{cleaned.residualPeak.toFixed(3)} Jy/beam"
-		>
-			<Label
-				anchor="start"
-				x={xOf('residual')}
-				y={Y0 + P + 40}
-				text="brightest left: {cleaned.residualPeak.toFixed(3)} Jy/beam"
-				size={11}
-				muted
-				tabular
-			/>
-		</Readout>
-		<Readout
-			id="flux"
-			order={3}
-			label="Flux in components"
-			value="{cleaned.flux.toFixed(2)} of {total(truth).toFixed(2)} Jy"
-		>
-			<Label
-				anchor="start"
-				x={xOf('restored')}
-				y={Y0 + P + 22}
-				text="components hold {cleaned.flux.toFixed(2)} of {total(truth).toFixed(2)} Jy"
-				size={13}
-				tabular
-			/>
-		</Readout>
-		<Readout id="cbeam">
-			<Label
-				anchor="start"
-				x={xOf('restored')}
-				y={Y0 + P + 40}
-				text="clean beam {fmtAngle(beamMajor)} × {fmtAngle(beamMinor)}"
-				size={11}
-				muted
-				tabular
-			/>
-		</Readout>
-		<Readout id="dirtypeak">
-			<Label
-				anchor="start"
-				x={xOf('dirty')}
-				y={Y0 + P + 22}
-				text="peak {dirtyPeak.toFixed(2)} Jy/beam"
-				size={13}
-				tabular
-			/>
-		</Readout>
-		<Readout id="truthname">
-			<Label anchor="start" x={xOf('truth')} y={Y0 + P + 22} text={SKY_NAMES[skyKind]} size={13} />
-		</Readout>
-	{/if}
-
-	{#if mode === 'size'}
-		<Readout id="size" order={2} label="Size" value="× {sizeF.toFixed(2)}">
-			<Label
-				anchor="start"
-				x={xOf('uv')}
-				y={Y0 + P + 22}
-				text="array × {sizeF.toFixed(2)} · {trackText}"
-				size={13}
-				tabular
-			/>
-		</Readout>
-		{#if skyKind === 'double'}
-			<Readout
-				id="res"
-				order={3}
-				label="Beam vs the double’s 1.5′"
-				value="{fmtAngle(beamMajor)}: {resolved ? 'two points' : 'one blob'}"
-			>
-				<Label
-					anchor="start"
-					x={XS[0]}
-					y={Y0 + P + 70}
-					text="longest baseline {fmtInt(sp.max)} m → beam {fmtAngle(
-						beamMajor
-					)}; the double’s points are 1.5′ apart: {resolved ? 'resolved, two points' : 'one blob'}"
-					size={14}
-					weight={600}
-					tabular
-				/>
-			</Readout>
-		{:else if discKept !== null}
-			<Readout
-				id="las"
-				order={3}
-				label="Largest scale λ/b_min"
-				value="{largest.toFixed(1)}′ (disc 6′)"
-			>
-				<Label
-					anchor="start"
-					x={XS[0]}
-					y={Y0 + P + 70}
-					text="shortest baseline {fmtInt(
-						sp.min
-					)} m → nothing much larger than λ/b = {largest.toFixed(1)}′ is seen; the disc is 6′"
-					size={14}
-					weight={600}
-					tabular
-				/>
-			</Readout>
-			<Readout
-				id="kept"
-				order={4}
-				label="Disc’s centre kept"
-				value="{Math.round(Math.max(0, discKept) * 100)}%"
-			>
-				<Label
-					anchor="start"
-					x={XS[0]}
-					y={Y0 + P + 94}
-					text="brightness at the disc’s centre: {Math.round(
-						discKept * 100
-					)}% of the true sky at this resolution"
-					size={13}
-					tabular
-				/>
-			</Readout>
-		{/if}
-	{/if}
-
-	{#if mode === 'area' && dishes.length > 1}
-		<Readout id="area-array" order={3} label="Collecting area" value="{fmtInt(area)} m²">
-			<Label
-				anchor="start"
-				x={XS[0]}
-				y={Y0 + P + 70}
-				text="{dishes.length} dishes of 25 m: {fmtInt(area)} m² · one dish {fmtInt(
-					sp.max
-				)} m across (dashed): {fmtInt(bigArea)} m²"
-				size={13}
-				tabular
-			/>
-		</Readout>
-		<Readout
-			id="area-ratio"
-			order={4}
-			label="Share of the big dish"
-			value="{((100 * area) / bigArea).toFixed(1)}%"
-		>
-			<Label
-				anchor="start"
-				x={XS[0]}
-				y={Y0 + P + 94}
-				text="same resolution, {((100 * area) / bigArea).toFixed(
-					1
-				)}% of the area: what the big dish sees in a minute takes the array {duration(
-					(bigArea / area) ** 2
-				)}"
-				size={14}
-				weight={600}
-				tabular
 			/>
 		</Readout>
 	{/if}
