@@ -78,16 +78,19 @@
 				]
 			: [{ id: 'right', x0: 90, x1: 900, title: '' }]
 	);
-	const yMax = $derived(
-		Math.max(
+	/** The axis fits p, q and (for the wrong rule) its final frequencies, so it holds still. */
+	const yMax = $derived.by(() => {
+		const final = hw ? counts(hw.draws, null, SAMPLES).all.map((x) => x / SAMPLES) : [];
+		const m = Math.max(
 			...shown.map((v) => Math.max(h.p[v], h.q[v])),
-			...(cw ? shown.map((v) => cw.all[v] / n) : [])
-		) > 0.3
-			? 0.6
-			: 0.3
-	);
+			...shown.map((v) => final[v] ?? 0)
+		);
+		return m <= 0.3 ? 0.3 : m <= 0.4 ? 0.4 : 0.6;
+	});
 	const yOf = (v: number) => Y0 - ((Y0 - Y1) * Math.min(v, yMax * 1.05)) / yMax;
-	const yTicks = $derived(yMax > 0.3 ? [0, 0.2, 0.4, 0.6] : [0, 0.1, 0.2, 0.3]);
+	const yTicks = $derived(
+		yMax === 0.6 ? [0, 0.2, 0.4, 0.6] : yMax === 0.4 ? [0, 0.1, 0.2, 0.3, 0.4] : [0, 0.1, 0.2, 0.3]
+	);
 </script>
 
 <g>
