@@ -448,18 +448,26 @@
 
 	<!-- the sample -->
 	{#if sample}
-		<SampleCard
-			x={CARD.x}
-			y={CARD.y}
-			w={CARD.w}
-			h={CARD.h}
-			title={sampleTitle}
-			note={copyWanted && copy
-				? `bold: ${copy.length} characters copied from its training text`
-				: 'drawn at random from its probabilities, same seed each time'}
-			text={sample.text}
-			copy={copyWanted ? copy : null}
-		/>
+		<Readout
+			id="sample"
+			order={7}
+			label={sampleTitle}
+			value={sample.text.trim().slice(0, 160).replace(/\n+/g, ' ↵ ')}
+			note={copyWanted && copy ? `${copy.length} characters copied from its training text` : ''}
+		>
+			<SampleCard
+				x={CARD.x}
+				y={CARD.y}
+				w={CARD.w}
+				h={CARD.h}
+				title={sampleTitle}
+				note={copyWanted && copy
+					? `bold: ${copy.length} characters copied from its training text`
+					: 'drawn at random from its probabilities, same seed each time'}
+				text={sample.text}
+				copy={copyWanted ? copy : null}
+			/>
+		</Readout>
 	{:else}
 		<rect
 			x={CARD.x}

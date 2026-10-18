@@ -35,18 +35,3 @@ export const visible = (c: string) => (c === ' ' ? '␣' : c === '\n' ? '↵' : 
 /** Data size for a label. */
 export const dataLabel = (size: number) =>
 	Number.isFinite(size) ? `${int(size)} characters` : 'all 1,003,854 characters';
-
-/**
- * Lines of a sample for a card: split at its line breaks, long lines wrapped at `width`
- * characters, at most `max` lines.
- */
-export function sampleLines(text: string, width: number, max: number): string[] {
-	const out: string[] = [];
-	for (const line of text.split('\n')) {
-		if (line.length === 0) out.push('');
-		for (let i = 0; i < line.length; i += width) out.push(line.slice(i, i + width));
-	}
-	// a blank first line (the sample starts after a blank line) adds nothing
-	while (out.length && out[0] === '') out.shift();
-	return out.slice(0, max);
-}
