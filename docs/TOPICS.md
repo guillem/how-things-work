@@ -207,7 +207,7 @@ A topic is done when:
 - [x] big-bang
 - [x] exoplanets
 - [x] lagrange-points-three-body
-- [ ] aperture-synthesis
+- [x] aperture-synthesis
 
 **Computing**
 - [x] binary
