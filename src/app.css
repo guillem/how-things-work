@@ -4273,3 +4273,30 @@ kbd {
 	--tp-mixed: #ffc14d;
 	--tp-contested: #ff8a5c;
 }
+
+/* pharmacokinetics-dosing: the level curve, the comparison curve, the target band, the toxic
+   line, the tank's water, the three forms of dose and the half-life marks */
+:root {
+	--pk-curve: #8f3985;
+	--pk-ghost: #868e96;
+	--pk-band: rgba(47, 158, 68, 0.14);
+	--pk-band-text: #2b7a3b;
+	--pk-toxic: #d6336c;
+	--pk-water: #4dabf7;
+	--pk-tablet: #f08c00;
+	--pk-inject: #1c7ed6;
+	--pk-drip: #15aabf;
+	--pk-half: #5f3dc4;
+}
+:root[data-theme='dark'] {
+	--pk-curve: #e599f7;
+	--pk-ghost: #adb5bd;
+	--pk-band: rgba(105, 219, 124, 0.14);
+	--pk-band-text: #8ce99a;
+	--pk-toxic: #ff8787;
+	--pk-water: #4dabf7;
+	--pk-tablet: #ffc078;
+	--pk-inject: #74c0fc;
+	--pk-drip: #66d9e8;
+	--pk-half: #b197fc;
+}

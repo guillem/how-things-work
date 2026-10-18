@@ -596,6 +596,18 @@
 
 	// Population genetics: allele-share traces of small populations drifting from one half until
 	// each hits the top (fixed) or the bottom (lost), from a fixed seed.
+	/** Doses piling up to a steady sawtooth inside a band (one tablet every 18 units). */
+	const pkArt = (() => {
+		const k = Math.LN2 / 26;
+		let d = '';
+		let c = 0;
+		for (let x = 0; x <= 172; x += 1) {
+			if (x % 18 === 0) c += 1;
+			else c *= Math.exp(-k);
+			d += `${d ? 'L' : 'M'}${(18 + x).toFixed(0)} ${(104 - c * 26).toFixed(1)}`;
+		}
+		return { d, doses: Array.from({ length: 10 }, (_, i) => 18 + i * 18) };
+	})();
 	const popgenTraces = (() => {
 		let seed = 23;
 		const rand = () => ((seed = (seed * 16807) % 2147483647) - 1) / 2147483646;
@@ -4453,6 +4465,14 @@
 				opacity={tr.fate === 'down' ? 0.4 : 0.85}
 			/>
 		{/each}
+	{:else if slug === 'pharmacokinetics-dosing'}
+		<!-- tablets every few hours; the level piles up to a steady sawtooth inside the target band -->
+		<rect x="18" y="38" width="172" height="26" fill="currentColor" opacity="0.08" />
+		<line x1="18" x2="190" y1="104" y2="104" stroke="currentColor" stroke-width="1" opacity="0.4" />
+		{#each pkArt.doses as x (x)}
+			<rect x={x - 4} y="14" width="8" height="5" rx="2.5" fill="currentColor" opacity="0.45" />
+		{/each}
+		<path d={pkArt.d} fill="none" stroke={accent} stroke-width="2" stroke-linejoin="round" />
 	{:else if slug === 'resampling-inference'}
 		<!-- the histogram chance alone produces, the observed difference and the tail beyond it -->
 		{#each resampleArt as b (b.i)}

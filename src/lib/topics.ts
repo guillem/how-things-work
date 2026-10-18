@@ -1266,6 +1266,15 @@ const explainers: Explainer[] = [
 		accent: '#a0522d',
 		steps: 7,
 		minutes: 20
+	},
+	{
+		slug: 'pharmacokinetics-dosing',
+		title: 'Pharmacokinetics: how doses add up',
+		summary:
+			'Give a drug as an injection, a tablet or a drip and watch its blood level rise and fall against the range where it works. Doses pile up until removal balances intake, after four or five half-lives whatever the dose; place your own doses, halve the clearance, and watch phenytoin break the rules. Built from five drugs’ US labels; not dosing advice.',
+		accent: '#8f3985',
+		steps: 9,
+		minutes: 18
 	}
 ];
 

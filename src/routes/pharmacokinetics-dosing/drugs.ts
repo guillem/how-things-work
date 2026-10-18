@@ -78,8 +78,11 @@ export interface Drug {
 	dose: number;
 	doseForm: Form;
 	interval: number;
-	/** A loading dose from the label, given in `doseForm`, or null. */
-	loading: number | null;
+	/**
+	 * A loading dose from the label, or null: its form, its parts as [hours after the start,
+	 * amount], and the minutes an injected one takes.
+	 */
+	loading: { form: Form; parts: [number, number][]; minutes: number } | null;
 	/** Saturable (Michaelis–Menten) elimination: Vmax in amount/h, Km in amount/L. */
 	saturable?: { Vmax: number; Km: number };
 	/** Hours shown on the time axis. */
@@ -111,7 +114,7 @@ const theophylline: Drug = {
 	dose: 300,
 	doseForm: 'tablet',
 	interval: 8,
-	loading: 320,
+	loading: { form: 'injection', parts: [[0, 4.6 * KG]], minutes: 30 },
 	span: 72,
 	source: 'theophylline and aminophylline US labels (via openFDA)'
 };
@@ -136,7 +139,7 @@ const digoxin: Drug = {
 	dose: 250,
 	doseForm: 'tablet',
 	interval: 24,
-	loading: 750,
+	loading: { form: 'tablet', parts: [[0, 750]], minutes: 0 },
 	span: 14 * 24,
 	source: 'Lanoxin US label (via openFDA)'
 };
@@ -216,7 +219,15 @@ const phenytoin: Drug = {
 	dose: 400,
 	doseForm: 'tablet',
 	interval: 24,
-	loading: 1000,
+	loading: {
+		form: 'tablet',
+		parts: [
+			[0, 400],
+			[2, 300],
+			[4, 300]
+		],
+		minutes: 0
+	},
 	saturable: { Vmax: VMAX, Km: KM },
 	span: 28 * 24,
 	source: 'Dilantin US label (via openFDA); Vmax, Km: Salehifar et al. 2010; V: Noval et al. 2020'

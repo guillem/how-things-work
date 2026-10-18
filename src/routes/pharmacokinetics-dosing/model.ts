@@ -39,6 +39,8 @@ export interface Series {
 	t: Float64Array;
 	/** Concentration in the blood at each sample, amount / L. */
 	c: Float64Array;
+	/** Amount still in the gut (tablets not yet absorbed) at each sample. */
+	g: Float64Array;
 	dt: number;
 }
 
@@ -86,6 +88,7 @@ export function simulate(b: Body, doses: readonly Dose[], tEnd: number, samples 
 	const dt = tEnd / n;
 	const t = new Float64Array(n + 1);
 	const c = new Float64Array(n + 1);
+	const g = new Float64Array(n + 1);
 	// inner step: fine enough for the fastest process (absorption, or a short infusion)
 	const fast = Math.max(b.ka, (b.saturable ? b.saturable.Vmax / b.saturable.Km : b.CL) / b.V);
 	const sub = Math.max(1, Math.ceil(dt / Math.min(0.1, 0.2 / Math.max(fast, 1e-9))));
@@ -147,12 +150,14 @@ export function simulate(b: Body, doses: readonly Dose[], tEnd: number, samples 
 	}
 	t[0] = 0;
 	c[0] = body / b.V;
+	g[0] = gut;
 	for (let i = 1; i <= n; i++) {
 		advance(i * dt);
 		t[i] = i * dt;
 		c[i] = body / b.V;
+		g[i] = gut;
 	}
-	return { t, c, dt };
+	return { t, c, g, dt };
 }
 
 /** The level at time `time`, interpolated from a series. */
