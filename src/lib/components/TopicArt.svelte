@@ -593,6 +593,28 @@
 			return `${i ? 'L' : 'M'}${x.toFixed(1)} ${y.toFixed(1)}`;
 		}).join(' ')
 	);
+
+	// Population genetics: allele-share traces of small populations drifting from one half until
+	// each hits the top (fixed) or the bottom (lost), from a fixed seed.
+	const popgenTraces = (() => {
+		let seed = 23;
+		const rand = () => ((seed = (seed * 16807) % 2147483647) - 1) / 2147483646;
+		return Array.from({ length: 9 }, (_, k) => {
+			let copies = 10;
+			let d = `M14 ${60}`;
+			let end = 0;
+			for (let g = 1; g <= 43; g++) {
+				const p = copies / 20;
+				let next = 0;
+				for (let i = 0; i < 20; i++) if (rand() < p) next++;
+				copies = next;
+				d += `L${(14 + g * 4).toFixed(1)} ${(104 - (copies / 20) * 88).toFixed(1)}`;
+				end = copies;
+				if (copies === 0 || copies === 20) break;
+			}
+			return { id: k, d, fate: end === 20 ? 'up' : end === 0 ? 'down' : 'mid' };
+		});
+	})();
 </script>
 
 <svg viewBox="0 0 200 120" class="art" style:--accent={accent} aria-hidden="true">
@@ -4416,6 +4438,20 @@
 		/>
 		{#each pcrCurves as d, i (i)}
 			<path {d} fill="none" stroke={accent} stroke-width="2.4" opacity={1 - i * 0.25} />
+		{/each}
+	{:else if slug === 'population-genetics'}
+		<!-- populations drifting from one half until the allele is fixed (top) or lost (bottom) -->
+		<line x1="14" x2="190" y1="16" y2="16" stroke="currentColor" stroke-width="1" opacity="0.3" />
+		<line x1="14" x2="190" y1="104" y2="104" stroke="currentColor" stroke-width="1" opacity="0.3" />
+		{#each popgenTraces as tr (tr.id)}
+			<path
+				d={tr.d}
+				fill="none"
+				stroke={tr.fate === 'down' ? 'currentColor' : accent}
+				stroke-width="1.8"
+				stroke-linejoin="round"
+				opacity={tr.fate === 'down' ? 0.4 : 0.85}
+			/>
 		{/each}
 	{:else if slug === 'resampling-inference'}
 		<!-- the histogram chance alone produces, the observed difference and the tail beyond it -->

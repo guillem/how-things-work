@@ -4219,3 +4219,24 @@ kbd {
 	--lo-down: #ff922b;
 	--lo-band: rgba(229, 153, 247, 0.12);
 }
+
+/* population-genetics: the three genotypes (A as AA, a as aa), drifting traces, the mean,
+   theory curves and the band where chance rules */
+:root {
+	--popgen-AA: #2b8a3e;
+	--popgen-Aa: #6741d9;
+	--popgen-aa: #d9480f;
+	--popgen-trace: #1c7ed6;
+	--popgen-mean: #c2255c;
+	--popgen-band: #fff3bf;
+	--popgen-band-text: #8a6100;
+}
+:root[data-theme='dark'] {
+	--popgen-AA: #69db7c;
+	--popgen-Aa: #b197fc;
+	--popgen-aa: #ff922b;
+	--popgen-trace: #74c0fc;
+	--popgen-mean: #f783ac;
+	--popgen-band: #3a3214;
+	--popgen-band-text: #ffd43b;
+}

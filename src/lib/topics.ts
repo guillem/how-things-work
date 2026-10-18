@@ -1248,6 +1248,15 @@ const explainers: Explainer[] = [
 		accent: '#a8519b',
 		steps: 8,
 		minutes: 18
+	},
+	{
+		slug: 'population-genetics',
+		title: 'Population genetics: drift and selection',
+		summary:
+			'Run a hundred populations at once and watch an allele’s share wander by chance until it is fixed or lost, faster in small populations; give it an advantage and the traces bend upwards, yet most new beneficial mutations still vanish while rare. Hardy–Weinberg, recessive alleles hiding, and when chance beats selection.',
+		accent: '#3f7d5a',
+		steps: 8,
+		minutes: 16
 	}
 ];
 
