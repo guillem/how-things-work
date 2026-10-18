@@ -3765,3 +3765,30 @@ kbd {
 	--cv-chain: #ced4da;
 	--cv-arch: #4dabf7;
 }
+
+/* random-graphs: pieces by size (largest, second, other pieces of 3+, pairs), the dual grid, and
+   the graph sizes of the sweep from small (amber) to large (indigo) */
+:root {
+	--rg-giant: #b8336a;
+	--rg-second: #1c7ed6;
+	--rg-mid: #e67700;
+	--rg-pair: #0ca678;
+	--rg-dual: #0ca678;
+	--rg-n0: #f59f00;
+	--rg-n1: #e8590c;
+	--rg-n2: #c2255c;
+	--rg-n3: #862e9c;
+	--rg-n4: #364fc7;
+}
+:root[data-theme='dark'] {
+	--rg-giant: #f06595;
+	--rg-second: #74c0fc;
+	--rg-mid: #ffa94d;
+	--rg-pair: #63e6be;
+	--rg-dual: #63e6be;
+	--rg-n0: #ffd43b;
+	--rg-n1: #ff922b;
+	--rg-n2: #f06595;
+	--rg-n3: #cc5de8;
+	--rg-n4: #748ffc;
+}

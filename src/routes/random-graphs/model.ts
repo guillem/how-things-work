@@ -97,18 +97,32 @@ export function randomGraph(n: number, cMax: number, seed: number): RandomGraph 
 				a.push(v);
 				b.push(w);
 				// given that the pair's number is below pMax, it is uniform on [0, pMax)
-				u.push(rand() * pMax * (n - 1));
+				u.push(Math.min(rand() * pMax * (n - 1), cMax));
 			}
 		}
 	}
-	const order = u.map((_, i) => i).sort((i, j) => u[i] - u[j]);
-	return {
+	// sort by threshold: each link's number as 32 bits, its index in the low 20 bits, so that a
+	// fast numeric sort of plain numbers does it (exact up to 2^52; a million links at most)
+	const m = u.length;
+	if (m >= 2 ** 20) throw new RangeError('randomGraph: more than a million links');
+	const keys = new Float64Array(m);
+	const scaleU = pMax > 0 ? 2 ** 32 / (pMax * (n - 1)) : 0;
+	for (let i = 0; i < m; i++) keys[i] = Math.floor(u[i] * scaleU) * 2 ** 20 + i;
+	keys.sort();
+	const g: RandomGraph = {
 		n,
 		cMax,
-		a: Int32Array.from(order, (i) => a[i]),
-		b: Int32Array.from(order, (i) => b[i]),
-		at: Float64Array.from(order, (i) => u[i])
+		a: new Int32Array(m),
+		b: new Int32Array(m),
+		at: new Float64Array(m)
 	};
+	for (let k = 0; k < m; k++) {
+		const i = keys[k] % 2 ** 20;
+		g.a[k] = a[i];
+		g.b[k] = b[i];
+		g.at[k] = u[i];
+	}
+	return g;
 }
 
 /** How many of the graph's links are present at average degree c. */

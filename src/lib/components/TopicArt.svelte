@@ -4174,6 +4174,22 @@
 		<circle cx={brachArt.bead.x} cy={brachArt.bead.y} r="5" fill={accent} />
 		<circle cx="24" cy="22" r="3.5" fill="currentColor" />
 		<circle cx="176" cy="82" r="3.5" fill="currentColor" />
+	{:else if slug === 'random-graphs'}
+		<!-- a random graph: one giant piece (accent) among small pieces and single nodes -->
+		{#each [[60, 30, 84, 46], [84, 46, 72, 72], [72, 72, 100, 84], [100, 84, 124, 62], [124, 62, 108, 40], [108, 40, 84, 46], [124, 62, 150, 70], [150, 70, 140, 94], [72, 72, 48, 82], [108, 40, 128, 24]] as [x1, y1, x2, y2], i (i)}
+			<line {x1} {y1} {x2} {y2} stroke={accent} stroke-width="1.6" />
+		{/each}
+		{#each [[60, 30], [84, 46], [72, 72], [100, 84], [124, 62], [108, 40], [150, 70], [140, 94], [48, 82], [128, 24]] as [cx, cy], i (i)}
+			<circle {cx} {cy} r="4.5" fill={accent} />
+		{/each}
+		{#each [[22, 50, 32, 70], [168, 32, 182, 46], [172, 96, 186, 82]] as [x1, y1, x2, y2], i (i)}
+			<line {x1} {y1} {x2} {y2} stroke="currentColor" stroke-width="1.2" opacity="0.6" />
+			<circle cx={x1} cy={y1} r="3.5" fill="currentColor" opacity="0.6" />
+			<circle cx={x2} cy={y2} r="3.5" fill="currentColor" opacity="0.6" />
+		{/each}
+		{#each [[30, 100], [40, 22], [160, 12], [186, 64], [112, 106]] as [cx, cy], i (i)}
+			<circle {cx} {cy} r="3" fill="currentColor" opacity="0.4" />
+		{/each}
 	{:else}
 		<circle cx="100" cy="60" r="30" fill="none" stroke={accent} stroke-width="2" />
 		<circle cx="100" cy="60" r="5" fill={accent} />

@@ -1122,6 +1122,15 @@ const explainers: Explainer[] = [
 		accent: '#b04a8a',
 		steps: 8,
 		minutes: 18
+	},
+	{
+		slug: 'random-graphs',
+		title: 'Random graphs & the giant component',
+		summary:
+			'Link nodes at random and watch the pieces merge: a giant component appears once each node has about one link, ever more sharply as the graph grows. Then open bonds on a grid until it spans.',
+		accent: '#b8336a',
+		steps: 12,
+		minutes: 18
 	}
 ];
 
