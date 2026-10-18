@@ -33,7 +33,7 @@ export function isDilemma(p: Payoffs): boolean {
 
 /**
  * In a repeated game, cooperating every round must pay more than taking turns at exploiting
- * each other (2R > T + S); otherwise alternating C and D is the best way to play together.
+ * each other (2R > T + S); otherwise alternating C and D pays as much or more.
  */
 export function rewardsCooperation(p: Payoffs): boolean {
 	return 2 * p.R > p.T + p.S;
@@ -80,9 +80,8 @@ export interface Strategy {
 }
 
 /**
- * How often generous tit for tat forgives a defection: the largest generosity that still
- * doesn't let always-defect invade, min(1 − (T − R)/(R − S), (R − P)/(T − P)) (Nowak &
- * Sigmund 1992); 1/3 for Axelrod's payoffs.
+ * How often generous tit for tat forgives a defection: Nowak & Sigmund's (1992) generosity,
+ * min(1 − (T − R)/(R − S), (R − P)/(T − P)); 1/3 for Axelrod's payoffs.
  */
 export function generosity(p: Payoffs): number {
 	const g = Math.min(1 - (p.T - p.R) / (p.R - p.S), (p.R - p.P) / (p.T - p.P));
@@ -291,10 +290,7 @@ export function evolve(t: Tournament, start: readonly number[], generations: num
 			continue;
 		}
 		const next = x.map((xi, i) => (xi * f[i]) / mean);
-		// drop shares that have fallen below one player in a billion
-		const kept = next.map((v) => (v < 1e-9 ? 0 : v));
-		const s = kept.reduce((a, b) => a + b, 0);
-		x = kept.map((v) => v / s);
+		x = next;
 		shares.push(x);
 	}
 	return { ids: [...t.ids], shares, fitness };

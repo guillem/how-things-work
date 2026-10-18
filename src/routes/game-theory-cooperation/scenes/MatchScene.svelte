@@ -10,8 +10,8 @@
 	 */
 	import { Axes, Label, linePath, scale } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
-	import { playMatch, strategy, tournament, type StrategyId } from '../model';
-	import { moveColor, payoffsOf, pts } from './shared';
+	import { CLASSIC, playMatch, strategy, tournament, type StrategyId } from '../model';
+	import { moveColor, pts } from './shared';
 
 	let { step, t, params, reduced }: StageProps = $props();
 
@@ -20,7 +20,8 @@
 	/** Seeds that show a typical game: with 5 % mistakes, one early slip and a long echo. */
 	const SEED = 3;
 	const ECHO_SEED = 25;
-	const p = $derived(payoffsOf(params));
+	/** Axelrod's payoffs (only the payoff table and the tournament edit them). */
+	const p = CLASSIC;
 	const idA = $derived(
 		String(echo ? (params.echo ?? 'tft') : (params.matchA ?? 'tft')) as StrategyId
 	);

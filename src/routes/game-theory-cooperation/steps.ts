@@ -182,7 +182,7 @@ export const spec: ExplainerSpec = {
 			controls: [cooperate, cheat, again, opponent],
 			body: `
 <p>Now play the same game ten times against the same opponent, who remembers what you did. The page plays <strong>tit for tat</strong>: it cooperates in the first round, and after that it copies whatever you did in the round before.</p>
-<p>Cheat once and you take 5 points from its 0. But next round it cheats back. Cheat every round and you score 5 + 9 × 1 = 14; cooperate every round and you score 10 × 3 = 30. Against a player who remembers, cheating pays once, then it costs.</p>
+<p>Cheat once and you take 5 points from its 0. But next round it cheats back. Cheat every round and you score 5 + 9 × 1 = 14; cooperate every round and you score 10 × 3 = 30. Against a player who remembers, cheating pays once, then it costs. Only a cheat in the very last round goes unpunished, because there is no next round to hit back in.</p>
 <p>Try the other opponents. Against <em>always cooperate</em>, cheating pays every round; against <em>grudger</em>, a single cheat is never forgiven.</p>`
 		},
 		// ---------------------------------------------------------------- again
@@ -235,7 +235,7 @@ export const spec: ExplainerSpec = {
 			controls: [shortRounds],
 			body: `
 <p>Cooperation depends on meeting again: the next round has to be worth protecting. Shorten the games. With one round, the tournament is the one-shot game, and always cheat wins it. With two or three rounds it still wins: one early cheat earns more than the little cooperation that follows can repay.</p>
-<p>Lengthen the games and the order reverses. At five rounds it only just leads; with ten or more it finishes last. The longer the <dfn data-def="Axelrod's phrase for how much the future matters to a player: the chance of meeting again, or how much later rounds count.">shadow of the future</dfn>, the better cooperation pays (the same idea as <a href="../reinforcement-learning/#discount">a reward now being worth more than one later</a>).</p>`,
+<p>Lengthen the games and the order reverses. At five rounds it is neck and neck with grudger; at ten it is near the bottom, and with twenty or more it finishes last. The longer the <dfn data-def="Axelrod's phrase for how much the future matters to a player: the chance of meeting again, or how much later rounds count.">shadow of the future</dfn>, the better cooperation pays (the same idea as <a href="../reinforcement-learning/#discount">a reward now being worth more than one later</a>).</p>`,
 			notes: `<p>If both players know exactly which round is the last, a cold argument says cheat in it, since there is no future to protect; then the round before is effectively the last, and so on back to the first (<dfn data-def="Reasoning from the end of a game back to its start.">backward induction</dfn>). People and simple strategies rarely follow it in long games, and Axelrod's second tournament made the length uncertain so that nobody could plan on an end. The strategies here don't count rounds: in short games, always cheat simply gains more from its first cheats than it loses later.</p>`
 		},
 		// --------------------------------------------------------------- evolve
@@ -274,7 +274,7 @@ export const spec: ExplainerSpec = {
 			body: `
 <p>Real players make mistakes: a message gets lost, a hand slips. Let a few moves come out the opposite of what was meant. Two tit for tats then fall into a feud: one slips, the other punishes, the first punishes the punishment, and they take turns cheating until another slip ends or doubles it.</p>
 <p>Switch both to <strong>generous tit for tat</strong>, which lets one cheat in three go unpunished. A slip still costs a round or two, but the feud dies out quickly.</p>`,
-			notes: `<p>Generous tit for tat forgives a cheat with the probability that just stops always cheat from invading a population of it: one in three for Axelrod's payoffs (Nowak &amp; Sigmund, <em>Nature</em> 355, 1992). Points are shown for each round; a ring marks a move that came out wrong.</p>`
+			notes: `<p>Generous tit for tat forgives a cheat with the probability given by Nowak &amp; Sigmund's generosity formula (<em>Nature</em> 355, 1992): one in three for Axelrod's payoffs. Points are shown for each round; a ring marks a move that came out wrong.</p>`
 		},
 		{
 			id: 'noise',
@@ -300,8 +300,8 @@ export const spec: ExplainerSpec = {
 			body: `
 <p>Take away memory altogether. In 1992 Martin Nowak and Robert May put players on a grid. Each cell either always cooperates or always cheats, and plays one game with each of its 8 neighbours and itself: a cooperator gets 1 point for each cooperator it meets, a cheat gets <em>b</em> for each cooperator it meets, and nobody gets anything from a cheat. Then every cell copies the strategy of whichever of the nine scored highest.</p>
 <p>A cheat surrounded by cooperators does well, but a block of cooperators earns a lot from each other. Clusters of cooperators grow at their edges and are eaten at their edges. Blue cells stayed cooperators, red stayed cheats; green ones have just become cooperators and yellow ones cheats.</p>
-<p>With <em>b</em> between 1.8 and 2, neither side wins: the grid churns for ever with about a third cooperators. Below 1.8 cooperators hold most of it; above 2, cheats take nearly all.</p>`,
-			notes: `<p>Nowak &amp; May, "Evolutionary games and spatial chaos", <em>Nature</em> 359 (1992). Updates are simultaneous on a 59 × 59 grid that wraps round at the edges, starting with one cell in ten a cheat. Only a few thresholds of <em>b</em> change what happens (when one neighbourhood's score passes another's), so the slider steps between them. No memory, no repeated games with the same partner: here what protects cooperators is that they stay neighbours of one another, like <a href="../ecosystems/#web">species tied together in a food web</a>.</p>`
+<p>With <em>b</em> between 1.8 and 2, neither side wins: the grid keeps changing over all the generations shown, with about a third cooperators on average. Below 1.8 cooperators hold most of it; above 2, cheats take nearly all.</p>`,
+			notes: `<p>Nowak &amp; May, "Evolutionary games and spatial chaos", <em>Nature</em> 359 (1992). Updates are simultaneous on a 59 × 59 grid that wraps round at the edges, starting with one cell in ten a cheat. Only a few thresholds of <em>b</em> change what happens (when one neighbourhood's score passes another's), so the slider steps between them. The same neighbours meet again every generation, but no cell remembers earlier encounters: here what protects cooperators is that they stay neighbours of one another, like <a href="../ecosystems/#web">species tied together in a food web</a>.</p>`
 		},
 		{
 			id: 'kaleidoscope',
@@ -312,8 +312,8 @@ export const spec: ExplainerSpec = {
 			duration: 40,
 			controls: [temptation],
 			body: `
-<p>Start with a single cheat in the middle of a grid of cooperators. At <em>b</em> = 1.85 it does better than its neighbours, so they copy it; the block of cheats then has cooperators around it doing better, and they win back ground. The fight never settles: it draws an endless, symmetric kaleidoscope with about a third of the cells cooperating.</p>
-<p>Lower <em>b</em> below 1.8 and the cheat's first converts stay a small block, boxed in for ever. Just above 2 the block grows into a square and stops; at 2.5 the cheats take nine cells in ten. Cooperation here needs no memory or kindness, only neighbours who cooperate too.</p>`
+<p>Start with a single cheat in the middle of a grid of cooperators. At <em>b</em> = 1.85 it does better than its neighbours, so they copy it; the block of cheats then has cooperators around it doing better, and they win back ground. The fight doesn't settle: it draws a long sequence of symmetric patterns, with about a third of the cells cooperating on average.</p>
+<p>Lower <em>b</em> below 1.8 and the cheats stay confined near the centre: depending on <em>b</em>, a small patch stays put or keeps growing and shrinking back. Just above 2 the block grows into a square and stops; at 2.5 the cheats take nine cells in ten. Cooperation here needs no memory or kindness, only neighbours who cooperate too.</p>`
 		}
 	]
 };

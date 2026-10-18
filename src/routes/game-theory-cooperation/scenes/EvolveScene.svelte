@@ -10,13 +10,14 @@
 	 */
 	import { Axes, Label, areaPath, scale } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
-	import { STRATEGIES, evolve, tournament, type StrategyId } from '../model';
-	import { payoffsOf, pts, strategyColor } from './shared';
+	import { CLASSIC, STRATEGIES, evolve, tournament, type StrategyId } from '../model';
+	import { pts, strategyColor } from './shared';
 
 	let { step, t, params, reduced }: StageProps = $props();
 
 	const focus = $derived(String(step.hints?.focus ?? 'equal'));
-	const p = $derived(payoffsOf(params));
+	/** Axelrod's payoffs (only the payoff table and the tournament edit them). */
+	const p = CLASSIC;
 	const rounds = $derived(focus === 'few' ? Math.round(Number(params.rounds ?? 200)) : 200);
 	const noise = $derived(focus === 'noise' ? Number(params.noise ?? 0.05) : 0);
 	const cheats = $derived(focus === 'few' && params.start !== 'equal');

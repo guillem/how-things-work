@@ -11,14 +11,15 @@
 	import { untrack } from 'svelte';
 	import { Label, cycle } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
-	import { payoff, playMatch, rng, strategy, type Move, type StrategyId } from '../model';
-	import { moveColor, payoffsOf } from './shared';
+	import { CLASSIC, payoff, playMatch, rng, strategy, type Move, type StrategyId } from '../model';
+	import { moveColor } from './shared';
 
 	let { t, params, reduced, setParam }: StageProps = $props();
 
 	const ROUNDS = 10;
 	const SEED = 11;
-	const p = $derived(payoffsOf(params));
+	/** Axelrod's payoffs, the numbers the narrative quotes (only the payoff table and the tournament edit them). */
+	const p = CLASSIC;
 	const opp = $derived(strategy(String(params.opponent ?? 'tft') as StrategyId));
 	const moves = $derived(
 		[...String(params.moves ?? '')]

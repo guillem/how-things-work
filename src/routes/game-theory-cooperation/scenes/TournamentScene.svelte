@@ -10,13 +10,14 @@
 	 */
 	import { Label, scale, smoothstep } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
-	import { ALL_IDS, STRATEGIES, tournament, type StrategyId } from '../model';
+	import { ALL_IDS, CLASSIC, STRATEGIES, tournament, type StrategyId } from '../model';
 	import { payoffsOf, pts, strategyColor } from './shared';
 
 	let { step, t, params, reduced }: StageProps = $props();
 
 	const focus = $derived(String(step.hints?.focus ?? 'all'));
-	const p = $derived(payoffsOf(params));
+	/** The reader's payoffs on the first tournament step; Axelrod's on the others. */
+	const p = $derived(focus === 'all' ? payoffsOf(params) : CLASSIC);
 	const rounds = $derived(
 		focus === 'pick'
 			? 200

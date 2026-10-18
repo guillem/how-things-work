@@ -97,6 +97,13 @@ test('short games favour cheating', () => {
 		const t = tournament(ALL_IDS, { rounds });
 		expect(t.ids[t.ranking[0]]).toBe('alld');
 	}
+	// lengthen the games and it sinks: near the bottom at ten rounds, last from twenty
+	const rank = (rounds: number) => {
+		const t = tournament(ALL_IDS, { rounds });
+		return t.ranking.indexOf(t.ids.indexOf('alld'));
+	};
+	expect(rank(10)).toBeGreaterThanOrEqual(ALL_IDS.length - 2);
+	for (const rounds of [20, 50, 200]) expect(rank(rounds)).toBe(ALL_IDS.length - 1);
 	// with three-round games, an equal mix evolves into a population of cheats
 	const t3 = tournament(ALL_IDS, { rounds: 3 });
 	const ev = evolve(

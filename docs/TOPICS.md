@@ -109,7 +109,7 @@ A topic is done when:
 - [x] chaos-fractals
 - [x] taylor-series
 - [x] exponentials-logarithms
-- [ ] game-theory-cooperation
+- [x] game-theory-cooperation
 
 **Physics**
 - [x] newtons-laws

@@ -64,12 +64,17 @@
 		)
 	);
 	const NM = 12 * Math.log(2) - 8;
+	/** What this temptation does from this start (the single cheat's block can stop growing). */
 	const regime = $derived(
 		b < 1.8
-			? 'b < 1.8: cooperators hold most of the grid'
+			? one
+				? 'b < 1.8: the cheats stay near the centre'
+				: 'b < 1.8: cooperators hold most of the grid'
 			: b < 2
 				? '1.8 < b < 2: neither side wins'
-				: 'b > 2: cheats spread'
+				: shares[200] > 0.5
+					? 'b > 2: the cheats’ block grows, then stops'
+					: 'b > 2: cheats take most of the grid'
 	);
 	const legend = [
 		{ c: KINDS[0], t: 'cooperator, stayed' },
@@ -131,14 +136,7 @@
 		stroke="var(--stage-ink-muted)"
 		stroke-dasharray="4 4"
 	/>
-	<Label
-		x={930}
-		y={98}
-		text="dashed: ≈ 32 % (Nowak & May)"
-		size={11}
-		anchor="end"
-		muted
-	/>
+	<Label x={930} y={98} text="dashed: ≈ 32 % (Nowak & May)" size={11} anchor="end" muted />
 	<path d={trace} fill="none" stroke="var(--gt-cc)" stroke-width="2.2" stroke-linejoin="round" />
 	<Readout id="share" order={2} label="Cooperators" value="{pts(shares[gen] * 100, 1)} %">
 		<Label

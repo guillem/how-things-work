@@ -43,14 +43,25 @@
 	);
 	/** Where two players who each take their better reply end up (if each column agrees). */
 	const settled = $derived(
-		replies[0].best === replies[1].best && replies[0].gain > 0 ? replies[0].best : null
+		replies[0].best === replies[1].best && replies.every((r) => r.gain > 0) ? replies[0].best : null
 	);
+	/** Some choice of theirs leaves you indifferent between your two moves. */
+	const tie = $derived(replies.some((r) => r.gain === 0));
 	const checks = $derived([
 		{ text: `temptation ${p.T} > reward ${p.R}`, ok: p.T > p.R },
 		{ text: `reward ${p.R} > punishment ${p.P}`, ok: p.R > p.P },
 		{ text: `punishment ${p.P} > sucker ${p.S}`, ok: p.P > p.S }
 	]);
 	const repeatOk = $derived(rewardsCooperation(p));
+	const repeatEven = $derived(2 * p.R === p.T + p.S);
+	const repeatSign = $derived(repeatOk ? '>' : repeatEven ? '=' : '<');
+	const repeatNote = $derived(
+		repeatOk
+			? ['cooperating every round beats', 'taking turns to cheat']
+			: repeatEven
+				? ['taking turns to cheat pays the same', 'as cooperating every round']
+				: ['taking turns to cheat pays', 'more than cooperating']
+	);
 	const verdict = $derived(dilemma ? "a prisoner's dilemma" : 'not a dilemma');
 	const caption = $derived(
 		dilemma
@@ -65,10 +76,15 @@
 							`Cheating still pays more, but both cheating (${p.P} each) is no worse`,
 							`than both cooperating (${p.R} each): no dilemma.`
 						]
-					: [
-							'The better reply depends on what the other does:',
-							'a different game, not the prisoner’s dilemma.'
-						]
+					: tie
+						? [
+								'Against at least one of their choices, cooperating and cheating',
+								'pay you the same: not the prisoner’s dilemma.'
+							]
+						: [
+								'The better reply depends on what the other does:',
+								'a different game, not the prisoner’s dilemma.'
+							]
 	);
 	const cellOf = (me: Move, them: Move) => ({
 		x: COLS.find((c) => c.them === them)?.x ?? 0,
@@ -291,37 +307,21 @@
 			id="repeat"
 			order={3}
 			label="Repeated games"
-			value="2 × {p.R} {repeatOk ? '>' : '≤'} {p.T} + {p.S}"
-			note={repeatOk ? 'steady cooperation beats taking turns' : 'taking turns to cheat pays more'}
+			value="2 × {p.R} {repeatSign} {p.T} + {p.S}"
+			note={repeatNote.join(' ')}
 		>
 			<Label
 				x={16}
 				y={248}
-				text="{repeatOk ? '✓' : '✗'} 2 × reward {2 * p.R} {repeatOk ? '>' : '≤'} {p.T} + {p.S}"
+				text="{repeatOk ? '✓' : '✗'} 2 × reward {2 * p.R} {repeatSign} {p.T} + {p.S}"
 				size={13}
 				anchor="start"
 				color={repeatOk ? 'var(--stage-ink)' : 'var(--gt-cheat)'}
 				halo={false}
 				tabular
 			/>
-			<Label
-				x={16}
-				y={272}
-				text={repeatOk ? 'cooperating every round beats' : 'taking turns to cheat pays'}
-				size={11}
-				anchor="start"
-				muted
-				halo={false}
-			/>
-			<Label
-				x={16}
-				y={288}
-				text={repeatOk ? 'taking turns to cheat' : 'more than cooperating'}
-				size={11}
-				anchor="start"
-				muted
-				halo={false}
-			/>
+			<Label x={16} y={272} text={repeatNote[0]} size={11} anchor="start" muted halo={false} />
+			<Label x={16} y={288} text={repeatNote[1]} size={11} anchor="start" muted halo={false} />
 		</Readout>
 	</g>
 
