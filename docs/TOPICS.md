@@ -1,6 +1,6 @@
 # Topic catalog
 
-Source of truth for the content of an interactive web learning tool that shows how things work. It defines 112 topics in 11 categories, each built around one interactive graphic. Readers range from high-school students to university majors.
+Source of truth for the content of an interactive web learning tool that shows how things work. It defines 113 topics in 11 categories, each built around one interactive graphic. Readers range from high-school students to university majors.
 
 This file covers content only. It does not choose the stack, the visual design or the project layout; take those from the repository's own instructions.
 
@@ -86,7 +86,7 @@ A topic is done when:
 | Physics | `physics` | 10 |
 | Chemistry & Materials | `chemistry` | 10 |
 | Biology | `biology` | 10 |
-| Body & Medicine | `medicine` | 9 |
+| Body & Medicine | `medicine` | 10 |
 | Earth & Climate | `earth` | 8 |
 | Space | `space` | 9 |
 | Computing | `computing` | 10 |
@@ -155,6 +155,7 @@ A topic is done when:
 - [x] mrna-vaccines
 - [x] cancer
 - [x] medical-imaging
+- [ ] cerebellum-motor-learning
 
 **Earth & Climate**
 - [x] plate-tectonics
@@ -697,6 +698,16 @@ A topic is done when:
 - **Takeaway:** A CT scanner never sees a slice directly; it measures many shadows and computes the image that explains them all.
 - **Prerequisites:** fourier-transform
 
+#### cerebellum-motor-learning
+- **Title:** The cerebellum & motor learning
+- **Level:** 3
+- **Kind:** manipulate
+- **Interaction:** Move the mouse or a finger to targets while the cursor is secretly rotated by thirty degrees, and watch yourself miss, correct and adapt over a few dozen reaches; beside the hand, a two-rate error-driven model (a fast and a slow learner) updates its prediction trial by trial and its curve sits over the reader's own. Remove the rotation and say 'aim straight': the aftereffect that remains is the implicit, cerebellar part. Reverse the rotation briefly, then hide the errors, and both the model and the hand drift back toward the first adaptation as the fast learner fades and the slow one remains.
+- **Takeaway:** An implicit learner nudges its prediction a little after every miss, and the aftereffect that survives being told the world is back to normal shows a correction that was learned, not reasoned.
+- **Prerequisites:** neurons, feedback-control
+- **Related:** gradient-descent, reinforcement-learning
+- **Pitfall:** Not all of the reader's correction comes from the cerebellum: much of the quick early improvement under a large rotation is deliberate re-aiming, and only the slow, implicit part persists as an aftereffect when the reader is told the rotation is gone.
+
 ### Earth & Climate
 
 #### plate-tectonics
@@ -1044,6 +1055,7 @@ A topic is done when:
 - **Interaction:** Drop a ball on a loss landscape shown as a surface and as a contour map; it steps downhill along the negative gradient. Change the learning rate, add momentum or noise, and try landscapes with ravines, plateaus and several minima.
 - **Takeaway:** A model is trained by repeatedly nudging its parameters in the direction that reduces the error fastest, and the step size decides whether that crawls, converges or diverges.
 - **Prerequisites:** calculus, learning-from-data
+- **Related:** cerebellum-motor-learning
 
 #### neural-networks
 - **Title:** Neural networks & backpropagation
@@ -1111,7 +1123,7 @@ A topic is done when:
 - **Interaction:** Paint rewards, penalties and walls onto a grid world and release an agent. Watch its value estimate for each cell and action update as it explores; adjust the exploration rate, the discount factor and the learning rate, and compare early episodes with late ones.
 - **Takeaway:** An agent can learn a skill from rewards alone by trying actions and gradually crediting the ones that led to good outcomes, balancing exploration against using what it already knows.
 - **Prerequisites:** learning-from-data
-- **Related:** feedback-control
+- **Related:** feedback-control, cerebellum-motor-learning
 
 #### ngram-text-models
 - **Title:** N-gram text models & their limits
