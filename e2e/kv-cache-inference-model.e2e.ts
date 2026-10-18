@@ -19,7 +19,8 @@ import {
 	makeDecoder,
 	makeTinyGpt,
 	PROMPT,
-	SEEDS
+	SEEDS,
+	totals
 } from '../src/routes/kv-cache-inference/tiny';
 import {
 	attainable,
@@ -93,11 +94,19 @@ test.describe('the tiny GPT with and without a cache', () => {
 		expect(grow).toBeLessThan(1.25 * (64 / 7));
 		// cached: one position each time; only attention over the longer cache grows
 		expect(flops(last.cached) / flops(first.cached)).toBeLessThan(1.3);
-		// over the whole generation, recomputing costs ~30 times the arithmetic
-		const sum = (f: (r: (typeof rows)[number]) => number) => rows.reduce((s, r) => s + f(r), 0);
-		const ratio = sum((r) => flops(r.recompute)) / sum((r) => flops(r.cached));
-		expect(ratio).toBeGreaterThan(25);
-		expect(ratio).toBeLessThan(40);
+		// over the whole generation, the cached run's prompt steps included, recomputing costs
+		// 31 times the arithmetic
+		const t = totals(rows);
+		expect(t.fr / t.fc).toBeGreaterThan(30.5);
+		expect(t.fr / t.fc).toBeLessThan(31.5);
+		// the cached run's total counts every step it ran: one per character of prompt and text
+		const dec = makeDecoder();
+		let macs = 0;
+		for (const tok of encode(PROMPT + rows.map((r) => r.char).join('')).slice(0, -1)) {
+			dec.step(tok);
+			macs += dec.cost.macs;
+		}
+		expect(t.fc).toBe(2 * macs);
 	});
 
 	test('the bytes read are about the weights either way; the cache adds a growing share', () => {
@@ -141,11 +150,11 @@ test.describe('real models', () => {
 		expect(cacheBytes(LLAMA2_7B, 4096, 8) / 1e9).toBeCloseTo(17.2, 1);
 		expect(cacheBytes(LLAMA2_7B, 4096, 8)).toBeGreaterThan(weightBytes(LLAMA2_7B));
 		expect(cacheBytes(MISTRAL_7B, 4096, 8)).toBeLessThan(weightBytes(MISTRAL_7B));
-		// how many 4,096-token sequences fit beside the weights in an H100's 80 GB
-		expect(maxBatch(H100, LLAMA2_7B, 4096)).toBe(30);
-		expect(maxBatch(H100, MISTRAL_7B, 4096)).toBe(122);
-		expect(fits(RTX_4090, LLAMA2_7B, 4096, 4)).toBe(true);
-		expect(fits(RTX_4090, LLAMA2_7B, 4096, 5)).toBe(false);
+		// how many 4,096-token sequences fit beside the weights in an H100's 80 GiB
+		expect(maxBatch(H100, LLAMA2_7B, 4096)).toBe(33);
+		expect(maxBatch(H100, MISTRAL_7B, 4096)).toBe(133);
+		expect(fits(RTX_4090, LLAMA2_7B, 4096, 5)).toBe(true);
+		expect(fits(RTX_4090, LLAMA2_7B, 4096, 6)).toBe(false);
 	});
 });
 
@@ -169,7 +178,9 @@ test.describe('the roofline', () => {
 		expect(1 / timing(H100, decodeStep(LLAMA2_7B, 1, 1)).seconds).toBeLessThan(260);
 	});
 
-	test('prefill of a 1,024-token prompt is compute-bound', () => {
+	test('prefill of a 1,024-token prompt is compute-bound; a 256-token one is not', () => {
+		expect(timing(H100, prefill(LLAMA2_7B, 256, 1)).memoryBound).toBe(true);
+		expect(timing(H100, prefill(LLAMA2_7B, 512, 1)).memoryBound).toBe(false);
 		const p = prefill(LLAMA2_7B, 1024, 1);
 		expect(intensity(p)).toBeGreaterThan(ridge(H100));
 		const tm = timing(H100, p);

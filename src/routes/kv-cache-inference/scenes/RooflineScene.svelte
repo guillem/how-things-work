@@ -388,6 +388,17 @@
 		/>
 	{/each}
 
+	<Readout id="ideal">
+		<Label
+			x={PX}
+			y={536}
+			anchor="start"
+			size={11}
+			muted
+			text="ideal roofline bounds: activations and overheads left out"
+		/>
+	</Readout>
+
 	<!-- read-outs -->
 	{#each lines as l, j (l.id)}
 		{@const y = 92 + j * 56}
@@ -420,7 +431,7 @@
 				size={13}
 				weight={700}
 				color="var(--kv-over)"
-				text="this batch’s caches don’t fit in {fmt(gpu.memory / 1e9)} GB"
+				text="this batch’s caches don’t fit in {fmt(gpu.memory / 2 ** 30)} GiB"
 			/>
 		</Readout>
 	{/if}

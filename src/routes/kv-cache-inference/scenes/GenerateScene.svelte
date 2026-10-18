@@ -18,7 +18,15 @@
 	 */
 	import { Axes, clamp, Label, scale, smoothstep } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
-	import { bytesMoved, compare, flops, generation, PROMPT, SEEDS } from '../tiny';
+	import {
+		bytesMoved,
+		compare,
+		flops,
+		generation,
+		PROMPT,
+		SEEDS,
+		totals as totalsOf
+	} from '../tiny';
 
 	let { step, t, params, reduced }: StageProps = $props();
 
@@ -84,19 +92,7 @@
 	const cachedBars = $derived(bars((j) => flops(rows[j].cached), k, CW * 0.7, 0));
 
 	// ---- compare --------------------------------------------------------------------------
-	const totals = $derived.by(() => {
-		let fr = 0;
-		let fc = 0;
-		let br = 0;
-		let bc = 0;
-		for (const r of rows) {
-			fr += flops(r.recompute);
-			fc += flops(r.cached);
-			br += bytesMoved(r.recompute);
-			bc += bytesMoved(r.cached);
-		}
-		return { fr, fc, br, bc };
-	});
+	const totals = $derived(totalsOf(rows));
 	const BAR_X = 330;
 	const BAR_W = 440;
 </script>
@@ -416,7 +412,7 @@
 			{
 				id: 'flops',
 				y: 300,
-				title: `arithmetic, all ${N} characters`,
+				title: `arithmetic, all ${N} characters, prompt included`,
 				r: totals.fr,
 				k: totals.fc,
 				f: big,
@@ -425,7 +421,7 @@
 			{
 				id: 'bytes',
 				y: 430,
-				title: 'bytes read from memory, all characters',
+				title: 'bytes moved to and from memory, all characters',
 				r: totals.br,
 				k: totals.bc,
 				f: (v: number) => `${fmt(v / 1e6, 1)} MB`,
@@ -437,7 +433,7 @@
 			<Readout
 				id="total-{g.id}"
 				order={3}
-				label={g.id === 'flops' ? 'Arithmetic in total' : 'Bytes read in total'}
+				label={g.id === 'flops' ? 'Arithmetic in total' : 'Bytes moved in total'}
 				value="{g.f(g.r)} recomputing, {g.f(g.k)} cached"
 			>
 				<Label x={X0 - 6} y={g.y} anchor="start" size={14} weight={700} text={g.title} />
@@ -472,7 +468,7 @@
 			value="{fmt(totals.fr / totals.fc, 0)} times less arithmetic, {fmt(
 				(100 * (totals.bc - totals.br)) / totals.br,
 				0
-			)}% more bytes"
+			)}% more bytes moved"
 		>
 			<Label
 				x={480}
@@ -482,7 +478,7 @@
 				text="with the cache: {fmt(totals.fr / totals.fc, 0)} times less arithmetic, and {fmt(
 					(100 * (totals.bc - totals.br)) / totals.br,
 					0
-				)}% more bytes read (the weights every step, plus the growing cache)"
+				)}% more bytes moved (weights and cache read every step, new keys and values written)"
 			/>
 		</Readout>
 	{/if}

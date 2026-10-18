@@ -106,14 +106,14 @@
 <g opacity={fadeIn}>
 	<!-- memory bar -->
 	<g opacity={sizeOpacity}>
-		<Readout id="gpu" order={0} label={gpu.name} value="{fmt(gpu.memory / 1e9)} GB of memory">
+		<Readout id="gpu" order={0} label={gpu.name} value="{fmt(gpu.memory / 2 ** 30)} GiB of memory">
 			<Label
 				x={BX}
 				y={46}
 				anchor="start"
 				size={15}
 				weight={700}
-				text="{gpu.name}: {fmt(gpu.memory / 1e9)} GB of memory, serving {model.name}"
+				text="{gpu.name}: {fmt(gpu.memory / 2 ** 30)} GiB of memory, serving {model.name}"
 			/>
 		</Readout>
 		<defs>
@@ -237,7 +237,7 @@
 				anchor={capX > BX + BW - 60 ? 'end' : 'middle'}
 				size={11}
 				muted
-				text="{fmt(gpu.memory / 1e9)} GB"
+				text="{fmt(gpu.memory / 2 ** 30)} GiB"
 			/>
 		</Readout>
 		<Readout

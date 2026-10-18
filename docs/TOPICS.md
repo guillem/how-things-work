@@ -214,7 +214,7 @@ A topic is done when:
 - [x] training-a-tiny-language-model
 - [x] scaling-laws
 - [x] rlhf-alignment
-- [ ] kv-cache-inference
+- [x] kv-cache-inference
 
 **Energy & Machines**
 - [x] heat-engines

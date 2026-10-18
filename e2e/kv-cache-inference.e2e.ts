@@ -17,7 +17,7 @@ test(
 		await page.goto('./kv-cache-inference/#same');
 		await expect(stage(page)).toContainText('the same 58 characters');
 		await expect(stage(page)).toContainText('every position and character: 0, to the last bit');
-		await expect(stage(page)).toContainText('34 times less arithmetic');
+		await expect(stage(page)).toContainText('31 times less arithmetic');
 		// another draw of random numbers: another text, still identical
 		await page.locator('button[data-control=seed]').click();
 		await expect(stage(page)).toContainText('the same 58 characters');
@@ -39,17 +39,17 @@ test('without the cache the last character costs the whole window; with it, one 
 test('the cache grows with context and batch until it does not fit', async ({ page }) => {
 	await page.goto('./kv-cache-inference/#cache-size');
 	await expect(stage(page)).toContainText('512 KiB per token');
-	await expect(stage(page)).toContainText('room for 123 conversations of 1,024 tokens');
+	await expect(stage(page)).toContainText('room for 134 conversations of 1,024 tokens');
 	await range(page, 'context').focus();
 	await page.keyboard.press('End');
 	await range(page, 'batch').focus();
-	for (let i = 0; i < 5; i++) await page.keyboard.press('ArrowRight');
-	await expect(stage(page)).toContainText('cache: 32 × 4,096 tokens = 68.7 GB');
-	await expect(stage(page)).toContainText('does not fit: at most 30 conversations of 4,096 tokens');
+	for (let i = 0; i < 6; i++) await page.keyboard.press('ArrowRight');
+	await expect(stage(page)).toContainText('cache: 64 × 4,096 tokens = 137.4 GB');
+	await expect(stage(page)).toContainText('does not fit: at most 33 conversations of 4,096 tokens');
 	// grouped-query attention: a quarter of the cache, four times the conversations
 	await page.getByRole('radio', { name: /Mistral 7B/ }).click();
 	await expect(stage(page)).toContainText('128 KiB per token');
-	await expect(stage(page)).toContainText('room for 122 conversations of 4,096 tokens');
+	await expect(stage(page)).toContainText('room for 133 conversations of 4,096 tokens');
 });
 
 test('prefill is compute-bound, decode memory-bound, and a batch shares the weights', async ({

@@ -39,7 +39,7 @@ export interface Gpu {
 	peak: number;
 	/** Memory bandwidth, bytes/s. */
 	bandwidth: number;
-	/** Memory, bytes. */
+	/** Memory, bytes: the advertised 80 GB and 24 GB are binary gigabytes (GiB), as the drivers report them. */
 	memory: number;
 }
 
@@ -48,7 +48,7 @@ export const H100: Gpu = {
 	name: 'NVIDIA H100 SXM',
 	peak: (1979 / 2) * 1e12,
 	bandwidth: 3.35e12,
-	memory: 80e9
+	memory: 80 * 2 ** 30
 };
 
 export const RTX_4090: Gpu = {
@@ -56,7 +56,7 @@ export const RTX_4090: Gpu = {
 	name: 'NVIDIA RTX 4090',
 	peak: 165.2e12,
 	bandwidth: 1008e9,
-	memory: 24e9
+	memory: 24 * 2 ** 30
 };
 
 export const GPUS = [H100, RTX_4090];

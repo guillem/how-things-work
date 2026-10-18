@@ -73,6 +73,40 @@ export function generation(seed: number): Row[] {
 	});
 }
 
+/**
+ * What the cached run spends on the prompt before the step that writes the first character
+ * (that step is the first row's `cached` cost): the prompt's other characters, one position each.
+ */
+export function promptCost(): Cost {
+	const dec = makeDecoder();
+	const prompt = encode(PROMPT);
+	const total: Cost = { macs: 0, weightBytes: 0, cacheBytes: 0, writeBytes: 0 };
+	for (const tok of prompt.slice(0, -1)) {
+		dec.step(tok);
+		total.macs += dec.cost.macs;
+		total.weightBytes += dec.cost.weightBytes;
+		total.cacheBytes += dec.cost.cacheBytes;
+		total.writeBytes += dec.cost.writeBytes;
+	}
+	return total;
+}
+
+/** Totals over a generation, the cached run including its prompt steps. */
+export function totals(rows: readonly Row[]) {
+	const p = promptCost();
+	let fr = 0;
+	let fc = flops(p);
+	let br = 0;
+	let bc = bytesMoved(p);
+	for (const r of rows) {
+		fr += flops(r.recompute);
+		fc += flops(r.cached);
+		br += bytesMoved(r.recompute);
+		bc += bytesMoved(r.cached);
+	}
+	return { fr, fc, br, bc };
+}
+
 export interface Comparison {
 	cached: string;
 	recomputed: string;
