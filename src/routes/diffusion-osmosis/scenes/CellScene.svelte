@@ -293,7 +293,12 @@
 			weight={600}
 		/>
 	</Readout>
-	<Readout id="volume" order={3} label="Volume" value={burst ? 'burst' : `${pct(v)} of normal`}>
+	<Readout
+		id="volume"
+		order={3}
+		label="Volume"
+		value={burst ? 'burst' : `${pct(v)} of ${blood ? 'normal' : 'fresh'}`}
+	>
 		<Label
 			x={(BX0 + BX1) / 2}
 			y={BY1 + 52}
