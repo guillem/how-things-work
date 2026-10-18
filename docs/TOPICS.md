@@ -1,6 +1,6 @@
 # Topic catalog
 
-Source of truth for the content of an interactive web learning tool that shows how things work. It defines 107 topics in 11 categories, each built around one interactive graphic. Readers range from high-school students to university majors.
+Source of truth for the content of an interactive web learning tool that shows how things work. It defines 108 topics in 11 categories, each built around one interactive graphic. Readers range from high-school students to university majors.
 
 This file covers content only. It does not choose the stack, the visual design or the project layout; take those from the repository's own instructions.
 
@@ -82,7 +82,7 @@ A topic is done when:
 
 | Category | Id | Topics |
 |---|---|---|
-| Mathematics | `math` | 10 |
+| Mathematics | `math` | 11 |
 | Physics | `physics` | 10 |
 | Chemistry & Materials | `chemistry` | 9 |
 | Biology | `biology` | 9 |
@@ -107,6 +107,7 @@ A topic is done when:
 - [x] central-limit-theorem
 - [x] primes-modular-arithmetic
 - [x] chaos-fractals
+- [ ] taylor-series
 
 **Physics**
 - [x] newtons-laws
@@ -281,7 +282,7 @@ A topic is done when:
 - **Interaction:** Draw a closed curve or a waveform, then rebuild it from rotating circles or sine waves, adding one frequency at a time with a slider. A bar chart shows the strength of each frequency and can be edited to reshape the signal.
 - **Takeaway:** Any signal can be written as a sum of sine waves, and the transform says how much of each frequency it contains.
 - **Prerequisites:** unit-circle, complex-numbers
-- **Related:** positional-encoding
+- **Related:** positional-encoding, taylor-series
 
 #### bayes-theorem
 - **Title:** Probability & Bayes' theorem
@@ -317,6 +318,16 @@ A topic is done when:
 - **Takeaway:** Simple deterministic rules can produce behavior that is unpredictable in the long run and structure that repeats at every scale.
 - **Prerequisites:** none
 - **Related:** complex-numbers, ecosystems, atmosphere-weather
+
+#### taylor-series
+- **Title:** Taylor series & where they stop working
+- **Level:** 3
+- **Kind:** manipulate
+- **Interaction:** Pick a function and add Taylor terms one at a time with a slider: the polynomial hugs e^x and sin x ever further from the center, but for 1/(1 + x²) it closes in only for |x| < 1 and swings ever wilder beyond, however many terms are added. A linked complex plane shows the disk of convergence and the function's singularities at ±i: the disk stops exactly where it touches the nearest one; drag the center along the real line and the disk, and the stretch of the real line the polynomials fit, resize to match. A last toggle overlays Chebyshev interpolation, which fits the whole interval anyway.
+- **Takeaway:** The Taylor series of a function converges exactly out to its nearest singularity in the complex plane, even when nothing goes wrong on the real line.
+- **Prerequisites:** calculus, complex-numbers
+- **Related:** fourier-transform
+- **Pitfall:** More terms do not always mean a better fit: outside the radius each new term makes the polynomial worse, and a function can be smooth everywhere on the real line and still have a finite radius. Do not claim convergence on the boundary circle: for 1/(1 + x²) the series diverges at x = ±1.
 
 ### Physics
 
