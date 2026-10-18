@@ -62,6 +62,13 @@
 
 	const sim = $derived(mutationFates(N, s, 0.5, TRIALS, 31 + N));
 	const simRatio = $derived((sim.fixed / TRIALS) * 2 * N);
+	const simHigh = $derived(((sim.fixed + sim.drifting) / TRIALS) * 2 * N);
+	const simText = $derived(
+		`${sim.fixed.toLocaleString('en-US')} of ${TRIALS.toLocaleString('en-US')} fixed (${percent(sim.fixed / TRIALS)})` +
+			(sim.drifting > 0
+				? `, ${sim.drifting.toLocaleString('en-US')} still drifting after 6,000 generations`
+				: '')
+	);
 
 	const signed = (v: number, digits = 2) => {
 		const a = Math.abs(v).toLocaleString('en-US', { maximumFractionDigits: digits });
@@ -155,7 +162,19 @@
 
 	<!-- the chosen N and s -->
 	{#if reveal >= 1}
-		{#if sim.fixed > 0 && !off}
+		{#if sim.drifting > 0 && !off}
+			<!-- some runs still drift after 6,000 generations: the bounds, fixed to fixed-or-drifting -->
+			<line
+				x1={dot.x}
+				x2={dot.x}
+				y1={sim.fixed > 0 ? yOf(simRatio) : PY0}
+				y2={yOf(simHigh)}
+				stroke="var(--popgen-mean)"
+				stroke-width="4"
+				stroke-linecap="round"
+				opacity="0.8"
+			/>
+		{:else if sim.fixed > 0 && !off}
 			<circle
 				cx={dot.x}
 				cy={yOf(simRatio)}
@@ -220,17 +239,15 @@
 	<Readout
 		id="simulated"
 		order={2}
-		label="Simulated (ring)"
-		value="{sim.fixed.toLocaleString('en-US')} of {TRIALS.toLocaleString('en-US')} fixed"
+		label={sim.drifting > 0 ? 'Simulated (bar)' : 'Simulated (ring)'}
+		value={simText}
 		color="var(--popgen-mean)"
 	>
 		<Label
 			x={PX0 - 70}
 			y={94}
 			anchor="start"
-			text="simulated (ring): {sim.fixed.toLocaleString('en-US')} of {TRIALS.toLocaleString(
-				'en-US'
-			)} fixed ({percent(sim.fixed / TRIALS)})"
+			text="simulated{off ? '' : sim.drifting > 0 ? ' (bar)' : ' (ring)'}: {simText}"
 			size={13}
 			color="var(--popgen-mean)"
 			tabular

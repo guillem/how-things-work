@@ -230,7 +230,7 @@ export function mutationFates(
 /**
  * Kimura's diffusion result for the chance that A, at share `p`, is eventually fixed:
  *   u(p) = ∫₀ᵖ G / ∫₀¹ G,  G(x) = exp(−∫₀ˣ 2M/V),
- * with the mean change per generation M(x) = x(1−x)·2s·(h + (1−2h)x) of the fitnesses above and the
+ * with the mean change per generation M(x) ≈ 2s·x(1−x)·(h + (1−2h)x) of the fitnesses above (weak selection: the exact change divides this by the mean fitness) and the
  * drift variance V(x) = x(1−x)/2N, so G(x) = exp(−8Nhs·x − 4Ns(1−2h)·x²). For h = ½ it is the
  * closed form (1 − e^(−4Nsp)) / (1 − e^(−4Ns)); for s = 0 it is p. Integrated numerically on a grid
  * that is fine near both ends, where G can change over a few hundred-thousandths.

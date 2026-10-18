@@ -162,7 +162,7 @@ A topic is done when:
 - [x] pcr-copying-dna
 - [x] morphogen-gradients
 - [x] lac-operon
-- [ ] population-genetics
+- [x] population-genetics
 
 **Body & Medicine**
 - [x] heart-circulation

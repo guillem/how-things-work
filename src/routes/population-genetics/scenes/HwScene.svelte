@@ -136,7 +136,7 @@
 
 <g>
 	{@render bars(parentX, parents, 'Parents', 'genotypes you choose', 'parents')}
-	{@render bars(kidX, kids, 'Children', 'after one generation', 'kids')}
+	{@render bars(kidX, kids, 'Children', 'expected after one generation', 'kids')}
 
 	<!-- the gene pool: a share p of A over q of a -->
 	<Readout id="pool-title">

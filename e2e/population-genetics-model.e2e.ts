@@ -2,7 +2,7 @@
 // puts genotypes at the Hardy–Weinberg proportions p², 2pq, q² in one generation and leaves the
 // allele share alone; a neutral allele fixes with a chance equal to its share (1/2N for a new
 // mutation); heterozygosity decays by 1/2N per generation; a new beneficial mutation fixes with
-// a chance of about 2s whatever N (Haldane), as Kimura's formula gives for any N and s; a harmful
+// a chance of about 2s whatever N (Haldane), as Kimura's diffusion approximation gives; a harmful
 // one can fix in a small population; a recessive allele hides from selection while rare. The
 // simulations are seeded, and each is compared with the theory within three standard errors.
 // Runs in Node; no browser.

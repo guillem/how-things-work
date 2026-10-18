@@ -16,7 +16,7 @@ export function hinted(
 export function percent(v: number): string {
 	const x = v * 100;
 	if (x === 0) return '0%';
-	if (x >= 99.95 && x < 100) return '99.9%';
+	if (x >= 99.5 && x < 100) return 'over 99%';
 	if (x >= 10) return `${Math.round(x)}%`;
 	if (x >= 1) return `${x.toFixed(1)}%`;
 	if (x < 0.001) return 'under 0.001%';

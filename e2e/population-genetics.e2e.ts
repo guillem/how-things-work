@@ -109,5 +109,10 @@ test('in a small population a harmful allele still fixes', async ({ page }) => {
 	await expect(stage(page)).toContainText('N = 10, s = −1% per copy');
 	await expect(stage(page)).toContainText('fixes with chance 4.1%');
 	await key(page, 'N_b', 'End');
-	await expect(stage(page)).toContainText('simulated (ring): 0 of 4,000 fixed');
+	await expect(stage(page)).toContainText('simulated: 0 of 4,000 fixed');
+	// nearly neutral in a large population: some runs are still drifting when the simulation
+	// stops, and the page says so rather than counting them as lost
+	await range(page, 's_b').fill('0.001');
+	await expect(stage(page)).toContainText('N × s = 10');
+	await expect(stage(page)).toContainText(/still drifting after 6,000 generations/);
 });

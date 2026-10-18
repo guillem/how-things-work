@@ -75,10 +75,7 @@
 	const fates = $derived(isNew ? mutationFates(N, s, 0.5, TRIALS, seed, POPS) : null);
 	const gens = $derived.by(() => {
 		if (!fates) return fixedGens;
-		const longest = Math.max(
-			40,
-			...fates.shown.map((l) => (l.fate === 'lost' ? 0 : l.copies.length - 1))
-		);
+		const longest = Math.max(40, ...fates.shown.map((l) => l.copies.length - 1));
 		return Math.min(6000, niceMax(longest));
 	});
 
@@ -393,7 +390,7 @@
 			x={LX}
 			y={136}
 			text={isNew
-				? `${fmt(TRIALS)} new mutations · N = ${fmt(N)}`
+				? `${fmt(TRIALS)} new mutations · N = ${fmt(N)} · up to 6,000 gen.`
 				: mode === 'one'
 					? `one population · N = ${fmt(N)}`
 					: `${POPS} populations · N = ${fmt(N)}`}
@@ -548,7 +545,7 @@
 			meanH[Math.min(g, meanH.length - 1)].toFixed(3),
 			'var(--popgen-mean)'
 		)}
-		{@render row('theory', 2, 204, 'down 1/2N a generation', theoryH(g).toFixed(3))}
+		{@render row('theory', 2, 204, 'expected (−1/2N a gen.)', theoryH(g).toFixed(3))}
 		{@render row('none', 3, 230, 'no variation left', `${fixedNow + lostNow} of ${POPS}`)}
 		<line x1={LX} x2={RX} y1={252} y2={252} stroke="var(--stage-line)" />
 		<Readout
@@ -589,7 +586,7 @@
 		)}
 		{@render row('nlost', 2, 204, 'lost', done ? fmt(fates.lost) : '…', GENO.aa)}
 		{#if fates.drifting > 0}
-			{@render row('ndrift', 3, 230, 'still drifting', done ? fmt(fates.drifting) : '…')}
+			{@render row('ndrift', 3, 230, 'drifting at 6,000 gen.', done ? fmt(fates.drifting) : '…')}
 		{/if}
 		<line x1={LX} x2={RX} y1={252} y2={252} stroke="var(--stage-line)" />
 		{@render row('kimura', 4, 278, 'Kimura', percent(uNew))}
@@ -627,7 +624,7 @@
 				size={11}
 				muted
 				text={mode === 'hetero'
-					? 'faint: each population · thick: their average · dashed: down 1/2N a generation'
+					? 'faint: each population · thick: their average · dashed: expected, −1/2N of what is left a generation'
 					: isNew
 						? 'each line: one new mutation, from one copy · top: fixed · bottom: lost'
 						: mode === 'drift'
