@@ -1,6 +1,6 @@
 # Topic catalog
 
-Source of truth for the content of an interactive web learning tool that shows how things work. It defines 130 topics in 11 categories, each built around one interactive graphic. Readers range from high-school students to university majors.
+Source of truth for the content of an interactive web learning tool that shows how things work. It defines 131 topics in 11 categories, each built around one interactive graphic. Readers range from high-school students to university majors.
 
 This file covers content only. It does not choose the stack, the visual design or the project layout; take those from the repository's own instructions.
 
@@ -84,7 +84,7 @@ A topic is done when:
 |---|---|---|
 | Mathematics | `math` | 18 |
 | Physics | `physics` | 13 |
-| Chemistry & Materials | `chemistry` | 13 |
+| Chemistry & Materials | `chemistry` | 14 |
 | Biology | `biology` | 10 |
 | Body & Medicine | `medicine` | 10 |
 | Earth & Climate | `earth` | 9 |
@@ -145,6 +145,7 @@ A topic is done when:
 - [x] dislocations-alloys
 - [x] huckel-molecular-orbitals
 - [x] surface-catalysis
+- [ ] transition-state-theory
 
 **Biology**
 - [x] the-cell
@@ -668,7 +669,19 @@ A topic is done when:
 - **Interaction:** Run CO oxidation on a lattice of catalyst sites: CO lands on one empty site, O2 splits onto two neighbouring empty sites, and adjacent CO and O react into CO2 and leave (the Ziff-Gulari-Barshad model). Slide the CO fraction in the gas: with too little CO the surface fills with oxygen and goes dead, across a narrow window the CO2 rate climbs, and just past its peak it collapses abruptly as CO covers every site, with the lattice's rate and coverages plotted beside the mean-field rate equations of the same moves (the reactants taken as randomly mixed), which miss the oxygen dead end entirely and put the CO collapse too late. Add a CO desorption rate (a hotter surface) and watch the abrupt collapse soften and the poisoned surface recover.
 - **Takeaway:** A catalyst works by holding the reactants next to each other on its surface, and too much of one reactant can cover every site and stop the reaction entirely.
 - **Prerequisites:** reaction-rates-equilibrium
+- **Related:** transition-state-theory
 - **Pitfall:** A catalyst is not consumed, but it is not inert either: its activity depends on what covers it, and a poisoned surface is a catalyst that has stopped working.
+
+#### transition-state-theory
+- **Title:** Reaction trajectories & the transition state
+- **Level:** 3
+- **Kind:** simulate
+- **Interaction:** Fire a quasiclassical trajectory of A + BC → AB + C across a potential-energy surface (LEPS model of H + H2 and F + H2) drawn as a contour map, choosing how much energy goes into translation and how much into vibration (never less than the zero-point vibration), and see whether it crosses the saddle or turns back. Compare the early barrier of F + H2 with the late barrier of its reverse, H + HF, to see that translation carries molecules over an early pass and vibration over a late one; sweep the temperature to watch the Eyring rate climb, and swap H for D to watch the zero-point energies, the effective barrier and the rate change.
+- **Takeaway:** A reaction is a journey over a mountain pass on an energy landscape; the pass's height sets how often molecules make it and its position sets which kind of energy gets them over.
+- **Prerequisites:** reaction-rates-equilibrium, newtons-laws
+- **Related:** surface-catalysis
+- **Needs:** LEPS (Sato) parameters for the H3 and FH2 surfaces.
+- **Pitfall:** The transition state is not an intermediate that can be isolated; it is the top of the pass, crossed in a single vibration, and a catalyst lowers the pass rather than pushing molecules over it.
 
 ### Biology
 
