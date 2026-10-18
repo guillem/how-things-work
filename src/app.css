@@ -3721,3 +3721,26 @@ kbd {
 	--gt-dc: #69db7c;
 	--gt-cd: #ffd43b;
 }
+
+/* differential-equations: the slope dashes, solution curves (the newest one highlighted), the
+   exact formula, stable, unstable and semi-stable level lines, and the chart of f */
+:root {
+	--de-field: #a5adb6;
+	--de-curve: #1971c2;
+	--de-new: #e8590c;
+	--de-exact: #212529;
+	--de-stable: #2b8a3e;
+	--de-unstable: #e03131;
+	--de-semi: #f08c00;
+	--de-f: #7048e8;
+}
+:root[data-theme='dark'] {
+	--de-field: #5c6670;
+	--de-curve: #4dabf7;
+	--de-new: #ff922b;
+	--de-exact: #f1f3f5;
+	--de-stable: #69db7c;
+	--de-unstable: #ff8787;
+	--de-semi: #ffc078;
+	--de-f: #b197fc;
+}

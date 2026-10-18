@@ -431,6 +431,30 @@
 			const y = log ? 100 - 84 * x : 100 - (84 * (2 ** (8 * x) - 1)) / 255;
 			return `${i ? 'L' : 'M'}${((log ? 116 : 16) + 70 * x).toFixed(1)} ${y.toFixed(1)}`;
 		}).join(' ');
+
+	// Differential equations: the slope field of logistic growth on a 9 × 5 grid and three
+	// solution curves through it (rising in an S to the ceiling, falling back to it from above).
+	const deField = (() => {
+		let d = '';
+		for (let i = 0; i < 9; i++)
+			for (let j = 0; j < 5; j++) {
+				const x = 18 + i * 21;
+				const y = 18 + j * 21;
+				const n = (104 - y) / 70;
+				const slope = ((0.9 * n * (1 - n) * 70) / 21) * 1.4;
+				const len = Math.hypot(1, slope);
+				const dx = 6 / len;
+				const dy = (6 * slope) / len;
+				d += `M${(x - dx).toFixed(1)} ${(y + dy).toFixed(1)}L${(x + dx).toFixed(1)} ${(y - dy).toFixed(1)}`;
+			}
+		return d;
+	})();
+	const deCurve = (n0: number) =>
+		Array.from({ length: 61 }, (_, i) => {
+			const tt = i / 60;
+			const n = n0 / (n0 + (1 - n0) * Math.exp(-7 * tt));
+			return `${i ? 'L' : 'M'}${(8 + tt * 184).toFixed(1)} ${(104 - 70 * n).toFixed(1)}`;
+		}).join(' ');
 </script>
 
 <svg viewBox="0 0 200 120" class="art" style:--accent={accent} aria-hidden="true">
@@ -3119,6 +3143,20 @@
 		{#each [0, 1, 2, 3, 4] as k (k)}
 			<circle cx={116 + 17.5 * k} cy={100 - 21 * k} r="2.6" fill="currentColor" />
 		{/each}
+	{:else if slug === 'differential-equations'}
+		<!-- logistic growth: slope dashes, the ceiling, and curves threading through them -->
+		<path
+			d={deField}
+			stroke="currentColor"
+			stroke-width="1.4"
+			stroke-linecap="round"
+			opacity="0.45"
+		/>
+		<line x1="8" y1="34" x2="192" y2="34" stroke={accent} stroke-width="1.4" opacity="0.6" />
+		<path d={deCurve(0.04)} fill="none" stroke={accent} stroke-width="2.4" />
+		<path d={deCurve(0.3)} fill="none" stroke={accent} stroke-width="2" opacity="0.75" />
+		<path d={deCurve(1.35)} fill="none" stroke={accent} stroke-width="2" opacity="0.75" />
+		<circle cx="8" cy={104 - 70 * 0.04} r="3.5" fill={accent} />
 	{:else if slug === 'taylor-series'}
 		<!-- a bump and its Taylor polynomial leaving it at |x| = 1; a disk stopped by ±i -->
 		<line x1="12" y1="92" x2="124" y2="92" stroke="currentColor" stroke-width="1" opacity="0.5" />

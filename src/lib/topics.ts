@@ -1104,6 +1104,15 @@ const explainers: Explainer[] = [
 		accent: '#0f766e',
 		steps: 12,
 		minutes: 18
+	},
+	{
+		slug: 'differential-equations',
+		title: 'Differential equations',
+		summary:
+			'Give a rule for how fast something changes and the plane fills with slope dashes; drop starting points to trace the one curve through each, for a growing colony, a cooling coffee, a population with a ceiling and a fish stock whose level line vanishes when the catch passes rK/4, and see that curves never cross even where no formula exists.',
+		accent: '#9a3b8f',
+		steps: 9,
+		minutes: 16
 	}
 ];
 
