@@ -1,6 +1,6 @@
 # Topic catalog
 
-Source of truth for the content of an interactive web learning tool that shows how things work. It defines 103 topics in 11 categories, each built around one interactive graphic. Readers range from high-school students to university majors.
+Source of truth for the content of an interactive web learning tool that shows how things work. It defines 104 topics in 11 categories, each built around one interactive graphic. Readers range from high-school students to university majors.
 
 This file covers content only. It does not choose the stack, the visual design or the project layout; take those from the repository's own instructions.
 
@@ -91,7 +91,7 @@ A topic is done when:
 | Space | `space` | 9 |
 | Computing | `computing` | 10 |
 | Information & Networks | `networks` | 8 |
-| Artificial Intelligence | `ai` | 12 |
+| Artificial Intelligence | `ai` | 13 |
 | Energy & Machines | `energy` | 9 |
 
 ## Checklist
@@ -209,6 +209,7 @@ A topic is done when:
 - [x] ngram-text-models
 - [x] tokenization
 - [x] positional-encoding
+- [ ] residual-stream-logit-lens
 
 **Energy & Machines**
 - [x] heat-engines
@@ -1105,6 +1106,16 @@ A topic is done when:
 - **Prerequisites:** transformers, unit-circle
 - **Related:** fourier-transform
 - **Pitfall:** RoPE does not add a position vector to the embeddings and is not applied to the values. 'Depends only on relative position' holds for the score of one query-key pair, not for the whole network's behaviour beyond the trained length. Attention with a causal mask is not fully blind to order, since each token sees a different number of predecessors; it is order-blind only without the mask.
+
+#### residual-stream-logit-lens
+- **Title:** Inside a transformer block: the residual stream
+- **Level:** 3
+- **Kind:** explore
+- **Interaction:** Pick a prompt and follow one token's vector down GPT-2 small's twelve blocks: in each, layer norm rescales a copy, attention adds what it gathered from other tokens, and the MLP adds its own output, drawn as arrows summing onto a running vector. A logit lens decodes that running vector after every block into the model's best guess for the next token, so a grid of layers by positions shows the answer appearing and sharpening; switch off any block's attention or MLP and see which guesses change.
+- **Takeaway:** A transformer does not pass a message from layer to layer; every block adds a correction to one shared running vector, and the prediction is refined gradually as those corrections pile up.
+- **Prerequisites:** transformers, language-models
+- **Needs:** Residual-stream activations, block outputs and ablated runs of GPT-2 small for a set of prompts, precomputed (or GPT-2 small run in the browser through ONNX).
+- **Pitfall:** The logit lens reads early layers with the final layer norm and unembedding, which they were never trained for; it works roughly on GPT-2 and fails on some other models (the tuned lens fixes this). Apply the final layer norm before unembedding, as the lens is defined, and do not present early-layer guesses as what the model 'thinks'.
 
 ### Energy & Machines
 
