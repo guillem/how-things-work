@@ -138,6 +138,7 @@
 	}));
 	const legend: Record<Medium, string> = { four: '4-level', three: '3-level', two: '2-level' };
 	const dnFrac = $derived(st.dn / N_ATOMS);
+	const invText = $derived(sci(dnFrac, 4).replace('-', '−'));
 </script>
 
 <g>
@@ -260,7 +261,7 @@
 			<Label
 				x={LV.x1 + 10}
 				y={lv.y + 4}
-				text={lv.label === 'lower laser level 1' ? '≈ 0' : sci(lv.frac, 3)}
+				text={lv.label === 'lower laser level 1' ? '≈ 0' : sci(lv.frac, 4)}
 				size={12}
 				anchor="start"
 				tabular
@@ -443,6 +444,17 @@
 		id="pops"
 		order={4}
 		label="Upper / lower level"
-		value="{sci(f2, 3)} / {medium === 'four' ? '≈ 0' : sci(f1, 3)} of the atoms"
+		value="{sci(f2, 4)} / {medium === 'four' ? '≈ 0' : sci(f1, 4)} of the atoms"
 	/>
+	<Readout id="inv" order={3} label="Inversion (N₂ − N₁)/N" value={invText}>
+		<Label
+			x={735}
+			y={584}
+			text="at this pump: (N₂ − N₁)/N = {invText}"
+			size={12}
+			weight={600}
+			color={color[medium]}
+			tabular
+		/>
+	</Readout>
 </g>

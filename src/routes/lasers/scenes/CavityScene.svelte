@@ -139,7 +139,7 @@
 		fill="var(--ls-mirror)"
 		opacity={0.55 + 0.45 * R}
 	/>
-	<Label x={M1 - 4} y={AX + 72} text="mirror 100%" size={12} muted />
+	<Readout id="m100"><Label x={M1 - 4} y={AX + 72} text="mirror 100%" size={12} muted /></Readout>
 	<Readout id="mirror" order={4} label="Output mirror" value="R = {(R * 100).toFixed(1)}%">
 		<Label
 			x={M2 + 4}
@@ -273,7 +273,9 @@
 			stroke="var(--stage-ink-muted)"
 			stroke-dasharray="4 4"
 		/>
-		<Label x={sxL(Pth) + 6} y={284} text="threshold" size={11} muted anchor="start" />
+		<Readout id="thl"
+			><Label x={sxL(Pth) + 6} y={284} text="threshold" size={11} muted anchor="start" /></Readout
+		>
 		<path d={photonCurve} fill="none" stroke="var(--ls-beam)" stroke-width="2.5" />
 		<circle
 			cx={sxL(P)}
@@ -348,14 +350,16 @@
 				stroke-dasharray="6 4"
 			/>
 			<path d={outCurve} fill="none" stroke="var(--ls-beam)" stroke-width="2.5" />
-			<Label
-				x={sxR(PMAX) - 6}
-				y={syInv(1) + 18}
-				text="inversion, clamped"
-				size={11}
-				color="var(--ls-inv)"
-				anchor="end"
-			/>
+			<Readout id="clamped"
+				><Label
+					x={sxR(PMAX) - 6}
+					y={syInv(1) + 18}
+					text="inversion, clamped"
+					size={11}
+					color="var(--ls-inv)"
+					anchor="end"
+				/></Readout
+			>
 			<circle
 				cx={sxR(P)}
 				cy={syInv(st.dn / nth)}

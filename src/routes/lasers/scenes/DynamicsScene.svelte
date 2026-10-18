@@ -128,7 +128,15 @@
 		stroke-width="1.5"
 	/>
 	<rect x="160" y={AX + 30} width="190" height="7" rx="3" fill="var(--ls-pump)" opacity="0.8" />
-	<Label x={150} y={AX + 52} text="pump {pump.toFixed(1)} W from 0 µs" size={12} anchor="start" />
+	<Readout id="pumplbl"
+		><Label
+			x={150}
+			y={AX + 52}
+			text="pump {pump.toFixed(1)} W from 0 µs"
+			size={12}
+			anchor="start"
+		/></Readout
+	>
 	{#if q}
 		<rect
 			x="420"
@@ -219,14 +227,16 @@
 				fill="var(--ls-shutter)"
 				opacity="0.08"
 			/>
-			<Label
-				x={X0 + 8}
-				y={212}
-				anchor="start"
-				text="shutter closed"
-				size={11}
-				color="var(--ls-shutter)"
-			/>
+			<Readout id="closedlbl"
+				><Label
+					x={X0 + 8}
+					y={212}
+					anchor="start"
+					text="shutter closed"
+					size={11}
+					color="var(--ls-shutter)"
+				/></Readout
+			>
 		{/if}
 	{:else}
 		<Axes {sx} sy={syLin} xLabel="µs" yLabel="output (W)" />
@@ -238,14 +248,16 @@
 			stroke="var(--stage-ink-muted)"
 			stroke-dasharray="4 4"
 		/>
-		<Label
-			x={X0 + 210}
-			y={186}
-			text="- - - steady output {watts(cw)}"
-			size={11}
-			muted
-			anchor="start"
-		/>
+		<Readout id="steadylbl"
+			><Label
+				x={X0 + 210}
+				y={186}
+				text="- - - steady output {watts(cw)}"
+				size={11}
+				muted
+				anchor="start"
+			/></Readout
+		>
 	{/if}
 	<g clip-path="url(#ls-dyn-clip)">
 		<path d={outPath} fill="none" stroke="var(--ls-beam)" stroke-width="1.6" />
@@ -261,7 +273,9 @@
 		stroke="var(--stage-ink-muted)"
 		stroke-dasharray="4 4"
 	/>
-	<Label x={X1} y={syInv(1) - 6} text="threshold" size={11} muted anchor="end" />
+	<Readout id="thl"
+		><Label x={X1} y={syInv(1) - 6} text="threshold" size={11} muted anchor="end" /></Readout
+	>
 	<g clip-path="url(#ls-dyn-clip)">
 		<path d={invPath} fill="none" stroke="var(--ls-inv)" stroke-width="2" />
 	</g>
@@ -285,7 +299,9 @@
 				{#if pulseShown}
 					<path d={pulsePath} fill="none" stroke="var(--ls-beam)" stroke-width="2.2" />
 				{/if}
-				<Label x={805} y={186} text="the pulse, zoomed" size={12} weight={600} />
+				<Readout id="zoomlbl"
+					><Label x={805} y={186} text="the pulse, zoomed" size={12} weight={600} /></Readout
+				>
 			</g>
 			<Readout
 				id="peak"
