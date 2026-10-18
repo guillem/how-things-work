@@ -1,6 +1,6 @@
 # Topic catalog
 
-Source of truth for the content of an interactive web learning tool that shows how things work. It defines 111 topics in 11 categories, each built around one interactive graphic. Readers range from high-school students to university majors.
+Source of truth for the content of an interactive web learning tool that shows how things work. It defines 112 topics in 11 categories, each built around one interactive graphic. Readers range from high-school students to university majors.
 
 This file covers content only. It does not choose the stack, the visual design or the project layout; take those from the repository's own instructions.
 
@@ -85,7 +85,7 @@ A topic is done when:
 | Mathematics | `math` | 11 |
 | Physics | `physics` | 10 |
 | Chemistry & Materials | `chemistry` | 10 |
-| Biology | `biology` | 9 |
+| Biology | `biology` | 10 |
 | Body & Medicine | `medicine` | 9 |
 | Earth & Climate | `earth` | 8 |
 | Space | `space` | 9 |
@@ -143,6 +143,7 @@ A topic is done when:
 - [x] evolution
 - [x] ecosystems
 - [x] crispr
+- [ ] bacterial-chemotaxis
 
 **Body & Medicine**
 - [x] heart-circulation
@@ -604,6 +605,16 @@ A topic is done when:
 - **Takeaway:** A bacterium keeps a piece of each virus it survives in its own DNA, and uses RNA copies of that record to find and cut the same virus next time.
 - **Prerequisites:** dna-to-protein
 
+#### bacterial-chemotaxis
+- **Title:** Bacterial chemotaxis
+- **Level:** 3
+- **Kind:** simulate
+- **Interaction:** Release a few hundred E. coli into a dish with a drop of attractant and watch each one run straight, tumble, and run again; inside each cell a receptor cluster (the MWC model of Tu, Shimizu & Berg) with Barkai–Leibler-style methylation feedback sets the tumble rate, and the swarm drifts up the gradient. Move the drop, flood the dish with a uniform dose and watch the tumble rate dip then recover exactly (perfect adaptation), and change the adaptation time or the swim speed to see the biased random walk fail.
+- **Takeaway:** A bacterium is too small to sense a gradient across its body, so it compares now with a moment ago and tumbles less when things are getting better; that biased random walk is enough to climb a gradient.
+- **Prerequisites:** the-cell
+- **Related:** feedback-control, homeostasis
+- **Pitfall:** The cell does not steer toward the attractant: it cannot tell direction, it only changes how often it tumbles, and the page must not draw it turning toward the source.
+
 ### Body & Medicine
 
 #### heart-circulation
@@ -622,7 +633,7 @@ A topic is done when:
 - **Interaction:** Give a virtual person a meal or send them for a run and plot blood glucose, insulin and glucagon over the following hours. Reduce insulin production or the body's sensitivity to it to model the two main types of diabetes, then try dosing insulin by hand.
 - **Takeaway:** The body holds its internal conditions steady with negative feedback loops, and many diseases are a broken loop.
 - **Prerequisites:** none
-- **Related:** heart-circulation, feedback-control
+- **Related:** heart-circulation, feedback-control, bacterial-chemotaxis
 
 #### neurons
 - **Title:** Neurons & the brain
@@ -1289,7 +1300,7 @@ A topic is done when:
 - **Interaction:** Tune the three gains of a PID controller to balance an inverted pendulum, hold a drone at a set height or keep a car at a set speed over hills, with the response plotted against the target. Add delay, sensor noise and gusts, then chain joints into a robot arm that reaches for a point.
 - **Takeaway:** A machine stays on target by measuring its error and correcting in proportion to it; too little correction is sluggish and too much makes it oscillate.
 - **Prerequisites:** oscillations-resonance
-- **Related:** homeostasis, reinforcement-learning
+- **Related:** homeostasis, reinforcement-learning, bacterial-chemotaxis
 
 ## Reserve
 
