@@ -241,7 +241,7 @@
 				<Label
 					x={X0 + W}
 					y={256}
-					text="dashed: expander, made only where the morphogen is below 2"
+					text="dashed: expander; its production is halved where the morphogen is 2"
 					size={11}
 					anchor="end"
 					color="var(--mg-expander-text)"

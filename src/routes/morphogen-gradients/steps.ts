@@ -45,6 +45,7 @@ const t1: Control = {
 	max: 90,
 	step: 1,
 	default: 35,
+	bounds: (p) => [Number(p.t2 ?? 10) + 1, 90],
 	help: 'Or drag the lines on the chart.'
 };
 
@@ -55,7 +56,8 @@ const t2: Control = {
 	min: 1,
 	max: 60,
 	step: 1,
-	default: 10
+	default: 10,
+	bounds: (p) => [1, Math.min(60, Number(p.t1 ?? 35) - 1)]
 };
 
 const measure: Control = {
@@ -147,10 +149,10 @@ export const spec: ExplainerSpec = {
 			duration: 30,
 			controls: [diff, life, prod, log],
 			body: `
-<p>The settled profile is what the SDD model predicts: an <strong>exponential</strong>. Every time you move λ further from the source, the concentration falls by the same factor e ≈ 2.7. Switch on the logarithmic scale and the curve becomes a straight line whose slope is −1/λ.</p>
+<p>The settled profile is what the SDD model predicts: when the tissue is several λ long, an <strong>exponential</strong>, except near the closed far end, where it flattens. Every time you move λ further from the source, the concentration falls by about the same factor e ≈ 2.7. Switch on the logarithmic scale and the curve becomes a straight line, flattening only at the far end.</p>
 <p>The <dfn data-def="The distance over which the concentration falls by a factor e; also called the decay length or length constant.">length scale</dfn> λ is set by just two numbers: λ = √(D/k) = √(D·τ), how far a molecule typically diffuses during its lifetime. Four times the diffusion constant, or four times the lifetime, doubles λ. Raising the production only lifts the whole curve: the shape, and λ, stay the same.</p>
 <p>The default numbers are those fitted to the fly's Bicoid protein (next step): D = 3.6 µm²/s and a half-life of 26 minutes give λ ≈ 90 µm. The gradient settles in a few lifetimes, here about two hours: a longer lifetime gives a longer gradient, but a slower one to form.</p>`,
-			notes: `<p>At steady state D c'' = kc, whose solution with a source flux j at x = 0 and a closed far end is c(x) = (jλ/D)·cosh((L − x)/λ)/sinh(L/λ). When the tissue is several λ long this is the exponential (jλ/D)·e^(−x/λ); only the last λ or so flattens, because nothing leaks out of the far end. The height at the source, jλ/D = j/√(Dk), is proportional to the production. The page measures λ by fitting a straight line to the logarithm of the profile over the first 40 % of the row.</p>`
+			notes: `<p>At steady state D c'' = kc, whose solution with a source flux j at x = 0 and a closed far end is c(x) = (jλ/D)·cosh((L − x)/λ)/sinh(L/λ). When the tissue is several λ long this is the exponential (jλ/D)·e^(−x/λ); only the last λ or so flattens, because nothing leaks out of the far end. The exact level at the source is c(0) = (jλ/D)·coth(L/λ), close to jλ/D = j/√(Dk) when L ≫ λ; either way it is proportional to the production. When λ is not small against the tissue (try a long lifetime and fast diffusion), the profile falls by less than e per λ. On the logarithmic chart (base 10) the straight part falls by one decade every λ·ln 10 ≈ 2.3 λ. The page measures λ by fitting a straight line to the logarithm of the profile over the first 40 % of the row.</p>`
 		},
 		{
 			id: 'bicoid',
@@ -176,7 +178,7 @@ export const spec: ExplainerSpec = {
 			controls: [t1, t2, prod],
 			body: `
 <p>A smooth gradient becomes sharp regions when cells respond to <strong>thresholds</strong>. Here every cell above the high threshold turns on a "blue" gene, every cell below the low one a "red" gene, and the cells in between neither: three bands, Wolpert's <dfn data-def="Wolpert's picture of positional information: a gradient read with two thresholds divides a row of cells into three regions, like the blue, white and red of the French flag.">French flag</dfn>. In the fly, Bicoid is a transcription factor: genes such as <i>hunchback</i> are switched on where it is above their threshold, and their own sharp domains mark out the head and thorax.</p>
-<p>Drag the threshold lines. Each boundary sits where the curve crosses its threshold, at x = λ·ln(c₀/T), with c₀ the level at the source. So in an exponential gradient a boundary moves by the same distance, λ·ln 2 ≈ 62 µm, every time the production doubles: try ×2 and ×4.</p>
+<p>Drag the threshold lines. Each boundary sits where the curve crosses its threshold, at about x = λ·ln(c₀/T), with c₀ the level at the source. So in an exponential gradient a boundary moves by the same distance, λ·ln 2 ≈ 62 µm, every time the production doubles: try ×2 and ×4.</p>
 <p>That is a prediction that can be tested by giving flies more or fewer copies of the <i>bicoid</i> gene: with more copies, the head–thorax pattern does move towards the tail (Driever and Nüsslein-Volhard, 1988).</p>`,
 			notes: `<p>Real genes do not switch as abruptly as a threshold: a gene's response to a transcription factor is a steep but smooth curve, and the target genes also act on each other, which sharpens boundaries and makes them hold their place better than a simple threshold reading would. The page reads the settled gradient; in the fly, the pattern is read while the gradient is still being made, within the first two to three hours after the egg is laid.</p>`
 		},
@@ -204,9 +206,9 @@ export const spec: ExplainerSpec = {
 			duration: 50,
 			controls: [expander, stretch],
 			body: `
-<p>Ben-Zvi and Barkai (2010) proposed a circuit that makes a gradient scale. A second substance, the <strong>expander</strong>, widens the morphogen's gradient: here it speeds the morphogen's spread and slows its breakdown. The expander is made only where the morphogen is <em>below</em> a repression threshold, so at first only at the far end; it spreads quickly and lasts a long time, so it fills the tissue (the dashed curve).</p>
-<p>Watch the circuit work. While the far end is short of morphogen, the expander keeps piling up and the gradient keeps widening; once the morphogen at the far end reaches the repression threshold, expander production stops and the gradient stays put. The far end is pinned to that threshold, so a longer tissue ends up with a proportionally longer gradient, and the bands of both tissues settle at nearly the same shares of their length.</p>
-<p>The circuit works for any length within a few per cent, not exactly. It also widens the short tissue's gradient: with the circuit on, its boundaries lie further back than in the plain model. Switch it off to compare.</p>`,
+<p>Ben-Zvi and Barkai (2010) proposed a circuit that makes a gradient scale. A second substance, the <strong>expander</strong>, widens the morphogen's gradient: here it speeds the morphogen's spread and slows its breakdown. The morphogen <em>represses</em> the expander: it is made where the morphogen is low, and production falls steeply once the morphogen rises past a repression threshold, so at first it is made mostly at the far end; it spreads quickly and lasts a long time, so it fills the tissue (the dashed curve).</p>
+<p>Watch the circuit work. While the far end is short of morphogen, the expander keeps piling up and the gradient keeps widening. As the morphogen at the far end rises past the repression threshold, expander production is shut down more and more, until what is still made just balances the little that is removed. The far end ends up held near that threshold, so a longer tissue ends up with a proportionally longer gradient, and the bands of both tissues settle at nearly the same shares of their length.</p>
+<p>Over the lengths shown here (500 to 1250 µm), the boundaries settle at shares of the tissue that differ by a few percentage points: close, not exact. It also widens the short tissue's gradient: with the circuit on, its boundaries lie further back than in the plain model. Switch it off to compare.</p>`,
 			notes: `<p>The model: ∂E/∂t = D_E ∂²E/∂x² − k_E E + β/(1 + (M/T_rep)^h), with the morphogen's diffusion multiplied and its breakdown divided by (1 + E). Ben-Zvi and Barkai showed that scaling needs the expander to be stable and to diffuse well; this page uses D_E = 60 µm²/s, a lifetime of about 12 days, T_rep = 2, h = 6 and β = 10⁻⁴ per second, and runs an hour of embryo time per second of the clock. They allow the expander to act on diffusion, on breakdown, or both; acting on both by the same factor keeps the source level the same, which makes the anterior boundaries scale better than acting on breakdown alone. The model is proposed for the Dpp gradient of the fly's wing disc, with the secreted protein Pentagone as the expander (Ben-Zvi and colleagues, 2011), though whether Pentagone spreads far enough to do this has been questioned (Zhu and colleagues, 2020).</p>`
 		},
 		// ------------------------------------------------------------------ precision
@@ -220,7 +222,7 @@ export const spec: ExplainerSpec = {
 			controls: [noise, t1, t2],
 			body: `
 <p>No cell measures a concentration exactly: only so many molecules are around, and they bind and unbind at random. Here each cell reads the morphogen with a random error of size σ, drawn afresh twice a second, and paints itself by what it reads.</p>
-<p>Look at the boundaries. Where the gradient is steep, a small reading error moves the crossing only a little, and the boundary stays sharp. In the flat tail, the same error moves the crossing a long way, and cells flicker between colours over a wide band. The positional error is σ_x = σ / |slope|; in an exponential the slope is c/λ, so σ_x = λσ/c, growing as the concentration falls. Drag the low threshold down into the tail and watch the error bar grow.</p>
+<p>Look at the boundaries. Where the gradient is steep, a small reading error moves the crossing only a little, and the boundary stays sharp. In the flat tail, the same error moves the crossing a long way, and cells flicker between colours over a wide band. For small reading errors the positional error is about σ_x ≈ σ / |slope|; in an exponential the slope is c/λ, so σ_x ≈ λσ/c, growing as the concentration falls. (When σ is not small against the threshold, this straight-line estimate is only rough.) Drag the low threshold down into the tail and watch the error bar grow.</p>
 <p>In the fly, nuclei at the same position read Bicoid to within about 10 %, and the <i>hunchback</i> boundary is placed to within 1–2 % of the egg's length, about one nucleus (Gregor and colleagues, 2007).</p>`,
 			notes: `<p>The error here is the same size σ everywhere, like a fixed background of noise. If instead the error were a fixed share of the concentration (10 % everywhere), σ_x = 0.1·λ would be the same at every boundary: whether the tail is fuzzier depends on how the noise grows with the concentration. For counting noise (σ ∝ √c) the error still grows into the tail, as λ/√c. The 10 % and 1–2 % figures are from Gregor, Tank, Wieschaus and Bialek, <i>Cell</i> 130:153, 2007, who argued that the precision is close to the limit set by counting Bicoid molecules. Cells can do better than one reading by averaging over time and over their neighbours.</p>`
 		}

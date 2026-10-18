@@ -4550,18 +4550,18 @@
 		<line x1="20" y1="92" x2="186" y2="92" stroke="currentColor" stroke-width="1" opacity="0.5" />
 		<line
 			x1="20"
-			y1="44"
+			y1="60"
 			x2="186"
-			y2="44"
+			y2="60"
 			stroke="currentColor"
 			stroke-dasharray="4 3"
 			opacity="0.5"
 		/>
 		<line
 			x1="20"
-			y1="74"
+			y1="80"
 			x2="186"
-			y2="74"
+			y2="80"
 			stroke="currentColor"
 			stroke-dasharray="4 3"
 			opacity="0.5"
@@ -4580,10 +4580,10 @@
 				width="8.6"
 				height="14"
 				rx="2"
-				fill={i < 5 ? accent : i < 9 ? 'none' : 'currentColor'}
+				fill={i < 3 ? accent : i < 7 ? 'none' : 'currentColor'}
 				stroke="currentColor"
 				stroke-width="0.8"
-				opacity={i < 5 ? 0.9 : i < 9 ? 0.6 : 0.35}
+				opacity={i < 3 ? 0.9 : i < 7 ? 0.6 : 0.35}
 			/>
 		{/each}
 	{:else}

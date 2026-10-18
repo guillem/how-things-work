@@ -97,7 +97,7 @@ test('with the expansion–repression circuit the boundaries keep their share of
 	const share = (L: number, T: number) => crossing(settled(L, on).M, T)! / L;
 	for (const T of [35, 10]) {
 		const a = share(500, T);
-		for (const L of [750, 1000]) expect(Math.abs(share(L, T) - a)).toBeLessThan(0.05);
+		for (const L of [750, 1000, 1250]) expect(Math.abs(share(L, T) - a)).toBeLessThan(0.05);
 	}
 	// the expander widens the gradient: the far end is pinned near the repression threshold
 	const long = settled(1000, on);
@@ -114,22 +114,43 @@ test('a reading error blurs a boundary by σ/|slope|: sharp where steep, blurred
 	// in an exponential, σ_x = λ·σ/T
 	const lam = decayLength(BICOID.D, BICOID.halfLife);
 	expect(near).toBeCloseTo((lam * sigma) / 35, 0);
-	// check it by simulation: cells read M plus Gaussian noise; where does the reading cross?
+	// check it by simulation for a small error: each cell reads M plus Gaussian noise; the share of
+	// readings above T falls from 1 to 0 across the boundary, and the width of that fall (the
+	// standard deviation of its slope) is the positional error
 	const rand = rng(7);
 	const gauss = () => Math.sqrt(-2 * Math.log(1 - rand())) * Math.cos(2 * Math.PI * rand());
-	const spread = (T: number) => {
-		const xs: number[] = [];
-		for (let trial = 0; trial < 400; trial++) {
-			const read = Array.from(s.M, (m) => m + sigma * gauss());
-			// the boundary: the middle of the cells whose reading is on the wrong side
-			let below = 0;
-			for (let i = 0; i < read.length; i++) if (read[i] >= T) below = i + 1;
-			let first = read.length;
-			for (let i = read.length - 1; i >= 0; i--) if (read[i] < T) first = i;
-			xs.push(((below + first) / 2) * DX);
+	const width = (T: number, sd: number) => {
+		const trials = 4000;
+		const above = Array.from(s.M, (m) => {
+			let n = 0;
+			for (let k = 0; k < trials; k++) if (m + sd * gauss() >= T) n++;
+			return n / trials;
+		});
+		let w = 0;
+		let mean = 0;
+		let sq = 0;
+		for (let i = 1; i < above.length; i++) {
+			const drop = above[i - 1] - above[i];
+			const x = i * DX;
+			w += drop;
+			mean += drop * x;
+			sq += drop * x * x;
 		}
-		const mean = xs.reduce((a, b) => a + b, 0) / xs.length;
-		return Math.sqrt(xs.reduce((a, b) => a + (b - mean) ** 2, 0) / xs.length);
+		mean /= w;
+		return Math.sqrt(sq / w - mean * mean);
 	};
-	expect(spread(5)).toBeGreaterThan(3 * spread(35));
+	for (const T of [20, 10]) {
+		const sd = T / 10;
+		const predicted = positionalError(s.M, T, sd)!;
+		expect(Math.abs(width(T, sd) - predicted) / predicted).toBeLessThan(0.15);
+	}
+});
+
+test('a long jump in time is caught up over later calls, not skipped', () => {
+	const capped = new Tissue(500, bicoid);
+	const first = capped.at(86400, 1000);
+	expect(first.t).toBeLessThan(86400);
+	while (capped.at(86400, 1000).t < 86400);
+	const direct = new Tissue(500, bicoid).at(86400, 1e6);
+	expect(capped.at(86400).M[10]).toBeCloseTo(direct.M[10], 6);
 });

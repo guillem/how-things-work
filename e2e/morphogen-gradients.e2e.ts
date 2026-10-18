@@ -53,6 +53,14 @@ test('a threshold handle moves with the keyboard and the slider follows', async 
 	expect(await read(page, 'white | red:')).toBeGreaterThan(400);
 });
 
+test('the high threshold cannot be set below the low one', async ({ page }) => {
+	await page.goto('./morphogen-gradients/#flag');
+	await range(page, 't1').focus();
+	await page.keyboard.press('Home');
+	await expect(range(page, 't1')).toHaveValue('11');
+	await expect(stage(page)).toContainText('high threshold: 11');
+});
+
 test("FRAP's diffusion constant gives a gradient far shorter than the measured one", async ({
 	page
 }) => {
@@ -86,7 +94,7 @@ test('noise blurs the boundary in the flat tail more than the one on the steep p
 	page
 }) => {
 	await page.goto('./morphogen-gradients/#noise');
-	const [high, low] = await readAll(page, 'positional error ±');
+	const [high, low] = await readAll(page, 'positional error ≈ ±');
 	expect(low).toBeGreaterThan(2.5 * high);
 	await range(page, 'noise').fill('0');
 	await expect(stage(page)).not.toContainText('positional error');

@@ -160,7 +160,7 @@ A topic is done when:
 - [x] bacterial-chemotaxis
 - [x] diffusion-osmosis
 - [x] pcr-copying-dna
-- [ ] morphogen-gradients
+- [x] morphogen-gradients
 
 **Body & Medicine**
 - [x] heart-circulation

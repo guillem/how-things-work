@@ -198,7 +198,7 @@
 	});
 	const tau = $derived(p.halfLife / Math.LN2);
 	const lamText = $derived(
-		`λ = √(D·τ) = √(${p.D.toFixed(1)} µm²/s × ${tau.toFixed(1)} min) = ${Math.round(lam)} µm`
+		`λ = √(D·τ) = √(${p.D.toFixed(1)} µm²/s × ${Math.round(tau * 60)} s) = ${Math.round(lam)} µm`
 	);
 	const sourceLevel = $derived(`level at the source: ${Math.round(M[0])}`);
 	const marks = $derived(
@@ -334,7 +334,7 @@
 			<Label
 				x={X0}
 				y={142}
-				text="τ = half-life / ln 2 is the mean lifetime; each λ further on, the level falls by a factor e ≈ 2.7"
+				text="τ = half-life / ln 2 is the mean lifetime; far from the closed end, each λ divides the level by about e ≈ 2.7"
 				size={11}
 				anchor="start"
 				muted
@@ -347,7 +347,9 @@
 				order={1 + k}
 				label={k === 0 ? 'Blue | white' : 'White | red'}
 				value={th.b.text}
-				note={sigma > 0 ? `positional error ${errText(th.e)}` : undefined}
+				note={sigma > 0
+					? `positional error ≈ ${errText(th.e)}${sigma > th.T / 2 ? ' (rough)' : ''}`
+					: undefined}
 			>
 				<Label
 					x={k === 0 ? X0 : X0 + 380}
@@ -362,7 +364,7 @@
 					<Label
 						x={k === 0 ? X0 : X0 + 380}
 						y={140}
-						text="positional error {errText(th.e)}"
+						text="positional error ≈ {errText(th.e)}{sigma > th.T / 2 ? ' (rough)' : ''}"
 						size={12}
 						anchor="start"
 						tabular
@@ -417,7 +419,7 @@
 				<Label
 					x={sx(m.x) + 8}
 					y={yOf(m.c) - 10}
-					text={m.n === 1 ? 'λ: ÷ e' : `${m.n}λ: ÷ e${m.n === 2 ? '²' : '³'}`}
+					text={m.n === 1 ? 'λ' : `${m.n}λ`}
 					size={12}
 					anchor="start"
 					color="var(--mg-morph-text)"

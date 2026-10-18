@@ -12,17 +12,19 @@
  *    exponential e^(−x/λ) when L ≫ λ.
  *
  * 2. Expansion–repression (Ben-Zvi & Barkai 2010, PNAS 107:6924). A second substance, the
- *    expander E, is made wherever the morphogen is below a repression threshold T_rep, spreads
- *    fast and is very stable; it widens the morphogen's gradient. The paper allows E to raise the
+ *    expander E, is repressed by the morphogen (made where the morphogen is low), spreads fast and
+ *    is very stable; it widens the morphogen's gradient. The paper allows E to raise the
  *    morphogen's diffusion or lower its degradation; here it does both by the same factor, so
  *    λ grows as (1 + E) while the amount at the source end (j/√(Dk)) stays the same:
  *
  *        D_M = D·(1 + E),   k_M = k/(1 + E)
  *        ∂E/∂t = D_E ∂²E/∂x² − k_E E + β / (1 + (M/T_rep)^h)
  *
- *    E keeps accumulating until the morphogen at the far end has risen to T_rep and switched
- *    its own production off (integral feedback), so the gradient's length is pinned to the
- *    tissue's.
+ *    Expander production falls steeply as the morphogen rises past T_rep (it is half-maximal
+ *    at M = T_rep). E keeps accumulating while the far end is short of morphogen; as the
+ *    gradient widens, production is repressed until what is still made balances the slow
+ *    removal (integral feedback), which holds the far end near T_rep and so ties the gradient's
+ *    length to the tissue's.
  *
  * Numerics: finite volumes of width DX, backward Euler in time (unconditionally stable), with
  * the reaction terms taken from the previous step. Concentrations are in the page's relative
@@ -105,7 +107,8 @@ export function crossing(profile: ArrayLike<number>, threshold: number, dx = DX)
 
 /**
  * Positional error of a boundary set by `threshold` when each cell reads the concentration with
- * an error of standard deviation `sigma`: σ_x = σ / |dM/dx| at the crossing, µm.
+ * an error of standard deviation `sigma`: σ_x ≈ σ / |dM/dx| at the crossing, µm (the
+ * small-error, straight-line estimate).
  */
 export function positionalError(profile: ArrayLike<number>, threshold: number, sigma: number) {
 	const x = crossing(profile, threshold);
@@ -241,7 +244,11 @@ export class Tissue {
 		thomas(a, b, c, d, E);
 	}
 
-	/** The state at simulated time t (s); t never runs backwards within one tissue. */
+	/**
+	 * The state at simulated time t (s); t never runs backwards within one tissue. At most
+	 * `maxSteps` steps per call: after a long jump (a hidden tab) the tissue lags behind the
+	 * clock and catches up on later calls; the state's `t` is the time actually integrated.
+	 */
 	at(t: number, maxSteps = 4000): TissueState {
 		let steps = 0;
 		while (this.s.t < t - 1e-9 && steps < maxSteps) {
@@ -250,8 +257,6 @@ export class Tissue {
 			this.s.t += h;
 			steps++;
 		}
-		// a long jump (a hidden tab) is cut short: the tissue just lags behind the clock
-		if (this.s.t < t - 1e-9) this.s.t = t;
 		return this.s;
 	}
 
