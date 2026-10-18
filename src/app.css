@@ -3439,3 +3439,30 @@ kbd {
 	--kv-over: #ff6b6b;
 	--kv-chip: #25282c;
 }
+
+/* chromatography: the marker and the two compounds, the column's tube and packing, the
+   coating and the liquid of the close-up, and the three van Deemter terms */
+:root {
+	--ch-marker: #868e96;
+	--ch-c1: #1c7ed6;
+	--ch-c2: #e8590c;
+	--ch-tube: #f1f3f5;
+	--ch-bead: #dee2e6;
+	--ch-coat: #82c91e;
+	--ch-liquid: #e7f5ff;
+	--ch-term-A: #868e96;
+	--ch-term-B: #7048e8;
+	--ch-term-C: #0c8599;
+}
+:root[data-theme='dark'] {
+	--ch-marker: #adb5bd;
+	--ch-c1: #4dabf7;
+	--ch-c2: #ff922b;
+	--ch-tube: #1f2328;
+	--ch-bead: #343a40;
+	--ch-coat: #94d82d;
+	--ch-liquid: #10263a;
+	--ch-term-A: #adb5bd;
+	--ch-term-B: #b197fc;
+	--ch-term-C: #3bc9db;
+}

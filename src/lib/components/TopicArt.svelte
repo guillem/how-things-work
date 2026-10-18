@@ -3709,6 +3709,44 @@
 		<line x1="113.5" y1="45" x2="126.5" y2="75" stroke="currentColor" stroke-width="1.5" />
 		<circle cx="140" cy="43" r="4.5" fill="currentColor" opacity="0.3" />
 		<path d="M140 38.5 A4.5 4.5 0 0 0 140 47.5 Z" fill="currentColor" opacity="0.9" />
+	{:else if slug === 'chromatography'}
+		<!-- a packed column with two bands that have come apart, and the two peaks they draw -->
+		<rect
+			x="14"
+			y="22"
+			width="172"
+			height="24"
+			rx="6"
+			fill="none"
+			stroke="currentColor"
+			stroke-width="1.4"
+			opacity="0.6"
+		/>
+		{#each [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13] as i (i)}
+			<circle cx={22 + i * 12} cy={34} r="4" fill="currentColor" opacity="0.12" />
+		{/each}
+		{#each [-6, -3, 0, 3, 6] as d (d)}
+			<circle cx={136 + d * 1.4} cy={30 + ((d + 6) % 5) * 2} r="2.4" fill={accent} />
+			<circle
+				cx={98 + d * 1.6}
+				cy={29 + ((d + 9) % 6) * 2}
+				r="2.4"
+				fill="currentColor"
+				opacity="0.75"
+			/>
+		{/each}
+		<line x1="14" y1="104" x2="186" y2="104" stroke="currentColor" stroke-width="1" opacity="0.5" />
+		<path
+			d="M14 104 L80 104 C88 104 90 66 96 66 C102 66 104 104 112 104 L118 104 C126 104 128 58 134 58 C140 58 142 104 150 104 L186 104"
+			fill="none"
+			stroke="currentColor"
+			stroke-width="1.8"
+		/>
+		<path
+			d="M118 104 C126 104 128 58 134 58 C140 58 142 104 150 104 Z"
+			fill={accent}
+			opacity="0.35"
+		/>
 	{:else}
 		<circle cx="100" cy="60" r="30" fill="none" stroke={accent} stroke-width="2" />
 		<circle cx="100" cy="60" r="5" fill={accent} />

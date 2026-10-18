@@ -1014,6 +1014,15 @@ const explainers: Explainer[] = [
 		accent: '#e8590c',
 		steps: 9,
 		minutes: 18
+	},
+	{
+		slug: 'chromatography',
+		title: 'Chromatography: separating by stickiness',
+		summary:
+			'Inject a mixture into a column and watch each molecule hop between the moving liquid and the packing: the bands separate and spread, the detector draws the peaks, and the measured plate height traces the van Deemter curve with its best flow speed.',
+		accent: '#e8590c',
+		steps: 8,
+		minutes: 16
 	}
 ];
 
