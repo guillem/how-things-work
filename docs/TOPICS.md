@@ -1,6 +1,6 @@
 # Topic catalog
 
-Source of truth for the content of an interactive web learning tool that shows how things work. It defines 148 topics in 11 categories, each built around one interactive graphic. Readers range from high-school students to university majors.
+Source of truth for the content of an interactive web learning tool that shows how things work. It defines 149 topics in 11 categories, each built around one interactive graphic. Readers range from high-school students to university majors.
 
 This file covers content only. It does not choose the stack, the visual design or the project layout; take those from the repository's own instructions.
 
@@ -89,7 +89,7 @@ A topic is done when:
 | Body & Medicine | `medicine` | 14 |
 | Earth & Climate | `earth` | 13 |
 | Space | `space` | 11 |
-| Computing | `computing` | 11 |
+| Computing | `computing` | 12 |
 | Information & Networks | `networks` | 9 |
 | Artificial Intelligence | `ai` | 19 |
 | Energy & Machines | `energy` | 10 |
@@ -221,6 +221,7 @@ A topic is done when:
 - [x] turing-machines
 - [x] quantum-computing
 - [x] game-tree-search
+- [ ] cache-memory-hierarchy
 
 **Information & Networks**
 - [x] compression
@@ -1275,7 +1276,7 @@ A topic is done when:
 - **Interaction:** Give the same job (shading every pixel of an image, then multiplying two large matrices) to one fast worker and to thousands of slow ones, and race them. Change the share of the job that must run in sequence and watch the speed-up hit a ceiling.
 - **Takeaway:** A GPU trades a few fast, flexible cores for thousands of simple ones, which wins whenever a job splits into many identical, independent pieces.
 - **Prerequisites:** cpu, linear-transformations
-- **Related:** tensors, graphics-3d, neural-networks
+- **Related:** tensors, graphics-3d, neural-networks, cache-memory-hierarchy
 
 #### graphics-3d
 - **Title:** 3D graphics
@@ -1333,6 +1334,16 @@ A topic is done when:
 - **Prerequisites:** graph-search
 - **Related:** sorting, reinforcement-learning
 - **Pitfall:** The program does not plan like a person; it counts. And it does not look at every possible game: depth is limited and the leaves are scored by a rule of thumb, which is why a better scoring rule can beat a deeper search.
+
+#### cache-memory-hierarchy
+- **Title:** Caches & the memory hierarchy
+- **Level:** 3
+- **Kind:** simulate
+- **Interaction:** Choose a program's access pattern (sum an array row by row or column by column, walk a linked list, multiply matrices with and without blocking) and run it through a cache with adjustable size, line length, associativity and replacement policy; each access lights a line as a hit or a miss, and the miss count and the average memory access time plot live. Add a second level of cache and watch where the knee of the curve moves.
+- **Takeaway:** The same program, doing the same arithmetic, takes many times more cycles waiting for memory or many times fewer, depending only on whether it touches memory in an order the cache can exploit.
+- **Prerequisites:** cpu
+- **Related:** gpu
+- **Pitfall:** A bigger cache is not always better: a direct-mapped cache thrashes on a stride equal to its size however large it is, and the unit moved is a whole line, never a byte, so a miss costs the same for one byte as for sixty-four.
 
 ### Information & Networks
 
