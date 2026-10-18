@@ -1,6 +1,6 @@
 # Topic catalog
 
-Source of truth for the content of an interactive web learning tool that shows how things work. It defines 104 topics in 11 categories, each built around one interactive graphic. Readers range from high-school students to university majors.
+Source of truth for the content of an interactive web learning tool that shows how things work. It defines 105 topics in 11 categories, each built around one interactive graphic. Readers range from high-school students to university majors.
 
 This file covers content only. It does not choose the stack, the visual design or the project layout; take those from the repository's own instructions.
 
@@ -91,7 +91,7 @@ A topic is done when:
 | Space | `space` | 9 |
 | Computing | `computing` | 10 |
 | Information & Networks | `networks` | 8 |
-| Artificial Intelligence | `ai` | 13 |
+| Artificial Intelligence | `ai` | 14 |
 | Energy & Machines | `energy` | 9 |
 
 ## Checklist
@@ -210,6 +210,7 @@ A topic is done when:
 - [x] tokenization
 - [x] positional-encoding
 - [x] residual-stream-logit-lens
+- [ ] training-a-tiny-language-model
 
 **Energy & Machines**
 - [x] heat-engines
@@ -923,7 +924,7 @@ A topic is done when:
 - **Interaction:** Type a message and see how many bits each symbol deserves given its frequency, then build the Huffman tree and compare the encoded size. Load an image, split it into 8×8 blocks and discard high-frequency detail with a quality slider until the damage shows.
 - **Takeaway:** Information is measured by surprise, so predictable data fits in fewer bits, and lossy formats go further by dropping what the senses will not miss.
 - **Prerequisites:** binary, fourier-transform
-- **Related:** entropy, ngram-text-models
+- **Related:** entropy, ngram-text-models, training-a-tiny-language-model
 
 #### error-correction
 - **Title:** Error-correcting codes
@@ -1116,6 +1117,17 @@ A topic is done when:
 - **Prerequisites:** transformers, language-models
 - **Needs:** Residual-stream activations, block outputs and ablated runs of GPT-2 small for a set of prompts, precomputed (or GPT-2 small run in the browser through ONNX).
 - **Pitfall:** The logit lens reads early layers with the final layer norm and unembedding, which they were never trained for; it works roughly on GPT-2 and fails on some other models (the tuned lens fixes this). Apply the final layer norm before unembedding, as the lens is defined, and do not present early-layer guesses as what the model 'thinks'.
+
+#### training-a-tiny-language-model
+- **Title:** Training a tiny language model
+- **Level:** 3
+- **Kind:** simulate
+- **Interaction:** Press train and a small character-level transformer (two layers, a few tens of thousands of weights) learns Tiny Shakespeare live in the page, with a fixed seed: the training and validation cross-entropy fall on a loss curve with smoothed bigram and trigram models' validation scores drawn as horizontal lines, perplexity is read off beside it, and a sample is written every few hundred steps. Change the model width, the context length and the amount of data to load precomputed runs of the same model (trained offline with the same code) and compare them: bigger models and longer contexts end lower, and with too little data the two curves split as it starts memorising.
+- **Takeaway:** Training a language model is gradient descent on one number, the average surprise at the next character, and as that number falls the samples go from random letters to plausible spelling to words and line structure.
+- **Prerequisites:** language-models, gradient-descent, ngram-text-models
+- **Related:** compression
+- **Needs:** Tiny Shakespeare; a tiny char-level transformer trained by the page itself for the default configuration (nanoGPT's character-level configuration is the reference), plus the project's own precomputed loss curves and samples for the other settings, trained offline with the same code; smoothed n-gram baselines counted from the same train/validation split.
+- **Pitfall:** Perplexity is the exponential of the average cross-entropy per token and is comparable only between models with the same tokenizer and the same validation text; a training loss near zero is memorisation, not success. The order in which samples improve is a typical pattern, not a guaranteed sequence.
 
 ### Energy & Machines
 
