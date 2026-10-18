@@ -16,12 +16,13 @@ const buffer: Control = {
 const rule: Control = {
 	type: 'select',
 	id: 'rule',
-	label: 'Rule',
+	label: 'Increase rule',
 	default: 'reno',
 	options: [
-		{ value: 'reno', label: 'AIMD: +1 packet per round trip, halve on loss' },
-		{ value: 'mimd', label: 'MIMD: +5 % per round trip, halve on loss' }
-	]
+		{ value: 'reno', label: 'AIMD' },
+		{ value: 'mimd', label: 'MIMD' }
+	],
+	help: 'AIMD adds 1 packet per round trip, MIMD 5 %; both halve on a loss.'
 };
 
 const rtt2: Control = {

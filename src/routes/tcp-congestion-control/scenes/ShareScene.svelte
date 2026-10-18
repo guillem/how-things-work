@@ -148,7 +148,7 @@
 			<Label
 				x={BX0}
 				y={524}
-				text="user A: {pct(shareA)}"
+				text="share of user A: {pct(shareA)}"
 				size={13}
 				weight={600}
 				anchor="start"
@@ -160,7 +160,7 @@
 			<Label
 				x={BX1}
 				y={524}
-				text="user B: {pct(1 - shareA)}"
+				text="share of user B: {pct(1 - shareA)}"
 				size={13}
 				weight={600}
 				anchor="end"
