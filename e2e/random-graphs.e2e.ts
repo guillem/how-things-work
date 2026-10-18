@@ -59,7 +59,7 @@ test('a search from one node runs into the giant, or stops early in a small piec
 	page
 }) => {
 	await page.goto('./random-graphs/#explore');
-	await expect(stage(page)).toContainText(': the giant component');
+	await expect(stage(page)).toContainText(': the largest component');
 	await control(page, 'start').click();
 	await expect(stage(page)).toContainText('stopped after');
 	await control(page, 'cb').fill('0.5');

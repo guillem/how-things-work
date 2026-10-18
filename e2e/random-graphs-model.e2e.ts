@@ -185,3 +185,12 @@ test('exactly one of the grid (top to bottom) and its dual (left to right) cross
 		}
 	}
 });
+
+test('a large grid keeps every one of its bonds: all open joins every site', () => {
+	const L = 200;
+	const lat = lattice(L, 3);
+	const keys = new Set<number>();
+	for (let e = 0; e < lat.a.length; e++) keys.add(lat.a[e] * L * L + lat.b[e]);
+	expect(keys.size).toBe(2 * L * (L - 1));
+	expect(clustersAt(lat, 1.01).largestSize).toBe(L * L);
+});

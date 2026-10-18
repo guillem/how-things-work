@@ -319,11 +319,12 @@ export function lattice(L: number, seed: number): Lattice {
 			}
 		}
 	}
-	// each bond's random number (32 bits) with its index below it, so that a fast numeric sort
-	// of plain numbers orders the bonds (exact: 2^48 < 2^53)
+	// each bond's random number (32 bits) with its index in the 20 bits below it, so that a fast
+	// numeric sort of plain numbers orders the bonds (exact: 2^52 < 2^53; up to L = 724)
 	const B = a.length;
+	if (B >= 2 ** 20) throw new RangeError('lattice: more than a million bonds');
 	const keys = new Float64Array(B);
-	for (let i = 0; i < B; i++) keys[i] = Math.floor(rand() * 2 ** 32) * 2 ** 16 + i;
+	for (let i = 0; i < B; i++) keys[i] = Math.floor(rand() * 2 ** 32) * 2 ** 20 + i;
 	keys.sort();
 	const out: Lattice = {
 		L,
@@ -332,10 +333,10 @@ export function lattice(L: number, seed: number): Lattice {
 		at: new Float64Array(B)
 	};
 	for (let k = 0; k < B; k++) {
-		const i = keys[k] % 2 ** 16;
+		const i = keys[k] % 2 ** 20;
 		out.a[k] = a[i];
 		out.b[k] = b[i];
-		out.at[k] = Math.floor(keys[k] / 2 ** 16) / 2 ** 32;
+		out.at[k] = Math.floor(keys[k] / 2 ** 20) / 2 ** 32;
 	}
 	return out;
 }

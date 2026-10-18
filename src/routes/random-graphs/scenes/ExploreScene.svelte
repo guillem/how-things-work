@@ -19,7 +19,7 @@
 	const levels = $derived(bfsLevels(g, c, startNode));
 	const uf = $derived(componentsAt(g, c));
 	const giant = $derived(uf.largest / N);
-	const inGiant = $derived(uf.size[uf.find(startNode)] === uf.largest && uf.largest > 50);
+	const inLargest = $derived(uf.size[uf.find(startNode)] === uf.largest);
 	const reachedAll = $derived(levels.reduce((a, l) => a + l.length, 0));
 	const shown = $derived(reduced ? levels.length : Math.min(levels.length, 1 + Math.floor(t)));
 	const reached = $derived(levels.slice(0, shown).reduce((a, l) => a + l.length, 0));
@@ -49,7 +49,8 @@
 				const x = dotX(i, lvl.length);
 				xs.push(x);
 				ys.push(rowY(k));
-				if (k > 0) {
+				// a link to a parent beyond the drawn ones is left out
+				if (k > 0 && lvl[i].parent < MAXDOT) {
 					const pxp = dotX(lvl[i].parent, prev.length);
 					edges += `M${x.toFixed(1)} ${rowY(k)}L${pxp.toFixed(1)} ${rowY(k - 1)}`;
 				}
@@ -77,7 +78,7 @@
 	);
 	const giantText = $derived(
 		c > 1
-			? `giant: ${pct(giant)} of the nodes · S(c) = ${pct(giantShare(c))}`
+			? `largest component: ${pct(giant)} of the nodes · S(c) = ${pct(giantShare(c))}`
 			: `largest piece: ${fmt(uf.largest)} nodes · no giant below c = 1`
 	);
 	const giantNote = $derived(
@@ -86,8 +87,8 @@
 	const verdict = $derived(
 		!done
 			? `level ${shown - 1} · ${fmt(reached)} nodes reached so far`
-			: inGiant
-				? `reached ${fmt(reachedAll)} nodes: the giant component`
+			: inLargest
+				? `reached ${fmt(reachedAll)} nodes: the largest component`
 				: `stopped after ${levels.length - 1} level${levels.length === 2 ? '' : 's'}: a piece of ${fmt(reachedAll)}`
 	);
 </script>
@@ -147,7 +148,7 @@
 	<Label
 		x={TX0}
 		y={80}
-		text="level 0: the start · each row: nodes first reached one link further"
+		text="level 0: the start · each row: nodes one link further (at most 44 drawn)"
 		size={11}
 		anchor="start"
 		muted

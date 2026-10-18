@@ -112,7 +112,7 @@ A topic is done when:
 - [x] game-theory-cooperation
 - [x] differential-equations
 - [x] calculus-of-variations
-- [ ] random-graphs
+- [x] random-graphs
 
 **Physics**
 - [x] newtons-laws

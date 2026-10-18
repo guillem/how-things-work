@@ -69,7 +69,7 @@
 			id="title"
 			order={1}
 			label="One curve"
-			value="giant share against c = final epidemic size against R₀"
+			value="giant share against c = major-outbreak size against R₀"
 		>
 			<Label
 				x={24}
@@ -91,7 +91,7 @@
 		<Label
 			x={100}
 			y={84}
-			text="share in the giant component · share ever infected"
+			text="share in the giant component · share infected in a major outbreak"
 			size={11}
 			anchor="start"
 			muted
@@ -137,7 +137,7 @@
 		<Label x={744} y={194} text="giant: S of all nodes" size={11} anchor="start" muted />
 		<Label x={744} y={226} text="Epidemic" size={12} weight={600} anchor="start" />
 		<Label x={744} y={246} text="case → the R₀ it infects" size={11} anchor="start" muted />
-		<Label x={744} y={264} text="outbreak: z of the crowd" size={11} anchor="start" muted />
+		<Label x={744} y={264} text="major outbreak: z of the crowd" size={11} anchor="start" muted />
 		<Label x={744} y={296} text="both: grow only above 1" size={11} anchor="start" weight={600} />
 		<line
 			x1={730}
