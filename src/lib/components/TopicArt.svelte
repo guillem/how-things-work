@@ -3165,6 +3165,30 @@
 				opacity={0.45 + i * 0.05}
 			/>
 		{/each}
+	{:else if slug === 'kv-cache-inference'}
+		<!-- a row of cached key/value cells with one new cell, over a roofline with a low dot -->
+		{#each [0, 1, 2, 3, 4, 5, 6] as i (i)}
+			<rect
+				x={18 + i * 14}
+				y="18"
+				width="12"
+				height="22"
+				rx="2"
+				fill="var(--kv-cache)"
+				opacity="0.55"
+			/>
+		{/each}
+		<rect x="116" y="18" width="12" height="22" rx="2" fill="var(--kv-compute)" />
+		<path
+			d="M24 104 L96 54 L190 54"
+			fill="none"
+			stroke="currentColor"
+			stroke-width="2"
+			opacity="0.6"
+			stroke-linejoin="round"
+		/>
+		<circle cx="38" cy="94" r="5.5" fill={accent} />
+		<circle cx="160" cy="54" r="5.5" fill="var(--kv-prefill)" />
 	{:else if slug === 'stars'}
 		<!-- a massive star cut open: onion layers round an iron core, and a track on the HR diagram -->
 		<circle cx="62" cy="60" r="44" fill="var(--st-h)" />

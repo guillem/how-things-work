@@ -11,6 +11,7 @@ import { sample } from '../src/routes/training-a-tiny-language-model/tiny-gpt';
 import { generateCached } from '../src/routes/kv-cache-inference/kv-gpt';
 import {
 	bytesMoved,
+	compare,
 	decode,
 	encode,
 	flops,
@@ -64,8 +65,15 @@ test.describe('the tiny GPT with and without a cache', () => {
 			const b = gpt.next(text.slice(0, t + 1));
 			let worst = 0;
 			for (let v = 0; v < a.length; v++) worst = Math.max(worst, Math.abs(a[v] - b[v]));
-			expect(worst).toBeLessThanOrEqual(1e-15);
+			expect(worst).toBe(0);
 		}
+	});
+
+	test('the page’s own comparison finds both runs identical', () => {
+		const c = compare(12);
+		expect(c.cached).toBe(c.recomputed);
+		expect(c.cached.length).toBe(58);
+		expect(c.maxDiff).toBe(0);
 	});
 
 	test('the cache stops at the end of the 64-character window', () => {
@@ -174,7 +182,9 @@ test.describe('the roofline', () => {
 	test('without a cache each new token costs a whole prefill', () => {
 		const withCache = decodeStep(LLAMA2_7B, 4096, 1);
 		const without = recomputeStep(LLAMA2_7B, 4096, 1);
-		expect(without.flops / withCache.flops).toBeGreaterThan(3000);
+		// nearly 4,000 times the arithmetic at 4,096 tokens
+		expect(without.flops / withCache.flops).toBeGreaterThan(3500);
+		expect(without.flops / withCache.flops).toBeLessThan(4000);
 		expect(timing(H100, without).memoryBound).toBe(false);
 	});
 

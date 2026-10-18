@@ -3,10 +3,12 @@
  * training page's code) widened to float64, its alphabet, and the generation the first scenes
  * show, with what each character cost with and without the cache.
  */
+import { rng } from '#lib/draw/math.ts';
 import { TinyGPT, type Config } from '../training-a-tiny-language-model/tiny-gpt.ts';
 import { weightsData } from './weights-data.ts';
 import {
 	bytesMoved,
+	draw,
 	flops,
 	generateCached,
 	KvDecoder,
@@ -69,6 +71,37 @@ export function generation(seed: number): Row[] {
 		window.push(tok);
 		return row;
 	});
+}
+
+export interface Comparison {
+	cached: string;
+	recomputed: string;
+	/** Largest difference between the two runs' probabilities, over every position and character. */
+	maxDiff: number;
+}
+
+/**
+ * The same generation twice: with the cache, and with the training page's model recomputing the
+ * whole window for every character (the same random number per character, as `sample` draws).
+ */
+export function compare(seed: number): Comparison {
+	const rows = generation(seed);
+	const cached = rows.map((r) => r.char).join('');
+	const gpt = makeTinyGpt();
+	const dec = makeDecoder();
+	const text = encode(PROMPT + cached);
+	let maxDiff = 0;
+	const random = rng(seed);
+	const out = encode(PROMPT);
+	dec.reset();
+	for (let t = 0; t < text.length - 1; t++) {
+		const a = dec.step(text[t]);
+		if (t < PROMPT.length - 1) continue;
+		const b = gpt.next(out);
+		for (let v = 0; v < a.length; v++) maxDiff = Math.max(maxDiff, Math.abs(a[v] - b[v]));
+		out.push(draw(b, random()));
+	}
+	return { cached, recomputed: decode(out.slice(PROMPT.length)), maxDiff };
 }
 
 export { bytesMoved, flops };

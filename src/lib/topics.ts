@@ -1005,6 +1005,15 @@ const explainers: Explainer[] = [
 		accent: '#d9480f',
 		steps: 7,
 		minutes: 16
+	},
+	{
+		slug: 'kv-cache-inference',
+		title: 'Serving a language model: the KV cache',
+		summary:
+			'Generate text with a tiny transformer, first recomputing every earlier character and then keeping each layer’s keys and values, and count the arithmetic and the bytes; then put Llama 2 7B and Mistral 7B on an H100’s roofline to see why the prompt is compute-bound, each new token memory-bound, and batching what makes serving cheap.',
+		accent: '#e8590c',
+		steps: 9,
+		minutes: 18
 	}
 ];
 

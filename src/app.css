@@ -3413,3 +3413,29 @@ kbd {
 	--ts-cheb: #b197fc;
 	--ts-plane: #1a1d21;
 }
+
+/* kv-cache-inference: work computed this step, the cache (kept keys and values), recomputation
+   without a cache, the weights, the prompt's prefill and the decode step on the roofline, a batch
+   that does not fit */
+:root {
+	--kv-compute: #1c7ed6;
+	--kv-cache: #e8590c;
+	--kv-recompute: #c92a2a;
+	--kv-weights: #7048e8;
+	--kv-prefill: #2b8a3e;
+	--kv-decode: #e8590c;
+	--kv-roof: #495057;
+	--kv-over: #e03131;
+	--kv-chip: #f1f3f5;
+}
+:root[data-theme='dark'] {
+	--kv-compute: #4dabf7;
+	--kv-cache: #ff922b;
+	--kv-recompute: #ff6b6b;
+	--kv-weights: #b197fc;
+	--kv-prefill: #69db7c;
+	--kv-decode: #ff922b;
+	--kv-roof: #ced4da;
+	--kv-over: #ff6b6b;
+	--kv-chip: #25282c;
+}
