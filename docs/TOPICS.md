@@ -1,6 +1,6 @@
 # Topic catalog
 
-Source of truth for the content of an interactive web learning tool that shows how things work. It defines 135 topics in 11 categories, each built around one interactive graphic. Readers range from high-school students to university majors.
+Source of truth for the content of an interactive web learning tool that shows how things work. It defines 136 topics in 11 categories, each built around one interactive graphic. Readers range from high-school students to university majors.
 
 This file covers content only. It does not choose the stack, the visual design or the project layout; take those from the repository's own instructions.
 
@@ -85,7 +85,7 @@ A topic is done when:
 | Mathematics | `math` | 18 |
 | Physics | `physics` | 13 |
 | Chemistry & Materials | `chemistry` | 14 |
-| Biology | `biology` | 14 |
+| Biology | `biology` | 15 |
 | Body & Medicine | `medicine` | 10 |
 | Earth & Climate | `earth` | 9 |
 | Space | `space` | 9 |
@@ -162,6 +162,7 @@ A topic is done when:
 - [x] pcr-copying-dna
 - [x] morphogen-gradients
 - [x] lac-operon
+- [ ] population-genetics
 
 **Body & Medicine**
 - [x] heart-circulation
@@ -821,6 +822,16 @@ A topic is done when:
 - **Related:** crispr
 - **Pitfall:** Bistability and hysteresis were measured with the gratuitous inducer TMG; with plain lactose the loop is weak or absent because lactose is also consumed, so the page must not present lactose itself as a memory switch. Nor should it pin the diauxic pause on cAMP and CAP alone: in E. coli it comes mainly from inducer exclusion, where glucose uptake blocks the lactose permease.
 
+#### population-genetics
+- **Title:** Population genetics: drift & selection
+- **Level:** 3
+- **Kind:** simulate
+- **Interaction:** Run a hundred Wright-Fisher populations at once as allele-frequency traces: with no selection they wander and fix at random, faster in small populations; with a selection coefficient s they bend toward fixation, and a counter shows the share of new beneficial mutations that fix, approaching Haldane's 2s however large the population, so most are lost anyway. Set dominance to see recessive alleles hide from selection, and compare the Hardy-Weinberg genotype frequencies with the simulated ones each generation.
+- **Takeaway:** Allele frequencies change by chance as well as by selection: in a small population chance can fix a harmful allele or lose a good one, and even in a large population most new beneficial mutations vanish while they are still rare.
+- **Prerequisites:** meiosis-inheritance, evolution, central-limit-theorem
+- **Related:** cancer
+- **Pitfall:** Hardy-Weinberg is not 'evolution stops': it is the one-generation baseline that shows which forces are absent, and drift is not selection by another name; the page must keep them separate.
+
 ### Body & Medicine
 
 #### heart-circulation
@@ -894,6 +905,7 @@ A topic is done when:
 - **Interaction:** Let the cells of a tissue divide and occasionally mutate; mutations in growth-control genes let a clone divide faster and spread, and mutations in repair genes raise the mutation rate, so that further changes arrive sooner. Apply a treatment and watch the tumor shrink, then regrow from the cells that resist it.
 - **Takeaway:** Cancer is evolution inside the body: cells that acquire mutations letting them divide unchecked outgrow their neighbors.
 - **Prerequisites:** evolution, dna-to-protein
+- **Related:** population-genetics
 
 #### medical-imaging
 - **Title:** Medical imaging
