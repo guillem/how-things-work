@@ -1,5 +1,5 @@
 // Checks the tokenization explainer's models: byte-pair encoding learned from a small text (against
-// the worked examples of the Hugging Face course and of Gage's 1994 article, and the rules the page
+// the Hugging Face course's worked example, the usual worked example of Gage's scheme, and the rules the page
 // states), and GPT-2's real tokenizer on the examples the page quotes. That tokenizer is checked
 // against GPT-2's own Python tokenizer in language-models-model.e2e.ts.
 import { readFileSync } from 'node:fs';
@@ -27,7 +27,7 @@ test.describe('learning merges from a text', () => {
 		expect(merged(t).slice(0, 3)).toEqual(['u+g=20', 'u+n=16', 'h+ug=15']);
 	});
 
-	test('Gage’s example: aaabdaaabac becomes five tokens after three merges', () => {
+	test('the usual worked example of Gage’s scheme: aaabdaaabac becomes five tokens after three merges', () => {
 		const t = new Training('aaabdaaabac');
 		expect(t.merges).toHaveLength(3);
 		expect(t.text(t.merges[0].id)).toBe('aa');
