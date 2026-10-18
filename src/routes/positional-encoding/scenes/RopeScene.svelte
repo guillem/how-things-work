@@ -142,41 +142,17 @@
 		/>
 	</Readout>
 
-	<!-- the track -->
+	<!-- the track: the query above it, the key below -->
 	<path d={cells} fill="var(--stage-grid)" />
-	{#each [0, 16, 32, 48, 63] as p (p)}
-		<Label x={tx(p)} y={TY + 26} size={11} muted tabular text={String(p)} />
-	{/each}
-	<Readout id="track">
-		<Label x={TX0 + TRAIN * CELL + 8} y={TY + 9} anchor="start" size={11} muted text="position" />
-	</Readout>
-	{#if dist > 0}
-		<path
-			d="M{tx(n)} {TY - 10}v-6H{tx(m)}v6"
-			fill="none"
-			stroke="var(--stage-ink-muted)"
-			stroke-width="1.2"
-		/>
-		<Label x={(tx(n) + tx(m)) / 2} y={TY - 22} size={11} muted tabular text="{dist} apart" />
-	{/if}
+	<Label x={TX0 - 8} y={TY + 9} anchor="end" size={11} muted tabular text="0" />
+	<Label x={TX0 + TRAIN * CELL + 8} y={TY + 9} anchor="start" size={11} muted tabular text="63" />
 	<rect x={tx(n) - CELL / 2 + 1} y={TY} width={CELL - 2} height="10" fill="var(--pe-k)" />
 	<rect x={tx(m) - CELL / 2 + 1} y={TY} width={CELL - 2} height="10" fill="var(--pe-q)" />
-	<Handle
-		x={tx(n)}
-		y={TY + 5}
-		r={8}
-		color="var(--pe-k)"
-		label="Key token (moves both)"
-		value={n}
-		min={0}
-		max={TRAIN - 1 - dist}
-		valuetext="key at position {n}"
-		onmove={moveKey}
-		onkey={keyStep}
-	/>
+	<line x1={tx(m)} y1={TY - 6} x2={tx(m)} y2={TY} stroke="var(--pe-q)" stroke-width="2" />
+	<line x1={tx(n)} y1={TY + 10} x2={tx(n)} y2={TY + 16} stroke="var(--pe-k)" stroke-width="2" />
 	<Handle
 		x={tx(m)}
-		y={TY + 5}
+		y={TY - 14}
 		r={8}
 		color="var(--pe-q)"
 		label="Query token (sets the distance)"
@@ -187,24 +163,35 @@
 		onmove={moveQuery}
 		onkey={queryStep}
 	/>
+	<Handle
+		x={tx(n)}
+		y={TY + 24}
+		r={8}
+		color="var(--pe-k)"
+		label="Key token (moves both)"
+		value={n}
+		min={0}
+		max={TRAIN - 1 - dist}
+		valuetext="key at position {n}"
+		onmove={moveKey}
+		onkey={keyStep}
+	/>
 	<Readout id="who">
 		<Label
-			x={Math.max(60, tx(n) - 12)}
-			y={TY + 44}
-			anchor={dist < 8 ? 'end' : 'middle'}
-			size={12}
-			weight={600}
-			color="var(--pe-k)"
-			text="key, n = {n}"
-		/>
-		<Label
-			x={Math.min(900, tx(m) + 12)}
-			y={TY + 44}
-			anchor={dist < 8 ? 'start' : 'middle'}
+			x={Math.min(880, Math.max(80, tx(m)))}
+			y={TY - 32}
 			size={12}
 			weight={600}
 			color="var(--pe-q)"
 			text="query, m = {m}"
+		/>
+		<Label
+			x={Math.min(880, Math.max(80, tx(n)))}
+			y={TY + 52}
+			size={12}
+			weight={600}
+			color="var(--pe-k)"
+			text="key, n = {n}"
 		/>
 	</Readout>
 
@@ -374,21 +361,22 @@
 		</Readout>
 	{:else}
 		<!-- what is turned, and what is not -->
-		<rect
-			x={140}
-			y={428}
-			width={680}
-			height={132}
-			rx="10"
-			fill="var(--surface)"
-			stroke="var(--border)"
-		/>
+
 		<Readout
 			id="card"
 			order={2}
 			label="Turned"
 			value="the query (by m·θᵢ) and the key (by n·θᵢ); not the value, and nothing is added to the embedding"
 		>
+			<rect
+				x={140}
+				y={428}
+				width={680}
+				height={132}
+				rx="10"
+				fill="var(--surface)"
+				stroke="var(--border)"
+			/>
 			<Label
 				x={168}
 				y={460}

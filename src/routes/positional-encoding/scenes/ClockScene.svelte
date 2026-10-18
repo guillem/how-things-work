@@ -189,7 +189,7 @@
 		<line x1={DX + R - 5} y1={cy} x2={DX + R} y2={cy} stroke="var(--stage-ink-muted)" />
 		{#if offW.current > 0.01}
 			{@const a2 = (here + k) * w}
-			{@const tip2 = onDial(DX, cy, R, a2)}
+			{@const tip2 = onDial(DX, cy, R - 4, a2)}
 			<g opacity={offW.current}>
 				<path
 					d={arc(DX, cy, R - 7, a, a + ((k * w) % TAU))}

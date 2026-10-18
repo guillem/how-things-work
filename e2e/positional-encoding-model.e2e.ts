@@ -68,6 +68,21 @@ test.describe('attention and order', () => {
 		expect(attention(xs, HEAD, true).weights[0][0]).toBe(1);
 	});
 
+	test('with the mask, a token that sees the same set of tokens keeps its output', () => {
+		const xs = WORDS.map(embed);
+		const open = attention(xs, HEAD).out;
+		for (let n = 1; n < 10; n++) {
+			const perm = order(n);
+			const out = attention(
+				perm.map((i) => xs[i]),
+				HEAD,
+				true
+			).out;
+			// the word in the last place sees the whole sentence: the same output as with no mask
+			expect(maxDiff([out[4]], [open[perm[4]]])).toBeLessThan(1e-12);
+		}
+	});
+
 	test('every shuffle the page offers is a permutation of the sentence', () => {
 		for (let n = 0; n < 30; n++) expect([...order(n)].sort()).toEqual([0, 1, 2, 3, 4]);
 		expect(
