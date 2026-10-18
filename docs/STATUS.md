@@ -4,7 +4,7 @@ The self-handover. If work is interrupted, this file alone must be enough to con
 top to bottom, then run the commands under "Resume". **Update it at every commit**, not just at
 the end of a development.
 
-Last updated: 2026-10-18 12:30 UTC, 24 of the proposal's topics built (unreleased).
+Last updated: 2026-10-18 21:30 UTC, 44 of the proposal's topics built (unreleased).
 
 ## How we work
 
@@ -86,19 +86,20 @@ promoted into `TOPICS.md` as their builds start (next paragraph).
 time in worktrees, each fact-checked by Codex (`scripts/local-review.mjs`) and pushed to `main`;
 the entry is promoted into `TOPICS.md` when its build starts. Order:
 `proposals/topics-200/data/build-order.json` (the LLM ladder first, then the level 1–3 topics;
-level 0 last, pending the user's answer on its definition). Built so far: 41 of the 100.
+level 0 last, pending the user's answer on its definition). Built so far: 44 of the 100.
 
-**Paused 2026-10-18 evening** (the user is moving the machine; no builder running, no worktree
-left). Resume with `tsunamis` (its build was stopped before it pushed anything, so start it
-fresh), then the rest of `build-order.json` from `carbonate-silicate-thermostat` on: 19 level 1–3
-topics left with tsunamis, then cellular-automata and the 39 level-0 topics, which wait for the user's answer
-on level 0. Weekly usage stood at about 80% at the pause; the user's limit is 95%. Load flakes
-seen in the full suite under parallel builds, each passing alone, to check on a quiet machine:
-central-limit-theorem "drawing the starting shape" (4 times), electromagnetism,
-taylor-series, training-a-tiny-language-model "chart grows to fit", site "follows a live
-change of the OS preference". Follow-ups the builders named: a regression test for
-turing-patterns' flat-dish restart; mri-k-space's tissue values (Gach et al. 2008) marked
-Unconfirmed in `DATA-SOURCES.md`; `docs/full-picture.html` not yet updated for this run.
+**Resumed 2026-10-18 night on the new machine** (after the move; the user's weekly limit is now
+98%). Landed since: ocean-acidification, tsunamis, carbonate-silicate-thermostat;
+radiative-convective-column building. Next in `build-order.json`: aperture-synthesis onwards (15
+level 1–3 topics after radiative-convective-column), then cellular-automata and the 39 level-0
+topics, which wait for the user's answer on level 0. The full suite on the new machine passed
+2,892 of 2,892 (5.2 min, 4 workers), including the load flakes seen before (central-limit-theorem
+"drawing the starting shape", electromagnetism, taylor-series, training-a-tiny-language-model
+"chart grows to fit", site "follows a live change of the OS preference"); central-limit-theorem
+failed once more under three parallel builds and passed alone. Follow-ups the builders named: a
+regression test for turing-patterns' flat-dish restart; mri-k-space's tissue values (Gach et al. 2008) marked Unconfirmed in `DATA-SOURCES.md`; ocean-acidification's PyCO2SYS cross-check
+(the entry's Needs now names Orr et al. 2015's intercomparison instead, as PyCO2SYS wasn't
+installed); `docs/full-picture.html` not yet updated for this run.
 
 **Released as v1.0.0 (2026-10-17): the backlog round (overnight) and the index work below.** Before
 releasing 1.0 the user asked to clear the backlog. One agent per package in a local worktree,
