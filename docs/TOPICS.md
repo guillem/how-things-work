@@ -131,7 +131,7 @@ A topic is done when:
 - [x] redox-batteries
 - [x] carbon-polymers
 - [x] semiconductors
-- [ ] chromatography
+- [x] chromatography
 
 **Biology**
 - [x] the-cell

@@ -124,8 +124,10 @@
 		})
 	);
 	/** The bars: the first molecule of compounds 1 and 2. */
-	const BX0 = 250;
-	const BX1 = 900;
+	const BX0 = 120;
+	const BX1 = 580;
+	/** Left edge of the shares, right of the bars. */
+	const TX = 600;
 	const bx = (s: number) => BX0 + ((BX1 - BX0) * s) / PERIOD;
 	const bars = $derived(
 		(['c1', 'c2'] as const).map((id, row) => {
@@ -272,16 +274,25 @@
 			color={COLOR[b.id]}
 		>
 			<Label
-				x={24}
+				x={TX}
 				y={y + 5}
-				text="{b.id === 'c1' ? '1' : '2'}: moving {pct(tally[b.row].share)} (long run {pct(
-					1 / (1 + tally[b.row].k)
-				)})"
+				text="moving {pct(tally[b.row].share)} (long run {pct(1 / (1 + tally[b.row].k))})"
 				size={12}
 				anchor="start"
 				color={COLOR[b.id]}
 				weight={600}
 				tabular
+			/>
+		</Readout>
+		<Readout id="row-{b.id}">
+			<Label
+				x={24}
+				y={y + 5}
+				text={NAME[b.id]}
+				size={12}
+				anchor="start"
+				color={COLOR[b.id]}
+				weight={600}
 			/>
 		</Readout>
 		<rect
@@ -306,11 +317,19 @@
 	{/each}
 	<Readout id="bars-key">
 		<Label
-			x={BX1}
+			x={24}
 			y={WY1 + 44}
-			text="one molecule of each: filled while moving, empty while stuck"
+			text="bars: one molecule of each, filled while moving"
 			size={11}
-			anchor="end"
+			anchor="start"
+			muted
+		/>
+		<Label
+			x={TX}
+			y={WY1 + 44}
+			text="share of time moving, average of {N_TALLY} molecules"
+			size={11}
+			anchor="start"
 			muted
 		/>
 	</Readout>

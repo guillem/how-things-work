@@ -454,7 +454,7 @@
 		<path d={areaPath(c.y, upTo)} fill={COLOR[c.id]} fill-opacity="0.28" stroke="none" />
 	{/each}
 	<path d={linePath(total, 0, upTo)} fill="none" stroke="var(--stage-ink)" stroke-width="1.6" />
-	{#if showGauss && upTo >= BINS}
+	{#if showGauss && (reduced || upTo >= BINS)}
 		{#each run.peaks.filter((p) => p.id !== 'marker') as p (p.id)}
 			<path
 				d={gauss(p.peak, WEIGHT[p.id])}

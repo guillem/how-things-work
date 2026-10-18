@@ -12,11 +12,15 @@
  * time, which is why it does not depend on the flow).
  *
  * A real molecule sticks tens of thousands of times on its way through a column. Simulating
- * that one hop at a time would be slow, so the simulation takes the hops in blocks, exactly:
- * the moving time before the K-th sticking is a Gamma(K, k_a) variable, the K stays on the
- * surface add up to a Gamma(K, k_d) variable, and the Gaussian spreads of the moving parts add
- * up to one Gaussian. Blocks shrink as the molecule nears the outlet, down to single hops, so
- * the time it leaves is resolved hop by hop.
+ * that one hop at a time would be slow, so the simulation takes the hops in blocks: the moving
+ * time before the K-th sticking is a Gamma(K, k_a) variable, the K stays on the surface add up
+ * to a Gamma(K, k_d) variable, and the Gaussian spreads of the moving parts add up to one
+ * Gaussian; these sums are exact. Blocks shrink as the molecule nears the outlet, down to
+ * single hops. The one approximation is the moment it leaves: it is interpolated linearly
+ * within the last moving stretch (a molecule that wanders past the outlet and back within one
+ * stretch is not caught), an error of about one hop, milliseconds against peak widths of
+ * seconds. The model tests check it against the exact first-passage times of a molecule that
+ * never sticks, and against much finer blocks.
  *
  * Units: millimetres, seconds; the particle size d_p in micrometres.
  */
@@ -54,6 +58,9 @@ export interface Compound {
 	 */
 	sticky?: { share: number; hold: number };
 }
+
+/** Each block of hops takes about 1/BLOCKS of the hops still ahead. */
+const BLOCKS = 8;
 
 export const DEFAULT: Conditions = { L: 50, u: 1, dp: 5 };
 
@@ -134,6 +141,18 @@ function poisson(rand: Rand, mean: number) {
 	return k;
 }
 
+function binomial(rand: Rand, n: number, p: number) {
+	if (n <= 0 || p <= 0) return 0;
+	if (p >= 1) return n;
+	if (n > 60) {
+		const v = Math.round(n * p + Math.sqrt(n * p * (1 - p)) * normal(rand));
+		return Math.min(n, Math.max(0, v));
+	}
+	let k = 0;
+	for (let i = 0; i < n; i++) if (rand() < p) k++;
+	return k;
+}
+
 // ---- one molecule ------------------------------------------------------------------------
 
 /**
@@ -156,7 +175,13 @@ export interface Track {
  * Runs one molecule. With `dt` (s), blocks are kept shorter than dt and every breakpoint is
  * recorded, for drawing; without it only the exit time and the hop count are kept.
  */
-function runMolecule(c: Conditions, cmp: Compound, rand: Rand, dt?: number): Track {
+function runMolecule(
+	c: Conditions,
+	cmp: Compound,
+	rand: Rand,
+	dt?: number,
+	blocks = BLOCKS
+): Track {
 	const r = rates(c, cmp);
 	const { u, L } = c;
 	const spread = 2 * r.D; // per second of moving
@@ -176,21 +201,29 @@ function runMolecule(c: Conditions, cmp: Compound, rand: Rand, dt?: number): Tra
 		let Tm: number;
 		if (r.kaWeak > 0) {
 			const expected = (r.kaWeak * rest) / u;
-			K = Math.max(1, Math.floor(expected / 8));
+			K = Math.max(1, Math.floor(expected / blocks));
 			if (dt) K = Math.max(1, Math.min(K, Math.floor((r.kaWeak * dt) / (1 + cmp.k))));
 			Tm = gamma(rand, K, r.kaWeak);
 		} else {
 			// Never sticks (or only on the sticky sites): move in chunks of time.
 			K = 0;
-			Tm = Math.max(rest / u / 8, (1e-5 * L) / u);
+			Tm = Math.max(rest / u / blocks, (1e-5 * L) / u);
 			if (dt) Tm = Math.min(Tm, dt);
 		}
 		const strong = poisson(rand, r.kaStrong * Tm);
 		const dx = u * Tm + Math.sqrt(spread * Tm + r.A * u * Tm) * normal(rand);
 		if (x + dx >= L) {
-			// It leaves during this moving stretch: interpolate within it.
+			// It leaves during this moving stretch, at a fraction f of it (interpolated). The
+			// stickings before that moment are kept: given the block's moving time, the first
+			// K − 1 of them fall at uniformly random moments in it (and so do the sticky ones).
 			const f = (L - x) / dx;
-			t += f * Tm;
+			const before = binomial(rand, Math.max(0, K - 1), f);
+			const strongBefore = binomial(rand, strong, f);
+			t +=
+				f * Tm +
+				(before > 0 ? gamma(rand, before, r.kd) : 0) +
+				(strongBefore > 0 ? gamma(rand, strongBefore, r.kdStrong) : 0);
+			track.hops += before + strongBefore;
 			record(t, L, K > 1 ? 2 : 1);
 			track.exit = t;
 			return track;
@@ -215,13 +248,16 @@ function runMolecule(c: Conditions, cmp: Compound, rand: Rand, dt?: number): Tra
 	return track;
 }
 
-/** Exit times of n molecules, s (and their mean number of stickings). */
-export function elute(c: Conditions, cmp: Compound, n: number, seed: number) {
+/**
+ * Exit times of n molecules, s (and their mean number of stickings). `blocks`: each block takes
+ * about 1/blocks of the hops still ahead (larger is finer and slower).
+ */
+export function elute(c: Conditions, cmp: Compound, n: number, seed: number, blocks = BLOCKS) {
 	const rand = rng(seed);
 	const times = new Float64Array(n);
 	let hops = 0;
 	for (let i = 0; i < n; i++) {
-		const tr = runMolecule(c, cmp, rand);
+		const tr = runMolecule(c, cmp, rand, undefined, blocks);
 		times[i] = tr.exit;
 		hops += tr.hops;
 	}

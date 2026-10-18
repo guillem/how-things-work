@@ -88,3 +88,23 @@ test('many hops give a near-Gaussian peak; few hops or a few very sticky sites m
 	const sticky = elute(DEFAULT, { k: 2, sticky: { share: 1e-4, hold: 2 } }, 4000, 33);
 	expect(peak(sticky.times, DEFAULT.L).skew).toBeGreaterThan(0.6);
 });
+
+test('the simulated exit is accurate: first-passage times, and finer blocks change nothing', () => {
+	// A molecule that never sticks drifts at u and spreads with an effective dispersion
+	// D_eff = (B + A·u)/2; its first passage to L has mean L/u and variance 2·D_eff·L/u³.
+	for (const u of [0.2, 1, 5]) {
+		const c = { ...DEFAULT, u };
+		const { A, B } = theory(c, { k: 0 });
+		const p = peak(elute(c, { k: 0 }, 6000, 41).times, c.L);
+		expect(p.mean / (c.L / u)).toBeCloseTo(1, 3);
+		expect(p.sd ** 2 / ((c.L * (B + A * u)) / u ** 3)).toBeGreaterThan(0.93);
+		expect(p.sd ** 2 / ((c.L * (B + A * u)) / u ** 3)).toBeLessThan(1.07);
+	}
+	// Blocks 25 times finer give the same peak.
+	const coarse = peak(elute(DEFAULT, { k: 2 }, 4000, 51).times, DEFAULT.L);
+	const fine = peak(elute(DEFAULT, { k: 2 }, 4000, 52, 200).times, DEFAULT.L);
+	// (Same mean within four standard errors of the difference of two means.)
+	expect(Math.abs(fine.mean - coarse.mean)).toBeLessThan(4 * coarse.sd * Math.sqrt(2 / 4000));
+	expect(fine.sd / coarse.sd).toBeGreaterThan(0.95);
+	expect(fine.sd / coarse.sd).toBeLessThan(1.05);
+});
