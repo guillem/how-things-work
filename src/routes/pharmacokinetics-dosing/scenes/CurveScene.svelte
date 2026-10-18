@@ -211,11 +211,7 @@
 
 	<!-- half-life marks: the share of the steady state reached -->
 	{#if halfMarks.length}
-		<Readout
-			id="half-title"
-			label="Ticks"
-			value="share of the steady state after 1, 2, 3… half-lives"
-		>
+		<Readout id="half-title">
 			<Label
 				x={L.PX0 - 8}
 				y={L.HALF + 4}
@@ -290,7 +286,7 @@
 			fill="var(--stage-bg)"
 			stroke={C.half}
 			stroke-width="2"
-			opacity={tc >= m.t ? 1 : 0}
+			opacity={reduced || tc >= m.t ? 1 : 0}
 		/>
 		{#if m.label}
 			<Readout id="halving-{m.text}">
@@ -302,7 +298,7 @@
 					size={11}
 					weight={600}
 					color={C.half}
-					opacity={tc >= m.t ? 1 : 0}
+					opacity={reduced || tc >= m.t ? 1 : 0}
 				/>
 			</Readout>
 		{/if}
@@ -713,6 +709,7 @@
 
 	<Readout
 		id="advice"
+		order={20}
 		label="Note"
 		value="an educational model of one 70 kg adult, not dosing advice"
 	>

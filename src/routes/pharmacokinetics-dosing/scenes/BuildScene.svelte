@@ -300,35 +300,31 @@
 			c.ok
 		)}
 		<g pointer-events="none" opacity={c.ok ? 1 : 0.55}>
-			<Readout id="chip-{c.id}">
-				<Label
-					x={chipX(i) + 12}
-					y={CY + 15}
-					anchor="start"
-					text="+ {c.name}"
-					size={12}
-					weight={700}
-					halo={false}
-				/>
-				<Label
-					x={chipX(i) + 12}
-					y={CY + 29}
-					anchor="start"
-					text={c.detail}
-					size={10}
-					muted
-					halo={false}
-				/>
-			</Readout>
+			<Label
+				x={chipX(i) + 12}
+				y={CY + 15}
+				anchor="start"
+				text="+ {c.name}"
+				size={12}
+				weight={700}
+				halo={false}
+			/>
+			<Label
+				x={chipX(i) + 12}
+				y={CY + 29}
+				anchor="start"
+				text={c.detail}
+				size={10}
+				muted
+				halo={false}
+			/>
 		</g>
 	{/each}
 	{@render button('Restore the usual regimen', 24, CY, 120, reset)}
 	{@render button('Remove every dose', 152, CY, 96, clear)}
 	<g pointer-events="none">
-		<Readout id="chip-usual">
-			<Label x={84} y={CY + 22} text="usual regimen" size={12} weight={600} halo={false} />
-			<Label x={200} y={CY + 22} text="clear all" size={12} weight={600} halo={false} />
-		</Readout>
+		<Label x={84} y={CY + 22} text="usual regimen" size={12} weight={600} halo={false} />
+		<Label x={200} y={CY + 22} text="clear all" size={12} weight={600} halo={false} />
 	</g>
 
 	<Tank
@@ -384,6 +380,7 @@
 
 	<Readout
 		id="advice"
+		order={20}
 		label="Note"
 		value="an educational model of one 70 kg adult, not dosing advice"
 	>

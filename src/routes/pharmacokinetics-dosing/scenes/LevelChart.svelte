@@ -27,23 +27,22 @@
 
 	/** The legend under the chart: swatch and text, laid out left to right. */
 	const LY = 536;
-	const CH = 6.1;
+	const CH = 5.6;
 	const items = $derived.by(() => {
 		const out: { id: string; kind: 'band' | 'toxic' | 'ghost'; text: string; x: number }[] = [];
 		let x = L.PX0;
 		const push = (id: string, kind: 'band' | 'toxic' | 'ghost', text: string) => {
 			out.push({ id, kind, text, x });
-			x += 30 + text.length * CH + 22;
+			x += 30 + text.length * CH + 28;
 		};
 		if (win)
 			push(
 				'window',
 				'band',
-				`target range on the label, ${level(win[0], drug, false)}–${level(win[1], drug)}`
+				`target range (label): ${level(win[0], drug, false)}–${level(win[1], drug)}`
 			);
 		else push('window', 'band', 'the label gives no target range');
-		if (drug.toxic !== null)
-			push('toxic', 'toxic', `toxicity likely above ${level(drug.toxic, drug)}`);
+		if (drug.toxic !== null) push('toxic', 'toxic', `toxic above ${level(drug.toxic, drug)}`);
 		if (ghost) push('ghost', 'ghost', ghost);
 		return out;
 	});
@@ -68,7 +67,7 @@
 		{yFormat}
 		xLabel={axis.label}
 	/>
-	<Readout id="yunit" label="Up: level in the blood" value={drug.concUnit}>
+	<Readout id="yunit">
 		<Label
 			x={L.PX0 + 8}
 			y={L.PY1 + 14}
@@ -93,6 +92,7 @@
 	{#each items as it (it.id)}
 		<Readout
 			id="key-{it.id}"
+			order={10}
 			label={it.kind === 'band' ? 'Green band' : it.kind === 'toxic' ? 'Red dashes' : 'Grey dashes'}
 			value={it.text}
 			color={it.kind === 'band' ? C.bandText : it.kind === 'toxic' ? C.toxic : undefined}

@@ -127,14 +127,14 @@
 		<circle {cx} cy={p.y} r={2 + 2.5 * Math.min(1, drain)} fill={C.water} opacity={p.o} />
 	{/each}
 
-	<Readout id="tank-v" label="The tank" value="the body, volume {volumeText}">
+	<Readout id="tank-v">
 		<Label x={cx - 14} y={bottom + 28} anchor="end" text="body" size={12} weight={600} />
 		<Label x={cx - 14} y={bottom + 43} anchor="end" text="V = {volumeText}" size={11} muted />
 		{#if halfText}
 			<Label x={cx - 14} y={bottom + 58} anchor="end" text="t½ = {halfText}" size={11} muted />
 		{/if}
 	</Readout>
-	<Readout id="tank-cl" label="The drain" value="removes clearance × level, CL = {clearanceText}">
+	<Readout id="tank-cl">
 		<Label x={cx + 14} y={bottom + 28} anchor="start" text="removed:" size={11} muted />
 		<Label x={cx + 14} y={bottom + 43} anchor="start" text="CL × level" size={11} muted />
 		<Label x={cx + 14} y={bottom + 58} anchor="start" text="CL = {clearanceText}" size={11} muted />
