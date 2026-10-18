@@ -1,6 +1,6 @@
 # Topic catalog
 
-Source of truth for the content of an interactive web learning tool that shows how things work. It defines 129 topics in 11 categories, each built around one interactive graphic. Readers range from high-school students to university majors.
+Source of truth for the content of an interactive web learning tool that shows how things work. It defines 130 topics in 11 categories, each built around one interactive graphic. Readers range from high-school students to university majors.
 
 This file covers content only. It does not choose the stack, the visual design or the project layout; take those from the repository's own instructions.
 
@@ -84,7 +84,7 @@ A topic is done when:
 |---|---|---|
 | Mathematics | `math` | 18 |
 | Physics | `physics` | 13 |
-| Chemistry & Materials | `chemistry` | 12 |
+| Chemistry & Materials | `chemistry` | 13 |
 | Biology | `biology` | 10 |
 | Body & Medicine | `medicine` | 10 |
 | Earth & Climate | `earth` | 9 |
@@ -144,6 +144,7 @@ A topic is done when:
 - [x] chromatography
 - [x] dislocations-alloys
 - [x] huckel-molecular-orbitals
+- [ ] surface-catalysis
 
 **Biology**
 - [x] the-cell
@@ -659,6 +660,15 @@ A topic is done when:
 - **Related:** carbon-polymers, semiconductors
 - **Needs:** Measured absorption maxima of a cyanine dye series for the color panel, to set beside the computed gap.
 - **Pitfall:** Benzene's bonds do not alternate between single and double; the orbitals spread over the whole ring, and the two Kekulé drawings are a convention, not structures it flips between.
+
+#### surface-catalysis
+- **Title:** Catalysis on a surface
+- **Level:** 3
+- **Kind:** simulate
+- **Interaction:** Run CO oxidation on a lattice of catalyst sites: CO lands on one empty site, O2 splits onto two neighbouring empty sites, and adjacent CO and O react into CO2 and leave (the Ziff-Gulari-Barshad model). Slide the CO fraction in the gas: with too little CO the surface fills with oxygen and goes dead, across a narrow window the CO2 rate climbs, and just past its peak it collapses abruptly as CO covers every site, with the lattice's rate and coverages plotted beside the mean-field rate equations of the same moves (the reactants taken as randomly mixed), which miss the oxygen dead end entirely and put the CO collapse too late. Add a CO desorption rate (a hotter surface) and watch the abrupt collapse soften and the poisoned surface recover.
+- **Takeaway:** A catalyst works by holding the reactants next to each other on its surface, and too much of one reactant can cover every site and stop the reaction entirely.
+- **Prerequisites:** reaction-rates-equilibrium
+- **Pitfall:** A catalyst is not consumed, but it is not inert either: its activity depends on what covers it, and a poisoned surface is a catalyst that has stopped working.
 
 ### Biology
 
