@@ -498,6 +498,20 @@
 		const u = (x + 4.5 - 100) / 30;
 		return { i, x, h: 70 * Math.exp((-u * u) / 2), tail: x + 4.5 > 154 };
 	});
+
+	// Twelve notes: two waves in the ratio 3 : 2 over x 24…176 (two cycles and three, so
+	// they start and end together), over a one-octave keyboard whose C and G are pressed.
+	const scaleWave = (cycles: number) =>
+		Array.from({ length: 81 }, (_, i) => {
+			const u = i / 80;
+			return `${i ? 'L' : 'M'}${(24 + 152 * u).toFixed(1)} ${(34 - 15 * Math.sin(2 * Math.PI * cycles * u)).toFixed(1)}`;
+		}).join(' ');
+	const scalesArt = {
+		low: scaleWave(2),
+		high: scaleWave(3),
+		white: Array.from({ length: 8 }, (_, i) => ({ i, x: 24 + i * 19, on: i === 0 || i === 4 })),
+		black: [0, 1, 3, 4, 5].map((i) => 24 + (i + 1) * 19 - 5.5)
+	};
 </script>
 
 <svg viewBox="0 0 200 120" class="art" style:--accent={accent} aria-hidden="true">
@@ -4244,6 +4258,24 @@
 		/>
 		<line x1="154" x2="154" y1="18" y2="100" stroke={accent} stroke-width="2.5" />
 		<circle cx="154" cy="18" r="4" fill={accent} />
+	{:else if slug === 'musical-scales-ratios'}
+		<!-- a fifth: three cycles against two, over a keyboard with C and G pressed -->
+		<path d={scalesArt.low} fill="none" stroke="currentColor" stroke-width="2" opacity="0.5" />
+		<path d={scalesArt.high} fill="none" stroke={accent} stroke-width="2.5" />
+		{#each scalesArt.white as k (k.i)}
+			<rect
+				x={k.x}
+				y="62"
+				width="18"
+				height="46"
+				rx="2"
+				fill={k.on ? accent : 'currentColor'}
+				opacity={k.on ? 0.85 : 0.12}
+			/>
+		{/each}
+		{#each scalesArt.black as x (x)}
+			<rect {x} y="62" width="11" height="28" rx="1.5" fill="currentColor" opacity="0.55" />
+		{/each}
 	{:else}
 		<circle cx="100" cy="60" r="30" fill="none" stroke={accent} stroke-width="2" />
 		<circle cx="100" cy="60" r="5" fill={accent} />

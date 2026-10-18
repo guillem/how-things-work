@@ -3844,3 +3844,28 @@ kbd {
 	--ri-hit: #69db7c;
 	--ri-miss: #ff8787;
 }
+
+/* musical-scales-ratios: the lower and upper note (and the chord's third note), their sum, the
+   pure fifth and third, smooth and rough, and the piano's keys */
+:root {
+	--ms-a: #0b7285;
+	--ms-b: #d9480f;
+	--ms-c: #7048e8;
+	--ms-sum: #b5487a;
+	--ms-fifth: #2b8a3e;
+	--ms-third: #1971c2;
+	--ms-rough: #e03131;
+	--ms-white-key: #fdfcf8;
+	--ms-black-key: #2a2b30;
+}
+:root[data-theme='dark'] {
+	--ms-a: #3bc9db;
+	--ms-b: #ff8c42;
+	--ms-c: #b197fc;
+	--ms-sum: #f283b5;
+	--ms-fifth: #69db7c;
+	--ms-third: #74c0fc;
+	--ms-rough: #ff8787;
+	--ms-white-key: #d8d5cb;
+	--ms-black-key: #101114;
+}

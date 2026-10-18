@@ -1149,6 +1149,15 @@ const explainers: Explainer[] = [
 		accent: '#8a6d1d',
 		steps: 8,
 		minutes: 18
+	},
+	{
+		slug: 'musical-scales-ratios',
+		title: 'Why music has twelve notes',
+		summary:
+			'Press two keys and watch their waves line up or beat, map which pairs sound smooth and why that depends on harmonics, then cut the octave into equal steps and see why twelve is the first small ladder whose fifth lands within 2 cents of the pure 3 : 2.',
+		accent: '#b5487a',
+		steps: 9,
+		minutes: 16
 	}
 ];
 
