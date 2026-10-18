@@ -490,6 +490,14 @@
 			const r = 27 + (r0 - 27) * Math.exp(-0.4 * a);
 			return `${i ? 'L' : 'M'}${(146 + r * Math.cos(a)).toFixed(1)} ${(60 + 0.9 * r * Math.sin(a)).toFixed(1)}`;
 		}).join(' ');
+
+	// Resampling: a bell-shaped histogram of shuffled differences (16 bars over x 28…172,
+	// centred on 100), its far tail beyond the observed difference at x 154 in the accent.
+	const resampleArt = Array.from({ length: 16 }, (_, i) => {
+		const x = 28 + i * 9;
+		const u = (x + 4.5 - 100) / 30;
+		return { i, x, h: 70 * Math.exp((-u * u) / 2), tail: x + 4.5 > 154 };
+	});
 </script>
 
 <svg viewBox="0 0 200 120" class="art" style:--accent={accent} aria-hidden="true">
@@ -4212,6 +4220,30 @@
 		{#each [[30, 100], [40, 22], [160, 12], [186, 64], [112, 106]] as [cx, cy], i (i)}
 			<circle {cx} {cy} r="3" fill="currentColor" opacity="0.4" />
 		{/each}
+	{:else if slug === 'resampling-inference'}
+		<!-- the histogram chance alone produces, the observed difference and the tail beyond it -->
+		{#each resampleArt as b (b.i)}
+			<rect
+				x={b.x}
+				y={100 - b.h}
+				width="7.5"
+				height={b.h}
+				rx="1.5"
+				fill={b.tail ? accent : 'currentColor'}
+				opacity={b.tail ? 0.9 : 0.3}
+			/>
+		{/each}
+		<line
+			x1="22"
+			x2="178"
+			y1="100"
+			y2="100"
+			stroke="currentColor"
+			stroke-width="1.5"
+			opacity="0.4"
+		/>
+		<line x1="154" x2="154" y1="18" y2="100" stroke={accent} stroke-width="2.5" />
+		<circle cx="154" cy="18" r="4" fill={accent} />
 	{:else}
 		<circle cx="100" cy="60" r="30" fill="none" stroke={accent} stroke-width="2" />
 		<circle cx="100" cy="60" r="5" fill={accent} />

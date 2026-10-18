@@ -1140,6 +1140,15 @@ const explainers: Explainer[] = [
 		accent: '#5a4fcf',
 		steps: 10,
 		minutes: 18
+	},
+	{
+		slug: 'resampling-inference',
+		title: 'The bootstrap & permutation tests',
+		summary:
+			'Shuffle the species labels of real penguins thousands of times to see what chance alone produces and read a p-value off it; resample them with replacement to put intervals on a difference and on a slope; then test those intervals on a population whose truth is known, and watch their 95% fall short for small, skewed samples and collapse for the maximum.',
+		accent: '#8a6d1d',
+		steps: 8,
+		minutes: 18
 	}
 ];
 

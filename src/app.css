@@ -3821,3 +3821,26 @@ kbd {
 	--pp-saddle: #ff922b;
 	--pp-centre: #b197fc;
 }
+
+/* resampling-inference: the two groups, the shuffled (null) differences and their tails, the
+   bootstrap, the simulated population, and the intervals that catch or miss the truth */
+:root {
+	--ri-a: #1c7ed6;
+	--ri-b: #e8590c;
+	--ri-null: #7c8aa5;
+	--ri-tail: #c2255c;
+	--ri-boot: #0b7285;
+	--ri-pop: #8a6d1d;
+	--ri-hit: #2b8a3e;
+	--ri-miss: #e03131;
+}
+:root[data-theme='dark'] {
+	--ri-a: #4dabf7;
+	--ri-b: #ff922b;
+	--ri-null: #8d9ab3;
+	--ri-tail: #f06595;
+	--ri-boot: #3bc9db;
+	--ri-pop: #d4b24c;
+	--ri-hit: #69db7c;
+	--ri-miss: #ff8787;
+}
