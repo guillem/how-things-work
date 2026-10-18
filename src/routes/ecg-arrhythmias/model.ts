@@ -69,6 +69,8 @@ const D_HIS = 20;
 const G_RELAY = 60;
 /** The AV node at full conduction. */
 const D_AV = 0.7;
+/** Below this AV conduction the AV node passes nothing. */
+export const AV_NONE = 0.1;
 /** Coupling of a junction between a cable and a muscle cell. */
 const G_JUNCTION = 12;
 /** Thickness weight of the atria's dipole (thin walls) relative to the ventricles'. */
@@ -267,7 +269,7 @@ const JUNCTION_EVERY = 6;
 export interface Options {
 	/** Sinus node rate, beats a minute; 0 stops it. */
 	rate: number;
-	/** AV node conduction, 1 normal, lower is weaker. */
+	/** AV node conduction: 1 normal, lower is weaker, below AV_NONE none (complete block). */
 	av: number;
 	/** The junctional escape pacemaker is there to take over. */
 	escape: boolean;
@@ -469,7 +471,8 @@ export class Heart {
 			}
 			if (c.kind === 'av') {
 				for (let k = 0; k < c.pts.length; k++) this.crec[s + k] = 0.6 * opt.av;
-				this.junctions.push([s, cellAt(c.pts[0]), -1]);
+				// below AV_NONE the node conducts nothing at all: complete block
+				if (opt.av >= AV_NONE) this.junctions.push([s, cellAt(c.pts[0]), -1]);
 			}
 			if (c.kind === 'his') this.hisNode = s;
 			for (let k = c.junctionsFrom; k < c.pts.length; k += JUNCTION_EVERY) {

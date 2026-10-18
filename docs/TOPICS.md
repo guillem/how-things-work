@@ -179,7 +179,7 @@ A topic is done when:
 - [x] pharmacokinetics-dosing
 - [x] cochlea-hearing
 - [x] mri-k-space
-- [ ] ecg-arrhythmias
+- [x] ecg-arrhythmias
 
 **Earth & Climate**
 - [x] plate-tectonics

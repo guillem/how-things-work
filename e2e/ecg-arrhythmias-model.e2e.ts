@@ -101,12 +101,17 @@ test('AV block: first degree lengthens PR, second drops beats, third leaves an e
 	expect(ventricularRate(second)).toBeLessThan(45);
 	expect(ventricularRate(second)).toBeGreaterThan(30);
 
-	const third = run('block', 6000, { av: 0.1 }).heart;
+	const third = run('block', 6000, { av: 0 }).heart;
 	near(atrialRate(third), 75);
 	// the junctional escape pacemaker, 1.5 s apart: 40 a minute, with a narrow QRS
 	expect(third.escapes.length).toBeGreaterThanOrEqual(3);
 	near(ventricularRate(third), 40);
 	expect(intervals(third)!.qrs).toBeLessThan(120);
+	// every ventricular beat follows an escape firing, none a P wave: no PR interval
+	for (const b of third.beats)
+		expect(third.escapes.some((e) => e <= b.onset && b.onset - e < 200)).toBe(true);
+	expect(third.beats.length).toBe(third.escapes.length);
+	expect(intervals(third)!.pr).toBeNull();
 });
 
 test('a healthy sheet answers an early beat with one wide beat, then the sinus rhythm', () => {

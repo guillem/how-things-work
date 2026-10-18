@@ -60,9 +60,9 @@
 	const CAP = 150;
 	/** Heart time shown under reduced motion, per step, ms. */
 	const REDUCED_MS: Record<string, number> = {
-		wave: 2700,
+		wave: 4000,
 		leads: 2700,
-		block: 5200,
+		block: 6500,
 		early: 3200,
 		reentry: 5200,
 		vf: 5200,
@@ -291,7 +291,7 @@
 		return heart.ectopics.filter((x) => x > from);
 	});
 	/** Where the real strip starts, s into the excerpt (its interesting part in view). */
-	const STRIP_FROM: Record<string, number> = { sinus: 0, pvc: 0.5, block: 0, vt: 0.9, vfl: 0.4 };
+	const STRIP_FROM: Record<string, number> = { sinus: 0, pvc: 0.5, block: 0, vt: 1, vfl: 0.4 };
 	const strip = $derived.by(() => {
 		if (!record) return null;
 		const from = STRIP_FROM[record.id] ?? 0;
@@ -743,7 +743,15 @@
 		</Readout>
 		{#if step.id === 'block'}
 			<Readout id="pr" order={3} label="PR interval" value={prText} note="normal 120–200 ms">
-				<Label anchor="end" x={PX1} y={316} text="PR {prText}" size={14} weight={600} tabular />
+				<Label
+					anchor="end"
+					x={PX1}
+					y={316}
+					text={prText === '—' ? 'PR —: no P wave led to this beat' : `PR ${prText}`}
+					size={14}
+					weight={600}
+					tabular
+				/>
 			</Readout>
 		{/if}
 		{#if record && strip}

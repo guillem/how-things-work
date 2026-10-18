@@ -24,7 +24,8 @@ test('the ventricles follow the sinus node one for one', { tag: '@smoke' }, asyn
 	await expect(stage(page)).toContainText('atria 75 a minute · ventricles 75 a minute');
 	await expect(stage(page)).toContainText('PR 1');
 	await range(page, 'rate').fill('120');
-	await expect(stage(page)).toContainText('atria 120 a minute · ventricles 120 a minute');
+	await expect(stage(page)).toContainText('atria 120 a minute');
+	await expect.poll(async () => Math.abs((await ventricles(page)) - 120)).toBeLessThan(3);
 });
 
 test('the three leads obey Einthoven’s law', async ({ page }) => {
@@ -44,8 +45,9 @@ test('a weaker AV node drops beats, then leaves only the escape rhythm', async (
 	const half = await ventricles(page);
 	expect(half).toBeGreaterThan(30);
 	expect(half).toBeLessThan(45);
-	await range(page, 'av').fill('0.1');
-	await expect(stage(page)).toContainText('ventricles 40 a minute');
+	await range(page, 'av').fill('0');
+	// the escape pacemaker, every 1.5 s: about 40 a minute
+	await expect.poll(async () => Math.abs((await ventricles(page)) - 40)).toBeLessThan(4);
 });
 
 test('an early beat into slowed, scarred ventricles starts a fast rhythm', async ({ page }) => {

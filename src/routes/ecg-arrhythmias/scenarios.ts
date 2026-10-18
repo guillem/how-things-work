@@ -165,7 +165,9 @@ export function intervals(h: Heart) {
 	const done = h.beats.filter((b) => b.end < h.time - 40);
 	const b = done[done.length - 1];
 	if (!b) return null;
+	// a beat started by the escape pacemaker or an early beat has no PR interval: no P led to it
+	const own = [...h.escapes, ...h.ectopics].some((e) => e <= b.onset && b.onset - e < 200);
 	const before = h.sinus.filter((s) => s < b.onset);
-	const pr = before.length ? b.onset - before[before.length - 1] : null;
+	const pr = !own && before.length ? b.onset - before[before.length - 1] : null;
 	return { pr, qrs: b.end - b.onset };
 }

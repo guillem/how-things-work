@@ -39,7 +39,7 @@ const EXCERPTS = [
 	{ id: 'sinus', record: '100', start: 0, length: 8, title: 'Normal sinus rhythm' },
 	{ id: 'pvc', record: '119', start: 21.5, length: 8, title: 'Ventricular premature beats' },
 	{ id: 'block', record: '231', start: 98, length: 8, title: '2:1 AV block' },
-	{ id: 'vt', record: '205', start: 1464, length: 8, title: 'Ventricular tachycardia' },
+	{ id: 'vt', record: '205', start: 1460, length: 8, title: 'Ventricular tachycardia' },
 	{ id: 'vfl', record: '207', start: 247, length: 8, title: 'Ventricular flutter' }
 ];
 
