@@ -87,7 +87,7 @@ export const spec: ExplainerSpec = {
 			controls: [ownWindow, again],
 			body: `
 <p>To write, the machine looks at the last letters it wrote, finds that window in its table, and draws the next letter at random, so that each letter's chance is its share of the counts. Picture a spinner whose slices are as wide as the counts: a common next letter gets a wide slice, a rare one a thin slice.</p>
-<p>The new letter joins the text, the window moves on by one, and it draws again. At the very start, before it has written enough letters, it uses the ones it has.</p>
+<p>The new letter joins the text, the window moves on by one, and it draws again. At the very start, before it has written enough letters, it uses the ones it has. If the current window has no recorded next letter (the window that ends your text has none), the machine drops its oldest letter until it finds counts: that lets it carry on past the end of your text.</p>
 <p>With a short text the table is thin. Many windows were followed by only one letter, so the spinner has a single slice and the machine just copies your text back. Press <strong>Write again</strong> for other random draws.</p>`,
 			notes: `<p>The draws use a seeded random generator, so the same seed always gives the same text, as it would with a recorded die. Picking the most common next letter every time instead would always write the same thing, and often loop on the same few words.</p>`
 		},
@@ -115,8 +115,8 @@ export const spec: ExplainerSpec = {
 			duration: 26,
 			controls: [window],
 			body: `
-<p>Writing is not the real test of a model: it should also predict text it has never seen. So the last tenth of Tiny Shakespeare, 111,540 characters from <em>The Taming of the Shrew</em>, is kept apart as ${HELD_OUT}. The machine never counted it.</p>
-<p>Go through it letter by letter and ask: did the <em>n</em> letters before this one ever appear in the training text? If not, the machine has no counts for that window and no idea what comes next. The stage marks those letters.</p>
+<p>Writing is not the real test of a model: it should also predict text it has never seen. So the last tenth of Tiny Shakespeare, 111,540 characters spanning the end of <em>The Taming of the Shrew</em> and the beginning of <em>The Tempest</em>, is kept apart as ${HELD_OUT}. The machine never counted it.</p>
+<p>Go through it letter by letter and ask: did the <em>n</em> letters before this one ever appear in the training text? If not, the machine has no counts for that full window and nothing to go on but a shorter one. The stage marks those letters.</p>
 <p>With a window of 3, only 1.4% of the windows are new. With 6, it is 21%; with 8, half; with 10, three in four. The longer the window, the more often the machine meets a window it has never seen.</p>`
 		},
 		{
@@ -128,8 +128,8 @@ export const spec: ExplainerSpec = {
 			controls: [window],
 			body: `
 <p>The text uses 65 different characters. A window of 1 letter can be one of 65; a window of 2, one of 65 × 65 = 4,225; every extra letter multiplies the possibilities by 65 again. A window of 4 can already be one of 17,850,625, more than the 1,003,854 letters the machine learned from. A window of 10 can be one of about 1.3 billion billion.</p>
-<p>Most of those windows are nonsense that no text would contain, but the sensible ones multiply too. The bars compare, on a scale where each line is ten times the one below, the windows possible with those that actually occur in the training text. At 10 letters the plays hold 780,165 different windows, almost one new window at every position, so nearly all of them were seen only once.</p>`,
-			notes: `<p>Growth by the same factor at every step is called exponential. It is why the bars climb as a straight line on this scale, where equal steps up mean ten times more.</p>`
+<p>Most of those windows are nonsense that no text would contain, but the sensible ones multiply too. The bars compare, on a scale where each grid line is 1,000 times the one below, the windows possible with those that actually occur in the training text. At 10 letters the plays hold 780,165 different windows, almost one new window at every position, and 94% of them were always followed by the same letter.</p>`,
+			notes: `<p>Growth by the same factor at every step is called exponential. It is why the bars climb as a straight line on this scale, where equal steps up mean multiplying by the same amount (the grid lines are a factor of 1,000 apart).</p>`
 		},
 		{
 			id: 'moredata',
@@ -142,7 +142,7 @@ export const spec: ExplainerSpec = {
 			body: `
 <p>Would more text fix it? It helps, but only a little. The curves show the share of held-out windows never seen when the machine counts 10,000, 100,000 or all 1,003,854 letters of the plays.</p>
 <p>With 100 times more text, the share for a window of 10 drops only from 99.4% to 75%. Each extra letter in the window multiplies the possible windows, while more text only adds windows in proportion to its length. To keep up, every letter added to the window would need far more text again, and soon more than has ever been written.</p>
-<p>Two old repairs help with the blanks: <dfn data-def="Pretending every letter was seen at least a little after every window, so that no next letter has a chance of exactly zero.">smoothing</dfn>, and <dfn data-def="When the window was never seen, falling back to a shorter window that was, and using its counts instead.">backing off</dfn> to a shorter window. Both give an answer for a new window, but the answer comes from fewer letters back, so the machine still cannot use what came long before.</p>`
+<p>Two old repairs help with the blanks: <dfn data-def="Pretending every letter was seen at least a little after every window, so that no next letter has a chance of exactly zero.">smoothing</dfn>, and <dfn data-def="When the window was never seen, falling back to a shorter window that was, and using its counts instead.">backing off</dfn> to a shorter window. Both can give an answer for a new window. Backing off uses fewer letters back; smoothing hands a little of the chance to letters never seen after that window. Neither removes the fixed window or teaches the machine anything about what came long before.</p>`
 		},
 		{
 			id: 'recite',
@@ -153,7 +153,7 @@ export const spec: ExplainerSpec = {
 			duration: 30,
 			controls: [window, again, size],
 			body: `
-<p>The writing has the opposite problem. The machine only ever writes windows it has seen, and with long windows most of those were seen once, always followed by the same letter. Then there is no choice to make: the spinner has one slice.</p>
+<p>The writing has the opposite problem. When the full window has recorded next letters (and in Shakespeare it nearly always does), the next letter comes from one of those occurrences, and with long windows most windows were always followed by the same letter. Then there is no choice to make: the spinner has one slice.</p>
 <p>The stage marks the longest stretch of the sample that appears word for word in the plays, and shows where. With a window of 1 it is about 9 characters; with 10 it is about 75, whole lines of Shakespeare, and on 84% of the letters the machine had no choice. Try the window at 10, or less training text: the machine is no longer writing, it is reciting.</p>`,
 			notes: `<p>This is the same trade-off as fitting a curve to points: a model flexible enough to follow every detail of its examples, here every exact run of 10 letters, ends up repeating its examples instead of predicting new ones.</p>`
 		},
@@ -169,7 +169,7 @@ export const spec: ExplainerSpec = {
 <p>Put the three meters side by side. As the window grows, the text gets more fluent, but the share of new text the machine has never seen climbs towards all of it, and its own writing turns into copying. No window is long enough to keep track of who is speaking or what a sentence is about, yet short enough to have been seen.</p>
 <p>A model that looks far back must <em>generalise</em>: treat a window it has never seen like similar ones it has. That is what the neural networks behind chatbots learn to do. They do not count exact windows, and they do not look text up in a stored copy: they turn the text into numbers that put similar contexts close together, and they can look back over thousands of words.</p>
 <p>They still write the way this machine does: predict the next piece of text from the ones before, draw one, add it, and repeat.</p>`,
-			notes: `<p>Counting models were the standard way to predict text for decades, in speech recognition and machine translation, with word windows of 3 to 5 and clever smoothing. In 2007 Google trained one on 2 trillion words of web text (Brants and colleagues), and it still could not look back further than 4 words. Neural language models replaced counting in the 2010s.</p>
+			notes: `<p>Counting models were the standard way to predict text for decades, in speech recognition and machine translation, with word windows of 3 to 5 and clever smoothing. In 2007, Brants and colleagues at Google evaluated models trained on up to 2 trillion tokens (words and punctuation marks) of web text: each prediction used at most the four tokens before it. Neural language models replaced counting in the 2010s.</p>
 <p>The figures on this page are measured live on Tiny Shakespeare: the meters on the stage are recomputed for every sample, and the curves here average three samples of 600 characters for each window.</p>`
 		}
 	]

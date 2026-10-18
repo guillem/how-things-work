@@ -135,6 +135,23 @@ test.describe('writing', () => {
 	test('real words: those of the training text', () => {
 		expect(words("O'er the hill, KING!")).toEqual(["o'er", 'the', 'hill', 'king']);
 		expect(realWordShare(model, 'the king said zzyzx and')).toBeCloseTo(3 / 4, 10);
+		// a last word that ends in a space or punctuation is complete, and counts
+		const pets = new NgramModel('cat dog');
+		expect(realWordShare(pets, 'cat zzz ')).toBe(0.5);
+		expect(realWordShare(pets, 'cat zzz.')).toBe(0.5);
+		expect(realWordShare(pets, 'cat zzz')).toBe(1); // "zzz" may be cut off: left out
+	});
+
+	test('past the end of its text, the machine backs off to a shorter window', () => {
+		const tiny = new NgramModel('abc');
+		const s = tiny.sample(2, 12, 1);
+		// "bc" ends the text and has no next letter: the machine drops to "c", then to nothing
+		expect(s.draws.some((d) => d.window < Math.min(2, s.draws.indexOf(d)))).toBe(true);
+		const cs = Array.from(s.text);
+		s.draws.forEach((d, i) => {
+			const window = cs.slice(i - d.window, i + 1).join('');
+			expect('abc'.includes(window)).toBe(true);
+		});
 	});
 });
 

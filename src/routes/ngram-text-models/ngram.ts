@@ -341,9 +341,10 @@ export function words(text: string): string[] {
 
 /** Share of the words of `text` (from character `from` on) that occur in the training text. */
 export function realWordShare(model: NgramModel, text: string, from = 0) {
-	const ws = words(chars(text).slice(from).join(''));
-	// the last word may be cut off mid-way: leave it out
-	const counted = ws.length > 1 ? ws.slice(0, -1) : ws;
+	const tail = chars(text).slice(from).join('');
+	const ws = words(tail);
+	// a sample that stops on a letter may have cut its last word off mid-way: leave it out
+	const counted = /[\p{L}']$/u.test(tail) ? ws.slice(0, -1) : ws;
 	if (counted.length === 0) return 0;
 	return counted.filter((w) => model.hasWord(w)).length / counted.length;
 }

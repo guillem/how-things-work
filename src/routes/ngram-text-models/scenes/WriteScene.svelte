@@ -58,11 +58,15 @@
 	const target = $derived(d ? S.x + ((d.offset + 0.5) / d.count) * S.w : S.x);
 	const mx = $derived(S.x + (target - S.x) * marker);
 
+	/** The window was shortened: fewer letters written so far, or no counts for the full one. */
+	const shortened = $derived(d ? d.window < n && cur >= n : false);
 	const head = $derived(
 		d
-			? d.window === 0
+			? cur === 0
 				? 'nothing written yet: any letter of the text, by its count'
-				: `window “${visible(windowText)}” came up ${d.count} time${d.count === 1 ? '' : 's'} in your text, followed by:`
+				: d.window === 0
+					? 'no usable window: falling back to the counts of single letters'
+					: `window “${visible(windowText)}”${shortened ? ` (using ${d.window} of ${n} letters)` : ''} came up ${d.count} time${d.count === 1 ? '' : 's'} in your text, followed by:`
 			: ''
 	);
 	const result = $derived(
@@ -153,14 +157,7 @@
 		<rect x={S.x} y={S.y} width={S.w} height={S.h} rx="4" fill="none" stroke="var(--stage-line)" />
 		<g opacity={reduced ? 1 : smoothstep(0.05, 0.15, u)}>
 			<path d="M{mx} {S.y - 3} l-8 -13 h16 Z" fill="var(--ng-hot)" />
-			<line
-				x1={mx}
-				y1={S.y - 3}
-				x2={mx}
-				y2={S.y + S.h + 3}
-				stroke="var(--ng-hot)"
-				stroke-width="2.5"
-			/>
+			<line x1={mx} y1={S.y - 3} x2={mx} y2={S.y + 6} stroke="var(--ng-hot)" stroke-width="2.5" />
 		</g>
 		<Readout id="result">
 			<Label
