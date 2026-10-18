@@ -1,6 +1,7 @@
 // Checks the mathematics behind the brachistochrone explainer against known results: free fall
 // and the incline, the cycloid's closed-form time, the optimiser finding the cycloid, the dip
-// below the end point beyond L/h = π/2, and Beltrami's (Snell's) constant along the optimum.
+// below the end point beyond L/h = π/2, Beltrami's (Snell's) constant along the optimum, and the
+// hanging chain: the catenary, its Lagrange multiplier, and a stationary shape that is a maximum.
 // Runs in Node; no browser.
 import { expect, test } from '@playwright/test';
 import {
@@ -20,6 +21,15 @@ import {
 	snell,
 	splinePoints
 } from '../src/routes/calculus-of-variations/brachistochrone';
+import {
+	G as CG,
+	RHO,
+	catenary,
+	energyOf,
+	hangingChain,
+	nudged,
+	parabolaPoints
+} from '../src/routes/calculus-of-variations/chain';
 
 const rel = (a: number, b: number) => Math.abs(a - b) / Math.abs(b);
 
@@ -174,5 +184,57 @@ test("Beltrami's quantity, sin φ / v (Snell's law), is the same all along the o
 			Array.from({ length: 11 }, (_, i) => ({ x: (L * i) / 10, y: (h * i) / 10 }))
 		).map((s) => s.value);
 		expect(lineValues[1] / lineValues[9]).toBeGreaterThan(2);
+	}
+});
+
+test('the hanging chain: links in balance make a catenary, lower than a parabola', () => {
+	const span = 4;
+	const length = 6;
+	const cat = catenary(span, length);
+	const devs = [10, 40, 160].map((N) => {
+		const ch = hangingChain(span, length, N);
+		// The horizontal pull is ρg·a, the catenary's parameter.
+		expect(rel(ch.H, RHO * CG * cat.a)).toBeLessThan(0.02);
+		return Math.max(...ch.pts.map((p) => Math.abs(p.y - cat.y(p.x))));
+	});
+	expect(devs[1]).toBeLessThan(devs[0] / 10);
+	expect(devs[2]).toBeLessThan(1e-4);
+	// Of all curves this long, the catenary has the least potential energy: less than the
+	// parabola through the same supports with the same length.
+	const ch = hangingChain(span, length, 160);
+	expect(ch.energy).toBeLessThan(energyOf(parabolaPoints(span, length, 2000)));
+});
+
+test('the Lagrange multiplier is the price of length: the tension at the supports', () => {
+	// Lengthening the chain by δL lowers the least energy by (tension at the supports)·δL.
+	for (const [span, length] of [
+		[4, 5],
+		[4, 8],
+		[2, 2.2]
+	]) {
+		const d = 1e-4;
+		const slope =
+			(hangingChain(span, length + d, 400).energy - hangingChain(span, length - d, 400).energy) /
+			(2 * d);
+		expect(rel(-slope, hangingChain(span, length, 400).support)).toBeLessThan(2e-3);
+	}
+});
+
+test('stationary is not the same as least: the chain is a minimum, the arch a maximum', () => {
+	const span = 4;
+	const ch = hangingChain(span, 6);
+	for (const eps of [-0.1, -0.02, 0.02, 0.1]) {
+		const hanging = nudged(ch, span, eps);
+		const arch = nudged(ch, span, eps, true);
+		// Every link keeps its length and the chain still ends on the right support.
+		const end = hanging.pts[hanging.pts.length - 1];
+		expect(end.x).toBeCloseTo(span / 2, 9);
+		expect(end.y).toBeCloseTo(0, 9);
+		// Either way, the nudge raises the hanging chain and lowers the arch…
+		expect(hanging.energy).toBeGreaterThan(ch.energy);
+		expect(arch.energy).toBeLessThan(-ch.energy);
+		// …by an amount that grows as ε²: the first-order change is zero for both.
+		const twice = nudged(ch, span, 2 * eps).energy - ch.energy;
+		expect(twice / (hanging.energy - ch.energy)).toBeCloseTo(4, 0);
 	}
 });
