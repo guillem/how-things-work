@@ -276,7 +276,8 @@ export function search(game: string | Position, opts: SearchOptions): SearchResu
 		}
 	}
 	root.sort((a, b) => a.col - b.col);
-	return { best, score: p.over ? 0 : bestScore, nodes, stopped, root };
+	// A finished game: lost for the side 'to move' if the last move won, a draw if the board is full.
+	return { best, score: p.won ? -WIN : p.full ? 0 : bestScore, nodes, stopped, root };
 }
 
 /** The result of a game between two players, from red's side: 1 red won, −1 yellow won, 0 a draw. */

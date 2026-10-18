@@ -62,7 +62,7 @@ const c4New: Control = {
 	id: 'c4New',
 	label: 'New game',
 	action: 'New game',
-	help: 'You play red and move first: click a column, or Tab to the board and use the arrow keys and Enter.'
+	help: 'You play red and move first: click a column, or Tab to a column and press Enter or Space.'
 };
 
 const c4Reset: Control = {
@@ -117,7 +117,7 @@ const runMatch: Control = {
 	id: 'runMatch',
 	label: 'Test your rule',
 	action: 'Play the match',
-	help: '98 games, four moves ahead: every two-move opening, each played with both colours.'
+	help: '98 games: your rule looks four moves ahead, the opponent as chosen. Every two-move opening is played with both colours.'
 };
 
 /**
@@ -150,7 +150,7 @@ export const spec: ExplainerSpec = {
 			duration: 22,
 			controls: [tttFirst, tttNew],
 			body: `
-<p>Play noughts and crosses against the computer: click a square (or Tab to the board, then use the arrow keys and Enter). Try to beat it.</p>
+<p>Play noughts and crosses against the computer: click a square (or Tab to a square, then press Enter or Space). Try to beat it.</p>
 <p>You can't. Before every move it tries <em>each</em> square it could take, then every reply you could make, then every answer to that, all the way to the end of the game. Under the board you can see what it found for each of its moves: a <strong>win</strong>, a <strong>draw</strong> or a <strong>loss</strong>, if both sides play as well as they can from there. It takes a move with the best outcome for itself.</p>
 <p>That is all there is to it. It doesn't plan like a person, with ideas such as "take a corner"; it counts, very fast.</p>`
 		},
@@ -269,8 +269,8 @@ export const spec: ExplainerSpec = {
 			controls: [wCentre, wTwo, wThree, opponent, runMatch],
 			body: `
 <p>Where the look-ahead stops, everything depends on the rule of thumb. Build your own from three features: discs in the <strong>centre column</strong> (it is part of more lines of four than any other), lines of four holding <strong>two</strong> of your discs and two empty squares, and lines holding <strong>three</strong> of your discs and one empty square. Each counts for you and, with the same points, against you for the opponent's discs.</p>
-<p>Then test it: your rule plays a match of 98 games, both sides looking four moves ahead. A rule of all zeros scores only wins and losses it can see. Try a single feature, then mixes. Can you beat the page's own rule (centre 3, two 2, three 5)?</p>`,
-			notes: `<p>The computer already tries the centre column first when moves score the same, so a rule of centre points alone plays exactly like no rule at all. Neither side ever picks a move at random: the 49 different two-move openings are what make the games differ.</p>`
+<p>Then test it: your rule, looking four moves ahead, plays a match of 98 games against the opponent you choose. A rule of all zeros scores only wins and losses it can see. Try a single feature, then mixes. Can you beat the page's own rule (centre 3, two 2, three 5)?</p>`,
+			notes: `<p>The computer already tries the centre column first when moves score the same, so in these matches a rule of centre points alone plays exactly the same games as no rule at all (in some other positions it does choose differently). Neither side ever picks a move at random: the 49 different two-move openings are what make the games differ.</p>`
 		},
 		{
 			id: 'better-rule',
@@ -282,7 +282,7 @@ export const spec: ExplainerSpec = {
 			body: `
 <p>Three matches of 98 games. With no rule of thumb, looking 6 moves ahead instead of 4 hardly helps: almost every game is a draw, because neither side can tell a promising position from a poor one until a win is in sight. With the page's rule, looking further ahead does win more games than it loses.</p>
 <p>But the page's rule looking only <strong>4</strong> moves ahead beats no rule looking <strong>6</strong> moves ahead: 56 wins to 26, while examining far fewer positions. A program doesn't see every possible game, only a few moves of it, and at the end of every line it trusts a rule of thumb. Knowing what makes a position good can be worth more than looking further.</p>
-<p>That is the whole method: look ahead down the tree, assume the opponent plays its best, take the line with the best guaranteed outcome, and look as deep as the tree's growth allows. Strong chess programs still work this way, with a finely tuned rule of thumb (today often a small neural network) and many refinements of alpha-beta.</p>`
+<p>That is the whole method: look ahead down the tree, assume the opponent plays its best, and take the move whose worst case is best, looking as deep as the tree's growth allows. When the search reaches the end of the game, as in noughts and crosses, that worst case is a guaranteed outcome; when it stops earlier, it is only an estimate. Strong chess programs still work this way, with a finely tuned rule of thumb (today often a small neural network) and many refinements of alpha-beta.</p>`
 		}
 	]
 };

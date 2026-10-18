@@ -139,6 +139,10 @@ test.describe('Connect Four', () => {
 		expect(C.Position.from('0011223').won).toBe(true); // along the bottom
 		expect(C.Position.from('01123223433').won).toBe(true); // diagonal
 		expect(C.Position.from('010101').won).toBe(false);
+		// A finished game is scored as a loss for the side that would move next.
+		const done = C.search('0011223', { depth: 4, prune: true });
+		expect(done.best).toBe(-1);
+		expect(done.score).toBe(-C.WIN);
 	});
 
 	test('with pruning off, every extra move of look-ahead multiplies the positions examined by about seven', () => {

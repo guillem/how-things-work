@@ -218,7 +218,7 @@ A topic is done when:
 - [x] graph-search
 - [x] turing-machines
 - [x] quantum-computing
-- [ ] game-tree-search
+- [x] game-tree-search
 
 **Information & Networks**
 - [x] compression
