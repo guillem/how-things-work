@@ -1,6 +1,6 @@
 # Topic catalog
 
-Source of truth for the content of an interactive web learning tool that shows how things work. It defines 136 topics in 11 categories, each built around one interactive graphic. Readers range from high-school students to university majors.
+Source of truth for the content of an interactive web learning tool that shows how things work. It defines 137 topics in 11 categories, each built around one interactive graphic. Readers range from high-school students to university majors.
 
 This file covers content only. It does not choose the stack, the visual design or the project layout; take those from the repository's own instructions.
 
@@ -85,7 +85,7 @@ A topic is done when:
 | Mathematics | `math` | 18 |
 | Physics | `physics` | 13 |
 | Chemistry & Materials | `chemistry` | 14 |
-| Biology | `biology` | 15 |
+| Biology | `biology` | 16 |
 | Body & Medicine | `medicine` | 10 |
 | Earth & Climate | `earth` | 9 |
 | Space | `space` | 9 |
@@ -163,6 +163,7 @@ A topic is done when:
 - [x] morphogen-gradients
 - [x] lac-operon
 - [x] population-genetics
+- [ ] turing-patterns
 
 **Body & Medicine**
 - [x] heart-circulation
@@ -345,7 +346,7 @@ A topic is done when:
 - **Interaction:** Start two double pendulums with almost identical angles and watch their paths separate. Slide the growth rate of the logistic map through its period-doubling cascade, and zoom deep into the Mandelbrot set.
 - **Takeaway:** Simple deterministic rules can produce behavior that is unpredictable in the long run and structure that repeats at every scale.
 - **Prerequisites:** none
-- **Related:** complex-numbers, ecosystems, atmosphere-weather, phase-portraits
+- **Related:** complex-numbers, ecosystems, atmosphere-weather, phase-portraits, turing-patterns
 
 #### taylor-series
 - **Title:** Taylor series & where they stop working
@@ -831,6 +832,16 @@ A topic is done when:
 - **Prerequisites:** meiosis-inheritance, evolution, central-limit-theorem
 - **Related:** cancer
 - **Pitfall:** Hardy-Weinberg is not 'evolution stops': it is the one-generation baseline that shows which forces are absent, and drift is not selection by another name; the page must keep them separate.
+
+#### turing-patterns
+- **Title:** Turing patterns
+- **Level:** 3
+- **Kind:** simulate
+- **Interaction:** Run an activator-inhibitor reaction-diffusion system on a grid from near-uniform noise and watch spots or stripes crystallise. Change the ratio of the two diffusion rates and the pattern appears only once the inhibitor spreads much faster than the activator; change the reaction rates to move from spots to stripes to labyrinths; grow the domain and extra stripes insert themselves, and taper the grid into a tail to see spots become bands as it narrows.
+- **Takeaway:** Two chemicals, one that makes more of itself and a faster-spreading one that suppresses it, can turn a uniform field into regular spots or stripes with no blueprint, at a spacing set by their reaction and diffusion rates.
+- **Prerequisites:** morphogen-gradients, reaction-rates-equilibrium
+- **Related:** chaos-fractals
+- **Pitfall:** Not every stripe in nature is a Turing pattern. The page should name where a Turing-type mechanism is well supported (digit spacing, hair and feather follicles) and where the evidence is mixed (fish skin, where pigment cells also move). It must not claim the mechanism for zebra stripes or fingerprints without saying that is contested.
 
 ### Body & Medicine
 
