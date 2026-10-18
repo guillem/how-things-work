@@ -80,12 +80,7 @@
 </script>
 
 <g>
-	<Readout
-		id="title"
-		order={1}
-		label="Grid"
-		value="b = {b}, generation {gen}, {Math.round(shares[gen] * 100)} % cooperators"
-	>
+	<Readout id="title" order={1} label="Grid" value="b = {b}, generation {gen}">
 		<Label
 			x={24}
 			y={34}
@@ -138,8 +133,8 @@
 	/>
 	<Label
 		x={930}
-		y={sy(NM) + 16}
-		text="≈ 32 %, Nowak & May (1.8 < b < 2)"
+		y={98}
+		text="dashed: ≈ 32 % (Nowak & May)"
 		size={11}
 		anchor="end"
 		muted
