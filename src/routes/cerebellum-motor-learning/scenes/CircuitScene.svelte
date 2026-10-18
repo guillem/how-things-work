@@ -43,33 +43,36 @@
 	/** Each volley takes 15% off the active synapses, down to 40%. */
 	const weight = $derived(Math.max(0.4, 1 - 0.15 * Math.min(volleys, 4)));
 
-	/** Dendritic fan: main trunk and branches reaching up through the fibres. */
+	/** Dendritic fan: a trunk, then five straight branches from its top up through the fibres. */
+	const FORK = { x: SOMA.x, y: 336 };
+	const TIPS = [292, 336, 380, 424, 468];
 	const branches = [
-		`M${SOMA.x} ${SOMA.y - 14} L${SOMA.x} 330 L360 290 L330 220 L310 150`,
-		`M${SOMA.x} 330 L400 280 L430 210 L450 140`,
-		`M360 290 L370 220 L360 140`,
-		`M400 280 L400 200 L405 135`,
-		`M330 220 L300 190`,
-		`M430 210 L470 180`
+		`M${SOMA.x} ${SOMA.y - 14} L${FORK.x} ${FORK.y}`,
+		...TIPS.map((x) => `M${FORK.x} ${FORK.y} L${x} 134`)
 	];
+	/** Where fibre i meets branch i mod 5: its synapse onto the Purkinje cell. */
+	const synAt = (i: number, y: number) => {
+		const tip = TIPS[(i * 2) % TIPS.length];
+		return FORK.x + ((tip - FORK.x) * (FORK.y - y)) / (FORK.y - 134);
+	};
+	/** The climbing fibre: from the olive to the soma, then winding up the trunk and one branch. */
 	const cfPts: Point[] = [
 		IO,
 		{ x: 700, y: 440 },
 		{ x: 520, y: 430 },
 		{ x: SOMA.x + 14, y: SOMA.y - 4 },
-		{ x: SOMA.x + 8, y: 340 },
-		{ x: 392, y: 300 },
-		{ x: 406, y: 270 },
-		{ x: 404, y: 230 },
-		{ x: 416, y: 200 },
-		{ x: 410, y: 160 }
+		{ x: SOMA.x + 6, y: 380 },
+		{ x: SOMA.x - 5, y: 358 },
+		...Array.from({ length: 11 }, (_, k) => {
+			const u = k / 10;
+			return { x: FORK.x + 44 * u + (k % 2 ? 5 : -5), y: FORK.y - 202 * u };
+		})
 	];
 	const cfPath = `M${cfPts.map((p) => `${p.x} ${p.y}`).join(' L')}`;
 	const volleyAt = $derived(volleyU >= 0 ? along(cfPts, volleyU) : null);
 
 	const granules = [110, 150, 190, 230];
 	/** Where each fibre meets the fan (its synapse onto the Purkinje cell). */
-	const synX = [318, 336, 352, 368, 384, 396];
 </script>
 
 <g>
@@ -154,7 +157,7 @@
 			{d}
 			fill="none"
 			stroke="var(--cb-pc)"
-			stroke-width={i < 2 ? 4 : 2.5}
+			stroke-width={i === 0 ? 5 : 3}
 			stroke-linecap="round"
 			stroke-linejoin="round"
 		/>
@@ -189,7 +192,7 @@
 		{@const on = ACTIVE.has(i)}
 		{@const w = on ? weight : 1}
 		<circle
-			cx={synX[i]}
+			cx={synAt(i, y)}
 			cy={y}
 			r={3 + 5 * w}
 			fill={on ? 'var(--cb-pf)' : 'var(--stage-ink-muted)'}

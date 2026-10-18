@@ -160,7 +160,7 @@
 				color: 'var(--stage-ink-muted)',
 				width: 2,
 				dash: '6 4',
-				label: 'one rate'
+				label: 'one rate (its own reversal)'
 			});
 		return out;
 	});
@@ -395,7 +395,7 @@
 		>
 			<Label
 				x={sx(BASELINE + 12)}
-				y={sy(s[BASELINE + 10].total) - 14}
+				y={sy(s[BASELINE + 10].total) - 26}
 				anchor="start"
 				size={12}
 				text="10 reaches: {fmt(s[BASELINE + 10].total)}, {fmt(s[BASELINE + 10].fast)} of it fast"
@@ -489,14 +489,7 @@
 			/>
 		</Readout>
 		<Readout id="hit">
-			<Label
-				x={sx(BASELINE) + 6}
-				y={sy(0) + 20}
-				anchor="start"
-				size={11}
-				muted
-				text="0: on target"
-			/>
+			<Label x={sx(1)} y={sy(0) - 8} anchor="start" size={11} muted text="0: on target" />
 		</Readout>
 	{/if}
 </g>

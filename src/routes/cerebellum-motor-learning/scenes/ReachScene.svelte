@@ -25,7 +25,7 @@
 	} from '#lib/draw/index.ts';
 	import type { Point } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
-	import { ROTATION, runTwoRate } from '../model';
+	import { runTwoRate } from '../model';
 	import {
 		correctionOf,
 		errorOf,
@@ -61,8 +61,8 @@
 	});
 
 	// ---- workspace geometry ---------------------------------------------------------
-	const S = { x: 250, y: 500 };
-	const R = 300;
+	const S = { x: 262, y: 486 };
+	const R = 280;
 	const rad = (deg: number) => (deg * Math.PI) / 180;
 	const deg = (r: number) => (r * 180) / Math.PI;
 	/** Screen point at math angle `a` (degrees, counter-clockwise from east) and distance `d`. */
@@ -73,8 +73,8 @@
 	const wrap = (a: number) => ((((a + 180) % 360) + 360) % 360) - 180;
 	const tgt = $derived(at(target, R));
 	const arc = (() => {
-		const a = at(28, R);
-		const b = at(152, R);
+		const a = at(32, R);
+		const b = at(148, R);
 		return `M${a.x} ${a.y} A${R} ${R} 0 0 0 ${b.x} ${b.y}`;
 	})();
 
@@ -183,7 +183,7 @@
 	const n = $derived(list.length);
 	const xMax = $derived(Math.max(40, Math.ceil((n + ahead) / 10) * 10));
 	const sx = $derived(scale([0, xMax], [596, 934]));
-	const sy = scale([-35, 40], [520, 96]);
+	const sy = scale([-35, 40], [520, 150]);
 
 	const rotPath = $derived.by(() => {
 		const rots = [...list.map((r) => r.rotation), ...futurePhases];
@@ -204,7 +204,6 @@
 			.map((s, i) => `${i === 0 ? 'M' : 'L'}${sx(n + 1 + i).toFixed(1)} ${sy(s.total).toFixed(1)}`)
 			.join(' ')
 	);
-	const grow = $derived(reduced ? 1 : smoothstep(0, 1.2, t));
 
 	const fmt = (v: number) => `${v > 0 ? '+' : v < 0 ? '−' : ''}${Math.abs(Math.round(v))}°`;
 	const lastNote = $derived.by(() => {
@@ -247,6 +246,18 @@
 
 	<!-- the last reach's feedback -->
 	{#if shown && endpoint && lastTarget}
+		{#if shown.target !== target}
+			<circle
+				cx={lastTarget.x}
+				cy={lastTarget.y}
+				r="17"
+				fill="none"
+				stroke="var(--cb-target)"
+				stroke-width="1.5"
+				stroke-dasharray="3 3"
+				opacity="0.7"
+			/>
+		{/if}
 		<line
 			x1={S.x}
 			y1={S.y}
@@ -383,7 +394,7 @@
 		stroke="var(--cb-model)"
 		stroke-width="2"
 		stroke-dasharray="3 4"
-		opacity={0.75 * grow}
+		opacity="0.75"
 	/>
 	{#if n > 0}
 		<path d={modelPath} fill="none" stroke="var(--cb-model)" stroke-width="2.5" />
@@ -398,25 +409,6 @@
 			stroke-width="1.5"
 		/>
 	{/each}
-	<Readout id="key-rot" order={3} label="Dashed grey" value="the rotation">
-		<Label x={604} y={112} anchor="start" size={12} muted text="dashed grey: the rotation" />
-	</Readout>
-	<Readout
-		id="key-model"
-		order={4}
-		label="Line"
-		value="two-rate model (dashed: its forecast)"
-		color="var(--cb-model)"
-	>
-		<Label
-			x={604}
-			y={130}
-			anchor="start"
-			size={12}
-			color="var(--cb-model)"
-			text="line: the two-rate model doing your reaches (dashed: forecast)"
-		/>
-	</Readout>
 	<Readout
 		id="key-hand"
 		order={2}
@@ -424,17 +416,51 @@
 		value="your reaches ({n}; hollow: no cursor)"
 		color="var(--cb-hand)"
 	>
+		<circle cx={566} cy={68} r="4" fill="var(--cb-hand)" />
 		<Label
-			x={604}
-			y={148}
+			x={576}
+			y={72}
 			anchor="start"
 			size={12}
 			color="var(--cb-hand)"
-			text="dots: your reaches ({n}) · hollow: no cursor"
+			text="your reaches ({n}) · hollow: no cursor"
 		/>
 	</Readout>
-	<Readout id="rot-note">
-		<Label x={934} y={sy(ROTATION) - 8} anchor="end" size={11} muted text="cancels 30°" />
+	<Readout
+		id="key-model"
+		order={3}
+		label="Line"
+		value="two-rate model doing your reaches (dashed: its forecast)"
+		color="var(--cb-model)"
+	>
+		<line x1={558} x2={574} y1={88} y2={88} stroke="var(--cb-model)" stroke-width="2.5" />
+		<Label
+			x={580}
+			y={92}
+			anchor="start"
+			size={12}
+			color="var(--cb-model)"
+			text="two-rate model doing your reaches (dashed: forecast)"
+		/>
+	</Readout>
+	<Readout id="key-rot" order={4} label="Dashed grey" value="the rotation">
+		<line
+			x1={558}
+			x2={574}
+			y1={108}
+			y2={108}
+			stroke="var(--stage-ink-muted)"
+			stroke-width="1.5"
+			stroke-dasharray="5 4"
+		/>
+		<Label
+			x={580}
+			y={112}
+			anchor="start"
+			size={12}
+			muted
+			text="the rotation: a correction here cancels it"
+		/>
 	</Readout>
 </g>
 
