@@ -1,6 +1,6 @@
 # Topic catalog
 
-Source of truth for the content of an interactive web learning tool that shows how things work. It defines 119 topics in 11 categories, each built around one interactive graphic. Readers range from high-school students to university majors.
+Source of truth for the content of an interactive web learning tool that shows how things work. It defines 120 topics in 11 categories, each built around one interactive graphic. Readers range from high-school students to university majors.
 
 This file covers content only. It does not choose the stack, the visual design or the project layout; take those from the repository's own instructions.
 
@@ -82,7 +82,7 @@ A topic is done when:
 
 | Category | Id | Topics |
 |---|---|---|
-| Mathematics | `math` | 14 |
+| Mathematics | `math` | 15 |
 | Physics | `physics` | 10 |
 | Chemistry & Materials | `chemistry` | 10 |
 | Biology | `biology` | 10 |
@@ -111,6 +111,7 @@ A topic is done when:
 - [x] exponentials-logarithms
 - [x] game-theory-cooperation
 - [x] differential-equations
+- [ ] calculus-of-variations
 
 **Physics**
 - [x] newtons-laws
@@ -371,6 +372,16 @@ A topic is done when:
 - **Related:** epidemics, ecosystems, feedback-control
 - **Pitfall:** Not every differential equation can be solved with a formula: most cannot, and the slope field still fixes each solution. For a smooth enough rule (the usual case), solution curves of one equation never cross, so two different futures cannot start from the same state.
 
+#### calculus-of-variations
+- **Title:** The brachistochrone & calculus of variations
+- **Level:** 3
+- **Kind:** manipulate
+- **Interaction:** Drag the control points of a ramp between two fixed points and a bead slides down it under gravity, its descent time computed by integrating along the curve; race the straight line, a circular arc and your curve. Press optimize and the curve relaxes step by step toward the cycloid as the page descends the gradient of the time functional, while a panel shows the Euler–Lagrange residual along the curve going to zero; a second example finds the hanging-chain shape.
+- **Takeaway:** The fastest slide between two points is a curve, the cycloid, not the straight line, and at the optimum the Euler–Lagrange residual is zero all along the curve, so no small change to its shape makes the slide faster.
+- **Prerequisites:** calculus, newtons-laws
+- **Related:** light-optics, gradient-descent, orbits-kepler
+- **Pitfall:** The best curve can dip below the end point and still win (it does whenever the horizontal distance is more than about π/2 times the drop), and the straight line is not 'almost as good': show it losing to the cycloid by a measured margin. A curve that satisfies the Euler–Lagrange equation is stationary, not automatically the minimum.
+
 ### Physics
 
 #### newtons-laws
@@ -424,7 +435,7 @@ A topic is done when:
 - **Interaction:** Drag light sources, mirrors, lenses and prisms on an optical bench and trace the rays. Change the refractive index and the color of the light to see bending, focusing, total internal reflection and dispersion into a spectrum.
 - **Takeaway:** Light changes direction when its speed changes between materials, and that one rule accounts for lenses, rainbows and optical fiber.
 - **Prerequisites:** waves-interference
-- **Related:** electromagnetism
+- **Related:** electromagnetism, calculus-of-variations
 
 #### entropy
 - **Title:** Heat, entropy & the arrow of time
@@ -853,7 +864,7 @@ A topic is done when:
 - **Interaction:** Launch a body around a star with a chosen speed and direction and get a circle, an ellipse or an escape path. Overlays show equal areas swept in equal times and a plot of period against orbit size; add a second planet to see the two disturb each other.
 - **Takeaway:** An orbit is continuous free fall, and a single law of gravity produces all three of Kepler's laws.
 - **Prerequisites:** newtons-laws
-- **Related:** sun-earth-moon, gps
+- **Related:** sun-earth-moon, gps, calculus-of-variations
 
 #### rockets
 - **Title:** Rockets & orbital maneuvers
@@ -1113,7 +1124,7 @@ A topic is done when:
 - **Interaction:** Drop a ball on a loss landscape shown as a surface and as a contour map; it steps downhill along the negative gradient. Change the learning rate, add momentum or noise, and try landscapes with ravines, plateaus and several minima.
 - **Takeaway:** A model is trained by repeatedly nudging its parameters in the direction that reduces the error fastest, and the step size decides whether that crawls, converges or diverges.
 - **Prerequisites:** calculus, learning-from-data
-- **Related:** cerebellum-motor-learning
+- **Related:** cerebellum-motor-learning, calculus-of-variations
 
 #### neural-networks
 - **Title:** Neural networks & backpropagation
