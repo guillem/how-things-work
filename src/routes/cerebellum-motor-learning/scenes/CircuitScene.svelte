@@ -308,9 +308,9 @@
 		value="weakened after {volleys} error volley{volleys === 1 ? '' : 's'} (schematic)"
 	>
 		<Label
-			x={240}
+			x={50}
 			y={352}
-			anchor="middle"
+			anchor="start"
 			size={12}
 			tabular
 			text="error volleys: {volleys} · active synapses shrink (schematic sizes)"
