@@ -158,7 +158,7 @@ A topic is done when:
 - [x] ecosystems
 - [x] crispr
 - [x] bacterial-chemotaxis
-- [ ] diffusion-osmosis
+- [x] diffusion-osmosis
 
 **Body & Medicine**
 - [x] heart-circulation

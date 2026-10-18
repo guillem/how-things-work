@@ -26,7 +26,6 @@
 	const drops = $derived(Number(params.redrop ?? 0));
 	const counting = $derived(focus === 'count');
 
-	const MAXT = 120;
 	const STILL = 8;
 
 	// ---- geometry ----------------------------------------------------------------------------
@@ -55,7 +54,7 @@
 		}
 		memo.last = t;
 		const sim = memo.sim!;
-		const simT = reduced ? STILL : Math.min(MAXT, t - memo.start);
+		const simT = reduced ? STILL : Math.max(0, t - memo.start);
 		const f = simT * sim.fps;
 		const k = sim.at(Math.floor(f) + 1) - 1;
 		const u = clamp(f - k, 0, 1);
@@ -241,6 +240,16 @@
 			fill="var(--do-dye)"
 			opacity="0.75"
 		/>
+		{#if s > 0.5}
+			<Label
+				x={BX + ((i + 0.5) * BW) / BINS}
+				y={GY1 - 4}
+				text="↑ {Math.round(s * 100)}%"
+				size={11}
+				weight={600}
+				tabular
+			/>
+		{/if}
 	{/each}
 	<line
 		x1={BX}
@@ -324,14 +333,14 @@
 		<Readout
 			id="net"
 			order={4}
-			label="Net flow to the right"
+			label="Net moved right since the drop"
 			value={String(toRight - toLeft)}
 			color="var(--do-dye-text)"
 		>
 			<Label
 				x={610}
 				y={168}
-				text="net flow to the right: {toRight - toLeft}"
+				text="net moved right since the drop: {toRight - toLeft}"
 				size={15}
 				weight={600}
 				anchor="start"
@@ -351,7 +360,7 @@
 			<Label
 				x={610}
 				y={230}
-				text="each step: left or right, equally likely"
+				text="each step: any direction, equally likely"
 				size={11}
 				anchor="start"
 				muted

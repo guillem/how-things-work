@@ -8,6 +8,9 @@
 import { expect, test } from '@playwright/test';
 import {
 	ATP_ENERGY,
+	POTATO,
+	R,
+	T_LAB,
 	RHO_G,
 	Tank,
 	Walkers,
@@ -166,4 +169,25 @@ test('the least work to hold a ten-fold gradient is a small part of one ATP', ()
 	const w = gradientWork(1, 10);
 	expect(w / 1000).toBeCloseTo(5.9, 1);
 	expect(w).toBeLessThan(ATP_ENERGY / 5);
+});
+
+test('the fresh potato cell is in balance where its sap minus its turgor matches the outside', () => {
+	const fresh = potatoCell(((POTATO.pi0 - POTATO.p0) * 1e6) / (R * T_LAB));
+	expect(fresh.v).toBeCloseTo(1, 4);
+	expect(fresh.turgor).toBeCloseTo(POTATO.p0, 4);
+});
+
+test('a membrane without pores lets nothing through', () => {
+	const s = new Walkers({
+		n: 400,
+		w: 100,
+		h: 60,
+		D: 300,
+		seed: 5,
+		membrane: { x: 50 },
+		start: (i, r) => [i % 2 ? 50 * r() : 50 + 50 * r(), 60 * r()]
+	});
+	const k = s.at(600);
+	expect(s.right[k]).toBe(s.right[0]);
+	expect(s.toRight[k] + s.toLeft[k]).toBe(0);
 });

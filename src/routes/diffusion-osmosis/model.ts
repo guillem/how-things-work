@@ -22,7 +22,7 @@
  *    an osmotically inactive fraction of 0.4 (LeFevre 1964, J Gen Physiol 47:585: about 0.6 of
  *    the volume is water that takes part). It bursts when it has swollen into a sphere: a
  *    membrane of 140 µm² cannot hold more than 156 fL, and the normal cell holds 90 fL
- *    (BioNumbers 101711). A plant cell adds a wall: once the protoplast presses on it, the wall
+ *    (BioNumbers 115152 and 107602). A plant cell adds a wall: once the protoplast presses on it, the wall
  *    pushes back with a turgor pressure that rises steeply with volume (an elastic modulus), so
  *    in pure water the cell stops swelling and becomes firm. The potato cell's numbers are
  *    illustrative (see POTATO).
@@ -89,12 +89,16 @@ export interface WalkOptions {
 	membrane?: Membrane;
 	/** ATP at the start, and the most the store holds. */
 	atp?: number;
+	/** Positions are kept for the first `keep` frames and the last 60; older ones are dropped. */
+	keep?: number;
 }
 
 /**
  * Brownian walkers, computed lazily one frame at a time. Settings marked mutable (`pumpOn`,
  * `refill`) apply from the next frame computed, so a scene can switch them mid-run.
  */
+const EMPTY = new Float32Array(0);
+
 export class Walkers {
 	readonly n: number;
 	readonly w: number;
@@ -113,6 +117,7 @@ export class Walkers {
 	readonly pumped: number[] = [0];
 	readonly atp: number[] = [];
 	readonly atpMax: number;
+	private readonly keep: number;
 	pumpOn = true;
 	/** ATP made per second (respiration), up to `atpMax`. */
 	refill = 0;
@@ -130,6 +135,7 @@ export class Walkers {
 		this.rand = rng(o.seed ?? 1);
 		this.sigma = Math.sqrt((2 * o.D) / this.fps);
 		this.atpMax = o.atp ?? 0;
+		this.keep = o.keep ?? Infinity;
 		this.atpNow = this.atpMax;
 		const x = new Float32Array(o.n);
 		const y = new Float32Array(o.n);
@@ -181,7 +187,8 @@ export class Walkers {
 					const was = px[i] > m.x;
 					const is = nx > m.x;
 					if (was !== is) {
-						const yc = (py[i] + ny) / 2;
+						// where the straight step crosses the membrane line
+						const yc = py[i] + ((m.x - px[i]) / (nx - px[i])) * (ny - py[i]);
 						let pass = m.open === true || (m.pores ?? []).some((r) => inside(yc, r));
 						if (!pass && !was && inside(yc, m.pump) && this.pumpOn && this.atpNow >= 1) {
 							pass = true;
@@ -200,6 +207,11 @@ export class Walkers {
 			this.atpNow = Math.min(this.atpMax, this.atpNow + this.refill / this.fps);
 			this.xs.push(x);
 			this.ys.push(y);
+			const old = this.xs.length - 61;
+			if (old > this.keep) {
+				this.xs[old] = EMPTY;
+				this.ys[old] = EMPTY;
+			}
 			this.toRight.push(toR);
 			this.toLeft.push(toL);
 			this.pumped.push(pumped);
@@ -223,6 +235,7 @@ export function dyeBox(celsius: number, seed = 7, line = false) {
 		h: BOX.h,
 		D: dyeD(celsius),
 		seed,
+		keep: 450,
 		membrane: line ? { x: BOX.w / 2, open: true } : undefined,
 		start: (_, r) => {
 			// uniformly over a quarter disc of radius DROP.r in the corner
@@ -358,9 +371,9 @@ export const saltOsm = (percent: number) => ((percent * 10) / 58.44) * 2 * 0.93 
 export const sugarOsm = (molar: number) => molar * 1000;
 
 export const RBC = {
-	/** Normal volume, fL (BioNumbers 101711). */
+	/** Normal volume, fL (BioNumbers 115152). */
 	v0: 90,
-	/** Membrane area, µm²: the membrane hardly stretches (BioNumbers 101711). */
+	/** Membrane area, µm²: the membrane hardly stretches (BioNumbers 107602). */
 	area: 140,
 	/** Osmotically inactive fraction of the normal volume (LeFevre 1964). */
 	b: 0.4
@@ -413,7 +426,7 @@ export interface PlantCell {
 export function potatoCell(osm: number): PlantCell {
 	const out = osmMPa(osm);
 	const sap = (v: number) => (POTATO.pi0 * (1 - POTATO.b)) / (v - POTATO.b);
-	const turgor = (v: number) => Math.max(0, (POTATO.eps * (v - POTATO_TOUCH)) / POTATO_TOUCH);
+	const turgor = (v: number) => Math.max(0, POTATO.eps * (v - POTATO_TOUCH));
 	let lo = POTATO.b + 1e-6;
 	let hi = 3;
 	for (let i = 0; i < 80; i++) {
@@ -448,6 +461,7 @@ export function pumpBox(seed = 3) {
 		h: b.h,
 		D: b.D,
 		seed,
+		keep: 0,
 		atp: b.atp,
 		membrane: { x: b.w / 2, pores: [b.pore], pump: b.pump },
 		start: (_, r) => [r() * b.w, r() * b.h]

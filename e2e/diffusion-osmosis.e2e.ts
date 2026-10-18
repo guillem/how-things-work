@@ -33,13 +33,13 @@ test('warmer water spreads the dye faster, and distance costs time as its square
 	expect(await read(page, 'D =')).toBeLessThan(0.00025);
 });
 
-test('the net flow is the difference of the two crossing counts', async ({ page }) => {
+test('the dye moved right is the difference of the two crossing counts', async ({ page }) => {
 	await page.goto('./diffusion-osmosis/#counting');
 	const right = await read(page, 'crossed the line → :');
 	const left = await read(page, 'crossed the line ← :');
 	expect(left).toBeGreaterThan(0);
 	expect(right).toBeGreaterThan(left);
-	expect(await read(page, 'net flow to the right:')).toBe(right - left);
+	expect(await read(page, 'net moved right since the drop:')).toBe(right - left);
 });
 
 test(
@@ -75,7 +75,7 @@ test('a potato cell firms up in pure water and pulls away from its wall in stron
 }) => {
 	await page.goto('./diffusion-osmosis/#potato');
 	await expect(stage(page)).toContainText('potato cell: firm');
-	await expect(stage(page)).toContainText('+11 %');
+	await expect(stage(page)).toContainText('+12 %');
 	await range(page, 'sucrose').fill('1');
 	await expect(stage(page)).toContainText('pulls away from the wall');
 });

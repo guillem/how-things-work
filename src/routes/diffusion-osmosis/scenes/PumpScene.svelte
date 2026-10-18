@@ -26,7 +26,6 @@
 	const restarts = $derived(Number(params.restart ?? 0));
 
 	const REFILL = 6;
-	const MAXT = 180;
 	const STILL = $derived(upkeep ? 60 : 30);
 
 	// ---- geometry ------------------------------------------------------------------------------
@@ -58,7 +57,7 @@
 		const sim = memo.sim!;
 		sim.pumpOn = pumpOn;
 		sim.refill = respire ? REFILL : 0;
-		const simT = reduced ? STILL : Math.min(MAXT, t - memo.start);
+		const simT = reduced ? STILL : Math.max(0, t - memo.start);
 		const f = simT * sim.fps;
 		const k = sim.at(Math.floor(f) + 1) - 1;
 		return { sim, simT, k, u: clamp(f - k, 0, 1) };

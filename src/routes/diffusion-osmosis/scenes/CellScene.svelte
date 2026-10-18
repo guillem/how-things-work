@@ -366,14 +366,14 @@
 		<Label
 			x={GX0}
 			y={120}
-			text={blood ? 'settled volume of the cell' : 'change in mass of potato pieces'}
+			text={blood ? 'settled volume of the cell' : 'change in volume of the potato cells'}
 			size={13}
 			weight={600}
 			anchor="start"
 		/>
 	</Readout>
 	{#if !blood}
-		<Readout id="mass" order={4} label="Mass change" value={signed(plant.v - 1)}>
+		<Readout id="mass" order={4} label="Volume change" value={signed(plant.v - 1)}>
 			<Label
 				x={GX0}
 				y={140}
