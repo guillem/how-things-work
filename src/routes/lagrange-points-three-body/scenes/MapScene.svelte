@@ -601,12 +601,12 @@
 					tabular
 				/>
 			</Readout>
-			<Readout id="zvc-gates" order={3} label="Gates" value={gatesOf(level)}>
+			<Readout id="zvc-gates" order={3} label="Gates" value={gatesOf(mu, Cj)}>
 				<Label
 					x={INSET_BOX.x0}
 					y={384}
 					anchor="start"
-					text={gatesOf(level)}
+					text={gatesOf(mu, Cj)}
 					size={13}
 					weight={600}
 					color={C.forbiddenEdge}

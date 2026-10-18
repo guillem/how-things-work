@@ -91,7 +91,7 @@
 			d: lg(dist(i))
 		}))
 	);
-	/** The linear theory: δ e^{λt}. */
+	/** A reference line with the growing mode’s slope, δ e^{λt} (the release at rest also excites other modes). */
 	const theory = $derived([
 		{ t: 0, d: lg(delta) },
 		{ t: tEnd, d: lg(delta) + (lambda * tEnd) / Math.LN10 }
@@ -249,7 +249,7 @@
 			x={R.x0 - 60}
 			y={506}
 			anchor="start"
-			text="dashed: the linear theory, ×e every {eFold}"
+			text="dashed: the growing mode’s slope, ×e every {eFold}"
 			size={12}
 			muted
 			tabular

@@ -206,7 +206,7 @@ A topic is done when:
 - [x] dark-matter
 - [x] big-bang
 - [x] exoplanets
-- [ ] lagrange-points-three-body
+- [x] lagrange-points-three-body
 
 **Computing**
 - [x] binary

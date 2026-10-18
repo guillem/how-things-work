@@ -165,7 +165,7 @@
 			x={MAIN.x0 + 14}
 			y={MAIN.y1 - 14}
 			anchor="start"
-			text="lines: the last 30 days of each path; shaded: forbidden to both"
+			text="lines: the last 30 days of each path; shaded: forbidden to A"
 			size={11}
 			muted
 		/>

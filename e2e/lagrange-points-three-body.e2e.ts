@@ -4,6 +4,7 @@
 // Sun–Jupiter tadpole with its 148-year swing, Routh's limit, the drop handle, and two probes a
 // nudge apart splitting. Reduced motion (each run shown whole), keyboard and select controls.
 import { expect, test, type Page } from '@playwright/test';
+import { playUntil } from './play';
 
 const stage = (page: Page) => page.locator('.stage svg > g');
 const range = (page: Page, id: string) => page.locator(`input[type=range][data-control="${id}"]`);
@@ -49,6 +50,9 @@ test('raising the energy opens the gates at L1, L2 and L3 in turn', async ({ pag
 	await page.goto('./lagrange-points-three-body/#gates');
 	await expect(stage(page)).toContainText('every gate shut');
 	await expect(stage(page)).toContainText('C at L1 = 3.2003 · shut');
+	// exactly at the mark the gate is still shut; just past it, open
+	await range(page, 'energy').fill('1');
+	await expect(stage(page)).toContainText('every gate shut');
 	await range(page, 'energy').fill('1.5');
 	await expect(stage(page)).toContainText('gate at L1 open');
 	await expect(stage(page)).toContainText('C at L1 = 3.2003 · open');
@@ -67,10 +71,10 @@ test('a probe dropped off Sun–Earth L1 drifts away, by e every 23 days', async
 	await expect(stage(page)).toContainText(/[0-9.,]+ (million )?km from L1/);
 });
 
-test('near L4 a probe swings in a tadpole; Jupiter’s takes about 148 years', async ({ page }) => {
+test('near L4 a probe swings in a tadpole; Jupiter’s takes about 147 years', async ({ page }) => {
 	await page.goto('./lagrange-points-three-body/#tadpole');
 	await choose(page, 'system', 'sun-jupiter');
-	await expect(stage(page)).toContainText('one small swing ≈ 148 years');
+	await expect(stage(page)).toContainText('one small swing ≈ 147 years');
 	await expect(stage(page)).toContainText('still circling L4');
 	// the drop handle follows the keyboard and moves the slider
 	await page.getByRole('slider', { name: 'Drop point along the orbit' }).focus();
@@ -110,4 +114,17 @@ test('the turning frame can be switched off', async ({ page }) => {
 	await page.locator('input[type=checkbox][data-control="rotating"]').focus();
 	await page.keyboard.press('Space');
 	await expect(stage(page)).toContainText('from the stars: the two circle their centre of mass');
+});
+
+test.describe('in motion', () => {
+	test.use({ reducedMotion: 'no-preference' });
+
+	test('a Jupiter tadpole goes on for as long as the reader waits', async ({ page }) => {
+		await page.clock.install();
+		await page.goto('./lagrange-points-three-body/#tadpole');
+		await choose(page, 'system', 'sun-jupiter');
+		// one stretch of the run is about 660 years; it goes on past it, still circling
+		await playUntil(page, stage(page), /after 1,[0-9]{3} years/, 90_000);
+		await expect(stage(page)).toContainText('still circling L4');
+	});
 });

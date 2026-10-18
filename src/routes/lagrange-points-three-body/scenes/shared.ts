@@ -63,13 +63,15 @@ export function jacobiOfLevel(mu: number, e: number): number {
 	return lo + (hi - lo) * Math.min(1, span);
 }
 
-/** Which gates a probe of this energy level can pass. */
-export function gatesOf(e: number): string {
-	if (e < 1) return 'every gate shut';
-	if (e < 2) return 'gate at L1 open';
-	if (e < 3) return 'gates at L1 and L2 open';
-	if (e < 4) return 'gates at L1, L2 and L3 open';
-	return 'no forbidden region left';
+/** Which gates a probe with Jacobi constant C can pass: those where C is below the point's. */
+export function gatesOf(mu: number, C: number): string {
+	const c = criticalC(mu);
+	if (C < 3) return 'no forbidden region left';
+	const open = (['L1', 'L2', 'L3'] as const).filter((id) => C < c[id]);
+	if (open.length === 0) return 'every gate shut';
+	if (open.length === 1) return `gate at ${open[0]} open`;
+	if (open.length === 2) return `gates at ${open[0]} and ${open[1]} open`;
+	return 'gates at L1, L2 and L3 open';
 }
 
 // ---------------------------------------------------------------- views

@@ -29,7 +29,7 @@ import {
 	separation,
 	type State
 } from '../src/routes/lagrange-points-three-body/model';
-import { jacobiOfLevel } from '../src/routes/lagrange-points-three-body/scenes/shared';
+import { gatesOf, jacobiOfLevel } from '../src/routes/lagrange-points-three-body/scenes/shared';
 
 const SE = SYSTEMS['sun-earth'];
 const EM = SYSTEMS['earth-moon'];
@@ -127,6 +127,13 @@ test('critical Jacobi constants: C1 > C2 > C3 > C4 = C5 = 3', () => {
 	}
 	// Earth–Moon C1 ≈ 3.2003 (Koon, Lo, Marsden & Ross, Dynamical Systems, the Three-Body Problem and Space Mission Design, with E = −C/2)
 	expect(criticalC(EM.mu).L1).toBeCloseTo(3.2003, 3);
+	// equal masses: C2 = C3, so the two outer gates open together
+	const half = criticalC(0.5);
+	expect(half.L2).toBeCloseTo(half.L3, 10);
+	expect(gatesOf(0.5, half.L2 - 1e-6)).toBe('gates at L1, L2 and L3 open');
+	// the gate summary follows the real C: exactly at C1 the gate is still shut
+	expect(gatesOf(EM.mu, criticalC(EM.mu).L1)).toBe('every gate shut');
+	expect(gatesOf(EM.mu, criticalC(EM.mu).L1 - 1e-9)).toBe('gate at L1 open');
 	// the energy slider's marks fall on the critical values
 	const c = criticalC(EM.mu);
 	expect(jacobiOfLevel(EM.mu, 1)).toBeCloseTo(c.L1, 12);
@@ -155,11 +162,12 @@ test('the integrator keeps the Jacobi constant through a year of close passes', 
 	expect(nearMoon && nearEarth).toBe(true);
 });
 
-test('L1 is unstable: an offset grows by e every 23 days at Sun–Earth, 1.5 days at Earth–Moon', () => {
+test('L1 is unstable: an offset grows by e every 23 days at Sun–Earth, 1.5 and 2.0 days at Earth–Moon L1 and L2', () => {
 	const L = lagrangePoints(SE.mu);
 	expect(daysPerUnit(SE) / growthRate(SE.mu, L.L1)).toBeCloseTo(23, 0);
 	expect(daysPerUnit(SE) / growthRate(SE.mu, L.L2)).toBeCloseTo(23, 0);
 	expect(daysPerUnit(EM) / growthRate(EM.mu, lagrangePoints(EM.mu).L1)).toBeCloseTo(1.5, 1);
+	expect(daysPerUnit(EM) / growthRate(EM.mu, lagrangePoints(EM.mu).L2)).toBeCloseTo(2.0, 1);
 	// integrated: 1,000 km off Sun–Earth L1, more than 100,000 km off after four months
 	const p = integrate(SE.mu, restingAt(L.L1, 1000 / SE.a), 120 / daysPerUnit(SE), 121);
 	const i = p.n - 1;

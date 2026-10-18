@@ -2,15 +2,17 @@
 	/**
 	 * A probe dropped at rest in the turning frame on the small body's orbit, near L4, over the
 	 * whole system. `mode` 'tadpole': the pair from the `system` select, the drop point dragged
-	 * along the orbit (the `lead` slider, degrees ahead of the small body); the run lasts about four
-	 * libration periods (2π/√(27μ/4) to first order), revealed over 40 s. 'routh': a pair with the
+	 * along the circle of radius one separation round the large body (the `lead` slider, degrees
+	 * ahead of the small body); each stretch of the run lasts about four libration periods, revealed
+	 * over 40 s, and while the probe keeps circling the run goes on, stretch after stretch,
+	 * integrated from where the last one ended, for as long as the reader stays. 'routh': a pair with the
 	 * `routhMu` slider's mass ratio, the probe 1° ahead of L4, 120 turns revealed over 24 s; the
 	 * panel compares 27μ(1 − μ) with 1 and says whether the probe stayed.
 	 */
 	import { untrack } from 'svelte';
 	import { Handle, Label, clamp } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
-	import { ROUTH, angleFromBig, lagrangePoints, onOrbit } from '../model';
+	import { ROUTH, angleFromBig, integrate, lagrangePoints, onOrbit, type Path } from '../model';
 	import Pair from './Pair.svelte';
 	import {
 		C,
@@ -52,38 +54,87 @@
 	);
 	const stable = $derived(mu < ROUTH);
 
-	/** Libration period to first order, frame units. */
-	const tLib = $derived((2 * Math.PI) / Math.sqrt((27 * mu) / 4));
+	/**
+	 * Period of the slow (libration) mode of small swings round L4, frame units: the root
+	 * λ² = −(1 − √(1 − 27μ(1 − μ)))/2 of the linearised motion; none above Routh's limit.
+	 */
+	const tLib = $derived(
+		stable
+			? (2 * Math.PI) / Math.sqrt((1 - Math.sqrt(1 - 27 * mu * (1 - mu))) / 2)
+			: (2 * Math.PI) / Math.sqrt((27 * mu) / 4)
+	);
 	const tEnd = $derived(
 		mode === 'routh' ? 2 * Math.PI * 120 : Math.min(6000, 4 * tLib * (1 + (lead - 60) / 120))
 	);
 	const N = $derived(mode === 'routh' ? 6001 : 2401);
-	const path = $derived(
-		runCached(mu, onOrbit(mu, lead), tEnd, N, { ...radii(P), far: 3, k: 0.02 })
-	);
+	const opts = $derived({ ...radii(P), far: 3, k: 0.02 });
+	const path = $derived(runCached(mu, onOrbit(mu, lead), tEnd, N, opts));
 
 	/**
 	 * Has the probe strayed at sample i? routh: it has left L4's neighbourhood; tadpole: it has
 	 * left the orbit (a tadpole or a horseshoe stays close to it).
 	 */
-	const strayed = (i: number) => {
-		const x = path.xy[2 * i];
-		const y = path.xy[2 * i + 1];
+	const strayed = (p: Path, i: number) => {
+		const x = p.xy[2 * i];
+		const y = p.xy[2 * i + 1];
 		return mode === 'routh'
 			? Math.hypot(x - L.L4.x, y - L.L4.y) > 0.5
 			: Math.abs(Math.hypot(x + mu, y) - 1) > 0.25;
 	};
 	/** The run is drawn until a few orbits after the probe strays (after that it only scribbles). */
-	const last = $derived.by(() => {
-		for (let i = 0; i < path.n; i++) if (strayed(i)) return Math.min(path.n, i + (N - 1) / 30);
-		return path.n;
-	});
+	const lastOf = (p: Path) => {
+		for (let i = 0; i < p.n; i++) if (strayed(p, i)) return Math.min(p.n, i + (N - 1) / 30);
+		return p.n;
+	};
+
+	/**
+	 * The run in stretches of `tEnd`: stretch 0 is `path`, each next one integrated from the last
+	 * state of the one before (kept in a plain cache, rebuilt when the drop or the pair changes).
+	 * Only a tadpole or horseshoe run that has neither strayed nor ended goes on.
+	 */
+	let chainKey = '';
+	let chain: Path[] = [];
+	function stretch(k: number): Path {
+		const key = `${mu}|${lead}|${tEnd}|${N}`;
+		if (key !== chainKey || chain[0] !== path) {
+			chainKey = key;
+			chain = [path];
+		}
+		while (chain.length <= k) {
+			const prev = chain[chain.length - 1];
+			chain.push(integrate(mu, prev.last, tEnd, N, opts));
+		}
+		return chain[k];
+	}
+	const goesOn = $derived(
+		mode === 'tadpole' && path.end === null && lastOf(path) === path.n && !reduced
+	);
 	const RUN_SECONDS = $derived(mode === 'routh' ? 24 : 40);
+	const u = $derived(Math.max(0, (t - 0.5) / RUN_SECONDS));
+	/** Which stretch is being drawn, and the one before it (drawn whole, for the trail). */
+	const k = $derived.by(() => {
+		if (!goesOn) return 0;
+		let j = Math.floor(u);
+		// stop at a stretch where the probe strays or the run ends
+		for (let i = 1; i <= j; i++) {
+			const p = stretch(i - 1);
+			if (p.end !== null || lastOf(p) < p.n) return i - 1;
+		}
+		return j;
+	});
+	const cur = $derived(stretch(k));
+	const prev = $derived(k > 0 ? stretch(k - 1) : null);
+	const last = $derived(lastOf(cur));
 	const shown = $derived(
-		reduced ? last : Math.min(last, Math.max(2, Math.ceil(clamp((t - 0.5) / RUN_SECONDS) * path.n)))
+		reduced
+			? last
+			: Math.min(
+					last,
+					Math.max(2, Math.ceil((goesOn && Math.floor(u) <= k ? u - k : clamp(u)) * cur.n))
+				)
 	);
 	const iNow = $derived(Math.max(0, shown - 1));
-	const head = $derived({ X: sx(MAIN, path.xy[2 * iNow]), Y: sy(MAIN, path.xy[2 * iNow + 1]) });
+	const head = $derived({ X: sx(MAIN, cur.xy[2 * iNow]), Y: sy(MAIN, cur.xy[2 * iNow + 1]) });
 
 	// how far it has strayed: the angles it swept, and its distance from L4
 	const sweep = $derived.by(() => {
@@ -91,23 +142,27 @@
 		let hi = -360;
 		let far = 0;
 		let leftAt = -1;
-		for (let i = 0; i < shown; i++) {
-			const x = path.xy[2 * i];
-			const y = path.xy[2 * i + 1];
-			let a = angleFromBig(mu, x, y);
-			if (a < -90) a += 360;
-			lo = Math.min(lo, a);
-			hi = Math.max(hi, a);
-			far = Math.max(far, Math.hypot(x - L.L4.x, y - L.L4.y));
-			if (leftAt < 0 && strayed(i)) leftAt = i;
-		}
+		const scan = (p: Path, n: number) => {
+			for (let i = 0; i < n; i++) {
+				const x = p.xy[2 * i];
+				const y = p.xy[2 * i + 1];
+				let a = angleFromBig(mu, x, y);
+				if (a < -90) a += 360;
+				lo = Math.min(lo, a);
+				hi = Math.max(hi, a);
+				far = Math.max(far, Math.hypot(x - L.L4.x, y - L.L4.y));
+				if (p === cur && leftAt < 0 && strayed(p, i)) leftAt = i;
+			}
+		};
+		if (prev) scan(prev, prev.n);
+		scan(cur, shown);
 		return { lo, hi, far, leftAt };
 	});
-	const crashed = $derived(path.end !== null && last === path.n && shown >= path.n);
+	const crashed = $derived(cur.end !== null && last === cur.n && shown >= cur.n);
 	const escaped = $derived(sweep.leftAt >= 0 || crashed);
 	/** Past L3 onto the L5 side: a horseshoe. */
 	const horseshoe = $derived(!escaped && sweep.hi > 190);
-	const turnsAt = (i: number) => path.t[i] / (2 * Math.PI);
+	const turnsAt = (i: number) => (k * tEnd + cur.t[i]) / (2 * Math.PI);
 
 	// ---- the drop handle on the orbit -------------------------------------------
 	const dropP = $derived(onOrbit(mu, lead));
@@ -129,7 +184,7 @@
 		k: (ZBOX.x1 - ZBOX.x0) / 0.36,
 		...ZBOX
 	});
-	const zHead = $derived({ X: sx(zoom, path.xy[2 * iNow]), Y: sy(zoom, path.xy[2 * iNow + 1]) });
+	const zHead = $derived({ X: sx(zoom, cur.xy[2 * iNow]), Y: sy(zoom, cur.xy[2 * iNow + 1]) });
 	const zIn = $derived(
 		zHead.X > ZBOX.x0 && zHead.X < ZBOX.x1 && zHead.Y > ZBOX.y0 && zHead.Y < ZBOX.y1
 	);
@@ -137,7 +192,7 @@
 	const bigR = $derived(clamp(9 + 8 * (1 - mu), 9, 16));
 	const smallR = $derived(clamp(4 + 14 * Math.cbrt(mu), 4, Math.min(14, bigR)));
 	const product = $derived(27 * mu * (1 - mu));
-	const elapsed = $derived(fmtTime(P, path.t[iNow]));
+	const elapsed = $derived(fmtTime(P, k * tEnd + cur.t[iNow]));
 </script>
 
 <g>
@@ -156,8 +211,31 @@
 			stroke-width="1"
 			stroke-dasharray="4 5"
 		/>
+		<!-- the circle the probe is dropped on: one separation from the large body -->
+		{#if mode === 'tadpole'}
+			<circle
+				cx={sx(MAIN, -mu)}
+				cy={sy(MAIN, 0)}
+				r={MAIN.k}
+				fill="none"
+				stroke={C.probe}
+				stroke-width="1"
+				stroke-dasharray="1 4"
+				opacity="0.6"
+			/>
+		{/if}
+		{#if prev}
+			<path
+				d={pathD(MAIN, prev, 0, prev.n)}
+				fill="none"
+				stroke={C.probe}
+				stroke-width="1.3"
+				opacity="0.8"
+				stroke-linejoin="round"
+			/>
+		{/if}
 		<path
-			d={pathD(MAIN, path, 0, shown)}
+			d={pathD(MAIN, cur, 0, shown)}
 			fill="none"
 			stroke={C.probe}
 			stroke-width="1.3"
@@ -301,7 +379,7 @@
 				x={668}
 				y={184}
 				anchor="start"
-				text="one small swing ≈ {fmtTime(P, tLib)}"
+				text={stable ? `one small swing ≈ ${fmtTime(P, tLib)}` : 'no stable small swing round L4'}
 				size={12}
 				muted
 				halo={false}
@@ -328,7 +406,7 @@
 			label="Probe"
 			value="left {mode === 'routh' ? 'L4' : 'the orbit'} after {fmtTime(
 				P,
-				path.t[Math.max(0, sweep.leftAt)]
+				k * tEnd + cur.t[Math.max(0, sweep.leftAt)]
 			)}"
 			color={C.point}
 		>
@@ -336,9 +414,9 @@
 				x={668}
 				y={242}
 				anchor="start"
-				text={crashed && (path.end === 'hit-big' || path.end === 'hit-small')
-					? `it hit the ${path.end === 'hit-big' ? P.big : P.small}`
-					: `it left ${mode === 'routh' ? 'L4' : 'the orbit'} after ${fmtTime(P, path.t[Math.max(0, sweep.leftAt)])}`}
+				text={crashed && (cur.end === 'hit-big' || cur.end === 'hit-small')
+					? `it hit the ${cur.end === 'hit-big' ? P.big : P.small}`
+					: `it left ${mode === 'routh' ? 'L4' : 'the orbit'} after ${fmtTime(P, k * tEnd + cur.t[Math.max(0, sweep.leftAt)])}`}
 				size={13}
 				weight={600}
 				color={C.pointText}
@@ -445,7 +523,7 @@
 				stroke-dasharray="4 5"
 			/>
 			<path
-				d={pathD(zoom, path, 0, shown)}
+				d={pathD(zoom, cur, 0, shown)}
 				fill="none"
 				stroke={C.probe}
 				stroke-width="1.2"

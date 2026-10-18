@@ -1,5 +1,5 @@
 import type { Control, ExplainerSpec } from '#lib/explainer/index.ts';
-import { LOGMU_MAX, LOGMU_MIN, gatesOf } from './scenes/shared';
+import { LOGMU_MAX, LOGMU_MIN } from './scenes/shared';
 
 const system: Control = {
 	type: 'select',
@@ -48,8 +48,8 @@ const energy: Control = {
 	max: 4.5,
 	step: 0.01,
 	default: 0.5,
-	format: gatesOf,
-	help: 'Higher energy is a lower Jacobi constant C. At the marks 1, 2, 3 and 4, C equals its value at L1, L2, L3 and L4/L5.'
+	format: (v) => v.toFixed(2),
+	help: 'Higher energy is a lower Jacobi constant C. At the marks 1, 2, 3 and 4, C equals its value at L1, L2, L3 and L4/L5; just past a mark, that gate is open.'
 };
 
 const drop: Control = {
@@ -72,7 +72,7 @@ const lead: Control = {
 	step: 1,
 	default: 75,
 	format: (v) => `${v.toFixed(0)}°`,
-	help: 'Along the small body’s orbit, at rest in the turning frame. L4 is at 60°.'
+	help: 'At one separation from the large body (the dotted circle), at rest in the turning frame. L4 is at 60°.'
 };
 
 const routhMu: Control = {
@@ -130,9 +130,9 @@ export const spec: ExplainerSpec = {
 			duration: 24,
 			controls: [rotating, system, logmu],
 			body: `
-<p>Two bodies on their own follow Kepler’s ellipses exactly. Add a third and the motion has no general formula: Bruns and Poincaré proved around 1890 that, beyond energy, momentum and angular momentum, it has no further conserved quantities of the kind that let the two-body problem be solved in closed form. What can be done is to simplify it to the <dfn data-def="Two bodies on circular orbits about their centre of mass, and a third too light to disturb them, moving in the same plane.">circular restricted three-body problem</dfn>: two large bodies of masses 1 − μ and μ circle their centre of mass, and a probe moves among them without pulling on either.</p>
+<p>Two bodies on their own have an exact solution, Kepler’s: bound, non-colliding orbits are ellipses. Add a third and the motion has no general formula: Bruns and Poincaré proved around 1890 that, beyond energy, momentum and angular momentum, it has no further conserved quantities of the kind that let the two-body problem be solved in closed form. What can be done is to simplify it to the <dfn data-def="Two bodies on circular orbits about their centre of mass, and a third too light to disturb them, moving in the same plane.">circular restricted three-body problem</dfn>: two large bodies of masses 1 − μ and μ circle their centre of mass, and a probe moves among them without pulling on either.</p>
 <p>The trick is to watch from the frame that turns with the two bodies. Switch it on and off: from the stars, the Earth and the Moon circle each other every 27.3 days; in the turning frame they stand still on a line, and only the probe moves. The price is two fictitious forces on the probe, the <dfn data-def="In a rotating frame, the outward push mω²r felt by every body at distance r from the axis.">centrifugal</dfn> push away from the axis and the <dfn data-def="In a rotating frame, a sideways push −2m ω × v on every moving body, at right angles to its velocity.">Coriolis</dfn> force, sideways to the probe’s velocity.</p>`,
-			notes: `<p>In units where the separation, the total mass, G and the angular speed are 1, the large body sits at (−μ, 0), the small one at (1 − μ, 0), and the probe obeys <span class="formula">ẍ − 2ẏ = ∂Ω/∂x, ÿ + 2ẋ = ∂Ω/∂y</span>, with the effective potential <span class="formula">Ω = ½(x² + y²) + (1 − μ)/r₁ + μ/r₂</span> (plus the constant ½μ(1 − μ), which makes the numbers below tidier). The terms −2ẏ and +2ẋ are the Coriolis force; ½(x² + y²) is the centrifugal potential. The page integrates these equations with a fourth-order Runge–Kutta method whose step shrinks near either body. “No formula” is a precise claim: in 1912 Sundman found a series that converges for all time, but it converges so slowly that it predicts nothing in practice, and the problem has no general closed-form solution.</p>`
+			notes: `<p>In units where the separation, the total mass, G and the angular speed are 1, the large body sits at (−μ, 0), the small one at (1 − μ, 0), and the probe obeys <span class="formula">ẍ − 2ẏ = ∂Ω/∂x, ÿ + 2ẋ = ∂Ω/∂y</span>, with the effective potential <span class="formula">Ω = ½(x² + y²) + (1 − μ)/r₁ + μ/r₂</span> (plus the constant ½μ(1 − μ), which makes the numbers below tidier). The terms −2ẏ and +2ẋ are the Coriolis force; ½(x² + y²) is the centrifugal potential. The page integrates these equations with a fourth-order Runge–Kutta method whose step shrinks near either body. “No formula” is a precise claim: in 1912 Sundman found a series solution that converges for all time whenever the total angular momentum is not zero, but it converges so slowly that it predicts nothing in practice, and the problem has no general closed-form solution.</p>`
 		},
 		{
 			id: 'points',
@@ -154,9 +154,9 @@ export const spec: ExplainerSpec = {
 			scene: 'balance',
 			duration: 28,
 			body: `
-<p>L1 is often called the place where the Sun’s and Earth’s gravity cancel. It is not: they cancel about 260,000 km from Earth, well inside the Moon’s orbit. L1 is almost six times farther out, at 1.50 million km, and a probe there is far from weightless: it is in orbit round the Sun.</p>
+<p>L1 is often called the place where the Sun’s and Earth’s gravity cancel. It is not: they cancel about 260,000 km from Earth, well inside the Moon’s orbit. L1 is almost six times farther out, at 1.50 million km. Gravity there is far from zero: it supplies exactly the acceleration the probe’s orbit round the Sun needs (and, like any orbiting craft, the probe is in free fall).</p>
 <p>A body circling the Sun at 0.99 of Earth’s distance would, by Kepler’s third law, go round in 0.985 years and pull ahead of Earth. At L1, Earth’s pull partly offsets the Sun’s, leaving a little less than the Sun’s alone, and with that weaker pull a circle of that size takes exactly one year: the probe keeps pace. At L2, 1.01 of Earth’s distance, Earth’s pull <em>adds</em> to the Sun’s, and the stronger pull again gives exactly one year. The bars show the accelerations, in millimetres per second squared.</p>
-<p>That is why spacecraft use these points: SOHO has watched the Sun from L1 since 1996, and the James Webb Space Telescope looks away from the Sun, Earth and Moon at L2. Neither sits on the point itself; each circles it on a wide loop, a <dfn data-def="A periodic orbit around L1 or L2, out of the plane of the two bodies, that looks like a halo round the Sun or Earth.">halo orbit</dfn>, and fires its thrusters every few weeks.</p>`,
+<p>That is why spacecraft use these points: SOHO has watched the Sun from L1 since 1996, and the James Webb Space Telescope looks away from the Sun, Earth and Moon at L2. Neither sits on the point itself; each circles it on a wide loop, a <dfn data-def="A periodic orbit around L1 or L2, out of the plane of the two bodies, that looks like a halo round the Sun or Earth.">halo orbit</dfn>, and both need occasional station-keeping burns.</p>`,
 			notes: `<p>Seen from the stars at the moment shown, the probe at L1 needs a centripetal acceleration ω²r towards the centre of mass, with ω = 2π per year and r its distance from the centre of mass. The Sun supplies G M<sub>☉</sub>/r₁², Earth takes away G M<sub>⊕</sub>/r₂²; at L1 the difference equals ω²r exactly. The numbers on the stage come from the page’s model with the Sun’s and Earth’s (plus Moon’s) masses, so they include the small shift of the centre of mass. The thrusters are needed because L1 and L2 are unstable (next chapter): JWST plans a station-keeping burn about every three weeks.</p>`
 		},
 		// ------------------------------------------------------------------ energy
@@ -185,7 +185,7 @@ export const spec: ExplainerSpec = {
 			controls: [energy, system, logmu],
 			body: `
 <p>Raise the energy past the mark 1 and the region round the large body and the region round the small one touch at L1: a gate opens, and the probe can cross from one to the other. Past 2 a second gate opens at L2, and the probe can leave the pair altogether. Past 3 the gate behind the large body opens at L3, and past 4 (C = 3, the value at L4 and L5) nothing in the plane is forbidden.</p>
-<p>The gates open in this order because the Jacobi constant of a probe at rest is highest at L1 and lowest at L4 and L5: C1 &gt; C2 &gt; C3 &gt; C4 = C5 = 3. The inset follows the necks round the small body. Low-energy paths through these gates are how comets are briefly captured by Jupiter and how spacecraft travel between the Earth–Moon and Sun–Earth points on very little fuel.</p>`,
+<p>The gates open in this order because the Jacobi constant of a probe at rest is highest at L1 and lowest at L4 and L5: C1 &gt; C2 &gt; C3 &gt; C4 = C5 = 3 for unequal masses (for equal masses C2 = C3, and the two outer gates open together). The inset follows the necks round the small body. Low-energy paths through these gates are how comets are briefly captured by Jupiter and how spacecraft travel between the Earth–Moon and Sun–Earth points on very little fuel.</p>`,
 			notes: `<p>A probe just past a gate does not pass through it at once: the open neck is narrow and only paths aimed at it get through. The bundles of paths that do are organised by the unstable orbits round L1 and L2, a structure studied by Conley (1968) and later used to plan the Genesis mission’s trajectory.</p>`
 		},
 		// ------------------------------------------------------------------ stability
@@ -197,7 +197,7 @@ export const spec: ExplainerSpec = {
 			duration: 26,
 			controls: [drop, system, logmu],
 			body: `
-<p>Drop a probe 1,000 km from L1 at rest, and watch it drift away. L1, L2 and L3 are passes (saddles) of the potential energy, and the Coriolis force cannot hold a probe on a pass: any small offset grows exponentially, by a factor e every 23 days near Sun–Earth L1 or L2, and every 1.5 days near the Moon’s. After four months a probe dropped 1,000 km from Sun–Earth L1 is 100,000 km away; near the Moon it is tens of thousands of kilometres off within a week.</p>
+<p>Drop a probe 1,000 km from L1 at rest, and watch it drift away. L1, L2 and L3 are passes (saddles) of the potential energy, and the Coriolis force cannot hold a probe on a pass: a generic offset contains a part that grows exponentially, by a factor e every 23 days near Sun–Earth L1 or L2, every 1.5 days at Earth–Moon L1 and 2.0 days at its L2. After four months a probe dropped 1,000 km from Sun–Earth L1 is 100,000 km away; near the Moon it is tens of thousands of kilometres off within a week.</p>
 <p>That is the station-keeping JWST needs: it notes where it is drifting and fires its thrusters every few weeks, before the error has grown. It also explains why so little dust or debris collects at L1 and L2.</p>`,
 			notes: `<p>Linearise the equations round a point: small offsets grow as e<sup>λt</sup>, with λ from λ⁴ + (4 − Ω<sub>xx</sub> − Ω<sub>yy</sub>)λ² + Ω<sub>xx</sub>Ω<sub>yy</sub> − Ω<sub>xy</sub>² = 0. At the collinear points the product Ω<sub>xx</sub>Ω<sub>yy</sub> is negative, so one root λ² is positive: a real, growing λ ≈ 2.5 per unit time (2π is one turn) for small μ, which is the 23 days at Sun–Earth. The same equation also has an oscillating pair of roots; halo and Lissajous orbits are built on them.</p>`
 		},
@@ -237,9 +237,9 @@ export const spec: ExplainerSpec = {
 			duration: 32,
 			controls: [nudge],
 			body: `
-<p>Away from the five points the restricted problem is chaotic. Two probes start between the Earth and the Moon, the second 1 km from the first, with the same velocity and enough energy to pass the L1 gate. For months they fly as one; then a close pass by the Moon sends them on different paths, and within weeks they are hundreds of thousands of kilometres apart.</p>
-<p>Make the nudge smaller: 1 metre instead of 1 km buys only about four more months together. The gap grows exponentially between encounters, so each tenfold improvement in where the probe starts adds a roughly fixed span of time to the forecast. That, not the lack of a formula, is what makes the three-body problem unpredictable: a computer can follow any one path as closely as you like, but no measurement is good enough to say which path a real body is on, far ahead.</p>`,
-			notes: `<p>The Jacobi constant still holds both probes inside the same region (the shading, with only the L1 gate open), so chaos here is confined: neither can leave the Earth and the Moon. Spacecraft on such paths are steered by small corrections, which is cheap precisely because the paths are so sensitive. The general three-body problem, with all three masses free, adds more chaos still: the solar system itself is chaotic over tens of millions of years (Laskar, 1989).</p>`
+<p>The restricted problem has both regular paths, like the tadpoles, and chaotic ones. Two probes start between the Earth and the Moon, the second 1 km from the first, with the same velocity and enough energy to pass the L1 gate. For months they fly as one; then a close pass by the Moon sends them on different paths, and within weeks they are hundreds of thousands of kilometres apart.</p>
+<p>Make the nudge smaller: 1 metre instead of 1 km buys only about four more months together. The gap grows exponentially between encounters, so each tenfold improvement in where the probe starts adds a roughly fixed span of time to the forecast. That, not the lack of a formula, is what limits long-term predictions of chaotic paths: a computer can follow any one path as closely as you like, but no measurement is good enough to say which path a real body is on, far ahead.</p>`,
+			notes: `<p>Starting at different places with the same velocity, the probes have slightly different Jacobi constants (the shading is A’s, with only the L1 gate open), but both stay above C2, so chaos here is confined: neither can leave the Earth and the Moon. Spacecraft on such paths are steered by small corrections, which is cheap precisely because the paths are so sensitive. The general three-body problem, with all three masses free, adds more chaos still: the solar system itself is chaotic over tens of millions of years (Laskar, 1989).</p>`
 		}
 	]
 };
