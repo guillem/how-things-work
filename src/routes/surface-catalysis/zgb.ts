@@ -13,7 +13,7 @@
  *     onto them as two O atoms if both are empty.
  *
  * A newly adsorbed particle reacts at once with a neighbour of the other kind, if it has one
- * (neighbours checked in random order): CO + O → CO₂, which leaves, freeing both sites. The
+ * (one chosen at random if it has several): CO + O → CO₂, which leaves, freeing both sites. The
  * reaction is instantaneous, as in the original model. Time is counted in Monte Carlo steps
  * (MCS): N trials on a lattice of N sites.
  *
@@ -90,21 +90,24 @@ export class Surface {
 	}
 
 	/**
-	 * Site i has just received a particle: if a neighbour holds the other kind, the first such
-	 * neighbour (in a random order) reacts with it and both sites are freed.
+	 * Site i has just received a particle: if any neighbours hold the other kind, one of them,
+	 * chosen uniformly at random, reacts with it and both sites are freed. Returns the partner's
+	 * site, or −1 if there was none.
 	 */
-	private react(i: number, partner: number, record: boolean) {
-		const start = Math.floor(this.rand() * 4);
+	react(i: number, partner: number, record = false) {
+		let count = 0;
+		let chosen = -1;
+		// reservoir sampling: each eligible neighbour ends up chosen with probability 1 / count
 		for (let d = 0; d < 4; d++) {
-			const j = this.nb[i * 4 + ((start + d) & 3)];
-			if (this.s[j] === partner) {
-				this.s[i] = EMPTY;
-				this.s[j] = EMPTY;
-				this.co2++;
-				if (record) this.last.reacted.push([i, j]);
-				return;
-			}
+			const j = this.nb[i * 4 + d];
+			if (this.s[j] === partner && this.rand() * ++count < 1) chosen = j;
 		}
+		if (chosen < 0) return -1;
+		this.s[i] = EMPTY;
+		this.s[chosen] = EMPTY;
+		this.co2++;
+		if (record) this.last.reacted.push([i, chosen]);
+		return chosen;
 	}
 
 	/** One trial at CO fraction y and desorption probability k. */

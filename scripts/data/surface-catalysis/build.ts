@@ -12,11 +12,7 @@
 import { writeFileSync } from 'node:fs';
 import { availableParallelism } from 'node:os';
 import { Worker, isMainThread, parentPort, workerData } from 'node:worker_threads';
-import {
-	meanField,
-	steady,
-	type SteadyState
-} from '../../../src/routes/surface-catalysis/zgb.ts';
+import { meanField, steady, type SteadyState } from '../../../src/routes/surface-catalysis/zgb.ts';
 
 interface Job {
 	k: number;
@@ -31,11 +27,7 @@ const SEEDS = 2;
 if (isMainThread) {
 	const grid = (a: number, b: number, d: number) =>
 		Array.from({ length: Math.round((b - a) / d) + 1 }, (_, i) => round(a + i * d, 3));
-	const ys = [
-		...grid(0, 0.34, 0.02),
-		...grid(0.35, 0.65, 0.005),
-		...grid(0.66, 1, 0.02)
-	];
+	const ys = [...grid(0, 0.34, 0.02), ...grid(0.35, 0.65, 0.005), ...grid(0.66, 1, 0.02)];
 	const jobs: Job[] = [];
 	K_VALUES.forEach((k, a) =>
 		ys.forEach((y, i) => {

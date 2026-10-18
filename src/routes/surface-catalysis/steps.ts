@@ -64,13 +64,13 @@ export const spec: ExplainerSpec = {
 			duration: 30,
 			controls: [fraction('y_moves', 0.5)],
 			body: `
-<p>A platinum surface turns carbon monoxide and oxygen into carbon dioxide, 2CO + O₂ → 2CO₂, in every car’s catalytic converter. In the gas the two hardly react. On the metal both stick to <dfn data-def="A place on the surface where one molecule or atom can bind: here, one square of the grid.">sites</dfn>, and they react as neighbours: the <dfn data-def="A surface reaction between two species that are both adsorbed, held on neighbouring sites. Named after Irving Langmuir and Cyril Hinshelwood.">Langmuir–Hinshelwood mechanism</dfn>.</p>
+<p>A car’s catalytic converter uses platinum and palladium to turn carbon monoxide and oxygen into carbon dioxide, 2CO + O₂ → 2CO₂. In the gas the two hardly react. On the metal both stick to <dfn data-def="A place on the surface where one molecule or atom can bind: here, one square of the grid.">sites</dfn>, and they react as neighbours: the <dfn data-def="A surface reaction between two species that are both adsorbed, held on neighbouring sites. Named after Irving Langmuir and Cyril Hinshelwood.">Langmuir–Hinshelwood mechanism</dfn>.</p>
 <p>The <strong>Ziff–Gulari–Barshad model</strong> (1986) keeps only that. Molecules hit the surface at random, a fraction <b>y</b> of them CO and the rest O₂:</p>
 <ul><li><b>CO</b> lands on one empty site, or bounces off a full one;</li>
 <li><b>O₂</b> splits into two O atoms and needs <b>two</b> neighbouring empty sites;</li>
 <li>a CO next to an O reacts at once into <b>CO₂</b>, which leaves and frees both sites.</li></ul>
-<p>Here one molecule arrives every third of a second. A <dfn data-def="Monte Carlo step: as many arrivals as there are sites, so each site is hit about once. The model’s unit of time.">Monte Carlo step</dfn> (MCS) is one arrival per site.</p>`,
-			notes: `<p>The model leaves out almost everything about real platinum: no energies, no diffusion of the adsorbed atoms, an instantaneous reaction, CO that never leaves (until the last chapter). Its point is what those few rules do on their own. Gerhard Ertl’s experiments on how CO and oxygen behave on platinum won the 2007 Nobel Prize in Chemistry. No measured data are used on this page: every number is the model’s own, from the page’s simulations.</p>`
+<p>Opposite edges of the grid are joined: a site on one edge neighbours the matching site on the opposite edge, so every site has four neighbours. Here one molecule arrives every third of a second. A <dfn data-def="Monte Carlo step: as many arrivals as there are sites, so each site is hit about once. The model’s unit of time.">Monte Carlo step</dfn> (MCS) is one arrival per site.</p>`,
+			notes: `<p>The model leaves out almost everything about real platinum: no energies, no diffusion of the adsorbed atoms, an instantaneous reaction, CO that never leaves (until the last chapter). Its point is what those few rules do on their own. Gerhard Ertl’s experiments on how CO and oxygen behave on platinum won the 2007 Nobel Prize in Chemistry. The completely oxygen-covered dead end of the next chapter is an artefact of these simplified adsorption rules, not a prediction for real platinum. No measured data are used on this page: every number is the model’s own, from the page’s simulations.</p>`
 		},
 		{
 			id: 'turnover',
@@ -108,8 +108,8 @@ export const spec: ExplainerSpec = {
 			duration: 30,
 			controls: [fraction('y_ox', 0.33), restart('restart_ox')],
 			body: `
-<p>Lower the CO fraction to <b>y = 0.33</b>. CO arrives too rarely to clear the oxygen, red patches spread, and after a few hundred MCS every site holds an O atom. Then nothing can happen: CO needs an empty site, O₂ needs two, and there are none. The rate is zero, for good. The surface is <dfn data-def="Covered by something that blocks the reaction, so the catalyst stops working.">poisoned</dfn>, by one of its own reactants.</p>
-<p>This dead end starts below <strong>y₁ ≈ 0.387</strong>. Approaching it from above, the rate falls smoothly to zero (a continuous transition), and close to y₁ the surface takes longer and longer to die: at 0.37 it can survive the whole step. A dead surface stays dead: raise y and nothing changes, so start again.</p>`,
+<p>Lower the CO fraction to <b>y = 0.33</b>. CO arrives too rarely to clear the oxygen, red patches spread, and after about 200 MCS every site holds an O atom. Then nothing can happen: CO needs an empty site, O₂ needs two, and there are none. The rate is zero, for good. The surface is <dfn data-def="Covered by something that blocks the reaction, so the catalyst stops working.">poisoned</dfn>, by one of its own reactants.</p>
+<p>This dead end starts below <strong>y₁ ≈ 0.387</strong>. Approaching it from above, the rate falls smoothly to zero (a continuous transition), and close to y₁ the surface takes longer and longer to die: at 0.37 it takes most of the step. A dead surface stays dead: raise y and nothing changes, so start again.</p>`,
 			notes: `<p>A surface full of one species, which no move can leave, is an <i>absorbing state</i>. The transition into it at y₁ belongs to the same family (directed percolation) as an epidemic dying out. The published value y₁ = 0.3874 is from Voigt and Ziff (1997).</p>`
 		},
 		{
@@ -129,16 +129,22 @@ export const spec: ExplainerSpec = {
 			body: `
 <p>Now raise it to <b>y = 0.54</b>. For a few seconds the surface works hard, then grey islands of CO appear and grow, and within a couple of hundred MCS CO covers every site. O₂ needs two empty neighbours, but a hole inside a CO island is a single site, and the next CO fills it. Only the islands’ edges react, and the islands grow faster than their edges eat them.</p>
 <p>This collapse is <strong>abrupt</strong>. Just below <strong>y₂ ≈ 0.526</strong> the surface makes CO₂ at its fastest, about 0.26 per site per MCS; just above it, nothing. The best working point sits at the edge of a cliff (a <dfn data-def="A transition in which the state jumps: here the rate drops from its maximum to zero with no values in between.">first-order transition</dfn>).</p>`,
-			notes: `<p>Close to y₂ the working surface can survive a long time before one island happens to grow large enough to take over (at y = 0.53 about 900 MCS on this lattice, at 0.55 about 100): a metastable state, like water cooled below its freezing point. The published value y₂ = 0.5256 is from Ziff and Brosilow (1992).</p>`
+			notes: `<p>Close to y₂ the working surface can survive a long time before one island happens to grow large enough to take over (at y = 0.53 about 1,000 MCS on this lattice, at 0.55 about 100): a metastable state, like water cooled below its freezing point. The published value y₂ = 0.5256 is from Ziff and Brosilow (1992).</p>`
 		},
 		{
 			id: 'window',
 			chapter: 'dead',
 			title: 'A narrow window, and what mean field misses',
 			scene: 'lattice',
-			hints: { panel: 'curves', yParam: 'y_win', k: 0, reducedUpdates: 300 },
+			hints: {
+				panel: 'curves',
+				yParam: 'y_win',
+				k: 0,
+				restartParam: 'restart_win',
+				reducedUpdates: 300
+			},
 			duration: 30,
-			controls: [fraction('y_win', 0.45, 0.2, 0.8)],
+			controls: [fraction('y_win', 0.45, 0.2, 0.8), restart('restart_win')],
 			body: `
 <p>Measure the steady state at each CO fraction (solid curves, each from runs of 3,000 MCS on this lattice): the surface works only between <b>0.387</b> and <b>0.526</b>, and its rate climbs across that window to the cliff.</p>
 <p>The dashed curves are the <dfn data-def="Rate equations for the coverages θ that assume every site’s neighbours are a random sample of the surface, so a molecule meets a reactant with probability set by the average coverage.">mean-field</dfn> rate equations of the same moves: they treat the adsorbed CO and O as perfectly mixed. They get it wrong twice:</p>
@@ -168,7 +174,7 @@ export const spec: ExplainerSpec = {
 			],
 			body: `
 <p>On a real surface an adsorbed CO can also <strong>desorb</strong>, leave without reacting, and the hotter the surface the more often it does (desorption is thermally activated, like the reactions in <a href="../reaction-rates-equilibrium/">reaction rates</a>). Add it: a fraction <b>k</b> of the trials picks a random site and lets the CO on it, if any, go.</p>
-<p>With <b>k = 0.05</b> the collapse moves up to about y = 0.55 and is no longer total: past it the surface stays mostly CO but keeps a trickle of reaction (0.03 at y = 0.56, against zero without desorption). At <b>k = 0.2</b> the cliff has become a smooth hill: the rate peaks at y ≈ 0.585 and falls gradually, still 0.13 at y = 0.645. Oxygen never desorbs, so the oxygen dead end stays where it was.</p>`,
+<p>With <b>k = 0.05</b> the collapse moves up to about y = 0.55 and is no longer total: past it the surface stays mostly CO but keeps a trickle of reaction (0.03 at y = 0.56, against zero without desorption). At <b>k = 0.2</b> the cliff has become a smooth hill: the rate peaks at y ≈ 0.58 and falls gradually, still 0.13 at y = 0.645. Oxygen never desorbs, so the oxygen dead end stays where it was.</p>`,
 			notes: `<p>Without desorption the jump at y₂ is a true first-order transition. Desorption shortens it, and at a critical value of k, about 0.04 (Tomé and Dickman 1993; later studies give 0.037 to 0.065), it ends at a critical point, like the end of the boiling line of water. A 64 × 64 lattice still shows a steep drop at k = 0.05, so the exact end point cannot be read from these curves.</p>`
 		},
 		{
@@ -189,7 +195,7 @@ export const spec: ExplainerSpec = {
 			body: `
 <p>Start from a surface entirely covered with CO, in a gas with <b>y = 0.5</b>, a mixture the clean surface handles well. With no desorption nothing ever happens: the catalyst is all there, not consumed, and completely useless. With <b>k = 0.05</b> a few CO molecules leave, O₂ finds pairs of empty sites, the oxygen eats into the CO, and within about 50 MCS the surface is working again.</p>
 <p>A catalyst is not consumed, but it is not inert: what it does depends on what covers it, and a <strong>poisoned surface is a catalyst that has stopped working</strong>. A car’s converter is CO-covered and nearly idle when cold, and starts working only once it is hot enough for CO to come off (its light-off). The platinum of a hydrogen fuel cell is poisoned by traces of CO in the fuel for the same reason.</p>`,
-			notes: `<p>Recovery time depends on k and y: at y = 0.5 about 170 MCS with k = 0.02 and 20 with k = 0.1. Poisons that bind more strongly than CO, such as sulphur or lead (which is why leaded petrol was dropped when converters arrived), do not leave at any operating temperature.</p>`
+			notes: `<p>Recovery time depends on k and y: at y = 0.5 about 170 MCS with k = 0.02 and 20 with k = 0.1. Lead poisoning of a converter is generally permanent (which is why leaded petrol was dropped when converters arrived). Sulphur poisoning can sometimes be reversed by regeneration, depending on the catalyst, the temperature and the gas.</p>`
 		}
 	]
 };

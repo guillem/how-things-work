@@ -4302,13 +4302,13 @@
 				/>
 			{/if}
 		{/each}
-		{#each [[96, 22], [112, 12], [104, 18]] as [cx, cy], i (i)}
+		{#each [[94, 18], [110, 18], [102, 18], [118, 9], [134, 9], [126, 9]] as [cx, cy], i (i)}
 			<circle
 				{cx}
 				{cy}
-				r={i === 2 ? 3.4 : 2.6}
-				fill={i === 2 ? 'currentColor' : accent}
-				opacity="0.6"
+				r={i % 3 === 2 ? 3.4 : 2.8}
+				fill={i % 3 === 2 ? 'currentColor' : accent}
+				opacity={i < 3 ? 0.75 : 0.45}
 			/>
 		{/each}
 	{:else if slug === 'resampling-inference'}

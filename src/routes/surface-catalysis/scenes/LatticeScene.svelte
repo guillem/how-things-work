@@ -13,8 +13,8 @@
 	 * when y or k changes (so the reader watches it respond, and a dead surface stays dead), and
 	 * starts again when the step or the restart count changes, or t goes back. The run object,
 	 * its start time and the last t are plain variables inside a `$derived` (as in the Ising
-	 * lattice). Reduced motion: a fresh run per setting, shown after the step's `reducedUpdates`
-	 * MCS, enough for its point (a dead surface on the dead-end steps, a recovered one on the last).
+	 * lattice). Reduced motion: one run per step and restart, advanced by the step's
+	 * `reducedUpdates` MCS at each new setting, enough for its point (a dead surface on the dead-end steps, a recovered one on the last).
 	 */
 	import { Axes, Label, linePath, scale, type Scale } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
@@ -46,6 +46,8 @@
 	// a plain cache of runs, not reactive state
 	// eslint-disable-next-line svelte/prefer-svelte-reactivity
 	const reducedRuns = new Map<string, LiveRun>();
+	// eslint-disable-next-line svelte/prefer-svelte-reactivity
+	const reducedSettings = new Map<string, string>();
 
 	const make = (restartCount: number) => new LiveRun(L, 1 + 7919 * restartCount, start);
 
@@ -53,13 +55,21 @@
 		const time = t;
 		const key = `${step.id}|${restarts}`;
 		if (reduced) {
-			const rk = `${key}|${y}|${k}`;
-			let r = reducedRuns.get(rk);
+			// one run per step and restart, advanced by the step's budget at each new setting, so
+			// a dead surface stays dead when a control moves (as in the live run)
+			let r = reducedRuns.get(key);
 			if (!r) {
 				r = make(restarts);
-				r.advance(reducedUpdates, y, k, Infinity);
-				if (reducedRuns.size > 8) reducedRuns.clear();
-				reducedRuns.set(rk, r);
+				if (reducedRuns.size > 8) {
+					reducedRuns.clear();
+					reducedSettings.clear();
+				}
+				reducedRuns.set(key, r);
+			}
+			const setting = `${y}|${k}`;
+			if (reducedSettings.get(key) !== setting) {
+				reducedSettings.set(key, setting);
+				r.advance(r.done + reducedUpdates, y, k, Infinity);
 			}
 			return { run: r, n: r.done };
 		}
@@ -106,19 +116,21 @@
 	const PX1 = 916;
 	const TOP: [number, number] = [262, 112];
 	const BOTTOM: [number, number] = [520, 370];
-	const R_MAX = 0.3;
+	const R_MAX = 0.4;
 	const syRate = scale([0, R_MAX], TOP);
 	const syCov = scale([0, 1], BOTTOM);
 
 	// trace
 	const WINDOW = 400;
-	const traceStart = $derived(Math.max(0, current.n - WINDOW));
-	const sxTrace = $derived(scale([traceStart, traceStart + WINDOW], [PX0, PX1]));
+	// the reduced-motion frame shows its whole run, so the death or recovery is in the picture
+	const span = $derived(reduced ? Math.max(WINDOW, current.n) : WINDOW);
+	const traceStart = $derived(reduced ? 0 : Math.max(0, current.n - WINDOW));
+	const sxTrace = $derived(scale([traceStart, traceStart + span], [PX0, PX1]));
 	function trace(q: 'rate' | 'co' | 'o', sy: Scale) {
 		const r = current.run;
 		const pts: [number, number][] = [];
 		for (let i = traceStart; i < current.n; i++)
-			pts.push([i + 1, q === 'rate' ? Math.min(R_MAX, r.smoothRate(i)) : r[q][i]]);
+			pts.push([i + 1, q === 'rate' ? r.smoothRate(i) : r[q][i]]);
 		return linePath(
 			pts,
 			(p) => p[0],
@@ -136,12 +148,12 @@
 	const YX: [number, number] = [0.2, 0.8];
 	const sxY = scale(YX, [PX0, PX1]);
 	const c = $derived(curve(k));
-	function curvePath(q: Quantity, sy: (v: number) => number, cap = Infinity) {
+	function curvePath(q: Quantity, sy: (v: number) => number) {
 		let d = '';
 		for (let i = 0; i < c.y.length; i++) {
 			const yy = c.y[i];
 			if (yy < YX[0] || yy > YX[1]) continue;
-			d += `${d === '' ? 'M' : 'L'}${sxY(yy).toFixed(1)} ${sy(Math.min(cap, c[q][i])).toFixed(1)}`;
+			d += `${d === '' ? 'M' : 'L'}${sxY(yy).toFixed(1)} ${sy(c[q][i]).toFixed(1)}`;
 		}
 		return d;
 	}
@@ -248,7 +260,7 @@
 				color="var(--sc-rate)"
 			/>
 		</Readout>
-		<Axes sx={sxTrace} sy={syRate} yTicks={[0, 0.1, 0.2, 0.3]} xTicks={[]} />
+		<Axes sx={sxTrace} sy={syRate} yTicks={[0, 0.1, 0.2, 0.3, 0.4]} xTicks={[]} />
 		<path d={traces.rate} fill="none" stroke="var(--sc-rate)" stroke-width="2" />
 
 		<Readout id="cov" order={4} label="Coverage" value="O {fmt(cov.o, 2)} · CO {fmt(cov.co, 2)}">
@@ -296,7 +308,7 @@
 			size={13}
 			weight={600}
 		/>
-		<Axes sx={sxY} sy={syRate} yTicks={[0, 0.1, 0.2, 0.3]} xTicks={[]} />
+		<Axes sx={sxY} sy={syRate} yTicks={[0, 0.1, 0.2, 0.3, 0.4]} xTicks={[]} />
 		{#if k === 0}
 			<!-- the dead ends of the lattice without desorption -->
 			<rect
@@ -321,7 +333,7 @@
 			</Readout>
 		{/if}
 		<path
-			d={curvePath('mfRate', syRate, R_MAX)}
+			d={curvePath('mfRate', syRate)}
 			fill="none"
 			stroke="var(--sc-rate)"
 			stroke-width="1.6"
@@ -368,7 +380,7 @@
 		/>
 		<circle
 			cx={markX}
-			cy={syRate(Math.min(R_MAX, measured.mf))}
+			cy={syRate(measured.mf)}
 			r="4"
 			fill="var(--stage-bg)"
 			stroke="var(--sc-rate)"

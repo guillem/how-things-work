@@ -144,7 +144,7 @@ A topic is done when:
 - [x] chromatography
 - [x] dislocations-alloys
 - [x] huckel-molecular-orbitals
-- [ ] surface-catalysis
+- [x] surface-catalysis
 
 **Biology**
 - [x] the-cell

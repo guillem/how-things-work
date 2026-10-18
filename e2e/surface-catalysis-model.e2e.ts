@@ -51,6 +51,29 @@ test('every CO₂ uses one CO and one O atom: the mass balance holds exactly', (
 	expect(2 * s.o2In - s.co2).toBe(onO);
 });
 
+test('a new particle with several partners reacts with each of them equally often', () => {
+	const s = new Surface(5, 5, 21);
+	const centre = 12;
+	const sides = [
+		[13, 11], // right and left
+		[17, 7], // below and above
+		[13, 17, 11] // three of the four
+	];
+	for (const partners of sides) {
+		const hits = new Map<number, number>();
+		const trials = 30000;
+		for (let n = 0; n < trials; n++) {
+			s.fill(0);
+			for (const j of partners) s.s[j] = O;
+			s.s[centre] = CO;
+			const j = s.react(centre, O);
+			hits.set(j, (hits.get(j) ?? 0) + 1);
+		}
+		for (const j of partners)
+			expect(Math.abs((hits.get(j) ?? 0) / trials - 1 / partners.length)).toBeLessThan(0.015);
+	}
+});
+
 test('a poisoned surface stays dead without desorption, and recovers with it', () => {
 	for (const species of [CO, O]) {
 		const s = new Surface(32, 32, 11);
