@@ -86,7 +86,8 @@
 	const lawPath = $derived.by(() => {
 		const a = xLo.current;
 		const b = xHi.current;
-		const y = (lx: number) => Math.max(Y_LO, Math.min(Y_HI, Y(powerLaw(law, 10 ** lx))));
+		// unclamped: the chart's clip path cuts the line at the axes
+		const y = (lx: number) => Y(powerLaw(law, 10 ** lx));
 		return `M${sx(a)},${sy(y(a))}L${sx(b)},${sy(y(b))}`;
 	});
 	const last = $derived(picked.pts[picked.pts.length - 1]);
@@ -206,7 +207,19 @@
 			{/each}
 		{/if}
 	{/each}
-	<path d={lawPath} fill="none" stroke="var(--sl-pick)" stroke-width="1.6" stroke-dasharray="6 4" />
+	<defs>
+		<clipPath id="sweep-clip">
+			<rect x={CH.x} y={CH.y} width={CH.w} height={CH.h} />
+		</clipPath>
+	</defs>
+	<path
+		clip-path="url(#sweep-clip)"
+		d={lawPath}
+		fill="none"
+		stroke="var(--sl-pick)"
+		stroke-width="1.6"
+		stroke-dasharray="6 4"
+	/>
 	<path
 		d={linePath(picked.pts, X, (p) => Y(p.loss), sx, sy)}
 		fill="none"

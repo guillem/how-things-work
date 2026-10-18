@@ -211,7 +211,7 @@ A topic is done when:
 - [x] positional-encoding
 - [x] residual-stream-logit-lens
 - [x] training-a-tiny-language-model
-- [ ] scaling-laws
+- [x] scaling-laws
 
 **Energy & Machines**
 - [x] heat-engines

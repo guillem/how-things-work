@@ -57,7 +57,8 @@
 	const small = bySize(10_000);
 	const law = fitPowerLaw(all.slice(0, 4).map((p) => ({ x: p.N, y: p.loss })));
 	const toyLine = linePath(
-		[X_LO + 0.6, X_HI].map((lx) => ({ lx, ly: clampY(powerLaw(law, 10 ** lx)) })),
+		// the ends are computed unclamped; the chart's clip path cuts the line at the axes
+		[X_LO + 0.6, X_HI].map((lx) => ({ lx, ly: Math.log10(powerLaw(law, 10 ** lx)) })),
 		(p) => p.lx,
 		(p) => p.ly,
 		sx,
@@ -77,7 +78,6 @@
 		sx,
 		sy
 	);
-	const toyStart = all[0];
 
 	/** Kaplan's line draws itself over the first 2.5 s (complete under reduced motion). */
 	const draw = $derived(reduced ? 1 : Math.min(1, t / 2.5));
@@ -166,7 +166,19 @@
 	</Readout>
 
 	<!-- the toy -->
-	<path d={toyLine} fill="none" stroke="var(--sl-toy)" stroke-width="1.6" stroke-dasharray="6 4" />
+	<defs>
+		<clipPath id="kaplan-clip">
+			<rect x={CH.x} y={CH.y} width={CH.w} height={CH.h} />
+		</clipPath>
+	</defs>
+	<path
+		clip-path="url(#kaplan-clip)"
+		d={toyLine}
+		fill="none"
+		stroke="var(--sl-toy)"
+		stroke-width="1.6"
+		stroke-dasharray="6 4"
+	/>
 	<path d={smallPath} fill="none" stroke="var(--sl-ramp-2)" stroke-width="1.6" />
 	{#each small as p (p.width)}
 		<circle cx={sx(Math.log10(p.N))} cy={sy(Math.log10(p.loss))} r="3" fill="var(--sl-ramp-2)" />
@@ -190,8 +202,8 @@
 		color="var(--sl-toy)"
 	>
 		<Label
-			x={sx(Math.log10(toyStart.N)) - 6}
-			y={sy(Math.log10(1.62))}
+			x={sx(5.55)}
+			y={sy(Math.log10(2.08))}
 			anchor="start"
 			size={12}
 			weight={650}
@@ -199,8 +211,8 @@
 			text="this page's sweep, all the text"
 		/>
 		<Label
-			x={sx(Math.log10(toyStart.N)) - 6}
-			y={sy(Math.log10(1.62)) + 16}
+			x={sx(5.55)}
+			y={sy(Math.log10(2.08)) + 16}
 			anchor="start"
 			size={11}
 			color="var(--sl-toy)"

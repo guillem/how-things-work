@@ -221,7 +221,7 @@
 					anchor="end"
 					size={11}
 					color="var(--sl-floor)"
-					text="floor E = {fit.E}: no model gets below it"
+					text="floor E = {fit.E}: the fitted loss approaches it"
 				/>
 			</Readout>
 			<g clip-path="url(#chin-clip)">
