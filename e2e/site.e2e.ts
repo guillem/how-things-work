@@ -9,6 +9,9 @@ const BASE = '/how-things-work/';
 const slugs = [
 	...fs.readFileSync('src/lib/topics.ts', 'utf8').matchAll(/slug: '([a-z0-9-]+)'/g)
 ].map((m) => m[1]);
+/** Topics in the catalogue (one `#### <slug>` entry each); it grows as proposals are promoted. */
+const planned = [...fs.readFileSync('docs/TOPICS.md', 'utf8').matchAll(/^#### [a-z0-9-]+$/gm)]
+	.length;
 
 /** Same-origin requests that failed or answered with an error status. */
 function watchRequests(page: Page) {
@@ -35,7 +38,7 @@ test(
 		}
 		await expect(page.locator('main .grid > *')).toHaveCount(slugs.length);
 		await expect(page.locator('.progress')).toContainText(
-			`${slugs.length} of the 100 planned topics are written so far`
+			`${slugs.length} of the ${planned} planned topics are written so far`
 		);
 	}
 );
