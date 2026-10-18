@@ -55,17 +55,17 @@ test('the magnetisation curve: Onsager’s value at 64 × 64, a blurred one at 8
 	await expect(stage(page)).toContainText('Onsager: 0.00');
 	await pick(page, 'size_order', '8');
 	await expect(stage(page)).toContainText('8 × 8 spins');
-	await expect(stage(page)).toContainText('⟨|m|⟩ = 0.43');
+	await expect(stage(page)).toContainText('⟨|m|⟩ = 0.35');
 });
 
 test('the susceptibility peak grows and moves towards T_c with the lattice', async ({ page }) => {
 	await page.emulateMedia({ reducedMotion: 'reduce' });
 	await page.goto('./ising-model/#peaks');
-	await range(page, 'T_peaks').fill('2.32');
-	await expect(stage(page)).toContainText('χ = 59.2');
+	await range(page, 'T_peaks').fill('2.3');
+	await expect(stage(page)).toContainText('χ′ = 69.4');
 	await pick(page, 'size_peaks', '8');
-	await range(page, 'T_peaks').fill('2.66');
-	await expect(stage(page)).toContainText('χ = 1.53');
+	await range(page, 'T_peaks').fill('2.52');
+	await expect(stage(page)).toContainText('χ′ = 1.77');
 });
 
 test('a swept field traces an open loop below T_c', async ({ page }) => {
@@ -83,5 +83,5 @@ test('a ring never orders: |m| falls with its length at the same temperature', a
 	await expect(stage(page)).toContainText('ring of 1,024: ⟨|m|⟩ = 0.07');
 	await expect(stage(page)).toContainText('correlation length ξ = 3.7 spins');
 	await pick(page, 'size_chain', '64');
-	await expect(stage(page)).toContainText('ring of 64: ⟨|m|⟩ = 0.29');
+	await expect(stage(page)).toContainText('ring of 64: ⟨|m|⟩ = 0.28');
 });

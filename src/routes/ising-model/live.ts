@@ -4,6 +4,7 @@
  * SVG path that draws its up spins.
  */
 import { Lattice } from './ising';
+import { at, curve } from './curves';
 
 export type Algorithm = 'metropolis' | 'wolff';
 
@@ -23,18 +24,12 @@ export class LiveRun {
 	}
 
 	/**
-	 * One update at temperature T: a Metropolis sweep, or Wolff clusters worth about N spins.
-	 * After a Wolff update the lattice is shown with its majority up (flipping every spin is an
-	 * exact symmetry without a field, so this changes nothing physical): below T_c a Wolff
-	 * cluster is most of the lattice, and the picture would otherwise flash between colours.
+	 * One update at temperature T: a Metropolis sweep, or a fixed number of Wolff clusters that
+	 * flip about N spins on average at this temperature and size (see `wolffCount`).
 	 */
 	step(T: number, algo: Algorithm) {
-		if (algo === 'wolff') {
-			this.lat.wolffSweep(T);
-			if (this.lat.magnetisation() < 0) this.lat.flipAll();
-		} else {
-			this.lat.metropolis(T);
-		}
+		if (algo === 'wolff') this.lat.wolffClusters(T, wolffCount(T, this.lat.w));
+		else this.lat.metropolis(T);
 		this.done++;
 		this.m.push(this.lat.magnetisation());
 		this.e.push(this.lat.energy());
@@ -46,14 +41,31 @@ export class LiveRun {
 		while (this.done < k && n++ < cap) this.step(T, algo);
 	}
 
-	/** Settles the lattice at T without recording: Wolff (fast at any T) plus Metropolis. */
+	/**
+	 * Settles the lattice at T without recording: Wolff clusters (fast at any T) and Metropolis
+	 * sweeps. Ends with the majority up: flipping every spin preserves the energy and the
+	 * Boltzmann weight without a field, so it is a fair starting point either way round.
+	 */
 	settle(T: number, updates: number) {
+		const count = wolffCount(T, this.lat.w);
 		for (let k = 0; k < updates; k++) {
-			this.lat.wolffSweep(T);
+			this.lat.wolffClusters(T, count);
 			this.lat.metropolis(T);
 		}
 		if (this.lat.magnetisation() < 0) this.lat.flipAll();
 	}
+}
+
+/**
+ * Wolff clusters per update for an L × L lattice at T: about N spins' worth. The average Wolff
+ * cluster holds N⟨m²⟩ spins, so that is 1 / ⟨m²⟩ clusters, with ⟨m²⟩ = χT / N + ⟨|m|⟩² from the
+ * measured curves. It depends only on T and L, never on the run (which would bias it).
+ */
+export function wolffCount(T: number, L: number) {
+	const c = curve(2, L);
+	const m = at(c, 'm', T);
+	const m2 = (at(c, 'chi', T) * T) / (L * L) + m * m;
+	return Math.max(1, Math.min(L * L, Math.round(1 / Math.max(m2, 1e-9))));
 }
 
 /** A coordinate with at most two decimals. */
@@ -63,7 +75,8 @@ const f = (v: number) => Math.round(v * 100) / 100;
  * SVG path of the up spins of a lattice drawn at (x0, y0) with square cells of `cell` units:
  * one rectangle per run of up spins along a row, so the whole lattice is a single node.
  */
-export function upPath(lat: Lattice, x0: number, y0: number, cell: number, rows = lat.h) {
+export function upPath(lat: Lattice, x0: number, y0: number, cell: number) {
+	const rows = lat.h;
 	let d = '';
 	const w = lat.w;
 	const s = lat.s;

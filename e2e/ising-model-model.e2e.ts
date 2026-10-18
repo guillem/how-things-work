@@ -92,6 +92,17 @@ test('Metropolis and Wolff sample the Boltzmann distribution: a 4 × 4 lattice a
 	}
 });
 
+test('the measurement the curves come from is unbiased: a 4 × 4 lattice and a 16-spin ring, exactly', () => {
+	// small systems are where a Wolff schedule that depends on the run would show its bias most
+	const ex = exact4x4(2.5);
+	const a = measure(new Lattice(4, 4, 12), 2.5, 500, 60000);
+	expect(Math.abs(a.m - ex.m)).toBeLessThan(0.01);
+	expect(Math.abs(a.e - ex.e)).toBeLessThan(0.02);
+	const ring = measure(new Lattice(16, 1, 4), 1, 500, 60000);
+	expect(Math.abs(ring.e - chainExact(1, 16).e)).toBeLessThan(0.01);
+	expect(Math.abs(ring.m2 / chainExact(1, 16).m2 - 1)).toBeLessThan(0.03);
+});
+
 test('a 32 × 32 lattice follows Onsager’s magnetisation and energy away from T_c', () => {
 	for (const T of [1.8, 2.1]) {
 		const a = measure(new Lattice(32, 32, 5), T, 200, 1500);
@@ -146,6 +157,10 @@ test('rings never order: the magnetisation at any fixed temperature falls as the
 		for (let k = 1; k < m.length; k++) expect(m[k]).toBeLessThan(m[k - 1]);
 	}
 	expect(at(curve(1, 1024), 'm', 1)).toBeLessThan(0.15);
+	// the shipped runs agree with the exact solution of the ring
+	for (const N of [16, 64]) {
+		expect(Math.abs(at(curve(1, N), 'e', 1) - chainExact(1, N).e)).toBeLessThan(0.01);
+	}
 	// the heat capacity is a broad bump near T ≈ 0.83 (the infinite chain's (1/T²) sech²(1/T))
 	// that doesn't sharpen with size
 	const big = peak(curve(1, 1024), 'c');

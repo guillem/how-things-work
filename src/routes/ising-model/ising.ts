@@ -242,10 +242,15 @@ export class Lattice {
 		return size;
 	}
 
-	/** Wolff clusters until about N spins have been flipped: comparable to one sweep. */
-	wolffSweep(T: number) {
+	/**
+	 * A fixed number of Wolff clusters; returns the spins flipped. The count must not depend on
+	 * the run itself: stopping once the clusters add up to N spins, say, would favour states
+	 * whose clusters are small and bias every average.
+	 */
+	wolffClusters(T: number, count: number) {
 		let flipped = 0;
-		while (flipped < this.n) flipped += this.wolff(T);
+		for (let k = 0; k < count; k++) flipped += this.wolff(T);
+		return flipped;
 	}
 
 	/** Flips every spin: an exact symmetry without a field (the energy does not change). */
@@ -296,15 +301,28 @@ export interface Averages {
 
 /**
  * Equilibrates `lat` at T (no field) for `eq` updates, then averages over `meas` updates. One
- * update is a Metropolis sweep followed by about N spins' worth of Wolff clusters, so it stays
- * fast near T_c (where Metropolis alone slows down) and far from it.
+ * update is a Metropolis sweep followed by a fixed number of Wolff clusters, chosen during the
+ * settling so that they flip about N spins on average; so it stays fast near T_c (where
+ * Metropolis alone slows down) and far from it.
  */
 export function measure(lat: Lattice, T: number, eq: number, meas: number): Averages {
+	// settle, learning the average cluster size (the count is then fixed for the measurement)
+	let clusters = 0;
+	let flipped = 0;
+	for (let k = 0; k < eq; k++) {
+		lat.metropolis(T);
+		flipped += lat.wolffClusters(T, 1);
+		clusters++;
+		while (flipped < (k + 1) * lat.n && clusters < (k + 1) * lat.n) {
+			flipped += lat.wolffClusters(T, 1);
+			clusters++;
+		}
+	}
+	const count = Math.max(1, Math.round(clusters / Math.max(1, eq)));
 	const step = () => {
 		lat.metropolis(T);
-		lat.wolffSweep(T);
+		lat.wolffClusters(T, count);
 	};
-	for (let k = 0; k < eq; k++) step();
 	let sm = 0;
 	let sm2 = 0;
 	let se = 0;

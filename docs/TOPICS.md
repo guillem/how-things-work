@@ -129,7 +129,7 @@ A topic is done when:
 - [x] standard-model
 - [x] musical-scales-ratios
 - [x] lasers
-- [ ] ising-model
+- [x] ising-model
 
 **Chemistry & Materials**
 - [x] atoms-periodic-table

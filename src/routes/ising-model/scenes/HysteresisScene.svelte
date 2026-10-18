@@ -2,8 +2,8 @@
 	/**
 	 * A 32 × 32 lattice in a field swept between +1.5 J and −1.5 J and back (left, with the field
 	 * as an arrow above it), and the magnetisation against the field (right): the loop it traces.
-	 * One Metropolis sweep per value of the field, RATE sweeps a second; `sweep:hyst` sets 400 or
-	 * 100 sweeps a loop, `T:hyst` the temperature.
+	 * One Metropolis sweep per value of the field, RATE sweeps a second; `sweep_hyst` sets 400 or
+	 * 100 sweeps a loop, `T_hyst` the temperature.
 	 *
 	 * The run is a `FieldSweep` advanced as t passes; it carries on when the temperature changes,
 	 * and starts again (all spins up, field at +1.5 J) when the sweep speed or the step changes or

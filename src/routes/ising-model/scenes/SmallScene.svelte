@@ -5,7 +5,7 @@
 	 *     its broken bonds marked, the energy counted bond by bond, and a close-up of one spin and
 	 *     its four neighbours (a different spin every few seconds);
 	 *   - `metropolis`: the Metropolis algorithm one attempt per second, on a lattice settled at
-	 *     the temperature `T:metro`: the picked spin, ΔE, the acceptance probability, the random
+	 *     the temperature `T_metro`: the picked spin, ΔE, the acceptance probability, the random
 	 *     number and the outcome, with the whole rule as a table.
 	 *
 	 * The metropolis run is a `Lattice` advanced attempt by attempt as t passes; it carries on
@@ -54,6 +54,8 @@
 		/** The spin before the attempt, and the sum of its neighbours. */
 		s: number;
 		sum: number;
+		/** The temperature the attempt was made at. */
+		temp: number;
 	}
 	let mrun: { lat: Lattice; log: Attempt[] } | null = null;
 	let lastT = 0;
@@ -62,7 +64,7 @@
 	const newRun = (temp: number) => {
 		const lat = new Lattice(N, N, 5);
 		for (let k = 0; k < 200; k++) {
-			lat.wolffSweep(temp);
+			lat.wolffClusters(temp, 4);
 			lat.metropolis(temp);
 		}
 		return { lat, log: [] as Attempt[] };
@@ -72,7 +74,7 @@
 			const res = r.lat.attempt(temp);
 			// the spin before the attempt (flipped back if it was flipped); neighbours are unchanged
 			const s = res.flipped ? -r.lat.s[res.i] : r.lat.s[res.i];
-			r.log.push({ ...res, s, sum: neighbourSum(r.lat.s, res.i) });
+			r.log.push({ ...res, s, sum: neighbourSum(r.lat.s, res.i), temp });
 		}
 	};
 	const neighbourSum = (s: Int8Array, i: number) => {
@@ -476,7 +478,7 @@
 				y={ZY + 6}
 				text={dE <= 0
 					? 'ΔE ≤ 0: always flip'
-					: `p = e^(−${dE}/${T.toFixed(2)}) = ${shown.p.toFixed(3)}`}
+					: `p = e^(−${dE}/${shown.temp.toFixed(2)}) = ${shown.p.toFixed(3)}`}
 				size={12}
 				tabular
 			/>

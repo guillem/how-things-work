@@ -99,6 +99,12 @@
 		return current.run.lat.energy();
 	});
 	const algoName = $derived(algo === 'wolff' ? 'Wolff clusters' : 'Metropolis');
+	/**
+	 * With Wolff clusters below T_c one cluster is most of the lattice, and the picture would
+	 * flash between colours at every update: the drawing (only) swaps the colours while m < 0,
+	 * so the majority is always orange. The traces keep the signed m.
+	 */
+	const swapped = $derived(algo === 'wolff' && mNow < 0);
 
 	// ---- panels --------------------------------------------------------------------------------
 	const PX0 = 600;
@@ -109,13 +115,15 @@
 	const WINDOW = 600;
 	const traceStart = $derived(Math.max(0, current.k - WINDOW));
 	const sxTrace = $derived(scale([traceStart, traceStart + WINDOW], [PX0, PX1]));
-	const syM = scale([-1, 1], [262, 96]);
+	/** The trace shows |m| on steps with the hint `abs` (where Wolff flips the sign each update). */
+	const abs = $derived(step.hints?.abs === true);
+	const syM = $derived(scale(abs ? [0, 1] : [-1, 1], [262, 96]));
 	const syE = scale([-2, 0], [520, 354]);
 	const traceM = $derived.by(() => {
 		const k = current.k;
 		const m = current.run.m;
 		const pts: [number, number][] = [];
-		for (let i = traceStart; i < k; i++) pts.push([i + 1, m[i]]);
+		for (let i = traceStart; i < k; i++) pts.push([i + 1, abs ? Math.abs(m[i]) : m[i]]);
 		return linePath(
 			pts,
 			(p) => p[0],
@@ -219,7 +227,7 @@
 			x={LX}
 			y={LY - 12}
 			text="{algoName}{algo === 'wolff'
-				? ' (drawn with the majority up)'
+				? ' (majority drawn orange)'
 				: ''} · update {current.k.toLocaleString('en-US')}"
 			size={12}
 			muted
@@ -230,20 +238,31 @@
 		y={LY}
 		width={LS}
 		height={LS}
-		fill="var(--im-down)"
+		fill={swapped ? 'var(--im-up)' : 'var(--im-down)'}
 		stroke="var(--stage-line)"
 		stroke-width="1"
 	/>
-	<path d={ups} fill="var(--im-up)" />
-	<Readout id="key" order={2} label="up (+1) orange, down (−1) blue">
+	<path d={ups} fill={swapped ? 'var(--im-down)' : 'var(--im-up)'} />
+	<Readout
+		id="key"
+		order={2}
+		label={algo === 'wolff' ? 'majority orange, minority blue' : 'up (+1) orange, down (−1) blue'}
+	>
 		<rect x={LX} y={LY + LS + 16} width="14" height="14" rx="3" fill="var(--im-up)" />
-		<Label anchor="start" x={LX + 20} y={LY + LS + 27} text="up, s = +1" size={12} halo={false} />
+		<Label
+			anchor="start"
+			x={LX + 20}
+			y={LY + LS + 27}
+			text={algo === 'wolff' ? 'the majority' : 'up, s = +1'}
+			size={12}
+			halo={false}
+		/>
 		<rect x={LX + 112} y={LY + LS + 16} width="14" height="14" rx="3" fill="var(--im-down)" />
 		<Label
 			anchor="start"
 			x={LX + 132}
 			y={LY + LS + 27}
-			text="down, s = −1"
+			text={algo === 'wolff' ? 'the minority' : 'down, s = −1'}
 			size={12}
 			halo={false}
 		/>
@@ -260,16 +279,36 @@
 
 	<!-- ---------------------------------------------------------------- panel: trace -->
 	{#if panel === 'trace'}
-		<Readout id="m" order={3} label="Magnetisation m" value={signed(mNow)}>
-			<Label anchor="start" x={PX0} y={80} text="magnetisation m" size={13} weight={600} />
-			<Label x={PX1} y={80} text={signed(mNow)} size={14} anchor="end" tabular weight={600} />
+		<Readout
+			id="m"
+			order={3}
+			label={abs ? '|m|' : 'Magnetisation m'}
+			value={abs ? Math.abs(mNow).toFixed(2) : signed(mNow)}
+		>
+			<Label
+				anchor="start"
+				x={PX0}
+				y={80}
+				text={abs ? 'size of the magnetisation, |m|' : 'magnetisation m'}
+				size={13}
+				weight={600}
+			/>
+			<Label
+				x={PX1}
+				y={80}
+				text={abs ? Math.abs(mNow).toFixed(2) : signed(mNow)}
+				size={14}
+				anchor="end"
+				tabular
+				weight={600}
+			/>
 		</Readout>
 		<Axes
 			sx={sxTrace}
 			sy={syM}
-			yTicks={[-1, 0, 1]}
+			yTicks={abs ? [0, 0.5, 1] : [-1, 0, 1]}
 			xTicks={[]}
-			yFormat={(v: number) => num(v, 0)}
+			yFormat={(v: number) => num(v, v % 1 ? 1 : 0)}
 		/>
 		<line x1={PX0} x2={PX1} y1={syM(0)} y2={syM(0)} stroke="var(--stage-line)" stroke-width="1" />
 		<path d={traceM} fill="none" stroke="var(--im-trace)" stroke-width="1.6" />
@@ -377,7 +416,7 @@
 			anchor="start"
 			x={PX0}
 			y={80}
-			text="susceptibility χ (log scale)"
+			text="susceptibility χ′ (log scale)"
 			size={13}
 			weight={600}
 		/>
@@ -454,14 +493,14 @@
 		<Readout
 			id="chi"
 			order={3}
-			label="χ, {L} × {L}"
+			label="χ′, {L} × {L}"
 			value={fmtChi(measured.chi)}
 			color={sizeColour(sizeIndex)}
 		>
 			<Label
 				x={PX1}
 				y={80}
-				text="χ = {fmtChi(measured.chi)}"
+				text="χ′ = {fmtChi(measured.chi)}"
 				size={14}
 				anchor="end"
 				tabular

@@ -3,7 +3,7 @@
 	 * The one-dimensional chain. Top: the history of a live ring of 128 spins, one row per
 	 * Metropolis sweep, the newest at the bottom (a space-time picture: domains are vertical
 	 * bands, their walls wander, meet and vanish, and new ones appear). Bottom: the measured
-	 * ⟨|m|⟩ against temperature for rings of 16 to 1,024 spins (the `size:chain` one bold), with
+	 * ⟨|m|⟩ against temperature for rings of 16 to 1,024 spins (the `size_chain` one bold), with
 	 * the 64 × 64 square lattice for comparison; right, the readouts.
 	 *
 	 * The ring is settled at the temperature, then advanced RATE sweeps a second; it carries on
@@ -36,7 +36,7 @@
 	const newRing = (temp: number): Ring => {
 		const lat = new Lattice(N, 1, 21);
 		for (let k = 0; k < 200; k++) {
-			lat.wolffSweep(temp);
+			lat.wolffClusters(temp, 4);
 			lat.metropolis(temp);
 		}
 		return { lat, rows: [lat.s.slice()], done: 0 };
