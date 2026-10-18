@@ -1,6 +1,6 @@
 # Topic catalog
 
-Source of truth for the content of an interactive web learning tool that shows how things work. It defines 134 topics in 11 categories, each built around one interactive graphic. Readers range from high-school students to university majors.
+Source of truth for the content of an interactive web learning tool that shows how things work. It defines 135 topics in 11 categories, each built around one interactive graphic. Readers range from high-school students to university majors.
 
 This file covers content only. It does not choose the stack, the visual design or the project layout; take those from the repository's own instructions.
 
@@ -85,7 +85,7 @@ A topic is done when:
 | Mathematics | `math` | 18 |
 | Physics | `physics` | 13 |
 | Chemistry & Materials | `chemistry` | 14 |
-| Biology | `biology` | 13 |
+| Biology | `biology` | 14 |
 | Body & Medicine | `medicine` | 10 |
 | Earth & Climate | `earth` | 9 |
 | Space | `space` | 9 |
@@ -161,6 +161,7 @@ A topic is done when:
 - [x] diffusion-osmosis
 - [x] pcr-copying-dna
 - [x] morphogen-gradients
+- [ ] lac-operon
 
 **Body & Medicine**
 - [x] heart-circulation
@@ -768,6 +769,7 @@ A topic is done when:
 - **Interaction:** Infect a bacterium with phages and watch it store a piece of a survived virus as a new spacer in its CRISPR array; follow the array being read into guide RNAs, and watch a Cas protein scan an invader's DNA, check the PAM beside the match and cut. Toggle the PAM to see why the cell spares its own array, mutate the phage to see it escape, and run a population of bacteria and phages through an arms race. Gene editing is mentioned only as the later use of this system.
 - **Takeaway:** A bacterium keeps a piece of each virus it survives in its own DNA, and uses RNA copies of that record to find and cut the same virus next time.
 - **Prerequisites:** dna-to-protein
+- **Related:** lac-operon
 
 #### bacterial-chemotaxis
 - **Title:** Bacterial chemotaxis
@@ -808,6 +810,16 @@ A topic is done when:
 - **Prerequisites:** the-cell, dna-to-protein
 - **Needs:** No data needed: a 1D synthesis-diffusion-degradation PDE plus the expansion-repression model (Ben-Zvi & Barkai 2010, PNAS), both run live. Optional comparison: published Bicoid length scales (about 20% of egg length, Gregor et al. 2007), quoted as numbers with citation.
 - **Pitfall:** The synthesis-diffusion-degradation model is a working hypothesis and the Bicoid gradient's formation is still debated; the page must present the exponential as what the model predicts and say where it is tested.
+
+#### lac-operon
+- **Title:** Gene regulation & the lac operon
+- **Level:** 3
+- **Kind:** manipulate
+- **Interaction:** Set the glucose and lactose in a bacterium's medium and watch an ODE model of the lac operon respond: the repressor leaves the operator when an inducer is present, the permease the operon makes imports more inducer, and while glucose is flowing in the glucose transporter blocks that permease (inducer exclusion), while CAP-cAMP raises the operon's output when glucose is scarce (by about fivefold in cells on succinate, Ozbudak et al. 2004, far less in cells growing on glucose). Sweep the gratuitous inducer TMG up and then down to trace the hysteresis loop, and grow a culture on both sugars to see the diauxic pause when the glucose runs out.
+- **Takeaway:** A bacterium switches a set of genes on only when their product is useful and nothing better is around, and positive feedback through its own transporter turns that switch into a memory: the same inducer level can leave the operon on or off depending on where it came from.
+- **Prerequisites:** dna-to-protein, reaction-rates-equilibrium
+- **Related:** crispr
+- **Pitfall:** Bistability and hysteresis were measured with the gratuitous inducer TMG; with plain lactose the loop is weak or absent because lactose is also consumed, so the page must not present lactose itself as a memory switch. Nor should it pin the diauxic pause on cAMP and CAP alone: in E. coli it comes mainly from inducer exclusion, where glucose uptake blocks the lactose permease.
 
 ### Body & Medicine
 
