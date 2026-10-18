@@ -2821,6 +2821,50 @@
 			stroke-width="1.6"
 			stroke-linecap="round"
 		/>
+	{:else if slug === 'tokenization'}
+		<!-- five byte chips, two pairs bracketed for merging, and below the two merged tokens -->
+		{#each ['l', 'o', 'w', 'e', 'r'] as c, i (i)}
+			<rect
+				x={30 + i * 30}
+				y="14"
+				width="24"
+				height="26"
+				rx="4"
+				fill="none"
+				stroke="currentColor"
+				stroke-width="1.4"
+				opacity="0.55"
+			/>
+			<text
+				x={42 + i * 30}
+				y="32"
+				text-anchor="middle"
+				font-size="14"
+				font-family="ui-monospace, monospace"
+				fill="currentColor"
+				opacity="0.7">{c}</text
+			>
+		{/each}
+		<path d="M32 46 h80 M120 46 h52" stroke={accent} stroke-width="2.5" stroke-linecap="round" />
+		<path d="M72 52 v14 M146 52 v14" stroke={accent} stroke-width="1.4" stroke-dasharray="3 2" />
+		<rect x="30" y="72" width="84" height="30" rx="6" fill={accent} opacity="0.85" />
+		<rect x="120" y="72" width="54" height="30" rx="6" fill={accent} opacity="0.45" />
+		<text
+			x="72"
+			y="92"
+			text-anchor="middle"
+			font-size="15"
+			font-family="ui-monospace, monospace"
+			fill="#fff">low</text
+		>
+		<text
+			x="147"
+			y="92"
+			text-anchor="middle"
+			font-size="15"
+			font-family="ui-monospace, monospace"
+			fill="currentColor">er</text
+		>
 	{:else if slug === 'stars'}
 		<!-- a massive star cut open: onion layers round an iron core, and a track on the HR diagram -->
 		<circle cx="62" cy="60" r="44" fill="var(--st-h)" />

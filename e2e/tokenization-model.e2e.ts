@@ -64,6 +64,16 @@ test.describe('learning merges from a text', () => {
 		expect(t.count(SAMPLE)).toBe(33);
 		// the first two merges are GPT-2's own first and third
 		expect(merged(t).slice(0, 2)).toEqual([' +t=19', 'h+e=11']);
+		expect(t.merges.slice(0, 8).map((m) => t.text(m.id))).toEqual([
+			' t',
+			'he',
+			' a',
+			' to',
+			'nd',
+			' s',
+			' o',
+			' the'
+		]);
 		expect(gpt2.bpe.text(256)).toBe(' t');
 		expect(gpt2.bpe.text(258)).toBe('he');
 	});
@@ -99,6 +109,13 @@ test.describe('GPT-2’s tokenizer', () => {
 		expect(pieces(gpt2.longestMatch(' doth'))).toEqual([' dot', 'h']);
 		expect(cut(' thine')).toEqual([' th', 'ine']);
 		expect(pieces(gpt2.longestMatch(' thine'))).toEqual([' thin', 'e']);
+		// the ranks the page quotes: ␣d (33rd merge), ot (58th), oth (594th), ␣dot (16,350th)
+		const [p] = gpt2.bpe.pieces(' doth');
+		expect(p.merges.map((m) => m.rank + 1)).toEqual([33, 58, 594]);
+		expect(gpt2.bpe.encode(' dot')).toEqual([256 + 16_349]);
+		expect(cut('Doth')).toEqual(['D', 'oth']);
+		expect(pieces(gpt2.longestMatch('Doth'))).toEqual(['Do', 'th']);
+		expect(cut(' Doth')).toEqual([' D', 'oth']);
 		// on common text the two rules usually agree
 		const s = 'To be, or not to be, that is the question';
 		expect(gpt2.longestMatch(s)).toEqual(gpt2.bpe.encode(s));
@@ -117,9 +134,12 @@ test.describe('GPT-2’s tokenizer', () => {
 		]);
 	});
 
-	test('numbers: 0–99 are single tokens, about half of 100–999, and years are uneven', () => {
+	test('numbers: single tokens up to 361, then fewer and fewer; years are uneven', () => {
 		const n = gpt2.numberTokens(1000);
-		expect(n.slice(0, 100).every((k) => k === 1)).toBe(true);
+		expect(n.indexOf(2)).toBe(362);
+		const perHundred = (h: number) => n.slice(100 * h, 100 * h + 100).filter((k) => k === 1).length;
+		expect(perHundred(4)).toBe(52);
+		expect([5, 6, 7, 8, 9].map(perHundred)).toEqual([18, 15, 12, 6, 9]);
 		expect(n.filter((k) => k === 1)).toHaveLength(505);
 		expect(Math.max(...n)).toBe(2);
 		expect(cut(' 777')).toEqual([' 777']);
@@ -154,6 +174,6 @@ test.describe('GPT-2’s tokenizer', () => {
 		expect(cut('strawberry')).toEqual(['st', 'raw', 'berry']);
 		expect(cut(' s t r a w b e r r y')).toHaveLength(10);
 		// single letters are tokens too
-		expect(gpt2.bpe.encode(' r')).toHaveLength(1);
+		expect(gpt2.bpe.encode(' r')).toEqual([374]);
 	});
 });

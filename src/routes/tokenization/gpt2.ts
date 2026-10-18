@@ -52,27 +52,29 @@ export class Gpt2 {
 	 * two differ.
 	 */
 	longestMatch(text: string): number[] {
+		return this.bpe.pieces(text).flatMap((p) => this.longestPiece(p.text));
+	}
+
+	/** The longest-match cut of one piece of the pre-split. */
+	longestPiece(piece: string): number[] {
 		const vocab = this.lookup();
-		const enc = new TextEncoder();
-		return this.bpe.pieces(text).flatMap((p) => {
-			const b = enc.encode(p.text);
-			const out: number[] = [];
-			let i = 0;
-			while (i < b.length) {
-				let id = -1;
-				let len = 1;
-				for (let j = i + 1; j <= Math.min(b.length, i + this.longestToken); j++) {
-					const t = vocab.get(key(b.subarray(i, j)));
-					if (t !== undefined) {
-						id = t;
-						len = j - i;
-					}
+		const b = new TextEncoder().encode(piece);
+		const out: number[] = [];
+		let i = 0;
+		while (i < b.length) {
+			let id = -1;
+			let len = 1;
+			for (let j = i + 1; j <= Math.min(b.length, i + this.longestToken); j++) {
+				const t = vocab.get(key(b.subarray(i, j)));
+				if (t !== undefined) {
+					id = t;
+					len = j - i;
 				}
-				out.push(id);
-				i += len;
 			}
-			return out;
-		});
+			out.push(id);
+			i += len;
+		}
+		return out;
 	}
 
 	/** Number of GPT-2 tokens of " n" (a number after a space), for n = 0 … count − 1. */

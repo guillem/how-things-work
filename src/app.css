@@ -3180,3 +3180,44 @@ kbd {
 	--ng-copy: #ffc078;
 	--ng-copy-bg: #6b5410;
 }
+
+/* tokenization: the latest merge, the next pair, the two curves, the pre-split's kinds, merge-rank
+   buckets, one- and two-token numbers, the language bars */
+:root {
+	--tk-hot: #e8590c;
+	--tk-next: #1971c2;
+	--tk-corpus: #6741d9;
+	--tk-sample: #0c8599;
+	--tk-letters: #2f9e44;
+	--tk-digits: #e8590c;
+	--tk-other: #c2255c;
+	--tk-space: #868e96;
+	--tk-ending: #7048e8;
+	--tk-r0: #868e96;
+	--tk-r1: #2f9e44;
+	--tk-r2: #1c7ed6;
+	--tk-r3: #e67700;
+	--tk-one: #a5d8ff;
+	--tk-two: #f76707;
+	--tk-bar: #6741d9;
+	--tk-bar-alt: #9775fa;
+}
+:root[data-theme='dark'] {
+	--tk-hot: #ff922b;
+	--tk-next: #74c0fc;
+	--tk-corpus: #b197fc;
+	--tk-sample: #3bc9db;
+	--tk-letters: #69db7c;
+	--tk-digits: #ffa94d;
+	--tk-other: #f783ac;
+	--tk-space: #adb5bd;
+	--tk-ending: #b197fc;
+	--tk-r0: #909296;
+	--tk-r1: #69db7c;
+	--tk-r2: #74c0fc;
+	--tk-r3: #ffc078;
+	--tk-one: #1f4e79;
+	--tk-two: #ff922b;
+	--tk-bar: #9775fa;
+	--tk-bar-alt: #7048e8;
+}

@@ -942,6 +942,15 @@ const explainers: Explainer[] = [
 		accent: '#0b7285',
 		steps: 8,
 		minutes: 16
+	},
+	{
+		slug: 'tokenization',
+		title: 'Tokenization & byte-pair encoding',
+		summary:
+			'Learn a tokenizer merge by merge from a text you type, then run GPT-2’s real one: why common words are one token, rare words several, numbers split oddly, other scripts cost more, and the letters inside a token are out of the model’s sight.',
+		accent: '#6741d9',
+		steps: 9,
+		minutes: 18
 	}
 ];
 
