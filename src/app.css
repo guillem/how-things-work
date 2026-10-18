@@ -3983,3 +3983,28 @@ kbd {
 	--da-real: #f59f00;
 	--da-real-text: #ffc078;
 }
+
+/* huckel-molecular-orbitals: the orbitals' positive and negative lobes, nodes, electrons, the
+   HOMO–LUMO gap, nitrogen, the model's line, and closed/open shells */
+:root {
+	--hk-pos: #1c7ed6;
+	--hk-neg: #e8590c;
+	--hk-node: #5c677d;
+	--hk-electron: #4a3aa8;
+	--hk-gap: #c2255c;
+	--hk-n: #364fc7;
+	--hk-model: #4a3aa8;
+	--hk-good: #2b8a3e;
+	--hk-warn: #c92a2a;
+}
+:root[data-theme='dark'] {
+	--hk-pos: #74c0fc;
+	--hk-neg: #ffa94d;
+	--hk-node: #adb5bd;
+	--hk-electron: #b197fc;
+	--hk-gap: #f783ac;
+	--hk-n: #91a7ff;
+	--hk-model: #b197fc;
+	--hk-good: #69db7c;
+	--hk-warn: #ff8787;
+}

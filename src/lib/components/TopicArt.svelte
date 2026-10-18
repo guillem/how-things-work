@@ -4359,6 +4359,42 @@
 			/>
 		{/each}
 		<path d="M88 63h24" stroke={accent} stroke-width="3.5" stroke-linecap="round" />
+	{:else if slug === 'huckel-molecular-orbitals'}
+		<!-- benzene seen from above with one orbital's signed lobes, beside a short energy ladder -->
+		{#each [0, 1, 2, 3, 4, 5] as j (j)}
+			{@const a = -Math.PI / 2 + (j * Math.PI) / 3}
+			{@const c = [0.58, 0.29, -0.29, -0.58, -0.29, 0.29][j]}
+			<circle
+				cx={70 + 32 * Math.cos(a)}
+				cy={60 + 32 * Math.sin(a)}
+				r={22 * Math.abs(c)}
+				fill={c > 0 ? accent : 'currentColor'}
+				fill-opacity={c > 0 ? 0.35 : 0.18}
+			/>
+		{/each}
+		<polygon
+			points={[0, 1, 2, 3, 4, 5]
+				.map((j) => {
+					const a = -Math.PI / 2 + (j * Math.PI) / 3;
+					return `${70 + 32 * Math.cos(a)},${60 + 32 * Math.sin(a)}`;
+				})
+				.join(' ')}
+			fill="none"
+			stroke="currentColor"
+			stroke-width="2"
+			opacity="0.7"
+		/>
+		{#each [[96, 1, 0], [76, 2, 0], [76, 2, 1], [44, 3, 0], [44, 3, 1], [24, 4, 0]] as [y, lv, k] (`${lv}${k}`)}
+			<rect
+				x={lv === 2 || lv === 3 ? 136 + k * 26 : 149}
+				y={y - 1.5}
+				width="20"
+				height="3"
+				rx="1"
+				fill={lv <= 2 ? accent : 'currentColor'}
+				opacity={lv <= 2 ? 1 : 0.45}
+			/>
+		{/each}
 	{:else}
 		<circle cx="100" cy="60" r="30" fill="none" stroke={accent} stroke-width="2" />
 		<circle cx="100" cy="60" r="5" fill={accent} />

@@ -1185,6 +1185,15 @@ const explainers: Explainer[] = [
 		accent: '#8a5a2b',
 		steps: 8,
 		minutes: 16
+	},
+	{
+		slug: 'huckel-molecular-orbitals',
+		title: 'Molecular orbitals & conjugation',
+		summary:
+			'Build chains and rings of carbon atoms and diagonalise their Hückel matrix: the π orbitals as signed lobes beside a ladder filled with electrons, a gap that narrows as a cyanine dye grows (so it absorbs redder light, beside the measured series), and rings that close their shell at 2, 6 or 10 electrons but leave two alone at 4 or 8.',
+		accent: '#4a3aa8',
+		steps: 9,
+		minutes: 16
 	}
 ];
 
