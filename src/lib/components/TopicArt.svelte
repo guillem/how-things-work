@@ -4781,6 +4781,40 @@
 			opacity="0.5"
 			transform="translate(-10 -6) scale(0.9)"
 		/>
+	{:else if slug === 'ocean-acidification'}
+		<!-- CO₂ over a wavy sea; inside it the carbonate ion falling as the CO₂ rises -->
+		<path
+			d="M8 44 Q22 38 36 44 T64 44 T92 44 T120 44 T148 44 T176 44 T192 44"
+			fill="none"
+			stroke={accent}
+			stroke-width="2"
+		/>
+		{#each [30, 78, 126, 168] as x (x)}
+			<g opacity="0.75">
+				<circle cx={x} cy="22" r="3.4" fill="currentColor" />
+				<circle cx={x - 7} cy="22" r="2.6" fill="none" stroke="currentColor" stroke-width="1.2" />
+				<circle cx={x + 7} cy="22" r="2.6" fill="none" stroke="currentColor" stroke-width="1.2" />
+			</g>
+		{/each}
+		<line
+			x1="24"
+			x2="176"
+			y1="104"
+			y2="104"
+			stroke="currentColor"
+			stroke-width="0.8"
+			opacity="0.4"
+		/>
+		<line x1="24" x2="24" y1="58" y2="104" stroke="currentColor" stroke-width="0.8" opacity="0.4" />
+		<path d="M24 64 C70 72 120 88 176 96" fill="none" stroke={accent} stroke-width="2.4" />
+		<path
+			d="M24 98 C70 92 120 80 176 70"
+			fill="none"
+			stroke="currentColor"
+			stroke-width="1.6"
+			stroke-dasharray="4 3"
+			opacity="0.6"
+		/>
 	{:else}
 		<circle cx="100" cy="60" r="30" fill="none" stroke={accent} stroke-width="2" />
 		<circle cx="100" cy="60" r="5" fill={accent} />

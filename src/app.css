@@ -4422,3 +4422,54 @@ kbd {
 	--ecg-mark: #ff922b;
 	--ecg-mark-text: #ffa94d;
 }
+
+/* ocean-acidification: the air and the water, the three forms of dissolved carbon, hydrogen ions,
+   pH, the acid side, undersaturation, calcite, cold and warm water, the reader's marker */
+:root {
+	--oa-air: #eaf3fb;
+	--oa-water: #d3e8f2;
+	--oa-water-edge: #4f8fb0;
+	--oa-co2: #e8590c;
+	--oa-co2-text: #b8460a;
+	--oa-hco3: #1c7ed6;
+	--oa-hco3-text: #1864ab;
+	--oa-co3: #2f9e44;
+	--oa-co3-text: #237a34;
+	--oa-h: #d6336c;
+	--oa-h-text: #b0285a;
+	--oa-ph: #7048e8;
+	--oa-ph-text: #5f3dc4;
+	--oa-acid: #e03131;
+	--oa-acid-text: #c92a2a;
+	--oa-under: #fa5252;
+	--oa-calcite: #0c8599;
+	--oa-calcite-text: #0b7285;
+	--oa-cold: #1971c2;
+	--oa-warm: #e8590c;
+	--oa-mark: #343a40;
+	--oa-mark-text: #212529;
+}
+:root[data-theme='dark'] {
+	--oa-air: #182430;
+	--oa-water: #10293a;
+	--oa-water-edge: #6fb3d6;
+	--oa-co2: #ff922b;
+	--oa-co2-text: #ffa94d;
+	--oa-hco3: #4dabf7;
+	--oa-hco3-text: #74c0fc;
+	--oa-co3: #51cf66;
+	--oa-co3-text: #69db7c;
+	--oa-h: #f06595;
+	--oa-h-text: #faa2c1;
+	--oa-ph: #9775fa;
+	--oa-ph-text: #b197fc;
+	--oa-acid: #ff6b6b;
+	--oa-acid-text: #ff8787;
+	--oa-under: #ff6b6b;
+	--oa-calcite: #3bc9db;
+	--oa-calcite-text: #66d9e8;
+	--oa-cold: #4dabf7;
+	--oa-warm: #ff922b;
+	--oa-mark: #dee2e6;
+	--oa-mark-text: #f1f3f5;
+}

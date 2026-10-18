@@ -1302,6 +1302,15 @@ const explainers: Explainer[] = [
 		accent: '#9e2f50',
 		steps: 9,
 		minutes: 22
+	},
+	{
+		slug: 'ocean-acidification',
+		title: 'Ocean acidification and carbonate chemistry',
+		summary:
+			'Turn up the CO₂ in the air and solve seawater’s carbonate chemistry as you go, with the constants CO2SYS uses: the pH slips a little, dissolved CO₂ and bicarbonate climb, and the carbonate ion that shells are built from runs short, first in cold polar water. A Bjerrum plot, the saturation of aragonite and calcite, and the Revelle factor that slows the ocean’s uptake.',
+		accent: '#1c7c99',
+		steps: 9,
+		minutes: 20
 	}
 ];
 
