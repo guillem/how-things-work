@@ -91,7 +91,7 @@ A topic is done when:
 | Space | `space` | 9 |
 | Computing | `computing` | 10 |
 | Information & Networks | `networks` | 8 |
-| Artificial Intelligence | `ai` | 17 |
+| Artificial Intelligence | `ai` | 18 |
 | Energy & Machines | `energy` | 9 |
 
 ## Checklist
@@ -216,6 +216,7 @@ A topic is done when:
 - [x] scaling-laws
 - [x] rlhf-alignment
 - [x] kv-cache-inference
+- [ ] speculative-decoding
 
 **Energy & Machines**
 - [x] heat-engines
@@ -1184,6 +1185,16 @@ A topic is done when:
 - **Prerequisites:** transformers, gpu
 - **Needs:** A small transformer run in the page (the project's own or GPT-2 small); published model configurations (layers, widths, heads) and GPU datasheet figures for memory bandwidth and peak throughput.
 - **Pitfall:** The cache does not make decoding compute-bound or free: its size grows with context and batch, and at long contexts reading the cache, not the weights, dominates. Prefill and decode are different regimes; one tokens-per-second figure hides both.
+
+#### speculative-decoding
+- **Title:** Speculative decoding
+- **Level:** 3
+- **Kind:** step
+- **Interaction:** A cheap draft model guesses the next few tokens and the large target model checks them all in one pass: step through each guess, accepted with probability min(1, p/q) or rejected and replaced by a sample from the leftover distribution max(0, p - q), with p and q drawn as overlapping bar charts. When every guess is accepted, the target's own pass adds one more token for free. Change the number of guesses and swap in a better or worse draft to see the tokens gained per target pass, then run ten thousand samples and watch their histogram converge on the target model's distribution.
+- **Takeaway:** A small model can do the guessing and the big one only the checking, which yields several tokens per expensive pass with output distributed exactly as if the big model had written it alone.
+- **Prerequisites:** kv-cache-inference, language-models
+- **Needs:** Two char-level models sharing one vocabulary, both run in the page: as target, the tiny transformer whose weights are shipped precomputed from training-a-tiny-language-model; as draft, a bigram table counted from the same Tiny Shakespeare text (or a smaller transformer).
+- **Pitfall:** It is not an approximation: with the rejection rule the output distribution equals the target's (a finite sample histogram matches only up to sampling noise). Accepting only exact matches with the target's top choice is valid only for greedy decoding. The speed-up pays off because a decode pass at small batch is memory-bound, so checking several tokens costs about as much as one; the tiny models on the page are not memory-bound, so the page counts target passes, not seconds.
 
 ### Energy & Machines
 
