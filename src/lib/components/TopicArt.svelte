@@ -3041,6 +3041,36 @@
 				fill="currentColor">{c}</text
 			>
 		{/each}
+	{:else if slug === 'scaling-laws'}
+		<!-- log-log axes: dots on a straight falling line that bends flat, and a U-shaped IsoFLOP slice -->
+		<line x1="22" y1="12" x2="22" y2="100" stroke="currentColor" stroke-width="1.2" opacity="0.5" />
+		<line
+			x1="22"
+			y1="100"
+			x2="186"
+			y2="100"
+			stroke="currentColor"
+			stroke-width="1.2"
+			opacity="0.5"
+		/>
+		<path
+			d="M28 22 L104 66 C120 75 140 79 180 81"
+			fill="none"
+			stroke="var(--sl-toy)"
+			stroke-width="2"
+			stroke-dasharray="5 3"
+		/>
+		{#each [[30, 23], [48, 34], [66, 44], [84, 55], [102, 65], [122, 74], [150, 79], [178, 81]] as [x, y], i (i)}
+			<circle cx={x} cy={y} r="3.6" fill="var(--sl-toy)" />
+		{/each}
+		<path
+			d="M110 22 Q138 70 176 30"
+			fill="none"
+			stroke={accent}
+			stroke-width="2.5"
+			stroke-linecap="round"
+		/>
+		<circle cx="141" cy="47" r="4.5" fill={accent} />
 	{:else if slug === 'stars'}
 		<!-- a massive star cut open: onion layers round an iron core, and a track on the HR diagram -->
 		<circle cx="62" cy="60" r="44" fill="var(--st-h)" />

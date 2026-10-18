@@ -978,6 +978,15 @@ const explainers: Explainer[] = [
 		accent: '#e8590c',
 		steps: 8,
 		minutes: 18
+	},
+	{
+		slug: 'scaling-laws',
+		title: 'Scaling laws',
+		summary:
+			'Scrub a sweep of 35 tiny transformers trained on Shakespeare and watch the loss fall along a straight line on log-log axes until the text or the model runs out; retrain one point in the page; then drag a compute budget through the Chinchilla law and see the best split between model size and training tokens, with the fit as printed, unrounded and refitted.',
+		accent: '#1864ab',
+		steps: 8,
+		minutes: 18
 	}
 ];
 

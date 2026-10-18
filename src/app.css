@@ -3311,3 +3311,51 @@ kbd {
 	--ttlm-backward: #f783ac;
 	--ttlm-copy: #f783ac;
 }
+
+/* scaling-laws: the sweep's lines (a ramp, light to dark), the picked line and its fit, the toy
+   in the published-law chart, Kaplan's line, the three Chinchilla fits, IsoFLOP slices, the
+   budget, iso-loss contours, the floor E, the fitted range, known models, the live run */
+:root {
+	--sl-ramp-1: #a5d8ff;
+	--sl-ramp-2: #74c0fc;
+	--sl-ramp-3: #4dabf7;
+	--sl-ramp-4: #339af0;
+	--sl-ramp-5: #1c7ed6;
+	--sl-ramp-6: #1864ab;
+	--sl-ramp-7: #0b3d6e;
+	--sl-pick: #e8590c;
+	--sl-toy: #1971c2;
+	--sl-kaplan: #7048e8;
+	--sl-hoffmann: #c2255c;
+	--sl-hoffmann-tex: #e8590c;
+	--sl-besiroglu: #2b8a3e;
+	--sl-slice: #adb5bd;
+	--sl-budget: #1864ab;
+	--sl-contour: #868e96;
+	--sl-floor: #495057;
+	--sl-range: #e7f5ff;
+	--sl-model: #5f3dc4;
+	--sl-live: #e8590c;
+}
+:root[data-theme='dark'] {
+	--sl-ramp-1: #1c3d5a;
+	--sl-ramp-2: #1f5481;
+	--sl-ramp-3: #1c6cb0;
+	--sl-ramp-4: #2f86d6;
+	--sl-ramp-5: #4dabf7;
+	--sl-ramp-6: #74c0fc;
+	--sl-ramp-7: #c5e4ff;
+	--sl-pick: #ff922b;
+	--sl-toy: #74c0fc;
+	--sl-kaplan: #b197fc;
+	--sl-hoffmann: #f783ac;
+	--sl-hoffmann-tex: #ffa94d;
+	--sl-besiroglu: #69db7c;
+	--sl-slice: #5c636a;
+	--sl-budget: #74c0fc;
+	--sl-contour: #909296;
+	--sl-floor: #ced4da;
+	--sl-range: #1b2a3a;
+	--sl-model: #b197fc;
+	--sl-live: #ff922b;
+}
