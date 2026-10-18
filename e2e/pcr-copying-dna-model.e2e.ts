@@ -11,6 +11,7 @@ import {
 	Tube,
 	amplify,
 	bestMismatch,
+	copiesAt,
 	kindOf,
 	primerMolecules,
 	primerSites,
@@ -82,6 +83,25 @@ test('a thousand copies cross the detection line about ten cycles before one cop
 	expect(thresholdCycle(amplify(0))).toBeNull();
 	// one copy crosses 10¹⁰ at log₂ 10¹⁰ ≈ 33 cycles
 	expect(ct(1)).toBeCloseTo(Math.log2(THRESHOLD), 1);
+});
+
+test('a strand no primer can pair with stays in the tube, uncopied', () => {
+	// a template too short to carry the reverse primer's site
+	const tube = new Tube({ ...LAYOUT, length: LAYOUT.b - 1 });
+	tube.step().step();
+	expect(tube.count().original).toBe(2);
+	expect(tube.singles.length).toBeGreaterThan(0);
+});
+
+test('a tube without template stays at zero, and a run of no cycles is its start', () => {
+	const none = amplify(0);
+	for (const c of [0, 10.5, 45]) expect(copiesAt(none, c)).toBe(0);
+	expect(copiesAt(amplify(1, 0), 0)).toBe(1);
+});
+
+test('primers find a facing pair even past an earlier site, and need room for both', () => {
+	expect(primerSites('TTTTGGGGAAAACCCCTTTT', 'AAAA', 'AAAA').product).toEqual([8, 20]);
+	expect(primerSites('ACGTACGT', 'GTACGT', 'GTACGT').product).toBeNull();
 });
 
 test('the CDC primers copy their own target and nothing in the other sequence', () => {

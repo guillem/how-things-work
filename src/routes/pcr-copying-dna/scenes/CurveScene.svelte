@@ -522,7 +522,7 @@
 			xTicks={[0, 2, 4, 6]}
 			yTicks={[10, 20, 30, 40]}
 			xFormat={(v: number) => INSET_X[v] ?? ''}
-			xLabel="copies at start"
+			xLabel="start (×10 per step)"
 		/>
 		<Readout id="inset-title">
 			<Label

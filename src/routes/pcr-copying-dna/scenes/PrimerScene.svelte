@@ -20,7 +20,8 @@
 		copiesAt,
 		primerSites,
 		reverseComplement,
-		thresholdCycle
+		thresholdCycle,
+		RECIPE
 	} from '../pcr';
 	import { TARGETS, type Target } from '../sequences-data';
 	import { powerLabel, tubePath } from './shared';
@@ -95,7 +96,16 @@
 	const copied = $derived(
 		blocks.find((b) => b.target.id === chosen && b.present && b.sites.product)
 	);
-	const run = $derived(copied ? amplify(START[copied.target.id]) : null);
+	// the tube's recipe, with the chosen piece's length and its primers' letters
+	const run = $derived(
+		copied
+			? amplify(START[copied.target.id], CYCLES, 1, {
+					...RECIPE,
+					amplicon: copied.target.ampliconLength,
+					primerLetters: pair.forward.length + pair.reverse.length
+				})
+			: null
+	);
 	const shown = $derived(reduced ? CYCLES : Math.min(CYCLES, t * 2));
 	const ct = $derived(run ? thresholdCycle(run) : null);
 	const crossed = $derived(ct !== null && shown >= ct);

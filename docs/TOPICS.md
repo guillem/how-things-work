@@ -159,7 +159,7 @@ A topic is done when:
 - [x] crispr
 - [x] bacterial-chemotaxis
 - [x] diffusion-osmosis
-- [ ] pcr-copying-dna
+- [x] pcr-copying-dna
 
 **Body & Medicine**
 - [x] heart-circulation

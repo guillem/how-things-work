@@ -65,6 +65,8 @@ export function kindOf(s: Strand, l: Layout): Kind {
 export class Tube {
 	readonly layout: Layout;
 	duplexes: Duplex[];
+	/** Strands no primer could pair with: left uncopied, single, but still in the tube. */
+	singles: Strand[] = [];
 	cycle = 0;
 
 	constructor(layout: Layout, copies = 1) {
@@ -92,20 +94,20 @@ export class Tube {
 	step(): this {
 		const born = this.cycle + 1;
 		const next: Duplex[] = [];
-		for (const d of this.duplexes) {
-			for (const s of [d.top, d.bottom]) {
-				const c = this.copyOf(s, born);
-				if (!c) continue;
-				next.push(s.sense === 'top' ? { top: s, bottom: c } : { top: c, bottom: s });
-			}
+		const singles: Strand[] = [];
+		for (const s of this.strands()) {
+			const c = this.copyOf(s, born);
+			if (!c) singles.push(s);
+			else next.push(s.sense === 'top' ? { top: s, bottom: c } : { top: c, bottom: s });
 		}
 		this.duplexes = next;
+		this.singles = singles;
 		this.cycle = born;
 		return this;
 	}
 
 	strands(): Strand[] {
-		return this.duplexes.flatMap((d) => [d.top, d.bottom]);
+		return [...this.duplexes.flatMap((d) => [d.top, d.bottom]), ...this.singles];
 	}
 
 	/** Strands of each kind. */
@@ -196,10 +198,14 @@ export function amplify(start: number, cycles = CYCLES, efficiency = 1, r: Recip
 
 /** Copies at a fractional cycle, interpolated on a log scale (for smooth drawing). */
 export function copiesAt(run: Run, cycle: number): number {
-	const c = Math.max(0, Math.min(run.copies.length - 1, cycle));
-	const i = Math.min(run.copies.length - 2, Math.floor(c));
+	const n = run.copies;
+	const c = Math.max(0, Math.min(n.length - 1, cycle));
+	const i = Math.floor(c);
 	const u = c - i;
-	return Math.exp((1 - u) * Math.log(run.copies[i]) + u * Math.log(run.copies[i + 1]));
+	if (u === 0 || i + 1 >= n.length) return n[i];
+	const [a, b] = [n[i], n[i + 1]];
+	if (a > 0 && b > 0) return Math.exp((1 - u) * Math.log(a) + u * Math.log(b));
+	return a + u * (b - a);
 }
 
 /** The threshold cycle: where the copies first reach `threshold`; null if they never do. */
@@ -238,12 +244,19 @@ export interface Sites {
 
 /** Where a pair of primers binds a top strand: exact matches only. */
 export function primerSites(top: string, forward: string, reverse: string): Sites {
-	const f = top.indexOf(forward);
 	const rc = reverseComplement(reverse);
-	const r = top.indexOf(rc);
-	const product: [number, number] | null =
-		f >= 0 && r >= 0 && r + rc.length > f ? [f, r + rc.length] : null;
-	return { forward: f, reverse: r, product };
+	const all = (needle: string) => {
+		const out: number[] = [];
+		for (let i = top.indexOf(needle); i >= 0; i = top.indexOf(needle, i + 1)) out.push(i);
+		return out;
+	};
+	const fs = all(forward);
+	const rs = all(rc);
+	// the first pair that faces each other: the reverse site wholly after the forward one
+	for (const f of fs)
+		for (const r of rs)
+			if (r >= f + forward.length) return { forward: f, reverse: r, product: [f, r + rc.length] };
+	return { forward: fs[0] ?? -1, reverse: rs[0] ?? -1, product: null };
 }
 
 /** Fewest letters that differ between `primer` and any same-length window of `top`. */
