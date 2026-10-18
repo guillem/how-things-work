@@ -81,5 +81,5 @@ test('the slide rule multiplies, and past 10 uses its other end', async ({ page 
 	await range(page, 'a2').fill('3.71');
 	await range(page, 'b2').fill('2.43');
 	await expect(stage(page)).toContainText('reads 9.025');
-	await expect(stage(page)).toContainText('exact product: 9.015');
+	await expect(stage(page)).toContainText('exact product: 9.0153');
 });

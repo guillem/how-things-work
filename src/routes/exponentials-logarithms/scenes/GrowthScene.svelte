@@ -123,7 +123,10 @@
 	const revealed = (values: readonly number[], c: number, x: Scale, y: (v: number) => number) => {
 		const pts: [number, number][] = [];
 		const whole = Math.floor(c);
-		for (let k = 0; k <= whole; k++) pts.push([x(k), y(values[k])]);
+		// at most ~300 points per curve, however many steps (×1.01 needs 1,852)
+		const stride = Math.max(1, Math.ceil(values.length / 300));
+		for (let k = 0; k <= whole; k += stride) pts.push([x(k), y(values[k])]);
+		if (whole % stride !== 0) pts.push([x(whole), y(values[whole])]);
 		if (c > whole && whole + 1 < values.length) {
 			const u = c - whole;
 			pts.push([x(c), y(values[whole] * (1 - u) + values[whole + 1] * u)]);
@@ -179,7 +182,7 @@
 
 	// ---- steady --------------------------------------------------------------------------
 	const CAP = 1e6;
-	const SN = $derived(f > 1.0001 ? clamp(Math.ceil(8 / Math.log10(f)), 10, 400) : 100);
+	const SN = $derived(f > 1.0001 ? Math.max(10, Math.ceil(8 / Math.log10(f))) : 100);
 	const sExp = $derived(geometric(1, f, SN));
 	const sSlow = $derived(logistic(1, f, CAP, SN));
 	const sc = $derived(phase === 'steady' ? Math.min(SN, (T / 6) * SN) : 0);
@@ -307,7 +310,7 @@
 			<Label
 				x={PANEL}
 				y={372}
-				text="each fold adds as much"
+				text="each fold adds as much as"
 				anchor="start"
 				size={12}
 				muted
@@ -316,7 +319,7 @@
 			<Label
 				x={PANEL}
 				y={390}
-				text="as all the folds before it"
+				text="the whole stack had before"
 				anchor="start"
 				size={12}
 				muted
@@ -336,7 +339,8 @@
 			<Axes
 				sx={rx}
 				sy={raceLog}
-				xTicks={[]}
+				xTicks={[0, 20, 40, 60]}
+				xLabel="steps"
 				yTicks={Array.from({ length: raceHi - 1 }, (_, i) => i + 2)}
 				yFormat={decade}
 				yLabel={w >= 0.5 ? 'amount (log scale)' : ''}
@@ -744,7 +748,8 @@
 			<Axes
 				sx={kx}
 				sy={kLog}
-				xTicks={[]}
+				xTicks={[0, 11400, 22800, 34200, 45600, 57000]}
+				xLabel="years"
 				yTicks={[-2, -1, 0, 1, 2]}
 				yFormat={(e: number) => `${fmt(10 ** e)} %`}
 				yLabel={w >= 0.5 ? 'carbon-14 left (log scale)' : ''}

@@ -1,6 +1,6 @@
 # Topic catalog
 
-Source of truth for the content of an interactive web learning tool that shows how things work. It defines 116 topics in 11 categories, each built around one interactive graphic. Readers range from high-school students to university majors.
+Source of truth for the content of an interactive web learning tool that shows how things work. It defines 117 topics in 11 categories, each built around one interactive graphic. Readers range from high-school students to university majors.
 
 This file covers content only. It does not choose the stack, the visual design or the project layout; take those from the repository's own instructions.
 
@@ -108,7 +108,7 @@ A topic is done when:
 - [x] primes-modular-arithmetic
 - [x] chaos-fractals
 - [x] taylor-series
-- [ ] exponentials-logarithms
+- [x] exponentials-logarithms
 
 **Physics**
 - [x] newtons-laws

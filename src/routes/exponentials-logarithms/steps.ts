@@ -131,8 +131,8 @@ export const spec: ExplainerSpec = {
 			controls: [folds],
 			body: `
 <p>A sheet of printer paper is about <strong>0.1 mm</strong> thick. Fold it in half and the stack is two sheets thick; fold again, four; again, eight. Every fold <strong>doubles</strong> the thickness.</p>
-<p>Seven folds make 128 layers, about 13 mm: the thickness of a notebook. Keep going, on paper at least: 14 folds pass a person's height, 27 pass Mount Everest, and <strong>42 folds</strong> would reach past the Moon, 384,400 km away.</p>
-<p>Watch the chart as the counter runs. Each new fold adds as much as all the folds before it put together, so the newest point always dwarfs the rest, and the earlier ones are squashed flat against the bottom.</p>`,
+<p>Seven folds make 128 layers, about 13 mm: the thickness of a notebook. Keep going, on paper at least: 15 folds pass a person's height, 27 pass Mount Everest, and <strong>42 folds</strong> would reach past the Moon, 384,400 km away.</p>
+<p>Watch the chart as the counter runs. Each new fold adds as much thickness as the whole stack had before it, so the newest bar always dwarfs the rest, and the earlier ones are squashed flat against the bottom.</p>`,
 			notes: `<p>Real paper gives up long before the Moon: each fold needs a longer sheet and more force. The record is 12 folds, by Britney Gallivan in 2002, with a strip of thin paper more than a kilometre long. The numbers here are the arithmetic of doubling, a thought experiment rather than a recipe.</p>`
 		},
 		{
@@ -187,8 +187,8 @@ export const spec: ExplainerSpec = {
 			duration: 14,
 			controls: [factor],
 			body: `
-<p>A trap: on a log scale, explosive growth looks calm. The <strong class="tag mul">same growth</strong> is drawn twice here, on an ordinary axis on the left and a log axis on the right. On the right it is a tame straight line; on the left it is shooting up. Both are true pictures. A straight line on a log scale means the growth rate <strong>stays the same</strong>: it is not slowing down.</p>
-<p>What slowing down looks like is the <strong class="tag slow">other curve</strong>: a population that starts with the same factor but runs out of food. On the log axis it <em>bends over</em> and flattens. When an epidemic chart on a log scale stays straight, the outbreak is still growing by the same factor every day; only a bend means it is easing.</p>`,
+<p>A trap: on a log scale, explosive growth looks calm. The <strong class="tag mul">same growth</strong> is drawn twice here, on an ordinary axis on the left and a log axis on the right. On the right it is a tame straight line; on the left it is shooting up. Both are true pictures. A straight line on a log scale means the growth rate <strong>stays the same</strong>: it is not slowing down. (At ×1 there is no growth at all, and both lines stay flat.)</p>
+<p>What slowing down looks like is the <strong class="tag slow">other curve</strong>: a population that starts with the same factor but runs out of food. On the log axis it <em>bends over</em> and flattens. When an epidemic chart on a log scale rises in a straight line, the outbreak is still growing by the same factor every day; bending towards horizontal means that factor is shrinking.</p>`,
 			notes: `<p>The slowing curve is the textbook “logistic” growth: each step adds the factor's share times the room left, so the growth fades as the population nears what the food can feed (here a million times the start).</p>`
 		},
 		{
@@ -216,7 +216,8 @@ export const spec: ExplainerSpec = {
 			body: `
 <p>Turn the question round. Not “what is 2 doubled ten times?” but “<strong>how many doublings</strong> take 1 to 1,000?” That count is the <dfn data-def="How many times you must multiply by the base to get a number. log₂ 8 = 3 because 2 × 2 × 2 = 8.">logarithm</dfn> base 2, written log₂.</p>
 <p>The line is a log scale laid on its side: every hop is one doubling, all the same length. Nine doublings reach 512; a tenth would overshoot to 1,024. So log₂ 1,000 is just under 10, about <strong>9.97</strong>: the fractional part says how much of the last hop is used.</p>
-<p>Drag the marker. log₂ 16 = 4, the four halvings that split 16 cards in <a href="../sorting/#merge">merge sort</a>; log₂ of a million is about 20. A logarithm grows very slowly, because it counts the steps, not the size.</p>`
+<p>Drag the marker. log₂ 16 = 4, the four halvings that split 16 cards in <a href="../sorting/#merge">merge sort</a>; log₂ of a million is about 20. A logarithm grows very slowly, because it counts the steps, not the size.</p>
+<p>What is a fraction of a doubling? Half a doubling multiplies by √2, about 1.414, because two of them must make ×2. The fractions are distances on the log scale, not halves of the gap.</p>`
 		},
 		{
 			id: 'zeros',
@@ -227,8 +228,8 @@ export const spec: ExplainerSpec = {
 			duration: 12,
 			controls: [number],
 			body: `
-<p>Count in steps of ×10 instead and the logarithm is base 10: log₁₀ 1,000,000 = <strong>6</strong>, the number of zeros. For a number between, it is the zeros plus a fraction: log₁₀ 500 ≈ 2.7.</p>
-<p>Scientists use this count when quantities span many powers of ten. The <a href="../acids-bases/#ph">pH scale</a> counts powers of ten of hydrogen ions: one step of pH is ten times more or fewer. <a href="../earthquakes/#magnitude">Earthquake magnitude</a> uses steps of about ×32 in energy: the bottom row counts those. Japan's magnitude 9.1 earthquake in 2011 was 1.3 steps above Nepal's 7.8 in 2015: 32<sup>1.3</sup> ≈ 90 times the energy.</p>
+<p>Count in steps of ×10 instead and the logarithm is base 10: log₁₀ 1,000,000 = <strong>6</strong>, the number of zeros. Between powers of ten, count the complete ×10 steps plus a fraction: 500 lies between 10² and 10³, so log₁₀ 500 ≈ 2.7.</p>
+<p>Scientists use logarithms when quantities span many powers of ten. On the <a href="../acids-bases/#ph">pH scale</a>, in dilute solutions, one step up in pH means roughly a tenth of the hydrogen-ion concentration. <a href="../earthquakes/#magnitude">Earthquake magnitude</a> uses steps of about ×32 in energy: the bottom row counts those. Japan's magnitude 9.1 earthquake in 2011 was 1.3 steps above Nepal's 7.8 in 2015: 32<sup>1.3</sup> ≈ 90 times the energy.</p>
 <p>The three rows count the same number in hops of different sizes, so their counts keep the same proportions: a doubling is always 0.30 of a ×10.</p>`,
 			notes: `<p>Changing the base just rescales the count: log₂ <i>x</i> = log₁₀ <i>x</i> ÷ log₁₀ 2 ≈ 3.32 × log₁₀ <i>x</i>. Each magnitude step is 10<sup>1.5</sup> ≈ 31.6 times the energy, which the page rounds to 32.</p>`
 		},

@@ -36,8 +36,15 @@
 	const MAG = 10 ** 1.5;
 	const rows = [
 		{ id: 'two', base: 2, name: '×2', y: 250, sym: 'log₂', what: 'doublings' },
-		{ id: 'ten', base: 10, name: '×10', y: 430, sym: 'log₁₀', what: 'zeros' },
-		{ id: 'mag', base: MAG, name: '×32', y: 530, sym: 'log₃₂', what: 'magnitude steps' }
+		{ id: 'ten', base: 10, name: '×10', y: 430, sym: 'log₁₀', what: '×10 steps' },
+		{
+			id: 'mag',
+			base: MAG,
+			name: '×32',
+			y: 530,
+			sym: 'magnitude steps to',
+			what: 'magnitude steps'
+		}
 	] as const;
 
 	const focusTwo = new Tween(1, { duration: 700, easing: cubicInOut });
@@ -78,7 +85,7 @@
 				? `${two.whole} doublings reach ${fmt(2 ** two.whole)}; ${(two.count - two.whole).toFixed(2)} of the next one gets to ${xText}`
 				: `exactly ${two.whole} doublings`
 			: ten.count - ten.whole > 1e-6
-				? `${ten.whole} zeros reach ${fmt(10 ** ten.whole)}; ${(ten.count - ten.whole).toFixed(2)} of the next ×10 gets to ${xText}`
+				? `${ten.whole} steps of ×10 reach ${fmt(10 ** ten.whole)}; ${(ten.count - ten.whole).toFixed(2)} of the next one gets to ${xText}`
 				: `exactly ${ten.whole} zeros`
 	);
 </script>

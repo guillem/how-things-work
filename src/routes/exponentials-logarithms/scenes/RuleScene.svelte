@@ -57,7 +57,7 @@
 	const TENTHS = [1.5];
 
 	const fmt2 = (v: number) => v.toFixed(2);
-	const readText = (v: number) => String(Number(v.toFixed(3)));
+	const readText = (v: number) => String(Number(v.toFixed(4)));
 
 	// the lengths, laid end to end at half scale
 	const H = L / 2;
