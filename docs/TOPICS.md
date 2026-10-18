@@ -681,7 +681,7 @@ A topic is done when:
 - **Prerequisites:** reaction-rates-equilibrium, newtons-laws
 - **Related:** surface-catalysis
 - **Needs:** LEPS (Sato) parameters for the H3 and FH2 surfaces.
-- **Pitfall:** The transition state is not an intermediate that can be isolated; it is the top of the pass, crossed in a single vibration, and a catalyst lowers the pass rather than pushing molecules over it.
+- **Pitfall:** The transition state is not an intermediate that can be isolated; it is the top of the pass, usually crossed within about one vibration (trajectories can recross), and a catalyst lowers the pass rather than pushing molecules over it.
 
 ### Biology
 
