@@ -24,37 +24,52 @@
 	const st = scale([-5, 35], [530, 390]);
 	const lg = Math.log10;
 
+	type Pt = { au: number; ppm: number; k: number };
+	/** The balance along the distance axis, in pieces split wherever none exists. */
 	const curveFor = (v: number) => {
-		const pts: { au: number; ppm: number; k: number }[] = [];
+		const pieces: Pt[][] = [];
+		let cur: Pt[] = [];
 		for (let i = 0; i <= 70; i++) {
 			const d = AU0 + ((AU1 - AU0) * i) / 70;
 			const eq = openEquilibrium(sunlightAt(d), v);
-			if (!eq) break;
-			pts.push({ au: d, ...eq });
+			if (eq) cur.push({ au: d, ...eq });
+			else if (cur.length) {
+				pieces.push(cur);
+				cur = [];
+			}
 		}
-		return pts;
+		if (cur.length) pieces.push(cur);
+		return pieces;
 	};
 	const edgeFor = (v: number) => outerEdge(v, AU0, AU1);
 	const today = curveFor(1);
 	const todayEdge = edgeFor(1);
 	const pts = $derived(volc === 1 ? today : curveFor(volc));
 	const edge = $derived(volc === 1 ? todayEdge : edgeFor(volc));
-	const co2Path = (p: typeof today) =>
-		linePath(
-			p,
-			(q) => q.au,
-			(q) => clamp(lg(q.ppm), 1, 6),
-			sx,
-			sc
-		);
-	const tPath = (p: typeof today) =>
-		linePath(
-			p,
-			(q) => q.au,
-			(q) => toC(q.k),
-			sx,
-			st
-		);
+	const co2Path = (pieces: Pt[][]) =>
+		pieces
+			.map((p) =>
+				linePath(
+					p,
+					(q) => q.au,
+					(q) => clamp(lg(q.ppm), 1, 6),
+					sx,
+					sc
+				)
+			)
+			.join(' ');
+	const tPath = (pieces: Pt[][]) =>
+		pieces
+			.map((p) =>
+				linePath(
+					p,
+					(q) => q.au,
+					(q) => toC(q.k),
+					sx,
+					st
+				)
+			)
+			.join(' ');
 	const here = $derived(openEquilibrium(sunlightAt(au), volc));
 
 	// ---- the strip with the Sun and the planet
@@ -126,12 +141,12 @@
 			id="edge"
 			order={4}
 			label="Outer edge"
-			value="none: without volcanoes there is no balance"
+			value={volc === 0 ? 'none: without volcanoes there is no balance' : 'none in this range'}
 		>
 			<Label
 				x={(X0 + X1) / 2}
 				y={250}
-				text="no volcanoes: no balance anywhere"
+				text={volc === 0 ? 'no volcanoes: no balance anywhere' : 'no balance in this range'}
 				size={14}
 				weight={700}
 				color="var(--cst-ice-edge)"
@@ -161,7 +176,7 @@
 		xTicks={[]}
 		yTicks={[1, 2, 3, 4, 5, 6]}
 		yFormat={(v: number) => fmtPpm(10 ** v)}
-		yLabel="CO₂, ppm"
+		yLabel="CO₂, µbar (ppm)"
 	/>
 	{#if volc !== 1}
 		<path

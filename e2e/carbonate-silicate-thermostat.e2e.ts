@@ -72,9 +72,9 @@ test('under the young Sun the box stays open only with livelier early volcanoes'
 	await expect(stage(page)).toContainText('one model’s history, not a measured one');
 	await expect(stage(page)).toContainText('today');
 	await expect(stage(page)).toContainText('280 ppm');
-	await expect(stage(page)).not.toContainText('no open balance');
+	await expect(stage(page)).not.toContainText('no steady open balance');
 	await slider(page, 'early').fill('1');
-	await expect(stage(page)).toContainText('no open balance');
+	await expect(stage(page)).toContainText('no steady open balance');
 });
 
 test('a snowball thaws once the volcanoes’ CO₂ builds up, even with half the volcanoes', async ({

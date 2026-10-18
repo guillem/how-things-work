@@ -12,7 +12,7 @@
 	import { cubicInOut } from 'svelte/easing';
 	import { Axes, Label, cycle, linePath, scale } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
-	import { OPEN_RATE, P0, celsiusText, co2Text, openTemperature, weathering } from '../model';
+	import { P0, celsiusText, co2Text, openRate, openTemperature, weathering } from '../model';
 
 	let { t, params, reduced }: StageProps = $props();
 
@@ -41,7 +41,7 @@
 	const k = $derived(openTemperature(ppm));
 	const w = $derived(weathering(k, ppm));
 	/** Net change, ppm per million years. */
-	const net = $derived(OPEN_RATE * 1e6 * (1 - w));
+	const net = $derived(openRate(ppm) * 1e6 * (1 - w));
 	const dir = $derived(Math.abs(net) < 3 ? 0 : Math.sign(net));
 	const netText = $derived(
 		dir === 0

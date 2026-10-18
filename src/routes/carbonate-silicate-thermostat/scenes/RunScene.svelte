@@ -102,7 +102,8 @@
 					ppm: Math.exp(lerp(Math.log(a.ppm), Math.log(b.ppm), f)),
 					k: lerp(a.k, b.k, f),
 					w: lerp(a.w, b.w, f),
-					frozen: a.frozen
+					frozen: a.frozen,
+					ocean: lerp(a.ocean, b.ocean, f)
 				};
 	});
 
@@ -341,7 +342,7 @@
 	<Axes
 		{sx}
 		sy={sc}
-		yLabel="CO₂, ppm"
+		yLabel="CO₂, µbar (ppm)"
 		xTicks={[]}
 		yTicks={co2Ticks.map(Math.log10)}
 		yFormat={(v: number) => fmtPpm(Math.round(10 ** v))}

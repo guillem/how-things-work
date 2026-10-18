@@ -18,11 +18,12 @@
  *  - G_water = 25 K + 0.5 (T − 288 K), never below 0: WHK's water-vapour term (eq. 4: the
  *    slope 0.5 is theirs, which doubles any change of Tₑ), here re-referenced to today's
  *    288 K;
- *  - G_CO₂ = 8 K today and 1.5 K more per doubling of CO₂ (zero below about 7 ppm), which
+ *  - G_CO₂ = 8 K today and 1.5 K more per doubling of CO₂ (zero below about 7 µbar), which
  *    the water term doubles to 3 °C per doubling, the IPCC AR6 best estimate of the
- *    equilibrium climate sensitivity. About a quarter of today's 33 K greenhouse effect is
- *    CO₂'s (Schmidt et al. 2010). WHK's own CO₂ term gave only 1.3 K per doubling, which
- *    they called an underestimate.
+ *    equilibrium climate sensitivity. These offsets are fitted, not an attribution: they
+ *    reproduce today's 15 °C and the 3 °C per doubling, and the water term lumps together
+ *    water vapour, clouds and everything else. WHK's own CO₂ term gave only 1.3 K per
+ *    doubling, which they called an underestimate.
  *
  * Ice: the albedo rises linearly from 0.3 for a global mean of 0 °C or more to 0.6 for a
  * fully frozen planet at −28 °C or less (a Budyko–Sellers ice-albedo feedback squeezed into
@@ -30,22 +31,31 @@
  * no state is stable there: a planet is either open (≥ 0 °C) or a snowball (≤ −28 °C), and
  * the temperature jumps between them.
  *
- * The reservoir: with the ocean open, air and ocean exchange CO₂ freely and the air's CO₂ is
- * taken as proportional to the carbon in both (WHK's assumption). Today's volcanic and
- * metamorphic release, 3.3 × 10¹⁴ g CO₂ a year (Holland 1978, used by WHK), "would double
- * the carbon in the ocean and atmosphere in only 400,000 years": 280 ppm per 400,000 years.
- * Under a snowball the ocean is sealed by ice and the same release builds up in the air
- * alone: one bar in 20 million years (WHK).
+ * CO₂ is a partial pressure in µbar, which in today's one-bar air is the same number as ppm
+ * (280 µbar ≈ 280 ppm); a thick snowball atmosphere is quoted in bar.
  *
- * The temperature adjusts in years and the carbon in hundreds of thousands, so the
- * temperature is always in balance with the current CO₂ (it is found by following the sign
- * of the energy imbalance from the previous temperature, so a frozen planet stays frozen
- * until its frozen balance disappears). Time is in years, CO₂ in ppm, temperatures in K.
+ * The carbon: the air holds 2.124 billion tonnes (Pg) of carbon per µbar. Today's volcanic
+ * and metamorphic release, 3.3 × 10¹⁴ g CO₂ a year (Holland 1978, used by WHK), "would
+ * double the carbon in the ocean and atmosphere in only 400,000 years", so air and ocean
+ * together hold about 36,000 Pg, nearly all of it in the ocean, which takes up its share of
+ * any change: near today 128 Pg per µbar of the air's CO₂ (WHK's assumption that the air's
+ * CO₂ follows their total; so below today the ocean empties in step with the air). Above
+ * today its share shrinks as the CO₂ grows (the ocean's extra carbon
+ * here grows as the logarithm of the CO₂), so a thick CO₂ atmosphere stays mostly in the
+ * air. Under a snowball the ocean is sealed by ice and the volcanoes' CO₂ builds up in the
+ * air alone (WHK: about a bar in 20 million years; here 24). When the ice goes, air and
+ * ocean share the carbon again, conserving it.
+ *
+ * The temperature adjusts much faster than the carbon (centuries against hundreds of
+ * thousands of years), so it is always taken in balance with the current CO₂ (found by
+ * following the sign of the energy imbalance from the previous temperature, so a frozen
+ * planet stays frozen until its frozen balance disappears). Time is in years, temperatures
+ * in K.
  */
 
 // ------------------------------------------------------------------ constants
 
-/** Pre-industrial CO₂, ppm: the reference P₀. */
+/** Pre-industrial CO₂, µbar (= ppm): the reference P₀. */
 export const P0 = 280;
 /** Today's global mean surface temperature, K (about 15 °C). */
 export const T0 = 288;
@@ -73,11 +83,23 @@ export const KINETIC_EFOLD = 17.7;
 export const RUNOFF_EFOLD = 60;
 /** Years for today's volcanoes to double the carbon of an open ocean and air (WHK). */
 export const DOUBLING_YEARS = 400e3;
-/** CO₂ added per year by today's volcanoes with the ocean open, and sealed under ice, ppm. */
-export const OPEN_RATE = P0 / DOUBLING_YEARS;
-export const SEALED_RATE = 1e6 / 20e6;
 /** Today's volcanic release, Pg (billion tonnes) of carbon a year: 3.3 × 10¹⁴ g CO₂ × 12/44. */
 export const VOLCANIC_PGC = (3.3e14 * 12) / 44 / 1e15;
+/** Carbon in the air per µbar (ppm) of CO₂, Pg. */
+export const AIR_PGC = 2.124;
+/** Carbon in air and ocean together, Pg: what today's volcanoes double in 400,000 years. */
+export const FLUID_PGC = VOLCANIC_PGC * DOUBLING_YEARS;
+/** The ocean's uptake near today, Pg per µbar of the air's CO₂. */
+const OCEAN_K = FLUID_PGC / P0 - AIR_PGC;
+/** The ocean's carbon above today's when its air holds `p` µbar, Pg (logarithmic). */
+export const oceanExtra = (p: number) =>
+	p < P0 ? OCEAN_K * (p - P0) : OCEAN_K * P0 * Math.log(p / P0);
+/** Carbon in air and ocean together, above today's, for an open planet at `p` µbar, Pg. */
+export const openCarbon = (p: number) => AIR_PGC * (p - P0) + oceanExtra(p);
+/** Pg of carbon per µbar of the air's change, with the ocean open. */
+const openCapacity = (p: number) => AIR_PGC + (p < P0 ? OCEAN_K : (OCEAN_K * P0) / p);
+/** CO₂ added per year by today's volcanoes to a sealed (frozen) planet's air, µbar. */
+export const SEALED_RATE = VOLCANIC_PGC / AIR_PGC;
 /** Sunlight of the snowball glaciations, about 700 million years ago (Gough 1981). */
 export const SNOWBALL_SUN = 0.94;
 /** Age of the Sun at present, Gyr, for Gough's law. */
@@ -169,7 +191,7 @@ export const runoffFactor = (k: number) => Math.exp((k - T0) / RUNOFF_EFOLD);
  */
 export function openEquilibrium(s: number, volcanoes = 1): { ppm: number; k: number } | null {
 	if (volcanoes <= 0) return null;
-	let lo = Math.log(1);
+	let lo = Math.log(1e-4);
 	let hi = Math.log(3e6);
 	const wAt = (ppm: number) => {
 		const k = openTemperature(ppm, s);
@@ -191,22 +213,30 @@ export function openEquilibrium(s: number, volcanoes = 1): { ppm: number; k: num
 
 /**
  * The farthest distance from today's Sun, in Earth's distances, at which an open balance
- * exists with volcanoes `volcanoes` × today's, searched between `near` and `far`: null if
- * there is none even at `near`, `far` if there is one all the way.
+ * exists with volcanoes `volcanoes` × today's, searched between `near` and `far` (scanned
+ * from the far end, then refined): null if there is none anywhere in the range, `far` if
+ * there is one there.
  */
 export function outerEdge(volcanoes: number, near = 0.95, far = 1.3): number | null {
 	const open = (au: number) => openEquilibrium(sunlightAt(au), volcanoes) !== null;
-	if (!open(near)) return null;
 	if (open(far)) return far;
-	let lo = near;
-	let hi = far;
-	for (let i = 0; i < 30; i++) {
-		const m = (lo + hi) / 2;
-		if (open(m)) lo = m;
-		else hi = m;
+	const step = 0.005;
+	for (let au = far - step; au >= near - 1e-9; au -= step) {
+		if (!open(au)) continue;
+		let lo = au;
+		let hi = au + step;
+		for (let i = 0; i < 20; i++) {
+			const m = (lo + hi) / 2;
+			if (open(m)) lo = m;
+			else hi = m;
+		}
+		return lo;
 	}
-	return lo;
+	return null;
 }
+
+/** CO₂ added to an open planet's air per year by today's volcanoes, µbar, at `p` µbar. */
+export const openRate = (p: number) => VOLCANIC_PGC / openCapacity(p);
 
 // ------------------------------------------------------------------ running it
 
@@ -220,6 +250,8 @@ export interface Sample {
 	/** Weathering relative to today's. */
 	w: number;
 	frozen: boolean;
+	/** The ocean's carbon above today's, Pg (sealed while frozen). */
+	ocean: number;
 }
 
 export interface RunOptions {
@@ -239,31 +271,54 @@ export interface RunOptions {
 	samples?: number;
 }
 
+/** The open planet's CO₂ (µbar) holding `pgc` Pg of carbon above today's in air and ocean. */
+export function openPressure(pgc: number, guess: number) {
+	let lo = Math.max(1e-6, guess / 1e4);
+	let hi = guess * 1e4;
+	for (let i = 0; i < 80; i++) {
+		const m = Math.sqrt(lo * hi);
+		if (openCarbon(m) > pgc) hi = m;
+		else lo = m;
+	}
+	return Math.sqrt(lo * hi);
+}
+
 /**
- * Runs the box forwards: CO₂ changes by (volcanoes − weathering) at the open or sealed rate,
- * and the temperature follows. Integrated with steps of at most 2,000 years, each split so
- * that CO₂ never changes by more than 2 % in one step (the hothouse after a snowball).
+ * Runs the box forwards. Open, the carbon of air and ocean changes by (volcanoes −
+ * weathering) and the air's CO₂ with it; frozen, the sea is sealed and the volcanoes' CO₂
+ * stays in the air. When a frozen planet thaws, air and ocean share their carbon again
+ * (conserved), and the temperature follows. Integrated with steps of at most 2,000 years,
+ * each split so that CO₂ never changes by more than 2 % in one step.
  */
 export function run(opts: RunOptions): Sample[] {
 	const s = opts.sun ?? 1;
 	const v = opts.volcanoes ?? 1;
 	let ppm = opts.ppm ?? P0;
 	let k = balance(ppm, s, opts.k ?? (opts.frozen ? 150 : T0));
+	/** The ocean's carbon above today's, Pg: in step with the air when open, fixed when sealed. */
+	let ocean = oceanExtra(ppm);
 	const n = opts.samples ?? 400;
 	const every = opts.years / n;
 	const out: Sample[] = [];
 	const push = (year: number) =>
-		out.push({ year, ppm, k, w: weathering(k, ppm), frozen: isFrozen(k) });
+		out.push({ year, ppm, k, w: weathering(k, ppm), frozen: isFrozen(k), ocean });
 	push(0);
 	let year = 0;
 	for (let i = 1; i <= n; i++) {
 		const end = i * every;
 		while (year < end - 1e-6) {
-			const rate = (isFrozen(k) ? SEALED_RATE : OPEN_RATE) * (v - weathering(k, ppm));
+			const frozen = isFrozen(k);
+			const rate = (frozen ? SEALED_RATE : openRate(ppm)) * (v - weathering(k, ppm));
 			let dt = Math.min(2000, end - year);
 			if (rate !== 0) dt = Math.min(dt, Math.max(1, (0.02 * ppm) / Math.abs(rate)));
-			ppm = Math.max(0.01, ppm + rate * dt);
+			ppm = Math.max(1e-4, ppm + rate * dt);
 			k = balance(ppm, s, k);
+			if (frozen && !isFrozen(k)) {
+				// the thaw: the ocean takes its share of the carbon the air built up
+				ppm = openPressure(AIR_PGC * (ppm - P0) + ocean, ppm);
+				k = balance(ppm, s, k);
+			}
+			if (!isFrozen(k)) ocean = oceanExtra(ppm);
 			year += dt;
 		}
 		push(end);
@@ -302,10 +357,10 @@ export interface HistoryPoint {
 	ga: number;
 	/** Relative sunlight. */
 	sun: number;
-	/** The thermostat's CO₂ (ppm) and temperature (K), or null where the planet is frozen. */
+	/** The thermostat's steady open balance: CO₂ (µbar) and temperature (K); null where none exists. */
 	ppm: number | null;
 	k: number | null;
-	/** Temperature with CO₂ held at 280 ppm, open start (K); frozen where no open balance. */
+	/** Temperature with CO₂ held at 280 µbar (K), followed from the frozen start. */
 	fixedK: number;
 }
 
@@ -317,22 +372,19 @@ export const volcanoesAgo = (ga: number, early: number) => 1 + ((early - 1) * ga
  * volcanoes `early` times today's 4.5 billion years ago, declining steadily to today's. The
  * carbon settles in about half a million years while the Sun brightens by 1 % in about 100
  * million, so at each moment the planet sits at its balance for that sunlight (if an open one
- * exists). `fixedK` is the planet without the thermostat: CO₂ held at 280 ppm.
+ * exists). `fixedK` is the planet without the thermostat: CO₂ held at 280 µbar, starting
+ * frozen under the faint Sun and followed forward, so once frozen it stays frozen while a
+ * frozen balance exists (the ice's hysteresis).
  */
 export function history(early: number, from = 4.5, steps = 90): HistoryPoint[] {
 	const out: HistoryPoint[] = [];
+	let fixedK = frozenTemperature(P0, sunlightAgo(from));
 	for (let i = 0; i <= steps; i++) {
 		const ga = from * (1 - i / steps);
 		const sun = sunlightAgo(ga);
 		const eq = openEquilibrium(sun, volcanoesAgo(ga, early));
-		const open = openTemperature(P0, sun);
-		out.push({
-			ga,
-			sun,
-			ppm: eq?.ppm ?? null,
-			k: eq?.k ?? null,
-			fixedK: open >= T_OPEN ? open : frozenTemperature(P0, sun)
-		});
+		fixedK = balance(P0, sun, fixedK);
+		out.push({ ga, sun, ppm: eq?.ppm ?? null, k: eq?.k ?? null, fixedK });
 	}
 	return out;
 }

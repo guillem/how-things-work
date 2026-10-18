@@ -193,7 +193,7 @@ A topic is done when:
 - [x] ensemble-weather-forecasting
 - [x] ocean-acidification
 - [x] tsunamis
-- [ ] carbonate-silicate-thermostat
+- [x] carbonate-silicate-thermostat
 
 **Space**
 - [x] sun-earth-moon

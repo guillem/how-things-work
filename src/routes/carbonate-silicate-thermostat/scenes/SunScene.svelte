@@ -100,7 +100,7 @@
 			)
 		)
 	);
-	/** Where the thermostat's planet has no open balance: frozen. */
+	/** Where the thermostat has no steady open balance (the box does not follow those times). */
 	const frozenSpans = $derived.by(() => {
 		const out: { a: number; b: number }[] = [];
 		let a: number | null = null;
@@ -161,7 +161,7 @@
 		xTicks={[]}
 		yTicks={[2, 3, 4, 5, 6]}
 		yFormat={(v: number) => fmtPpm(10 ** v)}
-		yLabel="CO₂, ppm"
+		yLabel="CO₂, µbar (ppm)"
 	/>
 	{#each co2Paths as d, i (i)}
 		<path {d} fill="none" stroke="var(--cst-co2)" stroke-width="2.5" />
@@ -251,7 +251,7 @@
 			order={3}
 			label="Thermostat"
 			value={now.ppm === null
-				? 'no open balance: frozen'
+				? 'no steady open balance (not simulated)'
 				: `${co2Text(now.ppm)}, ${celsiusText(now.k!)}`}
 			color="var(--cst-co2)"
 		>
@@ -259,7 +259,7 @@
 			<Label
 				x={748}
 				y={sc(4) + 10}
-				text={now.ppm === null ? 'frozen, no balance' : co2Text(now.ppm)}
+				text={now.ppm === null ? 'no steady balance' : co2Text(now.ppm)}
 				anchor="start"
 				weight={700}
 				color="var(--cst-co2)"
@@ -293,7 +293,7 @@
 			<Label
 				x={sx(frozenSpans[0].a) + 6}
 				y={522}
-				text="no open balance"
+				text="no steady open balance"
 				anchor="start"
 				size={11}
 				color="var(--cst-ice-edge)"

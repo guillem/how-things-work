@@ -4,6 +4,7 @@
 // snowball, the limits). Runs in Node.
 import { expect, test } from '@playwright/test';
 import {
+	AIR_PGC,
 	KINETIC_EFOLD,
 	P0,
 	RUNOFF_EFOLD,
@@ -16,13 +17,16 @@ import {
 	frozenTemperature,
 	history,
 	openEquilibrium,
+	openCarbon,
+	openPressure,
 	openTemperature,
 	outerEdge,
 	run,
 	sunlightAgo,
 	sunlightAt,
 	toC,
-	weathering
+	weathering,
+	type Sample
 } from '../src/routes/carbonate-silicate-thermostat/model';
 
 test('today the planet balances at 280 ppm and 15 °C, with weathering equal to the volcanoes', () => {
@@ -45,9 +49,39 @@ test("WHK's weathering law: dissolution and runoff combine to a 13.7 K e-folding
 	expect(weathering(T_FROZEN - 10, 100_000)).toBe(0);
 });
 
-test('volcanoes release about 0.09 billion tonnes of carbon a year; frozen over, that makes a bar in 20 Myr', () => {
+test('volcanoes release about 0.09 billion tonnes of carbon a year; frozen over, about a bar in 20–25 Myr', () => {
 	expect(VOLCANIC_PGC).toBeCloseTo(0.09, 2);
-	expect(SEALED_RATE * 20e6).toBeCloseTo(1e6, -3);
+	const barYears = 1e6 / SEALED_RATE;
+	expect(barYears).toBeGreaterThan(20e6);
+	expect(barYears).toBeLessThan(25e6);
+});
+
+test('carbon is conserved through freezing and thawing', () => {
+	// frozen, the air gains exactly what the volcanoes release
+	const frozen = run({ sun: 0.94, frozen: true, years: 2e6, samples: 4 });
+	expect(frozen.every((x) => x.frozen)).toBe(true);
+	const gained = AIR_PGC * (frozen.at(-1)!.ppm - frozen[0].ppm);
+	expect(gained / (VOLCANIC_PGC * 2e6)).toBeCloseTo(1, 6);
+	expect(frozen.at(-1)!.ocean).toBe(frozen[0].ocean);
+	// at the thaw the air shares its carbon with the sealed ocean, and none is lost
+	const air = 300_000;
+	const shared = openPressure(AIR_PGC * (air - P0), air);
+	expect(shared).toBeLessThan(air);
+	expect(openCarbon(shared) / (AIR_PGC * (air - P0))).toBeCloseTo(1, 6);
+	// through a whole snowball, the carbon budget closes: volcanoes in, weathering out (to the
+	// accuracy of summing the sampled weathering through the sharp hothouse)
+	const thawed = run({ sun: 0.94, frozen: true, years: 9e6, samples: 9000 });
+	expect(thawed[0].frozen).toBe(true);
+	const total = (x: Sample) => AIR_PGC * (x.ppm - P0) + x.ocean;
+	let budget = 0;
+	for (let i = 1; i < thawed.length; i++) {
+		const a = thawed[i - 1];
+		const b = thawed[i];
+		const w = a.frozen !== b.frozen ? 0 : (a.w + b.w) / 2;
+		budget += VOLCANIC_PGC * (1 - w) * (b.year - a.year);
+	}
+	expect(firstSwitch(thawed)).not.toBeNull();
+	expect((total(thawed.at(-1)!) - total(thawed[0])) / budget).toBeCloseTo(1, 1);
 });
 
 test("the young Sun shone at about 72 % of today's 4.5 billion years ago (Gough 1981)", () => {
@@ -62,7 +96,7 @@ test('knocked off balance, CO₂ returns to 280 ppm over hundreds of thousands o
 	expect(down.at(-1)!.ppm).toBeCloseTo(P0, -1);
 	for (const r of [up, down]) {
 		const e = eFoldingYears(r, P0)!;
-		expect(e).toBeGreaterThan(300e3);
+		expect(e).toBeGreaterThan(200e3);
 		expect(e).toBeLessThan(1e6);
 	}
 	// a human lifetime does nothing to the excess
@@ -103,8 +137,8 @@ test('under the brightening Sun the thermostat keeps the planet open while fixed
 	expect(lively[0].ppm!).toBeGreaterThan(50_000);
 	const ppms = lively.filter((p) => p.ppm !== null).map((p) => p.ppm!);
 	for (let i = 1; i < ppms.length; i++) expect(ppms[i]).toBeLessThan(ppms[i - 1]);
-	// with CO₂ held at 280 ppm the planet is a snowball two billion years ago
-	expect(toC(lively.find((p) => p.ga <= 2.0)!.fixedK)).toBeLessThan(-30);
+	// with CO₂ held at 280 ppm the young planet freezes, and the ice keeps it frozen to today
+	for (const h of lively) expect(toC(h.fixedK)).toBeLessThan(-30);
 	// with only today's volcanism, the earliest planet has no open balance
 	expect(history(1, 4.5, 9)[0].k).toBeNull();
 });
@@ -117,8 +151,12 @@ test('a snowball thaws after millions of years of volcanic CO₂, into a hothous
 	expect(thaw).not.toBeNull();
 	expect(thaw.year).toBeGreaterThan(3e6);
 	expect(thaw.year).toBeLessThan(15e6);
-	// the CO₂ that ended it: a tenth of a bar or more, hundreds of times today's
-	expect(thaw.ppm).toBeGreaterThan(100_000);
+	// the CO₂ that ended it: a tenth of a bar or more, hundreds of times today's; the opened
+	// sea then takes up part of it
+	const peak = r[r.indexOf(thaw) - 1];
+	expect(peak.ppm).toBeGreaterThan(100_000);
+	expect(thaw.ppm).toBeLessThan(peak.ppm);
+	expect(thaw.ppm).toBeGreaterThan(peak.ppm / 3);
 	expect(toC(thaw.k)).toBeGreaterThan(30);
 	expect(r.at(-1)!.ppm).toBeLessThan(thaw.ppm / 2);
 	expect(r.at(-1)!.frozen).toBe(false);
@@ -149,6 +187,9 @@ test('moved outward, the planet keeps an open balance to about 1.1 AU and loses 
 	expect(outerEdge(1)!).toBeCloseTo(1.13, 2);
 	expect(outerEdge(3)!).toBeGreaterThan(outerEdge(1)!);
 	expect(outerEdge(0)).toBeNull();
+	// even feeble volcanoes find a balance close enough to the Sun
+	expect(openEquilibrium(sunlightAt(0.98), 0.1)).not.toBeNull();
+	expect(outerEdge(0.1)!).toBeGreaterThan(0.98);
 });
 
 test('a frozen planet with today’s air is a stable snowball near −45 °C', () => {
