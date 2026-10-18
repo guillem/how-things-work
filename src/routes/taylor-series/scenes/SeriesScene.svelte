@@ -751,48 +751,49 @@
 						opacity={pe}
 					/>
 				</Readout>
-			{/if}
-			<g opacity={undefinedHere ? 0 : pe}>
-				<Axes
-					sx={ex}
-					sy={ey}
-					xTicks={[0, 10, 20, 30]}
-					yTicks={[-12, -8, -4, 0, 4, 8]}
-					yFormat={pow10}
-					xLabel="degree n"
-					yLabel="error at x = {pText}"
-				/>
-				{#if bounds.length}
-					<path
-						d={linePts(bounds)}
-						fill="none"
-						stroke="var(--ts-bound)"
-						stroke-width="1.6"
-						stroke-dasharray="5 4"
+			{:else}
+				<g opacity={pe}>
+					<Axes
+						sx={ex}
+						sy={ey}
+						xTicks={[0, 10, 20, 30]}
+						yTicks={[-12, -8, -4, 0, 4, 8]}
+						yFormat={pow10}
+						xLabel="degree n"
+						yLabel="error at x = {pText}"
 					/>
-				{/if}
-				<path d={linePts(errs)} fill="none" stroke="var(--ts-taylor)" stroke-width="2" />
-				<circle
-					cx={ex(n)}
-					cy={Number.isFinite(lg(errNow)) ? ey(lg(errNow)) : -100}
-					r="5"
-					fill="var(--ts-taylor)"
-					stroke="var(--stage-bg)"
-					stroke-width="2"
-				/>
-				{#if bounds.length}
-					<Readout id="bound-key">
-						<Label
-							x={CH.right}
-							y={CH.top + 14}
-							text="dashed: Taylor's bound"
-							anchor="end"
-							size={11}
-							muted
+					{#if bounds.length}
+						<path
+							d={linePts(bounds)}
+							fill="none"
+							stroke="var(--ts-bound)"
+							stroke-width="1.6"
+							stroke-dasharray="5 4"
 						/>
-					</Readout>
-				{/if}
-			</g>
+					{/if}
+					<path d={linePts(errs)} fill="none" stroke="var(--ts-taylor)" stroke-width="2" />
+					<circle
+						cx={ex(n)}
+						cy={ey(lg(errNow))}
+						r="5"
+						fill="var(--ts-taylor)"
+						stroke="var(--stage-bg)"
+						stroke-width="2"
+					/>
+					{#if bounds.length}
+						<Readout id="bound-key">
+							<Label
+								x={CH.right}
+								y={CH.top + 14}
+								text="dashed: Taylor's bound"
+								anchor="end"
+								size={11}
+								muted
+							/>
+						</Readout>
+					{/if}
+				</g>
+			{/if}
 		{/if}
 
 		{#if wCoef.current > 0.01}

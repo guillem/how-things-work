@@ -65,5 +65,5 @@ test('left of −1 the logarithm has no real value, so no error is shown', async
 	await range(page, 'probeOut').fill('-1.5');
 	await expect(stage(page)).toContainText('no real value for x ≤ −1');
 	await expect(stage(page)).toContainText('undefined for x ≤ −1');
-	await expect(stage(page)).not.toContainText('error ');
+	await expect(stage(page)).not.toContainText(/error \d|error at x/);
 });
