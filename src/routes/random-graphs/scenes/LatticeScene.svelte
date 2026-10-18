@@ -24,9 +24,9 @@
 	const du = $derived(dual ? dualAt(lat, p) : null);
 
 	// ---- the grid ---------------------------------------------------------------------------------
-	const GX = 70;
+	const GX = 50;
 	const GY = 100;
-	const GW = 440;
+	const GW = 420;
 	const cell = $derived(GW / (L - 1));
 	const X = (x: number) => GX + x * cell;
 	const Y = (y: number) => GY + y * cell;
@@ -83,7 +83,7 @@
 	const SIDES = [8, 16, 32, 64];
 	const PS = Array.from({ length: 101 }, (_, i) => i / 100);
 	const curves = SIDES.map((side, k) => spanningProbability(side, PS, 300, 31 + k));
-	const sx = scale([0, 1], [610, 930]);
+	const sx = scale([0, 1], [630, 930]);
 	const sy = scale([0, 1], [440, 140]);
 	const paths = curves.map((cv) =>
 		linePath(
@@ -207,7 +207,7 @@
 		yFormat={(v) => `${v * 100} %`}
 	/>
 	<Label
-		x={610}
+		x={630}
 		y={104}
 		text="share of grids that span (300 each)"
 		size={11}
@@ -229,14 +229,14 @@
 	<Label x={sx(p)} y={sy(1) - 8} text="p" size={12} weight={600} anchor="middle" italic />
 	{#each SIDES as side, k (side)}
 		<line
-			x1={610 + k * 82}
-			x2={634 + k * 82}
+			x1={630 + k * 76}
+			x2={654 + k * 76}
 			y1={516}
 			y2={516}
 			stroke={sizeColor(k + 1)}
 			stroke-width="2.2"
 		/>
-		<Label x={640 + k * 82} y={520} text="{side}×{side}" size={11} anchor="start" />
+		<Label x={660 + k * 76} y={520} text="{side}×{side}" size={11} anchor="start" />
 	{/each}
 	{#if dual}
 		<Readout
@@ -247,7 +247,7 @@
 			color="var(--rg-dual)"
 		>
 			<Label
-				x={610}
+				x={630}
 				y={556}
 				text={du?.crosses
 					? 'the dual crosses left to right: the grid cannot'
@@ -260,7 +260,7 @@
 		</Readout>
 	{:else}
 		<Label
-			x={610}
+			x={630}
 			y={556}
 			text="dashed: p = 1/2, the exact threshold"
 			size={11}
