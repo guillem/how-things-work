@@ -3225,6 +3225,62 @@
 				fill={accent}
 			/>
 		{/each}
+	{:else if slug === 'chain-of-thought-scratchpad'}
+		<!-- a column sum with its carries, and a row of written tokens, each carry fed back in -->
+		{#each [[28, '1'], [46, '1']] as [x, c], i (i)}
+			<text
+				x={Number(x)}
+				y="26"
+				text-anchor="middle"
+				font-size="13"
+				font-weight="700"
+				font-family="ui-monospace, monospace"
+				fill="var(--cot-carry)">{c}</text
+			>
+		{/each}
+		{#each [[46, '4', 48], [64, '9', 48], [46, '5', 70], [64, '1', 70], [28, '1', 100], [46, '0', 100], [64, '0', 100]] as [x, c, y], i (i)}
+			<text
+				x={Number(x)}
+				y={Number(y)}
+				text-anchor="middle"
+				font-size="18"
+				font-family="ui-monospace, monospace"
+				fill="currentColor">{c}</text
+			>
+		{/each}
+		<text x="18" y="70" font-size="16" fill="currentColor">+</text>
+		<line x1="16" y1="80" x2="76" y2="80" stroke="currentColor" stroke-width="1.5" />
+		{#each [0, 1, 2, 3, 4, 5] as i (i)}
+			<rect
+				x={98 + i * 16}
+				y="52"
+				width="13"
+				height="18"
+				rx="2.5"
+				fill="none"
+				stroke={i % 2 ? 'var(--cot-carry)' : accent}
+				stroke-width="1.6"
+			/>
+			{#if i % 2 && i < 5}
+				<path
+					d="M{104.5 + i * 16} 50 C{106 + i * 16} 36 {118 + i * 16} 36 {120.5 + i * 16} 50"
+					fill="none"
+					stroke="var(--cot-carry)"
+					stroke-width="1.4"
+				/>
+			{/if}
+		{/each}
+		{#each [0, 1, 2, 3, 4, 5] as i (i)}
+			<rect
+				x={98 + i * 16}
+				y="84"
+				width="13"
+				height="18"
+				rx="2.5"
+				fill={accent}
+				opacity={i < 3 ? 0.55 : 0.18}
+			/>
+		{/each}
 	{:else if slug === 'stars'}
 		<!-- a massive star cut open: onion layers round an iron core, and a track on the HR diagram -->
 		<circle cx="62" cy="60" r="44" fill="var(--st-h)" />

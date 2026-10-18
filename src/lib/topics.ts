@@ -1032,6 +1032,15 @@ const explainers: Explainer[] = [
 		accent: '#1c7ed6',
 		steps: 10,
 		minutes: 20
+	},
+	{
+		slug: 'chain-of-thought-scratchpad',
+		title: 'Why thinking out loud helps a model',
+		summary:
+			'Two tiny transformers of the same size, trained by the page on addition and run in it: one writes the answer straight away, the other writes each column’s digit and carry first. Step through both, token by token, and see where the direct one goes wrong and why writing the working gives the same model more computation.',
+		accent: '#0b7285',
+		steps: 8,
+		minutes: 16
 	}
 ];
 

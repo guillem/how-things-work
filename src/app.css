@@ -3485,3 +3485,32 @@ kbd {
 	--sd-left: #b197fc;
 	--sd-chip: #25282c;
 }
+
+/* chain-of-thought-scratchpad: the two models, carries, columns adding up to 9, right and
+   wrong characters, the question box */
+:root {
+	--cot-direct: #e8590c;
+	--cot-scratch: #1c7ed6;
+	--cot-carry: #d6336c;
+	--cot-nine: #946200;
+	--cot-nine-bg: #fff3bf;
+	--cot-right: #2f9e44;
+	--cot-right-bg: #ebfbee;
+	--cot-wrong: #e03131;
+	--cot-wrong-bg: #fff0f0;
+	--cot-question: #f1f3f5;
+	--cot-beyond: #f1f3f5;
+}
+:root[data-theme='dark'] {
+	--cot-direct: #ff922b;
+	--cot-scratch: #4dabf7;
+	--cot-carry: #f783ac;
+	--cot-nine: #ffd43b;
+	--cot-nine-bg: #3b3414;
+	--cot-right: #69db7c;
+	--cot-right-bg: #1b3a24;
+	--cot-wrong: #ff6b6b;
+	--cot-wrong-bg: #3b1d1d;
+	--cot-question: #25282c;
+	--cot-beyond: #232629;
+}
