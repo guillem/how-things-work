@@ -1,6 +1,6 @@
 # Topic catalog
 
-Source of truth for the content of an interactive web learning tool that shows how things work. It defines 142 topics in 11 categories, each built around one interactive graphic. Readers range from high-school students to university majors.
+Source of truth for the content of an interactive web learning tool that shows how things work. It defines 143 topics in 11 categories, each built around one interactive graphic. Readers range from high-school students to university majors.
 
 This file covers content only. It does not choose the stack, the visual design or the project layout; take those from the repository's own instructions.
 
@@ -87,7 +87,7 @@ A topic is done when:
 | Chemistry & Materials | `chemistry` | 14 |
 | Biology | `biology` | 16 |
 | Body & Medicine | `medicine` | 14 |
-| Earth & Climate | `earth` | 10 |
+| Earth & Climate | `earth` | 11 |
 | Space | `space` | 9 |
 | Computing | `computing` | 10 |
 | Information & Networks | `networks` | 9 |
@@ -192,6 +192,7 @@ A topic is done when:
 - [x] greenhouse-effect
 - [x] ensemble-weather-forecasting
 - [x] ocean-acidification
+- [ ] tsunamis
 
 **Space**
 - [x] sun-earth-moon
@@ -992,6 +993,7 @@ A topic is done when:
 - **Interaction:** Drag two plates together, apart or sideways, choosing oceanic or continental crust for each. A cross-section builds mountains, trenches, rift valleys and volcanoes; a world map overlays plate boundaries with recorded earthquakes and volcanoes.
 - **Takeaway:** Earth's surface is a set of moving plates, and most mountains, volcanoes and earthquakes occur where plates meet.
 - **Prerequisites:** none
+- **Related:** tsunamis
 - **Needs:** Plate boundaries and catalogs of earthquakes and volcanoes.
 
 #### earthquakes
@@ -1084,6 +1086,17 @@ A topic is done when:
 - **Related:** ocean-currents
 - **Needs:** Published empirical fits for seawater equilibrium constants as functions of temperature and salinity, the same ones CO2SYS uses: K0 (Weiss 1974), K1 and K2 of carbonic acid (Lueker et al. 2000), borate KB (Dickson 1990) and total boron (Uppström 1974) for the alkalinity, and aragonite and calcite solubility (Mucci 1983). These are published coefficients, retyped and cited. Cross-check the solver in a model test against the published intercomparison of carbonate packages (Orr, Epitalon & Gattuso 2015: check values of every constant, a standard water's dissolved carbon and its sensitivities, computed with CO2SYS, seacarb and mocsy).
 - **Pitfall:** The ocean is not becoming acid (its pH stays above 7); acidification means moving toward acid, and the harm is the loss of carbonate ion, not corrosive water.
+
+#### tsunamis
+- **Title:** Tsunamis: a wave as long as the ocean is deep
+- **Level:** 1
+- **Kind:** simulate
+- **Interaction:** A slice of the Pacific from Japan to California with the real sea floor under it. Jolt the floor up near the trench and watch the hump race across the deep ocean at airliner speed while a clock counts the hours and markers show arrival times; a speed gauge follows the depth, fast over the abyss and slowing over the shelf, where the wave bunches up and grows from under a metre to many metres. Drag the floor to change a shelf's slope or add an island, and compare with a wind wave of the same height, which barely notices the depth.
+- **Takeaway:** A tsunami is a shallow-water wave even over the deepest ocean, so its speed is set by the depth alone: it crosses an ocean in hours, is barely visible at sea, and rears up only when it reaches the shallows.
+- **Prerequisites:** waves-interference, earthquakes
+- **Related:** plate-tectonics
+- **Needs:** An ocean depth transect from NOAA's ETOPO 2022 relief model; the one-dimensional shallow-water equations run on that profile (a single transect ignores spreading across the ocean, so the far-shore height is an upper bound: state it on the page).
+- **Pitfall:** A tsunami is not a towering surf wave: at the coast it arrives as a fast-rising flood lasting minutes, often after the sea draws back; and it is not a tidal wave, tides have nothing to do with it.
 
 ### Space
 
