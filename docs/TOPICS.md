@@ -1,6 +1,6 @@
 # Topic catalog
 
-Source of truth for the content of an interactive web learning tool that shows how things work. It defines 145 topics in 11 categories, each built around one interactive graphic. Readers range from high-school students to university majors.
+Source of truth for the content of an interactive web learning tool that shows how things work. It defines 146 topics in 11 categories, each built around one interactive graphic. Readers range from high-school students to university majors.
 
 This file covers content only. It does not choose the stack, the visual design or the project layout; take those from the repository's own instructions.
 
@@ -89,7 +89,7 @@ A topic is done when:
 | Body & Medicine | `medicine` | 14 |
 | Earth & Climate | `earth` | 13 |
 | Space | `space` | 9 |
-| Computing | `computing` | 10 |
+| Computing | `computing` | 11 |
 | Information & Networks | `networks` | 9 |
 | Artificial Intelligence | `ai` | 19 |
 | Energy & Machines | `energy` | 10 |
@@ -218,6 +218,7 @@ A topic is done when:
 - [x] graph-search
 - [x] turing-machines
 - [x] quantum-computing
+- [ ] game-tree-search
 
 **Information & Networks**
 - [x] compression
@@ -1266,7 +1267,7 @@ A topic is done when:
 - **Interaction:** Run bubble, insertion, merge and quick sort side by side on the same shuffled bars, stepping or playing at speed, with comparisons counted. Grow the input and plot operations against size on a shared chart; try already-sorted and reversed inputs.
 - **Takeaway:** Algorithms that solve the same problem can differ enormously in how their cost grows with input size, and that growth rate matters more than the speed of the machine.
 - **Prerequisites:** none
-- **Related:** exponentials-logarithms
+- **Related:** exponentials-logarithms, game-tree-search
 
 #### graph-search
 - **Title:** Graph search & shortest paths
@@ -1296,6 +1297,16 @@ A topic is done when:
 - **Prerequisites:** quantum-mechanics, logic-gates
 - **Related:** cryptography
 - **Pitfall:** It does not try every answer at once and read off the best one; a measurement returns a single outcome, and the algorithm's job is to make that outcome likely to be right.
+
+#### game-tree-search
+- **Title:** How a computer plays a game: the search tree
+- **Level:** 1
+- **Kind:** build
+- **Interaction:** Play noughts and crosses against the page and open its mind: a tree of the moves it is weighing, the leaves scored win, draw or loss and the scores passed up, the computer taking the best of its moves and assuming you take the worst for it. Switch to Connect Four, where the whole tree is too big, and set how many moves ahead it looks: at two it blunders, at six it is hard to beat, and with pruning off the count of positions examined rises about sevenfold per extra move; turn on pruning and watch whole branches greyed out, the count falling steeply with the chosen move unchanged. Build the scoring rule yourself from a palette of features (centre column, three in a row) and test it.
+- **Takeaway:** A game-playing program looks ahead down a tree of moves, assumes the opponent plays its best, and picks the line with the best guaranteed outcome; how deep it can afford to look is set by how fast the tree grows.
+- **Prerequisites:** graph-search
+- **Related:** sorting, reinforcement-learning
+- **Pitfall:** The program does not plan like a person; it counts. And it does not look at every possible game: depth is limited and the leaves are scored by a rule of thumb, which is why a better scoring rule can beat a deeper search.
 
 ### Information & Networks
 
@@ -1467,7 +1478,7 @@ A topic is done when:
 - **Interaction:** Paint rewards, penalties and walls onto a grid world and release an agent. Watch its value estimate for each cell and action update as it explores; adjust the exploration rate, the discount factor and the learning rate, and compare early episodes with late ones.
 - **Takeaway:** An agent can learn a skill from rewards alone by trying actions and gradually crediting the ones that led to good outcomes, balancing exploration against using what it already knows.
 - **Prerequisites:** learning-from-data
-- **Related:** feedback-control, cerebellum-motor-learning, game-theory-cooperation
+- **Related:** feedback-control, cerebellum-motor-learning, game-theory-cooperation, game-tree-search
 
 #### ngram-text-models
 - **Title:** N-gram text models & their limits
