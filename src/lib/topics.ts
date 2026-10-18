@@ -1356,6 +1356,15 @@ const explainers: Explainer[] = [
 		accent: '#4c6ef5',
 		steps: 9,
 		minutes: 22
+	},
+	{
+		slug: 'aperture-synthesis',
+		title: 'Interferometry & aperture synthesis',
+		summary:
+			'An array of small radio dishes sees as sharply as one dish as wide as the array, because each pair measures one Fourier component of the sky. Place dishes on a map, let the Earth turn them through the uv plane, watch the dirty beam and image form, clean it with CLEAN, and see what shrinking and spreading the array costs.',
+		accent: '#5f3dc4',
+		steps: 12,
+		minutes: 26
 	}
 ];
 

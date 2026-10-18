@@ -4988,6 +4988,53 @@
 			stroke-width="0.8"
 			opacity="0.3"
 		/>
+	{:else if slug === 'aperture-synthesis'}
+		<!-- three dishes on the ground, and the uv plane their pairs trace as the Earth turns:
+		     nested ellipses of axis ratio sin δ -->
+		<line x1="14" x2="92" y1="98" y2="98" stroke="currentColor" stroke-width="1" opacity="0.4" />
+		{#each [24, 50, 82] as x (x)}
+			<path
+				d="M{x - 9} 82 Q {x} 94 {x + 9} 82"
+				fill="currentColor"
+				fill-opacity="0.15"
+				stroke="currentColor"
+				stroke-width="1.6"
+				opacity="0.75"
+			/>
+			<line x1={x} x2={x} y1="90" y2="98" stroke="currentColor" stroke-width="1.2" opacity="0.6" />
+		{/each}
+		<line
+			x1="104"
+			x2="184"
+			y1="56"
+			y2="56"
+			stroke="currentColor"
+			stroke-width="0.8"
+			opacity="0.35"
+		/>
+		<line
+			x1="144"
+			x2="144"
+			y1="14"
+			y2="98"
+			stroke="currentColor"
+			stroke-width="0.8"
+			opacity="0.35"
+		/>
+		{#each [14, 26, 38] as r (r)}
+			<ellipse
+				cx="144"
+				cy="56"
+				rx={r}
+				ry={r * 0.64}
+				fill="none"
+				stroke={accent}
+				stroke-width="2"
+				stroke-dasharray={r === 26 ? '30 12' : 'none'}
+				opacity={0.55 + r / 100}
+			/>
+		{/each}
+		<circle cx="144" cy="56" r="3" fill="currentColor" opacity="0.6" />
 	{:else}
 		<circle cx="100" cy="60" r="30" fill="none" stroke={accent} stroke-width="2" />
 		<circle cx="100" cy="60" r="5" fill={accent} />

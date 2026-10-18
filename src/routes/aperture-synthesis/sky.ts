@@ -5,7 +5,7 @@
  * left on screen and north (+m) up, as astronomers draw the sky. Positions below are in
  * arcminutes from the pointing centre.
  */
-import { ARCMIN, N, PIX, pixel, type Dish } from './model';
+import { ARCMIN, N, PIX, pixel, visibilities, type Dish, type Visibilities } from './model';
 import { VLA_D } from './vla';
 
 export type SkyKind = 'points' | 'double' | 'galaxy' | 'disc';
@@ -142,6 +142,18 @@ export function sky(kind: SkyKind): Float64Array {
 	}
 	cache.set(kind, img);
 	return img;
+}
+
+const vCache = new Map<SkyKind, Visibilities>();
+
+/** The sky's visibilities on the uv grid (computed once). */
+export function skyVisibilities(kind: SkyKind): Visibilities {
+	let v = vCache.get(kind);
+	if (!v) {
+		v = visibilities(sky(kind));
+		vCache.set(kind, v);
+	}
+	return v;
 }
 
 // ======================================================================================

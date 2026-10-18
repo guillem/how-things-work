@@ -4668,3 +4668,34 @@ kbd {
 	--lg-needed-text: #8ce99a;
 	--lg-star: #868e96;
 }
+
+/* aperture-synthesis: the map's ground and its dishes, uv tracks and their mirror images, the
+   waves and the extra path of the two-dish diagram, positive and negative fringes, a source */
+:root {
+	--as-ground: #eef1e6;
+	--as-ground-edge: #b5bda3;
+	--as-dish: #5f3dc4;
+	--as-track: #e8590c;
+	--as-track-text: #c2410c;
+	--as-mirror: #f2a679;
+	--as-wave: #1c7ed6;
+	--as-delay: #e03131;
+	--as-delay-text: #c92a2a;
+	--as-pos: #f08c00;
+	--as-neg: #1971c2;
+	--as-star: #f59f00;
+}
+:root[data-theme='dark'] {
+	--as-ground: #1d2219;
+	--as-ground-edge: #4b5440;
+	--as-dish: #b197fc;
+	--as-track: #ffa94d;
+	--as-track-text: #ffc078;
+	--as-mirror: #9a5a2a;
+	--as-wave: #4dabf7;
+	--as-delay: #ff6b6b;
+	--as-delay-text: #ff8787;
+	--as-pos: #ffa94d;
+	--as-neg: #4dabf7;
+	--as-star: #ffd43b;
+}
