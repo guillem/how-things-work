@@ -540,6 +540,18 @@
 		}
 		return out;
 	})();
+
+	// Surface catalysis: a 15 × 8 grid of sites, an oxygen patch (accent) meeting a CO patch
+	// (ink) along a ragged front with empty sites, and CO₂ leaving from the front.
+	const catalysisArt = Array.from({ length: 15 * 8 }, (_, i) => {
+		const x = i % 15;
+		const y = Math.floor(i / 15);
+		const front = 7 + Math.round(1.6 * Math.sin(y * 1.3 + 0.4));
+		const d = x - front;
+		const kind =
+			d < -1 ? 'o' : d > 1 ? 'co' : (x * 5 + y * 3) % 3 === 0 ? 'o' : (x + y) % 2 ? 'empty' : 'co';
+		return { i, x: 30 + x * 10, y: 34 + y * 10, kind };
+	});
 </script>
 
 <svg viewBox="0 0 200 120" class="art" style:--accent={accent} aria-hidden="true">
@@ -4273,6 +4285,30 @@
 				rx="1.5"
 				fill={c.up ? accent : 'currentColor'}
 				opacity={c.up ? 0.85 : 0.22}
+			/>
+		{/each}
+	{:else if slug === 'surface-catalysis'}
+		<!-- sites of a catalyst: oxygen (accent) and CO (ink) meet along a front, CO₂ leaves -->
+		{#each catalysisArt as c (c.i)}
+			{#if c.kind === 'empty'}
+				<circle cx={c.x} cy={c.y} r="3.6" fill="none" stroke="currentColor" opacity="0.3" />
+			{:else}
+				<circle
+					cx={c.x}
+					cy={c.y}
+					r="4"
+					fill={c.kind === 'o' ? accent : 'currentColor'}
+					opacity={c.kind === 'o' ? 0.85 : 0.45}
+				/>
+			{/if}
+		{/each}
+		{#each [[96, 22], [112, 12], [104, 18]] as [cx, cy], i (i)}
+			<circle
+				{cx}
+				{cy}
+				r={i === 2 ? 3.4 : 2.6}
+				fill={i === 2 ? 'currentColor' : accent}
+				opacity="0.6"
 			/>
 		{/each}
 	{:else if slug === 'resampling-inference'}

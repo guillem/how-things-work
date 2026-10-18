@@ -4008,3 +4008,21 @@ kbd {
 	--hk-good: #69db7c;
 	--hk-warn: #ff8787;
 }
+
+/* surface-catalysis: sites holding CO and O, empty sites (a pale metal), the CO₂ rate */
+:root {
+	--sc-co: #495057;
+	--sc-co-text: #343a40;
+	--sc-o: #e03131;
+	--sc-o-text: #c92a2a;
+	--sc-empty: #f3ead2;
+	--sc-rate: #5c7a0a;
+}
+:root[data-theme='dark'] {
+	--sc-co: #adb5bd;
+	--sc-co-text: #ced4da;
+	--sc-o: #ff6b6b;
+	--sc-o-text: #ff8787;
+	--sc-empty: #3a3527;
+	--sc-rate: #a9e34b;
+}

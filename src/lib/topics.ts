@@ -1194,6 +1194,15 @@ const explainers: Explainer[] = [
 		accent: '#4a3aa8',
 		steps: 9,
 		minutes: 16
+	},
+	{
+		slug: 'surface-catalysis',
+		title: 'Catalysis on a surface',
+		summary:
+			'CO oxidation on a lattice of catalyst sites (the Ziff–Gulari–Barshad model): slide the CO fraction of the gas and the surface dies of oxygen on one side and chokes on CO on the other, with a narrow working window between that ends at a cliff and that the mean-field rate equations get wrong; let CO desorb, as on a hotter surface, and the poisoned catalyst recovers.',
+		accent: '#6a7f10',
+		steps: 7,
+		minutes: 16
 	}
 ];
 
