@@ -33,7 +33,7 @@ export const spec: ExplainerSpec = {
 		{
 			id: 'measure',
 			chapter: 'encode',
-			title: 'The scanner measures the right-hand picture',
+			title: 'The scanner measures the left-hand picture',
 			scene: 'kspace',
 			hints: { mode: 'intro' },
 			duration: 20,
@@ -98,7 +98,7 @@ export const spec: ExplainerSpec = {
 				}
 			],
 			body: `
-<p>Inside the slice every spin now precesses at the same frequency. A short pulse of a second gradient, <b>G<sub>y</sub></b>, makes the spins lower down precess slightly faster for a millisecond. When it stops, they are all back at the same frequency, but each row has been left <strong>twisted by its own angle</strong>, proportional to its height.</p>
+<p>Inside the slice every spin now precesses at the same frequency. A short pulse of a second gradient, <b>G<sub>y</sub></b>, makes the spins lower down precess slightly faster for two milliseconds. When it stops, they are all back at the same frequency, but each row has been left <strong>twisted by its own angle</strong>, proportional to its height.</p>
 <p>The arrows on the right of the head show the twist row by row; the stripes over the head show the same thing as a wave. With this step’s gradient, the twist turns 3 times over the 24 cm field of view. The coil adds up all the spins: it measures how much the slice resembles that wave, which is one value of its Fourier transform at k<sub>y</sub> = 3 / 24 cm.</p>
 <p>Each repetition of the sequence uses a different step of G<sub>y</sub>: 128 of them, from −64 to +63 turns, about 0.1 mT/m·ms of gradient area apart. Beyond ±8 turns the twist is too fine to draw as arrows, but the scanner records it all the same.</p>`,
 			notes: `<p>The number of turns per centimetre is k<sub>y</sub> = γ ∫ G<sub>y</sub> dt. Steps of Δk = 1/FOV make the outermost row of the field of view turn once more than the row at the opposite edge with each step, and the image is sampled every FOV/128 = 1.9 mm. Phase is measured only modulo a whole turn: that is why, later, a field of view smaller than the head wraps round along this direction.</p>`
@@ -123,10 +123,10 @@ export const spec: ExplainerSpec = {
 				}
 			],
 			body: `
-<p>Now the third gradient, <b>G<sub>x</sub></b>, the <dfn data-def="The gradient switched on while the coil's signal is recorded; it makes frequency vary across the slice, left to right here.">readout gradient</dfn>. First a negative lobe winds the spins 64 turns one way across the slice. Then the gradient reverses and stays on while the signal is sampled 128 times: the twist unwinds, passes through zero, where every spin is in phase and the signal peaks, and winds up 63 turns the other way.</p>
+<p>Now the third gradient, <b>G<sub>x</sub></b>, the <dfn data-def="The gradient switched on while the coil's signal is recorded; it makes frequency vary across the slice, left to right here.">readout gradient</dfn>. First a negative lobe winds the spins 64 turns one way across the slice. Then the gradient reverses and stays on while the signal is sampled 128 times: the left-to-right twist unwinds, passes through zero and winds up 63 turns the other way. The twist between rows from the phase step stays all along; only on the central line, k<sub>y</sub> = 0, does every spin come back into phase.</p>
 <p>At each sample the spins form a wave across the slice, now tilted, and the coil records how much the slice holds of it. So the 128 samples of one echo are <strong>one horizontal line of k-space</strong>, at the k<sub>y</sub> the phase step chose. The dot on the small k-space map sweeps along that line.</p>
-<p>The peak in the middle of the signal is an echo made by the gradients: a <dfn data-def="An echo formed by reversing a gradient: the dephasing it caused is undone, so the spins come back into phase at the centre of the readout.">gradient echo</dfn>. Change the phase step and the echo shrinks: the waves away from k<sub>y</sub> = 0 match less of the head.</p>`,
-			notes: `<p>The signal is complex: the coil measures two components, 90° apart (in-phase and quadrature), drawn here as two curves. With 128 samples over a 24 cm field of view, each sample is 1/24 cm⁻¹ further along k<sub>x</sub>. With a receiver bandwidth of ±12.5 kHz (one sample every 40 µs) that takes a readout gradient of 1 / (γ × 40 µs × 0.24 m) ≈ 2.4 mT/m, and the line takes 5.1 ms to record.</p>`
+<p>The peak in the middle of the signal is an echo, timed twice over: the readout gradient’s winding is undone there, and the 180° pulse sent halfway through (the next step) refocuses the spins at the same moment, TE = 100 ms after the slice pulse. The diagram is one repetition of that <b>spin-echo</b> sequence, drawn not to scale. Change the phase step and the echo shrinks: the waves away from k<sub>y</sub> = 0 match less of the head.</p>`,
+			notes: `<p>The signal is complex: the coil measures two components, 90° apart (in-phase and quadrature), drawn here as two curves. With 128 samples over a 24 cm field of view, each sample is 1/24 cm⁻¹ further along k<sub>x</sub>. With a receiver bandwidth of ±12.5 kHz (one sample every 40 µs) that takes a readout gradient of 1 / (γ × 40 µs × 0.24 m) ≈ 2.4 mT/m, and the line takes 5.1 ms to record. The page treats each line as recorded in an instant at TE: it ignores the little T2 decay during those 5 ms, and any field inhomogeneity left over away from the echo’s centre. Without the 180° pulse, the same readout makes a pure <dfn data-def="An echo formed only by reversing a gradient: the dephasing it caused is undone, but not that from an uneven field, so its height falls with T2*.">gradient echo</dfn>, the basis of faster scans whose contrast depends on T2*.</p>`
 		},
 		// ---------------------------------------------------------------- echo
 		{
@@ -137,7 +137,7 @@ export const spec: ExplainerSpec = {
 			duration: 25,
 			controls: [{ type: 'toggle', id: 'refocus', label: 'Send the 180° pulse', default: true }],
 			body: `
-<p>Seen from above, in a frame turning at the scanner’s frequency, here are twelve spins of one tiny piece of tissue just after the slice pulse tipped them. They should all point the same way. But the field is never perfectly even, even inside a millimetre: some spins precess a few hertz fast, some slow, so they <strong>fan out</strong>, and the coil’s signal (the length of their average, on the right) collapses within milliseconds. That fast decay is called T2*.</p>
+<p>Seen from above, in a frame turning at the scanner’s frequency, here are twelve spins of one tiny piece of tissue just after the slice pulse tipped them. They should all point the same way. But the field is never perfectly even, even inside a millimetre: some spins precess a few hertz fast, some slow, so they <strong>fan out</strong>, and the coil’s signal (the length of the average over the whole voxel, the thick arrow, plotted on the right) collapses within milliseconds. That fast decay is called T2*.</p>
 <p>At 25 ms a <strong>180° pulse</strong> flips the whole fan over. The spins that were ahead are now behind, by exactly as much, and they keep their speeds, so at 50 ms they all meet again: an <dfn data-def="A signal that reappears after it has decayed, because the dephasing that destroyed it is reversed. Erwin Hahn found the spin echo in 1950.">echo</dfn>. Switch the pulse off and the signal never comes back.</p>
 <p>Only the true T2 loss, from protons disturbing each other at random, cannot be undone: the echo is e<sup>−TE/T2</sup> high, 0.61 for grey matter’s 100 ms at TE = 50 ms. Measuring at the echo is what makes a T2-weighted image.</p>`,
 			notes: `<p>The spins’ offsets follow a Lorentzian spread of half-width 20 Hz, which makes the signal without the 180° pulse decay as e<sup>−t/T2*</sup> with 1/T2* = 1/T2 + 2π × 20 Hz, so T2* = 7.4 ms. Their motion is the exact solution of the Bloch equations between pulses (precession plus T1 and T2 relaxation), and the pulses are treated as instantaneous rotations. The 180° pulse turns them about the y axis, so the echo forms where the spins started (the Carr–Purcell–Meiboom–Gill choice). Within one voxel the field varies because of the magnet and the tissue’s own magnetism, strongest where air meets tissue, as near the sinuses.</p>`
@@ -236,7 +236,7 @@ export const spec: ExplainerSpec = {
 			duration: 20,
 			controls: [radius('rc', 0.1, 'Keep the centre out to')],
 			body: `
-<p>Throw away everything outside a small disc around the centre of k-space. Those samples were the long waves, the slow changes across the slice. What is left is a <strong>blurred image with the right brightness</strong>: fluid still bright, white matter still darker than grey.</p>
+<p>Throw away everything outside a small disc around the centre of k-space. The samples kept describe the long waves: the slow changes across the slice. What is left is a <strong>blurred image with the right brightness</strong>: fluid still bright, white matter still darker than grey.</p>
 <p>The centre holds most of the signal: the sample at the very centre is the sum of the whole slice. Keep 10% of the way out (under 1% of the samples) and the large regions keep their brightness; the ripples near the edges are <a href="../fourier-transform/#gibbs">Gibbs ringing</a>, the price of a sharp cut-off.</p>`,
 			notes: `<p>Scanners make use of it. In dynamic scans, such as following a contrast injection, “keyhole” imaging records only the centre of k-space again and again and borrows the edges from one full scan, because the changes that matter are changes in brightness. Real reconstructions often taper the edges of k-space with a smooth window to trade a little sharpness for less ringing.</p>`
 		},
@@ -275,8 +275,8 @@ export const spec: ExplainerSpec = {
 			],
 			body: `
 <p>Here are two scans of the same head: a <strong>T1-weighted</strong> one (TR = 500 ms, TE = 15 ms), where fluid is dark and the scalp’s fat bright, and the <strong>T2-weighted</strong> one, where fluid is bright. Take the centre of k-space from one and the edges from the other.</p>
-<p>The image has the contrast of whichever scan gave the centre, and the edges hardly matter: with the centre from the T2 scan the ventricles are bright, with the centre from the T1 scan they are dark. The readouts below give the fluid’s brightness in each.</p>
-<p>This is why the lines recorded near the centre of k-space decide what an image shows. A turbo spin-echo scan that records the centre lines at its 100 ms echo looks T2-weighted, whatever the echo times of the other lines.</p>`,
+<p>The large regions take the brightness of whichever scan gave the centre, as long as the disc holds their long waves: with the centre from the T2 scan the ventricles are bright, with the centre from the T1 scan they are dark. The edges still shape the small structures and the boundaries. The readouts below give the fluid’s brightness in each.</p>
+<p>This is why the lines recorded near the centre of k-space decide what an image shows. A turbo spin-echo scan that records the centre lines at about 100 ms has an effective TE of about 100 ms and looks T2-weighted; recording the other lines at different echo times still blurs the image somewhat.</p>`,
 			notes: `<p>The two weightings come from the spin-echo signal M₀ (1 − e<sup>−TR/T1</sup>) e<sup>−TE/T2</sup> with each tissue’s T1, T2 and M₀ from Gach, Tanase and Boada’s MRI version of the Shepp–Logan head at 1.5 T. The page <a href="../medical-imaging/#relaxation">Medical imaging</a> shows how TR and TE trade T1 against T2. Where the two scans’ edges disagree (the scalp is bright in one and dim in the other), mixing them leaves a little ringing at the boundaries.</p>`
 		},
 		{

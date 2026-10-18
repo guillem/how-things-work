@@ -178,7 +178,7 @@ A topic is done when:
 - [x] cerebellum-motor-learning
 - [x] pharmacokinetics-dosing
 - [x] cochlea-hearing
-- [ ] mri-k-space
+- [x] mri-k-space
 
 **Earth & Climate**
 - [x] plate-tectonics
@@ -968,7 +968,7 @@ A topic is done when:
 - **Interaction:** Start where Medical imaging stops: one gradient turns position into frequency. Step through a real 2D pulse sequence on a phantom: a slice-selective pulse tips the protons, a phase-encoding gradient gives each row its own twist, and a readout gradient records one line of the slice's 2D Fourier transform. Watch k-space fill line by line beside the image that its inverse transform gives so far. A Bloch-equation view of a few spins shows them fan out and refocus into an echo. Then edit k-space: keep only the centre for a blurred image, only the edges for outlines, skip every other line to fold the image onto itself, or shrink the field of view until the head wraps around.
 - **Takeaway:** An MRI scanner never measures a picture: gradients give each position its own precession frequency and phase, so every echo is one line of the image's 2D Fourier transform, and the centre of k-space carries the contrast while its edges carry the detail.
 - **Prerequisites:** medical-imaging, fourier-transform, electromagnetism
-- **Needs:** The Shepp-Logan phantom (a mathematical object, no data); optionally one real T1-weighted brain slice.
+- **Needs:** The Shepp-Logan phantom (a mathematical object), with the MRI tissue values (proton density, T1, T2) of Gach, Tanase and Boada (2008) for its regions; optionally one real T1-weighted brain slice.
 - **Pitfall:** MRI uses no ionizing radiation, and the image is not proton density alone. A point in k-space is not a pixel: every sample holds information about the whole image, which is why dropping lines blurs or ghosts the whole picture instead of leaving holes.
 
 ### Earth & Climate

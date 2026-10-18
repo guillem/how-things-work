@@ -81,7 +81,7 @@
 			case 'fill':
 				return firstLines(t2, lines, order);
 			case 'point':
-				if (!spike) return t2;
+				if (!spike) return singleSample(t2, pky, pkx);
 				return withSpike(t2, pky, pkx);
 			case 'centre':
 				return centreOnly(t2, rc);
@@ -188,7 +188,9 @@
 			? spike
 				? 'k-space with one bad sample'
 				: 'k-space: one sample kept'
-			: (kTitles[mode] ?? kTitles.intro)
+			: mode === 'skip' && every === 1
+				? kTitles.intro
+				: (kTitles[mode] ?? kTitles.intro)
 	);
 	const iTitle = $derived(
 		mode === 'point' && !spike
@@ -215,7 +217,7 @@
 		height={S}
 		preserveAspectRatio="none"
 		style:image-rendering="pixelated"
-		opacity={mode === 'point' && !spike ? 0.35 : 1}
+		opacity={1}
 		onpointerdown={onKspaceDown}
 		data-testid="kspace"
 	/>
@@ -520,13 +522,13 @@
 			id="wrap"
 			order={2}
 			label="Head"
-			value={fovY >= 19.5 ? 'fits' : `wraps by ${(19 - fovY).toFixed(0)} cm`}
+			value={fovY >= 19 ? 'fits' : `wraps by ${(19 - fovY).toFixed(0)} cm`}
 		>
 			<Label
 				anchor="start"
 				x={IX}
 				y={512}
-				text={fovY >= 19.5
+				text={fovY >= 19
 					? 'the 19 cm head fits'
 					: `the 19 cm head sticks out by ${(19 - fovY).toFixed(0)} cm and wraps round`}
 				size={13}

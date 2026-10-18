@@ -1,7 +1,9 @@
 <script lang="ts">
 	/**
-	 * The pulse sequence, top right: the radio pulse (RF), the three gradients and the signal on a
-	 * 12 ms time line, with a play head running through the part the step is about.
+	 * The pulse sequence, top right: one repetition of the spin-echo sequence that records the
+	 * T2-weighted scan (TE = 100 ms), drawn schematically, not to scale: the 90° slice pulse, the
+	 * 180° pulse at TE/2, the phase-encoding lobe, the readout gradient's prephasing lobe and the
+	 * readout centred on the echo at TE. A play head runs through the part the step is about.
 	 * step.hints.mode:
 	 *   slice   — left, the head from the side in the slice gradient (params.gz, mT/m) with the
 	 *             slice the pulse (params.offset, kHz) picks; bottom right, the slice zoomed in: how
@@ -17,6 +19,7 @@
 	import { greyImage } from '../../medical-imaging/scenes/raster';
 	import {
 		GAMMA_HZ_T,
+		PULSE,
 		magnitude,
 		reconstruct,
 		sliceThicknessMm,
@@ -29,7 +32,8 @@
 	const mode = $derived(String(step.hints?.mode ?? 'slice'));
 
 	// ---- time ----------------------------------------------------------------------------
-	// slice: the pulse (0–4 ms) over 3 s, then 2 s hold. phase: the lobe over 2 s, 2 s hold.
+	// Times on the diagram are schematic units (0–12), not milliseconds.
+	// slice: the pulse over 3 s, then 2 s hold. phase: the lobe over 2 s, 2 s hold.
 	// readout: 1 s of prephasing, 6 s of sampling, 1 s hold. Reduced motion: a finished pulse,
 	// a full twist, the echo's centre.
 	const tt = $derived(reduced ? (mode === 'readout' ? 4 : mode === 'phase' ? 3 : 4.5) : t);
@@ -42,12 +46,12 @@
 
 	const playMs = $derived(
 		mode === 'slice'
-			? sliceU * 4
+			? sliceU * 2.4
 			: mode === 'phase'
-				? 4 + phaseU * 2
+				? 5.4 + phaseU * 0.8
 				: readT < 1
-					? 4 + prephaseU * 2
-					: 6 + Math.min(1, (readT - 1) / 6) * 5
+					? 6.2 + prephaseU * 0.8
+					: 7.2 + Math.min(1, (readT - 1) / 6) * 4.4
 	);
 
 	// ---- the sequence diagram --------------------------------------------------------------
@@ -65,13 +69,22 @@
 	});
 	const rfPath = (() => {
 		const pts: string[] = [];
-		for (let i = 0; i <= 80; i++) {
-			const ms = (i / 80) * 4;
-			const x = 4 * (ms / 4 - 0.5) * 2;
-			const s = x === 0 ? 1 : Math.sin(Math.PI * x) / (Math.PI * x);
-			const w = 0.54 + 0.46 * Math.cos(2 * Math.PI * (ms / 4 - 0.5));
-			pts.push(`${i ? 'L' : 'M'}${dx(ms).toFixed(1)} ${(ROWS.rf - s * w * H).toFixed(1)}`);
-		}
+		// the 90° pulse, the model's shape (PULSE): a sinc over ±timeBandwidth/2, Hamming window;
+		// then the 180° pulse, the same shape, shorter and twice as strong
+		const pulse = (s0: number, len: number, amp: number) => {
+			for (let i = 0; i <= 80; i++) {
+				const u = i / 80 - 0.5;
+				const x = PULSE.timeBandwidth * u;
+				const sv = x === 0 ? 1 : Math.sin(Math.PI * x) / (Math.PI * x);
+				const w = 0.54 + 0.46 * Math.cos(2 * Math.PI * u);
+				const X = dx(s0 + (u + 0.5) * len).toFixed(1);
+				pts.push(`${i ? 'L' : 'M'}${X} ${(ROWS.rf - amp * sv * w * H).toFixed(1)}`);
+			}
+		};
+		pulse(0, 2.4, 1);
+		pts.push(`M${dx(2.4)} ${ROWS.rf} L${dx(4.2)} ${ROWS.rf}`);
+		pulse(4.2, 0.8, 1.3);
+		pts.push(`M${dx(5)} ${ROWS.rf} L${dx(12)} ${ROWS.rf}`);
 		return pts.join(' ');
 	})();
 	const trap = (y: number, segs: [number, number, number][]) =>
@@ -83,12 +96,13 @@
 			.join(' ') +
 		` L${dx(12)} ${y}`;
 	const gzPath = trap(ROWS.gz, [
-		[0, 4, 12],
-		[4, 6, -12]
+		[0, 2.4, 12],
+		[2.4, 3.6, -12],
+		[4, 5.2, 12]
 	]);
 	const gxPath = trap(ROWS.gx, [
-		[4, 6, -10],
-		[6, 11, 8]
+		[6.2, 7, -16.5],
+		[7.2, 11.6, 6]
 	]);
 	const lineNow = $derived(
 		mode === 'phase'
@@ -98,7 +112,9 @@
 				: 0
 	);
 	const gyH = (m: number) => (m / 8) * 14;
-	const gyPath = $derived(trap(ROWS.gy, [[4, 6, gyH(lineNow) * (mode === 'phase' ? phaseU : 1)]]));
+	const gyPath = $derived(
+		trap(ROWS.gy, [[5.4, 6.2, gyH(lineNow) * (mode === 'phase' ? phaseU : 1)]])
+	);
 
 	// ---- the head ----------------------------------------------------------------------------
 	const t2 = scan('t2');
@@ -143,7 +159,7 @@
 		const arr = part === 're' ? t2.re : t2.im;
 		for (let c = 0; c <= upTo; c++) {
 			const v = arr[lineRow * N + c] / F0;
-			const ms = 6 + (c / (N - 1)) * 5;
+			const ms = 7.2 + (c / (N - 1)) * 4.4;
 			pts.push(`${c ? 'L' : 'M'}${dx(ms).toFixed(1)} ${(ROWS.sig - v * 26).toFixed(1)}`);
 		}
 		return pts.join(' ');
@@ -218,9 +234,9 @@
 	<g opacity={focus.gy}>
 		{#each [-8, -4, 4, 8] as m (m)}
 			<line
-				x1={dx(4) + 3}
+				x1={dx(5.4) + 3}
 				y1={ROWS.gy - gyH(m)}
-				x2={dx(6) - 3}
+				x2={dx(6.2) - 3}
 				y2={ROWS.gy - gyH(m)}
 				stroke="var(--mk-gy)"
 				stroke-opacity="0.35"
@@ -275,8 +291,10 @@
 		stroke-opacity="0.55"
 		stroke-width="1.5"
 	/>
-	<Label x={dx(0)} y={ROWS.sig + 44} text="0" anchor="middle" size={11} muted />
-	<Label x={dx(12)} y={ROWS.sig + 44} text="12 ms" anchor="end" size={11} muted />
+	<Label x={dx(0)} y={ROWS.sig + 44} text="90°" anchor="start" size={11} muted />
+	<Label x={dx(4.6)} y={ROWS.sig + 44} text="180° at TE/2" anchor="middle" size={11} muted />
+	<Label x={dx(9.4)} y={ROWS.sig + 44} text="echo at TE = 100 ms" anchor="middle" size={11} muted />
+	<Label x={dx(12)} y={ROWS.sig + 60} text="not to scale" anchor="end" size={11} muted italic />
 
 	{#if mode === 'slice'}
 		<!-- ================= the head from the side ================= -->

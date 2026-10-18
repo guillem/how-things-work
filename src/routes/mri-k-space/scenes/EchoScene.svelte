@@ -60,7 +60,7 @@
 	<Label
 		x={CX}
 		y={86}
-		text="12 spins of one voxel, from above"
+		text="12 representative spins of one voxel, from above"
 		anchor="middle"
 		size={15}
 		weight={600}
@@ -98,12 +98,17 @@
 	{#if flash}
 		<Label x={CX} y={CY + R + 34} text="180° pulse: the fan is flipped over" anchor="middle" pill />
 	{/if}
-	<Readout id="key" order={3} label="Spins" value="orange fast, blue slow; thick: their average">
+	<Readout
+		id="key"
+		order={3}
+		label="Spins"
+		value="orange fast, blue slow; thick: the whole voxel’s average"
+	>
 		<Label
 			anchor="start"
 			x={CX - R}
 			y={CY + R + 58}
-			text="orange: faster than average · blue: slower"
+			text="orange: faster · blue: slower · thick: the whole voxel’s average"
 			size={12}
 			muted
 		/>

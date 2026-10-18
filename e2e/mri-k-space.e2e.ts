@@ -71,8 +71,11 @@ test('a field of view smaller than the head wraps it round', async ({ page }) =>
 	await page.goto('./mri-k-space/#fov');
 	await expect(stage(page)).toContainText('85 lines');
 	await expect(stage(page)).toContainText('sticks out by 3 cm and wraps round');
-	await key(page, 'fovY', 'End');
+	// 19 cm: the head fits exactly
+	for (let i = 0; i < 3; i++) await key(page, 'fovY', 'ArrowRight');
 	await expect(stage(page)).toContainText('the 19 cm head fits');
+	await key(page, 'fovY', 'ArrowLeft');
+	await expect(stage(page)).toContainText('sticks out by 1 cm');
 });
 
 test('one sample of k-space follows its handle', async ({ page }) => {
