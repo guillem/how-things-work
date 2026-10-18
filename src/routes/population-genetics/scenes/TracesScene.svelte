@@ -502,12 +502,12 @@
 				id="hidden"
 				order={6}
 				label="Dashed curve now"
-				value="p = {percent(pd)}, {percent(1 - pd)} of A copies in Aa"
+				value="A at {percent(pd)}, {percent(1 - pd)} of A copies in Aa"
 			>
 				<Label
 					x={LX}
 					y={366}
-					text="dashed curve: p = {percent(pd)}"
+					text="dashed curve: A at {percent(pd)}"
 					size={12}
 					anchor="start"
 					tabular
