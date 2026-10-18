@@ -43,9 +43,9 @@ Output: a TypeScript module exporting `data` (type LensData from lens.ts). For e
   last     the last position in detail: stream[L] = |x_L|; attn[l], mlp[l] = |a_l|, |m_l|;
            ln1[l], ln2[l] = the standard deviation each block's layer norms divide by;
            plane: the 2-D projection of x_0 and of every a_l, m_l onto two unit directions:
-           u = the final answer's unembedding direction as the lens sees it (γ_f ∘ W_E[answer],
-           centred, as the final layer norm subtracts the mean), and v = the same for the
-           runner-up, made orthogonal to u. Projections are linear, so the arrows sum exactly
+           u = the final answer's direction as the lens reads it relative to the average token
+           (γ_f ∘ (W_E[answer] − mean row of W_E), centred, as the final layer norm subtracts the
+           mean), and v = the same for the runner-up, made orthogonal to u. Projections are linear, so the arrows sum exactly
            to the projection of x_L. Also the answer's and the runner-up's tokens.
   ablate   24 entries, attn 0, mlp 0, attn 1, … mlp 11: for the run without that component,
            grid[layer][position] = [i, p] the lens's top-1 for layers after the switched-off

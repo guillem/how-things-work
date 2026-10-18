@@ -110,7 +110,7 @@ test.describe('the running vector', () => {
 		expect(best.dx).toBeGreaterThan(25);
 	});
 
-	test('the stream grows a hundredfold; the layer norm reads it at a fixed size', () => {
+	test('the stream grows a hundredfold; the layer norm scales it back down to read it', () => {
 		const s = sizes(prompt('mary'));
 		expect(s.stream[0]).toBeLessThan(5);
 		expect(s.stream[BLOCKS]).toBeGreaterThan(450);
