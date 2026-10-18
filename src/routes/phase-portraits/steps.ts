@@ -47,7 +47,8 @@ const omega: Control = {
 	step: 0.05,
 	default: 0,
 	format: (v) => fmt(v, 2),
-	help: 'Above 0 the eigenvalues are a complex pair λ₁ ± iω, and λ₂ is not used.'
+	help: 'Above 0 the eigenvalues are the pair λ₁ ± iω. Make λ₂ equal to λ₁ first: a complex pair leaves the real axis from a double root.',
+	disabled: (p) => Number(p.w) === 0 && Math.abs(Number(p.l1) - Number(p.l2)) > 1e-9
 };
 
 const gamma: Control = {
@@ -79,9 +80,9 @@ const zoom: Control = {
 	id: 'zoom',
 	label: 'Size of the circle',
 	min: 0.1,
-	max: 1.5,
+	max: 2.5,
 	step: 0.05,
-	default: 1,
+	default: 2,
 	format: (v) => `radius ${v.toFixed(2)}`,
 	help: 'Shrink it: the real orbits (solid) and the linear ones (dashed) close up.'
 };
@@ -179,7 +180,7 @@ export const spec: ExplainerSpec = {
 <li><strong>A complex pair λ ± iω:</strong> e<sup>(λ ± iω)<i>t</i></sup> = e<sup>λ<i>t</i></sup>(cos ω<i>t</i> ± i sin ω<i>t</i>), so orbits turn at the rate ω while shrinking (λ &lt; 0) or growing (λ &gt; 0) by e<sup>λ<i>t</i></sup>: a stable or unstable <dfn data-def="A fixed point with complex eigenvalues λ ± iω, λ ≠ 0: orbits wind around it, in or out.">spiral</dfn>.</li>
 <li><strong>Pure imaginary, ±iω:</strong> a <dfn data-def="A fixed point surrounded by closed orbits.">centre</dfn>. Orbits are closed ellipses, each taking 2π/ω to go round.</li>
 </ul>
-<p>Drag a pair off the real axis and the two real eigenvalues meet first, then split up and down as a conjugate pair: the node turns into a spiral through a <dfn data-def="Two equal real eigenvalues: the in-between case of a node and a spiral.">degenerate node</dfn>.</p>`,
+<p>Real eigenvalues can't turn complex one at a time: they come off the real axis as a conjugate pair, from a double root. Drag one onto the other first (a <dfn data-def="Two equal real eigenvalues: the in-between case of a node and a spiral.">degenerate node</dfn>), then lift the pair off the axis: the node turns into a spiral.</p>`,
 			notes: `<p>With real eigenvalues the page builds A = P·diag(λ₁, λ₂)·P⁻¹ with fixed eigenvectors (1, 0.25) and (−0.4, 1); with a complex pair, the rotation-and-stretch [[λ, −ω], [ω, λ]]. Both give λ·I when the pair meets the real axis, so the portrait changes continuously. Any other matrix with the same eigenvalues (and not equal to λ·I) is the same picture seen through a change of coordinates: a skewed, stretched copy.</p>`
 		},
 		{
@@ -258,7 +259,7 @@ export const spec: ExplainerSpec = {
 <p>But the linearisation did not tell us that. Compare with the right:</p>
 <ul>
 <li><strong>damped pendulum:</strong> γ = 0.3 moves the eigenvalues off the imaginary axis to −0.15 ± 0.99i, a hyperbolic stable spiral; here the linearisation does decide.</li>
-<li><strong>r′ = −r³:</strong> x′ = −y − x(x² + y²), y′ = x − y(x² + y²). Its Jacobian at the origin is exactly the frictionless pendulum's, ±i. Yet every orbit spirals in, slowly: <i>r</i> = 1/√(1/<i>r</i>₀² + 2<i>t</i>).</li>
+<li><strong>r′ = −r³:</strong> x′ = y − x(x² + y²), y′ = −x − y(x² + y²). Its Jacobian at the origin is exactly the frictionless pendulum's, [[0, 1], [−1, 0]]. Yet every orbit spirals in, slowly: <i>r</i> = 1/√(1/<i>r</i>₀² + 2<i>t</i>).</li>
 <li><strong>r′ = +r³:</strong> the same linearisation again, and every orbit spirals <em>out</em>.</li>
 </ul>
 <p>Three systems, one linearisation, three fates. At a centre the linear terms balance exactly, and the nonlinear terms, which linearising throws away, decide. To prove a centre takes something more, such as a conserved energy.</p>`
@@ -273,8 +274,8 @@ export const spec: ExplainerSpec = {
 			controls: [muH],
 			body: `
 <p>Put a dial on that borderline. The <dfn data-def="The simplest system with a Hopf bifurcation, to which every generic one reduces near the bifurcation point.">normal form</dfn></p>
-<p class="formula"><strong>x′ = μx − y − x(x² + y²),&nbsp; y′ = x + μy − y(x² + y²)</strong></p>
-<p>is, in polar coordinates, <i>r</i>′ = μ<i>r</i> − <i>r</i>³ with a steady turn φ′ = 1. At the origin the eigenvalues are μ ± i: drag μ and watch them on the complex plane.</p>
+<p class="formula"><strong>x′ = μx + y − x(x² + y²),&nbsp; y′ = −x + μy − y(x² + y²)</strong></p>
+<p>is, in polar coordinates, <i>r</i>′ = μ<i>r</i> − <i>r</i>³ with a steady clockwise turn, φ′ = −1. At the origin the eigenvalues are μ ± i: drag μ and watch them on the complex plane.</p>
 <p>For μ &lt; 0 a stable spiral. At μ = 0 the pair sits on the imaginary axis: the r′ = −r³ case of the last step, still pulling in, slowly. For μ &gt; 0 the origin is an unstable spiral, and the linearisation would have every orbit grow for ever. It doesn't: the −<i>r</i>³ term stops the growth where μ<i>r</i> = <i>r</i>³, at <strong><i>r</i> = √μ</strong>. Orbits from inside and outside wind onto that circle, a stable <dfn data-def="An isolated closed orbit that nearby orbits approach (stable) or leave (unstable): a self-sustained oscillation.">limit cycle</dfn>. The panel measures where the orbits settle and compares it with √μ.</p>
 <p>This is a <dfn data-def="As a parameter changes, a pair of complex eigenvalues crosses the imaginary axis and a limit cycle is born (supercritical) or dies (subcritical) at the fixed point.">Hopf bifurcation</dfn>: the eigenvalues cross the imaginary axis, and a small cycle is born whose size grows like √μ. No fixed point predicts it: it exists only because of the nonlinear terms.</p>`,
 			notes: `<p>This one is supercritical: the cubic term pulls in. With +<i>r</i>³ instead (the right-hand panel's third system) the bifurcation is subcritical: an <em>unstable</em> cycle of radius √(−μ) surrounds the stable origin for μ &lt; 0 and shrinks onto it as μ → 0, after which the state jumps away. Electrical oscillators, flutter of a wing and the onset of oscillations in <a href="../feedback-control/">feedback loops</a> with too much gain are Hopf bifurcations.</p>`

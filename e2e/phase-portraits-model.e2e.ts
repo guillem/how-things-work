@@ -16,8 +16,10 @@ import {
 	flow,
 	fromEigenvalues,
 	linearField,
+	linearOverlay,
 	lvInvariant,
 	orbit,
+	overlayStarts,
 	pendulumEnergy,
 	period,
 	rk4,
@@ -205,6 +207,10 @@ test('a centre in the linearisation is not conclusive: the same linearisation, o
 		const fp = fixedPoints(systems[id], p0).find((q) => Math.hypot(q.x, q.y) < 1e-9);
 		expect(fp?.kind).toBe('centre');
 		expect(fp?.eigen.im[0]).toBeCloseTo(1, 12);
+		// not just the same eigenvalues: the same matrix as the frictionless pendulum's
+		expect(fp?.jacobian).toEqual(
+			systems.pendulum.jacobian(p0, 0, 0).map((v) => expect.closeTo(v, 12))
+		);
 	}
 	// r′ = −r³: from r = 0.5 it is down to 1/√(4 + 2t) after time t, spiralling in
 	const inward = flow(systems.hopf.field(p0), 0.5, 0, 20);
@@ -283,4 +289,16 @@ test('van der Pol: a cycle of amplitude about 2 for any μ > 0, period 6.663 at 
 	const a = settledAmplitude(f3, [0.1, 0], 100, 20, 0.01, absX);
 	const b = settledAmplitude(f3, [0.1, 0], 100, 20, 0.005, absX);
 	expect(Math.abs(a - b)).toBeLessThan(1e-6);
+});
+
+test('the magnifier: in a shrinking circle the real and linear orbits close up like its radius squared', () => {
+	const f = systems.pendulum.field(P);
+	const top = fixedPoints(systems.pendulum, P).find((q) => Math.abs(q.x - Math.PI) < 1e-9);
+	if (!top) throw new Error('no saddle at π');
+	const gap = (R: number) => linearOverlay(f, top, overlayStarts(R), R, 2 * Math.PI).gap;
+	expect(gap(1)).toBeGreaterThan(0.03);
+	// sin θ differs from its tangent by about θ³/6, so the gap relative to R falls like R²
+	expect(gap(1) / gap(0.25)).toBeGreaterThan(12);
+	expect(gap(1) / gap(0.25)).toBeLessThan(20);
+	expect(gap(0.1)).toBeLessThan(0.002);
 });

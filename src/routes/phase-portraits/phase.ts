@@ -72,6 +72,12 @@ export interface OrbitOptions {
 	back?: boolean;
 	/** Keep a point when it has moved this far (as a fraction of the window) since the last. */
 	gap?: number;
+	/**
+	 * Stop when the speed falls below this (window sizes per time unit): the
+	 * orbit has all but reached a fixed point. 0 for an orbit that starts next
+	 * to a fixed point on purpose (a separatrix).
+	 */
+	stopSpeed?: number;
 }
 
 /**
@@ -86,6 +92,7 @@ export function orbit(f: Field, x0: number, y0: number, o: OrbitOptions): Orbit 
 	const mx = wx / 5;
 	const my = wy / 5;
 	const gap = o.gap ?? 1 / 250;
+	const stop = o.stopSpeed ?? 1e-5;
 	const run = (dir: 1 | -1) => {
 		const ts: number[] = [];
 		const xs: number[] = [];
@@ -112,7 +119,7 @@ export function orbit(f: Field, x0: number, y0: number, o: OrbitOptions): Orbit 
 			}
 			if (out) break;
 			const [vx, vy] = f(x, y);
-			if (Math.hypot(vx / wx, vy / wy) < 1e-5) break;
+			if (Math.hypot(vx / wx, vy / wy) < stop) break;
 		}
 		return { ts, xs, ys };
 	};
@@ -289,22 +296,26 @@ export const systems: Record<SystemId, System> = {
 	/** x′ = y, y′ = μ(1 − x²)y − x. */
 	vanderpol: {
 		id: 'vanderpol',
-		box: { x: [-3.5, 3.5], y: [-5, 5] },
+		box: { x: [-3.5, 3.5], y: [-6, 6] },
 		field: (p) => (x, y) => [y, p.mu * (1 - x * x) * y - x],
 		jacobian: (p, x, y) => [0, 1, -2 * p.mu * x * y - 1, p.mu * (1 - x * x)]
 	},
-	/** The supercritical Hopf normal form: r′ = μr − r³, φ′ = 1. */
+	/**
+	 * The supercritical Hopf normal form: r′ = μr − r³, φ′ = −1 (turning
+	 * clockwise, like the pendulum, so at μ = 0 its Jacobian at the origin is the
+	 * frictionless pendulum's [[0, 1], [−1, 0]]).
+	 */
 	hopf: {
 		id: 'hopf',
 		box: { x: [-1.5, 1.5], y: [-1.5, 1.5] },
 		field: (p) => (x, y) => {
 			const r2 = x * x + y * y;
-			return [p.mu * x - y - x * r2, x + p.mu * y - y * r2];
+			return [p.mu * x + y - x * r2, -x + p.mu * y - y * r2];
 		},
 		jacobian: (p, x, y) => [
 			p.mu - 3 * x * x - y * y,
-			-1 - 2 * x * y,
 			1 - 2 * x * y,
+			-1 - 2 * x * y,
 			p.mu - x * x - 3 * y * y
 		]
 	},
@@ -314,12 +325,12 @@ export const systems: Record<SystemId, System> = {
 		box: { x: [-1.5, 1.5], y: [-1.5, 1.5] },
 		field: (p) => (x, y) => {
 			const r2 = x * x + y * y;
-			return [p.mu * x - y + x * r2, x + p.mu * y + y * r2];
+			return [p.mu * x + y + x * r2, -x + p.mu * y + y * r2];
 		},
 		jacobian: (p, x, y) => [
 			p.mu + 3 * x * x + y * y,
-			-1 + 2 * x * y,
 			1 + 2 * x * y,
+			-1 + 2 * x * y,
 			p.mu + x * x + 3 * y * y
 		]
 	}
@@ -439,4 +450,76 @@ export function period(
 		t += h;
 	}
 	return (crossings[crossings.length - 1] - crossings[0]) / (crossings.length - 1);
+}
+
+export interface Overlay {
+	/** Per start: the real orbit and the linearised one, as offsets from the fixed point. */
+	real: Vec[][];
+	lin: Vec[][];
+	/** The largest distance between them at equal times while both are within R, over R. */
+	gap: number;
+}
+
+/**
+ * The flow near a fixed point beside its linearisation u′ = J·u: from each
+ * start (an offset from the fixed point) both are followed forwards and
+ * backwards for tMax in RK4 steps of h, while they stay within 1.3 R.
+ */
+export function linearOverlay(
+	f: Field,
+	fp: { x: number; y: number; jacobian: Mat },
+	starts: Vec[],
+	R: number,
+	tMax: number,
+	h = 0.01
+): Overlay {
+	const lin = linearField(fp.jacobian);
+	const real: Vec[][] = [];
+	const lins: Vec[][] = [];
+	let gap = 0;
+	for (const [u0, v0] of starts) {
+		const sides = ([1, -1] as const).map((dir) => {
+			const a: Vec[] = [];
+			const b: Vec[] = [];
+			let p: Vec = [fp.x + u0, fp.y + v0];
+			let q: Vec = [u0, v0];
+			let aIn = true;
+			let bIn = true;
+			const n = Math.ceil(tMax / h);
+			for (let i = 1; i <= n && (aIn || bIn); i++) {
+				if (aIn) p = rk4(f, p[0], p[1], dir * h);
+				if (bIn) q = rk4(lin, q[0], q[1], dir * h);
+				const ra = Math.hypot(p[0] - fp.x, p[1] - fp.y);
+				const rb = Math.hypot(q[0], q[1]);
+				if (aIn && i % 2 === 0) a.push([p[0] - fp.x, p[1] - fp.y]);
+				if (bIn && i % 2 === 0) b.push([q[0], q[1]]);
+				if (aIn && bIn && ra <= R && rb <= R)
+					gap = Math.max(gap, Math.hypot(p[0] - fp.x - q[0], p[1] - fp.y - q[1]) / R);
+				if (ra > 1.3 * R) aIn = false;
+				if (rb > 1.3 * R) bIn = false;
+			}
+			return { a, b };
+		});
+		const [fwd, back] = sides;
+		real.push([...back.a.reverse(), [u0, v0], ...fwd.a]);
+		lins.push([...back.b.reverse(), [u0, v0], ...fwd.b]);
+	}
+	return { real, lin: lins, gap };
+}
+
+/**
+ * Starts around a fixed point for the overlay: eight at 0.6 R, or, for a
+ * fixed point in the corner of a quadrant that the system cannot leave (no
+ * negative populations), ten inside that quadrant.
+ */
+export function overlayStarts(R: number, corner = false): Vec[] {
+	return corner
+		? [0.12, 0.42, 0.78, 1.15, 1.45].flatMap((a): Vec[] => [
+				[0.45 * R * Math.cos(a), 0.45 * R * Math.sin(a)],
+				[0.85 * R * Math.cos(a), 0.85 * R * Math.sin(a)]
+			])
+		: Array.from({ length: 8 }, (_, i): Vec => {
+				const a = (i * Math.PI) / 4 + Math.PI / 8;
+				return [0.6 * R * Math.cos(a), 0.6 * R * Math.sin(a)];
+			});
 }

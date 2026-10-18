@@ -1131,6 +1131,15 @@ const explainers: Explainer[] = [
 		accent: '#b8336a',
 		steps: 12,
 		minutes: 18
+	},
+	{
+		slug: 'phase-portraits',
+		title: 'Phase portraits & stability',
+		summary:
+			'Drag the entries or the eigenvalues of a 2×2 system and its phase portrait turns node, saddle, spiral or centre on the trace–determinant chart; linearise a pendulum and predators and prey at their fixed points and watch the flow match its linearisation close up, except at a centre, where the nonlinear terms decide; then push μ through a Hopf bifurcation and a limit cycle is born.',
+		accent: '#5a4fcf',
+		steps: 10,
+		minutes: 18
 	}
 ];
 

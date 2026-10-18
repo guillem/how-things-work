@@ -476,6 +476,20 @@
 		const phi = 0.45 * lo;
 		return { d, r, bead: at(phi), centre: { x: 24 + r * phi, y: 22 + r } };
 	})();
+
+	// Phase portraits: an orbit spiralling into a stable focus, and two orbits, from inside and
+	// from outside, winding onto a limit cycle.
+	const ppSpiral = Array.from({ length: 121 }, (_, i) => {
+		const a = (i / 120) * 5 * Math.PI;
+		const r = 40 * Math.exp(-0.15 * a);
+		return `${i ? 'L' : 'M'}${(52 + r * Math.cos(a)).toFixed(1)} ${(60 - 0.9 * r * Math.sin(a)).toFixed(1)}`;
+	}).join(' ');
+	const ppWind = (r0: number) =>
+		Array.from({ length: 121 }, (_, i) => {
+			const a = (i / 120) * 4 * Math.PI;
+			const r = 27 + (r0 - 27) * Math.exp(-0.4 * a);
+			return `${i ? 'L' : 'M'}${(146 + r * Math.cos(a)).toFixed(1)} ${(60 + 0.9 * r * Math.sin(a)).toFixed(1)}`;
+		}).join(' ');
 </script>
 
 <svg viewBox="0 0 200 120" class="art" style:--accent={accent} aria-hidden="true">
@@ -3178,6 +3192,14 @@
 		<path d={deCurve(0.3)} fill="none" stroke={accent} stroke-width="2" opacity="0.75" />
 		<path d={deCurve(1.35)} fill="none" stroke={accent} stroke-width="2" opacity="0.75" />
 		<circle cx="8" cy={104 - 70 * 0.04} r="3.5" fill={accent} />
+	{:else if slug === 'phase-portraits'}
+		<!-- a stable spiral, and orbits from inside and outside winding onto a limit cycle -->
+		<path d={ppSpiral} fill="none" stroke="currentColor" stroke-width="1.8" opacity="0.6" />
+		<circle cx="52" cy="60" r="4" fill={accent} />
+		<ellipse cx="146" cy="60" rx="27" ry={27 * 0.9} fill="none" stroke={accent} stroke-width="3" />
+		<path d={ppWind(4)} fill="none" stroke="currentColor" stroke-width="1.5" opacity="0.55" />
+		<path d={ppWind(48)} fill="none" stroke="currentColor" stroke-width="1.5" opacity="0.55" />
+		<circle cx="146" cy="60" r="3.5" fill="none" stroke="currentColor" stroke-width="1.5" />
 	{:else if slug === 'taylor-series'}
 		<!-- a bump and its Taylor polynomial leaving it at |x| = 1; a disk stopped by ±i -->
 		<line x1="12" y1="92" x2="124" y2="92" stroke="currentColor" stroke-width="1" opacity="0.5" />

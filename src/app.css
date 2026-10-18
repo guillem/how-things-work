@@ -3792,3 +3792,32 @@ kbd {
 	--rg-n3: #cc5de8;
 	--rg-n4: #748ffc;
 }
+
+/* phase-portraits: the arrows of the flow, orbits and the dots riding them, separatrices,
+   eigenvector lines, the linearisation overlay, limit cycles, and fixed points by kind */
+:root {
+	--pp-field: #b4bcc4;
+	--pp-orbit: #1c7ed6;
+	--pp-dot: #1864ab;
+	--pp-sep: #e8590c;
+	--pp-eig: #f08c00;
+	--pp-lin: #c2255c;
+	--pp-cycle: #5a4fcf;
+	--pp-stable: #2b8a3e;
+	--pp-unstable: #e03131;
+	--pp-saddle: #e8590c;
+	--pp-centre: #7048e8;
+}
+:root[data-theme='dark'] {
+	--pp-field: #4f5862;
+	--pp-orbit: #4dabf7;
+	--pp-dot: #a5d8ff;
+	--pp-sep: #ff922b;
+	--pp-eig: #fcc419;
+	--pp-lin: #f783ac;
+	--pp-cycle: #b197fc;
+	--pp-stable: #69db7c;
+	--pp-unstable: #ff8787;
+	--pp-saddle: #ff922b;
+	--pp-centre: #b197fc;
+}
