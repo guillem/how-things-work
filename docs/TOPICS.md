@@ -1,6 +1,6 @@
 # Topic catalog
 
-Source of truth for the content of an interactive web learning tool that shows how things work. It defines 106 topics in 11 categories, each built around one interactive graphic. Readers range from high-school students to university majors.
+Source of truth for the content of an interactive web learning tool that shows how things work. It defines 107 topics in 11 categories, each built around one interactive graphic. Readers range from high-school students to university majors.
 
 This file covers content only. It does not choose the stack, the visual design or the project layout; take those from the repository's own instructions.
 
@@ -91,7 +91,7 @@ A topic is done when:
 | Space | `space` | 9 |
 | Computing | `computing` | 10 |
 | Information & Networks | `networks` | 8 |
-| Artificial Intelligence | `ai` | 15 |
+| Artificial Intelligence | `ai` | 16 |
 | Energy & Machines | `energy` | 9 |
 
 ## Checklist
@@ -212,6 +212,7 @@ A topic is done when:
 - [x] residual-stream-logit-lens
 - [x] training-a-tiny-language-model
 - [x] scaling-laws
+- [ ] rlhf-alignment
 
 **Energy & Machines**
 - [x] heat-engines
@@ -1046,7 +1047,7 @@ A topic is done when:
 - **Interaction:** Pick one of several example sentences and hover over any token to see, layer by layer and head by head, which other tokens a real small transformer attends to (weights precomputed from the model). Step through one attention operation: queries are matched against keys, the scores become weights, and values are mixed into a new vector for each token.
 - **Takeaway:** Attention lets every token gather information from every other token in one step, with learned weights deciding what is relevant, and a transformer is that operation stacked many times.
 - **Prerequisites:** embeddings, neural-networks
-- **Related:** language-models, tokenization
+- **Related:** language-models, tokenization, rlhf-alignment
 - **Needs:** Attention weights from a real small transformer, computed in the browser or precomputed.
 
 #### language-models
@@ -1140,6 +1141,17 @@ A topic is done when:
 - **Related:** language-models, training-a-tiny-language-model
 - **Needs:** The project's own precomputed sweep of small character-level transformers (the training-a-tiny-language-model architecture) trained on Tiny Shakespeare at several widths and data sizes; the Chinchilla parametric fit L = E + A/N^a + B/D^b with Hoffmann et al. 2022's published constants and Epoch AI's corrected constants (Besiroglu et al. 2024), shown side by side.
 - **Pitfall:** Scaling laws are empirical fits with disputed constants (Epoch AI's replication found Hoffmann's parametric fit inconsistent with the paper's own other methods); do not present them as physics, and say the loss never reaches zero but approaches an irreducible floor E. Compute-optimal minimizes training cost only; models meant for heavy use are deliberately trained on far more tokens than the optimum. The live retrain must be tiny and labelled as such, not a per-slider sweep.
+
+#### rlhf-alignment
+- **Title:** RLHF: learning from human preferences
+- **Level:** 3
+- **Kind:** simulate
+- **Interaction:** Read pairs of continuations that a real small language model wrote for a prompt and click the better one (or let a stated stand-in rater, a scoring rule, answer a hundred pairs at a time); a reward model (a linear layer on 48 principal components of GPT-2's own hidden states for each continuation, fit by the Bradley-Terry rule) updates after every click and scores all the candidates. Slide the KL penalty: the policy, computed exactly as the base model's distribution tilted by exp(reward/beta), drifts from the base model toward the reward model's favourites, and with a small penalty it collapses onto whichever odd continuation the reward model over-rates, reward hacking visible in the ranked list.
+- **Takeaway:** Comparisons train a reward model, and the policy is the base model's distribution pulled toward that reward and held back by a KL leash; loosen the leash and the policy exploits the reward model's mistakes instead of the preferences behind them.
+- **Prerequisites:** language-models, reinforcement-learning, bayes-theorem
+- **Related:** transformers
+- **Needs:** For three prompts, 64 sampled continuations each from GPT-2 small (OpenAI, MIT licence), with GPT-2's mean final hidden state over each continuation reduced to 48 principal components, all precomputed (a reward model is usually a head on the language model's own states, so no separate embedding model is used). The sample is the base model's distribution on the page: π_ref is 1/64 per continuation.
+- **Pitfall:** On this page the policy can only reweight continuations the base model already gives probability to, because the KL-regularised optimum keeps the base model's support; do not generalise that into a claim that RLHF can never change what a model knows. On a finite candidate set that optimum is closed-form, so the page must not pretend PPO is running (a policy-gradient run, labelled as such, may show that it converges to the same optimum); say that DPO is derived from the same closed form. Reward hacking here means over-optimising a learned proxy, not the model 'wanting' to cheat.
 
 ### Energy & Machines
 
