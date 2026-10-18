@@ -47,10 +47,10 @@ export interface Solution {
 	energy: number;
 	/** π bond order of each bond (Coulson): Σ occ·c_r·c_s. */
 	bondOrders: number[];
-	/** Highest orbital with an electron, lowest with room for one (indices), or -1. */
+	/** Highest orbital with an electron, lowest empty one (indices), or -1. */
 	homo: number;
 	lumo: number;
-	/** x(HOMO) − x(LUMO) in units of |β|; 0 when the HOMO level is only partly filled. */
+	/** x(HOMO) − x(LUMO) in units of |β|. */
 	gap: number;
 	/** Every level either full or empty. */
 	closedShell: boolean;
@@ -207,14 +207,18 @@ export function solve(mol: Molecule): Solution {
 	let homo = -1;
 	let lumo = -1;
 	for (let k = 0; k < n; k++) if (occ[k] > 0) homo = k;
-	for (let k = n - 1; k >= 0; k--) if (occ[k] < 2) lumo = k;
-	const gap =
-		homo >= 0 && lumo >= 0 ? Math.max(0, orbitals[homo].x - orbitals[lumo].x) : Number.NaN;
+	for (let k = n - 1; k >= 0; k--) if (occ[k] === 0) lumo = k;
+	const gap = homo >= 0 && lumo >= 0 ? orbitals[homo].x - orbitals[lumo].x : Number.NaN;
 	const closedShell = levels.every((lv) => {
 		const e = lv.reduce((s, k) => s + occ[k], 0);
 		return e === 0 || e === 2 * lv.length;
 	});
-	const doubles = Math.min(maxMatching(n), Math.floor(electrons / 2));
+	// The reference: as many isolated double bonds (2 sites, 2 electrons each) as the electrons
+	// and the sites allow, with the other electrons alone or in pairs on the remaining sites.
+	const doubles = Math.max(
+		0,
+		Math.min(maxMatching(n), Math.floor(electrons / 2), n - Math.ceil(electrons / 2))
+	);
 	return {
 		mol: { n, ring, electrons },
 		orbitals,

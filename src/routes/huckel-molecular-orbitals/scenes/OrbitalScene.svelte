@@ -70,9 +70,23 @@
 						? 'chips'
 						: null
 	);
-	const box = $derived(panel ? { cy: 236, h: 250 } : { cy: 300, h: 380 });
-	const geo = $derived(layout(mol.n, mol.ring, 280, box.cy, 460, box.h));
+	const box = $derived(panel ? { cy: 246, h: 226 } : { cy: 300, h: 380 });
+	// ---- building by clicking (the free-build step)
+	const editing = $derived(hint('source') === 'build');
+	/** A chain being built leaves room for the next carbon (the "+" drawn at its place). */
+	const roomForNext = $derived(editing && !mol.ring && mol.n < 12);
+	const full = $derived(layout(roomForNext ? mol.n + 1 : mol.n, mol.ring, 285, box.cy, 420, box.h));
+	const geo = $derived({ pts: full.pts.slice(0, mol.n), L: full.L });
 	const pulse = $derived(reduced ? 1 : 1 + 0.035 * Math.sin((2 * Math.PI * t) / 2.6));
+	const last = $derived(geo.pts[geo.pts.length - 1]);
+	const ghost = $derived(full.pts[full.pts.length - 1]);
+	/** A dashed arc under the chain from its last atom back to its first. */
+	const closeLink = $derived.by(() => {
+		const a = geo.pts[0];
+		const b = last;
+		const dip = Math.max(a.y, b.y) + 1.4 * geo.L;
+		return `M${b.x} ${b.y} C${b.x} ${dip}, ${a.x} ${dip}, ${a.x} ${a.y}`;
+	});
 
 	// ---- titles
 	const preset = $derived(presetFor(mol));
@@ -99,6 +113,14 @@
 	// ---- ring closure
 	const closure = $derived(mol.ring ? ringClosure(mol.n, mol.electrons) : 0);
 	const chainE = $derived(solve({ ...mol, ring: false }).energy);
+
+	const showClosure = $derived(mol.ring && panel === 'chips');
+	const y0 = $derived(showClosure ? 506 : 528);
+	const closureText = $derived(
+		Math.abs(closure) < 5e-4
+			? 'the same'
+			: `${closure < 0 ? 'higher' : 'lower'} by ${Math.abs(closure).toFixed(3)}|β|`
+	);
 
 	// ---- chips
 	const chipSet = $derived(
@@ -173,7 +195,9 @@
 		<Label
 			x={24}
 			y={82}
-			text="{mol.electrons} π electrons · click a level on the ladder to draw its orbital"
+			text={editing
+				? `${mol.electrons} π electrons · click + to add a carbon, an end atom to remove it, the dashed arc to close the ring, a bond to open it`
+				: `${mol.electrons} π electrons · click a level on the ladder to draw its orbital`}
 			size={11}
 			anchor="start"
 			muted
@@ -191,6 +215,99 @@
 			orders={hint('orders') === true}
 			numbers={panel === 'matrix'}
 		/>
+		{#if editing}
+			{#if !mol.ring}
+				{#if mol.n < 12}
+					<line
+						x1={last.x}
+						y1={last.y}
+						x2={ghost.x}
+						y2={ghost.y}
+						stroke="var(--stage-ink-muted)"
+						stroke-width="2"
+						stroke-dasharray="3 4"
+					/>
+					<g
+						class="chip ghost"
+						role="button"
+						tabindex="0"
+						aria-label="Add a carbon at the end of the chain"
+						onclick={() => setParam('atoms', mol.n + 1)}
+						onkeydown={(e) => onKey(e, () => setParam('atoms', mol.n + 1))}
+					>
+						<circle
+							cx={ghost.x}
+							cy={ghost.y}
+							r="12"
+							fill="var(--surface)"
+							stroke="var(--hk-electron)"
+							stroke-width="1.6"
+							stroke-dasharray="3 2"
+						/>
+						<text
+							x={ghost.x}
+							y={ghost.y + 5}
+							text-anchor="middle"
+							font-size="16"
+							font-weight="700"
+							fill="var(--hk-electron)">+</text
+						>
+					</g>
+				{/if}
+				{#if mol.n > 2}
+					<g
+						class="chip"
+						role="button"
+						tabindex="0"
+						aria-label="Take the end carbon off"
+						onclick={() => setParam('atoms', mol.n - 1)}
+						onkeydown={(e) => onKey(e, () => setParam('atoms', mol.n - 1))}
+					>
+						<circle cx={last.x} cy={last.y} r="11" fill="transparent" />
+					</g>
+				{/if}
+				{#if mol.n >= 3}
+					<g
+						class="chip"
+						role="button"
+						tabindex="0"
+						aria-label="Close the chain into a ring"
+						onclick={() => setParam('closed', true)}
+						onkeydown={(e) => onKey(e, () => setParam('closed', true))}
+					>
+						<path d={closeLink} fill="none" stroke="transparent" stroke-width="14" />
+						<path
+							d={closeLink}
+							fill="none"
+							stroke="var(--hk-electron)"
+							stroke-width="1.6"
+							stroke-dasharray="5 5"
+							opacity="0.7"
+						/>
+					</g>
+				{/if}
+			{:else}
+				{#each sol.bonds as [i, j], b (b)}
+					<g
+						class="chip"
+						role="button"
+						tabindex="0"
+						aria-label="Open the ring at bond {b + 1}"
+						onclick={() => setParam('closed', false)}
+						onkeydown={(e) => onKey(e, () => setParam('closed', false))}
+					>
+						<line
+							x1={geo.pts[i].x}
+							y1={geo.pts[i].y}
+							x2={geo.pts[j].x}
+							y2={geo.pts[j].y}
+							stroke="transparent"
+							stroke-width="12"
+						/>
+					</g>
+				{/each}
+			{/if}
+		{/if}
 	</g>
 
 	<!-- legend of the lobes -->
@@ -411,10 +528,28 @@
 
 	<!-- energies -->
 	<g data-testid="energies">
+		{#if showClosure}
+			<Readout
+				id="closure-live"
+				order={5}
+				label="Ring vs open chain"
+				value={closureText}
+				color={closure < -5e-4 ? 'var(--hk-warn)' : 'var(--hk-good)'}
+			>
+				<Label
+					x={590}
+					y={y0 + 40}
+					text="π energy vs the open chain: {closureText}"
+					size={13}
+					anchor="start"
+					color={closure < -5e-4 ? 'var(--hk-warn)' : 'var(--hk-good)'}
+				/>
+			</Readout>
+		{/if}
 		<Readout id="epi" order={2} label="π energy" value={energyText(mol.electrons, sol.energy)}>
 			<Label
 				x={590}
-				y={528}
+				y={y0}
 				text="π energy  {energyText(mol.electrons, sol.energy)}"
 				size={13}
 				anchor="start"
@@ -429,7 +564,7 @@
 		>
 			<Label
 				x={590}
-				y={548}
+				y={y0 + 20}
 				text="delocalisation  {(Math.abs(sol.delocalisation) < 5e-4
 					? 0
 					: sol.delocalisation
@@ -448,7 +583,7 @@
 		>
 			<Label
 				x={590}
-				y={572}
+				y={showClosure ? y0 + 62 : y0 + 44}
 				text={shell.text}
 				size={13}
 				weight={700}

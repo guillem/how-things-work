@@ -77,13 +77,16 @@
 			if (showFrost && same.length === 2) out.push({ k: text, x: cx, y: b.y + 4, text });
 			else out.push({ k: text, x: right + 8, y: b.y + 4, text });
 		};
-		const homoLevel = sol.homo >= 0 ? sol.orbitals[sol.homo].level : -1;
-		const lumoLevel = sol.lumo >= 0 ? sol.orbitals[sol.lumo].level : -1;
-		if (homoLevel >= 0 && homoLevel === lumoLevel) add(sol.homo, 'half-filled');
-		else {
-			add(sol.homo, 'HOMO');
+		// A partly filled level holds the singly occupied orbitals (SOMOs).
+		const homo = sol.homo >= 0 ? sol.orbitals[sol.homo] : null;
+		const level = homo ? sol.orbitals.filter((o) => o.level === homo.level) : [];
+		const inLevel = level.reduce((t, o) => t + o.occ, 0);
+		const partly = inLevel < 2 * level.length;
+		if (homo && partly && level.length === 2)
+			add(sol.homo, inLevel === 2 ? 'half-filled pair' : 'partly filled pair');
+		else add(sol.homo, homo && partly ? 'SOMO' : 'HOMO');
+		if (sol.lumo >= 0 && !(homo && sol.orbitals[sol.lumo].level === homo.level))
 			add(sol.lumo, 'LUMO');
-		}
 		return out;
 	});
 	const ticks = [2, 1, 0, -1, -2];

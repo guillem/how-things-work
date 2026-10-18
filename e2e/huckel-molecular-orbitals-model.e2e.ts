@@ -52,10 +52,32 @@ test('cyclobutadiene: two electrons alone in a degenerate pair at α, no delocal
 	expect(s.orbitals.map((o) => o.occ)).toEqual([2, 1, 1, 0]);
 	expect(s.unpaired).toBe(2);
 	expect(s.closedShell).toBe(false);
-	expect(s.gap).toBe(0);
 	expect(s.delocalisation).toBeCloseTo(0, 9);
 	// Closing butadiene into the ring raises its π energy.
 	expect(ringClosure(4, 4)).toBeCloseTo(-0.472, 3);
+});
+
+test('the reference of isolated double bonds never uses more sites than the molecule has', () => {
+	// Two sites, four electrons: two lone pairs, nothing to gain.
+	expect(solve({ n: 2, ring: false, electrons: 4 }).delocalisation).toBeCloseTo(0, 9);
+	// Butadiene's dianion: one double bond and two lone pairs.
+	expect(solve({ n: 4, ring: false, electrons: 6 }).delocalisation).toBeCloseTo(1.236068, 5);
+});
+
+test('radicals: the singly occupied orbital is the HOMO, the LUMO is the lowest empty one', () => {
+	const allyl = solve({ n: 3, ring: false, electrons: 3 });
+	expect(allyl.orbitals[allyl.homo].occ).toBe(1);
+	expect(allyl.orbitals[allyl.homo].x).toBeCloseTo(0, 9);
+	expect(allyl.gap).toBeCloseTo(Math.SQRT2, 9);
+	expect(allyl.unpaired).toBe(1);
+	// A triangle with 3 electrons: one in the degenerate pair, its partner empty.
+	const three = solve({ n: 3, ring: true, electrons: 3 });
+	expect(three.unpaired).toBe(1);
+	expect(three.orbitals[three.lumo].x).toBeCloseTo(-1, 9);
+	// With 5, three in the pair: no empty orbital left.
+	const five = solve({ n: 3, ring: true, electrons: 5 });
+	expect(five.unpaired).toBe(1);
+	expect(five.lumo).toBe(-1);
 });
 
 test('charged rings: the cyclopentadienyl anion and tropylium cation', () => {

@@ -4,6 +4,11 @@ const stage = (page: Page) => page.locator('.stage svg > g');
 const slide = (page: Page, control: string, value: string) =>
 	page.locator(`input[type=range][data-control="${control}"]`).fill(value);
 const level = (page: Page, k: number) => page.locator(`.stage [data-level="${k}"]`);
+/** Presses a stage button from the keyboard (the arcs and bonds are thin to aim at). */
+const press = async (page: Page, name: string) => {
+	await page.getByRole('button', { name }).focus();
+	await page.keyboard.press('Enter');
+};
 
 test('butadiene: the matrix, a level clicked draws its orbital, bond orders unequal', async ({
 	page
@@ -90,4 +95,21 @@ test('the builder opens a ring into a chain', async ({ page }) => {
 	await expect(ring).not.toBeChecked();
 	await expect(stage(page)).toContainText('hexatriene');
 	await expect(stage(page)).toContainText('delocalisation 0.988|β|');
+});
+
+test('the builder snaps carbons on and closes the chain by clicks on the molecule', async ({
+	page
+}) => {
+	await page.goto('./huckel-molecular-orbitals/#build');
+	await page.getByRole('button', { name: 'Build butadiene' }).click();
+	await expect(stage(page)).toContainText('butadiene · C₄H₆');
+	await page.getByRole('button', { name: 'Add a carbon at the end of the chain' }).click();
+	await expect(stage(page)).toContainText('5-carbon chain · C₅H₇');
+	await expect(stage(page)).toContainText('one unpaired electron: a radical');
+	await press(page, 'Take the end carbon off');
+	await press(page, 'Close the chain into a ring');
+	await expect(stage(page)).toContainText('cyclobutadiene');
+	await expect(stage(page)).toContainText('π energy vs the open chain: higher by 0.472|β|');
+	await press(page, 'Open the ring at bond 1');
+	await expect(stage(page)).toContainText('butadiene · C₄H₆');
 });

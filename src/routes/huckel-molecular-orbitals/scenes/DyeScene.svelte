@@ -336,7 +336,9 @@
 			<Label
 				x={590}
 				y={540}
-				text="gap {sol.gap.toFixed(3)}|β| × {BETA_EV.toFixed(2)} eV = {eV.toFixed(2)} eV"
+				text="gap {sol.gap.toFixed(3)} × |β| = {sol.gap.toFixed(3)} × {BETA_EV.toFixed(
+					2
+				)} eV = {eV.toFixed(2)} eV"
 				size={13}
 				anchor="start"
 				tabular

@@ -143,7 +143,7 @@ A topic is done when:
 - [x] semiconductors
 - [x] chromatography
 - [x] dislocations-alloys
-- [ ] huckel-molecular-orbitals
+- [x] huckel-molecular-orbitals
 
 **Biology**
 - [x] the-cell
