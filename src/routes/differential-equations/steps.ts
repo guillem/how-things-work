@@ -157,7 +157,7 @@ export const spec: ExplainerSpec = {
 <p>No colony grows exponentially for ever: food and room run out. The <dfn data-def="Growth in proportion to the population, slowed as it approaches the carrying capacity K: dN/dt = r·N·(1 − N/K). Pierre-François Verhulst, 1838.">logistic</dfn> rule slows the growth as the population <i>N</i> nears the <dfn data-def="The largest population the environment can sustain.">carrying capacity</dfn> <i>K</i>:</p>
 <p class="formula"><strong>dN/dt = r · N · (1 − N/K)</strong></p>
 <p>Here a stock of fish, measured in per cent of <i>K</i>, with <i>r</i> = 0.5 per year. Small stocks grow almost exponentially; the growth is fastest at <i>K</i>/2; above <i>K</i> the factor (1 − <i>N</i>/<i>K</i>) is negative and the stock shrinks back.</p>
-<p>Two lines are level: <i>N</i> = 0 (no fish, no births) and <i>N</i> = <i>K</i>. These <dfn data-def="Values where dy/dt = 0: a curve that starts there stays there for ever.">equilibria</dfn> are the only constant solutions. Every curve that starts between them rises in an S towards <i>K</i>; every curve above <i>K</i> falls to it. The exact formula is <i>N</i> = <i>K</i> <i>N</i>₀ / (<i>N</i>₀ + (<i>K</i> − <i>N</i>₀) e<sup>−<i>r</i>(<i>t</i> − <i>t</i>₀)</sup>), and the traced curves sit on it.</p>`,
+<p>Two lines are level: <i>N</i> = 0 (no fish, no births) and <i>N</i> = <i>K</i>. These <dfn data-def="Values where dy/dt = 0: a curve that starts there stays there for ever.">equilibria</dfn> are the only constant solutions. Every curve that starts between them rises towards <i>K</i>: below <i>K</i>/2 it first steepens, then flattens after passing <i>K</i>/2 (an S), and from above <i>K</i>/2 it flattens from the start. Every curve above <i>K</i> falls to it. The exact formula is <i>N</i> = <i>K</i> <i>N</i>₀ / (<i>N</i>₀ + (<i>K</i> − <i>N</i>₀) e<sup>−<i>r</i>(<i>t</i> − <i>t</i>₀)</sup>), and the traced curves sit on it.</p>`,
 			notes: `<p>The <a href="../ecosystems/#growth">ecosystems</a> page grows rabbits on the same rule and then adds foxes. With two populations that drive each other, the state is a point in a plane rather than a height on one axis, and the picture becomes a flow in that plane: a topic for a page of its own.</p>`
 		},
 		{
@@ -180,10 +180,10 @@ export const spec: ExplainerSpec = {
 			hints: { rule: 'crossRule', phase: 'cross' },
 			controls: [crossRule, add, clear],
 			body: `
-<p>Drop as many starts as you like: the curves crowd together, but they never cross. Through every point of the plane there passes <strong>exactly one</strong> solution, because the slope there is fixed by the rule. If two curves met at a point, they would share a value and a slope there, and the same rule would carry them on together; they could not part again or have come from different places.</p>
+<p>Drop as many starts as you like: the curves crowd together, but they never cross. For rules as smooth as these, a theorem guarantees that through every point of the plane there passes <strong>exactly one</strong> solution. So two different curves can never meet: at the meeting point there would be two solutions through one point. Knowing the slope everywhere is not quite enough on its own (see Go deeper); the smoothness of the rule is what rules out a second curve.</p>
 <p>That is the sense in which the rule plus a start fixes the future: two different futures cannot start from the same state. The panel checks every pair of curves on the plot, sampled at 400 times, and counts crossings.</p>
 <p>It also means that a curve can't cross a level line. A fish stock below <i>K</i> stays below <i>K</i> for ever; it only gets closer. Curves that run towards the same stable line come so close that they merge to the eye, but they never touch it or each other.</p>`,
-			notes: `<p>"Exactly one" needs the rule to be smooth enough: if <i>f</i> and its rate of change in <i>y</i> are continuous, the Picard–Lindelöf theorem guarantees a single solution through each point, at least for a while. Without that it can fail. For dy/dt = √<i>y</i> (with <i>y</i> ≥ 0) both <i>y</i> = 0 and <i>y</i> = <i>t</i>²/4 pass through (0, 0): √<i>y</i> is infinitely steep at <i>y</i> = 0, and an empty tank can "decide" to start filling at any moment.</p>`
+			notes: `<p>"Exactly one" needs the rule to be smooth enough: if <i>f</i> and its rate of change in <i>y</i> are continuous, the Picard–Lindelöf theorem guarantees a single solution through each point, at least for a while. Without that it can fail. For dy/dt = √<i>y</i> (with <i>y</i> ≥ 0) both <i>y</i> = 0 and the curve that is 0 up to <i>t</i> = 0 and <i>t</i>²/4 after it pass through (0, 0), with the same slope there. The second curve could just as well start rising at any later moment: √<i>y</i> changes infinitely fast with <i>y</i> at <i>y</i> = 0, and uniqueness fails.</p>`
 		},
 		// ------------------------------------------------------------------ harvest
 		{
@@ -216,7 +216,7 @@ export const spec: ExplainerSpec = {
 		{
 			id: 'no-formula',
 			chapter: 'formula',
-			title: 'Most equations have no formula',
+			title: 'Most equations have no simple formula',
 			scene: 'field',
 			hints: { rule: 'riccati', phase: 'formula' },
 			controls: [add, clear],
@@ -224,9 +224,9 @@ export const spec: ExplainerSpec = {
 <p>Growth, cooling and the logistic rule have short formulas, and that is the exception. Here is an innocent-looking rule in which the slope depends on the time as well, so the field changes from left to right:</p>
 <p class="formula"><strong>dy/dt = t − y²</strong></p>
 <p>Its solutions can be written with Airy functions, which are defined by an equation of this kind, but not with any formula built from powers, exponentials, logarithms, sines and their integrals (Liouville, 1841). That doesn't make the solutions any less definite: <strong>the slope field still fixes each curve</strong>, and following the arrows traces it as accurately as we like.</p>
-<p>The dotted curve <i>y</i>² = <i>t</i> is where the dashes are flat. Starts above a dividing curve all end up just under its upper half, <i>y</i> = √<i>t</i>; starts below the dividing curve plunge to −∞. The curves still never cross.</p>
+<p>The dotted curve <i>y</i>² = <i>t</i> is where the dashes are flat. Starts above the dashed dividing curve all end up just under its upper half, <i>y</i> = √<i>t</i>; starts below the dividing curve plunge to −∞ (the plot loses them when they leave it). A start exactly on the divider follows it. The curves still never cross.</p>
 <p>The same holds for most equations met in practice: <a href="../epidemics/">epidemics</a>, <a href="../ecosystems/">populations</a>, a <a href="../feedback-control/">controller</a> steering a car. Some couple several quantities, but the idea is the same: a rule for the rates of change, a starting state, and the one path the arrows lead along.</p>`,
-			notes: `<p>With <i>y</i> = <i>u</i>′/<i>u</i>, the equation becomes the linear <i>u</i>″ = <i>t</i>·<i>u</i>, Airy's equation, whose solutions Ai and Bi are not elementary. The curve √<i>t</i> is not a solution itself (its slope is 1/(2√<i>t</i>), not 0), but the solutions above the divide stay close below it, ever closer as <i>t</i> grows.</p>`
+			notes: `<p>With <i>y</i> = <i>u</i>′/<i>u</i>, the equation becomes the linear <i>u</i>″ = <i>t</i>·<i>u</i>, Airy's equation, whose solutions Ai and Bi are not elementary. The dividing curve is the solution <i>y</i> = Ai′(<i>t</i>)/Ai(<i>t</i>), drawn by following the arrows backwards from far along it, where it hugs −√<i>t</i>. The curve √<i>t</i> is not a solution itself (its slope is 1/(2√<i>t</i>), not 0), but the solutions above the divide stay close below it, ever closer as <i>t</i> grows.</p>`
 		}
 	]
 };

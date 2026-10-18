@@ -64,7 +64,7 @@ export const TEXT: Record<RuleId, RuleText> = {
 		formula: (p) => `dN/dt = 0.5 · N · (1 − N/100) − ${fixed(p.H, 1)}`
 	},
 	riccati: {
-		title: 'A rule with no formula',
+		title: 'A rule with no elementary formula',
 		tLabel: 't',
 		yLabel: 'y',
 		sym: 'y',

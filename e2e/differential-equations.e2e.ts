@@ -63,9 +63,14 @@ test('curves never cross, however many are added', async ({ page }) => {
 	await page.goto('./differential-equations/#cross');
 	await expect(stage(page)).toContainText('10 curves on the plot');
 	await expect(stage(page)).toContainText('crossings found: 0');
+	// each new curve goes into the widest gap left at the left edge, so no two are the same
 	await action(page, 'add').click();
+	const first = await stage(page)
+		.getByText(/^t₀ = /)
+		.textContent();
 	await action(page, 'add').click();
 	await expect(stage(page)).toContainText('12 curves on the plot');
+	await expect(stage(page).getByText(/^t₀ = /)).not.toHaveText(first ?? '');
 	await expect(stage(page)).toContainText('crossings found: 0');
 	await page.locator('button[data-control=crossRule][data-value=riccati]').click();
 	await expect(stage(page)).toContainText('crossings found: 0');

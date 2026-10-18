@@ -8,6 +8,7 @@ import {
 	crossings,
 	equilibria,
 	gapToExact,
+	riccatiDivider,
 	rules,
 	trace,
 	valueAt
@@ -125,6 +126,12 @@ test('dy/dt = t − y² has no formula, but the slope field still fixes each cur
 	// Halving the step does not move it: the field, not the method, fixes the curve.
 	const fine = trace(rules.riccati, p, 0, 0, 6000);
 	expect(Math.abs(valueAt(fine, 6) - valueAt(tr, 6))).toBeLessThan(1e-9);
+	// The dividing curve is Ai′(t)/Ai(t): at t = 0, Ai′(0)/Ai(0) = −0.258819/0.355028 (DLMF 9.2).
+	const divider = riccatiDivider();
+	expect(valueAt(divider, 0)).toBeCloseTo(-0.258819 / 0.355028, 3);
+	// Starts just above it follow √t; starts just below it leave the plot downwards.
+	expect(valueAt(trace(rules.riccati, p, 0, -0.7), 6)).toBeGreaterThan(2);
+	expect(trace(rules.riccati, p, 0, -0.76).t.at(-1)).toBeLessThan(6);
 	// Below a dividing curve the solutions run off to −∞ instead.
 	const low = trace(rules.riccati, p, 0, -1.5);
 	expect(low.t[low.t.length - 1]).toBeLessThan(6);

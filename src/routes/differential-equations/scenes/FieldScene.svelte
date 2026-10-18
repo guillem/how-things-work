@@ -14,7 +14,7 @@
 	 *   cross    — many curves; the panel counts crossings
 	 *   harvest  — the fish stock: level lines, f lowered by H, the threshold
 	 *   collapse — the same past rK/4: no level line, when each stock is gone
-	 *   formula  — dy/dt = t − y², which has no formula
+	 *   formula  — dy/dt = t − y², which has no elementary formula; the dividing curve
 	 *
 	 * The rule is `hints.rule`, or the param it names (`signRule`, `crossRule`);
 	 * the harvest is the param `hints.H` names (`H` or `H2`). A new curve is
@@ -31,6 +31,7 @@
 		crossings,
 		equilibria,
 		gapToExact,
+		riccatiDivider,
 		rules,
 		trace,
 		valueAt,
@@ -131,7 +132,7 @@
 			.map((tr) => valueAt(tr, t0))
 			.filter((v) => Number.isFinite(v) && v >= rule.y[0] && v <= rule.y[1]);
 		const edges = [rule.y[0], ...ys, rule.y[1]].sort((a, b) => a - b);
-		let best = { lo: rule.y[0], hi: rule.y[1] };
+		let best = { lo: edges[0], hi: edges[0] };
 		for (let i = 1; i < edges.length; i++)
 			if (edges[i] - edges[i - 1] > best.hi - best.lo) best = { lo: edges[i - 1], hi: edges[i] };
 		drop(t0, (best.lo + best.hi) / 2, born);
@@ -242,6 +243,15 @@
 				)
 				.join('');
 		return branch(1) + branch(-1);
+	});
+
+	/** For dy/dt = t − y²: the dividing solution Ai′(t)/Ai(t). */
+	const dividerPath = $derived.by(() => {
+		if (ruleId !== 'riccati') return '';
+		const tr = riccatiDivider();
+		return tr.t
+			.map((tt, i) => `${i ? 'L' : 'M'}${sx(tt).toFixed(1)} ${sy(tr.y[i]).toFixed(1)}`)
+			.join('');
 	});
 
 	// ---- equilibria -----------------------------------------------------------------------------
@@ -381,13 +391,18 @@
 				: `halves every ln 2 / |r| = ${fixed(Math.log(2) / -p.r, 2)} h`
 			: ''
 	);
+	/** When a trace first drops below the plot (it goes on to −∞ later). */
+	const exitTime = (tr: Trace) => {
+		const i = tr.y.findIndex((v, k) => k > tr.start && v < rule.y[0]);
+		return i < 0 ? tr.t[tr.t.length - 1] : tr.t[i];
+	};
 	const riccatiText = $derived.by(() => {
 		const tr = newestTrace;
 		if (!tr || ruleId !== 'riccati') return '';
 		const end = tr.t[tr.t.length - 1];
 		return end >= rule.t[1] - 1e-9
 			? `newest curve at t = 6: y = ${fixed(valueAt(tr, 6), 2)} (√6 = 2.45)`
-			: `newest curve runs off to −∞ near t = ${fixed(end, 1)}`;
+			: `newest curve leaves the plot downwards at t = ${fixed(exitTime(tr), 2)}`;
 	});
 	const critical = $derived((0.5 * 100) / 4);
 </script>
@@ -445,6 +460,13 @@
 		{#if ruleId === 'riccati'}
 			<!-- where the dashes are flat: t − y² = 0 -->
 			<path
+				d={dividerPath}
+				fill="none"
+				stroke="var(--de-unstable)"
+				stroke-width="2"
+				stroke-dasharray="8 6"
+			/>
+			<path
 				d={nullcline}
 				fill="none"
 				stroke="var(--de-f)"
@@ -501,10 +523,20 @@
 		</Readout>
 	{/if}
 	{#if ruleId === 'riccati'}
+		<Readout id="divider">
+			<Label
+				x={sx(1.25)}
+				y={sy(-1.35) + 24}
+				text="dividing curve"
+				size={12}
+				weight={600}
+				color="var(--de-unstable)"
+			/>
+		</Readout>
 		<Readout id="nullcline">
 			<Label
 				x={sx(4.3)}
-				y={sy(-Math.sqrt(4.3)) + 26}
+				y={sy(-Math.sqrt(4.3)) - 14}
 				text="dashes flat on y² = t"
 				size={12}
 				weight={600}
@@ -711,16 +743,28 @@
 			</Readout>
 		{/if}
 		{#if phase === 'formula'}
-			<Readout id="noformula" order={3} label="Formula" value="none: traced in 3000 RK4 steps">
+			<Readout
+				id="noformula"
+				order={3}
+				label="Formula"
+				value="no elementary formula; traced numerically"
+			>
 				<Label
 					x={PANEL}
 					y={168}
-					text="no formula: each curve traced"
+					text="no elementary formula: each curve"
 					anchor="start"
 					size={13}
 					muted
 				/>
-				<Label x={PANEL} y={188} text="in 3000 small RK4 steps" anchor="start" size={13} muted />
+				<Label
+					x={PANEL}
+					y={188}
+					text="traced numerically, in 3000 RK4 steps"
+					anchor="start"
+					size={13}
+					muted
+				/>
 			</Readout>
 			<Readout id="riccati" order={4} label="Newest curve" value={riccatiText}>
 				<Label x={PANEL} y={218} text={riccatiText} anchor="start" size={13} tabular />

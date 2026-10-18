@@ -236,6 +236,17 @@ export function gapToExact(rule: Rule, p: RuleParams, tr: Trace): number {
 	return worst;
 }
 
+/**
+ * The solution of dy/dt = t − y² that divides the curves that follow √t from
+ * those that plunge to −∞: y = Ai′(t)/Ai(t). Traced backwards from the right
+ * edge, where Ai′/Ai ≈ −√t − 1/(4t); backwards in time the other solutions
+ * close in on it, so a small error at the start dies away.
+ */
+export function riccatiDivider(): Trace {
+	const t1 = rules.riccati.t[1];
+	return trace(rules.riccati, DEFAULTS, t1, -Math.sqrt(t1) - 1 / (4 * t1));
+}
+
 // ---------------------------------------------------------------------------- equilibria
 
 export type Stability = 'stable' | 'unstable' | 'semi-stable';

@@ -110,7 +110,7 @@ A topic is done when:
 - [x] taylor-series
 - [x] exponentials-logarithms
 - [x] game-theory-cooperation
-- [ ] differential-equations
+- [x] differential-equations
 
 **Physics**
 - [x] newtons-laws
@@ -369,7 +369,7 @@ A topic is done when:
 - **Takeaway:** A differential equation says how fast something changes given where it is, and that rule plus a starting point fixes one curve through the field of arrows, which can be followed even when no formula exists.
 - **Prerequisites:** calculus
 - **Related:** epidemics, ecosystems, feedback-control
-- **Pitfall:** Not every differential equation can be solved with a formula: most cannot, and the slope field still fixes each solution. Solution curves of one equation never cross, so two different futures cannot start from the same state.
+- **Pitfall:** Not every differential equation can be solved with a formula: most cannot, and the slope field still fixes each solution. For a smooth enough rule (the usual case), solution curves of one equation never cross, so two different futures cannot start from the same state.
 
 ### Physics
 
