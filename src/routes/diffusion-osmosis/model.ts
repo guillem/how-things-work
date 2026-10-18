@@ -436,7 +436,7 @@ export const PUMP_BOX = {
 	pore: [12, 15] as [number, number],
 	pump: [36, 48] as [number, number],
 	/** ATP in the store when full. */
-	atp: 160
+	atp: 100
 };
 
 /** Particles spread evenly over both sides, and a pump with a full ATP store. */

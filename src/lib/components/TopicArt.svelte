@@ -4171,6 +4171,44 @@
 				opacity="0.6"
 			/>
 		</g>
+	{:else if slug === 'diffusion-osmosis'}
+		<!-- dye spreading from a corner, and two columns of water split by a membrane, higher on
+		     the sugary side -->
+		<rect x="14" y="22" width="80" height="80" rx="5" fill={accent} opacity="0.08" />
+		{#each Array.from({ length: 34 }, (_, i) => i) as i (i)}
+			<circle
+				cx={18 + ((i * 37) % 71) * (0.25 + 0.75 * ((i % 7) / 6))}
+				cy={26 + ((i * 53) % 71) * (0.25 + 0.75 * ((i % 5) / 4))}
+				r="2.2"
+				fill={accent}
+				opacity={0.9 - (i % 7) * 0.08}
+			/>
+		{/each}
+		<rect
+			x="110"
+			y="22"
+			width="76"
+			height="80"
+			rx="4"
+			fill="none"
+			stroke="currentColor"
+			opacity="0.5"
+		/>
+		<rect x="111" y="44" width="37" height="57" fill={accent} opacity="0.25" />
+		<rect x="148" y="62" width="37" height="39" fill={accent} opacity="0.25" />
+		<line
+			x1="148"
+			y1="24"
+			x2="148"
+			y2="101"
+			stroke="currentColor"
+			stroke-width="2"
+			stroke-dasharray="6 3"
+			opacity="0.7"
+		/>
+		{#each [[122, 60], [134, 76], [126, 90], [139, 54]] as p, i (i)}
+			<circle cx={p[0]} cy={p[1]} r="3" fill="currentColor" opacity="0.7" />
+		{/each}
 	{:else if slug === 'ensemble-weather-forecasting'}
 		<!-- a fan of forecasts opening from one start, the truth running through it, and the odds -->
 		{#each [-3, -2, -1, 0, 1, 2, 3] as m (m)}

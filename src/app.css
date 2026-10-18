@@ -4066,3 +4066,63 @@ kbd {
 	--tst-zpe-d: #f783ac;
 	--tst-region: rgba(255, 107, 107, 0.14);
 }
+
+/* diffusion-osmosis: water, the dye (and its text), a followed molecule, sugar, salt, the
+   membrane, water flow, the piston, the red blood cell, the potato cell's wall, cytoplasm, sap
+   and starch, the charts' curve, the pump, its particles and ATP */
+:root {
+	--do-water: #e7f5ff;
+	--do-dye: #37b24d;
+	--do-dye-text: #2b8a3e;
+	--do-trace: #1864ab;
+	--do-sugar: #e67700;
+	--do-salt: #868e96;
+	--do-membrane: #7048e8;
+	--do-membrane-text: #5f3dc4;
+	--do-flow: #1c7ed6;
+	--do-flow-text: #1864ab;
+	--do-press: #c92a2a;
+	--do-press-text: #a61e1e;
+	--do-rbc: #e03131;
+	--do-rbc-edge: #a51d1d;
+	--do-rbc-pale: #ffc9c9;
+	--do-rbc-text: #c92a2a;
+	--do-wall: #a07a1a;
+	--do-wall-fill: #fff9db;
+	--do-cyto: #ebfbee;
+	--do-sap: #e3fafc;
+	--do-starch: #ced4da;
+	--do-curve: #16869c;
+	--do-pump: #ae3ec9;
+	--do-particle: #d6336c;
+	--do-atp: #f76707;
+	--do-atp-text: #d9480f;
+}
+:root[data-theme='dark'] {
+	--do-water: #102a3d;
+	--do-dye: #69db7c;
+	--do-dye-text: #8ce99a;
+	--do-trace: #74c0fc;
+	--do-sugar: #ffa94d;
+	--do-salt: #ced4da;
+	--do-membrane: #b197fc;
+	--do-membrane-text: #d0bfff;
+	--do-flow: #4dabf7;
+	--do-flow-text: #74c0fc;
+	--do-press: #ff8787;
+	--do-press-text: #ffa8a8;
+	--do-rbc: #f03e3e;
+	--do-rbc-edge: #ff8787;
+	--do-rbc-pale: #ffa8a8;
+	--do-rbc-text: #ff8787;
+	--do-wall: #e0b84c;
+	--do-wall-fill: #2e2810;
+	--do-cyto: #16301d;
+	--do-sap: #0f2e33;
+	--do-starch: #868e96;
+	--do-curve: #3bc9db;
+	--do-pump: #da77f2;
+	--do-particle: #f783ac;
+	--do-atp: #ff922b;
+	--do-atp-text: #ffa94d;
+}

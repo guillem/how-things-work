@@ -1052,6 +1052,15 @@ const explainers: Explainer[] = [
 		minutes: 18
 	},
 	{
+		slug: 'diffusion-osmosis',
+		title: 'Diffusion, osmosis & active transport',
+		summary:
+			'Drop dye into a box of water and watch random jiggling spread it, faster when warmer; put a membrane in the way that passes water but not sugar and watch the water climb on the sugary side; put a blood cell and a potato cell in pure water and salt water; then switch on a pump that carries particles uphill and watch its ATP run down.',
+		accent: '#16869c',
+		steps: 9,
+		minutes: 18
+	},
+	{
 		slug: 'cerebellum-motor-learning',
 		title: 'The cerebellum & motor learning',
 		summary:
