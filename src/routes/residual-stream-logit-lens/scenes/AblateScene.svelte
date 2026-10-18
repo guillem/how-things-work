@@ -5,7 +5,7 @@
 	 * differs from the clean run are outlined, a line marks where the switched-off block sits (the
 	 * rows above it cannot change), and the card compares the final next-token guesses with and
 	 * without it. Phase `effects`: all 24 single-component runs as bars, the change in the answer's
-	 * probability for each, block 1 in grey (a zero-ablation artefact); a click picks a bar.
+	 * probability for each, block 1 in grey (a large effect on every prompt); a click picks a bar.
 	 *
 	 * Motion: the changed cells' outlines breathe (a function of t), the bars grow in over the
 	 * first two seconds; reduced motion shows the finished frame.
@@ -113,15 +113,17 @@
 			/>
 		{/if}
 
-		<rect
-			x={CARD.x}
-			y={CARD.y}
-			width={CARD.w}
-			height={CARD.h}
-			rx="8"
-			fill="var(--surface)"
-			stroke="var(--border)"
-		/>
+		<Readout id="card-bg">
+			<rect
+				x={CARD.x}
+				y={CARD.y}
+				width={CARD.w}
+				height={CARD.h}
+				rx="8"
+				fill="var(--surface)"
+				stroke="var(--border)"
+			/>
+		</Readout>
 		<Readout
 			id="changed"
 			order={1}
@@ -190,7 +192,7 @@
 			</Readout>
 		{/each}
 		{#if chosen.block === 1 && offC}
-			<Readout id="artefact" order={4} label="Block 1" value="a zero-ablation artefact">
+			<Readout id="artefact" order={4} label="Block 1" value="a large effect, whatever the prompt">
 				<Label
 					x={CARD.x + 16}
 					y={CARD.y + CARD.h - 12}
@@ -198,7 +200,7 @@
 					size={11}
 					muted
 					halo={false}
-					text="block 1 is special in GPT-2 small: later blocks rely on what it writes, so zeroing it changes most of the grid"
+					text="block 1 is special in GPT-2 small: zeroing it changes most of the grid, whatever the prompt"
 				/>
 			</Readout>
 		{/if}
@@ -299,7 +301,7 @@
 			id="grey-note"
 			order={3}
 			label="Block 1 (grey)"
-			value="hurts every prompt: a zero-ablation artefact"
+			value="hurts every prompt, whatever the task"
 		>
 			<Label
 				x={CHART.x + 4}

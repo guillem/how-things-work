@@ -1,10 +1,10 @@
 // Checks the residual-stream explainer's data against what is known of GPT-2 small: the lens after
 // the last block is the model's own output (and agrees with the transformers page's independent
-// run), the indirect-object sentence is answered " Mary" with block 10's attention (the name-mover
-// heads of Wang et al. 2022, their layer 9) pushing hardest towards it, the repeated phrase is
-// completed only after the induction heads' blocks, the early lens is a poor reader, and zero-
-// ablating block 1 wrecks every prompt while later blocks matter prompt by prompt. The numbers the narrative quotes are
-// checked here too.
+// run), the indirect-object sentence is answered " Mary" with block 10's attention (the layer of
+// Wang et al. 2022's name-mover heads, their layer 9) pushing hardest towards it, the repeated word
+// is copied from earlier in the prompt, the early lens is a poor reader, and zero-ablating block 1
+// wrecks every prompt while later blocks matter prompt by prompt. The numbers the narrative quotes
+// are checked here too.
 import { expect, test } from '@playwright/test';
 import {
 	answerAt,
@@ -66,9 +66,12 @@ test.describe('the logit lens', () => {
 		}
 	});
 
-	test('the answers settle late, the copied word only after the induction heads', () => {
-		// Induction heads of GPT-2 small sit in layers 5 and 6 (Olsson et al. 2022), blocks 6 and 7.
-		expect(settlesAt(prompt('fox'), last('fox'))).toBe(8);
+	test('the answers settle late; the repeated word is copied from earlier in the prompt', () => {
+		// After the first "brown" the model does not predict "fox"; after the second it does.
+		const fox = prompt('fox');
+		expect(finalAt(fox, 2)).not.toBe(' fox');
+		expect(finalAt(fox, last('fox'))).toBe(' fox');
+		expect(settlesAt(fox, last('fox'))).toBe(8);
 		expect(settlesAt(prompt('mary'), last('mary'))).toBe(10);
 		expect(settlesAt(prompt('count'), last('count'))).toBe(10);
 		expect(settlesAt(prompt('france'), last('france'))).toBe(12);
@@ -117,7 +120,7 @@ test.describe('the running vector', () => {
 });
 
 test.describe('switching a component off', () => {
-	test('switching off block 1’s attention wrecks every prompt (a zero-ablation artefact)', () => {
+	test('switching off block 1’s attention wrecks every prompt, whatever the task', () => {
 		for (const { id } of PROMPTS) {
 			const p = prompt(id);
 			expect(pAnswer(p, { block: 1, part: 'attn' })).toBeLessThan(0.05);

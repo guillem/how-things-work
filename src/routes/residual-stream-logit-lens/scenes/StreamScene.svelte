@@ -128,6 +128,9 @@
 			text="The last word, {word}: one vector through GPT-2 small’s 12 blocks"
 		/>
 	</Readout>
+	<Readout id="prompt" order={0.5} label="Prompt" value="“{p.text}”">
+		<Label x={944} y={30} anchor="end" size={12} muted text="“{p.text}”" />
+	</Readout>
 
 	<!-- ================= the tower ================= -->
 	<Readout id="len-key">
@@ -248,7 +251,12 @@
 	<!-- ================= the plane ================= -->
 	<line x1={PL.x0} y1={py(0)} x2={PL.x1} y2={py(0)} stroke="var(--stage-grid)" stroke-width="1.2" />
 	<line x1={px(0)} y1={PL.y0} x2={px(0)} y2={PL.y1} stroke="var(--stage-grid)" stroke-width="1.2" />
-	<Readout id="axis-x" order={3} label="Across" value="towards {q(answer)} (the final answer)">
+	<Readout
+		id="axis-x"
+		order={3}
+		label="Across"
+		value="projection on the direction of {q(answer)}, the final answer"
+	>
 		<Label
 			x={PL.x1 - 4}
 			y={py(0) + 18}
@@ -259,7 +267,12 @@
 			text="towards {q(answer)} →"
 		/>
 	</Readout>
-	<Readout id="axis-y" order={4} label="Up" value="towards {q(runner)} (the runner-up)">
+	<Readout
+		id="axis-y"
+		order={4}
+		label="Up"
+		value="projection on the direction of {q(runner)}, the runner-up (at right angles)"
+	>
 		<Label
 			x={px(0) + 8}
 			y={PL.y0 + 4}

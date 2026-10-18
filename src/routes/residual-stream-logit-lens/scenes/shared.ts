@@ -5,11 +5,13 @@ import { prompt, tokenLabel } from '../lens';
 export const promptOf = (params: Params) =>
 	prompt(typeof params.s === 'string' ? params.s : 'mary');
 
-/** A probability as a percentage: one decimal under 10%, none above; "<0.1%" for tiny ones. */
+/** A probability as a percentage: one decimal under 10% and above 99.5%, none between. */
 export function pct(p: number): string {
+	// Stored probabilities are rounded to thousandths: 0 and 1 mean "below 0.05%" and "above 99.95%".
 	const v = p * 100;
-	if (v > 0 && v < 0.1) return '<0.1%';
-	if (v >= 99.95 && p < 1) return '>99.9%';
+	if (v < 0.1) return '<0.1%';
+	if (v >= 99.95) return '>99.9%';
+	if (v >= 99.5 && p < 1) return `${v.toFixed(1)}%`;
 	return v < 10 ? `${v.toFixed(1)}%` : `${Math.round(v)}%`;
 }
 

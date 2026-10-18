@@ -71,7 +71,7 @@
 		/>
 	{/each}
 	<Readout id="grid-words">
-		<Label x={x - 12} y={y - 10} anchor="end" size={11} muted text="after the word" />
+		<Label x={x - 12} y={y - 10} anchor="end" size={11} muted text="after the token" />
 	</Readout>
 
 	{#each cells as row, r (r)}

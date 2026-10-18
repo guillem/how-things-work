@@ -209,7 +209,7 @@ A topic is done when:
 - [x] ngram-text-models
 - [x] tokenization
 - [x] positional-encoding
-- [ ] residual-stream-logit-lens
+- [x] residual-stream-logit-lens
 
 **Energy & Machines**
 - [x] heat-engines

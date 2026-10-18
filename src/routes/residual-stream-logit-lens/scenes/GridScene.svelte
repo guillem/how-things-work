@@ -60,7 +60,7 @@
 		weight={650}
 		text={phase === 'caveat'
 			? 'The early rows: a reader made for the last vector, used too early'
-			: 'The logit lens: the next-token guess after every block, for every word'}
+			: 'The logit lens: the next-token guess after every block, for every token'}
 	/>
 
 	{#if sweep >= 0 && sweep < ROWS}
@@ -92,15 +92,17 @@
 	/>
 
 	<!-- the card for the selected cell -->
-	<rect
-		x={CARD.x}
-		y={CARD.y}
-		width={CARD.w}
-		height={CARD.h}
-		rx="8"
-		fill="var(--surface)"
-		stroke="var(--border)"
-	/>
+	<Readout id="card-bg">
+		<rect
+			x={CARD.x}
+			y={CARD.y}
+			width={CARD.w}
+			height={CARD.h}
+			rx="8"
+			fill="var(--surface)"
+			stroke="var(--border)"
+		/>
+	</Readout>
 	<Readout
 		id="cell"
 		order={1}
@@ -164,7 +166,7 @@
 			halo={false}
 			text={phase === 'caveat'
 				? 'dimmed: the early rows, which the final layer norm and unembedding were never trained to read'
-				: 'bold: the model’s final guess after that word · fill: the guess’s probability'}
+				: 'bold: the model’s final guess after that token · fill: the guess’s probability'}
 		/>
 	</Readout>
 
