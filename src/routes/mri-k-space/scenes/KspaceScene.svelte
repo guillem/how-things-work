@@ -102,7 +102,7 @@
 		const reArr = Float64Array.from(k0.re);
 		const imArr = Float64Array.from(k0.im);
 		const i = (m + N / 2) * N + n + N / 2;
-		reArr[i] = 0.3 * k0.re[(N / 2) * N + N / 2];
+		reArr[i] = k0.re[(N / 2) * N + N / 2];
 		imArr[i] = 0;
 		return { ...k0, re: reArr, im: imArr };
 	}

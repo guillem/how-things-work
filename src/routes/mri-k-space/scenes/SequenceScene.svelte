@@ -32,7 +32,7 @@
 	// slice: the pulse (0–4 ms) over 3 s, then 2 s hold. phase: the lobe over 2 s, 2 s hold.
 	// readout: 1 s of prephasing, 6 s of sampling, 1 s hold. Reduced motion: a finished pulse,
 	// a full twist, the echo's centre.
-	const tt = $derived(reduced ? (mode === 'readout' ? 4 : 4.5) : t);
+	const tt = $derived(reduced ? (mode === 'readout' ? 4 : mode === 'phase' ? 3 : 4.5) : t);
 	const sliceU = $derived(Math.min(1, (tt % 5) / 3));
 	const phaseU = $derived(Math.min(1, (tt % 4) / 2));
 	const readT = $derived(tt % 8);
@@ -167,14 +167,19 @@
 	const thick = $derived(sliceThicknessMm(gz));
 	const z0 = $derived(slicePositionMm(gz, offset * 1000));
 	const zs = Array.from({ length: 121 }, (_, i) => -12 + i * 0.2);
-	const profile = $derived(zs.map((z) => tipAt(z, gz, offset * 1000)));
+	/** The zoomed chart is centred on the slice, to the nearest millimetre; zs are relative to it. */
+	const zc = $derived(Math.round(z0));
+	const profile = $derived(zs.map((z) => tipAt(zc + z, gz, offset * 1000)));
+	const zTicks = $derived(
+		Array.from({ length: 25 }, (_, i) => i - 12).filter((r) => (zc + r) % 5 === 0)
+	);
 	const pzx = scale([-12, 12], [570, 920]);
 	const pzy = scale([0, 1], [552, 462]);
 	const profilePath = $derived(
 		profile.map((v, i) => `${i ? 'L' : 'M'}${pzx(zs[i]).toFixed(1)} ${pzy(v).toFixed(1)}`).join(' ')
 	);
 	const SPIN_Z = Array.from({ length: 25 }, (_, i) => -12 + i);
-	const spinTips = $derived(SPIN_Z.map((z) => tipAt(z, gz, offset * 1000, sliceU)));
+	const spinTips = $derived(SPIN_Z.map((z) => tipAt(zc + z, gz, offset * 1000, sliceU)));
 	// the head from the side: 19 cm tall over 300 px
 	const HX = 210;
 	const HY = 330;
@@ -363,9 +368,9 @@
 			weight={600}
 		/>
 		<line x1={pzx(-12)} y1={pzy(0)} x2={pzx(12)} y2={pzy(0)} stroke="var(--stage-line)" />
-		{#each [-10, -5, 0, 5, 10] as z (z)}
+		{#each zTicks as z (z)}
 			<line x1={pzx(z)} y1={pzy(0)} x2={pzx(z)} y2={pzy(0) + 4} stroke="var(--stage-line)" />
-			<Label x={pzx(z)} y={pzy(0) + 18} text={String(z)} anchor="middle" size={11} muted />
+			<Label x={pzx(z)} y={pzy(0) + 18} text={String(zc + z)} anchor="middle" size={11} muted />
 		{/each}
 		<Label x={pzx(12)} y={pzy(0) + 34} text="height z (mm)" anchor="end" size={11} muted />
 		<path
