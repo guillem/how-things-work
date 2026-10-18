@@ -25,11 +25,13 @@ import {
 import {
 	byDigits,
 	byNines,
+	interventions,
 	NINES_CELLS,
 	PER_CELL
 } from '../src/routes/chain-of-thought-scratchpad/problems';
 import { results } from '../src/routes/chain-of-thought-scratchpad/results-data';
 import {
+	afterFlippedCarry,
 	check,
 	solve,
 	textOf,
@@ -105,7 +107,7 @@ test('runs of nines: the digits above a run depend on the column below it', () =
 			}
 });
 
-test('training problems have 1 to 8 digits, and the loss covers only what the model writes', () => {
+test('training problems have 1 to 8 digits, with filler targets over the question', () => {
 	const random = rng(9);
 	let long = 0;
 	for (let i = 0; i < 5000; i++) {
@@ -233,6 +235,19 @@ test('the scratchpad model’s own working is correct column arithmetic', () => 
 			carry = Number(w[2 * c + 1]);
 		}
 		expect(readAnswer('scratchpad', w)).toBe(a + b);
+	}
+});
+
+test('the scratchpad model uses the carries it wrote: flip one and the answer follows it', () => {
+	const m = model('scratchpad');
+	// the stored run of the intervention: every one of the 100 sums followed the flipped carry
+	expect(results.scratchpad.flipped).toEqual({ sums: 100, nextFollows: 100, answerFollows: 100 });
+	for (const [a, b, col] of interventions().slice(0, 8)) {
+		const out = afterFlippedCarry(m, a, b, col);
+		// the true carry out of column col (with whatever came in) flipped: the answer moves by it
+		const trueCarry = Math.floor(((a % 10 ** (col + 1)) + (b % 10 ** (col + 1))) / 10 ** (col + 1));
+		const shift = (trueCarry ? -1 : 1) * 10 ** (col + 1);
+		expect(readAnswer('scratchpad', out)).toBe(a + b + shift);
 	}
 });
 

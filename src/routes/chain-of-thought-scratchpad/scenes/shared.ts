@@ -17,7 +17,7 @@ export const NINES = 'nines';
 const presses = (v: unknown) => (typeof v === 'number' ? v : 0);
 
 /**
- * The sum the reader has posed: a preset, or a random 8-digit sum (any, or one with a run of 5 to
+ * The sum the reader has posed: a preset, or a random 8-digit sum (any, or one with a run of 2 to
  * 7 columns adding up to 9, with or without a carry coming into it), drawn from a seed that the
  * "another" button moves on.
  */
@@ -30,7 +30,7 @@ export function sumOf(p: Params): [number, number] {
 	}
 	if (v === NINES) {
 		const r = rng(5000 + n);
-		return withNines(TRAINED_DIGITS, 5 + Math.floor(r() * 3), r() < 0.5, r);
+		return withNines(TRAINED_DIGITS, 2 + Math.floor(r() * 6), r() < 0.5, r);
 	}
 	const m = /^(\d+)\+(\d+)$/.exec(v);
 	return m ? [Number(m[1]), Number(m[2])] : [457, 68];

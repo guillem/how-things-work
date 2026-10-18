@@ -37,6 +37,19 @@ export function byNines(): [number, number][][] {
 	});
 }
 
+/**
+ * The sums of the scratchpad intervention: 100 random 8-digit sums, each with a column (0 … 6)
+ * whose carry is flipped in the working (see `afterFlippedCarry` in solve.ts).
+ */
+export function interventions(): [number, number, number][] {
+	const random = rng(404);
+	return Array.from({ length: 100 }, () => [
+		randomOf(NINES_DIGITS, random),
+		randomOf(NINES_DIGITS, random),
+		Math.floor(random() * (NINES_DIGITS - 1))
+	]);
+}
+
 /** Every held-out problem within the trained lengths. */
 export const heldOut = (): [number, number][] => [
 	...byDigits().slice(0, NINES_DIGITS).flat(),

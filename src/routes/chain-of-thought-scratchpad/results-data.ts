@@ -180,7 +180,8 @@ export const results = {
 			wrongFar: 724,
 			digits: 37400,
 			far: 13609
-		}
+		},
+		flipped: null
 	},
 	scratchpad: {
 		mode: 'scratchpad',
@@ -350,7 +351,8 @@ export const results = {
 			[200, 200],
 			[200, 200]
 		],
-		errors: { answers: 3400, wrong: 0, wrongDigits: 0, wrongFar: 0, digits: 37400, far: 13609 }
+		errors: { answers: 3400, wrong: 0, wrongDigits: 0, wrongFar: 0, digits: 37400, far: 13609 },
+		flipped: { sums: 100, nextFollows: 100, answerFollows: 100 }
 	},
 	oneBlock: {
 		direct: {

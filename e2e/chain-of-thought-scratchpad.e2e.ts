@@ -39,16 +39,16 @@ test.describe('with reduced motion (complete transcripts)', () => {
 		await expect(another).toBeEnabled();
 		const title = stage(page).locator('text').first();
 		const first = await title.textContent();
-		await expect(stage(page)).toContainText(/longest run of nines: [5-7] columns/);
+		await expect(stage(page)).toContainText(/longest run of nines: [2-7] columns/);
 		await another.click();
 		await expect(title).not.toHaveText(first ?? '');
-		await expect(stage(page)).toContainText(/longest run of nines: [5-7] columns/);
+		await expect(stage(page)).toContainText(/longest run of nines: [2-7] columns/);
 	});
 
 	test('the charts: runs of nines, then the lengths beyond training', async ({ page }) => {
 		await page.goto('./chain-of-thought-scratchpad/#nines');
 		await expect(stage(page)).toContainText('Right answers on 8-digit sums, by run of nines');
-		await expect(stage(page)).toContainText('all 3,200 sums with a run of nines');
+		await expect(stage(page)).toContainText('all 3,200 sums of this chart');
 		await page.keyboard.press('ArrowRight');
 		await expect(stage(page)).toContainText('Right answers, by length of the numbers');
 		await expect(stage(page)).toContainText('beyond training');

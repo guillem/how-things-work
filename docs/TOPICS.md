@@ -217,7 +217,7 @@ A topic is done when:
 - [x] rlhf-alignment
 - [x] kv-cache-inference
 - [x] speculative-decoding
-- [ ] chain-of-thought-scratchpad
+- [x] chain-of-thought-scratchpad
 
 **Energy & Machines**
 - [x] heat-engines
@@ -1202,7 +1202,7 @@ A topic is done when:
 - **Level:** 3
 - **Kind:** step
 - **Interaction:** Two tiny transformers of the same size were trained by the project on 1- to 8-digit addition with the answer written most-significant digit first: one writes the answer straight away, the other first writes its working (each column's digit sum and carry). Pose sums and step through each model token by token, with the runs of columns adding up to 9 highlighted (such a column passes on whatever carry it gets, so the digit above it depends on columns further down): the direct model must settle that inside the one pass that writes the digit and errs there, while the scratchpad model reads the carry it just wrote back in. An accuracy chart by number of digits and by longest run of nines (with and without a carry coming in) compares the two, with 9 and 10 digits shown as beyond training, where both fail.
-- **Takeaway:** A transformer does a fixed amount of computation per token, so writing intermediate steps gives the same model more computation and a place to keep partial results, and it then solves carry-heavy sums the direct model gets wrong.
+- **Takeaway:** A transformer runs the same fixed stack of layers for every token, so writing intermediate steps gives the same model more computation and a place to keep partial results, and it then solves carry-heavy sums the direct model gets wrong.
 - **Prerequisites:** training-a-tiny-language-model, transformers
 - **Related:** turing-machines
 - **Needs:** Two tiny transformers trained offline by the project on generated addition problems (with and without a scratchpad), shipped and run in the page; the weights are the project's own, under the site's MIT licence.

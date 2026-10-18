@@ -47,6 +47,27 @@ export function solve(model: TinyGPT, mode: Mode, a: number, b: number): Written
 
 export const textOf = (w: Written[]) => w.map((x) => x.char).join('');
 
+/**
+ * An intervention on the scratchpad: the right working up to column `col`'s digit, then the
+ * opposite of that column's true carry, and the model writes the rest itself (greedy). Returns
+ * what it writes after the flipped carry: the next column's digit first, the answer after `>`.
+ */
+export function afterFlippedCarry(model: TinyGPT, a: number, b: number, col: number): string {
+	const work = completionOf('scratchpad', a, b);
+	const flipped = work[2 * col + 1] === '1' ? '0' : '1';
+	const context = encode(questionOf(a, b) + work.slice(0, 2 * col + 1) + flipped);
+	let out = '';
+	for (let i = 0; i < lengthOf('scratchpad'); i++) {
+		const p = model.next(context);
+		let best = 0;
+		for (let v = 1; v < p.length; v++) if (p[v] > p[best]) best = v;
+		out += CHARS[best];
+		context.push(best);
+		if (best === END) break;
+	}
+	return out;
+}
+
 /** How a model did on one problem. */
 export interface Outcome {
 	/** The answer it wrote is the sum. */

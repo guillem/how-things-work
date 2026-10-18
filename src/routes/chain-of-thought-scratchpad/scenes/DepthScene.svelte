@@ -315,7 +315,7 @@
 				id="note-s"
 				order={3}
 				label="Scratchpad"
-				value="each pass does one column and reads back the carry it wrote"
+				value="two passes per column, digit then carry; each carry it wrote is read back in"
 			>
 				<Label
 					x={60}
@@ -338,7 +338,7 @@
 					y={546}
 					anchor="start"
 					size={12}
-					text="pass's input (pink), so a carry travels up the columns one pass at a time instead of all at once."
+					text="pass's input (pink), so the working moves up one column every two passes instead of all at once."
 				/>
 			</Readout>
 		{/if}

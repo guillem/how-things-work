@@ -32,8 +32,8 @@ export const ANSWER = 12;
 export const END = 13;
 /**
  * The training target at every position of the question (the two numbers): there is nothing to
- * learn there (the numbers are random), so the loss asks for this constant and the model only
- * learns to write the working and the answer. Never an input.
+ * predict there (the numbers are random), so training asks for this constant instead, which the
+ * model learns at once; these positions stay in the loss, at almost zero. Never an input.
  */
 export const FILLER = 14;
 
@@ -134,7 +134,7 @@ export const encode = (s: string) => Array.from(s, (c) => CHARS.indexOf(c));
 
 /**
  * Inputs and targets of one training sequence: the targets are the next characters, except over
- * the question, where they are the constant FILLER (the loss is only about the completion).
+ * the question, where they are the constant FILLER.
  */
 export function example(mode: Mode, a: number, b: number) {
 	const codes = encode(sequenceOf(mode, a, b));

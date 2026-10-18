@@ -126,7 +126,7 @@
 	const s = results.scratchpad;
 	const show = (v: number) => pct(v);
 	const ninesNote = (mode: Mode) =>
-		`runs of nines: ${show(ninesTotal(mode))} right; 3 nines, no carry in: ${show(ninesShare(mode, 3, false))}`;
+		`all 3,200 sums: ${show(ninesTotal(mode))} right; 3 nines, no carry in: ${show(ninesShare(mode, 3, false))}`;
 </script>
 
 <g>
@@ -140,7 +140,9 @@
 			anchor="start"
 			size={11}
 			muted
-			text="200 held-out sums per point, never seen in training; greedy decoding, as on the page"
+			text={phase === 'learning'
+				? '3,400 held-out sums per point; every character written exactly right, greedy decoding'
+				: '200 held-out sums per point, never seen in training; greedy decoding, as on the page'}
 		/>
 	</Readout>
 
@@ -231,7 +233,7 @@
 						anchor="start"
 						size={11}
 						muted
-						text="all 3,200 sums with a run of nines:"
+						text="all 3,200 sums of this chart:"
 					/>
 					<Label
 						x={680}

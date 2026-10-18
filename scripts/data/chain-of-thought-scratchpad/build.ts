@@ -18,8 +18,17 @@
 import { execFileSync } from 'node:child_process';
 import { readFileSync, writeFileSync } from 'node:fs';
 import { columns, type Mode } from '../../../src/routes/chain-of-thought-scratchpad/addition.ts';
-import { byDigits, byNines } from '../../../src/routes/chain-of-thought-scratchpad/problems.ts';
-import { check, solve, textOf } from '../../../src/routes/chain-of-thought-scratchpad/solve.ts';
+import {
+	byDigits,
+	byNines,
+	interventions
+} from '../../../src/routes/chain-of-thought-scratchpad/problems.ts';
+import {
+	afterFlippedCarry,
+	check,
+	solve,
+	textOf
+} from '../../../src/routes/chain-of-thought-scratchpad/solve.ts';
 import {
 	packWeights,
 	unpackWeights
@@ -90,6 +99,26 @@ function whereWrong(model: TinyGPT, mode: Mode, problems: [number, number][]) {
 	return r;
 }
 
+/**
+ * The scratchpad intervention (problems.ts `interventions`): flip one carry in the working and
+ * let the model go on. Counts the sums where the next column's digit follows the flipped carry,
+ * and where the final answer is off from the true sum by exactly that carry.
+ */
+function flipCarries(model: TinyGPT) {
+	const r = { sums: 0, nextFollows: 0, answerFollows: 0 };
+	for (const [a, b, col] of interventions()) {
+		r.sums++;
+		const out = afterFlippedCarry(model, a, b, col);
+		const cols = columns(a, b);
+		const flipped = 1 - cols[col].carryOut;
+		if (Number(out[0]) === (cols[col + 1].a + cols[col + 1].b + flipped) % 10) r.nextFollows++;
+		const start = out.indexOf('>') + 1;
+		const shift = (flipped ? 1 : -1) * 10 ** (col + 1);
+		if (start > 0 && Number(out.slice(start, start + 11)) === a + b + shift) r.answerFollows++;
+	}
+	return r;
+}
+
 function measure(run: RunFile) {
 	const packed = packWeights(run.weights);
 	const model = new TinyGPT(run.config, unpackWeights(packed), 50);
@@ -112,13 +141,14 @@ function measure(run: RunFile) {
 		byDigits: tally(digits),
 		byNines: tally(ninesCells),
 		errors: whereWrong(model, run.mode, [...digits[7], ...ninesCells.flat()]),
+		flipped: run.mode === 'scratchpad' ? flipCarries(model) : null,
 		weights: packed
 	};
 	console.log(run.mode, `${((performance.now() - t0) / 1000).toFixed(0)} s`);
 	console.log('  digits', result.byDigits.map(([a]) => a).join(' '));
 	console.log('  nines ', result.byNines.map(([a]) => a).join(' '));
 	console.log('  exact ', result.byNines.map(([, e]) => e).join(' '));
-	console.log('  errors', result.errors);
+	console.log('  errors', result.errors, 'flipped', result.flipped);
 	return result;
 }
 
