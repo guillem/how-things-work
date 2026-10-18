@@ -1,6 +1,6 @@
 # Topic catalog
 
-Source of truth for the content of an interactive web learning tool that shows how things work. It defines 147 topics in 11 categories, each built around one interactive graphic. Readers range from high-school students to university majors.
+Source of truth for the content of an interactive web learning tool that shows how things work. It defines 148 topics in 11 categories, each built around one interactive graphic. Readers range from high-school students to university majors.
 
 This file covers content only. It does not choose the stack, the visual design or the project layout; take those from the repository's own instructions.
 
@@ -88,7 +88,7 @@ A topic is done when:
 | Biology | `biology` | 16 |
 | Body & Medicine | `medicine` | 14 |
 | Earth & Climate | `earth` | 13 |
-| Space | `space` | 10 |
+| Space | `space` | 11 |
 | Computing | `computing` | 11 |
 | Information & Networks | `networks` | 9 |
 | Artificial Intelligence | `ai` | 19 |
@@ -207,6 +207,7 @@ A topic is done when:
 - [x] big-bang
 - [x] exoplanets
 - [x] lagrange-points-three-body
+- [ ] aperture-synthesis
 
 **Computing**
 - [x] binary
@@ -935,6 +936,7 @@ A topic is done when:
 - **Interaction:** Rotate an X-ray source around a simple body and record its shadow at each angle, then watch the cross-section emerge as the projections are combined. Change the number of angles, toggle the filtering step that sharpens the result, and compare with a plain X-ray of the same body. Close with how ultrasound and MRI build images by other means.
 - **Takeaway:** A CT scanner never sees a slice directly; it measures many shadows and computes the image that explains them all.
 - **Prerequisites:** fourier-transform
+- **Related:** aperture-synthesis
 
 #### cerebellum-motor-learning
 - **Title:** The cerebellum & motor learning
@@ -1169,7 +1171,7 @@ A topic is done when:
 - **Interaction:** Fire light rays and probes past a black hole and watch their paths bend, loop or cross the horizon. Lower a clock toward the horizon and compare its ticking with a distant one; place a star field behind the hole to see gravitational lensing.
 - **Takeaway:** Gravity is the curvature of spacetime, and a black hole is a region where that curvature turns every path, even light's, inward.
 - **Prerequisites:** special-relativity, orbits-kepler
-- **Related:** stars, dark-matter, gps
+- **Related:** stars, dark-matter, gps, aperture-synthesis
 - **Pitfall:** A black hole does not suck things in; from far away, objects orbit it as they would any body of the same mass.
 
 #### gravitational-waves
@@ -1179,6 +1181,7 @@ A topic is done when:
 - **Interaction:** Set the masses of two black holes and let them spiral together; ripples spread outward while the signal's frequency and amplitude climb into a chirp that can be played as sound. A laser interferometer's arms stretch and squeeze as the wave passes, with the true size of the change shown to scale.
 - **Takeaway:** Accelerating masses send out ripples in spacetime, and detecting them means measuring a change in length far smaller than a proton.
 - **Prerequisites:** black-holes, waves-interference
+- **Related:** aperture-synthesis
 
 #### dark-matter
 - **Title:** Galaxies & dark matter
@@ -1218,6 +1221,17 @@ A topic is done when:
 - **Prerequisites:** orbits-kepler
 - **Related:** rockets, chaos-fractals
 - **Pitfall:** L1 and L2 are not places where gravity cancels. A spacecraft there circles the Sun in exactly one Earth year because the combined pull (Earth's pull partly offsets the Sun's at L1 and adds to it at L2) is exactly what that orbit needs, and it still needs station-keeping. The general three-body problem is not 'unsolvable': Sundman found a convergent series, but no closed formula and no long-term predictability.
+
+#### aperture-synthesis
+- **Title:** Interferometry & aperture synthesis
+- **Level:** 3
+- **Kind:** build
+- **Interaction:** Place radio dishes on a map and pick a model sky; every pair of dishes samples the sky's Fourier transform at one point and its mirror image, and as the Earth turns each pair traces a pair of arcs in the uv plane. Watch the dirty beam and the dirty image form from whatever the array has sampled: two dishes see only stripes, a dozen over six hours see the source. Run CLEAN step by step, subtracting the beam from the brightest point until the image emerges, and compare it with the truth; shrink the array to lose resolution, spread it to lose the extended emission.
+- **Takeaway:** An array of small telescopes can see as sharply as one dish as wide as the array, because what it measures is the sky's Fourier transform, and the Earth's rotation fills in the gaps.
+- **Prerequisites:** fourier-transform, waves-interference, light-optics
+- **Related:** medical-imaging, black-holes, gravitational-waves
+- **Needs:** No external data required: model skies (point sources, a disc, a jet) are generated in code and the model is a 2D FFT plus Hogbom CLEAN. Optional real array layouts (VLA Y with 120-degree arms; ALMA configurations from the CASA simulator's antenna-configuration files, CASA being open source under the GPL), or the coordinates published in open-access papers.
+- **Pitfall:** An interferometer does not gain the collecting area of a filled dish, only its resolution, and the dirty image is not a photograph of the sky but of what was sampled.
 
 ### Computing
 
@@ -1699,7 +1713,6 @@ Strong candidates that are not in the catalog. Do not build them unless the user
 
 - Fluid dynamics
 - DNA sequencing
-- Telescopes
 - Operating systems
 - Compilers
 - Cellular automata
