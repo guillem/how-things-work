@@ -56,6 +56,23 @@ test('a wider model ends lower, and its weights are counted', async ({ page }) =
 	await expect(stage(page)).toContainText('held-out text: 1.85');
 });
 
+test('the chart grows to fit the most overfitted run', async ({ page }) => {
+	await page.goto('./training-a-tiny-language-model/#compare');
+	await choose(page, 'width', '64');
+	await choose(page, 'context', '64');
+	await choose(page, 'data', '10k');
+	await expect(stage(page)).toContainText('held-out text: 7.37');
+	// every point of both curves lies inside the stage
+	const box = await page.locator('.stage svg').boundingBox();
+	const paths = stage(page).locator('path[stroke-width="2.5"]');
+	await expect(paths).toHaveCount(2);
+	for (const b of await paths.evaluateAll((els) =>
+		els.map((e) => e.getBoundingClientRect()).map((r) => ({ top: r.top, bottom: r.bottom }))
+	)) {
+		expect(b.top).toBeGreaterThanOrEqual(box?.y ?? 0);
+	}
+});
+
 test('with 10,000 characters the model memorises', async ({ page }) => {
 	await page.goto('./training-a-tiny-language-model/#overfit');
 	await expect(stage(page)).toContainText('10,000 characters');

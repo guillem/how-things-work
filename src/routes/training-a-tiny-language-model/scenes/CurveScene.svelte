@@ -154,13 +154,23 @@
 
 	// ---- chart
 	const CH = { x: 84, y: 64, w: 480, h: 424 };
-	const yMax = Tween.of(() => (phase === 'overfit' || phase === 'compare' ? 5.5 : 4.5), {
-		duration: 700,
-		easing: cubicInOut
-	});
+	/** The axis reaches past the highest loss of the run shown, in whole nats (at least 4.5). */
+	const top = $derived(
+		Math.max(
+			4.5,
+			Math.ceil(Math.max(...run.points.map((p) => Math.max(p.train, p.val)), base.points[0].val))
+		)
+	);
+	const yMax = Tween.of(
+		() => (phase === 'overfit' || phase === 'compare' ? Math.max(5.5, top) : top),
+		{
+			duration: 700,
+			easing: cubicInOut
+		}
+	);
 	const sx = scale([0, STEPS], [CH.x, CH.x + CH.w]);
 	const sy = $derived(scale([0, yMax.current], [CH.y + CH.h, CH.y]));
-	const yTicks = $derived(yMax.current > 5 ? [0, 1, 2, 3, 4, 5] : [0, 1, 2, 3, 4]);
+	const yTicks = $derived(Array.from({ length: Math.floor(yMax.current) + 1 }, (_, i) => i));
 	const trainPath = $derived(
 		linePath(
 			shown,

@@ -210,7 +210,7 @@ A topic is done when:
 - [x] tokenization
 - [x] positional-encoding
 - [x] residual-stream-logit-lens
-- [ ] training-a-tiny-language-model
+- [x] training-a-tiny-language-model
 
 **Energy & Machines**
 - [x] heat-engines

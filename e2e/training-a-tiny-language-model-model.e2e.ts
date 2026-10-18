@@ -124,6 +124,18 @@ test('the Kneser–Ney baselines are distributions over the alphabet', () => {
 	}
 });
 
+test('the Kneser–Ney discount keeps a probability for every character even with no single counts', () => {
+	// every bigram of this text occurs at least twice: Ney's estimate of the discount would be 0
+	const m = new KneserNey([0, 0, 1, 1, 0, 1, 0, 0, 1, 1, 0, 1], 2, 3);
+	let sum = 0;
+	for (let c = 0; c < 3; c++) {
+		const q = m.prob([0], 1, c);
+		expect(q).toBeGreaterThan(0);
+		sum += q;
+	}
+	expect(sum).toBeCloseTo(1, 10);
+});
+
 test('a longer smoothed n-gram scores lower on the held-out text, given enough data', () => {
 	const at = targets(val.length);
 	const ce = [2, 3, 5].map((n) => new KneserNey(train, n, 65).crossEntropy(val, at));

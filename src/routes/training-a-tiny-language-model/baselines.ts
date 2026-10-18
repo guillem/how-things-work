@@ -68,7 +68,9 @@ export class KneserNey {
 				if (c === 1) n1++;
 				else if (c === 2) n2++;
 			}
-			const D = n1 + 2 * n2 > 0 ? n1 / (n1 + 2 * n2) : 0.5;
+			// Ney's estimate; with no k-gram seen exactly once it would be 0 and leave the lower
+			// orders no probability, so a fixed 0.5 stands in
+			const D = n1 > 0 ? n1 / (n1 + 2 * n2) : 0.5;
 			this.orders.push({ gram, total, types, D });
 		}
 	}

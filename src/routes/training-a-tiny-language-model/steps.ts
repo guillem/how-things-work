@@ -67,9 +67,9 @@ const width: Control = {
 	label: 'Width (numbers per character)',
 	default: '32',
 	options: [
-		{ value: '16', label: '16 (9,249 weights)' },
-		{ value: '32', label: '32 (30,721 weights)' },
-		{ value: '64', label: '64 (110,529 weights)' }
+		{ value: '16', label: '16' },
+		{ value: '32', label: '32' },
+		{ value: '64', label: '64' }
 	]
 };
 
@@ -138,7 +138,7 @@ export const spec: ExplainerSpec = {
 <p>The <a href="../ngram-text-models/">n-gram page</a> counted which character followed the last few in ${TINY}. This page trains a model to make the same guess: a small <a href="../transformers/">transformer</a> with two blocks and 30,721 weights, which reads up to 32 characters and gives each of the 65 characters of the text a probability of coming next.</p>
 <p>The stage shows a ${HELD_OUT} line, one the model never trains on, read the way the model reads it: at each character, the probability the model had given it before seeing it, from the characters before it. Before training the weights are small random numbers, and every guess is close to 1/65, about 1.5%.</p>
 <p>Move the slider to see the same model after 100 to 3,000 steps of training, and click a character to see its four best guesses there. After “BAPTISTA:” the trained model is sure a line break comes next: names of speakers end that way.</p>`,
-			notes: `<p>Characters, not words or <a href="../tokenization/">tokens</a>, keep the vocabulary at 65 symbols (upper- and lower-case letters, punctuation, the space, the line break, and a stray 3, $ and &), so the read-out layer stays small. Real language models predict tokens of a few characters each, from a vocabulary of 50,000 or more; the training is the same.</p>`
+			notes: `<p>Here each character is one <a href="../tokenization/">token</a>, which keeps the vocabulary at 65 symbols (upper- and lower-case letters, punctuation, the space, the line break, and a stray 3, $ and &) and the read-out layer small. Most large language models predict subword tokens instead, from vocabularies of tens of thousands of symbols or more; the training is the same.</p>`
 		},
 		{
 			id: 'surprise',
@@ -150,7 +150,7 @@ export const spec: ExplainerSpec = {
 			controls: [ckpt, pos],
 			body: `
 <p>Score each guess by its surprise, −ln p, where p is the probability the model gave to the character that really came: 0 if it was certain and right, ln 65 = 4.17 nats for a uniform guess, more for a character it thought unlikely. The bars are the surprises along the line. Their mean is the line's ${CE}, in nats per character, and it is the one number training lowers, averaged over the training text instead of one line.</p>
-<p>The ${PPL} is e to that mean: untrained it is 65, as if the model picked among 65 equally likely characters; trained, it is down to a handful. It is only comparable between models that cut text into the same symbols and are measured on the same text: a character's perplexity and a word's or a token's are in different units, since a token holds several characters.</p>`,
+<p>The ${PPL} is e to that mean: untrained it is 65, as if the model picked among 65 equally likely characters; trained, it is down to a handful. It is only comparable between models that cut text into the same symbols and are measured on the same text: a character's perplexity and a word's or a token's are in different units, because the thing being predicted differs.</p>`,
 			notes: `<p>Divide nats by ln 2 = 0.693 to get bits: an average surprise of 1.9 nats is 2.7 bits per character, a figure that compression programs can be compared with. The <a href="../compression/">compression</a> page explains why the average surprise is a bound on the bits a coder needs.</p>`
 		},
 		// ------------------------------------------------------------------ train
@@ -176,7 +176,7 @@ export const spec: ExplainerSpec = {
 			body: `
 <p>Every 100 steps the run measured its average surprise on fixed stretches of text: 8,192 characters of the training text (orange) and 8,192 held-out ones (blue). Both start at 4.17, the uniform guess. In the first hundred steps they fall fast, as the model learns how common each character is and which tends to follow which; then slower, as it starts to use the characters further back.</p>
 <p>The dashed lines are what counting gets: ${KN} bigram and trigram models counted from the same training text and scored on the same held-out characters, 2.49 and 2.09 nats. The model passes the bigram at about step 150 and the trigram at about step 1,000, and ends at 1.93 nats, a perplexity of 6.9: on average, as unsure as a choice among seven characters. It is not the end of the road: a smoothed 5-gram scores 1.66 on the same characters, and nanoGPT's 10.7-million-weight character model reaches about 1.47 on this split.</p>`,
-			notes: `<p>The orange and blue curves stay close here because the model has far fewer weights than the training text has characters, and it sees each stretch only about three times; the last chapter breaks that. The model's first characters in each window have little to go on (the first has none), which costs it a little against the n-grams, which always see their full window. The training loss of each batch is noisier than these curves, which are measured on the same stretches every time.</p>`
+			notes: `<p>The orange and blue curves stay close here because the model has far fewer weights than the training text has characters, and it sees each stretch only about three times; the last chapter breaks that. The first characters the model predicts in each window have little to go on (the first has just one character before it), which costs it a little against the n-grams, which always see their full window. The training loss of each batch is noisier than these curves, which are measured on the same stretches every time.</p>`
 		},
 		{
 			id: 'samples',
@@ -227,7 +227,7 @@ export const spec: ExplainerSpec = {
 			duration: 36,
 			controls: [odata],
 			body: `
-<p>Now the model learns from the first 10,000 characters only, a few speeches of <i>Coriolanus</i>, for the same 3,000 steps: it reads each of them about 300 times. For a hundred steps both curves fall together. Then they split. The held-out loss is lowest at step 100, at 2.76, and climbs to 5.30, worse than a uniform guess, while the training loss keeps falling, to 0.62. The model is memorising the text instead of learning what text like it looks like: in its sample, the bold run is the longest stretch found word for word in those 10,000 characters. The 64-wide model, with more weights to memorise with, goes further: 0.27 on its training text, 6.57 on held-out text.</p>
+<p>Now the model learns from the first 10,000 characters only, a few speeches of <i>Coriolanus</i>, for the same 3,000 steps: it reads each of them about 300 times. For a hundred steps both curves fall together. Then they split. The held-out loss is lowest at step 100, at 2.76, and climbs to 5.30, worse than a uniform guess, while the training loss keeps falling, to 0.62. The model is memorising the text instead of learning what text like it looks like: in its sample, the bold run is the longest stretch found word for word in those 10,000 characters. The 64-wide model, with more weights to memorise with, goes further: 0.27 on its training text, 6.57 on held-out text. With a context of 64 as well (try it on the previous step), its sample is a run of 142 characters copied word for word from the play.</p>
 <p>A training loss near zero is not success: the held-out curve is the one that measures the model. That is the takeaway of the page. Training a language model is gradient descent on one number, the average surprise at the next character; as it falls on text the model has never read, the samples go from random letters to spelling to words and the shape of a play.</p>`,
 			notes: `<p>The usual remedies: more text, a smaller model, stopping at the lowest held-out loss, dropout (switching off random parts of the network during training) or stronger weight decay. Large language models are trained on so much text that they see most of it once or a few times, and their training and held-out curves stay together.</p>`
 		}
