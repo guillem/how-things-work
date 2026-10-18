@@ -154,9 +154,9 @@ export function pAnswer(p: PromptData, off: Component | null = null): number {
 }
 
 /** Every component, in the order the stream meets them: block 1 attention, block 1 MLP, … */
-export const COMPONENTS: Component[] = Array.from({ length: BLOCKS }, (_, l) => [
-	{ block: l + 1, part: 'attn' as Part },
-	{ block: l + 1, part: 'mlp' as Part }
+export const COMPONENTS: Component[] = Array.from({ length: BLOCKS }, (_, l): Component[] => [
+	{ block: l + 1, part: 'attn' },
+	{ block: l + 1, part: 'mlp' }
 ]).flat();
 
 /** Every single-component ablation's effect on the answer, in stream order. */

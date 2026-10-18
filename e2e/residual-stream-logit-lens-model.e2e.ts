@@ -22,8 +22,15 @@ import {
 	words
 } from '../src/routes/residual-stream-logit-lens/lens';
 import { data as attentionData } from '../src/routes/transformers/gpt2-data';
+import { PROMPT_MENU } from '../src/routes/residual-stream-logit-lens/steps';
 
 const last = (id: string) => words(prompt(id)).length - 1;
+
+test('the narrative’s prompt menu matches the data', () => {
+	expect(PROMPT_MENU.map((m) => [m.id, m.n])).toEqual(
+		PROMPTS.map(({ id }) => [id, words(prompt(id)).length])
+	);
+});
 
 test.describe('the logit lens', () => {
 	test('after the last block, the lens is the model’s own prediction', () => {

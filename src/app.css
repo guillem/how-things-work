@@ -3252,3 +3252,30 @@ kbd {
 	--pe-rope: #ff922b;
 	--pe-sin: #74c0fc;
 }
+
+/* residual-stream-logit-lens: the stream, attention and MLP outputs, the lens cells, the final
+   answer, changed cells, the sweep band, block 1's grey bars */
+:root {
+	--rs-stream: #7048e8;
+	--rs-attn: #e8590c;
+	--rs-mlp: #2b8a3e;
+	--rs-cell: #4263eb;
+	--rs-answer: #1c3faa;
+	--rs-changed: #e03131;
+	--rs-sweep: #fff3bf;
+	--rs-grey: #adb5bd;
+	--rs-attn-box: #e8590c;
+	--rs-mlp-box: #2b8a3e;
+}
+:root[data-theme='dark'] {
+	--rs-stream: #b197fc;
+	--rs-attn: #ff922b;
+	--rs-mlp: #51cf66;
+	--rs-cell: #748ffc;
+	--rs-answer: #91a7ff;
+	--rs-changed: #ff6b6b;
+	--rs-sweep: #3b3418;
+	--rs-grey: #6c757d;
+	--rs-attn-box: #d9480f;
+	--rs-mlp-box: #2f9e44;
+}

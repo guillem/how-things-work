@@ -960,6 +960,15 @@ const explainers: Explainer[] = [
 		accent: '#d9480f',
 		steps: 7,
 		minutes: 15
+	},
+	{
+		slug: 'residual-stream-logit-lens',
+		title: 'Inside a transformer block: the residual stream',
+		summary:
+			'Follow one word’s vector down GPT-2 small’s twelve blocks: each attention and each MLP adds a correction to one running vector. Read that vector after every block with the logit lens and watch the next word appear and sharpen; switch off any block’s attention or MLP and see which guesses change.',
+		accent: '#7048e8',
+		steps: 7,
+		minutes: 16
 	}
 ];
 

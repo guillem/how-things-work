@@ -60,6 +60,7 @@ import warnings
 
 import numpy as np
 
+sys.dont_write_bytecode = True  # no __pycache__ next to gpt2.py in the repository
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, os.path.join(HERE, '..', 'language-models'))
 from gpt2 import BOS, REVISION, SHA256, Tokenizer  # noqa: E402

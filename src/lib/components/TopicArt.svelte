@@ -2943,6 +2943,48 @@
 			opacity="0.6"
 		/>
 		<line x1="126" y1="6" x2="126" y2="114" stroke={accent} stroke-width="2" />
+	{:else if slug === 'residual-stream-logit-lens'}
+		<!-- the residual stream: one line, corrections added at each block; a lens grid that sharpens -->
+		<line x1="30" y1="8" x2="30" y2="112" stroke={accent} stroke-width="4" stroke-linecap="round" />
+		{#each [18, 34, 50, 66, 82, 98] as y, i (y)}
+			<path
+				d="M30 {y - 5}H52V{y + 3}H36"
+				fill="none"
+				stroke={i % 2 ? 'var(--rs-mlp)' : 'var(--rs-attn)'}
+				stroke-width="2"
+			/>
+			<circle
+				cx="30"
+				cy={y + 3}
+				r="3.2"
+				fill="var(--surface)"
+				stroke="currentColor"
+				stroke-width="1.2"
+			/>
+		{/each}
+		{#each [0, 1, 2, 3, 4, 5] as r (r)}
+			{#each [0, 1, 2, 3, 4] as c (c)}
+				<rect
+					x={78 + c * 22}
+					y={10 + r * 17}
+					width="19"
+					height="14"
+					rx="2.5"
+					fill="var(--rs-cell)"
+					fill-opacity={c === 4 ? 0.1 + r * 0.16 : 0.08 + ((r * 7 + c * 3) % 5) * 0.05}
+				/>
+			{/each}
+		{/each}
+		<rect
+			x="166"
+			y="95"
+			width="19"
+			height="14"
+			rx="2.5"
+			fill="none"
+			stroke="currentColor"
+			stroke-width="1.4"
+		/>
 	{:else if slug === 'stars'}
 		<!-- a massive star cut open: onion layers round an iron core, and a track on the HR diagram -->
 		<circle cx="62" cy="60" r="44" fill="var(--st-h)" />
