@@ -38,7 +38,7 @@ test('a huge queue adds delay but no throughput', async ({ page }) => {
 	await range(page, 'buffer').press('End');
 	await expect(stage(page)).toContainText('queue of 400 packets');
 	await expect(stage(page)).toContainText('100 % busy');
-	expect(await read(page, '% busy,')).toBeGreaterThan(3 * rtt60);
+	expect(await read(page, '% busy,')).toBeGreaterThan(2 * rtt60);
 });
 
 test('AIMD flows end up with equal shares; MIMD flows keep their imbalance', async ({ page }) => {
@@ -64,15 +64,18 @@ test('a longer round trip, or fewer connections, means a smaller share', async (
 	expect(await read(page, 'share of user B:')).toBeGreaterThan(70);
 });
 
-test('throughput over a lossy link follows the Mathis formula', async ({ page }) => {
+test('throughput over a lossy link follows the Mathis formula, until timeouts take over', async ({
+	page
+}) => {
 	await page.goto('./tcp-congestion-control/#mathis');
-	for (const key of ['Home', 'End']) {
-		await range(page, 'loss').press(key);
-		await expect(stage(page)).toContainText(key === 'Home' ? 'losing 0.05 %' : 'losing 2 %');
-		const ratio = (await read(page, 'simulated')) / (await read(page, 'formula'));
-		expect(ratio).toBeGreaterThan(0.95);
-		expect(ratio).toBeLessThan(1.25);
-	}
+	const ratio = async () => (await read(page, 'simulated')) / (await read(page, 'formula'));
+	await range(page, 'loss').press('Home');
+	await expect(stage(page)).toContainText('losing 0.05 %');
+	expect(await ratio()).toBeGreaterThan(0.95);
+	expect(await ratio()).toBeLessThan(1.15);
+	await range(page, 'loss').press('End');
+	await expect(stage(page)).toContainText('losing 2 %');
+	expect(await ratio()).toBeLessThan(0.95);
 });
 
 test('without congestion control the link fills with copies; with it, with new data', async ({

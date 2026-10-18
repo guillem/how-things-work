@@ -200,7 +200,7 @@ A topic is done when:
 - [x] gps
 - [x] pagerank
 - [x] consensus-blockchains
-- [ ] tcp-congestion-control
+- [x] tcp-congestion-control
 
 **Artificial Intelligence**
 - [x] learning-from-data

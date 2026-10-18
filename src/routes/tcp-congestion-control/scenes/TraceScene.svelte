@@ -124,7 +124,7 @@
 	</Readout>
 
 	<!-- window -->
-	<Axes {sx} sy={syW} xTicks={[]} yTicks={[0, 60, full].filter((v, i, a) => a.indexOf(v) === i)} />
+	<Axes {sx} sy={syW} xTicks={[]} yTicks={Math.abs(full - 60) < 20 ? [0, full] : [0, 60, full]} />
 	<line
 		x1={X0}
 		x2={X1}
@@ -195,13 +195,13 @@
 		id="d"
 		order={3}
 		label="Round trip"
-		value="{fmt(BASE_RTT * 1000 + last.queue)} ms"
+		value="{fmt(last.rtt[0] * 1000)} ms"
 		color="var(--tcp-queue)"
 	>
 		<Label
 			x={VX}
 			y={syD(last.queue) + 4}
-			text="RTT {fmt(BASE_RTT * 1000 + last.queue)} ms"
+			text="RTT {fmt(last.rtt[0] * 1000)} ms"
 			size={12}
 			anchor="start"
 			weight={600}
@@ -312,7 +312,7 @@
 			>
 				<Label
 					x={bx(ix) + (ix > 5 ? -12 : 12)}
-					y={syU(sweep[ix].utilisation * 100) + (sweep[ix].utilisation > 0.95 ? 18 : -10)}
+					y={syU(sweep[ix].utilisation * 100) + 22}
 					text="{fmt(sweep[ix].utilisation * 100)} % busy, {fmt(sweep[ix].rtt * 1000)} ms"
 					size={12}
 					weight={600}

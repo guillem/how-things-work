@@ -45,6 +45,7 @@
 	/** Shares of the link's capacity: new data, and new data plus copies. */
 	const useful = $derived(cur.goodput / LINK_RATE);
 	const busy = $derived(cur.throughput / LINK_RATE);
+	const copies = $derived(cur.copies / LINK_RATE);
 	const pct = (v: number) => `${Math.round(v * 100)} %`;
 	const fmt = (v: number) => v.toFixed(1);
 </script>
@@ -149,9 +150,9 @@
 	/>
 	<rect
 		x={BX}
-		y={by(busy)}
+		y={by(useful + copies)}
 		width={BW}
-		height={by(0) - by(busy)}
+		height={by(0) - by(useful + copies)}
 		rx="4"
 		fill="var(--tcp-drop)"
 		opacity="0.55"
@@ -183,18 +184,18 @@
 			tabular
 		/>
 	</Readout>
-	{#if busy - useful > 0.03}
+	{#if copies > 0.03}
 		<Readout
 			id="dup"
 			order={3}
 			label="Copies"
-			value="{pct(busy - useful)} of the link"
+			value="{pct(copies)} of the link"
 			color="var(--tcp-drop)"
 		>
 			<Label
 				x={BX + BW + 10}
-				y={by((busy + useful) / 2) + 4}
-				text="copies {pct(busy - useful)}"
+				y={by(useful + copies / 2) + 4}
+				text="copies {pct(copies)}"
 				size={12}
 				weight={600}
 				anchor="start"

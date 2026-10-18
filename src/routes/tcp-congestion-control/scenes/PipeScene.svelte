@@ -278,10 +278,14 @@
 			tabular
 		/>
 	</Readout>
-	<Readout id="flight" order={3} label="In flight" value="{inFlight} packets, {acks} ACKs">
-		<Label x={76} y={182} text="in flight:" size={11} muted />
-		<Label x={76} y={198} text="{inFlight} packets" size={11} muted tabular />
-		<Label x={76} y={214} text="{acks} ACKs" size={11} muted tabular />
+	<Readout
+		id="flight"
+		order={3}
+		label="On the way"
+		value="{inFlight} packets going, {acks} ACKs returning"
+	>
+		<Label x={76} y={186} text="{inFlight} packets going" size={11} muted tabular />
+		<Label x={76} y={202} text="{acks} ACKs returning" size={11} muted tabular />
 	</Readout>
 	<Readout
 		id="queue"
@@ -307,11 +311,12 @@
 			value="window halved at {fmtS(lossesSoFar[0].t)}"
 		>
 			<Label
-				x={76}
+				x={30}
 				y={286}
 				text="loss detected: window halved"
 				size={12}
 				weight={600}
+				anchor="start"
 				color="var(--tcp-drop)"
 				pill
 			/>

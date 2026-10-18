@@ -27,8 +27,8 @@
  *   trip (the ambiguity Karn & Partridge 1987 resolved).
  *
  * The receiver keeps out-of-order packets and acknowledges cumulatively (the next packet it
- * needs), echoing the send time of the packet that triggered the ACK (TCP timestamps), which the
- * sender uses to measure the round trip.
+ * needs), reporting the packet that triggered the ACK (an idealised SACK) and echoing its send
+ * time (an idealised timestamp: every ACK gives the sender a round-trip sample).
  */
 import { rng } from '#lib/draw/math.ts';
 
@@ -81,6 +81,10 @@ export interface Sample {
 	rate: number[];
 	/** Packets in the bottleneck queue (including the one being sent). */
 	queue: number;
+	/** Packets the bottleneck sent over the last interval, per second, and those of them that
+	 * reached a receiver that already had them. */
+	link: number;
+	dup: number;
 	/** Latest round-trip sample per flow, s. */
 	rtt: number[];
 }
@@ -90,6 +94,8 @@ export interface FlowStats {
 	delivered: number;
 	/** Packets that reached the receiver, duplicates included. */
 	received: number;
+	/** Arrivals the receiver already had (in order or buffered). */
+	duplicates: number;
 	/** Transmissions, retransmissions included. */
 	sent: number;
 	retransmits: number;
@@ -209,7 +215,8 @@ interface Sender {
 	ssthresh: number;
 	/** Packets the receiver reported holding above `una` (SACK). */
 	sacked: Set<number>;
-	hiSacked: number;
+	/** The three highest SACKed sequence numbers, highest first. */
+	top: number[];
 	/** Packets resent in the current recovery. */
 	rexmit: Set<number>;
 	/** After a timeout, everything below this that is not SACKed counts as lost. */
@@ -228,7 +235,10 @@ interface Sender {
 	minRtt: number;
 	// cubic
 	wMax: number;
-	wLastMax: number;
+	/** cwnd when ssthresh was last set (RFC 9438's cwnd_prior). */
+	cwndPrior: number;
+	/** The first congestion-avoidance epoch after a timeout starts with K = 0. */
+	afterTimeout: boolean;
 	epoch: number;
 	k: number;
 	wEst: number;
@@ -278,7 +288,7 @@ export function simulate(opts: SimOptions): SimResult {
 			cwnd: spec.algo === 'nobackoff' ? spec.rwnd : spec.cwnd0,
 			ssthresh: spec.ssthresh0,
 			sacked: new Set(),
-			hiSacked: -1,
+			top: [],
 			rexmit: new Set(),
 			lostBelow: 0,
 			scan: 0,
@@ -292,7 +302,8 @@ export function simulate(opts: SimOptions): SimResult {
 			lastRtt: f.rtt,
 			minRtt: Infinity,
 			wMax: 0,
-			wLastMax: 0,
+			cwndPrior: 0,
+			afterTimeout: false,
 			epoch: -1,
 			k: 0,
 			wEst: 0,
@@ -305,6 +316,7 @@ export function simulate(opts: SimOptions): SimResult {
 			st: {
 				delivered: 0,
 				received: 0,
+				duplicates: 0,
 				sent: 0,
 				retransmits: 0,
 				drops: 0,
@@ -328,6 +340,8 @@ export function simulate(opts: SimOptions): SimResult {
 	const losses: SimResult['losses'] = [];
 	const samples: Sample[] = [];
 	let nextSample = 0;
+	let outSince = 0;
+	let dupSince = 0;
 
 	const window = (s: Sender) => Math.min(s.spec.rwnd, Math.max(1, Math.floor(s.cwnd)));
 
@@ -370,8 +384,8 @@ export function simulate(opts: SimOptions): SimResult {
 	 * RFC 6675's IsLost: a packet the receiver has not reported is taken as lost once it has
 	 * reported three later ones, or after a timeout everything that was outstanding.
 	 */
-	const isLost = (s: Sender, x: number) =>
-		!s.sacked.has(x) && (x + DUP_THRESH <= s.hiSacked || x < s.lostBelow);
+	const lostEdge = (s: Sender) => (s.top.length >= DUP_THRESH ? s.top[DUP_THRESH - 1] : -1);
+	const isLost = (s: Sender, x: number) => !s.sacked.has(x) && (x < lostEdge(s) || x < s.lostBelow);
 
 	/** Packets the sender believes are still in the network (RFC 6675's "pipe"). */
 	function pipe(s: Sender) {
@@ -388,7 +402,7 @@ export function simulate(opts: SimOptions): SimResult {
 
 	/** The lowest packet taken as lost and not yet resent, or −1. */
 	function nextLost(s: Sender) {
-		const limit = Math.min(s.nxt, Math.max(s.hiSacked - DUP_THRESH + 1, s.lostBelow));
+		const limit = Math.min(s.nxt, Math.max(lostEdge(s), s.lostBelow));
 		for (let x = Math.max(s.scan, s.una); x < limit; x++) {
 			if (isLost(s, x) && !s.rexmit.has(x)) return x;
 			s.scan = x + 1;
@@ -413,6 +427,7 @@ export function simulate(opts: SimOptions): SimResult {
 					transmit(i, x, now);
 				} else {
 					while (s.sacked.has(s.nxt)) s.nxt++;
+					if (s.nxt >= s.una + s.spec.rwnd) break; // flow control: the receiver's window
 					transmit(i, s.nxt, now);
 					s.nxt++;
 				}
@@ -451,8 +466,8 @@ export function simulate(opts: SimOptions): SimResult {
 		switch (s.spec.algo) {
 			case 'cubic': {
 				const w = s.cwnd;
-				s.wMax = w < s.wLastMax ? (w * (1 + CUBIC.beta)) / 2 : w; // fast convergence
-				s.wLastMax = w;
+				s.wMax = w < s.wMax ? (w * (1 + CUBIC.beta)) / 2 : w; // fast convergence
+				s.cwndPrior = w;
 				s.epoch = -1;
 				return Math.max(2, w * CUBIC.beta);
 			}
@@ -466,11 +481,11 @@ export function simulate(opts: SimOptions): SimResult {
 		const a = s.spec.algo;
 		if (a === 'nobackoff') return;
 		if (a === 'vegas') {
-			if (s.vSlow && s.cwnd < s.ssthresh) s.cwnd += acked;
+			if (s.vSlow && s.cwnd < s.ssthresh) s.cwnd += Math.min(acked, 1);
 			return; // congestion avoidance is done once per round trip in `vegasRound`
 		}
 		if (s.cwnd < s.ssthresh) {
-			s.cwnd += acked;
+			s.cwnd += Math.min(acked, 1);
 			return;
 		}
 		if (a === 'mimd') {
@@ -482,12 +497,13 @@ export function simulate(opts: SimOptions): SimResult {
 				s.epoch = now;
 				s.cwndEpoch = s.cwnd;
 				s.wEst = s.cwnd;
-				if (s.wMax < s.cwnd) s.wMax = s.cwnd;
+				if (s.wMax < s.cwnd || s.afterTimeout) s.wMax = s.cwnd;
+				s.afterTimeout = false;
 				s.k = Math.cbrt((s.wMax - s.cwnd) / CUBIC.C);
 			}
 			const W = (tt: number) => CUBIC.C * (tt - s.k) ** 3 + s.wMax;
 			const tt = now - s.epoch;
-			const alpha = (3 * (1 - CUBIC.beta)) / (1 + CUBIC.beta);
+			const alpha = s.wEst >= s.cwndPrior ? 1 : (3 * (1 - CUBIC.beta)) / (1 + CUBIC.beta);
 			s.wEst += (alpha * acked) / s.cwnd;
 			if (W(tt) < s.wEst) {
 				s.cwnd = Math.max(s.cwnd, s.wEst);
@@ -534,7 +550,11 @@ export function simulate(opts: SimOptions): SimResult {
 		// selective acknowledgement: the packet that triggered this ACK arrived out of order
 		if (data >= ack && data >= s.una && !s.sacked.has(data)) {
 			s.sacked.add(data);
-			s.hiSacked = Math.max(s.hiSacked, data);
+			if (s.top.length < DUP_THRESH || data > s.top[DUP_THRESH - 1]) {
+				s.top.push(data);
+				s.top.sort((a, b) => b - a);
+				s.top.length = Math.min(s.top.length, DUP_THRESH);
+			}
 		}
 		if (ack > s.una) {
 			const acked = ack - s.una;
@@ -542,6 +562,8 @@ export function simulate(opts: SimOptions): SimResult {
 				s.sacked.delete(k);
 				s.rexmit.delete(k);
 			}
+			if (s.top.some((x) => x < ack))
+				s.top = [...s.sacked].sort((a, b) => b - a).slice(0, DUP_THRESH);
 			s.una = ack;
 			if (s.nxt < s.una) s.nxt = s.una;
 			if (s.recovery) {
@@ -555,7 +577,7 @@ export function simulate(opts: SimOptions): SimResult {
 			if (s.spec.algo === 'vegas' && s.una >= s.vMark) vegasRound(s);
 			armTimer(i, now);
 		}
-		if (!s.recovery && s.una >= s.recover && s.una + DUP_THRESH <= s.hiSacked && isLost(s, s.una)) {
+		if (!s.recovery && s.una >= s.recover && isLost(s, s.una)) {
 			// fast retransmit: enter loss recovery, once per window of data
 			s.st.lossEvents++;
 			losses.push({ t: now, flow: i, timeout: false });
@@ -576,16 +598,15 @@ export function simulate(opts: SimOptions): SimResult {
 		losses.push({ t: now, flow: i, timeout: true });
 		s.recovery = false;
 		s.recover = s.nxt;
-		{
-			s.ssthresh = decrease(s);
-			s.cwnd = 1;
-			s.vSlow = false;
-			s.rto = Math.min(MAX_RTO, 2 * s.rto); // exponential backoff
-			s.epoch = -1;
-			s.lostBelow = s.nxt;
-			s.rexmit.clear();
-			s.scan = s.una;
-		}
+		s.ssthresh = decrease(s);
+		s.cwnd = 1;
+		s.vSlow = true; // slow start again, up to the new ssthresh
+		s.rto = Math.min(MAX_RTO, 2 * s.rto); // exponential backoff
+		s.epoch = -1;
+		s.afterTimeout = true;
+		s.lostBelow = s.nxt;
+		s.rexmit.clear();
+		s.scan = s.una;
 		s.timerGen++;
 		sendMore(i, now);
 		if (s.nxt > s.una) at(now + s.rto, Ev.Timer, i, 0, s.timerGen);
@@ -602,8 +623,12 @@ export function simulate(opts: SimOptions): SimResult {
 				return r;
 			}),
 			queue: qLen(),
+			link: outSince / dt,
+			dup: dupSince / dt,
 			rtt: S.map((s) => s.lastRtt)
 		});
+		outSince = 0;
+		dupSince = 0;
 	}
 
 	while (heap.size > 0) {
@@ -636,6 +661,7 @@ export function simulate(opts: SimOptions): SimResult {
 			}
 			case Ev.Depart: {
 				const p = q[qHead++];
+				outSince++;
 				if (qHead > 4096 && qHead * 2 > q.length) {
 					q.splice(0, qHead);
 					qHead = 0;
@@ -649,7 +675,10 @@ export function simulate(opts: SimOptions): SimResult {
 			case Ev.Recv: {
 				s.st.received++;
 				if (e.log >= 0) packets[e.log].recv = now;
-				if (e.seq >= s.rcvNxt) {
+				if (e.seq < s.rcvNxt || s.ooo.has(e.seq)) {
+					s.st.duplicates++;
+					dupSince++;
+				} else {
 					s.ooo.add(e.seq);
 					while (s.ooo.has(s.rcvNxt)) {
 						s.ooo.delete(s.rcvNxt);
@@ -667,7 +696,8 @@ export function simulate(opts: SimOptions): SimResult {
 				break;
 			case Ev.Timer:
 				if (s.spec.algo === 'nobackoff') {
-					// resend a packet whose own timer ran out, unless acknowledged or resent since
+					// a packet's own timer ran out (unless acknowledged or resent since): resend that
+					// packet (RFC 793 §3.7)
 					if (e.seq >= s.una && s.lastSent.get(e.seq) === e.x) {
 						s.st.timeouts++;
 						transmit(e.flow, e.seq, now);
@@ -835,18 +865,21 @@ export function crowd(n: number, backoff: boolean, until = 30) {
 		});
 		const after = 8;
 		const xs = r.samples.filter((s) => s.t > after);
-		const goodput = xs.reduce((a, s) => a + s.rate.reduce((b, v) => b + v, 0), 0) / xs.length;
-		const received = r.flows.reduce((a, f) => a + f.received, 0);
-		const delivered = r.flows.reduce((a, f) => a + f.delivered, 0);
+		const mean = (f: (s: Sample) => number) => xs.reduce((a, s) => a + f(s), 0) / xs.length;
+		const goodput = mean((s) => s.rate.reduce((b, v) => b + v, 0));
+		const throughput = mean((s) => s.link);
+		const copies = mean((s) => s.dup);
 		return {
 			n,
 			backoff,
 			/** Packets per second delivered to applications (each once), after 8 s. */
 			goodput,
+			/** Packets per second the bottleneck sent, after 8 s. */
+			throughput,
+			/** Packets per second that reached a receiver that already had them, after 8 s. */
+			copies,
 			/** Share of what crossed the bottleneck that the receiver already had. */
-			duplicates: 1 - delivered / Math.max(1, received),
-			/** Packets per second crossing the bottleneck, copies included (whole-run share). */
-			throughput: Math.min(LINK_RATE, goodput / Math.max(1e-9, delivered / Math.max(1, received))),
+			duplicates: copies / Math.max(1e-9, throughput),
 			/** Offered load: the senders' full windows over their mean base round trip, as a
 			 * multiple of the link's rate. */
 			offered: (n * RWND) / 0.075 / LINK_RATE
@@ -890,7 +923,7 @@ export const pipeRun = (focus: 'start' | 'window') =>
 			flows: [{ rtt: BASE_RTT }],
 			until: focus === 'window' ? 14 : PIPE[focus].to + 0.5,
 			every: 0.005,
-			logFrom: PIPE[focus].from,
+			logFrom: Math.max(0, PIPE[focus].from - 0.8),
 			logUntil: PIPE[focus].to
 		})
 	);

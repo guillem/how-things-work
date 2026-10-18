@@ -21,8 +21,8 @@
 
 	// ---- phase plane -------------------------------------------------------------------------
 	const W = 140;
-	const px = scale([0, W], [100, 440]);
-	const py = scale([0, W], [520, 180]);
+	const px = scale([0, W], [100, 470]);
+	const py = scale([0, W], [540, 170]);
 	const FULL = 121;
 	const pts = $derived(
 		thin(
@@ -100,7 +100,7 @@
 
 	<!-- phase plane -->
 	<Axes sx={px} sy={py} xLabel="flow 1's window" yTicks={[0, 60, 120]} xTicks={[0, 60, 120]} />
-	<Label x={100} y={168} text="flow 2's window" size={11} anchor="start" muted />
+	<Label x={100} y={158} text="flow 2's window" size={11} anchor="start" muted />
 	<line
 		x1={px(0)}
 		y1={py(0)}
@@ -130,7 +130,7 @@
 			color="var(--tcp-queue)"
 		/>
 	</Readout>
-	<path d={trail} fill="none" stroke="var(--stage-ink)" stroke-width="1.3" opacity="0.75" />
+	<path d={trail} fill="none" stroke="var(--stage-ink)" stroke-width="1" opacity="0.6" />
 	{#if now >= JOIN}
 		<circle
 			cx={px(Math.min(W, start.cwnd[0]))}
