@@ -2,7 +2,14 @@
 import { expect, test } from '@playwright/test';
 import * as N from '../src/routes/game-tree-search/noughts';
 import * as C from '../src/routes/game-tree-search/connect-four';
-import { GROWTH, PUZZLE, TREE_PRESETS } from '../src/routes/game-tree-search/presets';
+import {
+	GROWTH,
+	MATCHES,
+	OPPONENTS,
+	PUZZLE,
+	TREE_PRESETS,
+	TTT_COUNTS
+} from '../src/routes/game-tree-search/presets';
 
 test.describe('noughts and crosses', () => {
 	test('there are 255,168 possible games: 131,184 won by X, 77,904 by O, 46,080 drawn', () => {
@@ -21,6 +28,38 @@ test.describe('noughts and crosses', () => {
 		// Every position after one move of each side: 9 × 8 = 72 (no two coincide yet).
 		expect(p.byPly[2]).toBe(72);
 		expect(p.treeNodes).toBe(549_946);
+	});
+
+	test('the counting chart holds the real counts', () => {
+		const p = N.countPositions();
+		const g = N.countGames();
+		expect([p.positions, p.treeNodes, g.games]).toEqual([
+			TTT_COUNTS.positions,
+			TTT_COUNTS.treeNodes,
+			TTT_COUNTS.games
+		]);
+		expect(p.byPly).toEqual(TTT_COUNTS.positionsByMarks);
+		for (const row of TTT_COUNTS.gamesByLength) {
+			expect(row.x + row.o + row.draw).toBe(g.byLength[row.moves]);
+		}
+		const sum = (k: 'x' | 'o' | 'draw') => TTT_COUNTS.gamesByLength.reduce((s, r) => s + r[k], 0);
+		expect([sum('x'), sum('o'), sum('draw')]).toEqual([g.xWins, g.oWins, g.draws]);
+	});
+
+	test('the computer the reader plays: it never loses, and its scores agree with the search', () => {
+		for (const b of [N.EMPTY, N.fromMoves([4]), ...TREE_PRESETS.map((t) => t.board)]) {
+			const a = N.analyse(b);
+			const s = N.search(b);
+			expect(a.best).toBe(s.best);
+			expect(a.nodes).toBe(s.nodes);
+		}
+		// Whatever X plays, a computer playing O by `analyse` never loses.
+		const games = (b: N.Board): N.Board[] => {
+			if (N.isOver(b)) return [b];
+			if (N.toMove(b) === 'O') return games(N.play(b, N.analyse(b).best));
+			return N.moves(b).flatMap((m) => games(N.play(b, m)));
+		};
+		expect(games(N.EMPTY).every((b) => N.winner(b) !== 'X')).toBe(true);
 	});
 
 	test('perfect play from the empty board is a draw', () => {
@@ -156,15 +195,34 @@ test.describe('Connect Four', () => {
 		expect(C.search(PUZZLE + '5', { depth: 8, prune: true }).score).toBeLessThan(C.FORCED);
 	});
 
-	test('a better rule of thumb beats a deeper search: the page’s rule at four moves ahead against none at six', () => {
-		const m = C.playMatch({ depth: 4, rule: C.PAGE_RULE }, { depth: 6, rule: C.NO_RULE });
-		expect(m.games).toHaveLength(14);
-		expect(m.wins).toBeGreaterThan(m.losses);
-	});
-
-	test('with the same rule, looking further ahead wins more than it loses', () => {
-		const m = C.playMatch({ depth: 4, rule: C.PAGE_RULE }, { depth: 2, rule: C.PAGE_RULE });
-		expect(m.wins).toBeGreaterThan(m.losses);
+	test('the quoted matches: a better rule of thumb beats a deeper search', () => {
+		const rule = (r: string) => (r === 'page' ? C.PAGE_RULE : C.NO_RULE);
+		for (const q of MATCHES) {
+			const m = C.playMatch(
+				{ depth: q.a.depth, rule: rule(q.a.rule) },
+				{ depth: q.b.depth, rule: rule(q.b.rule) }
+			);
+			expect(m.games).toHaveLength(98);
+			expect([m.wins, m.draws, m.losses]).toEqual([q.wins, q.draws, q.losses]);
+		}
+		for (const [id, o] of Object.entries(OPPONENTS)) {
+			const m = C.playMatch(
+				{ depth: 4, rule: C.PAGE_RULE },
+				{ depth: o.depth, rule: rule(o.rule) }
+			);
+			expect([m.wins, m.draws, m.losses], id).toEqual([o.page.wins, o.page.draws, o.page.losses]);
+		}
+		// A rule of centre points alone plays exactly like no rule (the centre is tried first anyway).
+		const centre = C.playMatch(
+			{ depth: 4, rule: { centre: 1, two: 0, three: 0 } },
+			{ depth: 4, rule: C.PAGE_RULE }
+		);
+		const none = C.playMatch({ depth: 4, rule: C.NO_RULE }, { depth: 4, rule: C.PAGE_RULE });
+		expect(centre.games.map((g) => g.game)).toEqual(none.games.map((g) => g.game));
+		// With the same rule, looking further ahead wins more than it loses…
+		expect(MATCHES[1].wins).toBeGreaterThan(MATCHES[1].losses);
+		// …but the page's rule four moves ahead beats no rule six moves ahead.
+		expect(MATCHES[2].wins).toBeGreaterThan(2 * MATCHES[2].losses);
 	});
 
 	test('matches are deterministic', () => {

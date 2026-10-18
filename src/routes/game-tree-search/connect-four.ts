@@ -302,23 +302,42 @@ export function playGame(red: Player, yellow: Player, opening = '') {
 }
 
 /**
- * A match: one game per opening column, each played twice so both players
- * take both colours. Results from player A's side.
+ * A match of 98 games: every opening of two moves (7 × 7), each played twice
+ * so both players take both colours. The players never choose at random, so
+ * the openings are what makes the games differ. Results from player A's side.
  */
 export function playMatch(a: Player, b: Player) {
 	const games: { opening: string; aIsRed: boolean; result: number; game: string }[] = [];
-	for (let c = 0; c < COLS; c++) {
-		for (const aIsRed of [true, false]) {
-			const g = aIsRed ? playGame(a, b, String(c)) : playGame(b, a, String(c));
-			games.push({
-				opening: String(c),
-				aIsRed,
-				result: aIsRed ? g.result : -g.result,
-				game: g.game
-			});
+	for (let c1 = 0; c1 < COLS; c1++) {
+		for (let c2 = 0; c2 < COLS; c2++) {
+			const opening = `${c1}${c2}`;
+			for (const aIsRed of [true, false]) {
+				const g = aIsRed ? playGame(a, b, opening) : playGame(b, a, opening);
+				games.push({ opening, aIsRed, result: aIsRed ? g.result : -g.result, game: g.game });
+			}
 		}
 	}
 	const wins = games.filter((g) => g.result > 0).length;
 	const losses = games.filter((g) => g.result < 0).length;
 	return { games, wins, losses, draws: games.length - wins - losses };
+}
+
+/** The features the rule of thumb counts, for one side (1 red, 2 yellow). */
+export function features(p: Position, who: number) {
+	let centre = 0;
+	for (let r = 0; r < ROWS; r++) if (p.cells[3 * ROWS + r] === who) centre++;
+	const twos: (readonly number[])[] = [];
+	const threes: (readonly number[])[] = [];
+	for (const w of WINDOWS) {
+		let mine = 0;
+		let theirs = 0;
+		for (const i of w) {
+			const v = p.cells[i];
+			if (v === who) mine++;
+			else if (v) theirs++;
+		}
+		if (theirs === 0 && mine === 2) twos.push(w);
+		if (theirs === 0 && mine === 3) threes.push(w);
+	}
+	return { centre, twos, threes };
 }

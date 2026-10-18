@@ -4910,6 +4910,52 @@
 				opacity="0.8"
 			/>
 		{/each}
+	{:else if slug === 'game-tree-search'}
+		<!-- a game tree: a root, three moves, their replies; one branch greyed out by pruning -->
+		<path
+			d="M100 22 L52 58 M100 22 L100 58 M100 22 L148 58 M52 58 L34 94 M52 58 L70 94 M100 58 L88 94 M100 58 L112 94"
+			fill="none"
+			stroke="currentColor"
+			stroke-width="1.4"
+			opacity="0.55"
+		/>
+		<path
+			d="M148 58 L130 94 M148 58 L166 94"
+			fill="none"
+			stroke="currentColor"
+			stroke-width="1.4"
+			stroke-dasharray="3 3"
+			opacity="0.3"
+		/>
+		<rect
+			x="88"
+			y="10"
+			width="24"
+			height="24"
+			rx="5"
+			fill="none"
+			stroke={accent}
+			stroke-width="2"
+		/>
+		<path d="M96 18 l8 8 m0 -8 l-8 8" stroke={accent} stroke-width="2" stroke-linecap="round" />
+		{#each [52, 100] as x (x)}
+			<circle cx={x} cy="58" r="8" fill={accent} opacity={x === 100 ? 0.9 : 0.5} />
+		{/each}
+		<circle
+			cx="148"
+			cy="58"
+			r="8"
+			fill="none"
+			stroke="currentColor"
+			stroke-width="1.2"
+			opacity="0.35"
+		/>
+		{#each [34, 70, 88, 112] as x (x)}
+			<circle cx={x} cy="96" r="5" fill="currentColor" opacity="0.55" />
+		{/each}
+		{#each [130, 166] as x (x)}
+			<circle cx={x} cy="96" r="5" fill="none" stroke="currentColor" opacity="0.3" />
+		{/each}
 	{:else}
 		<circle cx="100" cy="60" r="30" fill="none" stroke={accent} stroke-width="2" />
 		<circle cx="100" cy="60" r="5" fill={accent} />

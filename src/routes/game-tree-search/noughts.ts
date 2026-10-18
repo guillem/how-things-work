@@ -236,3 +236,54 @@ export function countPositions() {
 	rec(EMPTY, 0);
 	return { positions: seen.size, byPly, treeNodes };
 }
+
+// Memoised by position (a score depends only on the board, since the board
+// says how many moves were played): the page's computer answers at once even
+// from the empty board, whose tree has 549,946 positions.
+const scoreMemo = new Map<Board, number>();
+const sizeMemo = new Map<Board, number>();
+
+/** X's minimax score of a position (as `search`, without the counting). */
+export function score(b: Board): number {
+	const known = scoreMemo.get(b);
+	if (known !== undefined) return known;
+	const ply = 9 - moves(b).length;
+	let v = terminalScore(b, ply);
+	if (v === null) {
+		const kids = moves(b).map((m) => score(play(b, m)));
+		v = toMove(b) === 'X' ? Math.max(...kids) : Math.min(...kids);
+	}
+	scoreMemo.set(b, v);
+	return v;
+}
+
+/** Positions in the full minimax tree below `b`, `b` included (what `search` examines). */
+export function treeSize(b: Board): number {
+	const known = sizeMemo.get(b);
+	if (known !== undefined) return known;
+	const n = isOver(b) ? 1 : 1 + moves(b).reduce((s, m) => s + treeSize(play(b, m)), 0);
+	sizeMemo.set(b, n);
+	return n;
+}
+
+/**
+ * The computer's view of a position: every move with its score for the side
+ * to move (higher is better), the move it takes (the first of the best, in
+ * square order, as `search` chooses) and the positions a full search examines.
+ */
+export function analyse(b: Board) {
+	const me = toMove(b);
+	const options = moves(b).map((m) => {
+		const s = score(play(b, m));
+		return { square: m, score: me === 'X' ? s : -s };
+	});
+	let best = -1;
+	let top = -Infinity;
+	for (const o of options) {
+		if (o.score > top) {
+			top = o.score;
+			best = o.square;
+		}
+	}
+	return { options, best, nodes: treeSize(b) };
+}

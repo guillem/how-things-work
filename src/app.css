@@ -4591,3 +4591,36 @@ kbd {
 	--rc-ground: #5c4d33;
 	--rc-sky: #141c26;
 }
+
+/* game-tree-search: X (the reader's mark) and O, win / draw / loss for the computer, the
+   Connect Four frame, red and yellow discs, pruned branches */
+:root {
+	--gt-x: #1c7ed6;
+	--gt-o: #e8590c;
+	--gt-win: #2f9e44;
+	--gt-win-text: #2b8a3e;
+	--gt-draw: #868e96;
+	--gt-draw-text: #5c636a;
+	--gt-loss: #e03131;
+	--gt-loss-text: #c92a2a;
+	--gt-frame: #3b5bdb;
+	--gt-hole: #f3f1ec;
+	--gt-red: #e03131;
+	--gt-yellow: #fcc419;
+	--gt-pruned: #adb5bd;
+}
+:root[data-theme='dark'] {
+	--gt-x: #4dabf7;
+	--gt-o: #ff922b;
+	--gt-win: #51cf66;
+	--gt-win-text: #69db7c;
+	--gt-draw: #adb5bd;
+	--gt-draw-text: #ced4da;
+	--gt-loss: #ff6b6b;
+	--gt-loss-text: #ff8787;
+	--gt-frame: #364fc7;
+	--gt-hole: #16171a;
+	--gt-red: #ff6b6b;
+	--gt-yellow: #ffd43b;
+	--gt-pruned: #495057;
+}

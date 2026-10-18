@@ -1338,6 +1338,15 @@ const explainers: Explainer[] = [
 		accent: '#c2410c',
 		steps: 9,
 		minutes: 22
+	},
+	{
+		slug: 'game-tree-search',
+		title: 'How a computer plays a game: the search tree',
+		summary:
+			'Play noughts and crosses and Connect Four against the page and open its mind: the tree of moves it looks through, the scores passed up from the ends of the lines, how fast the tree grows with every move ahead, the branches pruning skips, and a rule of thumb you build yourself.',
+		accent: '#3b5bdb',
+		steps: 11,
+		minutes: 20
 	}
 ];
 
