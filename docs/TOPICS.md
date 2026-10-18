@@ -1,6 +1,6 @@
 # Topic catalog
 
-Source of truth for the content of an interactive web learning tool that shows how things work. It defines 127 topics in 11 categories, each built around one interactive graphic. Readers range from high-school students to university majors.
+Source of truth for the content of an interactive web learning tool that shows how things work. It defines 128 topics in 11 categories, each built around one interactive graphic. Readers range from high-school students to university majors.
 
 This file covers content only. It does not choose the stack, the visual design or the project layout; take those from the repository's own instructions.
 
@@ -84,7 +84,7 @@ A topic is done when:
 |---|---|---|
 | Mathematics | `math` | 18 |
 | Physics | `physics` | 13 |
-| Chemistry & Materials | `chemistry` | 10 |
+| Chemistry & Materials | `chemistry` | 11 |
 | Biology | `biology` | 10 |
 | Body & Medicine | `medicine` | 10 |
 | Earth & Climate | `earth` | 9 |
@@ -142,6 +142,7 @@ A topic is done when:
 - [x] carbon-polymers
 - [x] semiconductors
 - [x] chromatography
+- [ ] dislocations-alloys
 
 **Biology**
 - [x] the-cell
@@ -636,6 +637,16 @@ A topic is done when:
 - **Takeaway:** A column separates molecules by how much of the time each spends stuck rather than moving, and there is a best flow speed: slower and diffusion blurs the bands, faster and the molecules cannot keep up with the exchange.
 - **Prerequisites:** central-limit-theorem, reaction-rates-equilibrium
 - **Pitfall:** Most chromatography is not a sieve by size: two molecules of the same size separate because they stick differently. The bands are close to Gaussian only because each molecule makes many random hops that add up; with few exchanges or uneven sticky sites, real peaks tail.
+
+#### dislocations-alloys
+- **Title:** Dislocations: why metals bend and alloys resist
+- **Level:** 3
+- **Kind:** simulate
+- **Interaction:** Shear a two-dimensional crystal of simulated atoms that contains an edge dislocation, and watch the defect glide one row of bonds at a time while a gauge shows the stress it took. Remove the dislocation, and the perfect crystal holds to a far higher stress before a whole plane slips at once. Sprinkle in larger or smaller foreign atoms and the dislocation snags on them, so the gauge must climb higher before it moves. Add a second and third dislocation and drive them against a row of obstacles, where they pile up and resist further slip.
+- **Takeaway:** A crystal with a dislocation yields at a small fraction of the stress a perfect crystal needs, because the defect breaks one row of bonds at a time, and foreign atoms raise that stress by pinning it.
+- **Prerequisites:** semiconductors, states-of-matter
+- **Related:** bridges-structures
+- **Pitfall:** Crystals do not deform by whole planes sliding at once; the theoretical strength computed that way is a thousand times higher than what any real metal shows.
 
 ### Biology
 
@@ -1440,6 +1451,7 @@ A topic is done when:
 - **Interaction:** Build a bridge from beams, cables and supports across a gap, then drive a load over it. Each member is colored by tension or compression and by how close it is to failure; compare beam, truss, arch and suspension designs for the same span and material budget.
 - **Takeaway:** A structure stands by carrying loads to the ground through tension and compression, and its shape matters more than the amount of material.
 - **Prerequisites:** newtons-laws
+- **Related:** dislocations-alloys
 
 #### feedback-control
 - **Title:** Feedback control & robots
