@@ -206,7 +206,7 @@
 			<rect x={LX + 4} y={yL - 14} width={MX - LX - 10} height="12" rx="3" fill="var(--do-press)" />
 			<rect x={(LX + MX) / 2 - 5} y={yL - 70} width="10" height="56" fill="var(--do-press)" />
 		</g>
-		<Readout id="piston" order={4} label="Piston" value={kPa(press)} color="var(--do-press)">
+		<Readout id="piston">
 			<Label
 				x={(LX + MX) / 2 + 12}
 				y={yL - 50}
