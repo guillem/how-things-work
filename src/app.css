@@ -4387,3 +4387,38 @@ kbd {
 	--mk-fast: #ffa94d;
 	--mk-slow: #74c0fc;
 }
+
+/* ecg-arrhythmias: the sheet (resting, excited, recovering, atria, scar), the conduction system,
+   the traces (the sheet's ECG, a real ECG, one cell), the heart's vector and its loop, marks */
+:root {
+	--ecg-rest: #f3e3dc;
+	--ecg-atria: #eadbe3;
+	--ecg-excited: #c2185b;
+	--ecg-recovering: #b9a3c9;
+	--ecg-scar: #4a3f45;
+	--ecg-cable: rgba(60, 40, 50, 0.55);
+	--ecg-cable-lit: #f59f00;
+	--ecg-trace: #9e2f50;
+	--ecg-real: #1d6fa5;
+	--ecg-cell: #2f7d6d;
+	--ecg-vector: #9e2f50;
+	--ecg-loop: rgba(158, 47, 80, 0.35);
+	--ecg-mark: #d9480f;
+	--ecg-mark-text: #b8410c;
+}
+:root[data-theme='dark'] {
+	--ecg-rest: #3a2a2f;
+	--ecg-atria: #34293a;
+	--ecg-excited: #ff6fa0;
+	--ecg-recovering: #6a5a86;
+	--ecg-scar: #0e0b0c;
+	--ecg-cable: rgba(240, 220, 230, 0.5);
+	--ecg-cable-lit: #ffd166;
+	--ecg-trace: #ff8fb1;
+	--ecg-real: #74c0fc;
+	--ecg-cell: #5fcfb6;
+	--ecg-vector: #ff8fb1;
+	--ecg-loop: rgba(255, 143, 177, 0.4);
+	--ecg-mark: #ff922b;
+	--ecg-mark-text: #ffa94d;
+}

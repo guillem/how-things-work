@@ -110,11 +110,14 @@ test('AV block: first degree lengthens PR, second drops beats, third leaves an e
 });
 
 test('a healthy sheet answers an early beat with one wide beat, then the sinus rhythm', () => {
-	const h = run('early', 6000, { coupling: 450 }).heart;
-	expect(h.ectopics.length).toBe(1);
+	const h = run('early', 3200, { coupling: 450 }).heart;
+	expect(h.ectopics.length).toBeGreaterThanOrEqual(1);
 	const wide = h.beats.find((b) => Math.abs(b.onset - h.ectopics[0]) < 20)!;
 	expect(wide.end - wide.onset).toBeGreaterThan(120);
-	near(ventricularRate(h), 75);
+	// a beat later the sinus rhythm is back to normal, through the Purkinje fibres: narrow
+	const next = h.beats.find((b) => b.onset > wide.onset + 1000)!;
+	expect(next.end - next.onset).toBeLessThan(120);
+	expect(h.sinus.some((s) => next.onset - s > 100 && next.onset - s < 250)).toBe(true);
 	// too early: the tissue is still refractory and the beat goes nowhere
 	const early = run('early', 3000, { coupling: 200 }).heart;
 	const spot = early.beats.find((b) => Math.abs(b.onset - early.ectopics[0]) < 20);

@@ -4763,6 +4763,24 @@
 			stroke-width="2.4"
 			stroke-linejoin="round"
 		/>
+	{:else if slug === 'ecg-arrhythmias'}
+		<!-- an ECG strip: two normal beats, then a spiral's fast regular complexes -->
+		<line x1="8" x2="192" y1="62" y2="62" stroke="currentColor" stroke-width="0.8" opacity="0.3" />
+		<path
+			d="M8 62 H20 Q24 56 28 62 H34 L37 66 L41 26 L45 74 L48 62 H56 Q64 48 72 62 H80 Q84 56 88 62 H94 L97 66 L101 26 L105 74 L108 62 H112 Q118 50 124 62 Q130 92 136 62 Q142 30 148 62 Q154 92 160 62 Q166 30 172 62 Q178 92 184 62 L192 62"
+			fill="none"
+			stroke={accent}
+			stroke-width="2.4"
+			stroke-linejoin="round"
+		/>
+		<path
+			d="M150 108 m0 0 a4 4 0 1 1 4 -4 a8 8 0 1 1 -8 -8 a12 12 0 1 1 12 12"
+			fill="none"
+			stroke="currentColor"
+			stroke-width="1.2"
+			opacity="0.5"
+			transform="translate(-10 -6) scale(0.9)"
+		/>
 	{:else}
 		<circle cx="100" cy="60" r="30" fill="none" stroke={accent} stroke-width="2" />
 		<circle cx="100" cy="60" r="5" fill={accent} />

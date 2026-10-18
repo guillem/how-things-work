@@ -1293,6 +1293,15 @@ const explainers: Explainer[] = [
 		accent: '#36618e',
 		steps: 12,
 		minutes: 24
+	},
+	{
+		slug: 'ecg-arrhythmias',
+		title: 'The ECG and arrhythmias',
+		summary:
+			'A sheet of heart muscle as an excitable medium, with a hand-built conduction system, and the ECG read off it on Einthoven’s three leads. Slow the AV node until beats drop, fire an early beat into slowed, scarred tissue and watch a wave chase its own tail as tachycardia, let it break up into fibrillation, then shock it so the sinus node can take over. Real recordings from the MIT-BIH database alongside; a teaching model, not a diagnostic tool.',
+		accent: '#9e2f50',
+		steps: 9,
+		minutes: 22
 	}
 ];
 

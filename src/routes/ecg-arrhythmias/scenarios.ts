@@ -54,7 +54,12 @@ export function setup(step: string, p: Params): Setup {
 		case 'early':
 			return {
 				options: {},
-				events: [{ kind: 'ectopic', beat: AUTO_BEAT, coupling: num(p, 'coupling') }]
+				// an early beat after every third QRS, so that one is always in view
+				events: Array.from({ length: 30 }, (_, k) => ({
+					kind: 'ectopic' as const,
+					beat: AUTO_BEAT + 3 * k,
+					coupling: num(p, 'coupling')
+				}))
 			};
 		case 'reentry':
 			return {
