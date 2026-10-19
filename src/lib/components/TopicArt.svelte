@@ -5279,6 +5279,42 @@
 		/>
 		<circle cx="128" cy="49" r="2.6" fill={accent} />
 		<circle cx="140" cy="40" r="3" fill="currentColor" opacity="0.6" />
+	{:else if slug === 'radar-sonar'}
+		<!-- a dish sending wavefronts to a target, the echo coming back, and the range trace -->
+		<path
+			d="M26 40 Q40 52 26 64"
+			fill="none"
+			stroke="currentColor"
+			stroke-width="2"
+			opacity="0.6"
+		/>
+		<line x1="30" y1="52" x2="40" y2="52" stroke="currentColor" stroke-width="1.6" opacity="0.6" />
+		{#each [58, 76, 94] as x (x)}
+			<path
+				d="M{x} 38 Q{x + 7} 52 {x} 66"
+				fill="none"
+				stroke={accent}
+				stroke-width="1.8"
+				opacity={0.9 - (x - 58) / 80}
+			/>
+		{/each}
+		<path d="M134 46 Q129 52 134 58" fill="none" stroke={accent} stroke-width="1.4" opacity="0.5" />
+		<rect x="146" y="44" width="16" height="16" rx="3" fill={accent} opacity="0.85" />
+		<line
+			x1="22"
+			y1="100"
+			x2="186"
+			y2="100"
+			stroke="currentColor"
+			stroke-width="1.2"
+			opacity="0.4"
+		/>
+		<path
+			d="M22 98 L60 97 L66 99 L74 97 L86 98 L120 98 L150 98 L153 74 L156 98 L186 98"
+			fill="none"
+			stroke={accent}
+			stroke-width="1.8"
+		/>
 	{:else}
 		<circle cx="100" cy="60" r="30" fill="none" stroke={accent} stroke-width="2" />
 		<circle cx="100" cy="60" r="5" fill={accent} />

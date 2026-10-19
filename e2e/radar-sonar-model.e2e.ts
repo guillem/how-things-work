@@ -17,7 +17,6 @@ import {
 	dopplerShift,
 	echo,
 	maxSpeed,
-	peaks,
 	plateRcs,
 	radialSpeed,
 	rangeDoppler,

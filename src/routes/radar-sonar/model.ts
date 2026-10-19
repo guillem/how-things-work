@@ -188,9 +188,14 @@ export function peaks(y: ArrayLike<number>, threshold: number, minGap = 1) {
 	return kept.sort((a, b) => a - b);
 }
 
-/** Number of separate echoes in a trace: peaks that stand `dip` dB above the valley between them. */
-export function countEchoes(y: ArrayLike<number>, threshold: number, dip = 3) {
-	const p = peaks(y, threshold);
+/**
+ * Number of separate echoes in a trace: peaks over `threshold` that stand `dip` dB above the
+ * valley between them. With a `guard` (samples), a peak that close to one at least 6 dB
+ * stronger is taken for that echo's range sidelobe, not a target of its own.
+ */
+export function countEchoes(y: ArrayLike<number>, threshold: number, dip = 3, guard = 0) {
+	const all = peaks(y, threshold);
+	const p = all.filter((i) => !all.some((j) => Math.abs(j - i) <= guard && y[j] - y[i] >= 6));
 	if (p.length === 0) return 0;
 	let count = 1;
 	let last = p[0];
@@ -312,10 +317,10 @@ export function rangeDoppler(
 			add(amp(ranges[i], rcs), slowTime(ranges[i] + rand() * 50, drift, n, prf));
 		}
 		for (const tg of targets) {
-			// the chirp's range response (sinc-like) falls off within a cell
-			const d = (tg.r - ranges[i]) / MAP_CELL;
-			const w = Math.abs(d) < 1e-9 ? 1 : Math.abs(Math.sin(Math.PI * d) / (Math.PI * d));
-			if (w < 0.05) continue;
+			// the compressed pulse's main lobe, one cell wide: a target between two cells' centres
+			// shows in both (its tapered sidelobes are left out)
+			const w = 1 - Math.abs(tg.r - ranges[i]) / MAP_CELL;
+			if (w <= 0) continue;
 			add(amp(tg.r, tg.rcs) * w, slowTime(tg.r, tg.v ?? 0, n, prf));
 		}
 		pulse.push(db(Math.max(1e-6, (re[0] ** 2 + im[0] ** 2) / noise)) + extraNoiseDb);

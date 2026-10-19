@@ -1419,6 +1419,15 @@ const explainers: Explainer[] = [
 		accent: '#1971c2',
 		steps: 9,
 		minutes: 20
+	},
+	{
+		slug: 'radar-sonar',
+		title: 'Radar & sonar',
+		summary:
+			'Fire a pulse at two targets and time the echoes; watch them fade as 1/R⁴, merge when the pulse is too long and drown when it is too short, until a chirp and a matched filter give both reach and sharpness. Then read a speed from the Doppler shift, pull a small boat out of the clutter on a range-Doppler map, and take the whole thing under water.',
+		accent: '#0c8599',
+		steps: 9,
+		minutes: 20
 	}
 ];
 

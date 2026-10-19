@@ -4913,3 +4913,24 @@ kbd {
 	--kf-bad: #ff6b6b;
 	--kf-bad-text: #ff8787;
 }
+
+/* radar-sonar: the outgoing pulse, the two targets' echoes, the range-Doppler map's heat,
+   detections, and the sea */
+:root {
+	--rs-pulse: #e8590c;
+	--rs-a: #0c8599;
+	--rs-b: #7048e8;
+	--rs-heat: #1864ab;
+	--rs-hit: #e03131;
+	--rs-sea: #d0ebff;
+	--rs-sea-edge: #74c0fc;
+}
+:root[data-theme='dark'] {
+	--rs-pulse: #ff922b;
+	--rs-a: #3bc9db;
+	--rs-b: #9775fa;
+	--rs-heat: #74c0fc;
+	--rs-hit: #ff6b6b;
+	--rs-sea: #0f2a40;
+	--rs-sea-edge: #1c7ed6;
+}
