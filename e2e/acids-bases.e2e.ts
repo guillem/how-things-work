@@ -1,6 +1,6 @@
 import { expect, test, type Page } from '@playwright/test';
 
-const stage = (page: Page) => page.locator('.stage svg > g');
+const stage = (page: Page) => page.locator('.stage svg > g:not([data-leaving])');
 const range = (page: Page, id: string) => page.locator(`input[type=range][data-control=${id}]`);
 const button = (page: Page, id: string, value?: string) =>
 	page.locator(`button[data-control=${id}]${value ? `[data-value=${value}]` : ''}`);

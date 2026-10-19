@@ -1,7 +1,7 @@
 import { expect, test, type Page } from '@playwright/test';
 import { CHORD, KT } from '../src/routes/flight/plane';
 
-const stage = (page: Page) => page.locator('.stage svg > g');
+const stage = (page: Page) => page.locator('.stage svg > g:not([data-leaving])');
 const range = (page: Page, id: string) => page.locator(`input[type=range][data-control=${id}]`);
 const choice = (page: Page, id: string, value: string) =>
 	page.locator(`button[data-control=${id}][data-value=${value}]`);

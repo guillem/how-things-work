@@ -3,7 +3,7 @@ import { expect, test, type Page } from '@playwright/test';
 // The attention explainer: what a visitor sees when they step through one attention operation of
 // GPT-2 small, point at tokens in the explorer, pick named heads and look at the whole stack.
 // Reduced motion freezes the scenes on a complete frame (t = 2.5 s, tweens instant).
-const stage = (page: Page) => page.locator('.stage svg > g');
+const stage = (page: Page) => page.locator('.stage svg > g:not([data-leaving])');
 const range = (page: Page, id: string) => page.locator(`input[type=range][data-control=${id}]`);
 const token = (page: Page, name: RegExp) => stage(page).getByRole('button', { name });
 

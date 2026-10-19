@@ -6,7 +6,7 @@ import { expect, test, type Page } from '@playwright/test';
 
 test.use({ reducedMotion: 'reduce' });
 
-const stage = (page: Page) => page.locator('.stage svg > g');
+const stage = (page: Page) => page.locator('.stage svg > g:not([data-leaving])');
 const range = (page: Page, id: string) => page.locator(`input[type=range][data-control=${id}]`);
 
 /** The number of the 24 phases that cross, from "Fan of 24 phases: N cross". */

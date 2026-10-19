@@ -3,7 +3,7 @@ import { expect, test, type Page } from '@playwright/test';
 // The scaling-laws explainer: what a visitor sees when they pick a line of the sweep, retrain
 // its smallest point, and drag a compute budget through the Chinchilla law with each set of
 // constants. The numbers are the stored sweep's and the papers' (the model tests check both).
-const stage = (page: Page) => page.locator('.stage svg > g');
+const stage = (page: Page) => page.locator('.stage svg > g:not([data-leaving])');
 const range = (page: Page, id: string) => page.locator(`input[type=range][data-control=${id}]`);
 const choose = (page: Page, id: string, value: string) =>
 	page.locator(`button[data-control=${id}][data-value="${value}"]`).click();

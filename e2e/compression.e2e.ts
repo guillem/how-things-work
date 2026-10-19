@@ -1,7 +1,7 @@
 import { expect, test, type Page } from '@playwright/test';
 import { bmpDataUrl } from '../src/routes/compression/compression';
 
-const stage = (page: Page) => page.locator('.stage svg > g');
+const stage = (page: Page) => page.locator('.stage svg > g:not([data-leaving])');
 
 test('typing a message changes its size and never triggers the keyboard shortcuts', async ({
 	page

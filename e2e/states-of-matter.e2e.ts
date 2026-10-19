@@ -1,7 +1,7 @@
 import { expect, test, type Page } from '@playwright/test';
 import { playUntil } from './play';
 
-const stage = (page: Page) => page.locator('.stage svg > g');
+const stage = (page: Page) => page.locator('.stage svg > g:not([data-leaving])');
 
 test('the phase diagram places water at 1 atm: ice, liquid, steam', async ({ page }) => {
 	await page.goto('./states-of-matter/#water-diagram');

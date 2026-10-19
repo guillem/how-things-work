@@ -5,7 +5,7 @@ import { expect, test, type Page } from '@playwright/test';
 // after training, scrub the stored loss curve, compare runs, shrink the training text, and train
 // the model in the page. The numbers are the stored runs' (the model tests check them against
 // the page's code). Reduced motion freezes every scene on its complete frame, and stops "play".
-const stage = (page: Page) => page.locator('.stage svg > g');
+const stage = (page: Page) => page.locator('.stage svg > g:not([data-leaving])');
 const range = (page: Page, id: string) => page.locator(`input[type=range][data-control=${id}]`);
 const choose = (page: Page, id: string, value: string) =>
 	page.locator(`button[data-control=${id}][data-value="${value}"]`).click();

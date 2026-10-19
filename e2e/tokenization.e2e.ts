@@ -3,7 +3,7 @@ import { expect, test, type Page } from '@playwright/test';
 // The tokenization explainer: what a visitor sees when they learn merges from a text they type,
 // and run GPT-2's real tokenizer. The numbers are what the page computes (the model tests check
 // them against references). Reduced motion freezes every scene on its complete frame.
-const stage = (page: Page) => page.locator('.stage svg > g');
+const stage = (page: Page) => page.locator('.stage svg > g:not([data-leaving])');
 const range = (page: Page, id: string) => page.locator(`input[type=range][data-control=${id}]`);
 
 test.beforeEach(async ({ page }) => {

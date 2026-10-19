@@ -1,6 +1,6 @@
 import { expect, test, type Page } from '@playwright/test';
 
-const stage = (page: Page) => page.locator('.stage svg > g');
+const stage = (page: Page) => page.locator('.stage svg > g:not([data-leaving])');
 
 test('Coulomb: the force falls to a quarter at twice the distance', async ({ page }) => {
 	await page.goto('./electromagnetism/#force');

@@ -1,7 +1,7 @@
 import { expect, test, type Page } from '@playwright/test';
 import { playUntil } from './play';
 
-const stage = (page: Page) => page.locator('.stage svg > g');
+const stage = (page: Page) => page.locator('.stage svg > g:not([data-leaving])');
 const choose = (page: Page, id: string, value: string) =>
 	page.locator(`button[data-control=${id}][data-value="${value}"]`).click();
 /** Clicks bead `n` (1-based, as in its accessible name) `times` times. */

@@ -4,7 +4,7 @@ import { expect, test, type Page } from '@playwright/test';
 // drawn graph, solve the giant's equation, explore from a node, sweep graphs of several sizes and
 // open bonds on a grid. Reduced motion shows each scene complete. The model tests check the
 // numbers themselves.
-const stage = (page: Page) => page.locator('.stage svg > g');
+const stage = (page: Page) => page.locator('.stage svg > g:not([data-leaving])');
 const control = (page: Page, id: string) => page.locator(`[data-control=${id}]`);
 const option = (page: Page, id: string, value: string) =>
 	page.locator(`button[data-control=${id}][data-value="${value}"]`);

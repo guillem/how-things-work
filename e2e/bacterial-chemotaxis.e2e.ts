@@ -4,7 +4,7 @@ import { expect, test, type Page } from '@playwright/test';
 // concentration and gradient of the Berg–Purcell comparison, and switch the methylation off in
 // the dish. Reduced motion shows each scene's complete, settled frame. The model tests check the
 // numbers themselves.
-const stage = (page: Page) => page.locator('.stage svg > g');
+const stage = (page: Page) => page.locator('.stage svg > g:not([data-leaving])');
 const range = (page: Page, id: string) => page.locator(`input[type=range][data-control=${id}]`);
 /** The number after `prefix` in the stage's text. */
 const read = async (page: Page, prefix: string) => {

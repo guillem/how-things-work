@@ -4,7 +4,7 @@ import { expect, test, type Page } from '@playwright/test';
 // change the increase rule, the round trips and connections of two users, the random loss, the
 // number of senders and their backoff, and let a Reno flow join a Vegas one. Reduced motion
 // shows each scene's complete run. The model tests check the numbers themselves.
-const stage = (page: Page) => page.locator('.stage svg > g');
+const stage = (page: Page) => page.locator('.stage svg > g:not([data-leaving])');
 const range = (page: Page, id: string) => page.locator(`input[type=range][data-control=${id}]`);
 /** The number after `prefix` in the stage's text. */
 const read = async (page: Page, prefix: string) => {

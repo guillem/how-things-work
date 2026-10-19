@@ -1,7 +1,7 @@
 import { expect, test, type Page } from '@playwright/test';
 import { playUntil } from './play';
 
-const stage = (page: Page) => page.locator('.stage svg > g');
+const stage = (page: Page) => page.locator('.stage svg > g:not([data-leaving])');
 
 test('holding the coil: the torque is zero at the dead points and largest along the field', async ({
 	page

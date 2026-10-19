@@ -4,7 +4,7 @@ import { expect, test, type Page } from '@playwright/test';
 // the Pacific (arrival times beside the real records), the speed gauge, the shelf and the ridge
 // they reshape, the wind wave they compare, and the real records. Reduced motion shows each run at
 // a fixed model time (deterministic); the model tests check the physics itself.
-const stage = (page: Page) => page.locator('.stage svg > g');
+const stage = (page: Page) => page.locator('.stage svg > g:not([data-leaving])');
 const range = (page: Page, id: string) => page.locator(`input[type=range][data-control=${id}]`);
 const toggle = (page: Page, id: string) => page.locator(`input[type=checkbox][data-control=${id}]`);
 /** The highest the sea has been at the coast, m, as the shelf step shows it. */

@@ -4,7 +4,7 @@ import { expect, test, type Page } from '@playwright/test';
 // let it write, and widen its window on Tiny Shakespeare. The meters are live computations on
 // the shipped text, so the numbers below are what the page measures (the model tests check
 // them independently). Reduced motion freezes every scene on its complete frame.
-const stage = (page: Page) => page.locator('.stage svg > g');
+const stage = (page: Page) => page.locator('.stage svg > g:not([data-leaving])');
 const range = (page: Page, id: string) => page.locator(`input[type=range][data-control=${id}]`);
 const option = (page: Page, id: string, value: string) =>
 	page.locator(`button[data-control=${id}][data-value="${value}"]`);

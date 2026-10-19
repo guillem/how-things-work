@@ -4,7 +4,7 @@ import { expect, test, type Page } from '@playwright/test';
 // turned down and topped up, when the number of guesses and the draft change the passes, when
 // 10,000 draws are compared with the target's probabilities, and on the speed charts. The model
 // tests check the numbers.
-const stage = (page: Page) => page.locator('.stage svg > g');
+const stage = (page: Page) => page.locator('.stage svg > g:not([data-leaving])');
 const range = (page: Page, id: string) => page.locator(`input[type=range][data-control=${id}]`);
 
 test.beforeEach(async ({ page }) => {

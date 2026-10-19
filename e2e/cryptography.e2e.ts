@@ -1,7 +1,7 @@
 import { expect, test, type Page } from '@playwright/test';
 import { diffieHellman } from '../src/routes/cryptography/crypto';
 
-const stage = (page: Page) => page.locator('.stage svg > g');
+const stage = (page: Page) => page.locator('.stage svg > g:not([data-leaving])');
 
 test('typing in the hash box changes the digest and never triggers the keyboard shortcuts', async ({
 	page

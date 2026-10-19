@@ -1,6 +1,6 @@
 import { expect, test, type Page } from '@playwright/test';
 
-const stage = (page: Page) => page.locator('.stage svg > g');
+const stage = (page: Page) => page.locator('.stage svg > g:not([data-leaving])');
 
 test('adding a proton turns carbon into nitrogen, and the readout follows', async ({ page }) => {
 	await page.goto('./atoms-periodic-table/#build');
@@ -60,7 +60,7 @@ test('colouring the table by another property changes the legend and its unit', 
 	page
 }) => {
 	await page.goto('./atoms-periodic-table/#trends');
-	const stage = page.locator('.stage svg > g');
+	const stage = page.locator('.stage svg > g:not([data-leaving])');
 	await expect(stage).toContainText('Atomic radius (covalent, pm)');
 	await page.locator('button[data-control=colourBy][data-value=ionization]').click();
 	await expect(stage).toContainText('First ionization energy (eV)');

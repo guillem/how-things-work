@@ -4,7 +4,7 @@ import { expect, test, type Page } from '@playwright/test';
 // critical value, change the activator's diffusion, saturate the activator, narrow the tail and
 // watch the strip grow. Reduced motion shows each run settled (seeded noise, so deterministic).
 // The model tests check the numbers against linear stability theory.
-const stage = (page: Page) => page.locator('.stage svg > g');
+const stage = (page: Page) => page.locator('.stage svg > g:not([data-leaving])');
 const range = (page: Page, id: string) => page.locator(`input[type=range][data-control=${id}]`);
 /** The number after `prefix` in the stage's text. */
 const read = async (page: Page, prefix: string) => {

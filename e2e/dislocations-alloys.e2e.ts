@@ -5,7 +5,7 @@ import { expect, test, type Page } from '@playwright/test';
 
 test.use({ reducedMotion: 'reduce' });
 
-const stage = (page: Page) => page.locator('.stage svg > g');
+const stage = (page: Page) => page.locator('.stage svg > g:not([data-leaving])');
 
 /** The divisor of a gauge reading such as "highest G/1,100" (the stress is G divided by it). */
 async function reading(page: Page, which: 'now' | 'highest') {

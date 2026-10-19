@@ -3,7 +3,7 @@ import { expect, test, type Page } from '@playwright/test';
 // Reduced motion: every scene shows its finished, frozen frame.
 test.use({ reducedMotion: 'reduce' });
 
-const stage = (page: Page) => page.locator('.stage svg > g');
+const stage = (page: Page) => page.locator('.stage svg > g:not([data-leaving])');
 const range = (page: Page, id: string) => page.locator(`input[type=range][data-control=${id}]`);
 /** Picks an option of a select control (a row of radio buttons). */
 const choose = (page: Page, id: string, value: string) =>

@@ -4,7 +4,7 @@ import { expect, test, type Page } from '@playwright/test';
 // on different caches, make a direct-mapped cache thrash, change the replacement rule, tile
 // the matrix product, turn the L2 off and on, and add an L2 to the latency curve. Reduced
 // motion shows each run finished. The model tests check the numbers themselves.
-const stage = (page: Page) => page.locator('.stage svg > g');
+const stage = (page: Page) => page.locator('.stage svg > g:not([data-leaving])');
 const range = (page: Page, id: string) => page.locator(`input[type=range][data-control=${id}]`);
 const choose = (page: Page, id: string, value: string) =>
 	page.locator(`button[data-control=${id}][data-value=${value}]`).click();

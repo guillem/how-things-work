@@ -55,7 +55,7 @@ for (const slug of slugs) {
 				if (m.type() === 'error') errors.push(m.text());
 			});
 			await page.goto(`./${slug}/`);
-			await expect(page.locator('.stage svg > g')).toBeAttached();
+			await expect(page.locator('.stage svg > g:not([data-leaving])')).toBeAttached();
 			const h1 = await page.getByRole('heading', { level: 1 }).textContent();
 			await expect(page).toHaveTitle(`${h1?.trim()} — How Things Work`);
 			const links = page.getByRole('navigation', { name: 'Related topics' }).getByRole('link');

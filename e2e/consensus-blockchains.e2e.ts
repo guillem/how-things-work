@@ -3,7 +3,7 @@ import { expect, test, type Page } from '@playwright/test';
 // Reduced motion shows each scene's finished frame (a moment of the run for the cluster).
 test.use({ reducedMotion: 'reduce' });
 
-const stage = (page: Page) => page.locator('.stage svg > g');
+const stage = (page: Page) => page.locator('.stage svg > g:not([data-leaving])');
 const slider = (page: Page, id: string) => page.locator(`input[type=range][data-control=${id}]`);
 
 test('three generals fail with one traitor; four succeed', { tag: '@smoke' }, async ({ page }) => {

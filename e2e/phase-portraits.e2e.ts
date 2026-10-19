@@ -4,7 +4,7 @@ import { expect, test, type Page } from '@playwright/test';
 // eigenvalues of a linear system, pick a fixed point of the pendulum to linearise, shrink the
 // magnifier, compare the frictionless pendulum with a twin of the same linearisation, and push μ
 // through the Hopf bifurcation. The model tests check the numbers themselves.
-const stage = (page: Page) => page.locator('.stage svg > g');
+const stage = (page: Page) => page.locator('.stage svg > g:not([data-leaving])');
 const range = (page: Page, id: string) => page.locator(`input[type=range][data-control=${id}]`);
 const choice = (page: Page, id: string, value: string) =>
 	page.locator(`button[data-control=${id}][data-value=${value}]`);

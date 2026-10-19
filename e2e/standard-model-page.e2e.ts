@@ -1,6 +1,6 @@
 import { expect, test, type Page } from '@playwright/test';
 
-const stage = (page: Page) => page.locator('.stage svg > g');
+const stage = (page: Page) => page.locator('.stage svg > g:not([data-leaving])');
 
 // Reduced motion: the quarks in the bag and the decay products hold still to be tapped.
 async function open(page: Page, url: string) {

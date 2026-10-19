@@ -5,7 +5,7 @@ import { playUntil } from './play';
 // the elk out. The tests play at 2× on Playwright's fake clock, which drives the animation
 // frames, so simulated time doesn't depend on how busy the machine is.
 
-const stage = (page: Page) => page.locator('.stage svg > g');
+const stage = (page: Page) => page.locator('.stage svg > g:not([data-leaving])');
 
 async function open(page: Page, url: string) {
 	await page.clock.install();

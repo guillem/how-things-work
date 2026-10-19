@@ -3,7 +3,7 @@ import { expect, test, type Page } from '@playwright/test';
 // The language-model explainer: what a visitor sees when they type text for GPT-2's tokenizer,
 // move the temperature and cut-off sliders, watch sampled runs, pick tokens themselves and
 // compare a base model's answers. Reduced motion freezes every scene on a complete frame.
-const stage = (page: Page) => page.locator('.stage svg > g');
+const stage = (page: Page) => page.locator('.stage svg > g:not([data-leaving])');
 const range = (page: Page, id: string) => page.locator(`input[type=range][data-control=${id}]`);
 const option = (page: Page, id: string, value: string) =>
 	page.locator(`button[data-control=${id}][data-value="${value}"]`);

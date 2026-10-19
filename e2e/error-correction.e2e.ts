@@ -1,6 +1,6 @@
 import { expect, test, type Page } from '@playwright/test';
 
-const stage = (page: Page) => page.locator('.stage svg > g');
+const stage = (page: Page) => page.locator('.stage svg > g:not([data-leaving])');
 
 test('the failing checks locate a flipped bit, wherever it is', async ({ page }) => {
 	await page.goto('./error-correction/#repair');

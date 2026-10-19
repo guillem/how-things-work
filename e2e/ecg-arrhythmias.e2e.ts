@@ -4,7 +4,7 @@ import { expect, test, type Page } from '@playwright/test';
 // AV node, slow the ventricles, shock a fibrillating sheet or a flat line, and the real records.
 // Reduced motion shows each run at a fixed heart time (deterministic); the model tests check the
 // physiology itself.
-const stage = (page: Page) => page.locator('.stage svg > g');
+const stage = (page: Page) => page.locator('.stage svg > g:not([data-leaving])');
 const range = (page: Page, id: string) => page.locator(`input[type=range][data-control=${id}]`);
 const toggle = (page: Page, id: string) => page.locator(`input[type=checkbox][data-control=${id}]`);
 /** The ventricles' rate on the stage, a minute. */

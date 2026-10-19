@@ -9,7 +9,7 @@
 import { expect, test, type Page } from '@playwright/test';
 import { playUntil } from './play';
 
-const stage = (page: Page) => page.locator('.stage svg > g');
+const stage = (page: Page) => page.locator('.stage svg > g:not([data-leaving])');
 const range = (page: Page, id: string) => page.locator(`input[type=range][data-control="${id}"]`);
 async function key(page: Page, id: string, k: string) {
 	await range(page, id).focus();

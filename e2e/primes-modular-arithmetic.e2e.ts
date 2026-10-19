@@ -1,6 +1,6 @@
 import { expect, test } from '@playwright/test';
 
-const stage = (page: import('@playwright/test').Page) => page.locator('.stage svg > g');
+const stage = (page: import('@playwright/test').Page) => page.locator('.stage svg > g:not([data-leaving])');
 
 test('stepping the sieve to the end leaves only primes; 25 of them up to 100', async ({ page }) => {
 	await page.goto('./primes-modular-arithmetic/#sieve');

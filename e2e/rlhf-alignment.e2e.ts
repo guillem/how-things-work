@@ -4,7 +4,7 @@ import { playUntil } from './play';
 // The rlhf-alignment explainer: what a visitor sees when they compare answers, add or throw away
 // comparisons, and slide the KL leash. The numbers are the page's default (the stand-in rater's
 // first 100 comparisons for the sleep question); the model tests check where they come from.
-const stage = (page: Page) => page.locator('.stage svg > g');
+const stage = (page: Page) => page.locator('.stage svg > g:not([data-leaving])');
 const range = (page: Page, id: string) => page.locator(`input[type=range][data-control=${id}]`);
 
 test.beforeEach(async ({ page }) => {

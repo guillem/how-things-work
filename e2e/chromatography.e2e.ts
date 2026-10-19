@@ -3,7 +3,7 @@ import { expect, test, type Page } from '@playwright/test';
 // The chromatography explainer: what a visitor sees when they change a compound's stickiness,
 // the flow speed, the particle size, the column length and the surface. The model tests check
 // the numbers themselves.
-const stage = (page: Page) => page.locator('.stage svg > g');
+const stage = (page: Page) => page.locator('.stage svg > g:not([data-leaving])');
 const range = (page: Page, id: string) => page.locator(`input[type=range][data-control=${id}]`);
 const choose = (page: Page, id: string, value: string) =>
 	page.locator(`button[data-control=${id}][data-value="${value}"]`).click();

@@ -8,7 +8,7 @@
 	 * 960 × 600 coordinate system.
 	 */
 	import type { Component } from 'svelte';
-	import { fade } from 'svelte/transition';
+	import { fade, type FadeParams } from 'svelte/transition';
 	import type { SceneLoaders, StageProps } from './types';
 
 	interface Props extends StageProps {
@@ -34,6 +34,14 @@
 	const order = $derived(Object.keys(loaders));
 
 	const scene = $derived(props.step.scene);
+
+	// The scene being left stays in the DOM while it fades out. Svelte calls an outro's function
+	// as the outro begins, so mark the element here (`outrostart` only fires a frame later, after
+	// the incoming scene is already in): tests and tools can then tell the two apart.
+	function fadeOut(node: Element, params: FadeParams) {
+		node.setAttribute('data-leaving', '');
+		return fade(node, params);
+	}
 	let loaded = $state<{ name: string; component: SceneComponent } | null>(null);
 
 	$effect(() => {
@@ -78,7 +86,7 @@
 		{#key loaded.name}
 			<g
 				in:fade={{ duration: props.reduced ? 0 : 400, delay: props.reduced ? 0 : 120 }}
-				out:fade={{ duration: props.reduced ? 0 : 160 }}
+				out:fadeOut={{ duration: props.reduced ? 0 : 160 }}
 			>
 				<loaded.component {step} {index} {t} {playing} {reduced} {dark} {params} {setParam} />
 			</g>

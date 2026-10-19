@@ -3,7 +3,7 @@ import { expect, test, type Page } from '@playwright/test';
 // The kv-cache-inference explainer: what a visitor sees when the tiny GPT writes with and without
 // the cache, when the cached and recomputed runs are compared in the page, and when the model,
 // context and batch move the memory bar and the roofline. The model tests check the numbers.
-const stage = (page: Page) => page.locator('.stage svg > g');
+const stage = (page: Page) => page.locator('.stage svg > g:not([data-leaving])');
 const range = (page: Page, id: string) => page.locator(`input[type=range][data-control=${id}]`);
 
 test.beforeEach(async ({ page }) => {

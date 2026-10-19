@@ -5,7 +5,7 @@ const stepTitle = (page: Page) => page.locator('aside h2');
 /** Navigate and wait until the page is hydrated (the scene is rendered client-side only). */
 async function open(page: Page, url: string) {
 	await page.goto(url);
-	await expect(page.locator('.stage svg > g')).toBeAttached();
+	await expect(page.locator('.stage svg > g:not([data-leaving])')).toBeAttached();
 }
 
 test(

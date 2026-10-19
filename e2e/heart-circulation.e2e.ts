@@ -1,6 +1,6 @@
 import { expect, test, type Page } from '@playwright/test';
 
-const stage = (page: Page) => page.locator('.stage svg > g');
+const stage = (page: Page) => page.locator('.stage svg > g:not([data-leaving])');
 
 test('a faster heart pumps less per beat but more per minute', async ({ page }) => {
 	await page.goto('./heart-circulation/#rate');

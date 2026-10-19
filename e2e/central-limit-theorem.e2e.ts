@@ -1,6 +1,6 @@
 import { expect, test, type Page } from '@playwright/test';
 
-const stage = (page: Page) => page.locator('.stage svg > g');
+const stage = (page: Page) => page.locator('.stage svg > g:not([data-leaving])');
 
 test('the Galton board counts the paths into the end and middle bins', async ({ page }) => {
 	await page.goto('./central-limit-theorem/#why');

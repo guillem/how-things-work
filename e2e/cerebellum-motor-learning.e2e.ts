@@ -3,7 +3,7 @@ import { expect, test, type Page } from '@playwright/test';
 // The cerebellum explainer: what a visitor sees when reaching under a rotated or hidden cursor
 // (with a pointer or the keyboard), as the recovery protocol moves from phase to phase, and on
 // the model charts. The model tests check the numbers.
-const stage = (page: Page) => page.locator('.stage svg > g');
+const stage = (page: Page) => page.locator('.stage svg > g:not([data-leaving])');
 const workspace = (page: Page) => page.getByRole('slider', { name: /Workspace/ });
 const range = (page: Page, id: string) => page.locator(`input[type=range][data-control=${id}]`);
 

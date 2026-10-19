@@ -4,7 +4,7 @@ import { expect, test, type Page } from '@playwright/test';
 // and production, drag a threshold, pick Bicoid's measured constants, compare a short and a long
 // tissue with and without the expansion–repression circuit, and add reading noise. Reduced motion
 // shows each scene's settled frame. The model tests check the numbers themselves.
-const stage = (page: Page) => page.locator('.stage svg > g');
+const stage = (page: Page) => page.locator('.stage svg > g:not([data-leaving])');
 const range = (page: Page, id: string) => page.locator(`input[type=range][data-control=${id}]`);
 /** The numbers after each `prefix` in the stage's text, in order. */
 const readAll = async (page: Page, prefix: string) => {

@@ -4,7 +4,7 @@ import { expect, test, type Page } from '@playwright/test';
 // sweep it up and down (with and without glucose, and with lactose instead), and grow cultures
 // of the wild type and the mutants on glucose and lactose. Reduced motion shows each scene's
 // complete frame (the sweep and the culture run to the end). The model tests check the numbers.
-const stage = (page: Page) => page.locator('.stage svg > g');
+const stage = (page: Page) => page.locator('.stage svg > g:not([data-leaving])');
 const range = (page: Page, id: string) => page.locator(`input[type=range][data-control=${id}]`);
 /** The number after `prefix` in the stage's text. */
 const read = async (page: Page, prefix: string) => {

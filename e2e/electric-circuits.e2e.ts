@@ -1,6 +1,6 @@
 import { expect, test, type Page } from '@playwright/test';
 
-const stage = (page: Page) => page.locator('.stage svg > g');
+const stage = (page: Page) => page.locator('.stage svg > g:not([data-leaving])');
 const slot = (page: Page, pegs: string) =>
 	page.getByRole('button', { name: new RegExp(`between pegs ${pegs}\\b`) });
 const tool = (page: Page, value: string) =>

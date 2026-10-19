@@ -3,7 +3,7 @@ import { expect, test, type Page } from '@playwright/test';
 // The differential-equations explainer: what a visitor sees when they drop starting points on
 // the slope field, move the newest one, overlay the exact formula, and raise the catch of the
 // fish stock past rK/4. The model tests check the numbers themselves.
-const stage = (page: Page) => page.locator('.stage svg > g');
+const stage = (page: Page) => page.locator('.stage svg > g:not([data-leaving])');
 const range = (page: Page, id: string) => page.locator(`input[type=range][data-control=${id}]`);
 const action = (page: Page, id: string) => page.locator(`.action button[data-control=${id}]`);
 

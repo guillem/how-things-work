@@ -1,6 +1,6 @@
 import { expect, test, type Page } from '@playwright/test';
 
-const stage = (page: Page) => page.locator('.stage svg > g');
+const stage = (page: Page) => page.locator('.stage svg > g:not([data-leaving])');
 const pick = (page: Page, control: string, value: string) =>
 	page.locator(`button[data-control="${control}"][data-value="${value}"]`).click();
 const slide = (page: Page, control: string, value: string) =>

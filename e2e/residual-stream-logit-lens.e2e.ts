@@ -3,7 +3,7 @@ import { expect, test, type Page } from '@playwright/test';
 // The residual-stream explainer: what a visitor sees when they follow GPT-2's running vector, read
 // it with the logit lens, and switch components off. The numbers are GPT-2 small's (the model
 // tests check them against the data). Reduced motion freezes every scene on its complete frame.
-const stage = (page: Page) => page.locator('.stage svg > g');
+const stage = (page: Page) => page.locator('.stage svg > g:not([data-leaving])');
 const range = (page: Page, id: string) => page.locator(`input[type=range][data-control=${id}]`);
 const choose = (page: Page, id: string, value: string) =>
 	page.locator(`button[data-control=${id}][data-value=${value}]`).click();

@@ -3,7 +3,7 @@ import { expect, test, type Page } from '@playwright/test';
 // The exponentials-and-logarithms explainer: what a visitor sees when they fold paper, race
 // adding against multiplying, switch to a log axis, count doublings, date a sample and use the
 // slide rule. The model tests check the arithmetic itself.
-const stage = (page: Page) => page.locator('.stage svg > g');
+const stage = (page: Page) => page.locator('.stage svg > g:not([data-leaving])');
 const range = (page: Page, id: string) => page.locator(`input[type=range][data-control=${id}]`);
 
 test.beforeEach(async ({ page }) => {

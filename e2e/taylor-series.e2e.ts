@@ -3,7 +3,7 @@ import { expect, test, type Page } from '@playwright/test';
 // The taylor-series explainer: what a visitor sees when they add terms, move the point where the
 // error is measured, move the centre, and compare with Chebyshev interpolation. The model tests
 // check the numbers themselves.
-const stage = (page: Page) => page.locator('.stage svg > g');
+const stage = (page: Page) => page.locator('.stage svg > g:not([data-leaving])');
 const range = (page: Page, id: string) => page.locator(`input[type=range][data-control=${id}]`);
 
 test.beforeEach(async ({ page }) => {

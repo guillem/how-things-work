@@ -5,7 +5,7 @@
 // view under 19 cm wraps the head. Reduced motion gives each step's complete frame.
 import { expect, test, type Page } from '@playwright/test';
 
-const stage = (page: Page) => page.locator('.stage svg > g');
+const stage = (page: Page) => page.locator('.stage svg > g:not([data-leaving])');
 const range = (page: Page, id: string) => page.locator(`input[type=range][data-control="${id}"]`);
 const toggle = (page: Page, id: string) => page.locator(`input[type=checkbox][data-control=${id}]`);
 const choose = (page: Page, id: string, value: string) =>

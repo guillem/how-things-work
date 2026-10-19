@@ -1,6 +1,6 @@
 import { expect, test, type Page } from '@playwright/test';
 
-const stage = (page: Page) => page.locator('.stage svg > g');
+const stage = (page: Page) => page.locator('.stage svg > g:not([data-leaving])');
 const episodes = (page: Page) => page.getByRole('slider', { name: 'Episode' });
 
 /** Jump to the end of training with the episode bar's End key. */

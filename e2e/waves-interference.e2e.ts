@@ -1,6 +1,6 @@
 import { expect, test, type Locator, type Page } from '@playwright/test';
 
-const stage = (page: Page) => page.locator('.stage svg > g');
+const stage = (page: Page) => page.locator('.stage svg > g:not([data-leaving])');
 const slider = (page: Page, id: string) => page.locator(`input[type=range][data-control=${id}]`);
 /** A text of the stage that reads exactly `text`. */
 const reading = (page: Page, text: string) =>

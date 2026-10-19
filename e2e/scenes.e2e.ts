@@ -20,7 +20,7 @@ function watchErrors(page: Page) {
 	return errors;
 }
 
-const stage = (page: Page) => page.locator('.stage svg > g');
+const stage = (page: Page) => page.locator('.stage svg > g:not([data-leaving])');
 
 /** The page's requests still in flight (a scene may fetch its data after it first draws). */
 function watchRequests(page: Page) {

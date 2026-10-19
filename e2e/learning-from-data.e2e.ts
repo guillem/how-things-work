@@ -1,6 +1,6 @@
 import { expect, test, type Page } from '@playwright/test';
 
-const stage = (page: Page) => page.locator('.stage svg > g');
+const stage = (page: Page) => page.locator('.stage svg > g:not([data-leaving])');
 const degree = (page: Page) => page.locator('input[type=range][data-control=degree]');
 
 async function open(page: Page, url: string, text: string) {

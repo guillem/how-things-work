@@ -5,7 +5,7 @@ import { playUntil } from './play';
 // attention, turn the sinusoids' clock hands and move a query and a key under RoPE. The numbers
 // are what the page computes (the model tests check the properties behind them). Reduced motion
 // freezes every scene on its complete frame.
-const stage = (page: Page) => page.locator('.stage svg > g');
+const stage = (page: Page) => page.locator('.stage svg > g:not([data-leaving])');
 const range = (page: Page, id: string) => page.locator(`input[type=range][data-control=${id}]`);
 
 test.beforeEach(async ({ page }) => {

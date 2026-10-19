@@ -4,7 +4,7 @@ import { expect, test, type Page } from '@playwright/test';
 // the outer hair cells off, raise the level, kill the outer hair cells near the 5 kHz place and
 // listen through an implant. Reduced motion freezes the wave; the numbers come from the model,
 // which the model tests check against measurements.
-const stage = (page: Page) => page.locator('.stage svg > g');
+const stage = (page: Page) => page.locator('.stage svg > g:not([data-leaving])');
 const range = (page: Page, id: string) => page.locator(`input[type=range][data-control=${id}]`);
 /** The number after `prefix` in the stage's text. */
 const read = async (page: Page, prefix: string) => {

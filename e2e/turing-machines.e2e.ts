@@ -1,7 +1,7 @@
 import { expect, test, type Page } from '@playwright/test';
 import { playUntil } from './play';
 
-const stage = (page: Page) => page.locator('.stage svg > g');
+const stage = (page: Page) => page.locator('.stage svg > g:not([data-leaving])');
 const scrubber = (page: Page, name = 'Machine position') => page.getByRole('slider', { name });
 const editor = (page: Page) => page.getByRole('textbox', { name: 'Rule table' });
 const tape = (page: Page) => page.getByRole('textbox', { name: 'Starting tape' });

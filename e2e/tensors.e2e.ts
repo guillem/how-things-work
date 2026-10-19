@@ -1,7 +1,7 @@
 import { expect, test, type Page } from '@playwright/test';
 import { get, macaw, meanOver, num, principal, stress } from '../src/routes/tensors/tensor';
 
-const stage = (page: Page) => page.locator('.stage svg > g');
+const stage = (page: Page) => page.locator('.stage svg > g:not([data-leaving])');
 const slider = (page: Page, id: string) => page.locator(`input[type=range][data-control=${id}]`);
 const choose = (page: Page, id: string, value: string) =>
 	page.locator(`button[data-control=${id}][data-value=${value}]`).click();

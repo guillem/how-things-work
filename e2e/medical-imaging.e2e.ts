@@ -3,7 +3,7 @@ import { expect, test, type Page } from '@playwright/test';
 // Reduced motion: every scan is shown complete, so readouts are final.
 test.use({ reducedMotion: 'reduce' });
 
-const stage = (page: Page) => page.locator('.stage svg > g');
+const stage = (page: Page) => page.locator('.stage svg > g:not([data-leaving])');
 const range = (page: Page, id: string) => page.locator(`input[type=range][data-control=${id}]`);
 const toggle = (page: Page, id: string) => page.locator(`input[type=checkbox][data-control=${id}]`);
 const errorPct = async (page: Page) => {

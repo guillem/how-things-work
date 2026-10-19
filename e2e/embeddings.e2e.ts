@@ -3,7 +3,7 @@ import { expect, test, type Page } from '@playwright/test';
 // The embeddings explainer: what a visitor sees when they pick words, search the map, do word
 // arithmetic and compare sentences. Reduced motion freezes the scenes on a complete frame
 // (t = 2.5 s, tweens instant), so every number is on the stage at once.
-const stage = (page: Page) => page.locator('.stage svg > g');
+const stage = (page: Page) => page.locator('.stage svg > g:not([data-leaving])');
 
 test.beforeEach(async ({ page }) => {
 	await page.emulateMedia({ reducedMotion: 'reduce' });

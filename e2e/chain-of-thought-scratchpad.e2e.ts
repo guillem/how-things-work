@@ -4,7 +4,7 @@ import { playUntil } from './play';
 // The chain-of-thought-scratchpad explainer: both shipped models run in the page on the sum the
 // visitor picks, and the charts show the measured accuracies. The model tests check the numbers
 // and the weights; these check what a visitor sees.
-const stage = (page: Page) => page.locator('.stage svg > g');
+const stage = (page: Page) => page.locator('.stage svg > g:not([data-leaving])');
 const option = (page: Page, value: string) =>
 	page.locator(`button[data-control=sum][data-value="${value}"]`);
 

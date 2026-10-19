@@ -1,6 +1,6 @@
 import { expect, test, type Page } from '@playwright/test';
 
-const stage = (page: Page) => page.locator('.stage svg > g');
+const stage = (page: Page) => page.locator('.stage svg > g:not([data-leaving])');
 
 // Reduced motion shows each step's finished picture: the clock has run to the end.
 test.use({ reducedMotion: 'reduce' });
