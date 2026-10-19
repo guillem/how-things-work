@@ -1,6 +1,6 @@
 # Topic catalog
 
-Source of truth for the content of an interactive web learning tool that shows how things work. It defines 153 topics in 11 categories, each built around one interactive graphic. Readers range from high-school students to university majors.
+Source of truth for the content of an interactive web learning tool that shows how things work. It defines 154 topics in 11 categories, each built around one interactive graphic. Readers range from high-school students to university majors.
 
 This file covers content only. It does not choose the stack, the visual design or the project layout; take those from the repository's own instructions.
 
@@ -90,7 +90,7 @@ A topic is done when:
 | Earth & Climate | `earth` | 13 |
 | Space | `space` | 11 |
 | Computing | `computing` | 13 |
-| Information & Networks | `networks` | 12 |
+| Information & Networks | `networks` | 13 |
 | Artificial Intelligence | `ai` | 19 |
 | Energy & Machines | `energy` | 10 |
 
@@ -237,6 +237,7 @@ A topic is done when:
 - [x] shazam-audio-fingerprint
 - [x] distributed-hash-tables
 - [x] elliptic-curve-cryptography
+- [ ] kalman-filter
 
 **Artificial Intelligence**
 - [x] learning-from-data
@@ -1413,7 +1414,7 @@ A topic is done when:
 - **Interaction:** Drag a receiver across a flat map while satellites broadcast their positions and clock times; a circle of distance around each satellite passes through the receiver. Give the receiver's clock an error and every circle grows or shrinks together, so they stop meeting at a point; solving for that error as well takes one extra satellite (four in all, in three dimensions). Then switch off the relativity correction: the satellite clocks gain about 38 microseconds a day on clocks on the ground, worth about 11 km of range. Compare a receiver that trusts its own clock with one that solves for it.
 - **Takeaway:** A receiver finds its position by timing signals from satellites whose positions are known, which only works because the clocks are kept correct to billionths of a second.
 - **Prerequisites:** special-relativity
-- **Related:** orbits-kepler, black-holes
+- **Related:** orbits-kepler, black-holes, kalman-filter
 - **Pitfall:** The method is trilateration (distances), not triangulation (angles). The relativity correction has two parts with opposite signs: orbital speed slows the satellite clocks by about 7 microseconds a day and weaker gravity speeds them up by about 45, a net gain of about 38. The popular claim that positions would drift about 10 km a day without it describes the range error, not the position: an offset shared by all the satellites is absorbed when the receiver solves for its own clock, so its position barely moves and its time is wrong.
 
 #### pagerank
@@ -1474,6 +1475,16 @@ A topic is done when:
 - **Related:** consensus-blockchains, quantum-computing
 - **Needs:** Curve parameters from the openly published standards SEC 2 (secp256k1) and RFC 7748 (Curve25519).
 - **Pitfall:** The picture over the real numbers is for intuition only: the cryptography lives on the finite-field points, where there is no curve to see, and the hardness is the discrete logarithm, not the shape. 'Elliptic' has nothing to do with ellipses.
+
+#### kalman-filter
+- **Title:** The Kalman filter
+- **Level:** 3
+- **Kind:** simulate
+- **Interaction:** Track a moving object from a noisy sensor: at each step the filter predicts where the object will be, then blends in the new measurement, with the estimate's uncertainty drawn as an ellipse that grows on prediction and shrinks on measurement. Turn the measurement noise up and watch the filter lean on its model; add a second sensor (an accelerometer to the GPS fix) and see the fused estimate beat either alone; make the object swerve and watch a filter with the wrong motion model lag behind, confidently.
+- **Takeaway:** The best estimate of where something is comes from weighing a prediction against a measurement in proportion to how much each can be trusted, and the filter keeps that weighting up to date.
+- **Prerequisites:** bayes-theorem, central-limit-theorem, linear-transformations, feedback-control
+- **Related:** gps
+- **Pitfall:** It does not average measurements: with a good model it can be more certain than any single measurement. It is optimal only for linear systems with Gaussian noise, and when the model is wrong the failure mode is confident and wrong.
 
 ### Artificial Intelligence
 
