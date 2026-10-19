@@ -4,7 +4,7 @@ import { expect, test, type Page } from '@playwright/test';
 // rule, when servers get virtual nodes, when a lookup walks successors or jumps along fingers,
 // when the network grows to 16,384 nodes, and when churn meets longer successor lists and more
 // copies. Reduced motion shows each run finished. The model tests check the numbers themselves.
-const stage = (page: Page) => page.locator('.stage svg > g');
+const stage = (page: Page) => page.locator('.stage svg > g:not([data-leaving])');
 const range = (page: Page, id: string) => page.locator(`input[type=range][data-control=${id}]`);
 const toggle = (page: Page, id: string) => page.locator(`input[type=checkbox][data-control=${id}]`);
 const choose = (page: Page, id: string, value: string) =>
