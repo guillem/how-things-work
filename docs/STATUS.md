@@ -4,7 +4,7 @@ The self-handover. If work is interrupted, this file alone must be enough to con
 top to bottom, then run the commands under "Resume". **Update it at every commit**, not just at
 the end of a development.
 
-Last updated: 2026-10-18 21:30 UTC, 45 of the proposal's topics built (unreleased).
+Last updated: 2026-10-19 03:30 UTC, 54 of the proposal's topics built; v1.1.2 live (154 topics).
 
 ## How we work
 
@@ -35,12 +35,13 @@ Last updated: 2026-10-18 21:30 UTC, 45 of the proposal's topics built (unrelease
 
 ## Current state
 
-- **All 100 catalogue topics are built, fact-checked and ticked** (done 2026-10-15). `main` is
-  deployed as **v1.0.0** (2026-10-17): the 100 topics plus the index search and filters (a sticky
+- **All 100 catalogue topics are built, fact-checked and ticked** (done 2026-10-15). **v1.1.2**
+  (2026-10-19) is live: 154 topics, the 100 plus 54 of the proposal's. Before it, v1.0.0
+  (2026-10-17): the 100 topics plus the index search and filters (a sticky
   sidebar on wide screens), faster browser tests and the overnight backlog round described below.
   Earlier: v0.1.21 (2026-10-15) the housekeeping, stage-text fix and public polish; v0.1.19 the
-  user's external audit (`docs/codex-fact-check-complete.md`). **Since then the proposal's topics
-  are being built onto `main` (24 so far, none released; see "Current development").** What is
+  user's external audit (`docs/codex-fact-check-complete.md`). **The proposal's topics are being
+  built onto `main` (see "Current development").** What is
   left open, and the decisions left for the user, are in [`BACKLOG.md`](BACKLOG.md) ("Open after
   the backlog round").
 - Licence: MIT code, CC BY 4.0 content, third-party data under its own terms (`LICENSE`,
@@ -86,20 +87,40 @@ promoted into `TOPICS.md` as their builds start (next paragraph).
 time in worktrees, each fact-checked by Codex (`scripts/local-review.mjs`) and pushed to `main`;
 the entry is promoted into `TOPICS.md` when its build starts. Order:
 `proposals/topics-200/data/build-order.json` (the LLM ladder first, then the level 1–3 topics;
-level 0 last, pending the user's answer on its definition). Built so far: 45 of the 100.
+level 0 last, pending the user's answer on its definition). Built so far: 54 of the 100, all released in v1.1.2.
 
-**Resumed 2026-10-18 night on the new machine** (after the move; the user's weekly limit is now
-98%). Landed since: ocean-acidification, tsunamis, carbonate-silicate-thermostat,
-radiative-convective-column. Next in `build-order.json`: aperture-synthesis onwards (15
-level 1–3 topics after radiative-convective-column), then cellular-automata and the 39 level-0
-topics, which wait for the user's answer on level 0. The full suite on the new machine passed
-2,892 of 2,892 (5.2 min, 4 workers), including the load flakes seen before (central-limit-theorem
-"drawing the starting shape", electromagnetism, taylor-series, training-a-tiny-language-model
-"chart grows to fit", site "follows a live change of the OS preference"); central-limit-theorem
-failed once more under three parallel builds and passed alone. Follow-ups the builders named: a
-regression test for turing-patterns' flat-dish restart; mri-k-space's tissue values (Gach et al. 2008) marked Unconfirmed in `DATA-SOURCES.md`; ocean-acidification's PyCO2SYS cross-check
-(the entry's Needs now names Orr et al. 2015's intercomparison instead, as PyCO2SYS wasn't
-installed); `docs/full-picture.html` is current to 45.
+**Resumed 2026-10-18 night on the new machine** (the user's weekly limit is now 98%). Landed
+since: ocean-acidification, tsunamis, carbonate-silicate-thermostat, radiative-convective-column,
+game-tree-search, lagrange-points-three-body, aperture-synthesis (the Reserve's "Telescopes"
+removed), cache-memory-hierarchy, hash-tables-bloom-filters, shazam-audio-fingerprint,
+distributed-hash-tables, elliptic-curve-cryptography, kalman-filter. **Paused 2026-10-19 ~03:30
+UTC at about 97% of the weekly usage** (resets 2026-10-21 06:00 UTC; no builder running, no
+worktree left). Next in `build-order.json`: radar-sonar, k-means-clustering, abs-brakes,
+bicycle-stability, gas-turbines-combined-cycle, heat-pumps-refrigeration (the Reserve's "Heat
+pumps"), then cellular-automata and the 39 level-0 topics, which wait for the user's answer on
+level 0. kalman-filter's Related line leaves out radar-sonar until it exists; add it back then.
+
+**Releases v1.1.0–v1.1.2 (2026-10-19, the user asked for one around 150 topics).** v1.1.0 and
+v1.1.1 failed in CI and deployed nothing; v1.1.2 is live. What changed on the way:
+
+- The stage cross-fade: the outgoing scene's `<g>` stays during its 160 ms fade, so the strict
+  `.stage svg > g` locator saw two (the electromagnetism flake). `SceneStage` now marks it
+  `data-leaving` in the outro function itself (outrostart fires a frame too late), and every
+  browser test uses `.stage svg > g:not([data-leaving])`.
+- CPU load on the CI runner: ecg-arrhythmias' browser tests run one after another in one worker;
+  "the chart grows to fit" and the glossary tooltip check poll; on CI assertions wait up to
+  15 s (`playwright.config.ts`); the verify job's limit is 35 min (it took 19 min: `make check`
+  ~6, browser suite ~13).
+- site.e2e found cards by `href$="cryptography/"`, which also matched
+  elliptic-curve-cryptography; it now matches the whole path segment.
+- Load flakes still seen locally under parallel builds, each passing alone: central-limit-theorem
+  "drawing the starting shape", site "follows a live change of the OS preference".
+
+Follow-ups the builders named: a regression test for turing-patterns' flat-dish restart;
+mri-k-space's tissue values (Gach et al. 2008) and aperture-synthesis' VLA pad file (CASA data,
+terms page down) marked Unconfirmed in `DATA-SOURCES.md`; ocean-acidification's PyCO2SYS
+cross-check (the entry's Needs names Orr et al. 2015's intercomparison instead, as PyCO2SYS
+wasn't installed). `docs/full-picture.html` is current to v1.1.2.
 
 **Released as v1.0.0 (2026-10-17): the backlog round (overnight) and the index work below.** Before
 releasing 1.0 the user asked to clear the backlog. One agent per package in a local worktree,

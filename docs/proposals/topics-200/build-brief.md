@@ -47,7 +47,9 @@ continue"). The lead session runs one builder at a time, in the main checkout, o
    width with `TOUCH=1`). Look at every image and fix what is wrong.
 6. **Browser test** `e2e/<slug>.e2e.ts` for the behaviour worth guarding (controls, the model's
    visible result), following the testing philosophy (no `waitForTimeout`; reduced motion,
-   keyboard or the fake clock).
+   keyboard or the fake clock). Locate the stage with
+   `page.locator('.stage svg > g:not([data-leaving])')`: during a scene cross-fade the outgoing
+   scene's `<g>` is still there, marked `data-leaving`.
 
 ## Fact-check and finish
 

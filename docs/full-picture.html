@@ -507,7 +507,7 @@
 			<header>
 				<h1>How Things Work <span class="accent">— the full picture</span></h1>
 				<span class="updated"
-					>updated 2026-10-18 · v1.0.0 live · 45 of the next 100 topics built on main, unreleased ·
+					>updated 2026-10-19 · v1.1.2 live (154 topics) · 54 of the next 100 topics built ·
 					<a href="https://guillem.github.io/how-things-work/">live site</a></span
 				>
 			</header>
@@ -521,27 +521,26 @@
 				>.
 			</p>
 			<div class="badges">
-				<span class="badge"><span class="dot green"></span>v1.0.0 live · the first 100 topics</span>
+				<span class="badge"><span class="dot green"></span>v1.1.2 live · 154 topics</span>
 				<span class="badge"><span class="dot green"></span>make check green on main</span>
 				<span class="badge"
-					><span class="dot amber"></span>next 100 topics · 45 built on main, unreleased · 55 to
-					go</span
+					><span class="dot amber"></span>next 100 topics · 54 built and live · 46 to go</span
 				>
 			</div>
 			<div class="hero">
 				<div class="row">
-					<span class="big">145</span><span class="of">of 145 catalogue topics built</span
+					<span class="big">154</span><span class="of">of 154 catalogue topics built</span
 					><span class="pct">100%</span>
 				</div>
 				<div class="track"><div class="fill" style="width: 100%"></div></div>
 				<div class="row">
-					<span class="big">45</span><span class="of">of the 100 proposed topics built</span
-					><span class="pct">24%</span>
+					<span class="big">54</span><span class="of">of the 100 proposed topics built</span
+					><span class="pct">54%</span>
 				</div>
-				<div class="track"><div class="fill" style="width: 45%"></div></div>
+				<div class="track"><div class="fill" style="width: 54%"></div></div>
 				<div class="stats">
 					<div class="stat">
-						<div class="n">145</div>
+						<div class="n">154</div>
 						<div class="l">built &amp; fact-checked (ticked)</div>
 					</div>
 					<div class="stat">
@@ -553,7 +552,7 @@
 						<div class="l">being built right now</div>
 					</div>
 					<div class="stat">
-						<div class="n">75</div>
+						<div class="n">45</div>
 						<div class="l">proposed, not started yet</div>
 					</div>
 					<div class="stat">
@@ -663,42 +662,46 @@
 						</details>
 					</div>
 					<div class="cat">
-						<div class="head"><span class="name">Space</span><span class="frac">9/9</span></div>
+						<div class="head"><span class="name">Space</span><span class="frac">11/11</span></div>
 						<div class="mini"><i style="width: 100%"></i></div>
 						<div class="chips"></div>
 						<details class="done-list">
-							<summary>9 built &amp; fact-checked</summary>
+							<summary>11 built &amp; fact-checked (2 new since v1.0.0)</summary>
 							<div class="done-items">
 								sun-earth-moon orbits-kepler rockets stars black-holes gravitational-waves
-								dark-matter big-bang exoplanets
+								dark-matter big-bang exoplanets · new since v1.0.0: lagrange-points-three-body
+								aperture-synthesis
 							</div>
 						</details>
 					</div>
 					<div class="cat">
 						<div class="head">
-							<span class="name">Computing</span><span class="frac">10/10</span>
+							<span class="name">Computing</span><span class="frac">13/13</span>
 						</div>
 						<div class="mini"><i style="width: 100%"></i></div>
 						<div class="chips"></div>
 						<details class="done-list">
-							<summary>10 built &amp; fact-checked</summary>
+							<summary>13 built &amp; fact-checked (3 new since v1.0.0)</summary>
 							<div class="done-items">
 								binary logic-gates transistors-chipmaking cpu gpu graphics-3d sorting graph-search
-								turing-machines quantum-computing
+								turing-machines quantum-computing · new since v1.0.0: game-tree-search
+								cache-memory-hierarchy hash-tables-bloom-filters
 							</div>
 						</details>
 					</div>
 					<div class="cat">
 						<div class="head">
-							<span class="name">Information &amp; Networks</span><span class="frac">9/9</span>
+							<span class="name">Information &amp; Networks</span><span class="frac">13/13</span>
 						</div>
 						<div class="mini"><i style="width: 100%"></i></div>
 						<div class="chips"></div>
 						<details class="done-list">
-							<summary>9 built &amp; fact-checked (1 new since v1.0.0)</summary>
+							<summary>13 built &amp; fact-checked (5 new since v1.0.0)</summary>
 							<div class="done-items">
 								compression error-correction cryptography wireless-signals internet gps pagerank
 								consensus-blockchains · new since v1.0.0: tcp-congestion-control
+								shazam-audio-fingerprint distributed-hash-tables elliptic-curve-cryptography
+								kalman-filter
 							</div>
 						</details>
 					</div>
@@ -744,13 +747,12 @@
 						<div class="task todo">
 							<span class="mark">→</span>
 							<div>
-								building the proposal: 45 of 100 topics on main (resumed on the new machine)<span
-									class="small"
+								building the proposal: 54 of 100 topics built and live<span class="small"
 									>one builder agent per topic, three at a time in worktrees, each fact-checked by
 									Codex and landed on main · order in
 									docs/proposals/topics-200/data/build-order.json (the LLM ladder first, then levels
-									1–3; level 0 last) · next: aperture-synthesis · make check and make e2e-full green
-									on main (2,945 tests) · nothing released yet</span
+									1–3; level 0 last) · paused at the weekly usage cap · next: radar-sonar · make
+									e2e-full green on main (3,141 tests) · all 54 released in v1.1.2</span
 								>
 							</div>
 						</div>
@@ -830,15 +832,6 @@
 					</div>
 					<div class="col decide">
 						<h3>Decisions wanted from Guillem</h3>
-						<div class="task todo">
-							<span class="mark">★</span>
-							<div>
-								release the 45 new topics<span class="small"
-									>validate locally, then make release (the tag runs checks, tests and the deploy);
-									none of the 45 is live yet</span
-								>
-							</div>
-						</div>
 						<div class="task todo">
 							<span class="mark">★</span>
 							<div>
@@ -1017,26 +1010,16 @@
 			<section>
 				<h2>Releases</h2>
 				<div class="releases">
-					<div class="rel">
-						<span class="tag">main</span><span class="date">unreleased</span
+					<div class="rel latest">
+						<span class="tag">v1.1.2</span><span class="date">2026-10-19</span
 						><span
-							>45 new topics since v1.0.0 (2026-10-18): the LLM ladder (ngram-text-models,
-							tokenization, positional-encoding, residual-stream-logit-lens,
-							training-a-tiny-language-model, scaling-laws, rlhf-alignment, kv-cache-inference,
-							speculative-decoding, chain-of-thought-scratchpad), taylor-series, chromatography,
-							bacterial-chemotaxis, cerebellum-motor-learning, ensemble-weather-forecasting,
-							tcp-congestion-control, wind-turbine-aerodynamics, exponentials-logarithms,
-							game-theory-cooperation, differential-equations, calculus-of-variations,
-							phase-portraits, random-graphs, resampling-inference, musical-scales-ratios,
-							ising-model, lasers, dislocations-alloys, huckel-molecular-orbitals,
-							surface-catalysis, transition-state-theory, diffusion-osmosis, pcr-copying-dna,
-							lac-operon, morphogen-gradients, population-genetics, turing-patterns,
-							pharmacokinetics-dosing, cochlea-hearing, mri-k-space, ecg-arrhythmias,
-							ocean-acidification, tsunamis, carbonate-silicate-thermostat,
-							radiative-convective-column</span
+							>54 new topics (154 in all): the LLM ladder, the level 1–3 proposal topics through
+							kalman-filter · scene cross-fade test fix (data-leaving) · CI: 15 s waits and a
+							35-minute job (v1.1.0 failed four load tests, v1.1.1 timed out; neither
+							deployed)</span
 						>
 					</div>
-					<div class="rel latest">
+					<div class="rel">
 						<span class="tag">v1.0.0</span><span class="date">2026-10-17</span
 						><span
 							>index search and filters (sidebar) · phone readouts in all 100 topics · logic-gates
@@ -1154,8 +1137,8 @@
 				</div>
 				<div>
 					Numbers come from the repo’s own books: the TOPICS.md checklist, STATUS.md, BACKLOG.md and
-					the git tags. Last updated 2026-10-18, after the first 45 topics of the proposal landed on
-					main.
+					the git tags. Last updated 2026-10-19, after v1.1.2 (54 of the proposal's topics) went
+					live.
 				</div>
 			</footer>
 		</div>
