@@ -4,7 +4,7 @@ The self-handover. If work is interrupted, this file alone must be enough to con
 top to bottom, then run the commands under "Resume". **Update it at every commit**, not just at
 the end of a development.
 
-Last updated: 2026-10-19 03:30 UTC, 54 of the proposal's topics built; v1.1.2 live (154 topics).
+Last updated: 2026-10-19 03:30 UTC, 55 of the proposal's topics built; v1.1.2 live (154 topics), radar-sonar unreleased.
 
 ## How we work
 
@@ -87,18 +87,18 @@ promoted into `TOPICS.md` as their builds start (next paragraph).
 time in worktrees, each fact-checked by Codex (`scripts/local-review.mjs`) and pushed to `main`;
 the entry is promoted into `TOPICS.md` when its build starts. Order:
 `proposals/topics-200/data/build-order.json` (the LLM ladder first, then the level 1–3 topics;
-level 0 last, pending the user's answer on its definition). Built so far: 54 of the 100, all released in v1.1.2.
+level 0 last, pending the user's answer on its definition). Built so far: 55 of the 100; 54 released in v1.1.2, radar-sonar on `main` unreleased.
 
 **Resumed 2026-10-18 night on the new machine** (the user's weekly limit is now 98%). Landed
 since: ocean-acidification, tsunamis, carbonate-silicate-thermostat, radiative-convective-column,
 game-tree-search, lagrange-points-three-body, aperture-synthesis (the Reserve's "Telescopes"
 removed), cache-memory-hierarchy, hash-tables-bloom-filters, shazam-audio-fingerprint,
-distributed-hash-tables, elliptic-curve-cryptography, kalman-filter. **Paused 2026-10-19 ~03:30
+distributed-hash-tables, elliptic-curve-cryptography, kalman-filter, radar-sonar (unreleased). **Paused 2026-10-19 ~03:30
 UTC at about 97% of the weekly usage** (resets 2026-10-21 06:00 UTC; no builder running, no
-worktree left). Next in `build-order.json`: radar-sonar, k-means-clustering, abs-brakes,
+worktree left). Next in `build-order.json`: k-means-clustering, abs-brakes,
 bicycle-stability, gas-turbines-combined-cycle, heat-pumps-refrigeration (the Reserve's "Heat
 pumps"), then cellular-automata and the 39 level-0 topics, which wait for the user's answer on
-level 0. kalman-filter's Related line leaves out radar-sonar until it exists; add it back then.
+level 0.
 
 **Releases v1.1.0–v1.1.2 (2026-10-19, the user asked for one around 150 topics).** v1.1.0 and
 v1.1.1 failed in CI and deployed nothing; v1.1.2 is live. What changed on the way:
