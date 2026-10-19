@@ -627,6 +627,31 @@
 			return { id: k, d, fate: end === 20 ? 'up' : end === 0 ? 'down' : 'mid' };
 		});
 	})();
+
+	// Elliptic-curve cryptography: y² = x³ + 7 (x ↦ 40 + 22(x + 2.2), y ↦ 60 − 4.2y), the chord
+	// through P (y = −2.5) and Q (y = 3.5), its third point R and the sum P + Q, R's mirror.
+	const eccArt = (() => {
+		const sx = (x: number) => 40 + (x + 2.2) * 22;
+		const sy = (y: number) => 60 - y * 4.2;
+		const curve = Array.from({ length: 121 }, (_, i) => {
+			const y = -12 + (24 * i) / 120;
+			return `${i ? 'L' : 'M'}${sx(Math.cbrt(y * y - 7)).toFixed(1)} ${sy(y).toFixed(1)}`;
+		}).join(' ');
+		const P = { x: Math.cbrt(-0.75), y: -2.5 };
+		const Q = { x: Math.cbrt(5.25), y: 3.5 };
+		const l = (Q.y - P.y) / (Q.x - P.x);
+		const rx = l * l - P.x - Q.x;
+		const ry = P.y + l * (rx - P.x);
+		const pt = (x: number, y: number) => ({ x: sx(x), y: sy(y) });
+		return {
+			curve,
+			P: pt(P.x, P.y),
+			Q: pt(Q.x, Q.y),
+			R: pt(rx, ry),
+			S: pt(rx, -ry),
+			line: `M${sx(-2.2)} ${sy(P.y + l * (-2.2 - P.x))} L${sx(rx + 0.3)} ${sy(ry + l * 0.3)}`
+		};
+	})();
 </script>
 
 <svg viewBox="0 0 200 120" class="art" style:--accent={accent} aria-hidden="true">
@@ -5179,6 +5204,37 @@
 			opacity="0.8"
 		/>
 		<rect x="148" y="50" width="9" height="9" fill={accent} transform="rotate(45 152.5 54.5)" />
+	{:else if slug === 'elliptic-curve-cryptography'}
+		<!-- y² = x³ + 7 with a chord through P and Q, its third point R and the sum, R mirrored -->
+		<path
+			d={eccArt.curve}
+			fill="none"
+			stroke="currentColor"
+			stroke-width="2"
+			opacity="0.5"
+			stroke-linecap="round"
+		/>
+		<path d={eccArt.line} fill="none" stroke={accent} stroke-width="1.6" opacity="0.8" />
+		<line
+			x1={eccArt.R.x}
+			x2={eccArt.S.x}
+			y1={eccArt.R.y}
+			y2={eccArt.S.y}
+			stroke={accent}
+			stroke-width="1.4"
+			stroke-dasharray="3 3"
+		/>
+		<circle cx={eccArt.P.x} cy={eccArt.P.y} r="4.5" fill={accent} />
+		<circle cx={eccArt.Q.x} cy={eccArt.Q.y} r="4.5" fill={accent} />
+		<circle
+			cx={eccArt.R.x}
+			cy={eccArt.R.y}
+			r="4.5"
+			fill="var(--surface)"
+			stroke={accent}
+			stroke-width="1.6"
+		/>
+		<circle cx={eccArt.S.x} cy={eccArt.S.y} r="5.5" fill={accent} />
 	{:else}
 		<circle cx="100" cy="60" r="30" fill="none" stroke={accent} stroke-width="2" />
 		<circle cx="100" cy="60" r="5" fill={accent} />

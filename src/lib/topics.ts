@@ -1401,6 +1401,15 @@ const explainers: Explainer[] = [
 		accent: '#3b5bdb',
 		steps: 9,
 		minutes: 18
+	},
+	{
+		slug: 'elliptic-curve-cryptography',
+		title: 'Elliptic-curve cryptography',
+		summary:
+			'Drag two points on y² = x³ + 7 and add them with a chord, then watch the same equation over a finite field become a scatter on which the same rule still works. Multiply a point by a secret with double-and-add, see that the result gives no clue to the secret, run Diffie–Hellman on the curve, check secp256k1 and X25519 against their standards in your browser, and see why 256 bits do the work of 3,072.',
+		accent: '#0b7285',
+		steps: 12,
+		minutes: 24
 	}
 ];
 

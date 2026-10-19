@@ -4861,3 +4861,32 @@ kbd {
 	--dht-cut-text: #ffc078;
 	--dht-key: #b197fc;
 }
+
+/* elliptic-curve-cryptography: the curve, P, Q, the third point R and the sum, the line,
+   Alice, Bob and Eve, a check that passed */
+:root {
+	--ecc-curve: #0b7285;
+	--ecc-p: #1c7ed6;
+	--ecc-q: #e8590c;
+	--ecc-r: #868e96;
+	--ecc-sum: #9c36b5;
+	--ecc-line: #495057;
+	--ecc-alice: #5f3dc4;
+	--ecc-bob: #0b7285;
+	--ecc-eve: #c2255c;
+	--ecc-ok: #2f9e44;
+	--ecc-dot: #343a40;
+}
+:root[data-theme='dark'] {
+	--ecc-curve: #3bc9db;
+	--ecc-p: #4dabf7;
+	--ecc-q: #ff922b;
+	--ecc-r: #adb5bd;
+	--ecc-sum: #da77f2;
+	--ecc-line: #ced4da;
+	--ecc-alice: #9775fa;
+	--ecc-bob: #3bc9db;
+	--ecc-eve: #f06595;
+	--ecc-ok: #69db7c;
+	--ecc-dot: #dee2e6;
+}
