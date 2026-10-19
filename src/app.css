@@ -4815,4 +4815,48 @@ kbd {
 	--sz-match: #69db7c;
 	--sz-match-text: #8ce99a;
 	--sz-strip: #212327;
+
+/* distributed-hash-tables: the servers (A, B, ...), the query and its fingers, and churn
+   (failed, joined, cut off, lost keys) */
+:root {
+	--dht-s1: #1c7ed6;
+	--dht-s2: #e8590c;
+	--dht-s3: #2f9e44;
+	--dht-s4: #ae3ec9;
+	--dht-s5: #f08c00;
+	--dht-s6: #0c8599;
+	--dht-s7: #d6336c;
+	--dht-s8: #5c940d;
+	--dht-s9: #4c6ef5;
+	--dht-query: #e8590c;
+	--dht-finger: #1c7ed6;
+	--dht-node: #495057;
+	--dht-fail: #e03131;
+	--dht-fail-text: #c92a2a;
+	--dht-join: #2f9e44;
+	--dht-join-text: #2b8a3e;
+	--dht-cut: #f08c00;
+	--dht-cut-text: #d9480f;
+	--dht-key: #7048e8;
+}
+:root[data-theme='dark'] {
+	--dht-s1: #4dabf7;
+	--dht-s2: #ff922b;
+	--dht-s3: #51cf66;
+	--dht-s4: #da77f2;
+	--dht-s5: #ffd43b;
+	--dht-s6: #3bc9db;
+	--dht-s7: #f783ac;
+	--dht-s8: #a9e34b;
+	--dht-s9: #91a7ff;
+	--dht-query: #ff922b;
+	--dht-finger: #4dabf7;
+	--dht-node: #ced4da;
+	--dht-fail: #ff6b6b;
+	--dht-fail-text: #ff8787;
+	--dht-join: #51cf66;
+	--dht-join-text: #69db7c;
+	--dht-cut: #ffa94d;
+	--dht-cut-text: #ffc078;
+	--dht-key: #b197fc;
 }
