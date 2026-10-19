@@ -1,6 +1,6 @@
 # Topic catalog
 
-Source of truth for the content of an interactive web learning tool that shows how things work. It defines 149 topics in 11 categories, each built around one interactive graphic. Readers range from high-school students to university majors.
+Source of truth for the content of an interactive web learning tool that shows how things work. It defines 150 topics in 11 categories, each built around one interactive graphic. Readers range from high-school students to university majors.
 
 This file covers content only. It does not choose the stack, the visual design or the project layout; take those from the repository's own instructions.
 
@@ -89,7 +89,7 @@ A topic is done when:
 | Body & Medicine | `medicine` | 14 |
 | Earth & Climate | `earth` | 13 |
 | Space | `space` | 11 |
-| Computing | `computing` | 12 |
+| Computing | `computing` | 13 |
 | Information & Networks | `networks` | 9 |
 | Artificial Intelligence | `ai` | 19 |
 | Energy & Machines | `energy` | 10 |
@@ -222,6 +222,7 @@ A topic is done when:
 - [x] quantum-computing
 - [x] game-tree-search
 - [x] cache-memory-hierarchy
+- [ ] hash-tables-bloom-filters
 
 **Information & Networks**
 - [x] compression
@@ -1345,6 +1346,16 @@ A topic is done when:
 - **Related:** gpu
 - **Pitfall:** A bigger cache is not always better: a direct-mapped cache thrashes on a stride equal to its size however large it is, and the unit moved is a whole line, never a byte, so a miss costs the same for one byte as for sixty-four.
 
+#### hash-tables-bloom-filters
+- **Title:** Hash tables & Bloom filters
+- **Level:** 3
+- **Kind:** manipulate
+- **Interaction:** Insert keys into a table with chaining or open addressing and raise the load factor; every probe is drawn, and the measured mean probe length is plotted against the expected curve until the table resizes and rehashes. Then feed the same keys to a Bloom filter with an adjustable bit array and number of hash functions, query keys that were never inserted and watch the measured false-positive rate track the standard approximation (closely for large arrays, drifting above it for tiny ones); degrade the hash function with a slider and see both structures cluster.
+- **Takeaway:** A good hash spreads keys evenly, so lookups stay constant-time until the table fills, and a Bloom filter trades a known, tunable false-positive rate for a fraction of the memory.
+- **Prerequisites:** sorting, binary
+- **Related:** cryptography
+- **Pitfall:** A hash table's constant time is an average under a good hash, not a guarantee; the cryptographic hash of the cryptography page is a different tool; and a Bloom filter can only ever say 'definitely absent', never 'definitely present'.
+
 ### Information & Networks
 
 #### compression
@@ -1372,7 +1383,7 @@ A topic is done when:
 - **Interaction:** Two parties agree on a secret over a public channel, first by mixing paint colors and then with the real modular arithmetic on small numbers, while an eavesdropper sees every message. Edit one character of a text and watch its hash change completely; sign a message and verify the signature.
 - **Takeaway:** Some operations are easy to do and practically impossible to undo, and that asymmetry lets strangers share secrets and prove identity over an open network.
 - **Prerequisites:** primes-modular-arithmetic, binary
-- **Related:** quantum-computing
+- **Related:** quantum-computing, hash-tables-bloom-filters
 
 #### wireless-signals
 - **Title:** Wireless signals
