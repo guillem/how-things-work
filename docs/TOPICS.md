@@ -1,6 +1,6 @@
 # Topic catalog
 
-Source of truth for the content of an interactive web learning tool that shows how things work. It defines 152 topics in 11 categories, each built around one interactive graphic. Readers range from high-school students to university majors.
+Source of truth for the content of an interactive web learning tool that shows how things work. It defines 153 topics in 11 categories, each built around one interactive graphic. Readers range from high-school students to university majors.
 
 This file covers content only. It does not choose the stack, the visual design or the project layout; take those from the repository's own instructions.
 
@@ -90,7 +90,7 @@ A topic is done when:
 | Earth & Climate | `earth` | 13 |
 | Space | `space` | 11 |
 | Computing | `computing` | 13 |
-| Information & Networks | `networks` | 11 |
+| Information & Networks | `networks` | 12 |
 | Artificial Intelligence | `ai` | 19 |
 | Energy & Machines | `energy` | 10 |
 
@@ -236,6 +236,7 @@ A topic is done when:
 - [x] tcp-congestion-control
 - [x] shazam-audio-fingerprint
 - [x] distributed-hash-tables
+- [ ] elliptic-curve-cryptography
 
 **Artificial Intelligence**
 - [x] learning-from-data
@@ -1325,7 +1326,7 @@ A topic is done when:
 - **Interaction:** Rotate a single qubit on the Bloch sphere with gates and measure it repeatedly to see the statistics. Entangle two qubits and compare their results, then step through Grover's search on a few qubits and watch the amplitude of the right answer grow.
 - **Takeaway:** A quantum computer steers amplitudes so that wrong answers cancel and right ones reinforce, which gives a large speed-up for a few kinds of problem and little or none for most.
 - **Prerequisites:** quantum-mechanics, logic-gates
-- **Related:** cryptography
+- **Related:** cryptography, elliptic-curve-cryptography
 - **Pitfall:** It does not try every answer at once and read off the best one; a measurement returns a single outcome, and the algorithm's job is to make that outcome likely to be right.
 
 #### game-tree-search
@@ -1431,7 +1432,7 @@ A topic is done when:
 - **Interaction:** A cluster of nodes elects a leader and replicates a log; crash nodes or cut the network and watch the cluster keep agreeing or stall. Then chain blocks by hash, tamper with an old block to invalidate every later one, and mine a block by searching for a nonce at adjustable difficulty.
 - **Takeaway:** Getting independent machines to agree on one history is hard; voting among a known set of machines handles failures, and proof-of-work extends agreement to strangers who may cheat.
 - **Prerequisites:** cryptography, internet
-- **Related:** distributed-hash-tables
+- **Related:** distributed-hash-tables, elliptic-curve-cryptography
 
 #### tcp-congestion-control
 - **Title:** TCP congestion control
@@ -1462,6 +1463,17 @@ A topic is done when:
 - **Prerequisites:** hash-tables-bloom-filters, internet
 - **Related:** consensus-blockchains, pagerank, graph-search
 - **Pitfall:** Consistent hashing is not fair by default: with one point per server the loads vary widely, which is what virtual nodes fix. A DHT finds where a key lives; it does not make the data durable, replication does.
+
+#### elliptic-curve-cryptography
+- **Title:** Elliptic-curve cryptography
+- **Level:** 3
+- **Kind:** manipulate
+- **Interaction:** Drag two points on an elliptic curve over the real numbers and watch the chord-and-tangent rule produce their sum; switch the same curve to a finite field and the smooth curve becomes a scatter of points on which the same rule still works. Multiply a point by k with double-and-add, step by step, and see that landing on a target point gives no clue what k was; then run Diffie-Hellman on the curve and compare the key sizes with the modular version.
+- **Takeaway:** Multiplying a point on a curve by a secret number is quick, but over a finite field nobody knows a practical way to recover the number from the result, so a 256-bit curve key does the job of a 3,000-bit modular one.
+- **Prerequisites:** cryptography
+- **Related:** consensus-blockchains, quantum-computing
+- **Needs:** Curve parameters from the openly published standards SEC 2 (secp256k1) and RFC 7748 (Curve25519).
+- **Pitfall:** The picture over the real numbers is for intuition only: the cryptography lives on the finite-field points, where there is no curve to see, and the hardness is the discrete logarithm, not the shape. 'Elliptic' has nothing to do with ellipses.
 
 ### Artificial Intelligence
 
