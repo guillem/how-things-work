@@ -1365,6 +1365,15 @@ const explainers: Explainer[] = [
 		accent: '#5f3dc4',
 		steps: 12,
 		minutes: 26
+	},
+	{
+		slug: 'cache-memory-hierarchy',
+		title: 'Caches and the memory hierarchy',
+		summary:
+			'Run programs through a cache one load at a time: lines arrive, hit and get thrown out. Sum a matrix by rows and by columns, make a direct-mapped cache thrash, loop one line too far, chase a scattered list, tile a matrix product, and watch the latency curve break where each cache runs out.',
+		accent: '#0c8599',
+		steps: 11,
+		minutes: 22
 	}
 ];
 

@@ -4699,3 +4699,38 @@ kbd {
 	--as-neg: #4dabf7;
 	--as-star: #ffd43b;
 }
+
+/* cache-memory-hierarchy: hit and miss, the three Cs, the data structures (A, B, C), and the
+   levels of the hierarchy */
+:root {
+	--cm-hit: #2f9e44;
+	--cm-hit-text: #2b8a3e;
+	--cm-miss: #e03131;
+	--cm-miss-text: #c92a2a;
+	--cm-compulsory: #868e96;
+	--cm-capacity: #f08c00;
+	--cm-conflict: #ae3ec9;
+	--cm-a: #1c7ed6;
+	--cm-b: #e8590c;
+	--cm-c: #0ca678;
+	--cm-l1: #0c8599;
+	--cm-l2: #4263eb;
+	--cm-l3: #9c36b5;
+	--cm-mem: #d9480f;
+}
+:root[data-theme='dark'] {
+	--cm-hit: #51cf66;
+	--cm-hit-text: #69db7c;
+	--cm-miss: #ff6b6b;
+	--cm-miss-text: #ff8787;
+	--cm-compulsory: #adb5bd;
+	--cm-capacity: #ffa94d;
+	--cm-conflict: #da77f2;
+	--cm-a: #4dabf7;
+	--cm-b: #ff922b;
+	--cm-c: #38d9a9;
+	--cm-l1: #3bc9db;
+	--cm-l2: #748ffc;
+	--cm-l3: #cc5de8;
+	--cm-mem: #ff8787;
+}

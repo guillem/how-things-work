@@ -5035,6 +5035,40 @@
 			/>
 		{/each}
 		<circle cx="144" cy="56" r="3" fill="currentColor" opacity="0.6" />
+	{:else if slug === 'cache-memory-hierarchy'}
+		<!-- a core, a small cache of lines (one hit, one miss), and a long road to memory -->
+		<rect x="18" y="38" width="34" height="44" rx="5" fill={accent} opacity="0.85" />
+		{#each [0, 1, 2, 3] as r (r)}
+			{#each [0, 1] as c (c)}
+				<rect
+					x={68 + c * 24}
+					y={30 + r * 16}
+					width="20"
+					height="12"
+					rx="2"
+					fill={r === 1 && c === 0 ? '#2f9e44' : r === 2 && c === 1 ? '#e03131' : 'currentColor'}
+					opacity={(r === 1 && c === 0) || (r === 2 && c === 1) ? 0.9 : 0.25}
+				/>
+			{/each}
+		{/each}
+		<path
+			d="M120 60 H164"
+			stroke="currentColor"
+			stroke-width="1.6"
+			stroke-dasharray="3 4"
+			opacity="0.55"
+		/>
+		<rect
+			x="166"
+			y="34"
+			width="20"
+			height="52"
+			rx="3"
+			fill="none"
+			stroke={accent}
+			stroke-width="1.8"
+		/>
+		<path d="M52 60 H66" stroke={accent} stroke-width="1.6" />
 	{:else}
 		<circle cx="100" cy="60" r="30" fill="none" stroke={accent} stroke-width="2" />
 		<circle cx="100" cy="60" r="5" fill={accent} />

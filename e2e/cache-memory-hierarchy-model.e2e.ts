@@ -130,3 +130,14 @@ test('the lab: a column walk that thrashes a small direct-mapped cache fits a fu
 	expect(fa.totals.at(-1)!.misses).toBe(32);
 	expect(amat(fa.totals.at(-1)!)).toBeLessThan(amat(dm.totals.at(-1)!) / 5);
 });
+
+test('the bills the narrative quotes', () => {
+	expect(Math.round(program('row').amat)).toBe(35);
+	expect(Math.round(program('col').amat)).toBe(250);
+	expect(Math.round(program('list').amat)).toBe(66);
+	expect(Math.round(program('scattered').amat / 10) * 10).toBe(240);
+	const perOp = (r: { cycles: number; ops: number }) => r.cycles / r.ops;
+	expect(Math.round(perOp(matmulRun(0)))).toBe(287);
+	expect(Math.round(perOp(matmulRun(12)))).toBe(15);
+	expect(Math.round(matmulRun(0).tally.misses / matmulRun(12).tally.misses / 10) * 10).toBe(40);
+});
