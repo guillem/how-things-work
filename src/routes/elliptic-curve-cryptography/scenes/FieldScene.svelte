@@ -49,13 +49,17 @@
 			? `x = ${P.x} (vertical)`
 			: `y ≡ ${line.slope}x + ${line.intercept ?? 0}  (mod 97)`
 	);
-	const lineNote = $derived(
-		S === null
-			? '97 grid points; on the curve only P and Q'
-			: iP === iQ
-				? '97 grid points; on the curve P (twice) and R'
-				: '97 grid points; 3 on the curve: P, Q and R'
-	);
+	// The line's meetings with the curve: P, Q and R counted with multiplicity (a tangent touches
+	// twice), and O as the third for a vertical line.
+	const lineNote = $derived.by(() => {
+		if (S === null) return '97 grid points; meets the curve at P, Q and O';
+		const same = (a: { x: number; y: number }, b: { x: number; y: number } | null) =>
+			b !== null && a.x === b.x && a.y === b.y;
+		if (iP === iQ) return '97 grid points; tangent at P (twice), then R';
+		if (same(P, R)) return '97 grid points; tangent at P: R = P';
+		if (same(Q, R)) return '97 grid points; tangent at Q: R = Q';
+		return '97 grid points; 3 on the curve: P, Q and R';
+	});
 	const caseText = $derived(
 		iP === iQ
 			? S === null
@@ -144,8 +148,8 @@
 	<line
 		x1={GRID.x0}
 		x2={GRID.x0 + GRID.size}
-		y1={GRID.y0 + GRID.size / 2}
-		y2={GRID.y0 + GRID.size / 2}
+		y1={g.at(0, p / 2).y}
+		y2={g.at(0, p / 2).y}
 		stroke="var(--ecc-curve)"
 		stroke-dasharray="5 5"
 		opacity="0.55"

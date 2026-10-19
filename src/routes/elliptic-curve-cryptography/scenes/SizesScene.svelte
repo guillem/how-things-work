@@ -113,7 +113,7 @@
 		<Label
 			x={40}
 			y={blockY - 16}
-			text="{level.security} bits of security · each square is 64 bits of key"
+			text="{level.security} bits of security · each full square is 64 bits of key"
 			size={14}
 			weight={700}
 			anchor="start"
@@ -130,11 +130,11 @@
 			opacity={i < grow * modBlocks + 0.5 ? 0.85 : 0.08}
 		/>
 	{/each}
-	{#each Array.from({ length: curveBlocks }, (_, i) => i) as i (i)}
+	{#each Array.from({ length: Math.ceil(curveBlocks) }, (_, i) => i) as i (i)}
 		<rect
 			x={540 + i * SQ}
 			y={blockY}
-			width={SQ - 2}
+			width={(SQ - 2) * Math.min(1, curveBlocks - i)}
 			height={SQ - 2}
 			rx="1.5"
 			fill="var(--ecc-curve)"

@@ -247,7 +247,7 @@
 			stroke-dasharray="5 4"
 		/>
 		<Label x={14} y={26} text="Eve sees" weight={700} anchor="start" color="var(--ecc-eve)" />
-		<Readout id="eve" order={6} label="Eve sees" value="G, A, B — and must find a or b">
+		<Readout id="eve" order={6} label="Eve sees" value="G, A, B — one route to S: find a or b">
 			<Label
 				x={14}
 				y={52}
@@ -256,7 +256,7 @@
 				tabular
 				size={12.5}
 			/>
-			<Label x={14} y={78} text="to get S she must find a or b:" anchor="start" size={12} muted />
+			<Label x={14} y={78} text="one route to S: find a or b," anchor="start" size={12} muted />
 			<Label
 				x={14}
 				y={98}

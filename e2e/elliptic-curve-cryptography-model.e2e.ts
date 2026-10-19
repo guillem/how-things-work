@@ -114,23 +114,31 @@ test('double-and-add reaches the same point as adding G again and again, in abou
 	expect(bruteForceLog(TOY, TOY_G, walk[52]).k).toBe(53);
 });
 
-test('a line through two points of the curve over F_p holds exactly three of its points', () => {
+test('a line through two points mod p meets the curve exactly at P, Q and R (with tangents and O)', () => {
+	// For every pair, the line's grid points on the curve are exactly {P, Q, R}, where R = −(P + Q)
+	// may coincide with P or Q (the line is tangent there) or be O (a vertical line).
 	const pts = points(TOY);
-	const onCurve = new Set(pts.map((q) => `${q.x},${q.y}`));
-	for (const [i, j] of [
-		[3, 17],
-		[10, 50],
-		[0, 2]
-	]) {
-		const P = pts[i];
-		const Q = pts[j];
-		const line = linePoints(TOY, P, Q);
-		const hits = line.pts.filter((q) => onCurve.has(`${q.x},${q.y}`));
-		const R = neg(TOY, add(TOY, P, Q));
-		expect(R).not.toBeNull();
-		const want = new Set([`${P.x},${P.y}`, `${Q.x},${Q.y}`, `${R?.x},${R?.y}`]);
-		expect(new Set(hits.map((q) => `${q.x},${q.y}`))).toEqual(want);
-	}
+	const key = (q: { x: bigint; y: bigint }) => `${q.x},${q.y}`;
+	const onCurve = new Set(pts.map(key));
+	let wrong = 0;
+	let tangents = 0;
+	for (const P of pts)
+		for (const Q of pts) {
+			const hits = new Set(
+				linePoints(TOY, P, Q)
+					.pts.map((q) => `${q.x},${q.y}`)
+					.filter((k) => onCurve.has(k))
+			);
+			const R = neg(TOY, add(TOY, P, Q));
+			const want = new Set([key(P), key(Q), ...(R ? [key(R)] : [])]);
+			if (hits.size !== want.size || [...want].some((k) => !hits.has(k))) wrong++;
+			if (key(P) !== key(Q) && R && (key(R) === key(P) || key(R) === key(Q))) tangents++;
+		}
+	expect(wrong).toBe(0);
+	expect(tangents).toBeGreaterThan(0);
+	// the reviewer's example: the line through (1, 28) and (68, 16) is tangent at (1, 28)
+	const R = neg(TOY, add(TOY, { x: 1n, y: 28n }, { x: 68n, y: 16n }));
+	expect(R).toEqual({ x: 1n, y: 28n });
 });
 
 test('over the reals, the chord and the tangent meet the curve again', () => {

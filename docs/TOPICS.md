@@ -236,7 +236,7 @@ A topic is done when:
 - [x] tcp-congestion-control
 - [x] shazam-audio-fingerprint
 - [x] distributed-hash-tables
-- [ ] elliptic-curve-cryptography
+- [x] elliptic-curve-cryptography
 
 **Artificial Intelligence**
 - [x] learning-from-data

@@ -99,7 +99,7 @@ export const spec: ExplainerSpec = {
 			controls: [py, qy],
 			body: `
 <p>Here is the strange part: the points can be <em>added</em>. Draw the line through P and Q. A cubic meets a line in three points (counted properly), so the line hits the curve once more, at R. Mirror R in the x-axis and call the result <strong>P + Q</strong>.</p>
-<p>In coordinates, with slope λ = (y<sub>Q</sub> − y<sub>P</sub>) / (x<sub>Q</sub> − x<sub>P</sub>): x<sub>P+Q</sub> = λ² − x<sub>P</sub> − x<sub>Q</sub>, and y<sub>P+Q</sub> = λ(x<sub>P</sub> − x<sub>P+Q</sub>) − y<sub>P</sub>. Only additions, multiplications and one division. Drag P and Q: when they are close, the third point flies far out along the curve.</p>`,
+<p>In coordinates, with slope λ = (y<sub>Q</sub> − y<sub>P</sub>) / (x<sub>Q</sub> − x<sub>P</sub>): x<sub>P+Q</sub> = λ² − x<sub>P</sub> − x<sub>Q</sub>, and y<sub>P+Q</sub> = λ(x<sub>P</sub> − x<sub>P+Q</sub>) − y<sub>P</sub>. Only additions, multiplications and one division. Drag P and Q: as Q approaches P, the chord approaches the tangent; as Q approaches −P, the line steepens and the third point runs far beyond the picture.</p>`,
 			notes: `<p>Why the mirror? Without it, "the third point on the line" would not have a neutral element. With it, the <dfn data-def="The chord-and-tangent rule for adding points on an elliptic curve; with the point at infinity as zero it makes the points a commutative group.">chord-and-tangent rule</dfn> makes the points a commutative group: P + Q = Q + P (the line doesn't care about order), and (P + Q) + R = P + (Q + R). That last law is far from obvious from the picture; it is a theorem (one proof uses Cayley–Bacharach on cubics through nine points), and this page's tests check it point by point on small curves.</p>`
 		},
 		{
@@ -152,7 +152,7 @@ export const spec: ExplainerSpec = {
 			controls: [pi, qi],
 			body: `
 <p>The addition rule carries over word for word: the same formulas, with "divide by" meaning "multiply by the inverse mod 97". The line through P and Q becomes the 97 grid points with y ≡ λx + c (mod 97), a line that wraps around the grid like the hands of a clock, drawn as small dots.</p>
-<p>Of those 97 points exactly three lie on the curve: P, Q and a third, R. Mirror R (y → 97 − y) and you have P + Q, again a point of the scatter. Drag P and Q, or move the sliders: it never fails, and the group laws hold as before.</p>`
+<p>Its meetings with the curve are P, Q and a third, R, counting a point twice where the line is a tangent there (then R is P or Q itself), and with O as the third for a vertical line. Mirror R (y → 97 − y) and you have P + Q, again a point of the scatter. Drag P and Q, or move the sliders: it never fails, and the group laws hold as before.</p>`
 		},
 		// ------------------------------------------------------------------ one way
 		{
@@ -177,9 +177,9 @@ export const spec: ExplainerSpec = {
 			duration: 30,
 			controls: [k],
 			body: `
-<p>Now be Eve. She sees G and the point Q = kG, and wants k: the <dfn data-def="Given points G and Q = kG on an elliptic curve over a finite field, finding k.">elliptic-curve discrete logarithm</dfn>. Over the reals she could slide along the curve and measure. On the scatter, G, 2G, 3G, … jump around with no pattern (the line joins them in order), so landing on Q says nothing about how many steps it took. She tries G, 2G, 3G, … until one is Q.</p>
+<p>Now be Eve. She sees G and the point Q = kG, and wants k: the <dfn data-def="Given points G and Q = kG on an elliptic curve over a finite field, finding k.">elliptic-curve discrete logarithm</dfn>. On the scatter, G, 2G, 3G, … jump around with no pattern (the line joins them in order), so landing on Q says nothing about how many steps it took. She tries G, 2G, 3G, … until one is Q.</p>
 <p>On this toy curve that takes at most 78 tries. On secp256k1, the curve behind Bitcoin, there are about 1.16 × 10<sup>77</sup> points. The best known attack, Pollard's rho, is cleverer than trying them in order but still needs about √n ≈ 2<sup>128</sup> ≈ 3 × 10<sup>38</sup> point additions. <strong>Multiplying is quick; undoing it is out of reach</strong>, and the hardness comes from this discrete logarithm, not from the curve's shape.</p>`,
-			notes: `<p>Pollard's rho walks pseudo-randomly through combinations aG + bQ until two collide, which by the birthday paradox takes about √(πn/4) steps. The largest such problem solved in public on a curve over a prime field had a 112-bit group (2009, on a cluster of PlayStation 3 consoles). Some curves are weak despite their size: if the number of points equals p ("anomalous" curves) or the curve is "supersingular", the logarithm can be moved to an easier problem, which is why standard curves are chosen with care.</p>`
+			notes: `<p>Pollard's rho walks pseudo-randomly through combinations aG + bQ until two collide, which by the birthday paradox takes about √(πn/4) steps. A 112-bit prime-field example was solved in 2009 on a cluster of PlayStation 3 consoles, and a 114-bit one, on a curve with extra symmetries that help the attack, in 2017. Some curves are weak despite their size: if the number of points equals p ("anomalous" curves) or the curve is "supersingular", the logarithm can be moved to an easier problem, which is why standard curves are chosen with care.</p>`
 		},
 		// ------------------------------------------------------------------ dh
 		{
@@ -190,8 +190,8 @@ export const spec: ExplainerSpec = {
 			duration: 28,
 			controls: [a, b],
 			body: `
-<p>Everything public: the curve, the field and G. Alice picks a secret a = 29 and sends A = 29G; Bob picks b = 64 and sends B = 64G. Each multiplies the other's point by their own secret: Alice computes 29B, Bob 64A. Both are 29 · 64 · G, the same point S, and its x-coordinate is their shared key.</p>
-<p>This is <dfn data-def="Elliptic-curve Diffie–Hellman: Diffie–Hellman with scalar multiplication of curve points in place of powers on a prime clock.">ECDH</dfn>: exactly the exchange on the prime clock, with "raise to a power" replaced by "multiply a point". Move the sliders: the two sides always agree. Eve sees G, A and B, and to find S she would have to solve a discrete logarithm.</p>`
+<p>Everything public: the curve, the field and G. Alice picks a secret a = 29 and sends A = 29G; Bob picks b = 64 and sends B = 64G. Each multiplies the other's point by their own secret: Alice computes 29B, Bob 64A. Both are 29 · 64 · G, the same point S, and its x-coordinate is shared secret material, from which a key-derivation function makes their encryption keys.</p>
+<p>This is <dfn data-def="Elliptic-curve Diffie–Hellman: Diffie–Hellman with scalar multiplication of curve points in place of powers on a prime clock.">ECDH</dfn>: exactly the exchange on the prime clock, with "raise to a power" replaced by "multiply a point". Move the sliders: the two sides always agree. Eve sees G, A and B. Finding either secret (a discrete logarithm) would let her compute S; computing S straight from the public points is the <dfn data-def="Given G, aG and bG, computing abG. Solving the discrete logarithm solves it; no other way to solve it is known for well-chosen curves.">computational Diffie–Hellman problem</dfn>, and on well-chosen curves no practical way to do either is known.</p>`
 		},
 		{
 			id: 'secp256k1',
