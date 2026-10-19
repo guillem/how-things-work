@@ -628,13 +628,13 @@
 		});
 	})();
 
-	// Elliptic-curve cryptography: y² = x³ + 7 (x ↦ 40 + 22(x + 2.2), y ↦ 60 − 4.2y), the chord
+	// Elliptic-curve cryptography: y² = x³ + 7 (x ↦ 50 + 18(x + 2.2), y ↦ 60 − 3.6y), the chord
 	// through P (y = −2.5) and Q (y = 3.5), its third point R and the sum P + Q, R's mirror.
 	const eccArt = (() => {
-		const sx = (x: number) => 40 + (x + 2.2) * 22;
-		const sy = (y: number) => 60 - y * 4.2;
+		const sx = (x: number) => 50 + (x + 2.2) * 18;
+		const sy = (y: number) => 60 - y * 3.6;
 		const curve = Array.from({ length: 121 }, (_, i) => {
-			const y = -12 + (24 * i) / 120;
+			const y = -13 + (26 * i) / 120;
 			return `${i ? 'L' : 'M'}${sx(Math.cbrt(y * y - 7)).toFixed(1)} ${sy(y).toFixed(1)}`;
 		}).join(' ');
 		const P = { x: Math.cbrt(-0.75), y: -2.5 };
