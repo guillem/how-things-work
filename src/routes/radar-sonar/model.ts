@@ -171,8 +171,8 @@ export function echo(
 			yr += xr * sr[k] + xi * si[k];
 			yi += xi * sr[k] - xr * si[k];
 		}
-		// thermal noise floor of the output: ns samples of unit-variance noise
-		out[j] = db(Math.max(1e-6, yr * yr + yi * yi) / ns);
+		// the output's noise floor: ns samples of noise of the receiver's (raised) level
+		out[j] = db(Math.max(1e-6, yr * yr + yi * yi) / (ns * noise));
 	}
 	return { range, raw, out };
 }
@@ -272,15 +272,16 @@ export const MAP_CELL = 200;
 export const MAP_CELLS = 75;
 
 /**
- * A range-Doppler map: each of `RADAR.pulses` pulses is compressed in range (cells of
- * `MAP_CELL`, the resolution of a chirp of bandwidth c/(2·cell)), then each range cell's samples
- * across the pulses are Fourier-transformed, so each column is a radial speed. The chirp's
- * duration sets the energy. Ground clutter (stationary scatterers at every range with a little
- * wind-blown spread) and noise are seeded.
+ * A range-Doppler map: each of `RADAR.pulses` pulses is a plain pulse 2·cell/c long (1.33 µs,
+ * so its range resolution is one cell), matched-filtered and sampled at the cells' centres;
+ * then each range cell's samples across the pulses are Fourier-transformed, so each column is
+ * a radial speed. A plain pulse's matched-filter response is a triangle, 1 − |Δr|/cell, so a
+ * target between two cell centres shows in both, weaker (range straddle). Ground clutter
+ * (stationary scatterers at every range with a little wind-blown spread) and noise are seeded.
  */
 export function rangeDoppler(
 	targets: readonly Target[],
-	{ duration = 1e-6, extraNoiseDb = 0, clutter = true, seed = 7 } = {}
+	{ duration = (2 * MAP_CELL) / C, extraNoiseDb = 0, clutter = true, seed = 7 } = {}
 ): RangeDopplerMap {
 	const n = RADAR.pulses;
 	const prf = RADAR.prf;
@@ -317,8 +318,7 @@ export function rangeDoppler(
 			add(amp(ranges[i], rcs), slowTime(ranges[i] + rand() * 50, drift, n, prf));
 		}
 		for (const tg of targets) {
-			// the compressed pulse's main lobe, one cell wide: a target between two cells' centres
-			// shows in both (its tapered sidelobes are left out)
+			// the plain pulse's matched-filter response (its autocorrelation): a triangle
 			const w = 1 - Math.abs(tg.r - ranges[i]) / MAP_CELL;
 			if (w <= 0) continue;
 			add(amp(tg.r, tg.rcs) * w, slowTime(tg.r, tg.v ?? 0, n, prf));

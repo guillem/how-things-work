@@ -238,7 +238,7 @@ A topic is done when:
 - [x] distributed-hash-tables
 - [x] elliptic-curve-cryptography
 - [x] kalman-filter
-- [ ] radar-sonar
+- [x] radar-sonar
 
 **Artificial Intelligence**
 - [x] learning-from-data

@@ -3,12 +3,12 @@
 	 * A moving target and its Doppler shift (../model.ts `radialSpeed`, `slowTime`, `spectrum`).
 	 * Left: the radar and a car seen from above, its velocity arrow at the heading control's
 	 * angle off the line of sight, and the arrow's radial part along that line; the car drifts
-	 * along its heading and back (a 6 s loop). Right: the speeds. Middle row: the echo's phase on
+	 * along its heading (a 6 s run, faded at the restart; the arrows stay put). Right: the speeds. Middle row: the echo's phase on
 	 * each of 32 pulses, as a pointer per pulse (relative to the first); a highlight walks along
 	 * the row. Bottom: the spectrum of those 32 phases (128 bins), peaking at the Doppler
 	 * frequency, with the speed it stands for. Reduced motion: the car at its mark, no highlight.
 	 */
-	import { Axes, Label, clamp, linePath, pingpong, scale } from '#lib/draw/index.ts';
+	import { Axes, Label, clamp, cycle, linePath, scale, smoothstep } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { RADAR, dopplerShift, radialSpeed, slowTime, spectrum } from '../model';
 
@@ -28,8 +28,12 @@
 	const P0 = { x: 340, y: 210 };
 	const th = $derived((heading * Math.PI) / 180);
 	const dir = $derived({ x: -Math.cos(th), y: -Math.sin(th) });
-	const drift = $derived(reduced ? 0 : (pingpong(t, 6) - 0.5) * 40 * (speed / 55));
-	const P = $derived({ x: P0.x + dir.x * drift, y: P0.y + dir.y * drift });
+	// the car always moves along its heading: a 6 s run, faded out and back in at the restart
+	const run = $derived(cycle(t, 6));
+	const drift = $derived(reduced ? 0 : (run - 0.5) * 40 * (speed / 55));
+	const oCar = $derived(reduced ? 1 : smoothstep(0, 0.08, run) * (1 - smoothstep(0.92, 1, run)));
+	const P = P0;
+	const Pc = $derived({ x: P0.x + dir.x * drift, y: P0.y + dir.y * drift });
 	const L = $derived(2.4 * speed); // arrow length per m/s
 	const tip = $derived({ x: P.x + dir.x * L, y: P.y + dir.y * L });
 	const rad = $derived({ x: P.x - L * Math.cos(th), y: P.y });
@@ -114,13 +118,14 @@
 		/>
 	{/if}
 	<rect
-		x={P.x - 14}
-		y={P.y - 8}
+		x={Pc.x - 14}
+		y={Pc.y - 8}
 		width="28"
 		height="16"
 		rx="5"
 		fill="var(--rs-b)"
-		transform="rotate({heading} {P.x} {P.y})"
+		opacity={oCar}
+		transform="rotate({heading} {Pc.x} {Pc.y})"
 	/>
 	<Readout
 		id="v"

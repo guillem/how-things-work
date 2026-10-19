@@ -199,7 +199,7 @@ export const spec: ExplainerSpec = {
 			controls: [tau, gap],
 			body: `
 <p>A pulse has a length. One 2 µs long is 600 m of radio wave in flight, and the echoes of two targets closer together than half of that, 300 m, overlap in time. The <dfn data-def="The smallest separation in range at which two targets show as two echoes rather than one: c × pulse length ÷ 2 for a plain pulse.">range resolution</dfn> of a plain pulse is <strong>c × τ ÷ 2</strong>.</p>
-<p>Two targets of 10 m² sit 9 km away. The upper trace is the raw echo; the lower one has been through the receiver's <dfn data-def="A filter whose response is the transmitted pulse reversed in time: it correlates what comes back with what was sent, which maximises the signal-to-noise ratio at its peak.">matched filter</dfn>, which correlates what comes back with a copy of what was sent (more on that below). Bring the targets within 300 m of each other and the two echoes merge into one wide hump. Shorten the pulse to 0.2 µs and they come apart again, down to 30 m.</p>`
+<p>Two targets of 10 m² sit 9 km away. The upper trace is the raw echo; the lower one has been through the receiver's <dfn data-def="A filter whose impulse response is the complex conjugate of the transmitted waveform reversed in time: it correlates what comes back with what was sent, which maximises the peak signal-to-noise ratio in white noise.">matched filter</dfn>, which correlates what comes back with a copy of what was sent (more on that below). Bring the targets within 300 m of each other and the two echoes merge into one wide hump. Shorten the pulse to 0.2 µs and they come apart again, down to 30 m.</p>`
 		},
 		{
 			id: 'energy',
@@ -210,10 +210,10 @@ export const spec: ExplainerSpec = {
 			duration: 30,
 			controls: [tau, gap],
 			body: `
-<p>Now make the targets small, two drones of 0.1 m². A radar's transmitter has a fixed <em>peak</em> power, so a shorter pulse carries less energy, and energy is what lifts an echo out of the receiver's noise. At a fixed peak power, the matched filter's best signal-to-noise ratio is the echo's energy over the noise: <strong>SNR = P<sub>r</sub> τ ÷ (k T F)</strong>.</p>
-<p>At 20 µs the drones stand 22 dB above the noise, but they are one blur. At 2 µs they are 12 dB up, already marginal. At 0.2 µs, sharp enough to tell apart, they are 2 dB up and gone in the noise. A radar usually needs about 13 dB to call something a target without raising false alarms on noise.</p>
+<p>Now make the targets small, two drones of 0.1 m². A radar's transmitter has a fixed <em>peak</em> power, so a shorter pulse carries less energy, and energy is what lifts an echo out of the receiver's noise. At a fixed peak power, the matched filter's best signal-to-noise ratio is the echo's energy over the noise: <strong>SNR = P<sub>r</sub> τ ÷ (k T F)</strong>, where P<sub>r</sub> is the received echo power in watts, τ the pulse length in seconds, k Boltzmann's constant, T the reference noise temperature (290 K) and F the receiver's noise factor (about 2 for the 3 dB noise figure here).</p>
+<p>At 20 µs the drones stand 22 dB above the noise, but they are one blur. At 2 µs they are 12 dB up, already marginal. At 0.2 µs, sharp enough to tell apart, they are 2 dB up and gone in the noise. Here we mark filtered peaks whose measured power exceeds the mean noise power by 13 dB.</p>
 <p>So with plain pulses you choose: long for reach, short for detail. Unless the pulse can be long <em>and</em> sharp.</p>`,
-			notes: `<p>The SNR after a matched filter, E/N₀, depends only on the energy of the echo, not on its shape: that is the fact the next step exploits. A real radar's detection threshold depends on the false-alarm rate it can tolerate and how many looks it adds up; 13 dB is a typical single-look figure.</p>`
+			notes: `<p>The SNR after a matched filter, E/N₀, depends only on the energy of the echo, not on its shape: that is the fact the next step exploits. The 13 dB is a chosen decision threshold: noise alone crosses it in about two cells in a billion. The SNR a target needs for reliable detection also depends on the detection and false-alarm probabilities required and on how the target's echo fluctuates.</p>`
 		},
 		{
 			id: 'chirp',
@@ -251,9 +251,9 @@ export const spec: ExplainerSpec = {
 			duration: 32,
 			controls: [clutter],
 			body: `
-<p>Put the two ideas together. For each of 32 pulses the radar compresses the echo into range cells, here 200 m each; then, for each range cell, it takes the spectrum of that cell across the 32 pulses. The result is a <dfn data-def="A grid of echo power with range along one axis and radial speed (Doppler) along the other, made by Fourier-transforming each range cell across a train of pulses.">range-Doppler map</dfn>: range across, speed up and down.</p>
+<p>Put the two ideas together. For each of 32 pulses (plain ones, 1.33 µs long, so 200 m of range resolution) the radar matched-filters the echo into range cells 200 m apart; then, for each range cell, it takes the spectrum of that cell across the 32 pulses. The result is a <dfn data-def="A grid of echo power with range along one axis and radial speed (Doppler) along the other, made by Fourier-transforming each range cell across a train of pulses.">range-Doppler map</dfn>: range across, speed up and down.</p>
 <p>Three targets: a car at 3.5 km coming in at 25 m/s, a small boat (0.5 m²) at 7.1 km coming in at 12 m/s, and a helicopter at 11 km heading away at 45 m/s. The ground reflects too, at every range: <dfn data-def="Echoes from things the radar is not looking for: ground, sea waves, rain, buildings. Ground clutter is stationary, so it sits at zero Doppler.">clutter</dfn>. In one pulse (the upper trace) the boat is lost among the ground echoes. But the ground is not moving, so on the map all of it piles up in the zero-speed row, and the boat stands clear in its own.</p>
-<p>Adding 32 pulses coherently also lifts every target about 13 dB further above the noise. Switch the clutter off to see what it was hiding.</p>`,
+<p>Adding 32 pulses coherently also lifts every target about 13 dB further above the noise (15 dB for 32 pulses, less about 1.8 dB for the taper described in the notes). Switch the clutter off to see what it was hiding.</p>`,
 			notes: `<p>Clutter is not noise: it is real echo, often far stronger than the target, and averaging does not remove it; only a difference (here, in speed) separates them. Trees swaying in the wind and waves give clutter a little spread in speed, so the radar ignores a notch of slow speeds, ±5 m/s here: anything moving slower than that, a walker or a drifting boat, is lost with it. The speeds are processed with a Hann window, so the strong clutter does not leak into every other speed row.</p>`
 		},
 		{
@@ -266,7 +266,7 @@ export const spec: ExplainerSpec = {
 			controls: [noise],
 			body: `
 <p>A detector marks every cell that stands at least 13 dB above the noise, outside the clutter notch. Now raise the noise, as a jammer or a nearby transmitter would. The targets don't fade together: each goes when its own echo, set by its size and by 1/R⁴, sinks below the threshold.</p>
-<p>The far helicopter goes first, at about 17 dB of extra noise, then the small boat at about 21 dB; the near car holds out past 40 dB. Lowering the threshold would keep them longer, at the price of noise spikes marked as targets: every radar sets that trade between misses and false alarms.</p>`,
+<p>The far helicopter goes first, at about 16 dB of extra noise (it sits halfway between two range cells, which costs it some signal), then the small boat at about 22 dB; the near car holds out past 40 dB. Lowering the threshold would keep them longer, at the price of noise spikes marked as targets: every radar sets that trade between misses and false alarms.</p>`,
 			notes: `<p>Real detectors estimate the noise around each cell (constant false-alarm rate, CFAR) rather than knowing it. Detections from look to look are then joined into tracks, often with a <a href="../kalman-filter/">Kalman filter</a> that predicts where each target should be on the next sweep.</p>`
 		},
 		// ------------------------------------------------------------------ water

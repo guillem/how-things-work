@@ -52,6 +52,21 @@ test('an echo heard t after the pulse left comes from c·t/2, and sits where the
 	expect(Math.abs(tr.range[maxOf(tr.out)] - 4200)).toBeLessThan(10);
 });
 
+test('the matched filter’s output sits on its own noise floor, whatever the noise level', () => {
+	for (const extraNoiseDb of [0, 20]) {
+		for (const seed of [1, 2]) {
+			const tr = echo({ kind: 'plain', duration: 2e-6 }, [], 0, 100_000, FS / 4, {
+				seed,
+				extraNoiseDb
+			});
+			let p = 0;
+			for (const v of tr.out) p += 10 ** (v / 10);
+			expect(p / tr.out.length).toBeGreaterThan(0.85);
+			expect(p / tr.out.length).toBeLessThan(1.15);
+		}
+	}
+});
+
 test('the echo weakens as 1/R⁴: twice as far is 12 dB down', () => {
 	const w: Waveform = { kind: 'plain', duration: 2e-6 };
 	const near = echo(w, [{ r: 3000, rcs: 50 }], 2000, 4000, FS, { seed: 3 });
