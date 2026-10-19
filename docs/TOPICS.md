@@ -1,6 +1,6 @@
 # Topic catalog
 
-Source of truth for the content of an interactive web learning tool that shows how things work. It defines 150 topics in 11 categories, each built around one interactive graphic. Readers range from high-school students to university majors.
+Source of truth for the content of an interactive web learning tool that shows how things work. It defines 151 topics in 11 categories, each built around one interactive graphic. Readers range from high-school students to university majors.
 
 This file covers content only. It does not choose the stack, the visual design or the project layout; take those from the repository's own instructions.
 
@@ -90,7 +90,7 @@ A topic is done when:
 | Earth & Climate | `earth` | 13 |
 | Space | `space` | 11 |
 | Computing | `computing` | 13 |
-| Information & Networks | `networks` | 9 |
+| Information & Networks | `networks` | 10 |
 | Artificial Intelligence | `ai` | 19 |
 | Energy & Machines | `energy` | 10 |
 
@@ -234,6 +234,7 @@ A topic is done when:
 - [x] pagerank
 - [x] consensus-blockchains
 - [x] tcp-congestion-control
+- [ ] shazam-audio-fingerprint
 
 **Artificial Intelligence**
 - [x] learning-from-data
@@ -541,7 +542,7 @@ A topic is done when:
 - **Interaction:** A keyboard whose keys play, each note drawn as its wave; press two keys and the page plays them together and draws how the waves line up: an octave (double the frequency) repeats every cycle, a fifth (3:2) every two, while clashing pairs beat and a roughness meter (the Plomp-Levelt curve) rises. Slide a divider to cut the octave into 5, 7, 12, 19, 31 or 53 equal steps and read off how many cents each ladder misses the pure fifth and major third by; twelve is the first small ladder whose fifth lands within 2 cents. Compare an equal-tempered chord with a pure one by ear.
 - **Takeaway:** Notes sound smooth together when their frequencies are in simple ratios, and twelve equal steps per octave is the smallest small ladder whose fifth lands almost exactly on the pure 3:2.
 - **Prerequisites:** waves-interference
-- **Related:** fourier-transform
+- **Related:** fourier-transform, shazam-audio-fingerprint
 - **Pitfall:** Twelve is a good compromise, not a law of nature or of the ear: other traditions divide the octave differently, and equal temperament makes every fifth slightly flat. Consonance also depends on timbre; the roughness model (Plomp-Levelt 1965) is one measurable part of it.
 
 #### lasers
@@ -1365,7 +1366,7 @@ A topic is done when:
 - **Interaction:** Type a message and see how many bits each symbol deserves given its frequency, then build the Huffman tree and compare the encoded size. Load an image, split it into 8×8 blocks and discard high-frequency detail with a quality slider until the damage shows.
 - **Takeaway:** Information is measured by surprise, so predictable data fits in fewer bits, and lossy formats go further by dropping what the senses will not miss.
 - **Prerequisites:** binary, fourier-transform
-- **Related:** entropy, ngram-text-models, training-a-tiny-language-model, cochlea-hearing
+- **Related:** entropy, ngram-text-models, training-a-tiny-language-model, cochlea-hearing, shazam-audio-fingerprint
 
 #### error-correction
 - **Title:** Error-correcting codes
@@ -1439,6 +1440,16 @@ A topic is done when:
 - **Prerequisites:** internet, feedback-control
 - **Related:** wireless-signals
 - **Pitfall:** Congestion control is not flow control: the receiver's window protects the receiver, and the congestion window protects the network. A loss on a wireless link is often noise rather than congestion, and classic TCP misreads it as a signal to slow down. AIMD's 'fair share' is fair only between flows with similar round-trip times; a flow with a short round-trip time grabs more.
+
+#### shazam-audio-fingerprint
+- **Title:** How Shazam recognises a song
+- **Level:** 2
+- **Kind:** step
+- **Interaction:** Play one of a few short clips synthesized in the page and watch its spectrogram scroll by; the page keeps only the brightest peaks, a constellation of dots, and turns pairs of nearby peaks into fingerprints (two pitches and the gap between them), building a tiny database of a dozen clips the same way. Record a few seconds of one clip with noise, a cough and a different start time added, and watch its fingerprints looked up: hits on the wrong clips scatter, hits on the right one line up at a single time offset, and the spike in the histogram names the song. Slide the noise up until the spike disappears.
+- **Takeaway:** A song is recognised not by comparing sound but by matching a sparse set of peak pairs whose time gaps line up, which is why a few noisy seconds from the middle of a track are enough.
+- **Prerequisites:** fourier-transform, binary
+- **Related:** compression, musical-scales-ratios
+- **Pitfall:** It does not match the melody or the lyrics and cannot find a cover version or a hummed tune: a different performance has different peaks. The time alignment, not the number of matching hashes alone, is what makes a match reliable.
 
 ### Artificial Intelligence
 
