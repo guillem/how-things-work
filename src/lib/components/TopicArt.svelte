@@ -5235,6 +5235,50 @@
 			stroke-width="1.6"
 		/>
 		<circle cx={eccArt.S.x} cy={eccArt.S.y} r="5.5" fill={accent} />
+	{:else if slug === 'kalman-filter'}
+		<!-- a track through noisy fixes; the estimate's ellipse after a prediction (dashed) and
+		     after the fix -->
+		<path
+			d="M22 92 C60 88 84 66 110 56 S160 34 182 28"
+			fill="none"
+			stroke="currentColor"
+			stroke-width="1.6"
+			opacity="0.45"
+		/>
+		{#each [[30, 84], [46, 95], [62, 78], [78, 74], [92, 58], [104, 66]] as [x, y], i (i)}
+			<circle cx={x} cy={y} r="2.6" fill="currentColor" opacity="0.4" />
+		{/each}
+		<path
+			d="M22 92 C48 90 70 76 92 64 S112 56 122 52"
+			fill="none"
+			stroke={accent}
+			stroke-width="2.2"
+		/>
+		<ellipse
+			cx="134"
+			cy="46"
+			rx="20"
+			ry="13"
+			transform="rotate(-24 134 46)"
+			fill="none"
+			stroke={accent}
+			stroke-width="1.4"
+			stroke-dasharray="4 3"
+			opacity="0.8"
+		/>
+		<ellipse
+			cx="128"
+			cy="49"
+			rx="10"
+			ry="7"
+			transform="rotate(-24 128 49)"
+			fill={accent}
+			fill-opacity="0.25"
+			stroke={accent}
+			stroke-width="1.6"
+		/>
+		<circle cx="128" cy="49" r="2.6" fill={accent} />
+		<circle cx="140" cy="40" r="3" fill="currentColor" opacity="0.6" />
 	{:else}
 		<circle cx="100" cy="60" r="30" fill="none" stroke={accent} stroke-width="2" />
 		<circle cx="100" cy="60" r="5" fill={accent} />
