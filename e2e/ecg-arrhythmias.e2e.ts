@@ -15,6 +15,11 @@ const ventricles = async (page: Page) => {
 	return Number(m[1]);
 };
 
+// Each step simulates seconds of a 2D sheet of heart tissue as it opens (up to 13 s on CI's runner):
+// run this file's tests one after another in one worker, so they don't starve each other and the
+// rest of the suite of CPU.
+test.describe.configure({ mode: 'default' });
+
 test.beforeEach(async ({ page }) => {
 	await page.emulateMedia({ reducedMotion: 'reduce' });
 });

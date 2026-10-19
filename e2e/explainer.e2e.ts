@@ -186,8 +186,11 @@ test('glossary terms are focusable and show their definition on hover', async ({
 			return { display: s.display, content: s.content };
 		});
 	expect((await tooltip()).display).toBe('none');
-	await term.hover();
-	await expect.poll(async () => (await tooltip()).display).toBe('block');
+	// Hover again until it shows: the step's text slides in and can move out from under the pointer.
+	await expect(async () => {
+		await term.hover();
+		expect((await tooltip()).display).toBe('block');
+	}).toPass();
 	expect((await tooltip()).content).toContain('outermost layer of cells of a leaf');
 });
 
