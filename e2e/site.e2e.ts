@@ -34,7 +34,7 @@ test(
 	async ({ page }) => {
 		await page.goto('./');
 		for (const slug of slugs) {
-			await expect(page.locator(`main a[href$="${slug}/"]`)).toHaveCount(1);
+			await expect(page.locator(`main a[href$="/${slug}/"]`)).toHaveCount(1);
 		}
 		await expect(page.locator('main .grid > *')).toHaveCount(slugs.length);
 		await expect(page.locator('.progress')).toContainText(
