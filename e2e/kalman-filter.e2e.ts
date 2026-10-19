@@ -31,7 +31,7 @@ test('two guesses blend into an estimate surer than either, pulled towards the s
 	expect(await read(page, 'estimate 10.7 m, σ')).toBeLessThan(3);
 });
 
-test('with no drift the filter is the running mean; with drift it beats every average', async ({
+test('with no drift the filter is the running mean; with drift it beats the averages on this run', async ({
 	page
 }) => {
 	await page.goto('./kalman-filter/#forget');
@@ -97,7 +97,7 @@ test('round a corner a stiff filter misses by far more than it claims; allowing 
 
 test('the innovations are white only when the process noise is right', async ({ page }) => {
 	await page.goto('./kalman-filter/#check');
-	await expect(stage(page)).toContainText('the model fits');
+	await expect(stage(page)).toContainText('no mismatch seen');
 	await range(page, 'ratio').press('Home');
 	await expect(stage(page)).toContainText('the filter lags');
 	await range(page, 'ratio').press('End');

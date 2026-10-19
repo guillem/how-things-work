@@ -47,7 +47,7 @@
 		for (let v = Math.ceil(yr[0] / stepY) * stepY; v <= yr[1]; v += stepY) out.push(v);
 		return out;
 	});
-	const ky = scale([0, 1], [548, 418]);
+	const ky = scale([0, 1], [548, 428]);
 
 	const truthPath = $derived(
 		linePath(
@@ -219,7 +219,7 @@
 	>
 		<Label
 			x={X1}
-			y={ky(1) + 4}
+			y={412}
 			text={ss
 				? `gain now ${fmt(last.K)} · settles at ${fmt(ss.K)} (dashed)`
 				: `no drift: K = 1/k, now ${fmt(last.K, 3)}`}
@@ -239,7 +239,7 @@
 		>
 			<rect
 				x={X1 - 300}
-				y={366}
+				y={360}
 				width="300"
 				height="34"
 				rx="6"
@@ -249,7 +249,7 @@
 			/>
 			<Label
 				x={X1 - 290}
-				y={380}
+				y={374}
 				text="typical error: readings {fmt(eRaw)} m · Kalman {fmt(eKf)} m"
 				size={11}
 				anchor="start"
@@ -258,7 +258,7 @@
 			/>
 			<Label
 				x={X1 - 290}
-				y={394}
+				y={388}
 				text="mean of the last 10 {fmt(eMa)} m · of all {fmt(eMean)} m"
 				size={11}
 				anchor="start"
@@ -276,7 +276,7 @@
 		>
 			<Label
 				x={X1}
-				y={384}
+				y={382}
 				text="estimate's σ now {fmt(Math.sqrt(last.variance))} m · the sensor's {fmt(r)} m"
 				size={12}
 				anchor="end"

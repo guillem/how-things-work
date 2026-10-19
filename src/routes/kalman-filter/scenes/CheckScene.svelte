@@ -45,7 +45,7 @@
 	const ly = scale([-0.6, 0.6], [560, 400]);
 	const verdict = $derived(
 		lagsOut <= 1 && spread > 0.85 && spread < 1.15
-			? 'white, with the spread it predicted: the model fits'
+			? 'no mismatch seen: white, with the spread it predicted'
 			: ac[0] > band
 				? 'correlated and too wide: the filter lags (process noise too small)'
 				: ac[0] < -band
@@ -64,7 +64,7 @@
 		<Label
 			x={24}
 			y={34}
-			text="200 s of innovations, each ÷ the σ the filter predicted · its process noise × {ratio} the truth's"
+			text="190 innovations along x, each ÷ the σ the filter predicted · its process noise × {ratio} the truth's"
 			size={15}
 			weight={600}
 			anchor="start"
@@ -184,7 +184,7 @@
 				size={12}
 				anchor="start"
 				weight={600}
-				color={verdict.startsWith('white') ? 'var(--kf-fused)' : 'var(--kf-bad-text)'}
+				color={verdict.startsWith('no mismatch') ? 'var(--kf-fused)' : 'var(--kf-bad-text)'}
 			/>
 		</Readout>
 	</g>

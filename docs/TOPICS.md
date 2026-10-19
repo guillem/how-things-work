@@ -237,7 +237,7 @@ A topic is done when:
 - [x] shazam-audio-fingerprint
 - [x] distributed-hash-tables
 - [x] elliptic-curve-cryptography
-- [ ] kalman-filter
+- [x] kalman-filter
 
 **Artificial Intelligence**
 - [x] learning-from-data
@@ -1484,7 +1484,7 @@ A topic is done when:
 - **Takeaway:** The best estimate of where something is comes from weighing a prediction against a measurement in proportion to how much each can be trusted, and the filter keeps that weighting up to date.
 - **Prerequisites:** bayes-theorem, central-limit-theorem, linear-transformations, feedback-control
 - **Related:** gps
-- **Pitfall:** It does not average measurements: with a good model it can be more certain than any single measurement. It is optimal only for linear systems with Gaussian noise, and when the model is wrong the failure mode is confident and wrong.
+- **Pitfall:** It is not a plain average of the measurements: it weighs a prediction against each new one, and with a good model it can be more certain than any single measurement. It is optimal only for linear systems with Gaussian noise, and when the model is wrong the failure mode is confident and wrong.
 
 ### Artificial Intelligence
 

@@ -111,8 +111,8 @@
 			color="var(--kf-pred)"
 		>
 			<Label
-				x={sx(MP) - 10}
-				y={Math.max(80, sy(pdf(0, 0, sp)) - 12)}
+				x={Math.max(200, sx(MP - 1.18 * sp)) - 8}
+				y={sy(pdf(0, 0, sp) / 2) - 6}
 				text="prediction 10 m, σ {fmt(sp)} m"
 				size={12}
 				anchor="end"
@@ -142,8 +142,8 @@
 			color="var(--kf-meas)"
 		>
 			<Label
-				x={sx(Z) + 10}
-				y={Math.max(80, sy(pdf(0, 0, sm)) - 12)}
+				x={Math.min(750, sx(Z + 1.18 * sm)) + 8}
+				y={sy(pdf(0, 0, sm) / 2) - 6}
 				text="measurement 16 m, σ {fmt(sm)} m"
 				size={12}
 				anchor="start"

@@ -110,7 +110,7 @@ test('with no process noise and a diffuse prior the filter is the running mean',
 	});
 });
 
-test('the filter beats the raw measurements and every fixed-window average', () => {
+test('over a long run the filter beats the raw measurements and every fixed-window average', () => {
 	const [q, r] = [0.5, 2];
 	const { truth, z } = randomWalk(4000, q, r, 21);
 	const f = scalarFilter(z, q, r);

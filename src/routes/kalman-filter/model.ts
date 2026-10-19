@@ -300,7 +300,8 @@ export function wander(
  * a brisk car round a corner), then straight again. Deterministic.
  */
 export const SWERVE = { n: 50, straight: 20, turn: 6, speed: 8 };
-export function swerve(dt = 1): Truth {
+export function swerve(): Truth {
+	const dt = 1;
 	const { n, straight, turn, speed } = SWERVE;
 	const omega = Math.PI / 2 / (turn / dt); // radians per step
 	const states: Vec[] = [];
