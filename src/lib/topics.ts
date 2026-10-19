@@ -1383,6 +1383,15 @@ const explainers: Explainer[] = [
 		accent: '#2b8a3e',
 		steps: 8,
 		minutes: 20
+	},
+	{
+		slug: 'shazam-audio-fingerprint',
+		title: 'How Shazam recognises a song',
+		summary:
+			'Turn a dozen tunes the page composes into constellations of spectrogram peaks and pairs of peaks into 22-bit fingerprints, then record one through hiss and a cough from a random start and watch the matching fingerprints line up at a single time offset, while a transposed copy, a cover and an unknown tune find nothing.',
+		accent: '#1c7ed6',
+		steps: 11,
+		minutes: 18
 	}
 ];
 

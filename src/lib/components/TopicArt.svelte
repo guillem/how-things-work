@@ -5118,6 +5118,37 @@
 				opacity={[1, 3, 5, 8, 11, 13].includes(b) ? 0.85 : 0.4}
 			/>
 		{/each}
+	{:else if slug === 'shazam-audio-fingerprint'}
+		<!-- a constellation of spectrogram peaks, one anchor paired with three partners, and the
+		     histogram of time differences with its spike -->
+		{#each [[18, 70], [30, 40], [40, 82], [52, 28], [64, 60], [76, 88], [88, 36], [100, 72], [110, 22], [122, 54]] as [x, y] (x)}
+			<circle cx={x} cy={y} r="3" fill="currentColor" opacity="0.4" />
+		{/each}
+		{#each [[76, 30], [92, 50], [104, 40]] as [x, y] (x)}
+			<line x1="58" y1="44" x2={x} y2={y} stroke={accent} stroke-width="1.5" opacity="0.8" />
+			<circle cx={x} cy={y} r="3.5" fill={accent} opacity="0.85" />
+		{/each}
+		<circle cx="58" cy="44" r="5" fill={accent} />
+		<line
+			x1="136"
+			x2="190"
+			y1="100"
+			y2="100"
+			stroke="currentColor"
+			stroke-width="1"
+			opacity="0.45"
+		/>
+		{#each [[140, 4], [146, 7], [152, 3], [158, 6], [164, 52], [170, 5], [176, 8], [182, 3], [188, 5]] as [x, h] (x)}
+			<line
+				x1={x}
+				x2={x}
+				y1="100"
+				y2={100 - h}
+				stroke={h > 20 ? accent : 'currentColor'}
+				stroke-width="3"
+				opacity={h > 20 ? 1 : 0.45}
+			/>
+		{/each}
 	{:else}
 		<circle cx="100" cy="60" r="30" fill="none" stroke={accent} stroke-width="2" />
 		<circle cx="100" cy="60" r="5" fill={accent} />

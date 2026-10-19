@@ -4773,3 +4773,46 @@ kbd {
 	--hb-absent: #4dabf7;
 	--hb-absent-text: #74c0fc;
 }
+
+/* shazam-audio-fingerprint: the waveform, spectrogram peaks, the recording's peaks, an anchor,
+   its partner and the gap, the target zone, the cough, chance hits and the matching tune */
+:root {
+	--sz-wave: #4c6ef5;
+	--sz-peak: #e8590c;
+	--sz-peak-text: #c2410c;
+	--sz-rec: #0c8599;
+	--sz-anchor: #c2255c;
+	--sz-anchor-text: #a61e4d;
+	--sz-target: #1971c2;
+	--sz-target-text: #1864ab;
+	--sz-gap: #2b8a3e;
+	--sz-gap-text: #237032;
+	--sz-zone: #c2255c;
+	--sz-zone-text: #a61e4d;
+	--sz-cough: #e03131;
+	--sz-cough-text: #c92a2a;
+	--sz-hit: #868e96;
+	--sz-match: #2b8a3e;
+	--sz-match-text: #237032;
+	--sz-strip: #f1f3f5;
+}
+:root[data-theme='dark'] {
+	--sz-wave: #748ffc;
+	--sz-peak: #ff922b;
+	--sz-peak-text: #ffa94d;
+	--sz-rec: #3bc9db;
+	--sz-anchor: #f06595;
+	--sz-anchor-text: #faa2c1;
+	--sz-target: #4dabf7;
+	--sz-target-text: #74c0fc;
+	--sz-gap: #69db7c;
+	--sz-gap-text: #8ce99a;
+	--sz-zone: #f06595;
+	--sz-zone-text: #faa2c1;
+	--sz-cough: #ff6b6b;
+	--sz-cough-text: #ff8787;
+	--sz-hit: #868e96;
+	--sz-match: #69db7c;
+	--sz-match-text: #8ce99a;
+	--sz-strip: #212327;
+}
