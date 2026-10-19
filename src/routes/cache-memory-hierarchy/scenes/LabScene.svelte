@@ -217,7 +217,7 @@
 
 	// ---- plot of the running AMAT --------------------------------------------------------------
 	const PX0 = 92;
-	const PX1 = 560;
+	const PX1 = 540;
 	const PY0 = 430;
 	const PY1 = 560;
 	const sx = $derived(scale([0, Math.max(1, N)], [PX0, PX1]));
@@ -230,6 +230,17 @@
 			(d) => d.a,
 			sx,
 			sy
+		)
+	);
+	/** Misses so far, on a right-hand axis scaled so that "every access missed" meets 250 cycles. */
+	const syM = $derived(scale([0, (Math.max(1, N) * 260) / LATENCY.mem], [PY1, PY0]));
+	const missPath = $derived(
+		linePath(
+			thin(rp.totals.slice(0, Math.max(0, shown))),
+			(d) => d.accesses,
+			(d) => d.misses,
+			sx,
+			syM
 		)
 	);
 
@@ -398,7 +409,7 @@
 	{/if}
 
 	<!-- running AMAT -->
-	<Axes {sx} {sy} xLabel="loads" yTicks={[0, 50, 100, 150, 200, 250]} />
+	<Axes {sx} {sy} xLabel="accesses" yTicks={[0, 50, 100, 150, 200, 250]} />
 	<line
 		x1={PX0}
 		x2={PX1}
@@ -409,36 +420,48 @@
 		opacity="0.6"
 	/>
 	<Label
-		x={PX1}
-		y={sy(LATENCY.mem) - 6}
-		text="every load from memory"
+		x={PX1 - 4}
+		y={sy(LATENCY.mem) + 13}
+		text="every access a miss"
 		size={10}
 		anchor="end"
 		muted
 	/>
+	<Axes {sx} sy={syM} xTicks={[]} yTicks={[0, N]} yRight grid={false} />
+	<path d={missPath} fill="none" stroke="var(--cm-miss)" stroke-width="1.6" opacity="0.8" />
 	<path d={path} fill="none" stroke="var(--cm-a)" stroke-width="2.2" />
-	<Label
-		x={PX0}
-		y={PY0 - 12}
-		text="average memory access time so far, cycles"
-		size={11}
-		anchor="start"
-		muted
-	/>
+	<Readout id="plot-key">
+		<Label
+			x={PX0}
+			y={PY0 - 12}
+			text="average access time so far, cycles"
+			size={11}
+			anchor="start"
+			color="var(--cm-a)"
+		/>
+		<Label
+			x={PX1}
+			y={PY0 - 12}
+			text="misses so far (right)"
+			size={11}
+			anchor="end"
+			color="var(--cm-miss-text)"
+		/>
+	</Readout>
 
 	<!-- counts -->
 	<Readout
 		id="loads"
 		order={3}
-		label="Loads"
+		label="Accesses"
 		value="{fmt(shown)} of {fmt(N)}: {fmt(misses)} {misses === 1 ? 'miss' : 'misses'}"
 	>
 		<Label
 			x={BX0}
 			y={426}
-			text="{fmt(shown)} of {fmt(N)} loads · {fmt(misses)} {misses === 1 ? 'miss' : 'misses'} ({fmt(
-				tally ? (100 * misses) / tally.accesses : 0
-			)} %)"
+			text="{fmt(shown)} of {fmt(N)} accesses · {fmt(misses)} {misses === 1
+				? 'miss'
+				: 'misses'} ({fmt(tally ? (100 * misses) / tally.accesses : 0)} %)"
 			size={13}
 			weight={600}
 			anchor="start"

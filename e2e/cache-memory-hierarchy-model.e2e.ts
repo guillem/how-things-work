@@ -111,6 +111,11 @@ test('pointer-chasing latency steps up where the working set outgrows L1, and wi
 	const kb = 1024;
 	expect(workingSet(16 * kb, 'chase', null)).toBe(LATENCY.l1);
 	expect(workingSet(32 * kb, 'chase', null)).toBe(LATENCY.l1);
+	// one line past 32 KB, only one set overflows; by 36 KB every set has 9 lines for 8 ways
+	const justPast = workingSet(32 * kb + 64, 'chase', null);
+	expect(justPast).toBeGreaterThan(LATENCY.l1);
+	expect(justPast).toBeLessThan(LATENCY.l2);
+	expect(workingSet(36 * kb, 'chase', null)).toBe(LATENCY.mem);
 	expect(workingSet(64 * kb, 'chase', null)).toBe(LATENCY.mem);
 	expect(workingSet(64 * kb, 'chase', L2)).toBe(LATENCY.l2);
 	expect(workingSet(256 * kb, 'chase', L2)).toBe(LATENCY.l2);
@@ -138,6 +143,6 @@ test('the bills the narrative quotes', () => {
 	expect(Math.round(program('scattered').amat / 10) * 10).toBe(240);
 	const perOp = (r: { cycles: number; ops: number }) => r.cycles / r.ops;
 	expect(Math.round(perOp(matmulRun(0)))).toBe(287);
-	expect(Math.round(perOp(matmulRun(12)))).toBe(15);
+	expect(Math.round(perOp(matmulRun(12)))).toBe(16);
 	expect(Math.round(matmulRun(0).tally.misses / matmulRun(12).tally.misses / 10) * 10).toBe(40);
 });

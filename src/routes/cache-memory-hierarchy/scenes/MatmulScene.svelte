@@ -139,7 +139,7 @@
 				text="{(
 					(100 * (row.tiles ? tiled : naive).tally.misses) /
 					(row.tiles ? tiled : naive).tally.accesses
-				).toFixed(1)} % of loads miss · {fmt(
+				).toFixed(1)} % of accesses miss · {fmt(
 					perOp(row.tiles ? tiled : naive)
 				)} cycles waiting per multiply-add"
 				size={12}

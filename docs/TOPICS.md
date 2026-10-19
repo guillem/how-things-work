@@ -221,7 +221,7 @@ A topic is done when:
 - [x] turing-machines
 - [x] quantum-computing
 - [x] game-tree-search
-- [ ] cache-memory-hierarchy
+- [x] cache-memory-hierarchy
 
 **Information & Networks**
 - [x] compression

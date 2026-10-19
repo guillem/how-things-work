@@ -49,9 +49,9 @@
 	);
 	const last = $derived(k > 0 ? chase[k - 1] : null);
 	const sizeLabel = (e: number) => bytes(Math.pow(2, e));
-	/** The biggest working set that stays off DRAM, once the sweep has passed the step. */
+	/** The smallest working set measured where every load goes to DRAM, once the sweep is there. */
 	const firstSlow = $derived(chase.findIndex((d) => d.a >= LATENCY.mem));
-	const knee = $derived(firstSlow > 0 && k > firstSlow ? chase[firstSlow - 1].w : 0);
+	const knee = $derived(firstSlow > 0 && k > firstSlow ? chase[firstSlow].w : 0);
 	const marks = $derived([
 		{ id: 'l1', w: L1.size, name: 'L1 32 KB', c: 'var(--cm-l1)' },
 		...(hasL2 ? [{ id: 'l2', w: l2size, name: `L2 ${bytes(l2size)}`, c: 'var(--cm-l2)' }] : [])
@@ -126,11 +126,11 @@
 		<circle cx={lx(d.w)} cy={ly(d.a)} r="3" fill="var(--cm-a)" />
 	{/each}
 	{#if knee}
-		<Readout id="knee" order={3} label="Every load from DRAM" value="past {bytes(knee)}">
+		<Readout id="knee" order={3} label="Every load from DRAM" value="from {bytes(knee)}">
 			<Label
-				x={lx(knee) - 10}
+				x={lx(knee) - 12}
 				y={ly(LATENCY.mem) + 4}
-				text="every load from DRAM past {bytes(knee)}"
+				text="every load from DRAM from {bytes(knee)} on"
 				size={12}
 				weight={600}
 				anchor="end"

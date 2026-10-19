@@ -25,10 +25,10 @@ test(
 	{ tag: '@smoke' },
 	async ({ page }) => {
 		await page.goto('./cache-memory-hierarchy/#lines');
-		await expect(stage(page)).toContainText('256 of 256 loads · 32 misses');
+		await expect(stage(page)).toContainText('256 of 256 accesses · 32 misses');
 		await range(page, 'line').press('Home');
 		await expect(stage(page)).toContainText('16-byte lines');
-		await expect(stage(page)).toContainText('256 of 256 loads · 128 misses');
+		await expect(stage(page)).toContainText('256 of 256 accesses · 128 misses');
 	}
 );
 
@@ -68,13 +68,13 @@ test('LRU misses every load of a loop one line too big; random replacement and a
 	page
 }) => {
 	await page.goto('./cache-memory-hierarchy/#replacement');
-	await expect(stage(page)).toContainText('36 of 36 loads · 36 misses');
+	await expect(stage(page)).toContainText('36 of 36 accesses · 36 misses');
 	await choose(page, 'policy', 'random');
 	await expect(stage(page)).toContainText('RANDOM');
-	expect(await read(page, '36 of 36 loads ·')).toBeLessThan(20);
+	expect(await read(page, '36 of 36 accesses ·')).toBeLessThan(20);
 	await range(page, 'rways').press('Home');
 	await expect(stage(page)).toContainText('direct-mapped');
-	await expect(stage(page)).toContainText('36 of 36 loads · 15 misses');
+	await expect(stage(page)).toContainText('36 of 36 accesses · 15 misses');
 });
 
 test('tiling the matrix product cuts the misses many times over, unless the tile is too big', async ({
@@ -106,9 +106,23 @@ test('the latency curve breaks at the L1, and with an L2 the break to DRAM moves
 	page
 }) => {
 	await page.goto('./cache-memory-hierarchy/#knee');
-	await expect(stage(page)).toContainText('every load from DRAM past 32 KB');
+	await expect(stage(page)).toContainText('every load from DRAM from 45.3 KB on');
 	await page.locator('input[data-control=l2]').check({ force: true });
-	await expect(stage(page)).toContainText('every load from DRAM past 256 KB');
+	await expect(stage(page)).toContainText('every load from DRAM from 362 KB on');
 	await range(page, 'l2size').press('End');
-	await expect(stage(page)).toContainText('every load from DRAM past 2 MB');
+	await expect(stage(page)).toContainText('every load from DRAM from 2.83 MB on');
+});
+
+test('the lab runs the chosen program, plain or cache-friendly', async ({ page }) => {
+	await page.goto('./cache-memory-hierarchy/#lab');
+	await expect(stage(page)).toContainText('Multiply matrices');
+	await range(page, 'ways').press('End');
+	await expect(stage(page)).toContainText('fully associative');
+	await expect(stage(page)).toContainText('1,088 of 1,088 accesses · 584 misses');
+	await page.locator('input[data-control=friendly]').check({ force: true });
+	await expect(stage(page)).toContainText('Multiply matrices in tiles');
+	await expect(stage(page)).toContainText('1,216 of 1,216 accesses · 72 misses');
+	await choose(page, 'program', 'list');
+	await expect(stage(page)).toContainText('Walk a list, nodes in order');
+	await expect(stage(page)).toContainText('128 of 128 accesses · 32 misses');
 });

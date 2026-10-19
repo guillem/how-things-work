@@ -192,9 +192,11 @@ export function listWalk(n: number, scattered: boolean, node = 16, seed = 7): Tr
 
 /**
  * C = A × B for n × n matrices of 8-byte numbers, stored one after the other, row by row. The
- * inner loop loads A[i][k] and B[k][j]; C[i][j] stays in a register and is stored once per pass
+ * inner loop loads A[i][k] and B[k][j]; C[i][j] is summed in a register and stored once per pass
  * over k. Blocked, the k and j loops are cut into b × b tiles of B (Lam, Rothberg & Wolf 1991),
- * so a tile is reused by every row i before the next is loaded. Same n³ multiply-adds either way.
+ * so a tile is reused by every row i before the next is loaded; every tile after the first along
+ * k must load the partial sum C[i][j] before adding to it. Same n³ multiply-adds either way. A
+ * store is charged like a load (it brings in its line); writebacks of changed lines are left out.
  */
 export function matmul(n: number, block = 0, gap = 0): Trace {
 	const bytes = n * n * 8 + gap;
@@ -220,6 +222,7 @@ export function matmul(n: number, block = 0, gap = 0): Trace {
 			for (let jj = 0; jj < n; jj += block)
 				for (let i = 0; i < n; i++)
 					for (let j = jj; j < Math.min(n, jj + block); j++) {
+						if (kk > 0) push(c(i, j));
 						for (let k = kk; k < Math.min(n, kk + block); k++) {
 							push(a(i, k));
 							push(b(k, j));
