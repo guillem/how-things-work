@@ -204,8 +204,8 @@
 
 	<!-- the probe -->
 	<g opacity={probeFade}>
-		<circle cx={kp.x} cy={kp.y} r="9" fill="none" stroke="var(--dht-query)" stroke-width="2" />
-		{#if rule === 'ring'}
+		<circle cx={kp.x} cy={kp.y} r="9" fill="none" stroke="var(--stage-ink)" stroke-width="2" />
+		{#if rule === 'ring' && probeU > 0.01}
 			<path
 				d={arc(
 					C,
@@ -213,11 +213,11 @@
 					keyU[probeIndex] + span(keyU[probeIndex], probeTarget) * probeU
 				)}
 				fill="none"
-				stroke="var(--dht-query)"
+				stroke="var(--stage-ink)"
 				stroke-width="3"
 				stroke-linecap="round"
 			/>
-			<circle cx={probePos.x} cy={probePos.y} r="5" fill="var(--dht-query)" />
+			<circle cx={probePos.x} cy={probePos.y} r="5" fill="var(--stage-ink)" />
 		{/if}
 	</g>
 
@@ -237,7 +237,7 @@
 			size={13}
 			weight={600}
 			anchor="start"
-			color="var(--dht-query)"
+			color="var(--stage-ink)"
 		/>
 	</Readout>
 	<Readout id="held">
@@ -300,7 +300,7 @@
 			order={2}
 			label={on ? `Server ${serverName(n)} added` : 'Add a server'}
 			value={on ? `${movedCount} of ${K} keys moved (${pct(movedCount)} %)` : `${n} servers`}
-			color="var(--dht-query)"
+			color="var(--stage-ink)"
 		>
 			{#if on}
 				<g opacity={a}>

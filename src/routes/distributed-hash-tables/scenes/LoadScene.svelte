@@ -124,14 +124,6 @@
 		stroke-dasharray="5 4"
 		opacity="0.7"
 	/>
-	<Label
-		x={BX + N * (BW + BG) - 4}
-		y={BY - bh(1 / N) - 8}
-		text="fair share 12.5 %"
-		size={11}
-		anchor="end"
-		muted
-	/>
 	{#each NAMES as name, s (name)}
 		{@const x = BX + s * (BW + BG)}
 		{@const h = bh(bars.current[s] ?? 0)}
@@ -172,6 +164,16 @@
 			weight={600}
 			anchor="start"
 			tabular
+		/>
+	</Readout>
+	<Readout id="fair">
+		<Label
+			x={BX - 10}
+			y={132}
+			text="dashed line: the fair share, 12.5 % each"
+			size={11}
+			anchor="start"
+			muted
 		/>
 	</Readout>
 </g>

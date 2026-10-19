@@ -8,7 +8,7 @@ const servers: Control = {
 	min: 3,
 	max: 8,
 	step: 1,
-	default: 5
+	default: 6
 };
 
 const add: Control = {
@@ -137,7 +137,7 @@ export const spec: ExplainerSpec = {
 			body: `
 <p>A web cache, a shopping-basket store or a file-sharing network holds far more keys than one machine can. They are spread over N servers, and every client must be able to work out on its own which server holds a key, with no central directory to ask.</p>
 <p>The <a href="../hash-tables-bloom-filters/">hash table</a>'s trick does it: hash the key to a big number and take it modulo N. Every key lands on one of the N servers, the servers get about equal shares, and anyone with the same hash function finds the same server. The 60 keys on the circle are coloured by the server that holds them.</p>
-<p>Now add one server. The rule is now hash mod N + 1, and a key stays put only if its hash leaves the same remainder under both: about one key in N + 1. Going from 5 servers to 6, about five keys in six move to another server, each one copied over the network, all at once, just as the system is busy enough to need the new machine.</p>`,
+<p>Now add one server. The rule is now hash mod N + 1, and a key stays put only if its hash leaves the same remainder under both: about one key in N + 1. Going from 6 servers to 7, about six keys in seven move to another server, each one copied over the network, all at once, just as the system is busy enough to need the new machine.</p>`,
 			notes: `<p>The fraction that stays is exactly the share of hashes h with h mod N = h mod (N + 1), which for evenly spread hashes is 1/(N + 1). Doubling N is kinder (half the keys move, each to a new server), which is why some systems only ever double. The ring that follows removes the problem for any N.</p>`
 		},
 		{
@@ -234,7 +234,7 @@ export const spec: ExplainerSpec = {
 			body: `
 <p>In a real DHT machines crash, and users close their laptops. Each round here, a share of the 24 nodes fails at once (red), before anyone notices. Then the survivors repair: each finds its new successor, fixes its fingers, and new nodes join (green) until the ring is back to 24.</p>
 <p>The repair (Chord's <dfn data-def="Chord's periodic repair: each node asks its successor for its predecessor and successor list, so the ring's pointers follow nodes that join and leave.">stabilisation</dfn>) only works if every survivor still knows a live node ahead of it. With one successor each, a node whose successor failed is cut off (orange): the ring has a gap there, and lookups that need to cross it fail. So each node keeps a <strong>successor list</strong>, its next few nodes. The node is cut off only when all of them fail at once: with r successors and a fraction f failing, that's a chance of about fʳ.</p>
-<p>Lengthen the list to 3 or 4 and the ring survives round after round, even when half the nodes fail at once.</p>`,
+<p>Lengthen the list to 4 and, with a quarter of the nodes failing each round, the ring usually comes through all twelve rounds whole. Make half of them fail at once and 4 is no longer enough: the list has to grow with the network, to about 2 log₂ N.</p>`,
 			notes: `<p>Stoica et al. prove that with successor lists of length O(log N), lookups still find the right successor with high probability even if every node fails with probability ½ at the same moment. The model tests check it at full size: 1,000 nodes, half of them failing at once, cut about 250 survivors off with one successor each, and none with 20 (2 log₂ N). Real churn is gentler but never stops: measured peer-to-peer nodes stay for minutes to hours, which is why stabilisation runs every few seconds.</p>`
 		},
 		{
@@ -248,7 +248,7 @@ export const spec: ExplainerSpec = {
 			body: `
 <p>A healed ring still finds where a key should be. Whether the key is still there is another matter: when the node holding it fails, the key is gone, and its new successor has nothing to hand over. With one copy, every round loses about the failing fraction of what is left: the red ticks are keys lost for good.</p>
 <p>A DHT finds where a key lives; it does not make the data durable. <dfn data-def="Keeping copies of the same data on several machines, so that it survives the failure of some of them.">Replication</dfn> does: store each key on its successor and the next few nodes after it, the nodes already in the successor list, and re-copy it after each round to restore the count. A key is lost only if all c copies fail in the same round, a chance of about fᶜ.</p>
-<p>Raise the copies to 3: with a quarter of the nodes failing each round, almost every key survives every round. That's how DHash, Dynamo and Cassandra keep data: three copies is a common default.</p>`,
+<p>Raise the copies to 3: with a quarter of the nodes failing each round, only a few of the 48 keys are lost in twelve rounds, and with 4 usually none. That's how DHash, Dynamo and Cassandra keep data: three copies is a common default.</p>`,
 			notes: `<p>Copies on consecutive nodes have a weakness: the nodes are random machines, but they fail together if they share a rack or a power supply, so production systems pick the replicas' nodes in different racks or data centres. They must also agree on which copy is current when writes race; that is the business of <a href="../consensus-blockchains/">consensus</a>, which a DHT does not attempt. The model tests: over 10 rounds of 10 % failures among 1,000 nodes, one copy loses about two thirds of 10,000 keys and three copies about 1 %.</p>`
 		}
 	]

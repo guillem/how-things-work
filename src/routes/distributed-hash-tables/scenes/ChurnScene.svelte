@@ -314,11 +314,9 @@
 			<Label
 				x={panel}
 				y={262}
-				text="each round loses a key with all {copies} cop{copies === 1
-					? 'y'
-					: 'ies'} on failed nodes: about {pct(fail)} %{copies > 1
-					? ` to the ${copies === 2 ? '2nd' : copies === 3 ? '3rd' : '4th'} power`
-					: ''}"
+				text={copies === 1
+					? `a key is lost when its node fails: about ${pct(fail)} % a round`
+					: `lost only if all ${copies} copies fail: ${fail.toFixed(2)}${['', '', '²', '³', '⁴'][copies]} ≈ ${(100 * fail ** copies).toFixed(1)} % a round`}
 				size={12}
 				anchor="start"
 				muted

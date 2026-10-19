@@ -38,10 +38,18 @@
 		const r = rng(9001 + seed * 7919 + n);
 		const out: Planned[] = [];
 		let t0 = 0;
+		// the first lookup takes at least the average number of hops, so the opening frame (and
+		// the reduced-motion one) shows a typical route rather than a lucky one
+		const least = Math.ceil(fingers ? 0.5 * Math.log2(n) : n / 2);
 		for (let q = 0; q < 30; q++) {
-			const start = Math.floor(r() * n);
-			const key = Math.floor(r() * SPACE);
-			const res = lookup(net, start, key, fingers);
+			let start: number;
+			let key: number;
+			let res: Lookup;
+			do {
+				start = Math.floor(r() * n);
+				key = Math.floor(r() * SPACE);
+				res = lookup(net, start, key, fingers);
+			} while (res.hops < (q === 0 ? least : 1));
 			const t1 = t0 + INTRO + res.hops * HOP + ANSWER + HOLD;
 			out.push({ start, key, res, t0, t1 });
 			t0 = t1;

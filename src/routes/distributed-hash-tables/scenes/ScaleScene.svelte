@@ -134,14 +134,16 @@
 	<path d={ref} fill="none" stroke="var(--stage-ink)" stroke-dasharray="5 4" opacity="0.6" />
 	<path d={walkPath} fill="none" stroke="var(--dht-node)" stroke-width="2" />
 	{#if k > 4}
-		<Label
-			x={sx(5) + 10}
-			y={Y0 + 16}
-			text="successors only: N/2 hops, {fmt(Math.round(WALK[WALK.length - 1]))} at 16,384 nodes"
-			size={11}
-			anchor="start"
-			muted
-		/>
+		<Readout id="walk">
+			<Label
+				x={sx(5) + 10}
+				y={Y0 + 16}
+				text="successors only: about N/2 hops, 8,192 at 16,384 nodes"
+				size={11}
+				anchor="start"
+				muted
+			/>
+		</Readout>
 	{/if}
 	<path d={meanPath} fill="none" stroke="var(--dht-query)" stroke-width="2.6" />
 	{#each shown as d, i (d.n)}
