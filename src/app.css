@@ -4815,6 +4815,7 @@ kbd {
 	--sz-match: #69db7c;
 	--sz-match-text: #8ce99a;
 	--sz-strip: #212327;
+}
 
 /* distributed-hash-tables: the servers (A, B, ...), the query and its fingers, and churn
    (failed, joined, cut off, lost keys) */

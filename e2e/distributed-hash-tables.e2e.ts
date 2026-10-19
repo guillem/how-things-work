@@ -27,7 +27,7 @@ test(
 	async ({ page }) => {
 		await page.goto('./distributed-hash-tables/#join');
 		await expect(stage(page)).toContainText('consistent hashing · 6 servers');
-		await toggle(page, 'add').check();
+		await toggle(page, 'add').check({ force: true });
 		await expect(stage(page)).toContainText('G joins');
 		const ring = await read(page, 'G joins:');
 		expect(ring).toBeLessThan(30);
@@ -53,7 +53,12 @@ test('the same lookup among 64 nodes takes a few hops with fingers and many alon
 	page
 }) => {
 	const hops = async () =>
-		Number(/(\d+) hops?: node/.exec((await stage(page).textContent()) ?? '')?.[1]);
+		parseInt(
+			(await stage(page)
+				.getByText(/^\d+ hops?: node/)
+				.first()
+				.textContent()) ?? ''
+		);
 	await page.goto('./distributed-hash-tables/#walk');
 	await range(page, 'nodes').press('End');
 	await expect(stage(page)).toContainText('64 nodes · each knows only its successor');

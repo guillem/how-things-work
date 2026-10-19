@@ -1392,6 +1392,15 @@ const explainers: Explainer[] = [
 		accent: '#1c7ed6',
 		steps: 11,
 		minutes: 18
+	},
+	{
+		slug: 'distributed-hash-tables',
+		title: 'Distributed hash tables & consistent hashing',
+		summary:
+			'Hash servers and keys onto one ring and add a server: only its own share of the keys moves, where hash mod N moves almost all. Even the load with virtual nodes, look keys up with Chord finger tables in about ½ log₂ N hops among thousands of nodes, and churn the ring to see successor lists heal it and replicas keep the data.',
+		accent: '#3b5bdb',
+		steps: 9,
+		minutes: 18
 	}
 ];
 

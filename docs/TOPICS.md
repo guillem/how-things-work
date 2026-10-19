@@ -1,6 +1,6 @@
 # Topic catalog
 
-Source of truth for the content of an interactive web learning tool that shows how things work. It defines 151 topics in 11 categories, each built around one interactive graphic. Readers range from high-school students to university majors.
+Source of truth for the content of an interactive web learning tool that shows how things work. It defines 152 topics in 11 categories, each built around one interactive graphic. Readers range from high-school students to university majors.
 
 This file covers content only. It does not choose the stack, the visual design or the project layout; take those from the repository's own instructions.
 
@@ -90,7 +90,7 @@ A topic is done when:
 | Earth & Climate | `earth` | 13 |
 | Space | `space` | 11 |
 | Computing | `computing` | 13 |
-| Information & Networks | `networks` | 10 |
+| Information & Networks | `networks` | 11 |
 | Artificial Intelligence | `ai` | 19 |
 | Energy & Machines | `energy` | 10 |
 
@@ -235,6 +235,7 @@ A topic is done when:
 - [x] consensus-blockchains
 - [x] tcp-congestion-control
 - [x] shazam-audio-fingerprint
+- [x] distributed-hash-tables
 
 **Artificial Intelligence**
 - [x] learning-from-data
@@ -1305,7 +1306,7 @@ A topic is done when:
 - **Interaction:** Draw walls and slow terrain on a grid, set a start and a goal, and watch breadth-first search, Dijkstra's algorithm and A* expand their frontiers. Compare cells visited and the cost of the path found: breadth-first search ignores terrain and returns the route with the fewest steps, which is not always the cheapest. Then switch to a road-style graph of nodes and weighted edges.
 - **Takeaway:** Finding a route is a systematic exploration of a graph, and a good estimate of the remaining distance lets the search skip most of it.
 - **Prerequisites:** none
-- **Related:** internet, pagerank
+- **Related:** internet, pagerank, distributed-hash-tables
 - **Pitfall:** A* is guaranteed to find the cheapest path only if its estimate never overestimates the remaining cost; with slow terrain, base the estimate on the cheapest terrain.
 
 #### turing-machines
@@ -1421,7 +1422,7 @@ A topic is done when:
 - **Interaction:** Build a small web by adding pages and links. Release a random surfer who follows links and occasionally jumps to any page, and watch the visit counts converge to each page's rank; add links to try to boost one page.
 - **Takeaway:** A page's importance can be computed from the link structure alone: a page matters if pages that matter link to it.
 - **Prerequisites:** none
-- **Related:** linear-transformations, graph-search, random-graphs
+- **Related:** linear-transformations, graph-search, random-graphs, distributed-hash-tables
 
 #### consensus-blockchains
 - **Title:** Blockchains & distributed consensus
@@ -1430,6 +1431,7 @@ A topic is done when:
 - **Interaction:** A cluster of nodes elects a leader and replicates a log; crash nodes or cut the network and watch the cluster keep agreeing or stall. Then chain blocks by hash, tamper with an old block to invalidate every later one, and mine a block by searching for a nonce at adjustable difficulty.
 - **Takeaway:** Getting independent machines to agree on one history is hard; voting among a known set of machines handles failures, and proof-of-work extends agreement to strangers who may cheat.
 - **Prerequisites:** cryptography, internet
+- **Related:** distributed-hash-tables
 
 #### tcp-congestion-control
 - **Title:** TCP congestion control
@@ -1450,6 +1452,16 @@ A topic is done when:
 - **Prerequisites:** fourier-transform, binary
 - **Related:** compression, musical-scales-ratios
 - **Pitfall:** It does not match the melody or the lyrics and cannot find a cover version or a hummed tune: a different performance has different peaks. The time alignment, not the number of matching hashes alone, is what makes a match reliable.
+
+#### distributed-hash-tables
+- **Title:** Distributed hash tables & consistent hashing
+- **Level:** 3
+- **Kind:** simulate
+- **Interaction:** Hash keys and servers onto a ring and watch a lookup walk around it; add or remove a server and count how many keys move, with consistent hashing against the naive modulo rule. Then give each node a finger table and watch lookups finish in a number of hops that grows only logarithmically as the network grows to thousands of nodes; churn nodes in and out and see the ring heal or lose keys depending on how many replicas each key has.
+- **Takeaway:** Thousands of machines can find any key among them in a dozen hops with no directory, and adding one machine moves only its own share of the keys.
+- **Prerequisites:** hash-tables-bloom-filters, internet
+- **Related:** consensus-blockchains, pagerank, graph-search
+- **Pitfall:** Consistent hashing is not fair by default: with one point per server the loads vary widely, which is what virtual nodes fix. A DHT finds where a key lives; it does not make the data durable, replication does.
 
 ### Artificial Intelligence
 
