@@ -4890,3 +4890,26 @@ kbd {
 	--ecc-ok: #69db7c;
 	--ecc-dot: #dee2e6;
 }
+
+/* kalman-filter: the measurements, the estimate and its prediction, the three navigators of
+   the fusion step (GPS only, accelerometer only, both), and a wrong model's misses */
+:root {
+	--kf-meas: #ae3ec9;
+	--kf-est: #1971c2;
+	--kf-pred: #e8590c;
+	--kf-gps: #1971c2;
+	--kf-dead: #e8590c;
+	--kf-fused: #2f9e44;
+	--kf-bad: #e03131;
+	--kf-bad-text: #c92a2a;
+}
+:root[data-theme='dark'] {
+	--kf-meas: #da77f2;
+	--kf-est: #4dabf7;
+	--kf-pred: #ff922b;
+	--kf-gps: #4dabf7;
+	--kf-dead: #ff922b;
+	--kf-fused: #51cf66;
+	--kf-bad: #ff6b6b;
+	--kf-bad-text: #ff8787;
+}

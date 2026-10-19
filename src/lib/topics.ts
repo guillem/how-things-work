@@ -1410,6 +1410,15 @@ const explainers: Explainer[] = [
 		accent: '#0b7285',
 		steps: 12,
 		minutes: 24
+	},
+	{
+		slug: 'kalman-filter',
+		title: 'The Kalman filter',
+		summary:
+			'Blend a prediction with a noisy measurement in proportion to how much each can be trusted, and repeat: watch the uncertainty ellipse grow on every prediction and shrink on every fix, the filter become surer than its sensor, an accelerometer and a GPS beat either alone, and a filter with the wrong model lag round a corner, confidently.',
+		accent: '#1971c2',
+		steps: 9,
+		minutes: 20
 	}
 ];
 
