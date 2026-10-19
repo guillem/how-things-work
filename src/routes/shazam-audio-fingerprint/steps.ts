@@ -37,6 +37,7 @@ const start: Control = {
 	label: 'Recording starts at',
 	min: 0,
 	max: 7,
+	bounds: (p) => [0, Math.min(7, 12 - Number(p.seconds ?? 5))],
 	step: 0.1,
 	default: 4.3,
 	format: (v) => `${v.toFixed(1)} s into the tune`
@@ -67,6 +68,7 @@ const seconds: Control = {
 	label: 'Length of the recording',
 	min: 1,
 	max: 8,
+	bounds: (p) => [1, Math.min(8, Math.floor((12 - Number(p.start ?? 4.3)) * 2) / 2)],
 	step: 0.5,
 	default: 5,
 	format: (v) => `${v.toFixed(1)} s`
@@ -138,7 +140,7 @@ export const spec: ExplainerSpec = {
 			controls: [tune, play],
 			body: `
 <p>A waveform hides which notes are playing. The <em>Fourier transform</em> reveals them: it splits a stretch of sound into the sine waves it is made of. Do it over and over on short overlapping slices and you get a <dfn data-def="A picture of sound: time runs left to right, frequency (pitch) bottom to top, and the brightness of each point is how loud that frequency is at that moment.">spectrogram</dfn>.</p>
-<p>Here each slice is 64 milliseconds long (512 samples), and a new one starts every 32 ms. Each slice gives the loudness of 256 frequencies from 0 to 4,000 Hz, 15.6 Hz apart. Time runs to the right, pitch upward, and the louder a frequency, the darker (or, in dark mode, the brighter) its point.</p>
+<p>Here each slice is 64 milliseconds long (512 samples), and a new one starts every 32 ms. Each slice gives the loudness of 256 frequency bins from 0 to just under 4,000 Hz, 15.625 Hz apart. Time runs to the right, pitch upward, and the louder a frequency, the darker (or, in dark mode, the brighter) its point.</p>
 <p>Every note is a short horizontal stroke: its pitch at the bottom and, stacked above it, its <dfn data-def="The other sine waves in a note, at whole-number multiples of its lowest frequency. Their mix gives an instrument its sound.">harmonics</dfn> at two, three, four times that frequency. Each stroke fades as the note dies away.</p>`
 		},
 		{
@@ -152,7 +154,7 @@ export const spec: ExplainerSpec = {
 			body: `
 <p>Now throw almost all of it away. Keep a point only if it is <strong>louder than every neighbour</strong> in a box around it (here ± 94 Hz and ± 128 ms), and only if it is among the ten loudest such points within a quarter of a second either side, so that loud passages don't take all of them and quiet ones still get some.</p>
 <p>What remains is a scatter of dots, which Wang called a <dfn data-def="The sparse set of (time, frequency) points kept from a spectrogram: each one a local peak of loudness.">constellation map</dfn> because it looks like a star chart. The stage counts them: about a dozen dots a second, out of the 8,000 points (256 frequencies × 31¼ slices) the spectrogram has each second. Their loudness is forgotten too; only their positions are kept.</p>
-<p>Why peaks? Because they survive. Noise in a café adds sound everywhere, but a peak that stood well above its surroundings usually still does. A cheap loudspeaker or a phone's microphone changes how loud each frequency is, but a peak stays a peak at the same place.</p>`,
+<p>Why peaks? Because they survive. Noise in a café adds sound everywhere, but a peak that stood well above its surroundings usually still does. A cheap loudspeaker or a phone's microphone changes the strength of different frequencies, but most peaks stay where they were as long as that change is smooth across frequency.</p>`,
 			notes: `<p>Wang 2003 (§2.1): a point is a candidate peak "if it has a higher energy content than all its neighbors in a region centered around the point", and candidates are then chosen by a density criterion so the map has "reasonably uniform coverage", the loudest first. The box sizes, the ten per half-second and a rule that drops a peak more than 25 dB quieter than a louder one nearby (faint peaks are the first to drown) are this page’s choices, fitted to these tunes.</p>`
 		},
 		// ------------------------------------------------------------------ prints
@@ -179,7 +181,7 @@ export const spec: ExplainerSpec = {
 			controls: [tune],
 			body: `
 <p>A fingerprint is packed into one whole number, in <em>binary</em>. The first frequency is one of 256 bins, which takes 8 bits; the second another 8; the gap, at most 40 slices of 32 ms, fits in 6 bits (up to 63). Side by side they make a <strong>22-bit number</strong>.</p>
-<p>That is what makes pairs powerful. A single peak can only be one of 2⁸ = 256 values, so any of them turns up all over a library. A pair can be any of 2²² ≈ 4.2 million values, so a given fingerprint is rare, and looking it up points straight at a few places in a few songs.</p>
+<p>That is what makes pairs powerful. A single peak can only be one of 2⁸ = 256 values, so any of them turns up all over a library. The 22-bit format has 2²² ≈ 4.2 million possible bit patterns (the target zone's limits use only part of them), so a given fingerprint is rare, and looking it up points straight at a few places in a few songs.</p>
 <p>Wang's numbers: with 1,024 frequency bins (10 bits) and a 10-bit gap, a pair carries 30 bits against 10 for a single point, so it is about a million times more specific. Making ten pairs per peak costs about ten times the storage, and Wang estimated the search becomes about 10,000 times faster.</p>`,
 			notes: `<p>From Wang 2003 (§2.2): "each hash can be packed into a 32-bit unsigned integer", stored with the time offset of its anchor from the start of the file and the track's identity, "yielding an aggregate 64-bit struct". The speed-up of about 1,000,000/F² ≈ 10,000 for a fan-out F = 10 is his estimate. The price is robustness: a pair survives only if <em>both</em> its peaks do, roughly p² for a peak survival p, which the many pairs per anchor make up for.</p>`
 		},
@@ -193,8 +195,8 @@ export const spec: ExplainerSpec = {
 			body: `
 <p>Do the same to every tune in the library. For each fingerprint, store where it came from: <strong>which tune</strong>, and <strong>at what time</strong> its anchor occurs. Then file everything by fingerprint, like the index at the back of a book: look up a number and you get the list of (tune, time) places where it occurs.</p>
 <p>The stage shows the twelve constellations and the size of the index. Most fingerprint numbers occur in one tune only; some, made of two common notes at a common gap, turn up in several tunes. That is fine: a lone match proves nothing, as the next chapter shows.</p>
-<p>A lookup in such an index takes the same time whether it holds twelve tunes or millions. Wang's service held about 1.8 million tracks in 2003, and he reports search times of 5 to 500 milliseconds on a database of about 20,000 tracks on a single PC.</p>`,
-			notes: `<p>The index here is a hash map from fingerprint to a list of entries. Wang sorts the 64-bit records by fingerprint value, which gives the same lookup by binary search over a file that can be far larger than memory.</p>`
+<p>Such an index avoids scanning every tune: the page finds a fingerprint's list of places directly (a hash map) and only goes through that list, so a big library costs little more per lookup than a small one. Wang's service held about 1.8 million tracks in 2003, and he reports search times of 5 to 500 milliseconds on a database of about 20,000 tracks on a single PC.</p>`,
+			notes: `<p>The index here is a hash map from fingerprint to a list of entries. Wang sorts the 64-bit records by fingerprint value, which supports lookup by binary search over a file that can be far larger than memory.</p>`
 		},
 		// ------------------------------------------------------------------ search
 		{
@@ -247,7 +249,7 @@ export const spec: ExplainerSpec = {
 			controls: [noise, seconds, recTune, start, again],
 			body: `
 <p>Slide the noise up (the ratio down) and watch the spike. Peaks drown one by one and the noise adds peaks of its own, so fewer fingerprints survive. But the survivors still line up, and a few aligned hits stand out against a scatter of chance ones. Even with the hiss as loud as the music (0 dB), the spike is usually still there. Somewhere below that it sinks into the scatter, and the page says it can't tell.</p>
-<p>Now shorten the recording. Four or five seconds are usually enough; one second never is, because it holds too few pairs for the spike to stand out. Wang reports that in his tests, from a heavily corrupted 15-second sample, a match could be found with only about 1 to 2% of the fingerprints surviving and lining up.</p>`,
+<p>Now shorten the recording. Four or five seconds are usually enough; one second often holds too few pairs for a reliable match. Wang reports that in his tests, from a heavily corrupted 15-second sample, a match could be found with only about 1 to 2% of the fingerprints surviving and lining up.</p>`,
 			notes: `<p>Wang's tests (§3.1, Figure 4) took 250 excerpts from a database of 10,000 popular tracks, mixed with noise recorded in a pub: half were recognised at about −9, −6 and −3 dB for 15, 10 and 5 seconds. After GSM phone compression as well, the same rates came at about −3, 0 and +4 dB. This page's synthesized tunes, white hiss and twelve-tune library are much simpler, so its numbers are only a demonstration, not a reproduction of his.</p>`
 		},
 		// ------------------------------------------------------------------ limits

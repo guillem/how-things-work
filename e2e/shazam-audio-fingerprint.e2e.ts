@@ -49,7 +49,7 @@ test('a transposed copy, a cover and an unknown tune are not matched', async ({ 
 test('a fingerprint is two pitches and a gap packed into 22 bits', async ({ page }) => {
 	await page.goto('./shazam-audio-fingerprint/#bits');
 	await expect(stage(page)).toContainText('One fingerprint');
-	await expect(stage(page)).toContainText('4,194,304 possible fingerprints');
+	await expect(stage(page)).toContainText('4,194,304 possible bit patterns');
 	await expect(stage(page)).toContainText('first pitch:');
 	await expect(stage(page)).toContainText('(6 bits)');
 });

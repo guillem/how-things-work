@@ -364,13 +364,13 @@
 				order={6}
 				label="As one number"
 				value={thousands(hash)}
-				note="{HASH_BITS} bits: one of {thousands(2 ** HASH_BITS)} possible fingerprints"
+				note="{HASH_BITS} bits: one of {thousands(2 ** HASH_BITS)} possible bit patterns"
 				opacity={o.current.bits}
 			>
 				<Label
 					x={480}
 					y={556}
-					text="= {thousands(hash)}, one of 2²² = {thousands(2 ** HASH_BITS)} possible fingerprints"
+					text="= {thousands(hash)}, one of 2²² = {thousands(2 ** HASH_BITS)} possible bit patterns"
 					size={13}
 					weight={600}
 					halo={false}

@@ -234,7 +234,7 @@ A topic is done when:
 - [x] pagerank
 - [x] consensus-blockchains
 - [x] tcp-congestion-control
-- [ ] shazam-audio-fingerprint
+- [x] shazam-audio-fingerprint
 
 **Artificial Intelligence**
 - [x] learning-from-data
