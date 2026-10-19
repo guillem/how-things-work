@@ -2,7 +2,7 @@
  * Distributed hash tables: consistent hashing (Karger et al., STOC 1997) and Chord (Stoica et
  * al., SIGCOMM 2001) on a 32-bit identifier ring.
  *
- * Everything is placed on the ring by one seeded 32-bit hash (MurmurHash3's mixer over the
+ * Everything is placed on the ring by one seeded 32-bit hash (built from MurmurHash3's mixing steps over the
  * characters of a name), so a run replays exactly: same names, same ring, same lookups. Real
  * systems use SHA-1 (Chord, BitTorrent) or MD5 (Dynamo, Cassandra's older partitioner) over 128
  * or 160 bits; any hash that spreads names evenly behaves the same for what this page shows.
@@ -15,7 +15,10 @@ export const SPACE = 2 ** 32;
 export const BITS = 32;
 export const SEED = 0x5eed;
 
-/** A 32-bit hash of a string (MurmurHash3 x86_32 over its UTF-16 code units), seeded. */
+/**
+ * A seeded 32-bit string hash using MurmurHash3's mixing constants, one UTF-16 code unit per
+ * block (not byte-compatible with the reference MurmurHash3 x86_32).
+ */
 export function hash32(s: string, seed = SEED): number {
 	let h = seed >>> 0;
 	for (let i = 0; i < s.length; i++) {

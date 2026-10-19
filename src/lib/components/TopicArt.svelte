@@ -5149,6 +5149,36 @@
 				opacity={h > 20 ? 1 : 0.45}
 			/>
 		{/each}
+	{:else if slug === 'distributed-hash-tables'}
+		<!-- a ring of nodes, one node's fingers half, a quarter and an eighth of the way round -->
+		<circle
+			cx="100"
+			cy="60"
+			r="44"
+			fill="none"
+			stroke="currentColor"
+			stroke-width="1.6"
+			opacity="0.35"
+		/>
+		{#each [0, 0.07, 0.16, 0.27, 0.38, 0.5, 0.58, 0.69, 0.8, 0.9] as u (u)}
+			<circle
+				cx={100 + 44 * Math.sin(u * 2 * Math.PI)}
+				cy={60 - 44 * Math.cos(u * 2 * Math.PI)}
+				r="4.5"
+				fill={u === 0 ? accent : 'var(--surface)'}
+				stroke={u === 0 ? accent : 'currentColor'}
+				stroke-width="1.6"
+				opacity={u === 0 ? 1 : 0.75}
+			/>
+		{/each}
+		<path
+			d="M100 16 L100 104 M100 16 Q114.2 47.5 143.6 65.5 M100 16 Q112.1 38 137.1 36.4"
+			fill="none"
+			stroke={accent}
+			stroke-width="1.8"
+			opacity="0.8"
+		/>
+		<rect x="148" y="50" width="9" height="9" fill={accent} transform="rotate(45 152.5 54.5)" />
 	{:else}
 		<circle cx="100" cy="60" r="30" fill="none" stroke={accent} stroke-width="2" />
 		<circle cx="100" cy="60" r="5" fill={accent} />

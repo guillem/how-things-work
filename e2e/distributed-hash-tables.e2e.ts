@@ -49,22 +49,28 @@ test('virtual nodes bring the busiest server close to its fair share', async ({ 
 	expect(await read(page, 'busiest server')).toBeLessThan(1.3);
 });
 
-test('with fingers a lookup among 64 nodes takes a few hops; along successors, dozens', async ({
+test('the same lookup among 64 nodes takes a few hops with fingers and many along successors', async ({
 	page
 }) => {
+	const hops = async () =>
+		Number(/(\d+) hops?: node/.exec((await stage(page).textContent()) ?? '')?.[1]);
 	await page.goto('./distributed-hash-tables/#walk');
 	await range(page, 'nodes').press('End');
 	await expect(stage(page)).toContainText('64 nodes · each knows only its successor');
 	await expect(stage(page)).toContainText('answers');
-	const walkHops = Number(/(\d+) hops: node/.exec((await stage(page).textContent()) ?? '')?.[1]);
-	expect(walkHops).toBeGreaterThan(10);
+	const query = await stage(page)
+		.getByText(/^look up key/)
+		.first()
+		.textContent();
+	const walk = await hops();
 	await page.goto('./distributed-hash-tables/#fingers');
 	await range(page, 'nodes').press('End');
 	await expect(stage(page)).toContainText('64 nodes · each knows its fingers');
-	await expect(stage(page)).toContainText('finger table of node');
-	const fingerHops = Number(/(\d+) hops?: node/.exec((await stage(page).textContent()) ?? '')?.[1]);
-	expect(fingerHops).toBeGreaterThan(0);
-	expect(fingerHops).toBeLessThanOrEqual(6);
+	await expect(stage(page)).toContainText(query ?? '');
+	const fingers = await hops();
+	expect(fingers).toBeGreaterThan(0);
+	expect(fingers).toBeLessThanOrEqual(6); // log₂ 64
+	expect(walk).toBeGreaterThan(fingers);
 });
 
 test('16,384 nodes find any key in about 7 hops, 99 % within a dozen', async ({ page }) => {

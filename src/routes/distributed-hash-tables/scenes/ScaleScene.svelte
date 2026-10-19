@@ -85,8 +85,8 @@
 	const HW = 290;
 	const HY = 470;
 	const HH = 260;
-	const HMAX = 13;
-	const bw = HW / HMAX;
+	const bins = $derived(Math.max(13, S.hist.length));
+	const bw = $derived(HW / bins);
 	const hmax = $derived(Math.max(...S.hist));
 	const fmt = (n: number) => n.toLocaleString('en-US');
 </script>
@@ -197,7 +197,7 @@
 	</Readout>
 	<g opacity={visible ? 1 : 0.25}>
 		<line x1={HX} x2={HX + HW} y1={HY} y2={HY} stroke="var(--stage-line)" />
-		{#each S.hist.slice(0, HMAX) as f, h (h)}
+		{#each S.hist as f, h (h)}
 			{@const hgt = (f / hmax) * HH}
 			<rect
 				x={HX + h * bw + 2}

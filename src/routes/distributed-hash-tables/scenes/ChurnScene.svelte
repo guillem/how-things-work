@@ -75,6 +75,13 @@
 	const cutRounds = $derived(
 		rounds.slice(0, k + (ph > 0.3 ? 1 : 0)).filter((r) => r.cut.length > 0).length
 	);
+	/** Chance that c given nodes are all among the d of N that fail (drawn without replacement). */
+	const allFail = $derived(
+		Array.from(
+			{ length: copies },
+			(_, j) => Math.max(0, R.failed.length - j) / (R.before.length - j)
+		).reduce((a, b) => a * b, 1)
+	);
 	const keyR = (i: number) => C.r - 26 - (i % 3) * 8;
 	const panel = 600;
 	const pct = (v: number) => Math.round(v * 100);
@@ -83,11 +90,11 @@
 </script>
 
 <g>
-	<Readout id="title" order={1} label="Churn" value="{NODES} nodes, {pct(fail)} % fail each round">
+	<Readout id="title" order={1} label="Churn" value="{dead.size} of {NODES} nodes fail each round">
 		<Label
 			x={24}
 			y={34}
-			text="{NODES} nodes · {pct(fail)} % fail at once each round · {focus === 'ring'
+			text="{R.failed.length} of {NODES} nodes fail at once each round · {focus === 'ring'
 				? `successor lists of ${successors}`
 				: `${copies} ${copies === 1 ? 'copy' : 'copies'} of each key`}"
 			size={15}
@@ -315,8 +322,8 @@
 				x={panel}
 				y={262}
 				text={copies === 1
-					? `a key is lost when its node fails: about ${pct(fail)} % a round`
-					: `lost only if all ${copies} copies fail: ${fail.toFixed(2)}${['', '', '²', '³', '⁴'][copies]} ≈ ${(100 * fail ** copies).toFixed(1)} % a round`}
+					? `a key is lost when its node fails: ${pct(R.failed.length / NODES)} % a round`
+					: `lost only if all ${copies} copies fail: ${(100 * allFail).toFixed(allFail < 0.01 ? 2 : 1)} % a round`}
 				size={12}
 				anchor="start"
 				muted
