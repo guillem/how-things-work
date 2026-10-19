@@ -14,6 +14,9 @@ export default defineConfig({
 	// The model tests run in Node without a browser: playwright.models.config.ts.
 	testIgnore: '**/*-model.e2e.ts',
 	fullyParallel: true,
+	// CI's runner is slower than the laptop, and some steps compute for seconds as they open (a
+	// sheet of heart tissue, 9,999 shuffles): give assertions longer to come true there.
+	expect: { timeout: process.env.CI ? 15_000 : 5_000 },
 	reporter: process.env.CI ? [['list'], ['html', { open: 'never' }]] : 'list',
 	use: {
 		baseURL: `http://localhost:${PORT}${BASE}/`,

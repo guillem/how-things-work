@@ -43,7 +43,8 @@ jobs:
     # was too slow for the browser suite. The other jobs are short and stay on
     # GitHub (the Pages deploy runs on its own runner).
     runs-on: ubicloud-standard-8-ubuntu-2404
-    timeout-minutes: 20
+    # make check takes about 6 min there and the browser suite about 13 (2026-10-19).
+    timeout-minutes: 35
     steps:
       - uses: actions/checkout@v7
       - uses: actions/setup-node@v7
