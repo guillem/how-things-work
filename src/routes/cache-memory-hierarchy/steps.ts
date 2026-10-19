@@ -1,5 +1,5 @@
 import type { Control, ExplainerSpec } from '#lib/explainer/index.ts';
-import { L2_SIZES, LAB, MATMUL, PATTERNS, bytes } from './model';
+import { L2_SIZES, LAB, MATMUL, bytes } from './model';
 
 const sizeValues = () => LAB.sizes;
 const waysLabel = (v: number) =>
@@ -115,18 +115,34 @@ const l2size: Control = {
 	disabled: (p) => p.l2 !== true
 };
 
-const pattern: Control = {
+const program: Control = {
 	type: 'select',
-	id: 'pattern',
+	id: 'program',
 	label: 'Program',
-	default: 'matmul',
-	options: PATTERNS
+	default: 'product',
+	options: [
+		{ value: 'sum', label: 'Sum' },
+		{ value: 'list', label: 'List' },
+		{ value: 'product', label: 'Product' },
+		{ value: 'dot', label: 'a · b' },
+		{ value: 'loop', label: 'Loop' }
+	],
+	help: 'Sum a 16 × 16 matrix; walk a list of 128 nodes; multiply two 8 × 8 matrices; a · b with b one cache size after a; loop four times over one line more than the cache.'
+};
+
+const friendly: Control = {
+	type: 'toggle',
+	id: 'friendly',
+	label: 'Cache-friendly order (by rows, nodes in order, in 4 × 4 tiles)',
+	default: false,
+	disabled: (p) => p.program === 'dot' || p.program === 'loop'
 };
 
 /**
  * Scenes: `ladder` (the latency of each level, loads racing to each), `lab` (a small cache and
  * the memory it serves, one access at a time; hints name the program and, for each cache
- * setting, a fixed value or `@param` for a control: `size`, `line`, `ways` (an index into
+ * setting, a fixed value or `@param` for a control (`pattern: 'lab'` reads the `program` and
+ * `friendly` controls): `size`, `line`, `ways` (an index into
  * WAYS), `policy`; `focus` 'address' shows how an address splits), `matmul` (the matrix product
  * plain and tiled), `bills` (four programs on the measured chip) and `knee` (latency against
  * working-set size, with an optional L2).
@@ -295,18 +311,18 @@ export const spec: ExplainerSpec = {
 			title: 'Your turn: build a cache',
 			scene: 'lab',
 			hints: {
-				pattern: '@pattern',
+				pattern: 'lab',
 				size: '@size',
 				line: '@line',
 				ways: '@ways',
 				policy: '@policy'
 			},
 			duration: 40,
-			controls: [pattern, size, line, ways, policy],
+			controls: [program, friendly, size, line, ways, policy],
 			body: `
 <p>Every program of the page, on a cache you build: size, line length, associativity and replacement rule. Things to try:</p>
 <ul>
-<li>Multiply the 8 × 8 matrices plainly and in 4 × 4 tiles, on a fully associative 512-byte cache, then make it direct-mapped.</li>
+<li>Multiply the 8 × 8 matrices plainly and in tiles, on a fully associative 512-byte cache, then make it direct-mapped.</li>
 <li>Find a cache on which the column sum is as cheap as the row sum.</li>
 <li>Make the loop one line too many hit, without changing the cache's size.</li>
 </ul>

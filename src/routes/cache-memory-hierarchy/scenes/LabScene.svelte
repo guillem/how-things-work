@@ -36,7 +36,25 @@
 		if (typeof h === 'string' && h.startsWith('@')) return params[h.slice(1)];
 		return h;
 	}
-	const pattern = $derived((hint('pattern') ?? 'row') as Pattern);
+	/** The lab step names a program and whether to run its cache-friendly version. */
+	function labPattern(): Pattern {
+		const good = params.friendly === true;
+		switch (params.program) {
+			case 'sum':
+				return good ? 'row' : 'col';
+			case 'list':
+				return good ? 'list' : 'scattered';
+			case 'dot':
+				return 'dot';
+			case 'loop':
+				return 'loop';
+			default:
+				return good ? 'blocked' : 'matmul';
+		}
+	}
+	const pattern = $derived(
+		hint('pattern') === 'lab' ? labPattern() : ((hint('pattern') ?? 'row') as Pattern)
+	);
 	const config = $derived<CacheConfig>({
 		size: Number(hint('size') ?? 512),
 		line: Number(hint('line') ?? 64),
@@ -413,12 +431,12 @@
 		id="loads"
 		order={3}
 		label="Loads"
-		value="{fmt(shown)} of {fmt(N)}: {fmt(misses)} misses"
+		value="{fmt(shown)} of {fmt(N)}: {fmt(misses)} {misses === 1 ? 'miss' : 'misses'}"
 	>
 		<Label
 			x={BX0}
 			y={426}
-			text="{fmt(shown)} of {fmt(N)} loads · {fmt(misses)} misses ({fmt(
+			text="{fmt(shown)} of {fmt(N)} loads · {fmt(misses)} {misses === 1 ? 'miss' : 'misses'} ({fmt(
 				tally ? (100 * misses) / tally.accesses : 0
 			)} %)"
 			size={13}
