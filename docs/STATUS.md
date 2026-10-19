@@ -97,8 +97,17 @@ distributed-hash-tables, elliptic-curve-cryptography, kalman-filter, radar-sonar
 UTC at about 97% of the weekly usage** (resets 2026-10-21 06:00 UTC; no builder running, no
 worktree left). Next in `build-order.json`: k-means-clustering, abs-brakes,
 bicycle-stability, gas-turbines-combined-cycle, heat-pumps-refrigeration (the Reserve's "Heat
-pumps"), then cellular-automata and the 39 level-0 topics, which wait for the user's answer on
-level 0.
+pumps"), then the level-0 groundwork, cellular-automata and the 39 level-0 topics (decided below).
+
+**The user's decisions (2026-10-19):** level 0 as defined in `TOPICS-PROPOSAL.md` ("Level 0":
+ages 9–13 or adults with no science background, no formulas, one control at a time, 6–9 steps,
+real fact-checked models, level-0 prerequisites only); beginners find it through a "Start here"
+link on the index to `?level=0`, with the eleven categories unchanged; the water cycle stays a
+runner-up. So cellular-automata and the 39 level-0 topics are unblocked: first the parser change
+(`src/lib/catalog-parse.ts` accepts level 0, the Levels table gets its row), the "Start here"
+link and a short level-0 section in `docs/scene-guide.md`, then the builds. ocean-acidification
+keeps the Orr et al. 2015 cross-check (no PyCO2SYS fixtures). mri-k-space's and
+aperture-synthesis' data stay Unconfirmed in `DATA-SOURCES.md`.
 
 **Releases v1.1.0–v1.1.2 (2026-10-19, the user asked for one around 150 topics).** v1.1.0 and
 v1.1.1 failed in CI and deployed nothing; v1.1.2 is live. What changed on the way:
@@ -116,11 +125,8 @@ v1.1.1 failed in CI and deployed nothing; v1.1.2 is live. What changed on the wa
 - Load flakes still seen locally under parallel builds, each passing alone: central-limit-theorem
   "drawing the starting shape", site "follows a live change of the OS preference".
 
-Follow-ups the builders named: a regression test for turing-patterns' flat-dish restart;
-mri-k-space's tissue values (Gach et al. 2008) and aperture-synthesis' VLA pad file (CASA data,
-terms page down) marked Unconfirmed in `DATA-SOURCES.md`; ocean-acidification's PyCO2SYS
-cross-check (the entry's Needs names Orr et al. 2015's intercomparison instead, as PyCO2SYS
-wasn't installed). `docs/full-picture.html` is current to v1.1.2.
+Follow-ups the builders named: a regression test for turing-patterns' flat-dish restart.
+`docs/full-picture.html` is current to radar-sonar.
 
 **Released as v1.0.0 (2026-10-17): the backlog round (overnight) and the index work below.** Before
 releasing 1.0 the user asked to clear the backlog. One agent per package in a local worktree,
