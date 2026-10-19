@@ -1374,6 +1374,15 @@ const explainers: Explainer[] = [
 		accent: '#0c8599',
 		steps: 11,
 		minutes: 22
+	},
+	{
+		slug: 'hash-tables-bloom-filters',
+		title: 'Hash tables & Bloom filters',
+		summary:
+			'A hash turns a word into a slot number, so a lookup goes straight to it: chaining and linear probing measured against Knuth’s expected probes as the table fills and doubles, then a Bloom filter that says “definitely absent” or “maybe present” from a few bits per word, its false-positive rate against the formula, and a bad hash that clusters both.',
+		accent: '#2b8a3e',
+		steps: 8,
+		minutes: 20
 	}
 ];
 

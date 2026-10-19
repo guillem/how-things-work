@@ -5069,6 +5069,55 @@
 			stroke-width="1.8"
 		/>
 		<path d="M52 60 H66" stroke={accent} stroke-width="1.6" />
+	{:else if slug === 'hash-tables-bloom-filters'}
+		<!-- a row of slots with their chains, and a word whose three hashes point into a bit array -->
+		{#each [1, 0, 2, 1, 0, 3, 1, 0, 1, 2] as len, i (i)}
+			<rect
+				x={20 + i * 16}
+				y="14"
+				width="13"
+				height="10"
+				rx="2"
+				fill="none"
+				stroke="currentColor"
+				stroke-width="0.9"
+				opacity="0.5"
+			/>
+			{#each { length: len }, j (j)}
+				<rect
+					x={21 + i * 16}
+					y={27 + j * 7}
+					width="11"
+					height="5"
+					rx="1"
+					fill={accent}
+					opacity="0.8"
+				/>
+			{/each}
+		{/each}
+		{#each [3, 8, 13] as b (b)}
+			<path
+				d="M100 66 L{24 + b * 10} 90"
+				stroke={accent}
+				stroke-width="1.2"
+				opacity="0.7"
+				fill="none"
+			/>
+		{/each}
+		<circle cx="100" cy="64" r="4" fill="currentColor" opacity="0.7" />
+		{#each { length: 16 }, b (b)}
+			<rect
+				x={20 + b * 10}
+				y="92"
+				width="8"
+				height="10"
+				rx="1.5"
+				fill={[1, 3, 5, 8, 11, 13].includes(b) ? accent : 'none'}
+				stroke={[1, 3, 5, 8, 11, 13].includes(b) ? 'none' : 'currentColor'}
+				stroke-width="0.8"
+				opacity={[1, 3, 5, 8, 11, 13].includes(b) ? 0.85 : 0.4}
+			/>
+		{/each}
 	{:else}
 		<circle cx="100" cy="60" r="30" fill="none" stroke={accent} stroke-width="2" />
 		<circle cx="100" cy="60" r="5" fill={accent} />

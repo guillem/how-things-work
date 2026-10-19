@@ -4734,3 +4734,42 @@ kbd {
 	--cm-l3: #cc5de8;
 	--cm-mem: #ff8787;
 }
+
+/* hash-tables-bloom-filters: empty and filled slots, a word moved from its home slot, the probes
+   of a lookup, the found and not-found curves, bits set, a false positive, "definitely absent" */
+:root {
+	--hb-slot: #f1efe9;
+	--hb-slot-edge: #c8c4b8;
+	--hb-key: #2b8a3e;
+	--hb-key-soft: #b2dfbb;
+	--hb-moved: #f08c00;
+	--hb-probe: #1971c2;
+	--hb-probe-text: #1864ab;
+	--hb-hit: #2b8a3e;
+	--hb-hit-text: #237032;
+	--hb-miss: #d9480f;
+	--hb-miss-text: #c2410c;
+	--hb-bit: #2b8a3e;
+	--hb-fp: #e03131;
+	--hb-fp-text: #c92a2a;
+	--hb-absent: #1971c2;
+	--hb-absent-text: #1864ab;
+}
+:root[data-theme='dark'] {
+	--hb-slot: #25262b;
+	--hb-slot-edge: #4a4c52;
+	--hb-key: #51cf66;
+	--hb-key-soft: #2b4d33;
+	--hb-moved: #ffa94d;
+	--hb-probe: #4dabf7;
+	--hb-probe-text: #74c0fc;
+	--hb-hit: #51cf66;
+	--hb-hit-text: #69db7c;
+	--hb-miss: #ff922b;
+	--hb-miss-text: #ffa94d;
+	--hb-bit: #51cf66;
+	--hb-fp: #ff6b6b;
+	--hb-fp-text: #ff8787;
+	--hb-absent: #4dabf7;
+	--hb-absent-text: #74c0fc;
+}
