@@ -1,6 +1,6 @@
 # Topic catalog
 
-Source of truth for the content of an interactive web learning tool that shows how things work. It defines 154 topics in 11 categories, each built around one interactive graphic. Readers range from high-school students to university majors.
+Source of truth for the content of an interactive web learning tool that shows how things work. It defines 155 topics in 11 categories, each built around one interactive graphic. Readers range from high-school students to university majors.
 
 This file covers content only. It does not choose the stack, the visual design or the project layout; take those from the repository's own instructions.
 
@@ -90,7 +90,7 @@ A topic is done when:
 | Earth & Climate | `earth` | 13 |
 | Space | `space` | 11 |
 | Computing | `computing` | 13 |
-| Information & Networks | `networks` | 13 |
+| Information & Networks | `networks` | 14 |
 | Artificial Intelligence | `ai` | 19 |
 | Energy & Machines | `energy` | 10 |
 
@@ -238,6 +238,7 @@ A topic is done when:
 - [x] distributed-hash-tables
 - [x] elliptic-curve-cryptography
 - [x] kalman-filter
+- [ ] radar-sonar
 
 **Artificial Intelligence**
 - [x] learning-from-data
@@ -942,7 +943,7 @@ A topic is done when:
 - **Interaction:** Rotate an X-ray source around a simple body and record its shadow at each angle, then watch the cross-section emerge as the projections are combined. Change the number of angles, toggle the filtering step that sharpens the result, and compare with a plain X-ray of the same body. Close with how ultrasound and MRI build images by other means.
 - **Takeaway:** A CT scanner never sees a slice directly; it measures many shadows and computes the image that explains them all.
 - **Prerequisites:** fourier-transform
-- **Related:** aperture-synthesis
+- **Related:** aperture-synthesis, radar-sonar
 
 #### cerebellum-motor-learning
 - **Title:** The cerebellum & motor learning
@@ -1414,7 +1415,7 @@ A topic is done when:
 - **Interaction:** Drag a receiver across a flat map while satellites broadcast their positions and clock times; a circle of distance around each satellite passes through the receiver. Give the receiver's clock an error and every circle grows or shrinks together, so they stop meeting at a point; solving for that error as well takes one extra satellite (four in all, in three dimensions). Then switch off the relativity correction: the satellite clocks gain about 38 microseconds a day on clocks on the ground, worth about 11 km of range. Compare a receiver that trusts its own clock with one that solves for it.
 - **Takeaway:** A receiver finds its position by timing signals from satellites whose positions are known, which only works because the clocks are kept correct to billionths of a second.
 - **Prerequisites:** special-relativity
-- **Related:** orbits-kepler, black-holes, kalman-filter
+- **Related:** orbits-kepler, black-holes, kalman-filter, radar-sonar
 - **Pitfall:** The method is trilateration (distances), not triangulation (angles). The relativity correction has two parts with opposite signs: orbital speed slows the satellite clocks by about 7 microseconds a day and weaker gravity speeds them up by about 45, a net gain of about 38. The popular claim that positions would drift about 10 km a day without it describes the range error, not the position: an offset shared by all the satellites is absorbed when the receiver solves for its own clock, so its position barely moves and its time is wrong.
 
 #### pagerank
@@ -1483,8 +1484,18 @@ A topic is done when:
 - **Interaction:** Track a moving object from a noisy sensor: at each step the filter predicts where the object will be, then blends in the new measurement, with the estimate's uncertainty drawn as an ellipse that grows on prediction and shrinks on measurement. Turn the measurement noise up and watch the filter lean on its model; add a second sensor (an accelerometer to the GPS fix) and see the fused estimate beat either alone; make the object swerve and watch a filter with the wrong motion model lag behind, confidently.
 - **Takeaway:** The best estimate of where something is comes from weighing a prediction against a measurement in proportion to how much each can be trusted, and the filter keeps that weighting up to date.
 - **Prerequisites:** bayes-theorem, central-limit-theorem, linear-transformations, feedback-control
-- **Related:** gps
+- **Related:** gps, radar-sonar
 - **Pitfall:** It is not a plain average of the measurements: it weighs a prediction against each new one, and with a good model it can be more certain than any single measurement. It is optimal only for linear systems with Gaussian noise, and when the model is wrong the failure mode is confident and wrong.
+
+#### radar-sonar
+- **Title:** Radar & sonar
+- **Level:** 3
+- **Kind:** simulate
+- **Interaction:** Fire a pulse at targets you place and drag, and watch the echoes return on a range display; shorten the pulse for resolution and lose energy, then replace it with a chirp and a matched filter and get both at once. Set a target moving and read its speed from the Doppler shift, build a range-Doppler map, raise the noise until targets vanish into clutter, and switch the medium to water to see why sonar runs slow and low-frequency.
+- **Takeaway:** Radar and sonar measure distance by timing an echo and speed by its pitch, and the shape of the pulse decides how finely each can be told apart.
+- **Prerequisites:** waves-interference, fourier-transform, wireless-signals
+- **Related:** gps, medical-imaging, kalman-filter
+- **Pitfall:** Range comes from timing, not triangulation; stealth is mostly about where the echo goes, not about absorbing it; and the Doppler shift measures only the speed toward or away from the antenna.
 
 ### Artificial Intelligence
 
