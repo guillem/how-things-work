@@ -16,6 +16,7 @@ import {
 	buildTable,
 	chainHistogram,
 	expectedProbes,
+	fillCurve,
 	fpApprox,
 	fpExact,
 	growRun,
@@ -112,6 +113,16 @@ test('a lookup retraces the probes of the insertion, and a missing key stops at 
 	const miss = search(t, QUERIES[0]);
 	expect(miss.found).toBe(false);
 	expect(t.slots[miss.path[miss.path.length - 1]]).toBe(-1);
+});
+
+test('a full linear-probing table: a miss examines every slot, and the expectation says so', () => {
+	for (const m of [4, 16]) {
+		const t = buildTable('linear', INSERTABLE.slice(0, m), m);
+		expect(search(t, QUERIES[0]).probes).toBe(m);
+		expect(expectedProbes('linear', m, m).miss).toBe(m);
+		const curve = fillCurve('linear', INSERTABLE.slice(0, m), m);
+		expect(curve.miss[m - 1]).toBe(m);
+	}
 });
 
 test('with a good hash, chain lengths follow a Poisson distribution; the longest grows slowly', () => {

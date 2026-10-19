@@ -2,7 +2,7 @@
 	/**
 	 * A hash table of 64 slots holding the first n words (the slider), with chaining (each slot's
 	 * chain stacked under it) or linear probing (a word moved from its home slot drawn in orange).
-	 * Every 2.4 s a word is looked up and its probes are drawn one by one: arcs from slot to slot
+	 * Every 2.4 s a word is looked up and its probes are drawn one by one (faster for a long search, so that all of them and the verdict fit): arcs from slot to slot
 	 * for linear probing, a ring moving down the chain for chaining; every third lookup is a word
 	 * that was never inserted. Below, the mean probes of this table as it filled (thick lines),
 	 * found and not found, against the expected values for 64 slots (thin) and, for linear
@@ -54,7 +54,16 @@
 	const found = $derived(search(table, word, { salt }));
 	const PROBE_DT = 0.2;
 	const shown = $derived(
-		reduced ? found.path.length : clamp(Math.floor((u - 0.3) / PROBE_DT) + 1, 0, found.path.length)
+		reduced
+			? found.path.length
+			: u < 0.3
+				? 0
+				: Math.min(
+						found.path.length,
+						Math.floor(
+							Math.max((u - 0.3) / PROBE_DT, (found.path.length * (u - 0.3)) / (LOOK - 0.9))
+						) + 1
+					)
 	);
 	const done = $derived(shown >= found.path.length);
 

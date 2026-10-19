@@ -1,7 +1,7 @@
 // Browser tests of the hash-tables-bloom-filters page: a word's bucket follows the number of
 // buckets; chaining and linear probing measured against Knuth's expected probes as the table
 // fills, and another hash seed giving another sample of the same expectation; a table that
-// doubles and rehashes with under two moves per word; a Bloom filter's false positive and its
+// doubles and rehashes with under two re-insertions per word; a Bloom filter's false positive and its
 // "definitely absent"; the measured false-positive rate beside the formula and its best k; tiny
 // filters above the formula; and a hash that reads only the first letter clustering both
 // structures. Reduced motion (complete frames), keyboard and buttons, the fake clock for the
@@ -61,14 +61,14 @@ test('linear probing: misses climb steeply as the table fills; another seed is a
 	await expect(stage(page)).toContainText('expected 32.50');
 });
 
-test('a table that doubles past α = 0.75 moves fewer than two words per word inserted', async ({
+test('a table that doubles past α = 0.75 re-inserts fewer than two words per word inserted', async ({
 	page
 }) => {
 	await page.goto('./hash-tables-bloom-filters/#resize');
 	// 8 → 16 → … → 512 slots: rehashes at the 7th, 13th, 25th, 49th, 97th and 193rd word
 	await expect(stage(page)).toContainText('linear probing: 200 words in 512 slots, α = 0.39');
 	await expect(stage(page)).toContainText('6 doublings so far');
-	await expect(stage(page)).toContainText('378 words moved in all, 1.89 per word inserted');
+	await expect(stage(page)).toContainText('378 words reinserted in all, 1.89 per word inserted');
 	await page.locator('button[data-control="growScheme"][data-value="chaining"]').click();
 	await expect(stage(page)).toContainText('chaining: 200 words in 512 slots');
 });
@@ -136,5 +136,13 @@ test.describe('in motion', () => {
 		await playUntil(page, stage(page), /bit \d+ is 0: definitely never added/, 15_000);
 		await playUntil(page, stage(page), 'maybe present (it was added)', 10_000);
 		await playUntil(page, stage(page), 'a false positive', 10_000);
+	});
+
+	test('a long linear-probing search is drawn to its end', async ({ page }) => {
+		await page.clock.install();
+		await page.goto('./hash-tables-bloom-filters/#probing');
+		await range(page, 'probeKeys').fill('63');
+		// with one empty slot left, a missing word walks a run of dozens of slots to it
+		await playUntil(page, stage(page), /not there, [1-9]\d probes \(an empty slot\)/, 30_000);
 	});
 });

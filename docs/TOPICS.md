@@ -222,7 +222,7 @@ A topic is done when:
 - [x] quantum-computing
 - [x] game-tree-search
 - [x] cache-memory-hierarchy
-- [ ] hash-tables-bloom-filters
+- [x] hash-tables-bloom-filters
 
 **Information & Networks**
 - [x] compression

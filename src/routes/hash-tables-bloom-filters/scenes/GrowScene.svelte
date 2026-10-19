@@ -161,7 +161,7 @@
 			id="gr-flash"
 			order={2}
 			label="Rehash"
-			value="doubled to {recent.m} slots, {recent.moved} words moved"
+			value="doubled to {recent.m} slots, {recent.moved} words reinserted"
 		>
 			<rect
 				x={X0 - 6}
@@ -261,7 +261,7 @@
 		id="gr-moves"
 		order={4}
 		label="Rehashing so far"
-		value="{resizesSoFar} doublings, {group(now.moved)} words moved"
+		value="{resizesSoFar} doublings, {group(now.moved)} words reinserted"
 	>
 		<Label
 			x={610}
@@ -276,7 +276,7 @@
 			x={610}
 			y={338}
 			anchor="start"
-			text="{group(now.moved)} words moved in all, {n
+			text="{group(now.moved)} words reinserted in all, {n
 				? f2(now.moved / n)
 				: '0.00'} per word inserted"
 			size={12}

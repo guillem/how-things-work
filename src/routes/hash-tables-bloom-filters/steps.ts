@@ -185,9 +185,9 @@ export const spec: ExplainerSpec = {
 			duration: 30,
 			controls: [growScheme, maxLoad],
 			body: `
-<p>A table that keeps its speed must not fill up. Real tables set a maximum load factor (Java’s <code>HashMap</code> uses 0.75) and, when the next word would pass it, allocate a table twice as large and <dfn data-def="Re-insert every key into the new table: each key's slot is its hash mod the new size, so all of them move.">rehash</dfn> every word into it, since each word’s slot depends on m.</p>
-<p>Watch 200 words arrive in a table that starts with 8 slots. The load factor saws up and down, and the mean probes saw with it, always low. A rehash is slow, every word moves, but it happens after each doubling, so the total work of all the moves stays below two moves per word inserted: an <dfn data-def="The cost per operation averaged over a whole sequence of operations, which can be constant even when a few of them are slow.">amortised</dfn> constant. Raise the maximum load to save memory and the probes climb, steeply for linear probing.</p>`,
-			notes: `<p>Doubling is what makes the average constant: growing by a fixed number of slots instead would move every key again and again, Θ(n) per insertion. Systems that cannot afford a pause (a database, a game loop) rehash incrementally, moving a few keys on each operation while both tables are live.</p>`
+<p>A table that keeps its speed must not fill up. Real tables set a maximum load factor (Java’s <code>HashMap</code> uses 0.75) and, when the next word would pass it, allocate a table twice as large and <dfn data-def="Re-insert every key into the new table: each key's slot is its hash mod the new size, so every key's place must be worked out again.">rehash</dfn> every word into it, since each word’s slot depends on m.</p>
+<p>Watch 200 words arrive in a table that starts with 8 slots. The load factor saws up and down, and the mean probes saw with it, always low. A rehash is slow, every word is inserted again, but it happens after each doubling, so the total work of all the re-insertions stays below two per word inserted: an <dfn data-def="The cost per operation averaged over a whole sequence of operations, which can be constant even when a few of them are slow.">amortised</dfn> constant. Raise the maximum load to save memory and the probes climb, steeply for linear probing.</p>`,
+			notes: `<p>Doubling is what makes the average constant: growing by a fixed number of slots instead would re-insert every key again and again, Θ(n) per insertion. Systems that cannot afford a pause (a database, a game loop) rehash incrementally, moving a few keys on each operation while both tables are live.</p>`
 		},
 		// ------------------------------------------------------------------ bloom
 		{
@@ -210,9 +210,9 @@ export const spec: ExplainerSpec = {
 			duration: 30,
 			controls: [bitsPerKey, fpK],
 			body: `
-<p>Put n = 1,000 words in a filter of m bits and query 2,000 others that were never added. After kn bits have been set at random, a given bit is still 0 with probability about e<sup>−kn/m</sup>, and a missing word is a false positive when all its k bits are 1:</p>
+<p>Put n = 1,000 words in a filter of m bits and query 2,000 others that were never added. After kn bit-setting operations, some hitting the same position, a given bit is still 0 with probability about e<sup>−kn/m</sup>, and a missing word is a false positive when all its k bits are 1:</p>
 <p class="formula"><strong>false positives ≈ (1 − e<sup>−kn/m</sup>)<sup>k</sup></strong></p>
-<p>More hash functions check more bits but also fill the array faster; the rate is lowest at <strong>k = (m/n) ln 2</strong>, when about half the bits are set. Move k and the bits per word and watch the measured rate (dots) follow the curve. At 9.6 bits per word and k = 7, one query in a hundred is a false positive, whatever the words are: the words themselves average 6.4 letters, 59 bits even packed into bytes with a separator, before the table’s own overhead.</p>`,
+<p>More hash functions check more bits but also fill the array faster; the rate is lowest at <strong>k = (m/n) ln 2</strong>, when about half the bits are set. Move k and the bits per word and watch the measured rate (dots) follow the curve. At 9.6 bits per word and k = 7, the expected false-positive rate is about 1% for never-added words, whatever the words are (assuming the hash positions behave as independent and uniform): the words themselves average 6.4 letters, 59 bits even packed into bytes with a separator, before the table’s own overhead.</p>`,
 			notes: `<p>At the optimum k the rate is (½)<sup>k</sup> ≈ 0.6185<sup>m/n</sup>, so each extra 4.8 bits per word divides it by ten. The derivation treats the bits as independent, which they are not quite: see the next step. A filter is also only as good as its size estimate: put in more words than it was built for and the rate climbs fast, so it is sized for the largest n expected.</p>`
 		},
 		{
@@ -223,7 +223,7 @@ export const spec: ExplainerSpec = {
 			duration: 26,
 			controls: [tinyK],
 			body: `
-<p>The formula is an approximation, and Bose and colleagues showed in 2008 that it always errs low. Keep 8 bits per word but make the filter small, 16 bits for two words, and build 400 of them with different seeds: the measured rate comes out well above the formula. For filters of thousands of bits the gap closes.</p>
+<p>The formula is an approximation, and Bose and colleagues showed in 2008 that it always errs low. Keep 8 bits per word but make the filter small, 16 bits for two words, and build 300 of them with different seeds: the measured rate comes out well above the formula. For filters of thousands of bits the gap closes.</p>
 <p>Two things push the real rate up. The number of bits set varies from filter to filter, and the rate grows as the k-th power of the share of bits set, so the unlucky, fuller filters add more than the lucky ones take away. And in a small array, more of a word’s k bits fall on bits that are already set. The exact rate, from the distribution of the number of bits set (the line), matches the measurements.</p>`,
 			notes: `<p>The exact value assumes that each of the kn bit positions is independent and uniform, as with k independent seeds: Σ<sub>j</sub> P(j bits set) (j/m)<sup>k</sup>, the probabilities computed exactly by adding one bit position at a time (Bose et al. 2008; Christensen, Roginsky and Jimeno 2010). Implementations that derive the k positions from two hashes (h₁ + i·h₂, Kirsch and Mitzenmacher 2006) behave the same in large filters but can do slightly worse in small ones.</p>`
 		},

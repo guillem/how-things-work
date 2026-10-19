@@ -241,7 +241,7 @@ export function expectedProbes(
 	if (scheme === 'chaining') return { hit: 1 + (n - 1) / (2 * m), miss: n / m };
 	return {
 		hit: n === 0 ? 1 : 0.5 * (1 + knuthQ(0, m, n - 1)),
-		miss: 0.5 * (1 + knuthQ(1, m, n))
+		miss: n >= m ? m : 0.5 * (1 + knuthQ(1, m, n))
 	};
 }
 
@@ -298,7 +298,7 @@ export function fillCurve(
 			else {
 				let s = h;
 				let p = 1;
-				while (taken[s] && p <= m) {
+				while (taken[s] && p < m) {
 					s = (s + 1) % m;
 					p++;
 				}
@@ -343,7 +343,7 @@ export interface GrowPoint {
 	m: number;
 	/** Mean probes of a successful search in the table as it stands. */
 	hit: number;
-	/** Keys moved by rehashing so far, all resizes together. */
+	/** Keys re-inserted by rehashing so far, all resizes together. */
 	moved: number;
 }
 
