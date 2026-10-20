@@ -56,6 +56,8 @@
 	);
 	const lockedNow = $derived(now.slip > 0.98 && time > 0);
 	const steering = $derived(time >= STEER_AT);
+	/** The front wheels' drawn angle: the driver's slip angle, doubled so that it shows. */
+	const wheelAngle = $derived(-2 * now.steer);
 	const deg = (r: number) => (r * 180) / Math.PI;
 </script>
 
@@ -143,7 +145,7 @@
 				height="6"
 				rx="2"
 				fill={lockedNow ? 'var(--ab-lock)' : 'var(--text)'}
-				transform="rotate({steering ? -STEER * 2 : 0} {LENGTH * U * 0.28} {side * WIDTH * U * 0.5})"
+				transform="rotate({wheelAngle} {LENGTH * U * 0.28} {side * WIDTH * U * 0.5})"
 			/>
 			<rect
 				x={-LENGTH * U * 0.28 - 7}

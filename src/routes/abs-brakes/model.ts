@@ -91,10 +91,16 @@ export interface Sample {
 	x: number;
 	y: number;
 	heading: number;
+	/** The ABS valve is letting the pressure drop. */
+	releasing: boolean;
+	/** The slip angle the driver is asking for (degrees, positive to the left). */
+	steer: number;
 }
 
 export interface BrakeRun {
 	samples: Sample[];
+	/** False when the car is still moving after a minute (a pedal too light, or none). */
+	stopped: boolean;
 	/** Distance travelled (along the path) until the car stops (m), and the time it takes (s). */
 	distance: number;
 	time: number;
@@ -111,6 +117,8 @@ const EVERY = 50;
 const PRESS = 0.15;
 /** Below this speed slip is ill-defined (and ABS units switch off): finish at the last friction. */
 const V_END = 1;
+/** Give up after a minute. */
+const T_LIMIT = 60;
 
 /** Braking from v0 (100 km/h by default) until the car stops. */
 export function brake({
@@ -132,15 +140,13 @@ export function brake({
 	let y = 0;
 	let heading = 0;
 	let t = 0;
-	let mux = 0;
+	let mux = mu(0, surface);
 	let path = 0;
 	let countering = false;
 	let straight = false;
-	const tanA = Math.tan((steer * Math.PI) / 180);
+	const angle = (steer * Math.PI) / 180;
 	const samples: Sample[] = [];
-	for (let i = 0; v > V_END && t < 30; i++) {
-		const slip = Math.min(1, Math.max(0, (v - omega * R) / v));
-		// Combined slip: the friction of the total slip, split between braking and sideways.
+	for (let i = 0; v > V_END && t < T_LIMIT; i++) {
 		// The steering: held, or a lane change (out until halfway, back until straight, then none).
 		let dir = t >= steerAt ? 1 : 0;
 		if (dir && lane !== undefined) {
@@ -149,11 +155,17 @@ export function brake({
 			if (countering && heading <= 0) straight = true;
 			if (straight) dir = 0;
 		}
-		const sy = dir * (1 - slip) * tanA;
-		const total = Math.hypot(slip, sy);
-		const m = total > 0 ? mu(total, surface) : 0;
+		const a = dir * angle;
+		// Combined slip in the direction of travel (Burckhardt): with q = omega R / v, the slip
+		// along the travel direction is 1 - q cos a and across it q sin a. The friction of their
+		// combined size is shared between the two in proportion.
+		const q = Math.max(0, (omega * R) / v);
+		const slip = Math.min(1, Math.max(0, 1 - q * Math.cos(a)));
+		const side = q * Math.sin(a);
+		const total = Math.hypot(slip, side);
+		const m = total > 0 ? mu(Math.min(1, total), surface) : 0;
 		mux = total > 0 ? (m * slip) / total : 0;
-		const muy = total > 0 ? (m * sy) / total : 0;
+		const muy = total > 0 ? (m * side) / total : 0;
 
 		// The brake: the driver's command, cycled by the ABS.
 		const command = pedal * T_MAX * Math.min(1, t / PRESS);
@@ -167,31 +179,67 @@ export function brake({
 		else torque = Math.min(command, torque + RATE_UP * DT);
 		if (torque > command) torque = command;
 
-		if (i % EVERY === 0) samples.push({ t, v, rim: omega * R, slip, torque, mux, x, y, heading });
+		if (i % EVERY === 0)
+			samples.push({
+				t,
+				v,
+				rim: omega * R,
+				slip,
+				torque,
+				mux,
+				x,
+				y,
+				heading,
+				releasing: abs && releasing,
+				steer: (a * 180) / Math.PI
+			});
 
 		const fx = mux * N;
+		const fy = muy * N;
 		v -= (fx / MASS) * DT;
-		// The wheel: the road spins it up, the brake slows it; a stopped wheel stays stopped while
-		// the brake holds more than the road can turn.
-		omega += ((fx * R - torque) / J) * DT;
+		// The wheel: the road's force in the wheel's own plane spins it up, the brake slows it; a
+		// stopped wheel stays stopped while the brake holds more than the road can turn.
+		omega += ((R * (fx * Math.cos(a) - fy * Math.sin(a)) - torque) / J) * DT;
 		if (omega <= 0) {
 			omega = 0;
 			if (lockedAt === null) lockedAt = t;
 		}
-		heading += ((muy * G) / v) * DT;
+		heading += (fy / MASS / v) * DT;
 		x += v * Math.cos(heading) * DT;
 		y += v * Math.sin(heading) * DT;
 		path += v * DT;
 		t += DT;
 	}
-	// The last metre per second, at the last braking friction.
-	const tail = mux > 0 ? (v * v) / (2 * mux * G) : 0;
-	x += tail * Math.cos(heading);
-	y += tail * Math.sin(heading);
-	path += tail;
-	t += mux > 0 ? v / (mux * G) : 0;
-	samples.push({ t, v: 0, rim: 0, slip: lockedAt === null ? 0 : 1, torque, mux, x, y, heading });
-	return { samples, distance: path, time: t, lockedAt, releases };
+	const stopped = v <= V_END && mux > 0;
+	if (stopped) {
+		// The last metre per second, at the last braking friction.
+		const tail = (v * v) / (2 * mux * G);
+		x += tail * Math.cos(heading);
+		y += tail * Math.sin(heading);
+		path += tail;
+		t += v / (mux * G);
+		samples.push({
+			t,
+			v: 0,
+			rim: 0,
+			slip: lockedAt === null ? 0 : 1,
+			torque,
+			mux,
+			x,
+			y,
+			heading,
+			releasing: false,
+			steer: 0
+		});
+	}
+	return {
+		samples,
+		stopped,
+		distance: stopped ? path : Infinity,
+		time: stopped ? t : Infinity,
+		lockedAt,
+		releases
+	};
 }
 
 /** Stopping distance at constant deceleration mu g from v (m). */
@@ -211,19 +259,30 @@ export function at(run: BrakeRun, t: number): Sample {
 	return s[lo];
 }
 
+/**
+ * The best constant pedal without ABS: a firmer press stops shorter until the wheel locks, so it
+ * is the firmest press that doesn't lock (found by bisection to 0.01% of a full press).
+ */
+export function perfectFoot(surface: Surface) {
+	let lo = 0.01;
+	let hi = 1;
+	for (let i = 0; i < 14; i++) {
+		const mid = (lo + hi) / 2;
+		if (brake({ surface, pedal: mid, abs: false }).lockedAt === null) lo = mid;
+		else hi = mid;
+	}
+	return { pedal: lo, d: brake({ surface, pedal: lo, abs: false }).distance };
+}
+
 const stopsCache = new Map<Surface, { label: string; d: number; note: string }[]>();
 /**
  * The four stops the comparison shows, from 100 km/h: a locked wheel, ABS, the best constant
- * pedal (searched in 1% steps) and the floor of the peak friction held all the way.
+ * pedal and the floor of the peak friction held all the way.
  */
 export function compareStops(surface: Surface) {
 	const hit = stopsCache.get(surface);
 	if (hit) return hit;
-	let foot = { d: Infinity, pedal: 0 };
-	for (let p = 0.02; p <= 1.0001; p += 0.01) {
-		const d = brake({ surface, pedal: p, abs: false }).distance;
-		if (d < foot.d) foot = { d, pedal: p };
-	}
+	const foot = perfectFoot(surface);
 	const out = [
 		{
 			label: 'Wheel locked',
@@ -234,7 +293,7 @@ export function compareStops(surface: Surface) {
 		{
 			label: 'Perfect foot',
 			d: foot.d,
-			note: `best steady pressure: ${Math.round(foot.pedal * 100)}% of full`
+			note: `best steady pressure: ${(foot.pedal * 100).toFixed(1)}% of full`
 		},
 		{
 			label: 'Peak grip all the way',

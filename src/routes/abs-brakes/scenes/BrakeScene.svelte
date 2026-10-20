@@ -40,20 +40,22 @@
 	const drawn = $derived(run.samples.filter((p) => p.t <= time));
 
 	// ---- the road -------------------------------------------------------------------------------
-	const roadStep = $derived(locked.distance > 150 ? 50 : 10);
-	const roadLen = $derived(Math.ceil((locked.distance * 1.08) / roadStep) * roadStep);
+	const roadStep = $derived(Math.max(locked.distance, run.distance) > 150 ? 50 : 10);
+	const roadLen = $derived(
+		Math.ceil((Math.max(locked.distance, run.distance) * 1.08) / roadStep) * roadStep
+	);
 	const rx = $derived(scale([0, roadLen], [70, 910]));
 	const ROAD_Y = 112;
 
 	// ---- the plots --------------------------------------------------------------------------------
-	const tMax = $derived(niceMax(locked.time * 1.02));
+	const tMax = $derived(niceMax(Math.max(locked.time, run.time) * 1.02));
 	const sxL = $derived(scale([0, tMax], [80, 450]));
 	const sxR = $derived(scale([0, tMax], [550, 920]));
 	const syV = scale([0, 110], [520, 210]);
 	const syS = scale([0, 100], [520, 210]);
 	const kmh = (v: number) => v * 3.6;
 	const top = $derived(peak(surface));
-	const releasing = $derived(abs && !done && now.torque < pedal * T_MAX - 1 && time > 0.2);
+	const releasing = $derived(now.releasing);
 </script>
 
 <g class="ab-brake">

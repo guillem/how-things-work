@@ -280,7 +280,7 @@ A topic is done when:
 - [x] bridges-structures
 - [x] feedback-control
 - [x] wind-turbine-aerodynamics
-- [ ] abs-brakes
+- [x] abs-brakes
 - [ ] bicycle-stability
 
 ## Topics
@@ -1811,7 +1811,7 @@ A topic is done when:
 - **Title:** ABS & the tire's grip
 - **Level:** 3
 - **Kind:** simulate
-- **Interaction:** Brake a car from highway speed on dry asphalt, wet asphalt or snow: each wheel's spin follows its own equation of motion, and the tire's braking force follows a measured friction-against-slip curve whose peak sits near ten to twenty percent slip on dry asphalt and at smaller slip on snow, falling away as the wheel locks; the stopping distance is marked on the road. Brake too hard with ABS off and the wheel locks, the car slides further and no longer answers the steering; switch ABS on and watch the controller cycle the brake pressure to keep each wheel near the peak.
+- **Interaction:** Brake a car from highway speed on dry asphalt, wet asphalt or snow: one wheel carrying a quarter of the car follows its own equation of motion alongside the car's, and the tire's braking force follows a measured friction-against-slip curve whose peak sits near ten to twenty percent slip on dry asphalt and at smaller slip on snow, falling away as the wheel locks; the stopping distance is marked on the road. Brake too hard with ABS off and the wheel locks, the car slides further and no longer answers the steering; switch ABS on and watch the controller cycle the brake pressure to keep each wheel near the peak.
 - **Takeaway:** A tire grips best while still turning slightly slower than the road passes under it, a locked wheel brakes less and cannot steer, and ABS holds each wheel in that narrow band by releasing and reapplying the brake many times a second.
 - **Prerequisites:** newtons-laws, feedback-control
 - **Related:** bicycle-stability

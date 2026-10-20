@@ -50,4 +50,9 @@ test('steer: with ABS the car swerves past; without, it slides straight into the
 	await page.locator('input[type=checkbox][data-control=abs]').uncheck();
 	await expect(stage(page)).toContainText('hits the stopped car');
 	await expect(stage(page)).toContainText('wheels locked: steering does nothing');
+	// On wet asphalt even ABS can't get round a car this close.
+	await page.locator('input[type=checkbox][data-control=abs]').check();
+	await page.locator('[data-control=surface][data-value=wet]').click();
+	await expect(stage(page)).toContainText('hits the stopped car');
+	await expect(stage(page)).toContainText('steering works');
 });

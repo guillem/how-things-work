@@ -1,6 +1,14 @@
 // The ABS model: a quarter car braking on Burckhardt friction curves, with and without ABS.
 import { expect, test } from '@playwright/test';
-import { at, brake, ideal, mu, peak, type Surface } from '../src/routes/abs-brakes/model';
+import {
+	at,
+	brake,
+	ideal,
+	mu,
+	peak,
+	perfectFoot,
+	type Surface
+} from '../src/routes/abs-brakes/model';
 
 const surfaces: Surface[] = ['dry', 'wet', 'snow'];
 const V0 = 100 / 3.6;
@@ -94,4 +102,36 @@ test('brake first, then change lanes: without ABS the car goes straight on, with
 	expect(end.y).toBeGreaterThan(2.5);
 	expect(end.y).toBeLessThan(5);
 	expect(Math.abs(end.heading)).toBeLessThan(0.05);
+});
+
+test('a perfect foot, the firmest press that does not lock, beats ABS on every road', () => {
+	for (const s of surfaces) {
+		const foot = perfectFoot(s);
+		expect(foot.d).toBeLessThan(brake({ surface: s, pedal: 1, abs: true }).distance);
+		// A shade firmer locks the wheel.
+		expect(brake({ surface: s, pedal: foot.pedal + 0.001, abs: false }).lockedAt).not.toBeNull();
+	}
+	expect(perfectFoot('dry').pedal).toBeCloseTo(0.53, 2);
+	expect(perfectFoot('snow').pedal).toBeLessThan(0.1);
+});
+
+test('with no pedal the car never stops, and below 1 m/s the model claims no stop', () => {
+	const none = brake({ surface: 'dry', pedal: 0, abs: false });
+	expect(none.stopped).toBe(false);
+	expect(none.distance).toBe(Infinity);
+	const slow = brake({ surface: 'dry', pedal: 1, abs: false, v0: 0.5 });
+	expect(slow.stopped).toBe(false);
+});
+
+test('the ABS valve alternates: the torque falls while it releases and rises while it applies', () => {
+	const run = brake({ surface: 'dry', pedal: 1, abs: true });
+	const s = run.samples;
+	let falling = 0;
+	let rising = 0;
+	for (let i = 1; i < s.length - 1; i++) {
+		if (s[i].releasing && s[i + 1].torque < s[i].torque) falling++;
+		if (!s[i].releasing && s[i].t > 0.2 && s[i + 1].torque > s[i].torque) rising++;
+	}
+	expect(falling).toBeGreaterThan(20);
+	expect(rising).toBeGreaterThan(20);
 });
