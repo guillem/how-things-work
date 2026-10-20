@@ -1,6 +1,6 @@
 # Topic catalog
 
-Source of truth for the content of an interactive web learning tool that shows how things work. It defines 159 topics in 11 categories, each built around one interactive graphic. Readers range from high-school students to university majors.
+Source of truth for the content of an interactive web learning tool that shows how things work. It defines 160 topics in 11 categories, each built around one interactive graphic. Readers range from high-school students to university majors.
 
 This file covers content only. It does not choose the stack, the visual design or the project layout; take those from the repository's own instructions.
 
@@ -99,7 +99,7 @@ A topic is done when:
 | Computing | `computing` | 13 |
 | Information & Networks | `networks` | 14 |
 | Artificial Intelligence | `ai` | 20 |
-| Energy & Machines | `energy` | 13 |
+| Energy & Machines | `energy` | 14 |
 
 ## Checklist
 
@@ -283,6 +283,7 @@ A topic is done when:
 - [x] abs-brakes
 - [x] bicycle-stability
 - [ ] gas-turbines-combined-cycle
+- [ ] heat-pumps-refrigeration
 
 ## Topics
 
@@ -1837,9 +1838,20 @@ A topic is done when:
 - **Interaction:** Set a gas turbine's pressure ratio and turbine inlet temperature and watch its exhaust leave at several hundred degrees; then route that exhaust through a heat-recovery steam generator drawn as a temperature-heat diagram, the cooling gas line above the heating water-and-steam line. Drag the steam pressure and the pinch-point gap, add a second and third pressure level, and see the two lines hug more closely, the stack temperature fall and the plant's combined efficiency climb past 60 percent.
 - **Takeaway:** A combined-cycle plant reaches about 60 percent efficiency because a steam cycle turns the gas turbine's hot exhaust into extra work, and it recovers more the more closely the steam's heating line can follow the cooling exhaust.
 - **Prerequisites:** heat-engines, entropy
-- **Related:** power-grid
+- **Related:** power-grid, heat-pumps-refrigeration
 - **Needs:** Specific heats of air and combustion products as functions of temperature (NASA Glenn thermodynamic polynomial coefficients, US government, public domain); water and steam properties from IAPWS-IF97 (freely published), as in steam-power-cycles.
 - **Pitfall:** The best gas turbine for a combined cycle is not the most efficient stand-alone one. A lower pressure ratio leaves a hotter exhaust for the steam cycle, so the plant's optimum pressure ratio is below the gas turbine's own. And the steam cycle burns no extra fuel: it only uses heat that would otherwise go up the stack.
+
+#### heat-pumps-refrigeration
+- **Title:** Heat pumps & refrigeration
+- **Level:** 3
+- **Kind:** manipulate
+- **Interaction:** Drag the evaporator and condenser temperatures of a vapor-compression cycle on a pressure-enthalpy diagram drawn from real refrigerant properties and watch the four legs, compression, condensation, expansion and evaporation, move with them; the coefficient of performance, the compressor work and the heat delivered update live and are compared with the Carnot value for the same temperature lift. Set the compressor's isentropic efficiency, add subcooling and superheat, and switch the refrigerant between R-134a, propane and CO2, where the cycle goes transcritical.
+- **Takeaway:** A heat pump delivers several units of heat per unit of work by boiling and condensing a fluid at two pressures, and that ratio falls as the gap between the two temperatures widens.
+- **Prerequisites:** heat-engines, entropy, states-of-matter
+- **Related:** gas-turbines-combined-cycle
+- **Needs:** Saturation and superheated-vapor properties of R-134a, R-290 and R-744 from CoolProp (MIT licence), tabulated or fitted for the browser.
+- **Pitfall:** A COP of 4 is not '400 percent efficiency' and breaks no law: most of the heat delivered is moved from outside, not made from the electricity, and the second law still caps the COP at the Carnot value for the lift.
 
 ## Reserve
 
@@ -1850,5 +1862,4 @@ Strong candidates that are not in the catalog. Do not build them unless the user
 - Operating systems
 - Compilers
 - Cellular automata
-- Heat pumps
 - Dimensionality reduction
