@@ -4,15 +4,18 @@
 	import TopicCard from '#lib/components/TopicCard.svelte';
 	import { site } from '#lib/site.ts';
 	import { catalog, levelNames, type Level } from '#lib/catalog.ts';
-	import { sections, topics, type Topic } from '#lib/topics.ts';
+	import { sections, topics, topicBySlug, type Topic } from '#lib/topics.ts';
+	import { paths, byId, stops } from '#lib/paths.ts';
 	import { progress } from '#lib/progress.svelte.ts';
 	import { replaceState } from '$app/navigation';
 	import { onMount } from 'svelte';
 
 	// Search and filters. The prerendered page lists every topic; the filters
 	// only narrow it once the page has loaded. Their state lives in the query
-	// string (?q=&area=&level=) so a filtered list can be shared or returned to.
+	// string (?path= or ?q=&area=&level=) so a filtered list can be shared or returned to.
 	let query = $state('');
+	let path = $state('');
+	const selectedPath = $derived(byId.get(path));
 	let areas = $state<string[]>([]);
 	let levels = $state<Level[]>([]);
 	let ready = $state(false);
@@ -81,7 +84,15 @@
 	const toggle = <T,>(list: T[], value: T) =>
 		list.includes(value) ? list.filter((v) => v !== value) : [...list, value];
 
+	function choosePath(id: string) {
+		path = path === id ? '' : id;
+		query = '';
+		areas = [];
+		levels = [];
+	}
+
 	function clearFilters() {
+		path = '';
 		query = '';
 		areas = [];
 		levels = [];
@@ -92,14 +103,16 @@
 		progress.load();
 		const params = new URLSearchParams(location.search);
 		const list = (key: string) => params.get(key)?.split(',').filter(Boolean) ?? [];
-		query = params.get('q') ?? '';
-		areas = list('area').filter((id) => areaOptions.some((c) => c.id === id));
-		levels = levelOptions.filter((l) => list('level').includes(String(l)));
+		path = byId.has(params.get('path') ?? '') ? params.get('path')! : '';
+		query = path ? '' : (params.get('q') ?? '');
+		areas = path ? [] : list('area').filter((id) => areaOptions.some((c) => c.id === id));
+		levels = path ? [] : levelOptions.filter((l) => list('level').includes(String(l)));
 		ready = true;
 	});
 
 	$effect(() => {
 		const params = Object.entries({
+			path,
 			q: query.trim(),
 			area: areas.join(','),
 			level: levels.join(',')
@@ -168,7 +181,19 @@
 					aria-keyshortcuts="/"
 					bind:this={searchInput}
 					bind:value={query}
+					oninput={() => (path = '')}
 				/>
+				<div class="group open" role="group" aria-labelledby="filter-path" id="group-path">
+					<span class="group-label" id="filter-path">Path</span>
+					{#each paths as option (option.id)}
+						<button
+							type="button"
+							class="chip"
+							aria-pressed={path === option.id}
+							onclick={() => choosePath(option.id)}>{option.title}</button
+						>
+					{/each}
+				</div>
 				<div class="toggles">
 					<button
 						type="button"
@@ -207,7 +232,10 @@
 							class="chip"
 							class:none={areaCounts.get(c.id) === 0}
 							aria-pressed={areas.includes(c.id)}
-							onclick={() => (areas = toggle(areas, c.id))}
+							onclick={() => {
+								path = '';
+								areas = toggle(areas, c.id);
+							}}
 						>
 							<span class="name">{c.name}</span> <span class="n">{areaCounts.get(c.id)}</span>
 						</button>
@@ -228,7 +256,10 @@
 							class:none={levelCounts.get(l) === 0}
 							title={levelNames[l]}
 							aria-pressed={levels.includes(l)}
-							onclick={() => (levels = toggle(levels, l))}
+							onclick={() => {
+								path = '';
+								levels = toggle(levels, l);
+							}}
 						>
 							Level {l} <span class="n">{levelCounts.get(l)}</span>
 						</button>
@@ -268,21 +299,48 @@
 			</aside>
 
 			<div class="list">
-				{#each shown as { category, topics: built } (category.id)}
-					<section class="topics" aria-labelledby="category-{category.id}">
-						<h2 id="category-{category.id}">{category.name}</h2>
-						<div class="grid">
-							{#each built as topic (topic.slug)}
-								<TopicCard {topic} />
-							{/each}
-						</div>
+				{#if selectedPath}
+					<section class="topics" aria-labelledby="path-title">
+						<h2 id="path-title">{selectedPath.title}</h2>
+						<p>{selectedPath.promise}</p>
+						{#if progress.loaded}
+							<p aria-live="polite">
+								{stops(selectedPath).filter((slug) => progress.status(slug) === 'done').length} of {stops(
+									selectedPath
+								).length} done
+							</p>
+						{/if}
+						{#each selectedPath.chapters as chapter (chapter.title)}
+							<section class="topics" aria-label={chapter.title}>
+								<h3>{chapter.title}</h3>
+								<div class="grid">
+									{#each chapter.slugs as slug (slug)}
+										{@const topic = topicBySlug.get(slug)}
+										{#if topic}<TopicCard {topic} />{:else}<p>
+												{catalog.bySlug.get(slug)!.title} — coming later
+											</p>{/if}
+									{/each}
+								</div>
+							</section>
+						{/each}
 					</section>
 				{:else}
-					<p class="empty">
-						<span>{emptyMessage}</span>
-						<button type="button" class="reset" onclick={clearFilters}>Clear filters</button>
-					</p>
-				{/each}
+					{#each shown as { category, topics: built } (category.id)}
+						<section class="topics" aria-labelledby="category-{category.id}">
+							<h2 id="category-{category.id}">{category.name}</h2>
+							<div class="grid">
+								{#each built as topic (topic.slug)}
+									<TopicCard {topic} />
+								{/each}
+							</div>
+						</section>
+					{:else}
+						<p class="empty">
+							<span>{emptyMessage}</span>
+							<button type="button" class="reset" onclick={clearFilters}>Clear filters</button>
+						</p>
+					{/each}
+				{/if}
 
 				<p class="progress">
 					{topics.length} of the {catalog.entries.length} planned topics are written so far. More are
@@ -396,6 +454,9 @@
 		align-items: center;
 		gap: 6px;
 		padding-top: 4px;
+	}
+	#group-path {
+		order: 1;
 	}
 	.group.open {
 		display: flex;
@@ -542,6 +603,9 @@
 		.search {
 			flex: none;
 			font-size: 0.95rem;
+		}
+		#group-path {
+			order: 0;
 		}
 		.toggles {
 			display: none;

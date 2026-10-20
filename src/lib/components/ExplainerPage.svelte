@@ -8,6 +8,7 @@
 	import SiteHeader from './SiteHeader.svelte';
 	import SiteFooter from './SiteFooter.svelte';
 	import TopicLinks from './TopicLinks.svelte';
+	import PathStrip from './PathStrip.svelte';
 	import { Explainer, type ExplainerSpec, type StageProps } from '#lib/explainer/index.ts';
 	import { levelNames } from '#lib/catalog.ts';
 	import { site } from '#lib/site.ts';
@@ -47,6 +48,7 @@
 			<span class="level" title={levelNames[topic.entry.level]}>Level {topic.entry.level}</span>
 		</p>
 		<h1>{spec.title}</h1>
+		<PathStrip slug={spec.slug} />
 		<p class="summary">{spec.summary}</p>
 	</header>
 

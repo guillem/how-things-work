@@ -84,6 +84,7 @@ src/
       PhotosynthesisStage.svelte   picks and lazy-loads a scene per step
       scenes/*.svelte      the animated SVG scenes
 docs/TOPICS.md             the topic catalogue: 124 topics in 11 categories (content only)
+docs/PATHS.md              ordered reading paths, chapters and authoring rules
 docs/STATUS.md             where the work stands and how to resume it (the self-handover)
 docs/BACKLOG.md            what to build next, known gaps
 docs/full-picture.html     the one-glance status dashboard (open in a browser)

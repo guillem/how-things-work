@@ -4,7 +4,7 @@ The self-handover. If work is interrupted, this file alone must be enough to con
 top to bottom, then run the commands under "Resume". **Update it at every commit**, not just at
 the end of a development.
 
-Last updated: 2026-10-20 08:30 UTC, 55 of the proposal's topics built; v1.1.2 live (154 topics); `main` has the post-v1 fact-check round and radar-sonar, both unreleased (no release until TP-1's scene is fixed).
+Last updated: 2026-10-20 11:40 UTC, 55 of the proposal's topics built; v1.1.2 live (154 topics); `main` has the post-v1 fact-check round, Paths v1 and radar-sonar, unreleased. No release until Claude's turing-patterns scene fix (see "Waiting for Claude's finishing touch").
 
 ## How we work
 
@@ -60,6 +60,8 @@ Last updated: 2026-10-20 08:30 UTC, 55 of the proposal's topics built; v1.1.2 li
   columns still fit); below that, a compact bar whose Area and Level buttons open the options,
   and the counts show once something is started. The prerendered page still lists everything;
   the options come from the built topics, so new categories and levels appear by themselves.
+  Paths use `?path=<id>`, with the Path control above Area in the wide sidebar and on its own
+  row under search on narrow screens.
 - Local testing: other work runs on this machine, so ports can clash (4173 is taken). The test
   server uses `PW_PORT` (default 4180). In a worktree, clone `node_modules` (`cp -cR`) rather
   than symlinking it, or svelte-check checks the other checkout's types.
@@ -225,6 +227,39 @@ GPT-2 weights locally). Gates: `make check`, `make e2e` (245), `make e2e-full` (
 **Open: TP-1.** turing-patterns' text is fixed, but its scene still shows feather buds as "well
 supported"; it needs a Claude scene fix, and **no release until then** (user's rule). Paths v1
 (`docs/grok_paths.md`) not started.
+
+**Paths v1 (2026-10-20, committed, unreleased).** Guided reading paths. `docs/PATHS.md` is the
+only source: `src/lib/paths-parse.ts` parses it and `src/lib/paths.ts` validates it against the
+catalogue at build time (unknown or repeated stops, and on-path prerequisites placed later, fail
+the build). One path ships, `language-models` ("How a language model works", 16 stops in four
+chapters); every on-path prerequisite comes earlier. The index takes `?path=<id>` (typing in the
+search or picking an Area or Level leaves the path); every explainer on a path shows a
+`PathStrip` under its title (chapter, position, previous and next, link back to the path).
+Built by Codex from `docs/grok_paths.md`, reviewed by Grok (one finding, the sidebar order,
+rejected with a regression test); tests in `e2e/paths.e2e.ts` and `e2e/paths-model.e2e.ts`.
+`make check` and `make e2e-full` (3,165) green. A climate path needs a prerequisite-safe order
+first (carbon-cycle before greenhouse-effect).
+
+**Waiting for Claude's finishing touch** (the user's rule since 2026-10-20: visual and artistic
+work is always Claude's, to match the existing style). No release until item 1 is done; item 2
+should land before the release that ships paths.
+
+1. turing-patterns scene (TP-1): the text was corrected in the fact-check round, but the scene
+   still shows feather buds as "well supported". Make the scene match the text.
+2. Paths v1 visual design, deliberately functional for now:
+   - the Path control on the index (reuses the `group` / `chip` classes; above Area on wide
+     screens, its own row under search on phones);
+   - the selected-path section: promise, completion count, chapter headings, the card grid in
+     reading order with no numbering, and the "coming later" treatment for unbuilt stops;
+   - `PathStrip`: a plain wrapping flex row, `--text-muted` text, every link in
+     `--topic-accent`; decide the emphasis between backlink, chapter, position and neighbours,
+     long-title wrapping, the two ends (one neighbour), and the spacing between title, strip and
+     summary;
+   - wording: "Stop N of 16" against the spec's "N of 16" (the tests assert the current text;
+     update them if the wording changes on purpose).
+
+   Check both themes, keyboard focus, phones and reduced motion, and screenshot-review the
+   index and a few path stops per `docs/scene-guide.md`.
 
 ## Open questions for the user
 
