@@ -71,6 +71,11 @@ export interface BrakeInput {
 	steer?: number;
 	/** When the driver starts steering (s after the foot lands). */
 	steerAt?: number;
+	/**
+	 * Steer into the next lane, this far to the side (m), instead of holding the steering: turn
+	 * one way until halfway across, then the other way until the car points straight again.
+	 */
+	lane?: number;
 }
 
 export interface Sample {
@@ -114,7 +119,8 @@ export function brake({
 	abs,
 	v0 = 100 / 3.6,
 	steer = 0,
-	steerAt = 0
+	steerAt = 0,
+	lane
 }: BrakeInput): BrakeRun {
 	let v = v0;
 	let omega = v0 / R;
@@ -128,12 +134,22 @@ export function brake({
 	let t = 0;
 	let mux = 0;
 	let path = 0;
+	let countering = false;
+	let straight = false;
 	const tanA = Math.tan((steer * Math.PI) / 180);
 	const samples: Sample[] = [];
 	for (let i = 0; v > V_END && t < 30; i++) {
 		const slip = Math.min(1, Math.max(0, (v - omega * R) / v));
 		// Combined slip: the friction of the total slip, split between braking and sideways.
-		const sy = t >= steerAt ? (1 - slip) * tanA : 0;
+		// The steering: held, or a lane change (out until halfway, back until straight, then none).
+		let dir = t >= steerAt ? 1 : 0;
+		if (dir && lane !== undefined) {
+			if (y >= lane / 2) countering = true;
+			dir = countering ? (heading > 0 ? -1 : 0) : 1;
+			if (countering && heading <= 0) straight = true;
+			if (straight) dir = 0;
+		}
+		const sy = dir * (1 - slip) * tanA;
 		const total = Math.hypot(slip, sy);
 		const m = total > 0 ? mu(total, surface) : 0;
 		mux = total > 0 ? (m * slip) / total : 0;
@@ -193,4 +209,39 @@ export function at(run: BrakeRun, t: number): Sample {
 		else hi = mid;
 	}
 	return s[lo];
+}
+
+const stopsCache = new Map<Surface, { label: string; d: number; note: string }[]>();
+/**
+ * The four stops the comparison shows, from 100 km/h: a locked wheel, ABS, the best constant
+ * pedal (searched in 1% steps) and the floor of the peak friction held all the way.
+ */
+export function compareStops(surface: Surface) {
+	const hit = stopsCache.get(surface);
+	if (hit) return hit;
+	let foot = { d: Infinity, pedal: 0 };
+	for (let p = 0.02; p <= 1.0001; p += 0.01) {
+		const d = brake({ surface, pedal: p, abs: false }).distance;
+		if (d < foot.d) foot = { d, pedal: p };
+	}
+	const out = [
+		{
+			label: 'Wheel locked',
+			d: brake({ surface, pedal: 1, abs: false }).distance,
+			note: 'full press, no ABS'
+		},
+		{ label: 'ABS', d: brake({ surface, pedal: 1, abs: true }).distance, note: 'full press' },
+		{
+			label: 'Perfect foot',
+			d: foot.d,
+			note: `best steady pressure: ${Math.round(foot.pedal * 100)}% of full`
+		},
+		{
+			label: 'Peak grip all the way',
+			d: ideal(100 / 3.6, peak(surface).mu),
+			note: 'the floor no braking can beat'
+		}
+	];
+	stopsCache.set(surface, out);
+	return out;
 }

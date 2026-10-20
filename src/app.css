@@ -4952,3 +4952,23 @@ kbd {
 	--km-5: #f06595;
 	--km-6: #3bc9db;
 }
+
+/* abs-brakes: the three road surfaces, the car's and the rim's speed, the ABS band, a lock-up */
+:root {
+	--ab-dry: #e8590c;
+	--ab-wet: #1971c2;
+	--ab-snow: #0c8599;
+	--ab-rim: #ae3ec9;
+	--ab-band: #2f9e44;
+	--ab-lock: #e03131;
+	--ab-road: #868e96;
+}
+:root[data-theme='dark'] {
+	--ab-dry: #ff922b;
+	--ab-wet: #4dabf7;
+	--ab-snow: #3bc9db;
+	--ab-rim: #da77f2;
+	--ab-band: #51cf66;
+	--ab-lock: #ff6b6b;
+	--ab-road: #5c636a;
+}

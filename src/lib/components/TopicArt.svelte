@@ -5348,6 +5348,31 @@
 			stroke-width="3"
 			stroke-linecap="round"
 		/>
+	{:else if slug === 'abs-brakes'}
+		<!-- a braking wheel on the road, and the tyre's friction against slip with its peak -->
+		<line x1="14" y1="96" x2="84" y2="96" stroke="currentColor" stroke-width="2" opacity="0.5" />
+		<circle
+			cx="48"
+			cy="70"
+			r="24"
+			fill="none"
+			stroke="currentColor"
+			stroke-width="5"
+			opacity="0.75"
+		/>
+		<circle cx="48" cy="70" r="5" fill="currentColor" opacity="0.6" />
+		<rect x="40" y="92" width="16" height="4" rx="1" fill={accent} />
+		<path d="M24 40 h34" stroke="currentColor" stroke-width="2" opacity="0.6" />
+		<path d="M58 40 l-5 -3 v6 z" fill="currentColor" opacity="0.6" />
+		<line x1="96" y1="100" x2="188" y2="100" stroke="currentColor" stroke-width="1" opacity="0.4" />
+		<line x1="96" y1="100" x2="96" y2="24" stroke="currentColor" stroke-width="1" opacity="0.4" />
+		<path
+			d="M96.0 100.0 L98.2 67.1 L100.5 49.3 L102.8 40.0 L105.0 35.1 L107.2 32.8 L109.5 31.9 L111.8 31.8 L114.0 32.0 L116.2 32.5 L118.5 33.1 L120.8 33.8 L123.0 34.5 L125.2 35.2 L127.5 36.0 L129.8 36.7 L132.0 37.5 L134.2 38.2 L136.5 39.0 L138.8 39.7 L141.0 40.5 L143.2 41.3 L145.5 42.0 L147.8 42.8 L150.0 43.5 L152.2 44.3 L154.5 45.0 L156.8 45.8 L159.0 46.6 L161.2 47.3 L163.5 48.1 L165.8 48.8 L168.0 49.6 L170.2 50.4 L172.5 51.1 L174.8 51.9 L177.0 52.6 L179.2 53.4 L181.5 54.1 L183.8 54.9 L186.0 55.7"
+			fill="none"
+			stroke={accent}
+			stroke-width="2.2"
+		/>
+		<circle cx="111.3" cy="31.7" r="3.5" fill={accent} />
 	{:else}
 		<circle cx="100" cy="60" r="30" fill="none" stroke={accent} stroke-width="2" />
 		<circle cx="100" cy="60" r="5" fill={accent} />

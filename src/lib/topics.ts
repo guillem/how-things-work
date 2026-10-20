@@ -1437,6 +1437,15 @@ const explainers: Explainer[] = [
 		accent: '#1c7ed6',
 		steps: 10,
 		minutes: 15
+	},
+	{
+		slug: 'abs-brakes',
+		title: 'ABS & the tire’s grip',
+		summary:
+			'Brake a car from 100 km/h on dry asphalt, wet asphalt and snow with a measured tyre friction curve: find the slip where the tyre grips best, lock the wheel and slide, then let ABS cycle the brake to hold the wheel near the peak and keep the steering.',
+		accent: '#e8590c',
+		steps: 8,
+		minutes: 20
 	}
 ];
 

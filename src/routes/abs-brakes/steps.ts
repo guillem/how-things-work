@@ -169,7 +169,7 @@ export const spec: ExplainerSpec = {
 			body: `
 <p>The bigger reason for ABS is steering. A tyre turns the car by slipping sideways a little as well (its <dfn data-def="The angle between the direction a wheel points and the direction it actually travels.">slip angle</dfn>), and the friction it has is shared between braking and turning. A wheel that is still rolling can do both.</p>
 <p>A locked wheel slides. Its rubber has no rolling direction any more, so its whole friction points against the direction of travel, whichever way the wheel is turned. The driver turns the steering wheel and the car goes straight on.</p>
-<p>Here the driver stamps on the brake and, half a second later, steers away from an obstacle 30 m ahead. Turn ABS off: the wheels lock within a third of a second and the car slides straight into it. Turn ABS on: the car brakes nearly as hard <em>and</em> swerves around it.</p>`,
+<p>Here the driver stamps on the brake and, half a second later, steers into the next lane to miss a stopped car about 30 m ahead. Turn ABS off: the wheels lock within a third of a second and the car slides straight into it. Turn ABS on: the car brakes nearly as hard <em>and</em> swerves around it.</p>`,
 			notes: `<p>The model uses Burckhardt’s combined slip: a sideways slip (1 − s) tan α joins the braking slip s, the friction of their combined size is shared in proportion to the two, and the car is treated as a point that turns under the sideways force. A locked wheel has s = 1, so its sideways slip and sideways force are zero. In a real car, locked rear wheels also make the car spin, which is why every car apportions more braking to the front.</p>`
 		}
 	]
