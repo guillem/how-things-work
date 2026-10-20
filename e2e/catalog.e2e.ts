@@ -92,3 +92,21 @@ test('every built explainer has a catalogue entry and its route', () => {
 		expect(registry, `${slug} is not registered in src/lib/topics.ts`).toContain(`slug: '${slug}'`);
 	}
 });
+
+test('a level-0 entry parses, and a missing level is still rejected', () => {
+	const doc = (level: string) =>
+		[
+			'## Categories',
+			'| Physics | `physics` | 1 |',
+			'## Topics',
+			'### Physics',
+			'#### shadows',
+			'- **Title:** Shadows',
+			`- **Level:** ${level}`,
+			'## Checklist',
+			'**Physics**',
+			'- [ ] shadows'
+		].join('\n');
+	expect(parseCatalog(doc('0')).bySlug.get('shadows')?.level).toBe(0);
+	expect(() => parseCatalog(doc(''))).toThrow(/invalid level/);
+});

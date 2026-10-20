@@ -23,7 +23,7 @@ Each topic is a level-4 heading containing its slug, followed by one `- **Field:
 | Field | Meaning |
 |---|---|
 | Title | Display name of the topic. |
-| Level | 1, 2 or 3 (see below). Sets the depth of the explanation. |
+| Level | 0, 1, 2 or 3 (see below). Sets the depth of the explanation. |
 | Kind | The primary interaction pattern (see below). |
 | Interaction | What the reader does and what responds. This is the core of the page. |
 | Takeaway | The one idea the reader should leave with. The graphic should make it visible on its own. |
@@ -36,9 +36,16 @@ Each topic is a level-4 heading containing its slug, followed by one `- **Field:
 
 | Level | Reader |
 |---|---|
+| 0 | Curious beginner: primary or middle school (about ages 9 to 13), or an adult with no science background |
 | 1 | High school |
 | 2 | Final year of high school or first year of university |
 | 3 | University student in the field |
+
+A level-0 page starts from an object or experience the reader already knows, has no formulas
+(numbers as counts and comparisons, everyday units), one control at a time and six to nine steps.
+Its graphic is driven by a real, fact-checked model like any other page. Its prerequisites may only
+be other level-0 topics (usually none), and its entry names the topics it leads to. The index's
+"Start here" link opens `?level=0`. The full definition is in `TOPICS-PROPOSAL.md` ("Level 0").
 
 ### Kinds
 

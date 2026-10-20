@@ -4,7 +4,7 @@
  * invariants test.
  */
 
-export type Level = 1 | 2 | 3;
+export type Level = 0 | 1 | 2 | 3;
 export type Kind = 'manipulate' | 'simulate' | 'step' | 'build' | 'explore';
 
 export interface CatalogCategory {
@@ -42,6 +42,7 @@ export interface Catalog {
 }
 
 export const levelNames: Record<Level, string> = {
+	0: 'Curious beginner: about ages 9 to 13, or an adult with no science background',
 	1: 'High school',
 	2: 'Final year of high school or first year of university',
 	3: 'University student in the field'
@@ -91,8 +92,9 @@ export function parseCatalog(markdown: string): Catalog {
 	let slug = '';
 	const flush = () => {
 		if (!fields || !category) return;
-		const level = Number(fields.Level);
-		if (level !== 1 && level !== 2 && level !== 3) {
+		// Matched as text: Number('') is 0, so an empty field would pass as level 0.
+		const level = /^[0-3]$/.test(fields.Level ?? '') ? (Number(fields.Level) as Level) : null;
+		if (level === null) {
 			throw new Error(`TOPICS.md: ${slug} has an invalid level "${fields.Level}"`);
 		}
 		entries.push({
