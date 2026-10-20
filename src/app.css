@@ -5006,3 +5006,19 @@ kbd {
 	--cc-st: #51cf66;
 	--cc-loss: #adb5bd;
 }
+
+/* heat-pumps-refrigeration: the saturation dome, the hot and cold sides, the compressor's work */
+:root {
+	--hp-dome: #495057;
+	--hp-hot: #e03131;
+	--hp-cold: #1971c2;
+	--hp-work: #7048e8;
+	--hp-valve: #2f9e44;
+}
+:root[data-theme='dark'] {
+	--hp-dome: #adb5bd;
+	--hp-hot: #ff6b6b;
+	--hp-cold: #4dabf7;
+	--hp-work: #9775fa;
+	--hp-valve: #51cf66;
+}

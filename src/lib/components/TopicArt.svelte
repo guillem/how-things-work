@@ -5432,6 +5432,30 @@
 		<path d="M184 20 L132 46 L98 62 L36 92" fill="none" stroke={accent} stroke-width="2.6" />
 		<path d="M36 100 L94 70 L130 70 L180 34" fill="none" stroke="#1971c2" stroke-width="2.6" />
 		<circle cx="96" cy="64" r="3" fill="currentColor" opacity="0.7" />
+	{:else if slug === 'heat-pumps-refrigeration'}
+		<!-- a pressure-enthalpy diagram: the saturation dome and the four-legged cycle across it -->
+		<path
+			d="M30 104 Q70 20 110 18 Q150 20 176 104"
+			fill="none"
+			stroke="currentColor"
+			stroke-width="1.6"
+			opacity="0.55"
+		/>
+		<path
+			d="M64 40 L150 40 L172 22"
+			fill="none"
+			stroke={accent}
+			stroke-width="2.6"
+			stroke-linejoin="round"
+		/>
+		<path
+			d="M64 40 L64 84 L140 84 L172 22"
+			fill="none"
+			stroke="#1971c2"
+			stroke-width="2.6"
+			stroke-linejoin="round"
+		/>
+		<circle cx="172" cy="22" r="3" fill={accent} />
 	{:else}
 		<circle cx="100" cy="60" r="30" fill="none" stroke={accent} stroke-width="2" />
 		<circle cx="100" cy="60" r="5" fill={accent} />

@@ -1464,6 +1464,15 @@ const explainers: Explainer[] = [
 		accent: '#e8590c',
 		steps: 7,
 		minutes: 20
+	},
+	{
+		slug: 'heat-pumps-refrigeration',
+		title: 'Heat pumps & refrigeration',
+		summary:
+			'Run a real refrigerant around a vapour-compression cycle on its pressure-enthalpy diagram: boil it cold, compress it, condense it hot, drop its pressure. See why a heat pump delivers several units of heat for each unit of work, how that falls as the temperature lift grows, and what happens with propane and with CO2 above its critical point.',
+		accent: '#e03131',
+		steps: 8,
+		minutes: 20
 	}
 ];
 

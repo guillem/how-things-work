@@ -156,9 +156,13 @@ export function cycle({
 
 /** The saturation dome on a p-h diagram: liquid line up to the critical point and back down the vapour line. */
 export function dome(f: Fluid): { p: number; h: number }[] {
-	const sat = FLUIDS[f].sat;
+	const { sat, pc } = FLUIDS[f];
+	// The tables stop just short of the critical point; close the dome there, midway between the
+	// last liquid and vapour enthalpies (where the two branches meet).
+	const top = sat[sat.length - 1];
 	return [
 		...sat.map((r) => ({ p: r[1], h: r[2] })),
+		{ p: pc, h: (top[2] + top[3]) / 2 },
 		...[...sat].reverse().map((r) => ({ p: r[1], h: r[3] }))
 	];
 }
