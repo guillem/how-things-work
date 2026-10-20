@@ -92,7 +92,7 @@ test('rubisco: switching off "Count the carbons" labels molecules with carbon co
 	await open(page, './photosynthesis/#rubisco', 'Carbon bookkeeping');
 	const label = stage(page).getByText('5C', { exact: true });
 	await expect(label).toHaveCount(0);
-	await page.locator('input[type=checkbox][data-control=carbons]').uncheck({ force: true });
+	await page.locator('input[type=checkbox][data-control=carbons]').uncheck();
 	await expect(label.first()).toBeAttached();
 	await expect(stage(page).getByText('3C', { exact: true }).first()).toBeAttached();
 });

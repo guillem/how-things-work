@@ -22,7 +22,7 @@ test('without wolves the elk multiply', async ({ page }) => {
 	// The web arrives off balance and settles in the first few seconds.
 	await expect(stage(page)).toContainText('Finding its balance');
 	await playUntil(page, stage(page), /In balance/, 15_000);
-	await page.getByRole('switch', { name: 'Wolves' }).uncheck({ force: true });
+	await page.getByRole('switch', { name: 'Wolves' }).uncheck();
 	await expect(stage(page)).toContainText('Following the ripples');
 	await playUntil(page, stage(page), /Without wolves: .*elk \+\d+%/, 20_000);
 	await expect(stage(page)).toContainText(/beavers −\d+%/);
@@ -31,7 +31,7 @@ test('without wolves the elk multiply', async ({ page }) => {
 test('deer arriving push the elk out', async ({ page }) => {
 	await open(page, './ecosystems/#newcomer');
 	await expect(stage(page)).toContainText('not here yet');
-	await page.getByRole('switch', { name: 'Deer (newcomers)' }).check({ force: true });
+	await page.getByRole('switch', { name: 'Deer (newcomers)' }).check();
 	await playUntil(page, stage(page), /With deer: .*elk gone/, 60_000);
 });
 

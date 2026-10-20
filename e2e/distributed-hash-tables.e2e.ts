@@ -27,7 +27,7 @@ test(
 	async ({ page }) => {
 		await page.goto('./distributed-hash-tables/#join');
 		await expect(stage(page)).toContainText('consistent hashing · 6 servers');
-		await toggle(page, 'add').check({ force: true });
+		await toggle(page, 'add').check();
 		await expect(stage(page)).toContainText('G joins');
 		const ring = await read(page, 'G joins:');
 		expect(ring).toBeLessThan(30);

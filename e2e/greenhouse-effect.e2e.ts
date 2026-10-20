@@ -48,7 +48,7 @@ test.describe('settled frames (reduced motion)', () => {
 		// Each doubling adds the same: four times the CO₂, twice the warming.
 		await range(page, 'co2').fill('1120');
 		await expect(stage(page)).toContainText('settles at +6.0 °C');
-		await toggle(page, 'water').uncheck({ force: true });
+		await toggle(page, 'water').uncheck();
 		await expect(stage(page)).toContainText('water vapour off');
 		await expect(stage(page)).toContainText('doubled CO₂: +1.5 °C');
 		// Less CO₂ than before industry cools the planet.
@@ -70,7 +70,7 @@ test.describe('settled frames (reduced motion)', () => {
 		await page.locator('[data-control=scenario][data-value=ssp119]').click();
 		await expect(stage(page)).toContainText('IPCC 1.4 °C · model 1.3');
 		// Without the water-vapour feedback, the same emissions warm far less.
-		await toggle(page, 'water').uncheck({ force: true });
+		await toggle(page, 'water').uncheck();
 		await expect(stage(page)).toContainText('dashed: all feedbacks on');
 		await expect(stage(page)).toContainText('IPCC 1.4 °C · model 0.8');
 	});

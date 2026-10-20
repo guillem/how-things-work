@@ -56,7 +56,7 @@ test.describe('finished frames (reduced motion)', () => {
 		await open(page, './gpu/#ceiling');
 		await page.locator('input[type=range][data-control=serial]').fill('30');
 		await expect(stage(page)).toContainText('The fast core wins');
-		await page.locator('input[type=checkbox][data-control=hybrid]').check({ force: true });
+		await page.locator('input[type=checkbox][data-control=hybrid]').check();
 		await expect(stage(page)).toContainText('The two together win');
 	});
 });

@@ -47,7 +47,7 @@ test('the 180° pulse brings the signal back as an echo', async ({ page }) => {
 	// the reduced-motion frame is the echo, at TE = 50 ms: e^(−50/100)
 	await expect(stage(page)).toContainText('t = 50 ms');
 	await expect(stage(page)).toContainText('signal 0.61');
-	await toggle(page, 'refocus').uncheck({ force: true });
+	await toggle(page, 'refocus').uncheck();
 	await expect(stage(page)).toContainText(/signal 0\.0[0-2]/); // e^(−t/T2*) with T2* = 7.4 ms: gone
 });
 

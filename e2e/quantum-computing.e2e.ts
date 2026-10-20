@@ -90,7 +90,7 @@ test('two paths cancel, a phase steers them, and a measurement between them spoi
 	await range(page, 'shift').fill('90');
 	await expect(stage(page)).toContainText('P(1) = 50%');
 	await range(page, 'shift').fill('0');
-	await page.locator('input[type=checkbox][data-control=peek]').check({ force: true });
+	await page.locator('input[type=checkbox][data-control=peek]').check();
 	await expect(stage(page)).toContainText('P(1) = 50%');
 	await expect(stage(page)).toContainText('probabilities add');
 });

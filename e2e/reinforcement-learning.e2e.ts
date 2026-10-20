@@ -50,7 +50,7 @@ test('little exploration settles for the +1; exploring less and less finds the +
 	await finish(page);
 	await expect(stage(page)).toContainText('the +1, in 4 moves');
 	await page.locator('input[type=range][data-control=epsilon]').fill('1');
-	await page.locator('input[type=checkbox][data-control=decay]').check({ force: true });
+	await page.locator('input[type=checkbox][data-control=decay]').check();
 	await finish(page);
 	await expect(stage(page)).toContainText('the +10, in 8 moves');
 	await expect(stage(page)).toContainText('10.00');

@@ -23,7 +23,7 @@ test('force: the push and the mass set the acceleration readout', async ({ page 
 test('inertia: friction slows the cart down', async ({ page }) => {
 	await open(page, './newtons-laws/#inertia', 'Friction off');
 	await expect(stage(page)).toContainText('No force → constant speed');
-	await page.locator('input[type=checkbox][data-control=friction]').check({ force: true });
+	await page.locator('input[type=checkbox][data-control=friction]').check();
 	await expect(stage(page)).toContainText('Friction on (μ = 0.05)');
 	await expect(stage(page)).toContainText('Friction force → slows down');
 	await expect(stage(page)).toContainText('the speed drops by 0.49 m/s every second');

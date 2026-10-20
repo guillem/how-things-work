@@ -31,7 +31,7 @@ test('birds on sooty bark darken the moths; without birds they stay pale', async
 test('switching off unequal survival stops the adaptation', async ({ page }) => {
 	await open(page, './evolution/#ingredients');
 	expect(await averageMoth(page)).toBeGreaterThan(9);
-	await page.locator('input[type=checkbox][data-control=selection]').uncheck({ force: true });
+	await page.locator('input[type=checkbox][data-control=selection]').uncheck();
 	await expect(stage(page)).toContainText('off: equal survival');
 	expect(await averageMoth(page)).toBeLessThan(5);
 });
@@ -59,7 +59,7 @@ test('random mutation gives jackpots; resistance caused by the virus would not',
 test('bacteria evolve 10,000-fold resistance only through intermediate doses', async ({ page }) => {
 	await open(page, './evolution/#antibiotics');
 	await expect(stage(page)).toContainText('most resistant: survives 10,000×');
-	await page.locator('input[type=checkbox][data-control=steps]').uncheck({ force: true });
+	await page.locator('input[type=checkbox][data-control=steps]').uncheck();
 	await expect(stage(page)).toContainText('stuck in the drug-free bands');
 });
 

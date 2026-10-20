@@ -33,7 +33,7 @@ test('the ramp filter brings the computed slice close to the true one', async ({
 	await expect(stage(page)).toContainText('180 of 180 · filtered');
 	const filtered = await errorPct(page);
 	expect(filtered).toBeLessThan(8);
-	await toggle(page, 'filter').uncheck({ force: true });
+	await toggle(page, 'filter').uncheck();
 	await expect(stage(page)).toContainText('180 of 180 · not filtered');
 	expect(await errorPct(page)).toBeGreaterThan(3 * filtered);
 });
@@ -122,7 +122,7 @@ test('lower down, the CT slice finds the fluid the X-ray cannot see', async ({ p
 test('without gel the sound bounces straight back', async ({ page }) => {
 	await page.goto('./medical-imaging/#ultrasound');
 	await expect(stage(page)).toContainText('fat → muscle: echo after 25.5 μs, drawn at 1.96 cm');
-	await toggle(page, 'gel').uncheck({ force: true });
+	await toggle(page, 'gel').uncheck();
 	await expect(stage(page)).toContainText('probe → air: 99.89% reflected');
 });
 

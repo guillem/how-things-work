@@ -26,7 +26,7 @@ test(
 		await page.goto('./positional-encoding/#mask');
 		await expect(stage(page)).toContainText('Now: “the man bit the dog”');
 		await expect(stage(page)).toContainText('1 of 5 outputs the same; the largest change is 2.62');
-		await page.locator('input[data-control=mask]').uncheck({ force: true });
+		await page.locator('input[data-control=mask]').uncheck();
 		await expect(stage(page)).toContainText('5 of 5 outputs the same');
 	}
 );

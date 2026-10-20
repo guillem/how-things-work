@@ -74,7 +74,7 @@ test('joining the two pieces opens a depletion zone and bends the bands', async 
 	await page.emulateMedia({ reducedMotion: 'reduce' });
 	await page.goto('./semiconductors/#pn');
 	await expect(stage(page)).toContainText('Two separate pieces');
-	await page.getByRole('switch', { name: 'Join the two pieces' }).check({ force: true });
+	await page.getByRole('switch', { name: 'Join the two pieces' }).check();
 	await expect(stage(page)).toContainText('Joined: a depletion zone has formed');
 	await expect(stage(page)).toContainText('depletion zone 0.15 µm');
 	await expect(stage(page)).toContainText('hill for electrons: 0.84 eV');

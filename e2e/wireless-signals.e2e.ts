@@ -17,7 +17,7 @@ test('AM and FM widen the spectrum: 1 MHz for AM, about 4 MHz for FM', async ({ 
 test('smoothing the switches shrinks the bandwidth; faster symbols widen it', async ({ page }) => {
 	await page.goto('./wireless-signals/#bandwidth');
 	await expect(stage(page)).toContainText('99% of the power within 18 MHz (wider than shown)');
-	await page.getByRole('switch', { name: 'Smooth the switches' }).check({ force: true });
+	await page.getByRole('switch', { name: 'Smooth the switches' }).check();
 	await expect(stage(page)).toContainText('99% of the power within 1.1 MHz');
 	await range(page, 'rate').fill('2');
 	await expect(stage(page)).toContainText('99% of the power within 2.2 MHz');

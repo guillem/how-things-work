@@ -17,7 +17,7 @@ test.describe('finished pictures (reduced motion)', () => {
 	test('a broken repair gene brings the tumour sooner', async ({ page }) => {
 		await open(page, './cancer/#repair');
 		await expect(stage(page)).toContainText('tumour found at generation 239');
-		await toggle(page, 'repair').uncheck({ force: true });
+		await toggle(page, 'repair').uncheck();
 		await expect(stage(page)).toContainText('tumour found at generation 329');
 	});
 
@@ -27,7 +27,7 @@ test.describe('finished pictures (reduced motion)', () => {
 		await open(page, './cancer/#treat');
 		await expect(stage(page)).toContainText('back, resistant to the drug');
 		await expect(stage(page)).toContainText('drug given');
-		await toggle(page, 'treat').uncheck({ force: true });
+		await toggle(page, 'treat').uncheck();
 		await expect(stage(page)).toContainText('untreated');
 		await expect(stage(page)).not.toContainText('drug given');
 	});
@@ -57,7 +57,7 @@ test.describe('finished pictures (reduced motion)', () => {
 	}) => {
 		await open(page, './cancer/#knudson');
 		await expect(stage(page)).toContainText('120 expected');
-		await toggle(page, 'inherited').uncheck({ force: true });
+		await toggle(page, 'inherited').uncheck();
 		await expect(stage(page)).toContainText(/(^|\D)0 tumours in all/);
 	});
 

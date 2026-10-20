@@ -44,7 +44,7 @@ test('overfit: the verdict follows the degree and the true curve can be shown', 
 	await degree(page).fill('12');
 	await expect(stage(page)).toContainText('It bends to chase the dots');
 	await expect(stage(page)).toContainText('wild swing past the last dot');
-	await page.locator('input[type=checkbox][data-control=truth]').check({ force: true });
+	await page.locator('input[type=checkbox][data-control=truth]').check();
 	await expect(stage(page)).toContainText('true curve: the hidden rule');
 });
 

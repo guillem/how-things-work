@@ -28,7 +28,7 @@ test.describe('finished pictures (reduced motion)', () => {
 	}) => {
 		await open(page, './crispr/#self');
 		await expect(stage(page)).toContainText('no PAM next to the spacer: Cas9 never opens it');
-		await page.locator('input[type=checkbox][data-control=pam]').uncheck({ force: true });
+		await page.locator('input[type=checkbox][data-control=pam]').uncheck();
 		await expect(stage(page)).toContainText('its own chromosome cut: the cell dies');
 	});
 
@@ -73,7 +73,7 @@ test.describe('finished pictures (reduced motion)', () => {
 		await open(page, './crispr/#flask');
 		await expect(stage(page)).toContainText('phages 0');
 		await expect(stage(page)).toContainText(/bacteria 1\.0×10⁷/);
-		await page.locator('input[type=checkbox][data-control=crispr]').uncheck({ force: true });
+		await page.locator('input[type=checkbox][data-control=crispr]').uncheck();
 		await expect(stage(page)).toContainText('bacteria 0');
 		await expect(stage(page)).toContainText('no CRISPR system');
 	});
@@ -83,7 +83,7 @@ test.describe('finished pictures (reduced motion)', () => {
 	}) => {
 		await open(page, './crispr/#arms');
 		await expect(stage(page)).toContainText(/changed letters, on average: [1-9]\.\d per phage/);
-		await page.locator('input[type=checkbox][data-control=mutate]').uncheck({ force: true });
+		await page.locator('input[type=checkbox][data-control=mutate]').uncheck();
 		await expect(stage(page)).toContainText('changed letters, on average: 0.0 per phage');
 	});
 });

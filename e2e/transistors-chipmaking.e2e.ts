@@ -28,7 +28,7 @@ test('the transfer curve: dragging the dot to the end gives the full current', a
 	await expect(stage(page)).toContainText('1.80 V → 654 µA');
 	await handle.press('Home');
 	await expect(stage(page)).toContainText('0.00 V → 5.84 pA');
-	await page.getByRole('switch', { name: 'Logarithmic current scale' }).check({ force: true });
+	await page.getByRole('switch', { name: 'Logarithmic current scale' }).check();
 	await expect(stage(page)).toContainText('89 mV');
 });
 
@@ -54,7 +54,7 @@ test('the CMOS inverter flips its output and draws current only mid-switch', asy
 test('the NAND gate goes low only when both inputs are 1', async ({ page }) => {
 	await page.goto('./transistors-chipmaking/#nand');
 	await expect(stage(page)).toContainText('output connected to the supply');
-	await page.getByRole('switch', { name: 'Input B' }).check({ force: true });
+	await page.getByRole('switch', { name: 'Input B' }).check();
 	await expect(stage(page)).toContainText('output connected to ground');
 	await expect(stage(page)).toContainText('output 0.00 V');
 });

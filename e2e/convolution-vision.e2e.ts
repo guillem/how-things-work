@@ -65,7 +65,7 @@ test('the test digits it gets wrong, and a drawing that is not a digit', async (
 		[0.2, 0.8]
 	]);
 	await expect(stage(page)).toContainText(/It reads \d, with probability/);
-	await page.locator('input[type=checkbox][data-control=centre]').uncheck({ force: true });
+	await page.locator('input[type=checkbox][data-control=centre]').uncheck();
 	await expect(stage(page)).toContainText('your drawing, not centred or scaled');
 });
 
@@ -84,7 +84,7 @@ test('switching the centring off on “Where it goes wrong” leaves the other s
 	const centred = await reading();
 	await page.evaluate(() => (location.hash = '#mistakes'));
 	await pick(page, 'wrong', 'drawn');
-	await page.locator('input[type=checkbox][data-control=centre]').uncheck({ force: true });
+	await page.locator('input[type=checkbox][data-control=centre]').uncheck();
 	await expect(stage(page)).toContainText('your drawing, not centred or scaled');
 	expect(await reading()).not.toBe(centred);
 	await page.evaluate(() => (location.hash = '#predict'));

@@ -43,7 +43,7 @@ test('the point can be moved with the keyboard without changing the step', async
 
 test('snap visits the special angles', async ({ page }) => {
 	await open(page, './unit-circle/#quadrants');
-	await page.locator('input[type=checkbox][data-control=snap]').check({ force: true });
+	await page.locator('input[type=checkbox][data-control=snap]').check();
 	await handle(page).focus();
 	await page.keyboard.press('ArrowRight');
 	await expect(slider(page)).toHaveValue('45');
@@ -55,7 +55,7 @@ test('the angle slider snaps pointer input and visits special angles with the ke
 }) => {
 	await open(page, './unit-circle/#quadrants');
 	const snap = page.locator('input[type=checkbox][data-control=snap]');
-	await snap.check({ force: true });
+	await snap.check();
 	await slider(page).evaluate((input: HTMLInputElement) => {
 		input.value = '43';
 		input.dispatchEvent(new Event('input', { bubbles: true }));
@@ -67,7 +67,7 @@ test('the angle slider snaps pointer input and visits special angles with the ke
 	await slider(page).press('ArrowLeft');
 	await expect(slider(page)).toHaveValue('45');
 	await expect(page).toHaveURL(/#quadrants$/);
-	await snap.uncheck({ force: true });
+	await snap.uncheck();
 	await slider(page).evaluate((input: HTMLInputElement) => {
 		input.value = '43';
 		input.dispatchEvent(new Event('input', { bubbles: true }));

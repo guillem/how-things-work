@@ -25,7 +25,7 @@ test('windup: anti-windup keeps the integral from piling up on the climb', async
 	await expect(stage(page)).toContainText('largest');
 	const wound = await largest();
 	expect(wound).toBeGreaterThan(200);
-	await toggle(page, 'antiWindup').check({ force: true });
+	await toggle(page, 'antiWindup').check();
 	await expect.poll(largest).toBeLessThan(150);
 });
 
@@ -36,7 +36,7 @@ test('Ziegler–Nichols: the rule turns the ultimate gain into PID gains', async
 	await expect(stage(page)).toContainText('dying');
 	await range(page, 'znKp').fill('180');
 	await expect(stage(page)).not.toContainText('dying');
-	await toggle(page, 'useZn').check({ force: true });
+	await toggle(page, 'useZn').check();
 	await expect(stage(page)).toContainText('Ziegler–Nichols PID');
 	await expect(stage(page)).toContainText('Kp 80');
 });

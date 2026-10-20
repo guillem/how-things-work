@@ -24,7 +24,7 @@ test('the p-value counts the shuffles as far from 0 as the real gap, plus one', 
 	await expect(stage(page)).toContainText('p = 0.0001');
 	// five per group: the same species difference, but the data can no longer tell
 	await pick(page, 'perGroup', '5');
-	await expect(stage(page)).toContainText('5 penguins');
+	await expect(stage(page)).toContainText('shuffled label “Adelie” · 5 ·');
 	await expect(stage(page)).toContainText('p = 0.053');
 	// two islands' Adelie penguins: a gap chance produces about one time in 14
 	await pick(page, 'perGroup', 'all');

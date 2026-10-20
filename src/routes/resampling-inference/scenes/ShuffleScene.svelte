@@ -40,9 +40,11 @@
 	$effect(() => {
 		const s = shuffling ? 1 : 0;
 		const p = phase === 'p' ? 1 : 0;
+		// reduced motion: jump straight to the step's settled state
+		const duration = reduced ? 0 : 700;
 		untrack(() => {
-			shuffleAmt.set(s);
-			pAmt.set(p);
+			shuffleAmt.set(s, { duration });
+			pAmt.set(p, { duration });
 		});
 	});
 

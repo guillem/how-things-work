@@ -68,7 +68,7 @@ test('along the blade: stalled at λ = 3, none stalled at 7.5; tip loss costs po
 	await range(page, 'lambda').fill('3');
 	await expect(stage(page)).toContainText(/Elements stalled\s*13 of 13/);
 	await range(page, 'lambda').fill('7.5');
-	await page.locator('input[type=checkbox][data-control=tipLoss]').uncheck({ force: true });
+	await page.locator('input[type=checkbox][data-control=tipLoss]').uncheck();
 	await expect(stage(page)).toContainText(/Rotor CP\s*0\.52\d/);
 });
 

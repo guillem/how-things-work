@@ -48,6 +48,14 @@ test('drawing the starting shape and averaging bigger samples', async ({ page })
 	// Dragging over the top chart reshapes it: tall bars on the left move the mean down.
 	const chart = stage(page).locator('[role=slider]');
 	await chart.scrollIntoViewIfNeeded();
+	// The page may still be smooth-scrolling to the step: measure once it holds still.
+	await page.waitForFunction(
+		() =>
+			new Promise((done) => {
+				const y = scrollY;
+				requestAnimationFrame(() => requestAnimationFrame(() => done(scrollY === y)));
+			})
+	);
 	const box = (await chart.boundingBox())!;
 	await page.mouse.move(box.x + box.width * 0.02, box.y + box.height * 0.2);
 	await page.mouse.down();

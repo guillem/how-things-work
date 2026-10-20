@@ -19,7 +19,7 @@ test('clicking the switch opens the loop: no current, and the toggle follows', a
 	await expect(stage(page)).toContainText('Switch open');
 	await expect(page.locator('input[type=checkbox][data-control=closed]')).not.toBeChecked();
 	// And back with the toggle.
-	await page.locator('input[type=checkbox][data-control=closed]').check({ force: true });
+	await page.locator('input[type=checkbox][data-control=closed]').check();
 	await expect(stage(page)).toContainText('0.50 A');
 });
 

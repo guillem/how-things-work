@@ -244,6 +244,7 @@
 	.switch input {
 		position: absolute;
 		inset: 0;
+		z-index: 1; /* above the track, so a click lands on the input itself */
 		margin: 0;
 		opacity: 0;
 		cursor: pointer;

@@ -41,7 +41,7 @@ test('the tree: minimax picks the only move that does not lose', async ({ page }
 test('pruning skips positions of the tree', async ({ page }) => {
 	await page.goto('./game-tree-search/#pruning');
 	await expect(stage(page)).toContainText('Positions examined: 53 of 53');
-	await toggle(page, 'prune').check({ force: true });
+	await toggle(page, 'prune').check();
 	await expect(stage(page)).toContainText('Positions examined: 33 of 53');
 });
 
@@ -71,7 +71,7 @@ test('Connect Four: pruning cuts the positions examined, and the move stays the 
 	await slider(page, 'depth').fill('6');
 	await expect(stage(page)).toContainText('Positions examined: 123,449');
 	await expect(stage(page)).toContainText('The computer would play column 6');
-	await toggle(page, 'prune').check({ force: true });
+	await toggle(page, 'prune').check();
 	await expect(stage(page)).toContainText('Positions examined: 5,867');
 	await expect(stage(page)).toContainText('The computer would play column 6');
 });
@@ -88,7 +88,7 @@ test('the growth chart: pruning adds the pruned counts', async ({ page }) => {
 	await page.goto('./game-tree-search/#growth');
 	await expect(stage(page)).toContainText('6,634,027');
 	await expect(stage(page)).not.toContainText('9,793');
-	await toggle(page, 'prune').check({ force: true });
+	await toggle(page, 'prune').check();
 	await expect(stage(page)).toContainText('9,793');
 });
 

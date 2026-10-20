@@ -52,7 +52,7 @@ test('turning "Run by itself" off freezes the replay where it is', async ({ page
 	await page.clock.install();
 	await open(page, './sorting/#merge');
 	await page.clock.runFor(1500);
-	await page.locator('input[type=checkbox][data-control=play]').uncheck({ force: true });
+	await page.locator('input[type=checkbox][data-control=play]').uncheck();
 	const at = Number(await scrubber(page).getAttribute('aria-valuenow'));
 	expect(at).toBeGreaterThan(0);
 	await page.clock.runFor(800);
@@ -66,12 +66,12 @@ test('pausing after stepping does not jump back', async ({ page }) => {
 	await page.keyboard.press('ArrowRight');
 	await page.keyboard.press('ArrowRight');
 	const play = page.locator('input[type=checkbox][data-control=play]');
-	await play.check({ force: true });
+	await play.check();
 	await page.clock.runFor(2000);
 	const reached = Number(await scrubber(page).getAttribute('aria-valuenow'));
 	// Playback really advanced from the stepped position (2).
 	expect(reached).toBeGreaterThan(2);
-	await play.uncheck({ force: true });
+	await play.uncheck();
 	expect(Number(await scrubber(page).getAttribute('aria-valuenow'))).toBeGreaterThanOrEqual(
 		reached
 	);

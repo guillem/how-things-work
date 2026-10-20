@@ -44,7 +44,7 @@ test('the charge map shows water is polar and carbon dioxide is not', async ({ p
 	await stage(page).getByRole('button', { name: 'Build CO₂' }).click();
 	await expect(stage(page)).toContainText('Not polar');
 	await expect(stage(page)).toContainText('cancel out by symmetry');
-	await page.getByRole('switch', { name: 'Charge map' }).uncheck({ force: true });
+	await page.getByRole('switch', { name: 'Charge map' }).uncheck();
 	await expect(stage(page)).not.toContainText('δ− electrons pulled here');
 });
 

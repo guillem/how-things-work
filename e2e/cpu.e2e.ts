@@ -17,7 +17,7 @@ test('the sum of 1 to 10 runs at speed and halts with 55 in memory', async ({ pa
 test('Step does one phase at a time: fetch, then decode, then execute', async ({ page }) => {
 	await page.goto('./cpu/#cycle');
 	await expect(scrubber(page)).toBeAttached();
-	await page.locator('input[type=checkbox][data-control=play]').uncheck({ force: true });
+	await page.locator('input[type=checkbox][data-control=play]').uncheck();
 	await scrubber(page).focus();
 	await page.keyboard.press('Home');
 	await expect(stage(page)).toContainText('Ready: the PC is 0');

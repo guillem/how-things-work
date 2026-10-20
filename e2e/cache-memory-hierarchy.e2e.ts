@@ -96,7 +96,7 @@ test('summing by columns costs seven times summing by rows; the L2 helps none of
 	await expect(stage(page)).toContainText('35 cycles');
 	await expect(stage(page)).toContainText('250 cycles');
 	await expect(stage(page)).toContainText('239 cycles');
-	await page.locator('input[data-control=withL2]').uncheck({ force: true });
+	await page.locator('input[data-control=withL2]').uncheck();
 	await expect(stage(page)).toContainText('32 KB L1 only');
 	await expect(stage(page)).toContainText('35 cycles');
 	await expect(stage(page)).toContainText('249 cycles');
@@ -107,7 +107,7 @@ test('the latency curve breaks at the L1, and with an L2 the break to DRAM moves
 }) => {
 	await page.goto('./cache-memory-hierarchy/#knee');
 	await expect(stage(page)).toContainText('every load from DRAM from 45.3 KB on');
-	await page.locator('input[data-control=l2]').check({ force: true });
+	await page.locator('input[data-control=l2]').check();
 	await expect(stage(page)).toContainText('every load from DRAM from 362 KB on');
 	await range(page, 'l2size').press('End');
 	await expect(stage(page)).toContainText('every load from DRAM from 2.83 MB on');
@@ -119,7 +119,7 @@ test('the lab runs the chosen program, plain or cache-friendly', async ({ page }
 	await range(page, 'ways').press('End');
 	await expect(stage(page)).toContainText('fully associative');
 	await expect(stage(page)).toContainText('1,088 of 1,088 accesses · 584 misses');
-	await page.locator('input[data-control=friendly]').check({ force: true });
+	await page.locator('input[data-control=friendly]').check();
 	await expect(stage(page)).toContainText('Multiply matrices in tiles');
 	await expect(stage(page)).toContainText('1,216 of 1,216 accesses · 72 misses');
 	await choose(page, 'program', 'list');

@@ -48,11 +48,11 @@ test.describe('finished pictures', () => {
 		await expect(stage(page)).toContainText('none: the detector is off');
 		expect(await readout(page, 'fringe visibility')).toBeGreaterThan(0.95);
 		// Switch it on: the fringes go.
-		await toggle(page, 'detector').check({ force: true });
+		await toggle(page, 'detector').check();
 		await expect(stage(page)).toContainText('made, but nobody reads it');
 		expect(await readout(page, 'fringe visibility')).toBeLessThan(0.05);
 		// Reading the record changes nothing about the pattern.
-		await toggle(page, 'reading').check({ force: true });
+		await toggle(page, 'reading').check();
 		await expect(stage(page)).toContainText('T top · B bottom');
 		expect(await readout(page, 'fringe visibility')).toBeLessThan(0.05);
 	});

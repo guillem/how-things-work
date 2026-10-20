@@ -46,7 +46,7 @@ test('a drip: the rate sets the plateau, the half-life sets the time', async ({ 
 	await expect(stage(page)).toContainText('94% of the plateau after 4 half-lives, 32 hours');
 	await key(page, 'rate4', 'Home');
 	await key(page, 'rate4', 'ArrowRight', 2);
-	await toggle(page, 'load4').check({ force: true });
+	await toggle(page, 'load4').check();
 	// the label's loading dose: about 10 mcg/mL once it is in
 	await expect(stage(page)).toContainText('320 mg loading dose: 10 mcg/mL after 30 minutes');
 });
@@ -55,7 +55,7 @@ test('doubling digoxin doubles the plateau but reaches it no sooner', async ({ p
 	await page.goto('./pharmacokinetics-dosing/#double');
 	await expect(stage(page)).toContainText('digoxin 250 mcg a day: steady average 0.90 ng/mL');
 	await expect(stage(page)).toContainText('90% of its own plateau after 6.0 days');
-	await toggle(page, 'dbl5').check({ force: true });
+	await toggle(page, 'dbl5').check();
 	await expect(stage(page)).toContainText('digoxin 500 mcg a day: steady average 1.8 ng/mL');
 	await expect(stage(page)).toContainText('90% of its own plateau after 6.0 days');
 });
@@ -63,7 +63,7 @@ test('doubling digoxin doubles the plateau but reaches it no sooner', async ({ p
 test('a loading dose of digoxin is near the plateau after one day', async ({ page }) => {
 	await page.goto('./pharmacokinetics-dosing/#loading');
 	await expect(stage(page)).toContainText('after day 1: 36% of the plateau');
-	await toggle(page, 'load6').check({ force: true });
+	await toggle(page, 'load6').check();
 	await expect(stage(page)).toContainText(
 		/after day 1: (9\d|1[01]\d)% of the plateau \(without loading: 36%\)/
 	);
@@ -88,7 +88,7 @@ test('phenytoin: a third more drug, more than twice the level', async ({ page })
 		'phenytoin 400 mg a day (saturable): steady average 12 mcg/mL'
 	);
 	// a linear drug that matches it at 300 mg would rise by a third only
-	await toggle(page, 'sat9').uncheck({ force: true });
+	await toggle(page, 'sat9').uncheck();
 	await expect(stage(page)).toContainText(
 		'phenytoin 400 mg a day (linear): steady average 6.9 mcg/mL'
 	);

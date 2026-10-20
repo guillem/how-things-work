@@ -33,7 +33,7 @@ test('a carry off the left end grows the number', async ({ page }) => {
 test('Step applies one rule at a time, lighting it in the table', async ({ page }) => {
 	await page.goto('./turing-machines/#increment');
 	await expect(scrubber(page)).toBeAttached();
-	await page.locator('input[type=checkbox][data-control=play]').uncheck({ force: true });
+	await page.locator('input[type=checkbox][data-control=play]').uncheck();
 	await scrubber(page).focus();
 	await page.keyboard.press('Home');
 	await expect(stage(page)).toContainText('After 0 steps: in right, reading 1');

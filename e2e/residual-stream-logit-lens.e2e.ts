@@ -60,9 +60,9 @@ test('switching a component off changes the guesses after it', async ({ page }) 
 	await expect(stage(page)).toContainText('block 11 MLP switched off');
 	await expect(stage(page)).toContainText('12 of 182 guesses changed');
 	await expect(stage(page)).toContainText('With block 11 MLP off: next token after “to”');
-	await page.locator('input[data-control=off]').uncheck({ force: true });
+	await page.locator('input[data-control=off]').uncheck();
 	await expect(stage(page)).toContainText('0 of 182 guesses changed');
-	await page.locator('input[data-control=off]').check({ force: true });
+	await page.locator('input[data-control=off]').check();
 	await range(page, 'block').fill('1');
 	await expect(stage(page)).toContainText('139 of 182 guesses changed');
 });

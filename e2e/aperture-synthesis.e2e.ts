@@ -79,7 +79,7 @@ test.describe('in motion', () => {
 	test('turning the Earth sweeps the hours', async ({ page }) => {
 		await page.clock.install();
 		await page.goto('./aperture-synthesis/#rotation');
-		await toggle(page, 'play').check({ force: true });
+		await toggle(page, 'play').check();
 		await playUntil(page, stage(page), '12 h of the Earth’s turn', 20000);
 		await expect(range(page, 'hours')).toHaveValue('12');
 	});

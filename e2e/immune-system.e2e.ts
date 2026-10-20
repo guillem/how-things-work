@@ -15,7 +15,7 @@ test.describe('finished pictures (reduced motion)', () => {
 	test('innate immunity alone holds the virus but never clears it', async ({ page }) => {
 		await open(page, './immune-system/#standoff');
 		await expect(stage(page)).toContainText('Virus not cleared after 30 days');
-		await toggle(page, 'adaptive1').check({ force: true });
+		await toggle(page, 'adaptive1').check();
 		await expect(stage(page)).toContainText('Virus gone on day 9');
 	});
 
@@ -24,7 +24,7 @@ test.describe('finished pictures (reduced motion)', () => {
 	}) => {
 		await open(page, './immune-system/#course');
 		await expect(stage(page)).toContainText('Virus gone on day 9');
-		await toggle(page, 'adaptive').uncheck({ force: true });
+		await toggle(page, 'adaptive').uncheck();
 		await expect(stage(page)).toContainText('Virus not cleared after 30 days');
 		// The full response stays visible, faint, for comparison.
 		await expect(stage(page)).toContainText('with both responses');

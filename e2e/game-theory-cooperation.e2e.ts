@@ -67,8 +67,7 @@ test('in the round robin always cheat wins every game and comes last; tit for ta
 test('without strategies that hit back, always cheat wins the tournament', async ({ page }) => {
 	await page.goto('./game-theory-cooperation/#no-best');
 	await expect(stage(page)).toContainText('7 strategies');
-	for (const id of ['tft', 'grim', 'tf2t'])
-		await control(page, `in_${id}`).uncheck({ force: true });
+	for (const id of ['tft', 'grim', 'tf2t']) await control(page, `in_${id}`).uncheck();
 	await expect(stage(page)).toContainText('4 strategies');
 	await expect(stage(page)).toContainText('1. Always cheat');
 });

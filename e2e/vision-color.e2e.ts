@@ -27,7 +27,7 @@ test('the cornea stops focusing under water', async ({ page }) => {
 	await page.goto('./vision-color/#cornea');
 	await expect(stage(page)).toContainText('42.7 D');
 	await expect(stage(page)).toContainText('60.5 D');
-	await toggle(page, 'water').check({ force: true });
+	await toggle(page, 'water').check();
 	await expect(stage(page)).toContainText('0.0 D');
 	await expect(stage(page)).toContainText('21.8 D');
 });
@@ -96,6 +96,6 @@ test('the chessboard illusion’s reveal says squares A and B are the same grey'
 	await page.goto('./vision-color/#illusions');
 	await option(page, 'illusion', 'shadow').click();
 	await expect(stage(page)).toContainText('Which is lighter, square A or square B?');
-	await toggle(page, 'reveal').check({ force: true });
+	await toggle(page, 'reveal').check();
 	await expect(stage(page)).toContainText('A and B are the same grey');
 });

@@ -42,7 +42,7 @@ test('switching “Copy by itself” off leaves the polymerase where the animati
 }) => {
 	await page.goto('./dna-to-protein/#transcribe');
 	await expect(stage(page)).toContainText('Letter 46 of 1,608 copied');
-	await page.locator('input[type=checkbox][data-control=copy-auto]').uncheck({ force: true });
+	await page.locator('input[type=checkbox][data-control=copy-auto]').uncheck();
 	await expect(page.locator('input[type=range][data-control=copied]')).toHaveValue('46');
 	await expect(stage(page)).toContainText('stepped with the slider');
 	await expect(stage(page)).toContainText('Letter 46 of 1,608 copied · now in exon 1');

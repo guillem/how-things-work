@@ -96,7 +96,7 @@ test('the rainbow: red at 42.3°, violet at 40.6°', async ({ page }) => {
 	await page.goto('./light-optics/#rainbow');
 	await expect(stage(page)).toContainText('42.3°');
 	await expect(stage(page)).toContainText('40.6°');
-	await page.getByRole('switch', { name: 'White light (all colours)' }).uncheck({ force: true });
+	await page.getByRole('switch', { name: 'White light (all colours)' }).uncheck();
 	await slider(page, 'nm').fill('450');
 	await expect(stage(page)).toContainText('The bow for 450 nm');
 });

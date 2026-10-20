@@ -48,14 +48,14 @@ test.describe('finished pictures (reduced motion)', () => {
 	test('without the two prolines the spike springs into its after shape', async ({ page }) => {
 		await open(page, './mrna-vaccines/#prolines');
 		await expect(stage(page)).toContainText('before shape, held');
-		await page.locator('input[type=checkbox][data-control=prolines]').uncheck({ force: true });
+		await page.locator('input[type=checkbox][data-control=prolines]').uncheck();
 		await expect(stage(page)).toContainText('after shape: a long needle');
 	});
 
 	test('with ordinary U the RNA sensors raise the alarm', async ({ page }) => {
 		await open(page, './mrna-vaccines/#modified');
 		await expect(stage(page)).toContainText('RNA sensors idle: no alarm');
-		await page.locator('input[type=checkbox][data-control=modified]').uncheck({ force: true });
+		await page.locator('input[type=checkbox][data-control=modified]').uncheck();
 		await expect(stage(page)).toContainText('RNA sensors bound: the alarm is raised');
 	});
 

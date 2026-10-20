@@ -29,10 +29,10 @@ test(
 test('tetrodotoxin blocks the spike; blocking potassium makes it long', async ({ page }) => {
 	await open(page, './neurons/#channels');
 	await expect(stage(page)).toContainText('a spike: peak');
-	await toggle(page, 'ttx').check({ force: true });
+	await toggle(page, 'ttx').check();
 	await expect(stage(page)).toContainText('no sodium channels, no spike');
-	await toggle(page, 'ttx').uncheck({ force: true });
-	await toggle(page, 'tea').check({ force: true });
+	await toggle(page, 'ttx').uncheck();
+	await toggle(page, 'tea').check();
 	await expect(stage(page)).toContainText('it ends slowly with most K⁺ channels blocked');
 });
 
@@ -83,7 +83,7 @@ test('myelin makes a 10 µm fibre twenty times faster', async ({ page }) => {
 	await open(page, './neurons/#myelin');
 	await expect(stage(page)).toContainText('60 m/s');
 	await expect(stage(page)).toContainText('slowed down 36,000 times');
-	await toggle(page, 'myelin').uncheck({ force: true });
+	await toggle(page, 'myelin').uncheck();
 	await expect(stage(page)).toContainText('3.1 m/s');
 	// The bare fibre is slowed down less, so its creeping front still visibly moves.
 	await expect(stage(page)).toContainText('slowed down 3,000 times');
@@ -119,13 +119,13 @@ test('each receiving cell answers its own pattern, and a stronger connection cha
 	await expect(stage(page)).toContainText('A fires');
 	await expect(stage(page)).toContainText('B silent');
 	// Inputs 2 and 3: B fires.
-	await toggle(page, 'in1').uncheck({ force: true });
-	await toggle(page, 'in3').check({ force: true });
+	await toggle(page, 'in1').uncheck();
+	await toggle(page, 'in3').check();
 	await expect(stage(page)).toContainText('B fires');
 	await expect(stage(page)).toContainText('A silent');
 	// Inputs 1 and 3 fire A only once 3 → A is strengthened.
-	await toggle(page, 'in1').check({ force: true });
-	await toggle(page, 'in2').uncheck({ force: true });
+	await toggle(page, 'in1').check();
+	await toggle(page, 'in2').uncheck();
 	await expect(stage(page)).toContainText('A silent');
 	await control(page, 'w3a').fill('2');
 	await expect(stage(page)).toContainText('A fires');
