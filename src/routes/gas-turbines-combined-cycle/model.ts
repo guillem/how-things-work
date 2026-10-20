@@ -244,16 +244,20 @@ export interface PlantInput {
 	levels: number;
 }
 
-export function plant({ ratio, tit, pHigh, pinch, levels: count }: PlantInput): Plant {
-	const gt = gasTurbine(ratio, tit);
+/**
+ * The HRSG and steam turbine for the given pressure levels. A lower level that the gas can no
+ * longer boil is reported in `dead` (the caller then leaves it out and starts again, so the levels
+ * above take their water straight from the next working level).
+ */
+function recover(gt: GasTurbine, pressures: number[], pinch: number) {
 	const gas = gt.exhaust;
-	const pressures = [pHigh, P_IP, P_LP].slice(0, count);
-	const cond = satAtT(T_COND);
-	const feedH = cond[2];
 	const sections: Section[] = [];
 	const levels: Level[] = [];
+	let dead: number | null = null;
 	let tGas = gt.t4;
 	let q = 0;
+	const cond = satAtT(T_COND);
+	const feedH = cond[2];
 	pressures.forEach((p, k) => {
 		const sat = satAtP(p);
 		const tSat = sat[0];
@@ -264,61 +268,79 @@ export function plant({ ratio, tit, pHigh, pinch, levels: count }: PlantInput): 
 		const tWaterIn = next === undefined ? T_COND : satAtP(next)[0];
 		const hIn = next === undefined ? feedH : steamProps(tWaterIn, p, 0).h;
 		const tPinch = tSat + pinch;
-		if (tGas <= tPinch + 1) {
-			levels.push({ p, tSat, tSteam: tSat, steam: 0, work: 0 });
-			return;
-		}
-		const tSteam = Math.max(tSat + 1, Math.min(T_STEAM_MAX, tGas - APPROACH));
-		const hSteam = steamProps(tSteam, p, 1).h;
-		// Superheater and evaporator: the gas cools from tGas to the pinch.
-		const qBlock = hMix(gas, tGas) - hMix(gas, tPinch);
-		const steam = qBlock / (hSteam - hf);
-		const qSh = steam * (hSteam - hg);
-		const tMid = tAtH(gas, hMix(gas, tGas) - qSh);
-		sections.push(
-			{
-				kind: 'superheater',
-				level: k,
-				q0: q,
-				q1: q + qSh,
-				gasIn: tGas,
-				gasOut: tMid,
-				waterIn: tSat,
-				waterOut: tSteam
-			},
-			{
-				kind: 'evaporator',
-				level: k,
-				q0: q + qSh,
-				q1: q + qBlock,
-				gasIn: tMid,
-				gasOut: tPinch,
-				waterIn: tSat,
-				waterOut: tSat
-			}
-		);
-		q += qBlock;
-		// Economizer: the water of this level and of every level above it, from tWaterIn up to this
-		// level's boiling point (the higher levels' water goes on to their own economizers).
+		// A level whose evaporator the gas can no longer reach makes no steam, but its economizer
+		// still heats the water on its way to the levels above.
+		const boils = tGas > tPinch + 1;
+		const tSteam = boils ? Math.max(tSat + 1, Math.min(T_STEAM_MAX, tGas - APPROACH)) : tSat;
+		const hSteam = steamProps(Math.max(tSteam, tSat + 1), p, 1).h;
+		let steam = 0;
 		const liquid = (T: number, pj: number) =>
 			T <= T_COND + 0.01 ? feedH + 0.001 * (pj - cond[1]) * 1000 : steamProps(T, pj, 0).h;
+		if (boils) {
+			// Superheater and evaporator: at most what the gas gives cooling to the pinch...
+			const fromPinch = (hMix(gas, tGas) - hMix(gas, tPinch)) / (hSteam - hf);
+			// ...and at most what leaves the gas above the condensate (plus a pinch) once this steam and
+			// the water already bound for the levels above have been heated from the condensate.
+			const owed = levels.reduce(
+				(a, l) => a + l.steam * (liquid(tSat, l.p) - liquid(T_COND, l.p)),
+				0
+			);
+			const fromColdEnd =
+				(hMix(gas, tGas) - hMix(gas, T_COND + pinch) - owed) / (hSteam - liquid(T_COND, p));
+			steam = Math.max(0, Math.min(fromPinch, fromColdEnd));
+			const qBlock = steam * (hSteam - hf);
+			const qSh = steam * (hSteam - hg);
+			const tMid = tAtH(gas, hMix(gas, tGas) - qSh);
+			sections.push(
+				{
+					kind: 'superheater',
+					level: k,
+					q0: q,
+					q1: q + qSh,
+					gasIn: tGas,
+					gasOut: tMid,
+					waterIn: tSat,
+					waterOut: tSteam
+				},
+				{
+					kind: 'evaporator',
+					level: k,
+					q0: q + qSh,
+					q1: q + qBlock,
+					gasIn: tMid,
+					gasOut: tAtH(gas, hMix(gas, tGas) - qBlock),
+					waterIn: tSat,
+					waterOut: tSat
+				}
+			);
+			q += qBlock;
+			tGas = tAtH(gas, hMix(gas, tGas) - qBlock);
+		}
+		// Economizer: the water of this level and of every level above it, from tWaterIn up to this
+		// level's boiling point (the higher levels' water goes on to their own economizers).
 		let qEco = steam * (hf - hIn);
 		levels.forEach((l) => {
 			qEco += l.steam * (liquid(tSat, l.p) - liquid(tWaterIn, l.p));
 		});
-		const tAfter = tAtH(gas, hMix(gas, tPinch) - qEco);
-		sections.push({
-			kind: 'economizer',
-			level: k,
-			q0: q,
-			q1: q + qEco,
-			gasIn: tPinch,
-			gasOut: tAfter,
-			waterIn: tWaterIn,
-			waterOut: tSat
-		});
+		const tAfter = tAtH(gas, hMix(gas, tGas) - qEco);
+		if (qEco > 0)
+			sections.push({
+				kind: 'economizer',
+				level: k,
+				q0: q,
+				q1: q + qEco,
+				gasIn: tGas,
+				gasOut: tAfter,
+				waterIn: tWaterIn,
+				waterOut: tSat
+			});
 		q += qEco;
 		tGas = tAfter;
+		if (!boils || steam <= 1e-12) {
+			if (k > 0 && dead === null) dead = k;
+			levels.push({ p, tSat, tSteam: tSat, steam: 0, work: 0 });
+			return;
+		}
 		// The steam turbine: expansion to the condenser with efficiency ETA_ST, into wet steam.
 		const sIn = steamProps(tSteam, p, 1).s;
 		const x = Math.min(1, (sIn - cond[4]) / (cond[5] - cond[4]));
@@ -328,6 +350,23 @@ export function plant({ ratio, tit, pHigh, pinch, levels: count }: PlantInput): 
 		const pump = 0.001 * (p - cond[1]) * 1000;
 		levels.push({ p, tSat, tSteam, steam, work: steam * (hSteam - hOut - pump) });
 	});
+	return { sections, levels, dead, stack: tGas, q };
+}
+
+export function plant({ ratio, tit, pHigh, pinch, levels: count }: PlantInput): Plant {
+	const gt = gasTurbine(ratio, tit);
+	const gas = gt.exhaust;
+	let pressures = [pHigh, P_IP, P_LP].slice(0, count);
+	const idle: Level[] = [];
+	let r = recover(gt, pressures, pinch);
+	while (r.dead !== null) {
+		const p = pressures[r.dead];
+		idle.push({ p, tSat: satAtP(p)[0], tSteam: satAtP(p)[0], steam: 0, work: 0 });
+		pressures = pressures.filter((_, k) => k !== r.dead);
+		r = recover(gt, pressures, pinch);
+	}
+	const levels = [...r.levels, ...idle].sort((a, b) => b.p - a.p);
+	const { sections, stack: tGas, q } = r;
 	const wst = levels.reduce((a, l) => a + l.work, 0);
 	const work = gt.wt - gt.wc + wst;
 	const available = hMix(gas, gt.t4) - hMix(gas, T0);

@@ -4990,3 +4990,19 @@ kbd {
 	--bk-im: #da77f2;
 	--bk-fall: #ff6b6b;
 }
+
+/* gas-turbines-combined-cycle: the hot gas, water and steam, the two kinds of work, the losses */
+:root {
+	--cc-gas: #e8590c;
+	--cc-water: #1971c2;
+	--cc-gt: #7048e8;
+	--cc-st: #2f9e44;
+	--cc-loss: #868e96;
+}
+:root[data-theme='dark'] {
+	--cc-gas: #ff922b;
+	--cc-water: #4dabf7;
+	--cc-gt: #9775fa;
+	--cc-st: #51cf66;
+	--cc-loss: #adb5bd;
+}

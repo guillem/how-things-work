@@ -5425,6 +5425,13 @@
 			stroke-width="0.8"
 			opacity="0.4"
 		/>
+	{:else if slug === 'gas-turbines-combined-cycle'}
+		<!-- a temperature-heat diagram: the exhaust cooling above, the water's three steps below -->
+		<line x1="24" y1="104" x2="188" y2="104" stroke="currentColor" stroke-width="1" opacity="0.4" />
+		<line x1="24" y1="104" x2="24" y2="14" stroke="currentColor" stroke-width="1" opacity="0.4" />
+		<path d="M184 20 L132 46 L98 62 L36 92" fill="none" stroke={accent} stroke-width="2.6" />
+		<path d="M36 100 L94 70 L130 70 L180 34" fill="none" stroke="#1971c2" stroke-width="2.6" />
+		<circle cx="96" cy="64" r="3" fill="currentColor" opacity="0.7" />
 	{:else}
 		<circle cx="100" cy="60" r="30" fill="none" stroke={accent} stroke-width="2" />
 		<circle cx="100" cy="60" r="5" fill={accent} />

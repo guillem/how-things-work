@@ -66,20 +66,27 @@ test('each added level and each smaller pinch lowers the stack temperature and r
 });
 
 test('heat only flows downhill: the gas is hotter than the water at both ends of every section', () => {
-	for (const levels of [1, 2, 3])
-		for (const pinch of [5, 10, 30])
-			for (const pHigh of [4, 8, 16]) {
-				const p = plant({ ...base, levels, pinch, pHigh });
-				for (const s of p.sections) {
-					expect(s.gasIn).toBeGreaterThan(s.waterOut);
-					expect(s.gasOut).toBeGreaterThan(s.waterIn);
+	for (const ratio of [6, 12, 18, 30])
+		for (const levels of [1, 2, 3])
+			for (const pinch of [5, 10, 30])
+				for (const pHigh of [4, 8, 16]) {
+					const p = plant({ ...base, ratio, levels, pinch, pHigh });
+					for (const s of p.sections) {
+						expect(s.gasIn).toBeGreaterThan(s.waterOut);
+						expect(s.gasOut).toBeGreaterThan(s.waterIn);
+					}
 				}
-			}
 });
 
 test('energy balance: the heat the gas gives up equals what the water and steam take on', () => {
-	for (const levels of [1, 2, 3]) {
-		const p = plant({ ...base, levels });
+	for (const [levels, ratio] of [
+		[1, 18],
+		[2, 18],
+		[3, 18],
+		[3, 12],
+		[3, 6]
+	]) {
+		const p = plant({ ...base, levels, ratio });
 		const gasSide = p.sections.reduce((a, s) => a + (s.q1 - s.q0), 0);
 		const feed = satAtT(T_COND)[2];
 		const waterSide = p.levels.reduce(

@@ -1455,6 +1455,15 @@ const explainers: Explainer[] = [
 		accent: '#1971c2',
 		steps: 9,
 		minutes: 20
+	},
+	{
+		slug: 'gas-turbines-combined-cycle',
+		title: 'Combined-cycle power plants',
+		summary:
+			'Set a gas turbine’s pressure ratio and firing temperature and watch most of the fuel’s heat leave as hot exhaust. Then boil water with that exhaust in a heat-recovery steam generator, match its heating line to the cooling gas on a temperature-heat diagram, and take the plant past 60 percent.',
+		accent: '#e8590c',
+		steps: 7,
+		minutes: 20
 	}
 ];
 
