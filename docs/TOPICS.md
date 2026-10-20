@@ -1,6 +1,6 @@
 # Topic catalog
 
-Source of truth for the content of an interactive web learning tool that shows how things work. It defines 157 topics in 11 categories, each built around one interactive graphic. Readers range from high-school students to university majors.
+Source of truth for the content of an interactive web learning tool that shows how things work. It defines 158 topics in 11 categories, each built around one interactive graphic. Readers range from high-school students to university majors.
 
 This file covers content only. It does not choose the stack, the visual design or the project layout; take those from the repository's own instructions.
 
@@ -99,7 +99,7 @@ A topic is done when:
 | Computing | `computing` | 13 |
 | Information & Networks | `networks` | 14 |
 | Artificial Intelligence | `ai` | 20 |
-| Energy & Machines | `energy` | 11 |
+| Energy & Machines | `energy` | 12 |
 
 ## Checklist
 
@@ -281,6 +281,7 @@ A topic is done when:
 - [x] feedback-control
 - [x] wind-turbine-aerodynamics
 - [ ] abs-brakes
+- [ ] bicycle-stability
 
 ## Topics
 
@@ -1793,7 +1794,7 @@ A topic is done when:
 - **Interaction:** Tune the three gains of a PID controller to balance an inverted pendulum, hold a drone at a set height or keep a car at a set speed over hills, with the response plotted against the target. Add delay, sensor noise and gusts, then chain joints into a robot arm that reaches for a point.
 - **Takeaway:** A machine stays on target by measuring its error and correcting in proportion to it; too little correction is sluggish and too much makes it oscillate.
 - **Prerequisites:** oscillations-resonance
-- **Related:** homeostasis, reinforcement-learning, bacterial-chemotaxis, differential-equations, phase-portraits
+- **Related:** homeostasis, reinforcement-learning, bacterial-chemotaxis, differential-equations, phase-portraits, bicycle-stability
 
 #### wind-turbine-aerodynamics
 - **Title:** Wind turbines & the Betz limit
@@ -1813,8 +1814,20 @@ A topic is done when:
 - **Interaction:** Brake a car from highway speed on dry asphalt, wet asphalt or snow: each wheel's spin follows its own equation of motion, and the tire's braking force follows a measured friction-against-slip curve whose peak sits near ten to twenty percent slip on dry asphalt and at smaller slip on snow, falling away as the wheel locks; the stopping distance is marked on the road. Brake too hard with ABS off and the wheel locks, the car slides further and no longer answers the steering; switch ABS on and watch the controller cycle the brake pressure to keep each wheel near the peak.
 - **Takeaway:** A tire grips best while still turning slightly slower than the road passes under it, a locked wheel brakes less and cannot steer, and ABS holds each wheel in that narrow band by releasing and reapplying the brake many times a second.
 - **Prerequisites:** newtons-laws, feedback-control
+- **Related:** bicycle-stability
 - **Needs:** Tire friction-slip curves from the Burckhardt model, mu = c1(1 - e^(-c2 s)) - c3 s, with its published coefficient sets for dry asphalt, wet asphalt and snow (reproduced openly, e.g. arXiv:2211.10336); an icy surface only if a cited coefficient set is found.
 - **Pitfall:** ABS does not usually shorten the stop on dry road by much; its main job is to keep steering, and on loose gravel or snow a locked wheel can even stop shorter by building a wedge.
+
+#### bicycle-stability
+- **Title:** Why a bicycle balances itself
+- **Level:** 3
+- **Kind:** simulate
+- **Interaction:** Push a riderless bicycle at a chosen speed and let its linearized equations of motion run: below a certain speed it slowly falls, in a middle band it wobbles and recovers on its own, and above it it slowly leans away. Drag the speed and watch the eigenvalues of lean and steer cross the stability boundary; change the trail, the head angle and the front-wheel mass, cancel the gyroscopic effect of the wheels and the trail in turn and see the ordinary bicycle lose its self-stable band, then load the two-mass-skate design that balances with neither; finally steer left and watch the bike first lean right.
+- **Takeaway:** A riderless bicycle balances itself in a band of speeds because a lean makes its front wheel steer into the fall, and that self-steering comes from the geometry and mass of the whole front assembly, not from any single effect such as the wheels' gyroscopic spin.
+- **Prerequisites:** newtons-laws, oscillations-resonance, linear-transformations
+- **Related:** feedback-control, abs-brakes
+- **Needs:** The benchmark bicycle parameters and linearized equations of Meijaard, Papadopoulos, Ruina and Schwab (2007, Proc. R. Soc. A, doi:10.1098/rspa.2007.1857), reproduced openly at http://ruina.tam.cornell.edu/research/topics/bicycle_mechanics/, and the two-mass-skate parameters of Kooijman et al. (2011, Science 332:339, doi:10.1126/science.1201959).
+- **Pitfall:** Neither 'the gyroscope keeps it up' nor 'the gyroscope plays no part' is right. On the standard benchmark bicycle, cancelling the wheels' gyroscopic effect removes its self-stable speed band. Yet Kooijman et al. (2011) built a bicycle that balances with neither a gyroscopic effect nor trail. Self-stability comes from several effects working together.
 
 ## Reserve
 
