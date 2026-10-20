@@ -112,7 +112,7 @@ link and a short level-0 section in `docs/scene-guide.md`, then the builds. ocea
 keeps the Orr et al. 2015 cross-check (no PyCO2SYS fixtures). mri-k-space's and
 aperture-synthesis' data stay Unconfirmed in `DATA-SOURCES.md`.
 
-**Level-0 groundwork (2026-10-20, in progress):** steps 1–3 done (the catalogue parses level 0; the index's "Start here" link to `?level=0`, hidden until a level-0 topic is built; a "Level-0 scenes" section in `docs/scene-guide.md`). Next: step 4, STATUS and `full-picture.html`.
+**Level-0 groundwork (2026-10-20, done):** the catalogue parses level 0 (Levels table row and definition in `TOPICS.md`); the index has a "Start here" link to `?level=0`, shown once the first level-0 topic is built; `docs/scene-guide.md` has a "Level-0 scenes" section. Next: the 5 unbuilt topics left in `proposals/topics-200/data/build-order.json` (k-means-clustering, abs-brakes, bicycle-stability, gas-turbines-combined-cycle, heat-pumps-refrigeration) and cellular-automata (now unblocked; still listed under `blocked` there), then the 39 level-0 topics (not yet in the build order's `order`; their entries are in `TOPICS-PROPOSAL.md`).
 
 **Releases v1.2.0–v1.2.1 (2026-10-20).** v1.2.0 failed in CI's e2e-full and deployed nothing;
 v1.2.1 is live. Fixed on the way: resampling-inference's shuffle scene tweened under reduced
