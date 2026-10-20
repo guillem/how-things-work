@@ -5508,6 +5508,15 @@
 				/>
 			{/each}
 		{/each}
+	{:else if slug === 'shadows-and-pinholes'}
+		<!-- a lamp, straight lines of light past a toy, and its bigger shadow on the wall -->
+		<circle cx="34" cy="60" r="7" fill={accent} />
+		{#each [24, 36, 48, 72, 84, 96] as y (y)}
+			<line x1="34" y1="60" x2="168" y2={y} stroke={accent} stroke-width="1" opacity="0.5" />
+		{/each}
+		<rect x="80" y="50" width="8" height="20" rx="2" fill="currentColor" opacity="0.75" />
+		<rect x="168" y="14" width="10" height="92" fill={accent} opacity="0.25" />
+		<rect x="168" y="38" width="10" height="44" fill="currentColor" opacity="0.7" />
 	{:else}
 		<circle cx="100" cy="60" r="30" fill="none" stroke={accent} stroke-width="2" />
 		<circle cx="100" cy="60" r="5" fill={accent} />

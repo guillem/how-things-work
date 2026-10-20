@@ -5054,3 +5054,21 @@ kbd {
 	--life-die: #ff6b6b;
 	--life-born: #2b8a3e;
 }
+
+/* shadows-and-pinholes: lamp light and rays, the lit wall, the shadow, the toy */
+:root {
+	--sh-light: #f59f00;
+	--sh-ray: rgba(245, 159, 0, 0.55);
+	--sh-wall: #fff3bf;
+	--sh-dark: #495057;
+	--sh-toy: #1c7ed6;
+	--sh-flame: #e8590c;
+}
+:root[data-theme='dark'] {
+	--sh-light: #ffd43b;
+	--sh-ray: rgba(255, 212, 59, 0.5);
+	--sh-wall: #5c4a12;
+	--sh-dark: #111214;
+	--sh-toy: #4dabf7;
+	--sh-flame: #ff922b;
+}
