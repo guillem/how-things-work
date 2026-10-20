@@ -15,15 +15,15 @@ test('meadow: with no hurrying the fireflies stay out of step', async ({ page })
 });
 
 test('together: after a minute the whole field flashes as one', async ({ page }) => {
-	await open(page, './fireflies-in-sync/#together', 'each flash seen: 6% of a turn');
+	await open(page, './fireflies-in-sync/#together', 'hurrying: 5 out of 10');
 	await expect(stage(page)).toContainText('100%');
 });
 
 test('nudge: the hurrying control decides whether they fall into step', async ({ page }) => {
-	await open(page, './fireflies-in-sync/#nudge', 'each flash seen: 3% of a turn');
+	await open(page, './fireflies-in-sync/#nudge', 'hurrying: 1 out of 10');
 	await expect(stage(page)).not.toContainText('100%');
-	await page.locator('input[type=range][data-control=nudge]').fill('0.06');
-	await expect(stage(page)).toContainText('each flash seen: 6% of a turn');
+	await page.locator('input[type=range][data-control=nudge]').fill('0.01');
+	await expect(stage(page)).toContainText('hurrying: 5 out of 10');
 	await expect(stage(page)).toContainText('100%');
 });
 
@@ -31,4 +31,13 @@ test('scramble: a scrambled patch is out of step', async ({ page }) => {
 	await open(page, './fireflies-in-sync/#scramble', '100%');
 	await page.getByRole('button', { name: 'Scramble a patch' }).click();
 	await expect(stage(page)).not.toContainText('100%');
+});
+
+test('scramble starts from a meadow already in step, also after moving between steps', async ({
+	page
+}) => {
+	await open(page, './fireflies-in-sync/#together', '100%');
+	await page.getByRole('button', { name: 'Next step' }).click();
+	await expect(page).toHaveURL(/#scramble$/);
+	await expect(stage(page)).toContainText('100%');
 });

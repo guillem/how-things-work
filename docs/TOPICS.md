@@ -173,7 +173,7 @@ A topic is done when:
 - [x] lac-operon
 - [x] population-genetics
 - [x] turing-patterns
-- [ ] fireflies-in-sync
+- [x] fireflies-in-sync
 
 **Body & Medicine**
 - [x] heart-circulation

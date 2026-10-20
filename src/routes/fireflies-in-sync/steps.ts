@@ -3,12 +3,12 @@ import type { Control, ExplainerSpec } from '#lib/explainer/index.ts';
 const nudge: Control = {
 	type: 'range',
 	id: 'nudge',
-	label: 'How much a flash hurries a neighbour’s clock',
+	label: 'How hard a flash hurries a neighbour’s clock',
 	min: 0,
-	max: 0.1,
-	step: 0.005,
-	default: 0.03,
-	format: (v) => (v === 0 ? 'not at all' : `${Math.round(v * 100)}% of a full turn`)
+	max: 0.02,
+	step: 0.002,
+	default: 0.002,
+	format: (v) => (v === 0 ? 'not at all' : `${Math.round(v * 500)} out of 10`)
 };
 
 const again: Control = {
@@ -53,7 +53,7 @@ export const spec: ExplainerSpec = {
 			hints: { phase: 'meadow', nudge: 0 },
 			duration: 16,
 			body: `
-<p>It is a warm night and the meadow is full of fireflies. Each one flashes about once a second. But they flash whenever they like, so the meadow just twinkles: a flash here, a flash there, never all at once.</p>
+<p>It is a warm night and the meadow is full of fireflies. In this model, each one flashes about once a second. But they flash whenever they like, so the meadow just twinkles: a flash here, a flash there, never all at once.</p>
 <p>The bar at the bottom shows how much in step the fireflies are. Right now, hardly at all.</p>`
 		},
 		{
@@ -64,7 +64,7 @@ export const spec: ExplainerSpec = {
 			hints: { phase: 'clock', nudge: 0 },
 			duration: 18,
 			body: `
-<p>Think of each firefly as carrying a little clock with one hand. The hand goes round once in about a second. When it reaches twelve, the firefly flashes, and the hand starts round again.</p>
+<p>Think of each firefly as carrying a little clock with one hand. Here, the hand goes round once in about a second. When it reaches twelve, the firefly flashes, and the hand starts round again.</p>
 <p>The ringed firefly’s clock is shown on the right. Every firefly’s clock runs at almost the same speed, but they all started at different times, so their flashes stay scattered.</p>`
 		},
 		// ------------------------------------------------------------------ together
@@ -77,7 +77,7 @@ export const spec: ExplainerSpec = {
 			duration: 24,
 			controls: [nudge],
 			body: `
-<p>Now add one rule. When a firefly sees a neighbour flash, its own clock jumps forward a little, as if hurrying to catch up. If that takes its hand past twelve, it flashes straight away.</p>
+<p>Now add one rule. When a firefly sees a neighbour flash, its own clock jumps forward a little, as if hurrying to catch up, and a clock that is nearly due jumps further than one that has only just flashed. If the jump takes its hand past twelve, it flashes straight away.</p>
 <p>Turn the hurrying up a little. Small patches of fireflies start flashing together, then the patches grow and flashes sweep across the meadow in waves. Turn it up more and the whole meadow pulls together.</p>`
 		},
 		{
@@ -85,31 +85,31 @@ export const spec: ExplainerSpec = {
 			chapter: 'together',
 			title: 'The whole field as one',
 			scene: 'meadow',
-			hints: { phase: 'together', nudge: 0.06 },
+			hints: { phase: 'together', nudge: 0.01 },
 			duration: 26,
 			controls: [again],
 			body: `
-<p>With each flash hurrying the neighbours’ clocks by 6% of a turn, all 160 fireflies flash together in about twenty seconds. The bar fills up: they are in step.</p>
-<p>Why does it work? A firefly whose clock is a little behind gets hurried by the flashes around it, and catches up. One that flashes early has nobody to hurry it, so the others catch up with it. Little by little, everybody ends up on the same beat. Start the meadow again: the same thing happens every time.</p>`
+<p>With the hurrying at 5 out of 10, all 160 fireflies flash together in about half a minute. The bar fills up: they are in step.</p>
+<p>Why does it work? When a group flashes, the clocks that were nearly due get pushed right up to twelve and flash with it, and from then on they keep the same time. Each flash gathers a few more fireflies into a group, and the groups merge, until there is only one. Start the meadow again: the same thing happens every time.</p>`
 		},
 		{
 			id: 'scramble',
 			chapter: 'together',
 			title: 'Mix them up',
 			scene: 'meadow',
-			hints: { phase: 'scramble', nudge: 0.06 },
+			hints: { phase: 'scramble', nudge: 0.01 },
 			duration: 22,
 			controls: [shake],
 			body: `
 <p>Drag across the meadow, or press the button, to scramble the clocks of a patch of fireflies. For a moment that patch flashes out of time with the rest.</p>
-<p>But not for long. Their neighbours’ flashes hurry them, a little each time, and within about fifteen seconds they are back in step with the whole field.</p>`
+<p>But not for long. Their neighbours’ flashes hurry them, a little each time, until they are back in step with the whole field. Watch how long it takes.</p>`
 		},
 		{
 			id: 'noleader',
 			chapter: 'together',
 			title: 'No leader',
 			scene: 'meadow',
-			hints: { phase: 'noleader', nudge: 0.06 },
+			hints: { phase: 'noleader', nudge: 0.01 },
 			duration: 20,
 			controls: [other],
 			body: `
@@ -121,21 +121,21 @@ export const spec: ExplainerSpec = {
 			chapter: 'together',
 			title: 'Real fireflies',
 			scene: 'meadow',
-			hints: { phase: 'real', nudge: 0.06 },
+			hints: { phase: 'real', nudge: 0.01 },
 			duration: 18,
 			body: `
 <p>This really happens, but only in some kinds of firefly. In the mangrove swamps of Southeast Asia, whole trees of fireflies flash together night after night. In the Great Smoky Mountains of the United States, one species flashes in bursts together for a couple of weeks each summer, and people come from far away to watch.</p>
-<p>Real fireflies are more complicated than these little clocks, and each species has its own flash pattern. But the idea is the same: no conductor, just neighbours nudging each other into step.</p>`
+<p>These clocks are a simplified model. Real fireflies can hurry or delay their next flash, some also change their clock’s speed, and each species has its own flash pattern. The shared idea is that they adjust their timing in response to other fireflies.</p>`
 		},
 		{
 			id: 'next',
 			chapter: 'together',
 			title: 'Read next',
 			scene: 'meadow',
-			hints: { phase: 'next', nudge: 0.06 },
+			hints: { phase: 'next', nudge: 0.01 },
 			duration: 14,
 			body: `
-<p>Thousands of fireflies flash together with no conductor, because each one nudges its own clock a little towards every flash it sees.</p>
+<p>Thousands of fireflies can flash together without a conductor, by adjusting their timing in response to the flashes around them.</p>
 <p>A firefly’s clock is a kind of oscillator: something that repeats by itself. The page on <a href="../oscillations-resonance/">oscillations and resonance</a> looks at swings, springs and what happens when you push one in time with its own beat.</p>`
 		}
 	]

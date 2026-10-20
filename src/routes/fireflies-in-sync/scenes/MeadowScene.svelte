@@ -9,12 +9,22 @@
 	import { untrack } from 'svelte';
 	import { Label } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
-	import { DT, FIELD_H, FIELD_W, inStep, scramble, swarm, tick, type Swarm } from '../model';
+	import {
+		advance,
+		FIELD_H,
+		FIELD_W,
+		inStep,
+		run,
+		scramble,
+		scrambleSpot,
+		swarm,
+		type Swarm
+	} from '../model';
 
 	let { step, t, params, reduced }: StageProps = $props();
 
 	const phase = $derived(String(step.hints?.phase ?? 'meadow'));
-	const nudge = $derived(Number(step.hints?.nudge ?? params.nudge ?? 0.03));
+	const nudge = $derived(Number(step.hints?.nudge ?? params.nudge ?? 0.002));
 	const showClock = $derived(phase === 'clock' || phase === 'noleader');
 	const followed = $derived(phase === 'noleader' ? (Number(params.other ?? 0) * 37) % 160 : 0);
 
@@ -23,17 +33,23 @@
 	let simT = 0;
 	let t0 = 0;
 	let frame = $state(0);
-	// Restart on a new step or "Start the meadow again".
-	// With reduced motion, also on a change of the hurrying (the frozen frame is a fresh minute).
+	/** Bumped on every restart, so the advancing effect runs again (needed for reduced motion). */
+	let resets = $state(0);
+	// Restart on a new step or "Start the meadow again" (with reduced motion, also on a change of
+	// the hurrying, since the frozen frame is a fresh minute). The scrambling step starts from a
+	// meadow that has already fallen into step.
 	$effect(() => {
 		void step.id;
 		void params.again;
 		if (reduced) void nudge;
 		untrack(() => {
 			s = swarm();
+			if (phase === 'scramble') run(s, nudge, 60);
+			s.time = 0;
+			s.last.fill(-9);
 			simT = 0;
 			t0 = t;
-			frame++;
+			resets++;
 		});
 	});
 	// A scramble from the button: a patch of 120 around a spot that moves with each press.
@@ -41,20 +57,21 @@
 		const n = Number(params.shake ?? 0);
 		if (!n) return;
 		untrack(() => {
-			scramble(s, 150 + ((n * 263) % 600), 80 + ((n * 151) % 300), 120, n);
+			const spot = scrambleSpot(n);
+			scramble(s, spot.x, spot.y, 120, n);
 			frame++;
 		});
 	});
 	$effect(() => {
+		void resets;
 		const target = reduced ? 60 : Math.max(0, t - t0);
 		const k = nudge;
 		untrack(() => {
-			// Catch up, but never more than ten seconds of simulation in one frame.
-			let steps = 0;
-			while (simT + DT <= target && (reduced || steps < 600)) {
-				tick(s, k);
-				simT += DT;
-				steps++;
+			// Catch up, at most ten seconds at a time (all at once for reduced motion's frozen frame).
+			const step = Math.min(target - simT, reduced ? Infinity : 10);
+			if (step > 0) {
+				advance(s, k, step);
+				simT += step;
 			}
 			frame++;
 		});
@@ -64,7 +81,7 @@
 		return Array.from(s.phase, (p, i) => ({
 			x: s.x[i],
 			y: s.y[i],
-			glow: Math.max(0, 1 - s.since[i] / 0.25),
+			glow: Math.max(0, 1 - (s.time - s.last[i]) / 0.25),
 			p
 		}));
 	});
@@ -187,14 +204,14 @@
 		label="Hurry"
 		value={nudge === 0
 			? 'none: each firefly keeps its own time'
-			: `${Math.round(nudge * 100)}% of a turn per flash seen`}
+			: `hurrying ${Math.round(nudge * 500)} out of 10`}
 	>
 		<Label
 			x={FX + 560}
 			y={FY + FIELD_H + 34}
 			text={nudge === 0
 				? 'no hurrying: each keeps its own time'
-				: `each flash seen: ${Math.round(nudge * 100)}% of a turn`}
+				: `hurrying: ${Math.round(nudge * 500)} out of 10`}
 			anchor="start"
 			size={13}
 			muted
