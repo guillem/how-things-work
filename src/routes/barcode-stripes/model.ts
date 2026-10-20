@@ -137,3 +137,39 @@ export function smudge(modules: string, k: number): string {
 	r[k + 1][1] -= 1;
 	return r.map(([dark, w]) => (dark ? '1' : '0').repeat(w)).join('');
 }
+
+/**
+ * A misprint: in the given digit group (0-11), one bar printed one column to the side, if that
+ * turns the group into another valid digit. Returns the new modules and the digit it now reads,
+ * or null when no such move exists. (A single smudged edge never does this: the codes are chosen
+ * so that one shifted edge never makes another digit, so smudges are caught by the patterns
+ * alone; a whole bar out of place can make another digit, and only the check digit catches it.)
+ */
+export function misprint(
+	modules: string,
+	group: number
+): { modules: string; reads: number } | null {
+	const at = group < 6 ? 3 + 7 * group : 50 + 7 * (group - 6);
+	const codes = group < 6 ? L_CODES : R_CODES;
+	const code = modules.slice(at, at + 7);
+	const dark = group < 6 ? '1' : '0';
+	for (let i = 0; i < 7; i++) {
+		if (code[i] !== dark || (i > 0 && code[i - 1] === dark)) continue;
+		let j = i;
+		while (j < 7 && code[j] === dark) j++;
+		// The bar covers columns i..j-1; move it one column left or right.
+		for (const d of [-1, 1]) {
+			const lo = i + d;
+			const hi = j + d;
+			if (lo < 0 || hi > 7) continue;
+			const cells = [...code].map((c) => (c === dark ? (dark === '1' ? '0' : '1') : c));
+			for (let k = 0; k < 7; k++) if (code[k] === dark && (k < i || k >= j)) cells[k] = dark;
+			for (let k = lo; k < hi; k++) cells[k] = dark;
+			const moved = cells.join('');
+			const reads = codes.indexOf(moved);
+			if (reads >= 0 && moved !== code)
+				return { modules: modules.slice(0, at) + moved + modules.slice(at + 7), reads };
+		}
+	}
+	return null;
+}

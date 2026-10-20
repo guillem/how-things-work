@@ -5088,3 +5088,21 @@ kbd {
 	--ff-flash: #f4fc8a;
 	--ff-meter: #94d82d;
 }
+
+/* barcode-stripes: the bars, the scanner's red line, highlights, the good and bad lights */
+:root {
+	--bc-bar: #1c1b19;
+	--bc-paper: #ffffff;
+	--bc-laser: #e03131;
+	--bc-mark: #1c7ed6;
+	--bc-ok: #2f9e44;
+	--bc-bad: #e03131;
+}
+:root[data-theme='dark'] {
+	--bc-bar: #111214;
+	--bc-paper: #f1f3f5;
+	--bc-laser: #ff6b6b;
+	--bc-mark: #4dabf7;
+	--bc-ok: #51cf66;
+	--bc-bad: #ff6b6b;
+}

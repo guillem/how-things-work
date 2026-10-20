@@ -5,6 +5,7 @@ import {
 	encode,
 	isValid,
 	L_CODES,
+	misprint,
 	R_CODES,
 	read,
 	runs,
@@ -68,4 +69,33 @@ test('a smudged stripe is caught: either no digit matches, or the check digit fa
 	}
 	expect(tried).toBeGreaterThan(20);
 	expect(caught).toBe(tried);
+});
+
+test('a bar printed one column out of place can make another valid digit; only the check digit catches it', () => {
+	const m = encode(CODE);
+	// The fourth digit, a 0 (widths 3, 2, 1, 1), with its first bar one column to the left
+	// becomes widths 2, 2, 2, 1: a perfectly good 1.
+	const bad = misprint(m, 3)!;
+	expect(bad.reads).toBe(1);
+	const r = read(sweep(bad.modules));
+	expect(r.digits).toEqual([0, 3, 6, 1, 0, 0, 2, 9, 1, 4, 5, 2]);
+	expect(r.valid).toBe(false);
+	expect(r.problem).toBe('the check digit does not match');
+});
+
+test('moving any single edge of a digit never makes another valid digit', () => {
+	for (const codes of [L_CODES, R_CODES])
+		codes.forEach((code, d) => {
+			const r = runs(code);
+			for (let b = 0; b < r.length - 1; b++)
+				for (const delta of [1, -1]) {
+					const rr = r.map(([dark, w]) => [dark, w] as [boolean, number]);
+					rr[b][1] += delta;
+					rr[b + 1][1] -= delta;
+					if (rr[b][1] < 1 || rr[b + 1][1] < 1) continue;
+					const moved = rr.map(([dark, w]) => (dark ? '1' : '0').repeat(w)).join('');
+					const other = codes.indexOf(moved);
+					expect(other === -1 || other === d).toBe(true);
+				}
+		});
 });

@@ -5524,6 +5524,13 @@
 			<circle cx={x} cy={y} r="7" fill={accent} opacity="0.3" />
 			<circle cx={x} cy={y} r="2.6" fill={accent} />
 		{/each}
+	{:else if slug === 'barcode-stripes'}
+		<!-- a barcode and the scanner's red line across it -->
+		<rect x="34" y="20" width="132" height="80" rx="4" fill="#ffffff" opacity="0.9" />
+		{#each [[42, 2], [46, 2], [52, 4], [60, 2], [66, 6], [76, 2], [82, 4], [90, 2], [96, 2], [100, 2], [106, 6], [116, 2], [122, 4], [130, 2], [136, 6], [146, 2], [152, 2], [156, 2]] as [x, w], i (i)}
+			<rect {x} y="28" width={w} height="56" fill="#1c1b19" />
+		{/each}
+		<line x1="24" y1="56" x2="176" y2="56" stroke={accent} stroke-width="2" />
 	{:else}
 		<circle cx="100" cy="60" r="30" fill="none" stroke={accent} stroke-width="2" />
 		<circle cx="100" cy="60" r="5" fill={accent} />
