@@ -1,6 +1,6 @@
 # Topic catalog
 
-Source of truth for the content of an interactive web learning tool that shows how things work. It defines 156 topics in 11 categories, each built around one interactive graphic. Readers range from high-school students to university majors.
+Source of truth for the content of an interactive web learning tool that shows how things work. It defines 157 topics in 11 categories, each built around one interactive graphic. Readers range from high-school students to university majors.
 
 This file covers content only. It does not choose the stack, the visual design or the project layout; take those from the repository's own instructions.
 
@@ -99,7 +99,7 @@ A topic is done when:
 | Computing | `computing` | 13 |
 | Information & Networks | `networks` | 14 |
 | Artificial Intelligence | `ai` | 20 |
-| Energy & Machines | `energy` | 10 |
+| Energy & Machines | `energy` | 11 |
 
 ## Checklist
 
@@ -280,6 +280,7 @@ A topic is done when:
 - [x] bridges-structures
 - [x] feedback-control
 - [x] wind-turbine-aerodynamics
+- [ ] abs-brakes
 
 ## Topics
 
@@ -1804,6 +1805,16 @@ A topic is done when:
 - **Related:** power-grid
 - **Needs:** Lift and drag polars of wind-turbine airfoils: the NREL 5-MW reference turbine's AeroData tables (DU and NACA64 sections) as distributed in the OpenFAST r-test repository (github.com/OpenFAST/r-test, Apache-2.0), with blade chord and twist from the same reference turbine; NACA airfoil data (public domain) as a fallback.
 - **Pitfall:** The Betz limit is not a design shortcoming of today's turbines; it applies to any device that takes energy from a free stream, so a rotor near 50 percent is close to perfect.
+
+#### abs-brakes
+- **Title:** ABS & the tire's grip
+- **Level:** 3
+- **Kind:** simulate
+- **Interaction:** Brake a car from highway speed on dry asphalt, wet asphalt or snow: each wheel's spin follows its own equation of motion, and the tire's braking force follows a measured friction-against-slip curve whose peak sits near ten to twenty percent slip on dry asphalt and at smaller slip on snow, falling away as the wheel locks; the stopping distance is marked on the road. Brake too hard with ABS off and the wheel locks, the car slides further and no longer answers the steering; switch ABS on and watch the controller cycle the brake pressure to keep each wheel near the peak.
+- **Takeaway:** A tire grips best while still turning slightly slower than the road passes under it, a locked wheel brakes less and cannot steer, and ABS holds each wheel in that narrow band by releasing and reapplying the brake many times a second.
+- **Prerequisites:** newtons-laws, feedback-control
+- **Needs:** Tire friction-slip curves from the Burckhardt model, mu = c1(1 - e^(-c2 s)) - c3 s, with its published coefficient sets for dry asphalt, wet asphalt and snow (reproduced openly, e.g. arXiv:2211.10336); an icy surface only if a cited coefficient set is found.
+- **Pitfall:** ABS does not usually shorten the stop on dry road by much; its main job is to keep steering, and on loose gravel or snow a locked wheel can even stop shorter by building a wedge.
 
 ## Reserve
 
