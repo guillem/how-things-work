@@ -5456,6 +5456,13 @@
 			stroke-linejoin="round"
 		/>
 		<circle cx="172" cy="22" r="3" fill={accent} />
+	{:else if slug === 'cellular-automata'}
+		<!-- rule 90 from one live cell: a Sierpinski triangle, one row per generation -->
+		<path
+			d="M98 28h4v4h-4z M94 32h4v4h-4z M102 32h4v4h-4z M90 36h4v4h-4z M106 36h4v4h-4z M86 40h4v4h-4z M94 40h4v4h-4z M102 40h4v4h-4z M110 40h4v4h-4z M82 44h4v4h-4z M114 44h4v4h-4z M78 48h4v4h-4z M86 48h4v4h-4z M110 48h4v4h-4z M118 48h4v4h-4z M74 52h4v4h-4z M90 52h4v4h-4z M106 52h4v4h-4z M122 52h4v4h-4z M70 56h4v4h-4z M78 56h4v4h-4z M86 56h4v4h-4z M94 56h4v4h-4z M102 56h4v4h-4z M110 56h4v4h-4z M118 56h4v4h-4z M126 56h4v4h-4z M66 60h4v4h-4z M130 60h4v4h-4z M62 64h4v4h-4z M70 64h4v4h-4z M126 64h4v4h-4z M134 64h4v4h-4z M58 68h4v4h-4z M74 68h4v4h-4z M122 68h4v4h-4z M138 68h4v4h-4z M54 72h4v4h-4z M62 72h4v4h-4z M70 72h4v4h-4z M78 72h4v4h-4z M118 72h4v4h-4z M126 72h4v4h-4z M134 72h4v4h-4z M142 72h4v4h-4z M50 76h4v4h-4z M82 76h4v4h-4z M114 76h4v4h-4z M146 76h4v4h-4z M46 80h4v4h-4z M54 80h4v4h-4z M78 80h4v4h-4z M86 80h4v4h-4z M110 80h4v4h-4z M118 80h4v4h-4z M142 80h4v4h-4z M150 80h4v4h-4z M42 84h4v4h-4z M58 84h4v4h-4z M74 84h4v4h-4z M90 84h4v4h-4z M106 84h4v4h-4z M122 84h4v4h-4z M138 84h4v4h-4z M154 84h4v4h-4z"
+			fill={accent}
+		/>
+		<line x1="34" y1="94" x2="166" y2="94" stroke="currentColor" stroke-width="1" opacity="0.4" />
 	{:else}
 		<circle cx="100" cy="60" r="30" fill="none" stroke={accent} stroke-width="2" />
 		<circle cx="100" cy="60" r="5" fill={accent} />

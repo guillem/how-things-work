@@ -464,7 +464,7 @@ A topic is done when:
 - **Title:** Cellular automata
 - **Level:** 1
 - **Kind:** simulate
-- **Interaction:** Set the eight bits of a one-dimensional rule by clicking its lookup table, and run it from a single live cell or a random row, each generation drawn as a new line below the last. Rule 90 draws a Sierpinski triangle, rule 30 looks random, rule 110 carries colliding structures, and rule 184 moves cars along a road that jams once more than half the cells are full. Step through all 256 rules and sort them into Wolfram's four classes (die out, repeat, look random, build structures), with a count of live cells over time to compare rules.
+- **Interaction:** Set the eight bits of a one-dimensional rule by clicking its lookup table, and run it from a single live cell or a random row, each generation drawn as a new line below the last. Rule 90 draws a Sierpinski triangle, rule 30 looks random, rule 110 carries colliding structures, and rule 184 moves cars along a road that jams once more than half the cells are full. Step through all 256 rules, sorted by what each does to the same random ring (dies out, repeats, keeps changing) and set against Wolfram's four classes (die out, repeat, look random, build structures), with a count of live cells over time to compare rules.
 - **Takeaway:** A rule that only looks at a cell and its two neighbours, applied everywhere at once, can die out, repeat, look random or build moving structures, and changing one bit of the rule can switch between them.
 - **Prerequisites:** life-on-a-grid
 - **Related:** chaos-fractals, turing-machines, logic-gates

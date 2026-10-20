@@ -5022,3 +5022,19 @@ kbd {
 	--hp-work: #9775fa;
 	--hp-valve: #51cf66;
 }
+
+/* cellular-automata: live cells, the three behaviours of the rule survey, the cars of rule 184 */
+:root {
+	--ca-live: #1c1b19;
+	--ca-uniform: #adb5bd;
+	--ca-repeats: #4dabf7;
+	--ca-changing: #e8590c;
+	--ca-car: #1971c2;
+}
+:root[data-theme='dark'] {
+	--ca-live: #e9ecef;
+	--ca-uniform: #5c636a;
+	--ca-repeats: #1c7ed6;
+	--ca-changing: #ff922b;
+	--ca-car: #4dabf7;
+}

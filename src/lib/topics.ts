@@ -1473,6 +1473,15 @@ const explainers: Explainer[] = [
 		accent: '#e03131',
 		steps: 8,
 		minutes: 20
+	},
+	{
+		slug: 'cellular-automata',
+		title: 'Cellular automata',
+		summary:
+			'Write a rule as an eight-bit table, apply it to a row of cells all at once, and stack the generations: a Sierpinski triangle, a pattern that looks random but isn’t, and structures that collide. Then survey all 256 rules, and watch one of them run a traffic jam.',
+		accent: '#e8590c',
+		steps: 7,
+		minutes: 15
 	}
 ];
 
