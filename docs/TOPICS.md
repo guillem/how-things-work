@@ -1,6 +1,6 @@
 # Topic catalog
 
-Source of truth for the content of an interactive web learning tool that shows how things work. It defines 165 topics in 11 categories, each built around one interactive graphic. Readers range from high-school students to university majors.
+Source of truth for the content of an interactive web learning tool that shows how things work. It defines 166 topics in 11 categories, each built around one interactive graphic. Readers range from high-school students to university majors.
 
 This file covers content only. It does not choose the stack, the visual design or the project layout; take those from the repository's own instructions.
 
@@ -89,7 +89,7 @@ A topic is done when:
 
 | Category | Id | Topics |
 |---|---|---|
-| Mathematics | `math` | 19 |
+| Mathematics | `math` | 20 |
 | Physics | `physics` | 14 |
 | Chemistry & Materials | `chemistry` | 14 |
 | Biology | `biology` | 17 |
@@ -123,6 +123,7 @@ A topic is done when:
 - [x] phase-portraits
 - [x] resampling-inference
 - [x] cellular-automata
+- [ ] why-triangles-are-stiff
 
 **Physics**
 - [x] newtons-laws
@@ -472,6 +473,15 @@ A topic is done when:
 - **Prerequisites:** life-on-a-grid
 - **Related:** chaos-fractals, turing-machines, logic-gates
 - **Pitfall:** Rule 30 looks random but is completely determined: the same starting row always gives the same pattern. And most rules do not make complexity; they die out or repeat, and only a few, like rule 110, build lasting structures.
+
+#### why-triangles-are-stiff
+- **Title:** Why triangles are stiff
+- **Level:** 0
+- **Kind:** build
+- **Interaction:** Snap sticks together at their ends with pins to make a square, then push on a corner: it leans over into a diamond. Make a triangle and push: nothing moves. Add one diagonal stick to the square and push again; then build a tall tower and a garden gate and find the fewest sticks that stop them wobbling.
+- **Takeaway:** A triangle is the one shape whose sides fix its corners, so a floppy frame goes stiff the moment a diagonal cuts it into triangles.
+- **Prerequisites:** none
+- **Pitfall:** Stiff is not strong: the page is about shapes holding their angles, not about how much load a stick can carry; do not colour sticks by force or claim triangles 'spread the load'.
 
 ### Physics
 
