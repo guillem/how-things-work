@@ -1,6 +1,6 @@
 # Topic catalog
 
-Source of truth for the content of an interactive web learning tool that shows how things work. It defines 166 topics in 11 categories, each built around one interactive graphic. Readers range from high-school students to university majors.
+Source of truth for the content of an interactive web learning tool that shows how things work. It defines 187 topics in 11 categories, each built around one interactive graphic. Readers range from high-school students to university majors.
 
 This file covers content only. It does not choose the stack, the visual design or the project layout; take those from the repository's own instructions.
 
@@ -93,13 +93,13 @@ A topic is done when:
 | Physics | `physics` | 14 |
 | Chemistry & Materials | `chemistry` | 14 |
 | Biology | `biology` | 17 |
-| Body & Medicine | `medicine` | 14 |
-| Earth & Climate | `earth` | 13 |
-| Space | `space` | 11 |
-| Computing | `computing` | 14 |
-| Information & Networks | `networks` | 15 |
-| Artificial Intelligence | `ai` | 20 |
-| Energy & Machines | `energy` | 14 |
+| Body & Medicine | `medicine` | 18 |
+| Earth & Climate | `earth` | 16 |
+| Space | `space` | 13 |
+| Computing | `computing` | 16 |
+| Information & Networks | `networks` | 17 |
+| Artificial Intelligence | `ai` | 23 |
+| Energy & Machines | `energy` | 19 |
 
 ## Checklist
 
@@ -191,6 +191,10 @@ A topic is done when:
 - [x] cochlea-hearing
 - [x] mri-k-space
 - [x] ecg-arrhythmias
+- [ ] hearing-and-the-ear
+- [ ] muscles-pull-in-pairs
+- [ ] why-spinning-makes-you-dizzy
+- [ ] why-you-get-sleepy
 
 **Earth & Climate**
 - [x] plate-tectonics
@@ -206,6 +210,9 @@ A topic is done when:
 - [x] tsunamis
 - [x] carbonate-silicate-thermostat
 - [x] radiative-convective-column
+- [ ] cloud-base
+- [ ] forest-fire-spread
+- [ ] sea-breeze
 
 **Space**
 - [x] sun-earth-moon
@@ -219,6 +226,8 @@ A topic is done when:
 - [x] exoplanets
 - [x] lagrange-points-three-body
 - [x] aperture-synthesis
+- [ ] comet-tails
+- [ ] earth-is-a-ball
 
 **Computing**
 - [x] binary
@@ -235,6 +244,8 @@ A topic is done when:
 - [x] cache-memory-hierarchy
 - [x] hash-tables-bloom-filters
 - [x] life-on-a-grid
+- [ ] secret-codes
+- [ ] twenty-questions
 
 **Information & Networks**
 - [x] compression
@@ -252,6 +263,8 @@ A topic is done when:
 - [x] kalman-filter
 - [x] radar-sonar
 - [ ] barcode-stripes
+- [ ] qr-codes
+- [ ] wifi-and-walls
 
 **Artificial Intelligence**
 - [x] learning-from-data
@@ -274,6 +287,9 @@ A topic is done when:
 - [x] speculative-decoding
 - [x] chain-of-thought-scratchpad
 - [x] k-means-clustering
+- [ ] next-word-guessing-game
+- [ ] spam-filter-word-counts
+- [ ] teach-a-machine
 
 **Energy & Machines**
 - [x] heat-engines
@@ -290,6 +306,11 @@ A topic is done when:
 - [x] bicycle-stability
 - [x] gas-turbines-combined-cycle
 - [x] heat-pumps-refrigeration
+- [ ] clock-escapement
+- [ ] drone-four-rotors
+- [ ] hydraulics-digger-arm
+- [ ] light-bulb-hot-wire
+- [ ] toilet-flush
 
 ## Topics
 
@@ -492,7 +513,7 @@ A topic is done when:
 - **Interaction:** Launch a projectile with adjustable speed, angle and air resistance; push and collide carts of different mass; send a cart along an editable track while bars show kinetic, potential and dissipated energy.
 - **Takeaway:** Forces change motion rather than sustain it, and energy and momentum are conserved as they change form or pass between objects.
 - **Prerequisites:** none
-- **Related:** calculus
+- **Related:** calculus, why-spinning-makes-you-dizzy
 
 #### oscillations-resonance
 - **Title:** Oscillations & resonance
@@ -501,7 +522,7 @@ A topic is done when:
 - **Interaction:** Set the mass, stiffness and damping of a spring, or the length of a pendulum, and watch it oscillate. Add a periodic push with adjustable frequency and plot the resulting amplitude against that frequency.
 - **Takeaway:** Every oscillator has a natural frequency, and pushing it at that frequency makes the motion build up.
 - **Prerequisites:** newtons-laws
-- **Related:** phase-portraits
+- **Related:** phase-portraits, why-spinning-makes-you-dizzy
 
 #### waves-interference
 - **Title:** Waves, sound & interference
@@ -935,7 +956,7 @@ A topic is done when:
 - **Interaction:** Give a virtual person a meal or send them for a run and plot blood glucose, insulin and glucagon over the following hours. Reduce insulin production or the body's sensitivity to it to model the two main types of diabetes, then try dosing insulin by hand.
 - **Takeaway:** The body holds its internal conditions steady with negative feedback loops, and many diseases are a broken loop.
 - **Prerequisites:** none
-- **Related:** heart-circulation, feedback-control, bacterial-chemotaxis, pharmacokinetics-dosing
+- **Related:** heart-circulation, feedback-control, bacterial-chemotaxis, pharmacokinetics-dosing, why-you-get-sleepy
 
 #### neurons
 - **Title:** Neurons & the brain
@@ -953,7 +974,7 @@ A topic is done when:
 - **Interaction:** Change the shape of the eye's lens to focus near and far objects on the retina, and add glasses to correct a blurred eye. Mix red, green and blue light to match a target color while the responses of the three cone types are shown; try classic illusions.
 - **Takeaway:** The eye forms an image like a camera, but color is constructed by the brain from the signals of just three kinds of sensor.
 - **Prerequisites:** light-optics
-- **Related:** convolution-vision, cochlea-hearing
+- **Related:** convolution-vision, cochlea-hearing, hearing-and-the-ear
 - **Needs:** Measured sensitivity curves for the three cone types.
 
 #### immune-system
@@ -971,7 +992,7 @@ A topic is done when:
 - **Interaction:** Set how many people each case infects, how long a case stays infectious and what share of people are vaccinated. Watch the infection spread through a moving crowd and plot the susceptible, infected and recovered counts over time.
 - **Takeaway:** An outbreak grows exponentially while each case infects more than one other person, and it dies out once enough people are immune.
 - **Prerequisites:** none
-- **Related:** ecosystems, mrna-vaccines, exponentials-logarithms, differential-equations, random-graphs, pcr-copying-dna
+- **Related:** ecosystems, mrna-vaccines, exponentials-logarithms, differential-equations, random-graphs, pcr-copying-dna, forest-fire-spread
 
 #### mrna-vaccines
 - **Title:** Vaccines & mRNA
@@ -1029,7 +1050,7 @@ A topic is done when:
 - **Interaction:** Play a tone, a chord or a synthesized vowel into a cochlea modelled as a chain of coupled resonators whose stiffness falls along the basilar membrane, and watch the travelling wave peak at a place that depends on frequency. Drag the frequency and the peak moves; switch on the outer hair cells' amplification and the peak sharpens; kill the outer hair cells at the place tuned near 4 kHz, as loud noise does, and the audiogram develops the classic notch. Then replace the cochlea with a cochlear implant: split the sound into a few bands, drive one electrode per band, and hear the result.
 - **Takeaway:** The cochlea sorts sound by frequency along its length, so pitch is a place, and a cochlear implant works by stimulating those places with a handful of electrodes.
 - **Prerequisites:** waves-interference, fourier-transform, neurons
-- **Related:** vision-color, compression
+- **Related:** vision-color, compression, hearing-and-the-ear
 - **Needs:** Speech for the implant demonstration: synthesized vowels (source–filter synthesis on published formant frequencies); the cochlear model itself is a standard one-dimensional transmission-line model, with its damping, amplifier saturation and input calibration fitted to published measurements.
 - **Pitfall:** Noise damage does not simply turn the volume down: the lost hair cells remove the amplification, so soft sounds vanish while loud ones still hurt.
 
@@ -1052,6 +1073,46 @@ A topic is done when:
 - **Prerequisites:** heart-circulation, neurons
 - **Needs:** Annotated ECG records from the MIT-BIH Arrhythmia Database on PhysioNet (Open Data Commons Attribution License v1.0).
 - **Pitfall:** A defibrillator does not restart a stopped heart: it stops a chaotic rhythm so the natural pacemaker can take over, and a flat line is not a shockable rhythm. And not every arrhythmia is re-entry: a heart can also beat too slowly when conduction is blocked.
+
+#### hearing-and-the-ear
+- **Title:** How your ear hears
+- **Level:** 0
+- **Kind:** manipulate
+- **Interaction:** Slide a tone from low to high and watch it shake the big eardrum, which passes the shake through three tiny bones onto a much smaller window into the fluid of the snail-shaped cochlea, concentrating the push; a ripple then runs along the cochlea's ribbon until it peaks at one spot. Each pitch peaks somewhere else, high notes near the entrance and low notes at the far end. Play two notes at once and see two bumps; turn the loudness up and the bumps grow.
+- **Takeaway:** The ear sorts sounds by pitch before the brain hears them: each note makes a different place along the spiral wiggle.
+- **Prerequisites:** none
+- **Related:** cochlea-hearing, vision-color, why-spinning-makes-you-dizzy
+- **Pitfall:** The cochlea is not a microphone with one signal: it is thousands of sensors each listening at its own spot. Loud is not the same as high: loudness mainly grows the bump, pitch moves it. And the little bones are not the main amplifier: most of the boost comes from a big eardrum pushing on a tiny window.
+
+#### muscles-pull-in-pairs
+- **Title:** Muscles pull in pairs
+- **Level:** 0
+- **Kind:** manipulate
+- **Interaction:** Drag the hand of a cutaway arm: bending the elbow, the biceps shortens and bulges; straightening it against a push, such as pressing down on a table or pushing up from a chair, the triceps shortens instead, and tugging either muscle alone shows it can only pull, never push. Hang a bag of shopping from the hand and watch the biceps pull many times the bag's weight, because it grips the forearm so close to the elbow; lower the bag slowly and the biceps is still the one pulling, getting longer as it lets the bag down.
+- **Takeaway:** A muscle can only pull, so every joint needs a pair that take turns, and the one that grips near the elbow must pull far harder than the weight in your hand.
+- **Prerequisites:** none
+- **Related:** bridges-structures
+- **Pitfall:** Muscles never push; the opposite movement is another muscle pulling, or gravity. Lowering a bag slowly is the biceps braking while it lengthens, not the triceps pushing it down. And a bigger muscle does not change the lever: it still pulls from the same place.
+
+#### why-spinning-makes-you-dizzy
+- **Title:** Why spinning makes you dizzy
+- **Level:** 0
+- **Kind:** manipulate
+- **Interaction:** Spin a head on a chair with a slider and watch the fluid in the ear's three rings lag behind, bending the little flap that tells the brain turning; keep spinning at a steady speed and the fluid catches up, so the feeling fades. Stop suddenly and the fluid keeps going, the flap bends the other way, and the brain reports turning in the opposite direction while the room stands still: that is dizzy.
+- **Takeaway:** Your ears sense turning with a ring of fluid, and when you stop spinning the fluid keeps going, so you feel you are turning the other way.
+- **Prerequisites:** none
+- **Related:** hearing-and-the-ear, oscillations-resonance, newtons-laws
+- **Pitfall:** Dizziness after spinning is not blood sloshing or the brain being overwhelmed by speed: the sensor is faithfully reporting a real movement of fluid that is no longer the head's movement.
+
+#### why-you-get-sleepy
+- **Title:** Why you get sleepy
+- **Level:** 0
+- **Kind:** simulate
+- **Interaction:** Set a bedtime and a wake-up time and run three days: a sleep-pressure tank fills while you are awake and drains while you sleep, and a body clock sets the hours when sleep comes easily; sleepiness is the gap between them. Skip a night and watch the tank overflow; nap in the afternoon and see tonight's sleep come later. A strip under the plot sketches the night's usual rounds of light and deep sleep, about ninety minutes each.
+- **Takeaway:** Sleepiness is a pressure that builds all day and drains at night, gated by a clock that opens a window for it; when the two disagree you lie awake tired or nod off at noon.
+- **Prerequisites:** none
+- **Related:** homeostasis
+- **Pitfall:** The page explains when you get sleepy, not why animals sleep at all, which is still an open question. And the body clock is not fixed: late mornings and evening screen light push it later, which is why a weekend of lie-ins makes Monday feel like jet lag (the toy keeps the clock fixed, and says so).
 
 ### Earth & Climate
 
@@ -1187,6 +1248,36 @@ A topic is done when:
 - **Related:** carbonate-silicate-thermostat
 - **Pitfall:** Greenhouse gases do not trap heat like a lid or reflect infrared; the column warms because the effective emission level rises into colder air. A band that is saturated at the surface still warms the planet, because emission from higher, thinner layers is what matters. Stratospheric cooling is not automatic for any absorber: in a perfectly grey atmosphere with no solar heating aloft the stratosphere does not cool (its top stays at the skin temperature, its lower layers warm slightly), and it cools here because part of the infrared escapes through the window.
 
+#### cloud-base
+- **Title:** Why clouds form, and why their bottoms are flat
+- **Level:** 0
+- **Kind:** manipulate
+- **Interaction:** Drag a bubble of air up from the warm ground: it swells and its thermometer drops about one degree for every hundred metres, until the invisible water it carries turns to droplets and the bubble turns white. Every bubble released from the same ground turns white at the same height, so the clouds have flat bottoms; make the day more humid and the cloud base drops, dry the air and clouds form higher or not at all. A last step blows the bubble over a mountain: it cools as it is pushed up the slope, rains on the side facing the wind, and comes down the far side drier and warmer than it started.
+- **Takeaway:** Rising air swells and cools, and a cloud appears at exactly the height where the air gets cold enough for its water to turn into droplets, which is why the bottoms of clouds are flat.
+- **Prerequisites:** none
+- **Related:** sea-breeze
+- **Pitfall:** It is not colder up a mountain because it is farther from the Sun: a few kilometres make no difference to sunlight; the air up there is cold because air that rises expands and cools. Clouds are not made of vapour: they are tiny droplets, each heavier than air, that stay up because they fall more slowly than the rising air beneath them.
+
+#### forest-fire-spread
+- **Title:** How a wildfire crosses a forest, or stops
+- **Level:** 0
+- **Kind:** simulate
+- **Interaction:** A square forest of trees on a grid; light the left edge and watch the fire pass from each burning tree to its neighbours, leaving ash. One control: how densely the trees are planted. At half density the fire burns a few trees and dies, at two-thirds it nearly always crosses the forest, and around six in ten it is a coin toss, with a tally of how far the fire got over many runs; then cut a firebreak and find the width that stops it, or add wind so the fire jumps one extra tree downwind.
+- **Takeaway:** In a big forest, a fire's chance of crossing does not grow gradually with how many trees there are: it flips from almost never to almost always over a narrow band of density, so removing a few trees or cutting a gap can stop a fire that would otherwise get through.
+- **Prerequisites:** none
+- **Related:** epidemics
+- **Pitfall:** The tipping density (about 59% for four neighbours on a square grid) belongs to the grid and the rule, not to forests; real fires also depend on wind, slope, moisture and fuel, which the page says it leaves out.
+
+#### sea-breeze
+- **Title:** Where wind comes from: the sea breeze
+- **Level:** 0
+- **Kind:** simulate
+- **Interaction:** A coast in cross-section, land on one side and sea on the other, filled with air drawn as drifting particles. Drag the Sun across the sky: by afternoon the land is warmer than the sea, the air over it rises, and air from the sea slides in underneath as a breeze that a flag on the beach shows. At night the land cools faster than the water and the breeze turns around and blows out to sea.
+- **Takeaway:** Uneven heating is enough to make a wind: by day air slides in from over the cooler sea to replace the warm air rising over the land, and at night the land cools below the sea and the breeze turns around.
+- **Prerequisites:** none
+- **Related:** cloud-base
+- **Pitfall:** Warm air does not rise because heat goes up: it rises because it is lighter than the cooler air around it, which pushes it up. And not every wind is a sea breeze: big weather systems are steered by Earth's spin, which this page leaves out.
+
 ### Space
 
 #### sun-earth-moon
@@ -1295,6 +1386,25 @@ A topic is done when:
 - **Related:** medical-imaging, black-holes, gravitational-waves
 - **Needs:** No external data required: model skies (point sources, a disc, a jet) are generated in code and the model is a 2D FFT plus Hogbom CLEAN. Optional real array layouts (VLA Y with 120-degree arms; ALMA configurations from the CASA simulator's antenna-configuration files, CASA being open source under the GPL), or the coordinates published in open-access papers.
 - **Pitfall:** An interferometer does not gain the collecting area of a filled dish, only its resolution, and the dirty image is not a photograph of the sky but of what was sampled.
+
+#### comet-tails
+- **Title:** Comets and their tails
+- **Level:** 0
+- **Kind:** explore
+- **Interaction:** Scrub a comet along its real stretched orbit, far out and frozen, then swinging in close to the Sun. As it warms, gas and dust stream off it, and the tail always points away from the Sun, whichever way the comet is going, so on the way out the comet flies tail-first. Two tails appear: a straight blue gas tail pushed by the solar wind and a curved dust tail of grains that lag along the orbit; zoom in to see the grains leave.
+- **Takeaway:** A comet's tails are pushed out by the Sun, not left behind by its motion, so the gas tail always points straight away from the Sun and the comet leaves tail-first, while the dust tail bends back along the path it has travelled.
+- **Prerequisites:** none
+- **Needs:** Orbital elements of comet 1P/Halley (perihelion distance, eccentricity, period) from the JPL Small-Body Database: a few published numbers, typed into the model and free to reuse with the credit 'Courtesy NASA/JPL-Caltech' under JPL's open data policy.
+- **Pitfall:** The tail does not trail behind like exhaust, and a comet is not a burning rock: it is ice and dust turning to gas in sunlight.
+
+#### earth-is-a-ball
+- **Title:** Earth is a ball
+- **Level:** 0
+- **Kind:** manipulate
+- **Interaction:** Drag a ship out to sea and watch it from the shore. On a flat world it only shrinks, and binoculars bring all of it back. On the round world its hull sinks out of sight before its sails as the sea bulges up between you and it (the curve drawn exaggerated, the distances real). Binoculars cannot bring the hull back, but climbing a cliff can. Then walk a little figure around the globe: wherever it stands its feet point to the middle, and a dropped ball falls toward the middle too, so nobody on the far side falls off.
+- **Takeaway:** The world is a ball, so the sea itself hides the bottom of a distant ship, and 'down' means toward the middle wherever you stand.
+- **Prerequisites:** none
+- **Pitfall:** People on the far side are not upside down and do not have to hold on: the page draws no fixed up arrow anywhere. The ship does not vanish because it got too small, and magnifying it does not bring the hull back. The bulge is drawn much bigger than it really is, and air bends light a little so you see slightly farther than the plain geometry says; the page does not claim exact distances.
 
 ### Computing
 
@@ -1426,6 +1536,28 @@ A topic is done when:
 - **Takeaway:** A rule about counting neighbours, applied to every square at once, makes things that blink, walk and grow that nobody drew.
 - **Prerequisites:** none
 - **Pitfall:** All squares update together from the previous picture, not one after another; a page that updates in place gets wrong patterns. And do not call Life 'random': the same seed gives the same future every time.
+
+#### secret-codes
+- **Title:** Secret codes & code-breaking
+- **Level:** 0
+- **Kind:** step
+- **Interaction:** Turn the inner ring of a code wheel and type a message: each letter steps along the alphabet by the same amount, and your friend turns the ring back to read it. A spy who does not know the turn tries all 25 turns at once and the one that reads as words jumps out. Scramble the alphabet instead; now the spy counts the letters in the secret message and lines its bars up with the bars of ordinary English: the tallest few give E, T and A, half-words like TH_ appear, and the reader swaps the remaining letters until the message reads.
+- **Takeaway:** A code that shifts every letter the same way falls to trying all 25 shifts, and a code that scrambles the alphabet falls to counting letters, because in a long message E stays the most common letter however it is disguised.
+- **Prerequisites:** none
+- **Related:** twenty-questions
+- **Needs:** English letter frequencies counted at build time by a script from a public-domain text, e.g. Project Gutenberg's Alice's Adventures in Wonderland (public domain), not typed in from memory.
+- **Pitfall:** A short message has too few letters for counting to work: show the counting fail on a one-line note and succeed on a paragraph, rather than pretending frequency analysis always works.
+
+#### twenty-questions
+- **Title:** Twenty questions: halving the haystack
+- **Level:** 0
+- **Kind:** step
+- **Interaction:** Think of a number from 1 to 100 and answer the page's 'higher or lower' questions: a bar of candidates shrinks by half each answer and the counter stops at seven. Now find a word in a thousand-page dictionary by opening it in the middle, then in the middle of the right half, counting the opens, against a search that flips through every page. Then play animal twenty questions: each yes/no question hides half of the hundred animals on the board until one is left.
+- **Takeaway:** A question that splits what is left in half finds the answer in a handful of steps, where checking one at a time takes hundreds.
+- **Prerequisites:** none
+- **Related:** secret-codes
+- **Needs:** The animal board: the UCI Zoo dataset (101 animals, 16 yes/no and count features), CC BY 4.0.
+- **Pitfall:** Halving needs either a list in order (the dictionary trick fails on a shuffled pile of pages) or a question that really splits what is left: show 'is it a penguin?' barely shrinking the board, and do not claim every yes/no question halves the pile.
 
 ### Information & Networks
 
@@ -1570,7 +1702,29 @@ A topic is done when:
 - **Interaction:** Drag a scanner's red line across a barcode (a UPC-A, the 12-digit form found on many products) and watch what it sees, a trace of dark and light over time, then step through it: a start mark, six groups of stripes, a middle mark, six more and an end mark, each group of two bars and two gaps one digit. Scan slowly, fast or at a slant and the widths all stretch together, so the digits come out the same; scan it upside down and the scanner tells, from the left groups looking different from the right ones, which way to read. Smudge one stripe and the group matches no digit at all; print one bar a column out of place and the group reads as another digit, which the last digit, a check digit, catches: the light turns red, scan again.
 - **Takeaway:** A barcode is a number written as stripe widths, read as proportions so that speed and angle do not matter, with a last digit that catches a misread; the price is looked up afterwards.
 - **Prerequisites:** none
+- **Related:** qr-codes
 - **Pitfall:** The barcode does not contain the price or the product name; it is a number the till looks up. The scanner reads ratios of widths, not absolute sizes, which is why the code can be printed at any size.
+
+#### qr-codes
+- **Title:** QR codes
+- **Level:** 0
+- **Kind:** build
+- **Interaction:** Type a short message and watch it become a square of black and white cells, built the real way: the three big corner squares that tell a camera where the code is and which way up, then the message as cells, then spare cells computed from the message. Point a drawn camera at it from any angle and it reads. Now paint over cells with a brush: the message still comes out, and a counter shows how many cells are damaged; keep painting and find the moment it fails, then paint over a corner square instead, which fails at once.
+- **Takeaway:** A QR code carries its message plus spare cells computed from it, so a scratched or half-covered code still reads, until too much of the message is spoiled or a corner finder is hidden.
+- **Prerequisites:** none
+- **Related:** barcode-stripes
+- **Needs:** None to ship; the page runs a real encoder and decoder (open-source implementations of the QR standard exist under MIT and Apache 2.0, e.g. qrcode-generator and jsQR).
+- **Pitfall:** The three corner squares hold no message; they are for finding and orienting. The code is not read in a spiral or line by line, and the spare cells are not a copy of the message, so do not say the data is duplicated. The survivable damage (about 7 to 30 percent depending on the level chosen) is counted in damaged bytes, not cells or area: a scatter of specks can break a code that a single blot of the same size does not, so the cell counter is a guide, not a fixed limit.
+
+#### wifi-and-walls
+- **Title:** Wi-Fi around the house
+- **Level:** 0
+- **Kind:** build
+- **Interaction:** Place a router on a floor plan and the rooms fill with a signal map; drag the laptop around and its speed gauge follows the colour. Add walls, a brick one, a fridge, a fish tank, and watch each cut a shadow in the map and the gauge drop, as the link slows down to be heard through the loss. Switch the router to the faster, shorter-reach band and compare; then add a neighbour's router on the same channel and watch the two take turns.
+- **Takeaway:** Wi-Fi is radio: walls and water eat it, the link slows down rather than breaking as the signal fades, and two networks on one channel must take turns.
+- **Prerequisites:** none
+- **Needs:** Attenuation per wall material at 2.4 and 5 GHz: NIST IR 6055, 'Electromagnetic Signal Attenuation in Construction Materials' (W. C. Stone, NIST, 1997; brick, concrete, drywall, glass, plywood, wet wood), for a multi-wall path-loss model; water (fish tank, people) from the same report's wet-material results or textbook absorption values.
+- **Pitfall:** Wi-Fi is not the internet; a full signal to the router says nothing about the line out of the house. The signal does not stop at an edge: it fades gradually, and the devices then choose a slower, sturdier way of sending so that it can still be read, which is why the gauge drops step by step instead of cutting out. Walls are not perfect shadows either; reflections leak signal around them, which this simple wall-counting model leaves out.
 
 ### Artificial Intelligence
 
@@ -1639,7 +1793,7 @@ A topic is done when:
 - **Interaction:** Type any text to see it split into tokens; for a set of example prompts, view a real small model's probability for each candidate next token as a bar chart (precomputed). Pick tokens one at a time while adjusting temperature and top-p, and compare several sampled continuations of the same prompt.
 - **Takeaway:** A language model does one thing, predict the next token, and fluent text, answers and code emerge from doing that repeatedly with a very large network trained on a very large amount of text.
 - **Prerequisites:** embeddings, neural-networks
-- **Related:** transformers, ngram-text-models, scaling-laws
+- **Related:** transformers, ngram-text-models, scaling-laws, next-word-guessing-game
 - **Needs:** A small language model that runs in the browser, or precomputed next-token probabilities.
 
 #### diffusion-models
@@ -1667,7 +1821,7 @@ A topic is done when:
 - **Interaction:** Feed a text into a counting machine that records which letter (or word) follows each run of the previous n, then let it write by sampling from those counts. Slide n from 1 to 10 and watch the samples go from gibberish to word-like to Shakespeare-like, while two meters track what goes wrong: the share of contexts in held-out text that were never seen climbs toward all of them, and the longest stretch copied verbatim from the source grows until the model only recites.
 - **Takeaway:** Counting what followed the last few symbols gives more fluent text as the window grows, but the number of possible contexts explodes so fast that long windows are almost never seen, and the model can only copy; a model that reaches far back has to generalise instead of count.
 - **Prerequisites:** learning-from-data
-- **Related:** language-models, compression, tokenization
+- **Related:** language-models, compression, tokenization, next-word-guessing-game
 - **Needs:** About 1 MB of Shakespeare's plays (the 'Tiny Shakespeare' extract popularised by Karpathy's char-rnn, or the same plays taken from Project Gutenberg) and the reader's own text.
 - **Pitfall:** Unseen contexts are not a problem solved by more data alone: the count of possible contexts grows exponentially with n. Smoothing and back-off fix the zero counts but not the lack of long-range structure.
 
@@ -1777,6 +1931,39 @@ A topic is done when:
 - **Needs:** The Palmer penguins measurements (344 penguins, three species).
 - **Pitfall:** k-means does not discover the number of groups and finds only compact, roughly round blobs of similar size; different starts give different answers, so run it several times. The groups it finds need not match the species.
 
+#### next-word-guessing-game
+- **Title:** How a chatbot picks its next word
+- **Level:** 0
+- **Kind:** manipulate
+- **Interaction:** Play a guessing game against a tiny machine that has read a few children's books: a story stops mid-sentence, you guess the next word, and the machine shows its own guess as a row of word cards, each with a count of how often that word came next in everything it read. Then let it write on its own: each word is drawn by chance like a spinner whose slices are as big as the counts, so it usually picks a common word but sometimes an odd one, and the word it picked becomes the start of the next guess. Press the one button, 'read more books', and watch the cards fill up and its stories get better.
+- **Takeaway:** A chatbot writes by guessing one word at a time from what usually came next in the text it learned from, adding each guess to the story before making the next, so it picks likely words, not true ones.
+- **Prerequisites:** none
+- **Related:** ngram-text-models, language-models
+- **Needs:** A few public-domain children's books (Beatrix Potter, Aesop's fables) from Project Gutenberg, counted in the page.
+- **Pitfall:** Do not say real chatbots only count word pairs: say this toy looks back one or two words, while a real chatbot uses a neural network that looks back over thousands. And it does not look answers up in a stored copy of the books.
+
+#### spam-filter-word-counts
+- **Title:** How a spam filter decides
+- **Level:** 0
+- **Kind:** build
+- **Interaction:** A pile of real text messages arrives, each already marked spam or not; pick any word, 'free', 'win', 'tonight', 'mum', and see two counts, how many spam messages contain it and how many ordinary ones. Build the filter by letting it count every word, then write a message of your own and watch the words vote: each nudges the score toward spam or not according to its two counts. Try to sneak past with 'fr33' and watch the vote change; mark your message and see the counts update.
+- **Takeaway:** This kind of spam filter has no idea what a message means: it counts which words turned up more in past spam than in ordinary messages, which is why spammers misspell and why your 'report spam' clicks teach it.
+- **Prerequisites:** none
+- **Related:** teach-a-machine
+- **Needs:** The SMS Spam Collection (Almeida, Gómez Hidalgo and Silva, UCI Machine Learning Repository, 5,574 messages), reduced to a hand-checked subset of a few hundred messages with adult or crude spam removed, since the audience is children.
+- **Pitfall:** No word is bad: 'free' is only commoner in spam. The filter can be fooled both ways, and how much spam exists overall matters, so a rare kind of message needs stronger evidence; keep that as counts, not Bayes' formula. Do not say this is how every modern mail filter works: real ones also look at the sender, the links and use neural networks.
+
+#### teach-a-machine
+- **Title:** Teach a machine to tell things apart
+- **Level:** 0
+- **Kind:** build
+- **Interaction:** Draw a few cats and a few houses (or pull examples from a pile of other people's doodles), label them, and draw a new one: the machine shrinks every drawing to a small grid of squares, finds the stored drawings most like the new one square by square, and the labels of those neighbours vote. Watch it get the first guesses wrong, add more examples and watch the votes firm up. Then teach it a trap: every cat drawn in the top corner, every house at the bottom, and see it decide by position instead of shape.
+- **Takeaway:** A machine learns to sort things by comparing new examples with the ones it was shown, so more and more varied examples make it better, and a lazy pattern in the examples teaches it the wrong thing.
+- **Prerequisites:** none
+- **Related:** spam-filter-word-counts
+- **Needs:** Optional: a hand-checked subset of doodles (a few hundred per class) from the Quick, Draw! dataset (Google, CC BY 4.0) as a ready pile of examples; the reader's own drawings need nothing.
+- **Pitfall:** The machine does not know what a cat is; it compares squares. Do not call the neighbour vote a neural network; neural-networks comes later. If the wolves-in-snow story is told, tell it accurately: researchers (Ribeiro et al., 2016) built that trap on purpose, picking photos where every wolf had snow behind it, to show how a model can learn the background; it was not an accident discovered in a real product.
+
 ### Energy & Machines
 
 #### heat-engines
@@ -1841,6 +2028,7 @@ A topic is done when:
 - **Interaction:** Place a wing section in a stream of air and change its angle, its shape and the airspeed. Streamlines, a pressure map and force arrows show lift and drag growing with the angle until the flow separates and the wing stalls; then balance lift, weight, thrust and drag to hold level flight.
 - **Takeaway:** A wing generates lift by turning the passing air downward, which appears as lower pressure above the wing than below it.
 - **Prerequisites:** newtons-laws
+- **Related:** drone-four-rotors
 - **Pitfall:** Do not use the "equal transit time" explanation, in which air over the top must catch up with air below; it is false.
 
 #### bridges-structures
@@ -1850,7 +2038,7 @@ A topic is done when:
 - **Interaction:** Build a bridge from beams, cables and supports across a gap, then drive a load over it. Each member is colored by tension or compression and by how close it is to failure; compare beam, truss, arch and suspension designs for the same span and material budget.
 - **Takeaway:** A structure stands by carrying loads to the ground through tension and compression, and its shape matters more than the amount of material.
 - **Prerequisites:** newtons-laws
-- **Related:** dislocations-alloys
+- **Related:** dislocations-alloys, muscles-pull-in-pairs
 
 #### feedback-control
 - **Title:** Feedback control & robots
@@ -1859,7 +2047,7 @@ A topic is done when:
 - **Interaction:** Tune the three gains of a PID controller to balance an inverted pendulum, hold a drone at a set height or keep a car at a set speed over hills, with the response plotted against the target. Add delay, sensor noise and gusts, then chain joints into a robot arm that reaches for a point.
 - **Takeaway:** A machine stays on target by measuring its error and correcting in proportion to it; too little correction is sluggish and too much makes it oscillate.
 - **Prerequisites:** oscillations-resonance
-- **Related:** homeostasis, reinforcement-learning, bacterial-chemotaxis, differential-equations, phase-portraits, bicycle-stability
+- **Related:** homeostasis, reinforcement-learning, bacterial-chemotaxis, differential-equations, phase-portraits, bicycle-stability, drone-four-rotors, toilet-flush
 
 #### wind-turbine-aerodynamics
 - **Title:** Wind turbines & the Betz limit
@@ -1915,6 +2103,54 @@ A topic is done when:
 - **Related:** gas-turbines-combined-cycle
 - **Needs:** Saturation and superheated-vapor properties of R-134a, R-290 and R-744, tabulated for the browser: from the NIST Chemistry WebBook (as for heat-engines; CoolProp, MIT licence, would serve equally).
 - **Pitfall:** A COP of 4 is not '400 percent efficiency' and breaks no law: most of the heat delivered is moved from outside, not made from the electricity, and the second law still caps the COP at the Carnot value for the lift.
+
+#### clock-escapement
+- **Title:** Pendulum clocks & the escapement
+- **Level:** 0
+- **Kind:** simulate
+- **Interaction:** Hang a weight on a cord that turns a toothed wheel and watch the wheel spin away in a blur; add the anchor that rocks with a pendulum, and the wheel can now advance only one tooth per swing, with a tick each time a tooth is caught and a tiny push back to the pendulum to keep it going. Lengthen or shorten the pendulum, or hang a heavier weight, and count ticks against a reference second hand to see which change alters the rate.
+- **Takeaway:** The weight drives the clock and the pendulum only meters it out, one tooth per swing, so the length of the pendulum sets the time and a heavier weight hardly changes the rate.
+- **Prerequisites:** none
+- **Pitfall:** The pendulum does not power the clock, and a bigger swing does not tick faster: for small swings the length alone sets the period.
+
+#### drone-four-rotors
+- **Title:** How a drone steers with four rotors
+- **Level:** 0
+- **Kind:** build
+- **Interaction:** Each step gives one control, and the drone shows its four rotors with a push arrow and a speed bar on each. Raise the throttle and all four speed up together so the drone rises; push the forward control and watch the back pair speed up, the drone tip and slide forward; push the sideways control and the left pair speeds up so it tips and slides right. Then the turn control speeds up the two rotors that spin clockwise and slows the other two: the lift stays the same but the drone turns on the spot, and if all four spin the same way the body spins helplessly the opposite way. A last step hands over the four rotor speeds directly.
+- **Takeaway:** A drone has no flaps or rudder: it climbs, tilts and turns only by spinning its four rotors at slightly different speeds, two one way and two the other.
+- **Prerequisites:** none
+- **Related:** flight, feedback-control
+- **Pitfall:** The rotors do not all spin the same way: the pairs spin opposite ways so their twists cancel, and turning on the spot uses that twist. It is the tilt that moves the drone sideways, not a sideways push from a rotor.
+
+#### hydraulics-digger-arm
+- **Title:** Diggers and hydraulics: a small push becomes a huge one
+- **Level:** 0
+- **Kind:** manipulate
+- **Interaction:** Push a small piston and watch oil shove a much bigger piston at the digger's arm: the big one moves with many times the force but only a fraction of the distance, and a counter shows the two trade places exactly. Change the piston sizes and lift a car, then a boulder; let an air bubble into the pipe and the arm goes spongy. Drive the three cylinders of a digger's boom, arm and bucket to scoop and dump.
+- **Takeaway:** A trapped liquid passes on the same push on every bit of surface it touches, so a piston with ten times the area gets ten times the push, paid for by moving only a tenth as far.
+- **Prerequisites:** none
+- **Pitfall:** Hydraulics make no energy: the work in equals the work out, and the small piston simply travels much farther. The liquid does not pass on the same total force; it passes on the same push per bit of area, which is why the bigger piston gets more. A liquid barely squashes, which is the whole point; a spongy brake pedal is air in the line.
+
+#### light-bulb-hot-wire
+- **Title:** Why a light bulb glows (and gets hot)
+- **Level:** 0
+- **Kind:** manipulate
+- **Interaction:** Slide a dimmer and watch the thin wire inside an old-style bulb go from dark to dull red to orange to white as it heats, while a bar splits what the bulb takes into light you can see and heat. At full brightness the heat bar is dozens of times the light bar, and most of that heat leaves as invisible infrared you feel on your hand. Swap in an LED bulb giving the same light: the electricity it needs, and so its heat bar, shrinks to about a tenth, though the LED still makes more heat than light and warms its base instead of glowing in infrared.
+- **Takeaway:** An old bulb makes light by heating a wire until it glows white and wastes nearly all its electricity as heat, while an LED makes the same light from about a tenth of the electricity, so far less heat.
+- **Prerequisites:** none
+- **Needs:** The CIE 1931 colour-matching functions and the photopic V(lambda) curve, to turn the filament's temperature into an on-screen colour and a light-versus-heat split (CIE open-access datasets, CC BY-SA 4.0, cie.co.at/data-tables; also at cvrl.org). Tungsten's resistivity and emissivity against temperature from Jones & Langmuir (1927, General Electric Review), quoted as numbers, or a grey-body emissivity of about 0.4 documented as an approximation. The LED's efficiency is a documented typical value (white LED bulbs at about 90 to 100 lm/W, against about 15 lm/W for incandescent).
+- **Pitfall:** The wire does not burn: there is no oxygen inside the bulb, which is why a tungsten filament lasts about a thousand hours. Brightness does not rise in step with the dimmer: a little more current makes the wire much hotter, much brighter and whiter. And an LED is not cold: it still turns over half its electricity into heat, only much less electricity overall.
+
+#### toilet-flush
+- **Title:** Toilet flush & siphons
+- **Level:** 0
+- **Kind:** simulate
+- **Interaction:** Press the lever: the flapper lifts, the tank pours into the bowl and the bowl's water climbs toward the top of the bend behind it. The moment it spills over fast enough, the whole bend fills and the bowl drains itself, fast, until air gets in and it gurgles to a stop. Then pour a bucket in slowly or quickly to find what starts the siphon, swap in a wide-bend washdown bowl that never siphons and only pushes the extra water over the top, and watch the float rise with the refilling tank and shut its own valve.
+- **Takeaway:** In a siphonic toilet the tank only has to fill the bend behind the bowl; once it is full, the water running down the long side drains the bowl by itself until air gets in and breaks the siphon.
+- **Prerequisites:** none
+- **Related:** feedback-control
+- **Pitfall:** The flush is not suction, and not every toilet siphons. In a siphonic toilet, gravity pulls the water down the long side of the bend while the air pressing on the bowl pushes more water in behind it. A slow pour never fills the bend and just trickles over the top, so the bowl stays full. Washdown toilets, the usual kind in much of Europe, never siphon: the tank's rush pushes the water over the weir.
 
 ## Reserve
 
