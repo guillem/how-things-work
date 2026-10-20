@@ -4,7 +4,7 @@ The self-handover. If work is interrupted, this file alone must be enough to con
 top to bottom, then run the commands under "Resume". **Update it at every commit**, not just at
 the end of a development.
 
-Last updated: 2026-10-20 16:00 UTC, 55 of the proposal's topics built; v1.1.2 live (154 topics); `main` has the post-v1 fact-check round (verified, TP-1 scene fixed), Paths v1 (with its visual pass) and radar-sonar, unreleased.
+Last updated: 2026-10-20 18:00 UTC, 55 of the proposal's topics built; **v1.2.1 live** (155 topics, Paths v1, the verified post-v1 fact-check round). Next: to be discussed with the user (level 0 groundwork, or the remaining level 1–3 topics).
 
 ## How we work
 
@@ -35,8 +35,9 @@ Last updated: 2026-10-20 16:00 UTC, 55 of the proposal's topics built; v1.1.2 li
 
 ## Current state
 
-- **All 100 catalogue topics are built, fact-checked and ticked** (done 2026-10-15). **v1.1.2**
-  (2026-10-19) is live: 154 topics, the 100 plus 54 of the proposal's. Before it, v1.0.0
+- **All 100 catalogue topics are built, fact-checked and ticked** (done 2026-10-15). **v1.2.1**
+  (2026-10-20) is live: 155 topics, the 100 plus 55 of the proposal's, and Paths v1 (one
+  reading path, language models). Before it, v1.1.2 (2026-10-19): 154 topics. Before it, v1.0.0
   (2026-10-17): the 100 topics plus the index search and filters (a sticky
   sidebar on wide screens), faster browser tests and the overnight backlog round described below.
   Earlier: v0.1.21 (2026-10-15) the housekeeping, stage-text fix and public polish; v0.1.19 the
@@ -89,7 +90,7 @@ promoted into `TOPICS.md` as their builds start (next paragraph).
 time in worktrees, each fact-checked by Codex (`scripts/local-review.mjs`) and pushed to `main`;
 the entry is promoted into `TOPICS.md` when its build starts. Order:
 `proposals/topics-200/data/build-order.json` (the LLM ladder first, then the level 1–3 topics;
-level 0 last, pending the user's answer on its definition). Built so far: 55 of the 100; 54 released in v1.1.2, radar-sonar on `main` unreleased.
+level 0 last, pending the user's answer on its definition). Built so far: 55 of the 100, all released (v1.2.1).
 
 **Resumed 2026-10-18 night on the new machine** (the user's weekly limit is now 98%). Landed
 since: ocean-acidification, tsunamis, carbonate-silicate-thermostat, radiative-convective-column,
@@ -110,6 +111,13 @@ runner-up. So cellular-automata and the 39 level-0 topics are unblocked: first t
 link and a short level-0 section in `docs/scene-guide.md`, then the builds. ocean-acidification
 keeps the Orr et al. 2015 cross-check (no PyCO2SYS fixtures). mri-k-space's and
 aperture-synthesis' data stay Unconfirmed in `DATA-SOURCES.md`.
+
+**Releases v1.2.0–v1.2.1 (2026-10-20).** v1.2.0 failed in CI's e2e-full and deployed nothing;
+v1.2.1 is live. Fixed on the way: resampling-inference's shuffle scene tweened under reduced
+motion (its test caught a transient label); vision-color's forced checkbox click missed while the
+page smooth-scrolled to the step, so the switch input now sits above its track and the suite's
+80 `check({ force: true })` calls lost `force`; central-limit-theorem's drag waits for the scroll
+to hold still. 51 other `boundingBox()` measurements could still race the scroll on CI.
 
 **Releases v1.1.0–v1.1.2 (2026-10-19, the user asked for one around 150 topics).** v1.1.0 and
 v1.1.1 failed in CI and deployed nothing; v1.1.2 is live. What changed on the way:
