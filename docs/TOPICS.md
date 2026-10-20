@@ -1,6 +1,6 @@
 # Topic catalog
 
-Source of truth for the content of an interactive web learning tool that shows how things work. It defines 162 topics in 11 categories, each built around one interactive graphic. Readers range from high-school students to university majors.
+Source of truth for the content of an interactive web learning tool that shows how things work. It defines 163 topics in 11 categories, each built around one interactive graphic. Readers range from high-school students to university majors.
 
 This file covers content only. It does not choose the stack, the visual design or the project layout; take those from the repository's own instructions.
 
@@ -90,7 +90,7 @@ A topic is done when:
 | Category | Id | Topics |
 |---|---|---|
 | Mathematics | `math` | 19 |
-| Physics | `physics` | 13 |
+| Physics | `physics` | 14 |
 | Chemistry & Materials | `chemistry` | 14 |
 | Biology | `biology` | 16 |
 | Body & Medicine | `medicine` | 14 |
@@ -138,6 +138,7 @@ A topic is done when:
 - [x] musical-scales-ratios
 - [x] lasers
 - [x] ising-model
+- [ ] shadows-and-pinholes
 
 **Chemistry & Materials**
 - [x] atoms-periodic-table
@@ -592,6 +593,16 @@ A topic is done when:
 - **Prerequisites:** entropy
 - **Related:** states-of-matter, neural-networks
 - **Pitfall:** A one-dimensional chain has no phase transition at any temperature above zero; show that case so the reader does not believe order is automatic.
+
+#### shadows-and-pinholes
+- **Title:** Shadows & pinholes
+- **Level:** 0
+- **Kind:** manipulate
+- **Interaction:** Drag a lamp, a toy and a wall about a room: straight rays from the lamp are blocked by the toy, and the shadow on the wall grows as the lamp comes closer and shrinks as the wall comes closer. Swap the small bulb for a wide lampshade and the shadow's edge goes soft; switch on a second lamp and a second shadow appears. Poke a pinhole in a shoebox and the picture of the lamp forms upside down on its back wall.
+- **Takeaway:** Light travels in straight lines, so a shadow is simply where the lines are blocked, and its size follows the lines back to the lamp.
+- **Prerequisites:** none
+- **Related:** sun-earth-moon
+- **Pitfall:** A shadow is not something a lamp throws onto a wall; it is where no light arrives. And the Moon's phases are not Earth's shadow (the page should point to sun-earth-moon for eclipses, which are).
 
 ### Chemistry & Materials
 
@@ -1164,7 +1175,7 @@ A topic is done when:
 - **Interaction:** Move the Earth around the Sun with an adjustable axial tilt and see day length and the angle of sunlight at any latitude. Move the Moon around the Earth, on an orbit tilted about 5 degrees to Earth's, to produce its phases; an eclipse happens only when a new or full Moon falls close to the plane of Earth's orbit. Watch the tides follow the Moon, stronger when it lines up with the Sun.
 - **Takeaway:** Seasons, phases, eclipses and tides all come from the geometry of three bodies, one tilted axis and one tilted orbit.
 - **Prerequisites:** none
-- **Related:** orbits-kepler
+- **Related:** orbits-kepler, shadows-and-pinholes
 - **Pitfall:** Seasons are caused by the tilt of Earth's axis, not by its distance from the Sun. Phases are not Earth's shadow on the Moon. Eclipses do not happen every month, because the Moon's orbit is tilted.
 
 #### orbits-kepler

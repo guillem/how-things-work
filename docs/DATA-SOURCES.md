@@ -520,3 +520,9 @@ Downloads log:
 | Topic          | File(s)                          | Source                                                                                                                                                                                                                   | Licence                          | Status                   |
 | -------------- | -------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | -------------------------------- | ------------------------ |
 | life-on-a-grid | none (`life-on-a-grid/model.ts`) | No dataset: Conway's Game of Life (rule B3/S23, M. Gardner, Scientific American 223(4), October 1970) computed on a wrapping grid; the shapes (block, beehive, blinker, toad, glider, R-pentomino) are the standard ones | Facts and the project's own code | **OK.** No external data |
+
+## Added 2026-10-21 (shadows-and-pinholes)
+
+| Topic                | File(s)                                | Source                                                                                                               | Licence                | Status                   |
+| -------------------- | -------------------------------------- | -------------------------------------------------------------------------------------------------------------------- | ---------------------- | ------------------------ |
+| shadows-and-pinholes | none (`shadows-and-pinholes/model.ts`) | No dataset: straight-line (geometric) optics computed from similar triangles; the room's sizes are the project's own | The project's own code | **OK.** No external data |
