@@ -1,6 +1,6 @@
 # Topic catalog
 
-Source of truth for the content of an interactive web learning tool that shows how things work. It defines 160 topics in 11 categories, each built around one interactive graphic. Readers range from high-school students to university majors.
+Source of truth for the content of an interactive web learning tool that shows how things work. It defines 162 topics in 11 categories, each built around one interactive graphic. Readers range from high-school students to university majors.
 
 This file covers content only. It does not choose the stack, the visual design or the project layout; take those from the repository's own instructions.
 
@@ -89,14 +89,14 @@ A topic is done when:
 
 | Category | Id | Topics |
 |---|---|---|
-| Mathematics | `math` | 18 |
+| Mathematics | `math` | 19 |
 | Physics | `physics` | 13 |
 | Chemistry & Materials | `chemistry` | 14 |
 | Biology | `biology` | 16 |
 | Body & Medicine | `medicine` | 14 |
 | Earth & Climate | `earth` | 13 |
 | Space | `space` | 11 |
-| Computing | `computing` | 13 |
+| Computing | `computing` | 14 |
 | Information & Networks | `networks` | 14 |
 | Artificial Intelligence | `ai` | 20 |
 | Energy & Machines | `energy` | 14 |
@@ -122,6 +122,7 @@ A topic is done when:
 - [x] random-graphs
 - [x] phase-portraits
 - [x] resampling-inference
+- [ ] cellular-automata
 
 **Physics**
 - [x] newtons-laws
@@ -230,6 +231,7 @@ A topic is done when:
 - [x] game-tree-search
 - [x] cache-memory-hierarchy
 - [x] hash-tables-bloom-filters
+- [ ] life-on-a-grid
 
 **Information & Networks**
 - [x] compression
@@ -376,7 +378,7 @@ A topic is done when:
 - **Interaction:** Start two double pendulums with almost identical angles and watch their paths separate. Slide the growth rate of the logistic map through its period-doubling cascade, and zoom deep into the Mandelbrot set.
 - **Takeaway:** Simple deterministic rules can produce behavior that is unpredictable in the long run and structure that repeats at every scale.
 - **Prerequisites:** none
-- **Related:** complex-numbers, ecosystems, atmosphere-weather, phase-portraits, turing-patterns, lagrange-points-three-body
+- **Related:** complex-numbers, ecosystems, atmosphere-weather, phase-portraits, turing-patterns, lagrange-points-three-body, cellular-automata
 
 #### taylor-series
 - **Title:** Taylor series & where they stop working
@@ -457,6 +459,16 @@ A topic is done when:
 - **Prerequisites:** central-limit-theorem, bayes-theorem, learning-from-data
 - **Needs:** The Palmer penguins dataset (344 penguins, bill and flipper measurements by species; palmerpenguins, CC0).
 - **Pitfall:** A p-value is not the probability that the null hypothesis is true, and a bootstrap interval is not guaranteed to have its stated coverage: the bootstrap does not cure a small sample. The coverage counter must show the shortfall, not a reassuring 95%.
+
+#### cellular-automata
+- **Title:** Cellular automata
+- **Level:** 1
+- **Kind:** simulate
+- **Interaction:** Set the eight bits of a one-dimensional rule by clicking its lookup table, and run it from a single live cell or a random row, each generation drawn as a new line below the last. Rule 90 draws a Sierpinski triangle, rule 30 looks random, rule 110 carries colliding structures, and rule 184 moves cars along a road that jams once more than half the cells are full. Step through all 256 rules and sort them into Wolfram's four classes (die out, repeat, look random, build structures), with a count of live cells over time to compare rules.
+- **Takeaway:** A rule that only looks at a cell and its two neighbours, applied everywhere at once, can die out, repeat, look random or build moving structures, and changing one bit of the rule can switch between them.
+- **Prerequisites:** life-on-a-grid
+- **Related:** chaos-fractals, turing-machines, logic-gates
+- **Pitfall:** Rule 30 looks random but is completely determined: the same starting row always gives the same pattern. And most rules do not make complexity; they die out or repeat, and only a few, like rule 110, build lasting structures.
 
 ### Physics
 
@@ -1269,6 +1281,7 @@ A topic is done when:
 - **Interaction:** Wire AND, OR, NOT and XOR gates on a canvas, flip the inputs and watch signals propagate, with a truth table generated live. Guided challenges build a half adder, a full adder and a 4-bit adder.
 - **Takeaway:** A few kinds of simple gate, combined, can compute any logical or arithmetic function.
 - **Prerequisites:** binary
+- **Related:** cellular-automata
 
 #### transistors-chipmaking
 - **Title:** Transistors & chipmaking
@@ -1331,7 +1344,7 @@ A topic is done when:
 - **Interaction:** Program a tape-and-head machine with a small rule table and step it through tasks such as adding one or checking a palindrome. Then explore two limits: a walk-through of why no single program can tell, for every program and input, whether it will halt, and a travelling-salesman puzzle whose search space explodes as cities are added.
 - **Takeaway:** A very simple machine can compute anything that is computable, yet some problems cannot be solved by any program and others cannot be solved quickly by any known method.
 - **Prerequisites:** sorting
-- **Related:** cpu, chain-of-thought-scratchpad
+- **Related:** cpu, chain-of-thought-scratchpad, cellular-automata
 
 #### quantum-computing
 - **Title:** Quantum computing
@@ -1372,6 +1385,15 @@ A topic is done when:
 - **Prerequisites:** sorting, binary
 - **Related:** cryptography
 - **Pitfall:** A hash table's constant time is an average under a good hash, not a guarantee; the cryptographic hash of the cryptography page is a different tool; and a Bloom filter can only ever say 'definitely absent', never 'definitely present'.
+
+#### life-on-a-grid
+- **Title:** Life on a grid
+- **Level:** 0
+- **Kind:** simulate
+- **Interaction:** Paint a few squares on a grid and press step: every square counts its live neighbours at once, and the three rules (lonely dies, crowded dies, exactly three neighbours gives birth) show as the counts on each square. Press play and find the shapes that blink, the ones that sit still and the glider that walks across the board. Change one number in a rule and watch the same seed grow, freeze or die.
+- **Takeaway:** A rule about counting neighbours, applied to every square at once, makes things that blink, walk and grow that nobody drew.
+- **Prerequisites:** none
+- **Pitfall:** All squares update together from the previous picture, not one after another; a page that updates in place gets wrong patterns. And do not call Life 'random': the same seed gives the same future every time.
 
 ### Information & Networks
 
@@ -1861,5 +1883,4 @@ Strong candidates that are not in the catalog. Do not build them unless the user
 - DNA sequencing
 - Operating systems
 - Compilers
-- Cellular automata
 - Dimensionality reduction
