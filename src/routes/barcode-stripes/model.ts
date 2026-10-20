@@ -32,11 +32,14 @@ export function checkDigit(first11: readonly number[]) {
 	return (10 - (sum % 10)) % 10;
 }
 
+const isDigit = (d: number) => Number.isInteger(d) && d >= 0 && d <= 9;
+
 export const isValid = (digits: readonly number[]) =>
-	digits.length === 12 && checkDigit(digits.slice(0, 11)) === digits[11];
+	digits.length === 12 && digits.every(isDigit) && checkDigit(digits.slice(0, 11)) === digits[11];
 
 /** The 95 modules of a 12-digit code, as a string of 0s and 1s. */
 export function encode(digits: readonly number[]): string {
+	if (digits.length !== 12 || !digits.every(isDigit)) throw new Error('UPC-A needs 12 digits 0-9');
 	return (
 		START +
 		digits
@@ -82,7 +85,8 @@ export interface Reading {
 }
 
 /**
- * Reads a sweep: the 95 modules span the whole thing, so one module is the total length over 95
+ * Reads an ideal sweep, cut to the barcode itself (from the start mark to the end mark): the 95
+ * modules span the whole thing, so one module is the total length over 95
  * (only proportions matter); each run is rounded to whole modules, the guards are checked, each
  * group of 7 modules is looked up, and the parity of the left groups says which way round it was.
  */
@@ -141,9 +145,10 @@ export function smudge(modules: string, k: number): string {
 /**
  * A misprint: in the given digit group (0-11), one bar printed one column to the side, if that
  * turns the group into another valid digit. Returns the new modules and the digit it now reads,
- * or null when no such move exists. (A single smudged edge never does this: the codes are chosen
- * so that one shifted edge never makes another digit, so smudges are caught by the patterns
- * alone; a whole bar out of place can make another digit, and only the check digit catches it.)
+ * or null when no such move exists. (Moving a single edge by one column never does this: the
+ * codes are chosen so that a one-column edge shift never makes another digit, so such smudges are
+ * caught by the patterns alone; larger smudges, or a whole bar out of place, can make another
+ * digit, and then only the check digit catches it.)
  */
 export function misprint(
 	modules: string,
@@ -152,7 +157,7 @@ export function misprint(
 	const at = group < 6 ? 3 + 7 * group : 50 + 7 * (group - 6);
 	const codes = group < 6 ? L_CODES : R_CODES;
 	const code = modules.slice(at, at + 7);
-	const dark = group < 6 ? '1' : '0';
+	const dark = '1';
 	for (let i = 0; i < 7; i++) {
 		if (code[i] !== dark || (i > 0 && code[i - 1] === dark)) continue;
 		let j = i;
@@ -172,4 +177,15 @@ export function misprint(
 		}
 	}
 	return null;
+}
+
+/**
+ * A slanted sweep: crossing the bars at an angle (degrees from straight across) makes every stripe
+ * last 1 / cos(angle) times longer. Past the angle where the line runs off the top or bottom of
+ * the bars before reaching the far end, the scan misses part of the code (bars `height` tall,
+ * code `width` wide, in the same units).
+ */
+export function slanted(angle: number, width: number, height: number) {
+	const a = (Math.abs(angle) * Math.PI) / 180;
+	return { stretch: 1 / Math.cos(a), crossesAll: Math.tan(a) * width <= height };
 }

@@ -7,7 +7,7 @@
 	 */
 	import { Label } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
-	import { encode, L_CODES, misprint, R_CODES, read, runs, sweep } from '../model';
+	import { encode, L_CODES, misprint, R_CODES, read, runs, slanted, smudge, sweep } from '../model';
 
 	let { step, params }: StageProps = $props();
 
@@ -16,12 +16,24 @@
 	const good = encode(CODE);
 	const bad = misprint(good, 3);
 	const modules = $derived(
-		phase === 'check' && params.misprint === true && bad ? bad.modules : good
+		phase === 'check' && params.misprint === true && bad
+			? bad.modules
+			: phase === 'smudge' && params.smudge === true
+				? smudge(good, 7)
+				: good
 	);
 	const flipped = $derived(phase === 'upside' && params.flip === true);
-	const stretch = $derived(phase === 'speed' ? 1 / Number(params.speed ?? 1) : 1);
+	const tilt = $derived(phase === 'slant' ? Number(params.slant ?? 0) : 0);
+	const path = $derived(slanted(tilt, 95 * 7, 150));
+	const stretch = $derived(
+		phase === 'speed' ? 1 / Number(params.speed ?? 1) : phase === 'slant' ? path.stretch : 1
+	);
 	const recording = $derived(sweep(modules, { stretch, reversed: flipped }));
-	const reading = $derived(read(recording));
+	const reading = $derived(
+		path.crossesAll
+			? read(recording)
+			: { digits: null, reversed: false, valid: false, problem: 'the line ran off the bars' }
+	);
 	const scanTo = $derived(phase === 'scan' ? Number(params.scan ?? 1) : 1);
 
 	// ---- the barcode: 95 columns, 7 px each ------------------------------------------------------
@@ -40,6 +52,9 @@
 
 	// ---- the recording: dark low, light high, against time ---------------------------------------
 	const TY = 300;
+	/** The recording at normal speed is TW wide, so a slow scan's still fits. */
+	const TW = 280;
+	const TM = TW / 95;
 	const TH = 50;
 	const TX = BX;
 	const tracePath = $derived.by(() => {
@@ -52,13 +67,13 @@
 			if (used >= limit) break;
 			const part = Math.min(w, limit - used);
 			const y = dark ? TY + TH : TY;
-			d += `${d ? 'L' : 'M'}${x.toFixed(1)} ${y}L${(x + part * MW).toFixed(1)} ${y}`;
-			x += part * MW;
+			d += `${d ? 'L' : 'M'}${x.toFixed(1)} ${y}L${(x + part * TM).toFixed(1)} ${y}`;
+			x += part * TM;
 			used += part;
 		}
 		return d;
 	});
-	const traceLen = $derived(recording.reduce((a, [, w]) => a + w, 0) * MW);
+	const traceLen = $derived(recording.reduce((a, [, w]) => a + w, 0) * TM);
 	const laserX = $derived(BX + scanTo * 95 * MW);
 
 	// ---- the chosen digit's four widths ------------------------------------------------------------
@@ -80,9 +95,9 @@
 <g class="bc">
 	<!-- the label and the bars -->
 	<rect
-		x={BX - 40}
+		x={BX - 9 * MW}
 		y={BY - 14}
-		width={95 * MW + 80}
+		width={113 * MW}
 		height={BH + 60}
 		rx="6"
 		fill="var(--bc-paper)"
@@ -181,11 +196,12 @@
 			stroke-width="3"
 		/>
 	{:else}
+		<!-- straight across, or slanted through the middle of the code -->
 		<line
 			x1={BX - 30}
-			y1={BY + BH / 2}
+			y1={BY + BH / 2 - ((95 * MW) / 2 + 30) * Math.tan((tilt * Math.PI) / 180)}
 			x2={BX + 95 * MW + 30}
-			y2={BY + BH / 2}
+			y2={BY + BH / 2 + ((95 * MW) / 2 + 30) * Math.tan((tilt * Math.PI) / 180)}
 			stroke="var(--bc-laser)"
 			stroke-width="2"
 			opacity="0.8"
@@ -271,17 +287,17 @@
 			muted
 		/>
 		<path d={tracePath} fill="none" stroke="var(--bc-laser)" stroke-width="2" />
-		{#if phase === 'speed'}
+		{#if phase === 'speed' || phase === 'slant'}
 			<Readout
 				id="bc-len"
 				order={3}
 				label="Recording"
-				value="{Math.round((traceLen / (95 * MW)) * 100)}% as long as at normal speed"
+				value="{Math.round(stretch * 100)}% as long as straight across at normal speed"
 			>
 				<Label
 					x={TX + traceLen + 8}
 					y={TY + TH / 2 + 4}
-					text="{Math.round((traceLen / (95 * MW)) * 100)}% as long"
+					text="{Math.round(stretch * 100)}% as long"
 					anchor="start"
 					size={12}
 					tabular

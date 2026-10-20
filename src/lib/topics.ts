@@ -1514,9 +1514,9 @@ const explainers: Explainer[] = [
 		slug: 'barcode-stripes',
 		title: 'Barcodes at the checkout',
 		summary:
-			'Sweep a scanner’s red line across a barcode and see what it sees: dark, light, dark, light. Find the number hidden in the widths of the stripes, see why speed and angle don’t matter, how the scanner knows which way up the code is, and how the last digit catches a misprint.',
+			'Sweep a scanner’s red line across a barcode and see what it sees: dark, light, dark, light. Find the number hidden in the widths of the stripes, see why different scanning speeds and angles can give the same number, how the scanner knows which way up the code is, and how the last digit catches a misprint.',
 		accent: '#e03131',
-		steps: 8,
+		steps: 9,
 		minutes: 10
 	},
 	{

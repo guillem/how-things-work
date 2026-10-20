@@ -262,7 +262,7 @@ A topic is done when:
 - [x] elliptic-curve-cryptography
 - [x] kalman-filter
 - [x] radar-sonar
-- [ ] barcode-stripes
+- [x] barcode-stripes
 - [ ] qr-codes
 - [ ] wifi-and-walls
 
@@ -1700,10 +1700,10 @@ A topic is done when:
 - **Level:** 0
 - **Kind:** step
 - **Interaction:** Drag a scanner's red line across a barcode (a UPC-A, the 12-digit form found on many products) and watch what it sees, a trace of dark and light over time, then step through it: a start mark, six groups of stripes, a middle mark, six more and an end mark, each group of two bars and two gaps one digit. Scan slowly, fast or at a slant and the widths all stretch together, so the digits come out the same; scan it upside down and the scanner tells, from the left groups looking different from the right ones, which way to read. Smudge one stripe and the group matches no digit at all; print one bar a column out of place and the group reads as another digit, which the last digit, a check digit, catches: the light turns red, scan again.
-- **Takeaway:** A barcode is a number written as stripe widths, read as proportions so that speed and angle do not matter, with a last digit that catches a misread; the price is looked up afterwards.
+- **Takeaway:** A barcode is a number written as stripe widths, read as proportions so that a steady scan at different speeds and slants gives the same number, with a last digit that catches a misread; the price is looked up afterwards.
 - **Prerequisites:** none
 - **Related:** qr-codes
-- **Pitfall:** The barcode does not contain the price or the product name; it is a number the till looks up. The scanner reads ratios of widths, not absolute sizes, which is why the code can be printed at any size.
+- **Pitfall:** For ordinary packaged products the barcode does not contain the price or the product name; it is a number the till looks up (some in-store labels, such as those on weighed food, do carry a price). The scanner reads ratios of widths, not absolute sizes, which is why the code can be printed at different permitted sizes.
 
 #### qr-codes
 - **Title:** QR codes

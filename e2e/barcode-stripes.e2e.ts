@@ -49,3 +49,20 @@ test('price: the price changes, the barcode does not', async ({ page }) => {
 	await expect(stage(page)).toContainText('$1.99');
 	await expect(stage(page)).toContainText('reads 0 36000 29145 2');
 });
+
+test('slant: a gentle slant reads the same number; too steep runs off the bars', async ({
+	page
+}) => {
+	await open(page, './barcode-stripes/#slant', 'reads 0 36000 29145 2');
+	await page.locator('input[type=range][data-control=slant]').fill('10');
+	await expect(stage(page)).toContainText('102% as long');
+	await expect(stage(page)).toContainText('reads 0 36000 29145 2');
+	await page.locator('input[type=range][data-control=slant]').fill('20');
+	await expect(stage(page)).toContainText('can’t read it: the line ran off the bars');
+});
+
+test('smudge: a smudged group matches no digit', async ({ page }) => {
+	await open(page, './barcode-stripes/#smudge', 'reads 0 36000 29145 2');
+	await page.locator('input[type=checkbox][data-control=smudge]').check();
+	await expect(stage(page)).toContainText('can’t read it: a group of stripes is not a digit');
+});

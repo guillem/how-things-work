@@ -9,6 +9,7 @@ import {
 	R_CODES,
 	read,
 	runs,
+	slanted,
 	smudge,
 	sweep
 } from '../src/routes/barcode-stripes/model';
@@ -83,7 +84,7 @@ test('a bar printed one column out of place can make another valid digit; only t
 	expect(r.problem).toBe('the check digit does not match');
 });
 
-test('moving any single edge of a digit never makes another valid digit', () => {
+test('moving any single edge of a digit by one column never makes another valid digit', () => {
 	for (const codes of [L_CODES, R_CODES])
 		codes.forEach((code, d) => {
 			const r = runs(code);
@@ -98,4 +99,40 @@ test('moving any single edge of a digit never makes another valid digit', () => 
 					expect(other === -1 || other === d).toBe(true);
 				}
 		});
+});
+
+test('moving an edge by two columns can make another digit (a 0 becomes a 3)', () => {
+	// Left-hand 0 is 0001101; moving its first gap/bar edge two columns left gives 0111101, a 3.
+	expect(L_CODES.indexOf('0111101')).toBe(3);
+});
+
+test('a misprint in the right half also moves one whole black bar by one column', () => {
+	const m = encode(CODE);
+	for (let g = 6; g < 12; g++) {
+		const bad = misprint(m, g);
+		if (!bad) continue;
+		const at = 50 + 7 * (g - 6);
+		const before = runs(m.slice(at, at + 7))
+			.filter(([dark]) => dark)
+			.map(([, w]) => w);
+		const after = runs(bad.modules.slice(at, at + 7))
+			.filter(([dark]) => dark)
+			.map(([, w]) => w);
+		// The same black bars, of the same widths: one of them moved.
+		expect(after).toEqual(before);
+		expect(read(sweep(bad.modules)).valid).toBe(false);
+	}
+});
+
+test('only 12 digits from 0 to 9 make a code', () => {
+	expect(isValid([10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])).toBe(false);
+	expect(() => encode([1, 2, 3])).toThrow();
+});
+
+test('a slanted scan stretches every stripe alike, until it runs off the bars', () => {
+	const s = slanted(10, 665, 150);
+	expect(s.stretch).toBeCloseTo(1 / Math.cos(Math.PI / 18), 12);
+	expect(s.crossesAll).toBe(true);
+	expect(read(sweep(encode(CODE), { stretch: s.stretch })).digits).toEqual(CODE);
+	expect(slanted(20, 665, 150).crossesAll).toBe(false);
 });
