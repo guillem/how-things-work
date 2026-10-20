@@ -36,7 +36,7 @@ const DOWN = 3; // 360 → 120 samples per second
  * Starts were chosen with `--list` from the reference annotations.
  */
 const EXCERPTS = [
-	{ id: 'sinus', record: '100', start: 0, length: 8, title: 'Normal sinus rhythm' },
+	{ id: 'sinus', record: '100', start: 0, length: 8, title: 'Sinus rhythm' },
 	{ id: 'pvc', record: '119', start: 21.5, length: 8, title: 'Ventricular premature beats' },
 	{ id: 'block', record: '231', start: 98, length: 8, title: '2:1 AV block' },
 	{ id: 'vt', record: '205', start: 1460, length: 8, title: 'Ventricular tachycardia' },

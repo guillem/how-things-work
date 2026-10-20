@@ -78,7 +78,7 @@ test('the shock clears fibrillation; a flat line stays flat', async ({ page }) =
 test('the real recordings are listed with their records', async ({ page }) => {
 	await page.goto('./ecg-arrhythmias/#records');
 	for (const [title, rec] of [
-		['Normal sinus rhythm', '100'],
+		['Sinus rhythm', '100'],
 		['Ventricular premature beats', '119'],
 		['2:1 AV block', '231'],
 		['Ventricular tachycardia', '205'],

@@ -285,7 +285,7 @@ export const spec: ExplainerSpec = {
 			duration: 30,
 			controls: [noise],
 			body: `
-<p>Run the evolution again with equal shares, 200-round games and mistakes. Grudger, which never forgives a single slip, now dies out. Tit for tat shrinks, losing points in feuds with its own kind; generous tit for tat and tit for two tats end up commoner than it.</p>
+<p>Run the evolution again with equal shares, 200-round games and mistakes. Grudger, which never forgives a single slip, now dies out. In this model tit for tat rises at first but ends about where it began, losing points in feuds with its own kind; generous tit for tat and tit for two tats end up commoner than it.</p>
 <p>And Random does not disappear: in a population that forgives, a player who cheats half the time is not punished enough. Forgiveness pays among players who mean well and costs among those who don't. The best strategy depends on the mistakes, the payoffs and who else is playing.</p>`
 		},
 		// ----------------------------------------------------------------- grid

@@ -4,7 +4,7 @@ The self-handover. If work is interrupted, this file alone must be enough to con
 top to bottom, then run the commands under "Resume". **Update it at every commit**, not just at
 the end of a development.
 
-Last updated: 2026-10-19 03:30 UTC, 55 of the proposal's topics built; v1.1.2 live (154 topics), radar-sonar unreleased.
+Last updated: 2026-10-20 08:30 UTC, 55 of the proposal's topics built; v1.1.2 live (154 topics); `main` has the post-v1 fact-check round and radar-sonar, both unreleased (no release until TP-1's scene is fixed).
 
 ## How we work
 
@@ -214,6 +214,17 @@ completion review and merged into `main`:
 Built-state params in use: `web:<step>`, `board:build`, `bridge:build`, `bits:<step>`,
 `map:<step>`, `view:zoom`, `mol:<step>`, `probe:tank`, `sources:tank`, `ft:wave`, `ft:bars`,
 `ft:curve`, `dope:<step>`, `pick:<step>`.
+
+**Fact-check round after v1 (2026-10-20).** Grok audited topics 101–155 at `f72fadb1` (the
+report stays outside the repository for now). Codex fixed 29 findings in the text, Grok reviewed
+the diff, and its three follow-ups went in: OA-1 (onset 550–635 ppm), CACHE-1 (now 239 vs 249
+cycles, the model's 10-cycle difference; L2 paragraph rewritten), LO-1 (percentages credited to
+Ozbudak's fit), TLM-1, and ECG record 100 retitled "Sinus rhythm" (its e2e test updated on
+purpose). SD-1 rejected (Leviathan et al. 2023, Table 4 gives c = 0.02); RS-1 unverified (no
+GPT-2 weights locally). Gates: `make check`, `make e2e` (245), `make e2e-full` (3,160) all pass.
+**Open: TP-1.** turing-patterns' text is fixed, but its scene still shows feather buds as "well
+supported"; it needs a Claude scene fix, and **no release until then** (user's rule). Paths v1
+(`docs/grok_paths.md`) not started.
 
 ## Open questions for the user
 

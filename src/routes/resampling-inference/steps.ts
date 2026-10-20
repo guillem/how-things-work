@@ -159,7 +159,7 @@ export const spec: ExplainerSpec = {
 			body: `
 <p>Penguins with longer flippers are heavier. The least-squares line through body mass against flipper length (as in <a href="../learning-from-data/#line">learning from data</a>) rises about <strong>33 g per mm</strong> for Adelie penguins. How sure is that slope?</p>
 <p>Resample the penguins, each one's flipper and mass together, fit a new line to each resample, and collect the slopes. The faint lines are the latest of 1,000 resamples; their slopes' middle 95% is about 24 to 43 g per mm. Nothing here assumes the scatter around the line is the same everywhere, which the textbook formula for the slope's error does. Cut the sample to 10 penguins and the fan of lines opens wide.</p>`,
-			notes: `<p>Resampling whole penguins (the “case” or “pairs” bootstrap) keeps whatever link there is between flipper length and the scatter of mass. Its standard error for Adelie, 4.7 g/mm, is close to the textbook 5.1; for Gentoo it is 4.3 against 5.0. A different scheme resamples the residuals around the fitted line instead, which assumes they are interchangeable.</p>`
+			notes: `<p>Resampling whole penguins (the “case” or “pairs” bootstrap) keeps whatever link there is between flipper length and the scatter of mass. In this model, with the initial seed and all the penguins, its standard error for Adelie, 4.6 g/mm, is close to the textbook 5.1; for Gentoo it is 4.2 against 5.0. A different scheme resamples the residuals around the fitted line instead, which assumes they are interchangeable.</p>`
 		},
 		// ------------------------------------------------------------------ coverage
 		{

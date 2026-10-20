@@ -33,7 +33,7 @@ export const RECORDS: EcgRecord[] = [
 	{
 		id: 'sinus',
 		record: '100',
-		title: 'Normal sinus rhythm',
+		title: 'Sinus rhythm',
 		start: 0,
 		rhythm: '',
 		fs: 120,

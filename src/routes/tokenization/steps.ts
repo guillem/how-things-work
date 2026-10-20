@@ -52,7 +52,7 @@ const number: Control = {
 
 const BYTE = `<dfn data-def="Eight bits, a number from 0 to 255. Text is stored as bytes with the UTF-8 code, one to four bytes per Unicode character: one for a plain English letter, digit or space, two for é or a Greek or Russian letter, three for most Chinese, Japanese and Hindi characters, four for 🙂. Some symbols on screen are several Unicode characters (an accent added to a letter, a skin tone added to an emoji).">byte</dfn>`;
 const PIECES = `<dfn data-def="GPT-2 first cuts text with a fixed pattern: a word with the space in front of it, a run of digits, a run of punctuation, a run of spaces, or one of the endings 's 't 're 've 'm 'll 'd. Pairs are counted, and merged, only inside a piece.">pieces</dfn>`;
-const RANK = `<dfn data-def="A merge's place in the list of merges, counting from 0: the order in which they were learned. A merge learned early joined a pair that was very frequent in the training text.">rank</dfn>`;
+const RANK = `<dfn data-def="A merge's place in the learned list. The merge numbers on this page count from 1 (the zero-based rank + 1): the order in which they were learned. A merge learned early joined a pair that was very frequent in the training text.">rank</dfn>`;
 
 export const spec: ExplainerSpec = {
 	slug: 'tokenization',
