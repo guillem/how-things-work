@@ -48,9 +48,10 @@
 			<span class="level" title={levelNames[topic.entry.level]}>Level {topic.entry.level}</span>
 		</p>
 		<h1>{spec.title}</h1>
-		<PathStrip slug={spec.slug} />
 		<p class="summary">{spec.summary}</p>
 	</header>
+
+	<PathStrip slug={spec.slug} />
 
 	<Explainer {spec} accent={topic.accent} {stage} />
 

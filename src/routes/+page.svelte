@@ -190,7 +190,9 @@
 							type="button"
 							class="chip"
 							aria-pressed={path === option.id}
-							onclick={() => choosePath(option.id)}>{option.title}</button
+							onclick={() => choosePath(option.id)}
+							>{option.title}<span class="n" aria-hidden="true">{stops(option).length} stops</span
+							></button
 						>
 					{/each}
 				</div>
@@ -300,25 +302,33 @@
 
 			<div class="list">
 				{#if selectedPath}
-					<section class="topics" aria-labelledby="path-title">
-						<h2 id="path-title">{selectedPath.title}</h2>
-						<p>{selectedPath.promise}</p>
-						{#if progress.loaded}
-							<p aria-live="polite">
-								{stops(selectedPath).filter((slug) => progress.status(slug) === 'done').length} of {stops(
-									selectedPath
-								).length} done
-							</p>
-						{/if}
-						{#each selectedPath.chapters as chapter (chapter.title)}
-							<section class="topics" aria-label={chapter.title}>
-								<h3>{chapter.title}</h3>
+					{@const all = stops(selectedPath)}
+					{@const done = all.filter((slug) => progress.status(slug) === 'done')}
+					<section class="path" aria-labelledby="path-title">
+						<header class="path-head">
+							<p class="kicker">Reading path · {all.length} stops</p>
+							<h2 id="path-title">{selectedPath.title}</h2>
+							<p class="promise">{selectedPath.promise}</p>
+							{#if progress.loaded}
+								<div class="path-progress">
+									<span class="track" aria-hidden="true">
+										{#each all as slug (slug)}<span class="seg" class:done={done.includes(slug)}
+											></span>{/each}
+									</span>
+									<p aria-live="polite">{done.length} of {all.length} done</p>
+								</div>
+							{/if}
+						</header>
+						{#each selectedPath.chapters as chapter, i (chapter.title)}
+							<section class="chapter" aria-label={chapter.title}>
+								<h3><span class="number" aria-hidden="true">{i + 1}</span>{chapter.title}</h3>
 								<div class="grid">
 									{#each chapter.slugs as slug (slug)}
 										{@const topic = topicBySlug.get(slug)}
-										{#if topic}<TopicCard {topic} />{:else}<p>
-												{catalog.bySlug.get(slug)!.title} — coming later
-											</p>{/if}
+										{#if topic}<TopicCard {topic} />{:else}<div class="later">
+												<p class="later-tag">Coming later</p>
+												<p class="later-title">{catalog.bySlug.get(slug)!.title}</p>
+											</div>{/if}
 									{/each}
 								</div>
 							</section>
@@ -457,6 +467,19 @@
 	}
 	#group-path {
 		order: 1;
+	}
+	/* A path is a way of reading, not a filter: on the narrow bar it says so. */
+	#group-path .group-label {
+		display: inline;
+		margin-right: 2px;
+		font-size: 0.75rem;
+		font-weight: 600;
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+		color: var(--text-muted);
+	}
+	#group-path .n {
+		margin-left: 6px;
 	}
 	.group.open {
 		display: flex;
@@ -607,6 +630,19 @@
 		#group-path {
 			order: 0;
 		}
+		#group-path .chip {
+			display: flex;
+			flex-direction: column;
+			align-items: flex-start;
+			gap: 1px;
+			padding: 7px 10px 6px;
+			border-radius: var(--radius-sm);
+			text-align: left;
+			line-height: 1.3;
+		}
+		#group-path .n {
+			margin-left: 0;
+		}
 		.toggles {
 			display: none;
 		}
@@ -710,6 +746,103 @@
 
 	.topics + .topics {
 		margin-top: 44px;
+	}
+
+	/* ---- a reading path: its promise, progress and chapters in order ------------------- */
+	.path-head {
+		max-width: 720px;
+		margin-bottom: 32px;
+	}
+	.kicker {
+		font-size: 0.85rem;
+		font-weight: 600;
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+		color: var(--text-muted);
+		margin-bottom: 6px;
+	}
+	.path-head h2 {
+		font-size: clamp(1.6rem, 3vw, 2.1rem);
+		letter-spacing: -0.02em;
+		margin-bottom: 8px;
+	}
+	.promise {
+		font-size: 1.05rem;
+		color: var(--text-muted);
+		text-wrap: pretty;
+	}
+	.path-progress {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 8px 14px;
+		margin-top: 16px;
+		font-size: 0.88rem;
+		color: var(--text-muted);
+		font-variant-numeric: tabular-nums;
+	}
+	.track {
+		display: flex;
+		gap: 3px;
+		flex: 0 1 240px;
+	}
+	.seg {
+		flex: 1;
+		height: 6px;
+		border-radius: 999px;
+		background: var(--border-strong);
+	}
+	.seg.done {
+		background: var(--status-done);
+	}
+	.chapter + .chapter {
+		margin-top: 40px;
+	}
+	.chapter h3 {
+		display: flex;
+		align-items: center;
+		gap: 10px;
+		font-size: 0.85rem;
+		font-weight: 600;
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+		color: var(--text-muted);
+		margin-bottom: 16px;
+	}
+	.number {
+		display: inline-grid;
+		place-items: center;
+		width: 1.7em;
+		height: 1.7em;
+		border: 1px solid var(--border-strong);
+		border-radius: 50%;
+		color: var(--text);
+		letter-spacing: 0;
+		font-variant-numeric: tabular-nums;
+	}
+	/* An unbuilt stop keeps its place in the order, without being a card or a link. */
+	.later {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		gap: 6px;
+		min-height: 160px;
+		padding: 20px;
+		border: 1px dashed var(--border-strong);
+		border-radius: var(--radius-lg);
+		background: var(--surface-2);
+	}
+	.later-tag {
+		font-size: 0.78rem;
+		font-weight: 500;
+		letter-spacing: 0.05em;
+		text-transform: uppercase;
+		color: var(--text-faint);
+	}
+	.later-title {
+		font-size: 1.2rem;
+		font-weight: 600;
+		color: var(--text-muted);
 	}
 	.topics h2 {
 		font-size: 0.85rem;

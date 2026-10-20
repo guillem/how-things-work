@@ -4,7 +4,7 @@ The self-handover. If work is interrupted, this file alone must be enough to con
 top to bottom, then run the commands under "Resume". **Update it at every commit**, not just at
 the end of a development.
 
-Last updated: 2026-10-20 16:00 UTC, 55 of the proposal's topics built; v1.1.2 live (154 topics); `main` has the post-v1 fact-check round (verified, TP-1 scene fixed), Paths v1 and radar-sonar, unreleased. Paths' visual pass should land before the release that ships them.
+Last updated: 2026-10-20 16:00 UTC, 55 of the proposal's topics built; v1.1.2 live (154 topics); `main` has the post-v1 fact-check round (verified, TP-1 scene fixed), Paths v1 (with its visual pass) and radar-sonar, unreleased.
 
 ## How we work
 
@@ -245,24 +245,16 @@ rejected with a regression test); tests in `e2e/paths.e2e.ts` and `e2e/paths-mod
 first (carbon-cycle before greenhouse-effect).
 
 **Waiting for Claude's finishing touch** (the user's rule since 2026-10-20: visual and artistic
-work is always Claude's, to match the existing style). Item 1 is done; item 2 should land
-before the release that ships paths.
+work is always Claude's, to match the existing style). Both items are done.
 
 1. ~~turing-patterns scene (TP-1)~~: done 2026-10-20.
-2. Paths v1 visual design, deliberately functional for now:
-   - the Path control on the index (reuses the `group` / `chip` classes; above Area on wide
-     screens, its own row under search on phones);
-   - the selected-path section: promise, completion count, chapter headings, the card grid in
-     reading order with no numbering, and the "coming later" treatment for unbuilt stops;
-   - `PathStrip`: a plain wrapping flex row, `--text-muted` text, every link in
-     `--topic-accent`; decide the emphasis between backlink, chapter, position and neighbours,
-     long-title wrapping, the two ends (one neighbour), and the spacing between title, strip and
-     summary;
-   - wording: "Stop N of 16" against the spec's "N of 16" (the tests assert the current text;
-     update them if the wording changes on purpose).
-
-   Check both themes, keyboard focus, phones and reduced motion, and screenshot-review the
-   index and a few path stops per `docs/scene-guide.md`.
+2. ~~Paths v1 visual design~~: done 2026-10-20. The index's Path control is a labelled chip on
+   phones and a row with its stop count in the sidebar; the selected path has a large title,
+   the promise as a lede, a 16-segment bar beside "N of 16 done", numbered chapter headings and
+   a dashed "Coming later" tile for unbuilt stops (not a card, not a link). `PathStrip` now sits
+   after the summary, as the spec places it: a card with the topic's accent edge, "Path · title
+   · chapter · Stop N of 16", a dot per stop, and Previous (left) / Next (right) with their titles.
+   Wording kept as "Stop N of 16": it reads on its own, where "3 of 16" needs the context.
 
 ## Open questions for the user
 
