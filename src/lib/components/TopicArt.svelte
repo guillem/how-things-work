@@ -5531,6 +5531,26 @@
 			<rect {x} y="28" width={w} height="56" fill="#1c1b19" />
 		{/each}
 		<line x1="24" y1="56" x2="176" y2="56" stroke={accent} stroke-width="2" />
+	{:else if slug === 'why-triangles-are-stiff'}
+		<!-- a square leaning over beside a stiff triangle -->
+		<line x1="18" y1="100" x2="182" y2="100" stroke="currentColor" stroke-width="2" opacity="0.5" />
+		<path
+			d="M30 100 L80 100 L100 52 L50 52 Z"
+			fill="none"
+			stroke={accent}
+			stroke-width="5"
+			stroke-linejoin="round"
+		/>
+		<path
+			d="M118 100 L172 100 L145 54 Z"
+			fill="none"
+			stroke={accent}
+			stroke-width="5"
+			stroke-linejoin="round"
+		/>
+		{#each [[30, 100], [80, 100], [100, 52], [50, 52], [118, 100], [172, 100], [145, 54]] as [x, y], i (i)}
+			<circle cx={x} cy={y} r="3.5" fill="currentColor" />
+		{/each}
 	{:else}
 		<circle cx="100" cy="60" r="30" fill="none" stroke={accent} stroke-width="2" />
 		<circle cx="100" cy="60" r="5" fill={accent} />

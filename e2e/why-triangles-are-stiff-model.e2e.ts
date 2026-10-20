@@ -70,3 +70,11 @@ test('a garden gate on two hinges sags one way; one brace stops it', () => {
 	const sagged = push(g, 1, 0.3, { down: true });
 	expect(sagged.pts[1].y).toBeLessThan(-0.01);
 });
+
+test('the count is not enough: sixteen sticks with two diagonals in one box and none in another still wobble', () => {
+	const t = tower(4, [true, true, true, false]);
+	// A second diagonal, crossing the first, in the bottom box.
+	t.sticks.push([1, 2]);
+	expect(t.sticks.length).toBe(16);
+	expect(wobbles(t)).toBe(1);
+});

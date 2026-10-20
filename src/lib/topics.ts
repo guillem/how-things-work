@@ -1518,6 +1518,15 @@ const explainers: Explainer[] = [
 		accent: '#e03131',
 		steps: 8,
 		minutes: 10
+	},
+	{
+		slug: 'why-triangles-are-stiff',
+		title: 'Why triangles are stiff',
+		summary:
+			'Pin sticks together into a square and push it: it leans over. Make a triangle and push: nothing moves. Find out why, then stiffen a wobbly tower and a sagging garden gate with as few extra sticks as you can.',
+		accent: '#8a5a2b',
+		steps: 9,
+		minutes: 10
 	}
 ];
 

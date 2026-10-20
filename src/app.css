@@ -5106,3 +5106,19 @@ kbd {
 	--bc-ok: #51cf66;
 	--bc-bad: #ff6b6b;
 }
+
+/* why-triangles-are-stiff: sticks, pins, the ground, a diagonal, the push */
+:root {
+	--tr-stick: #8a5a2b;
+	--tr-pin: #343a40;
+	--tr-ground: #868e96;
+	--tr-brace: #2f9e44;
+	--tr-push: #e8590c;
+}
+:root[data-theme='dark'] {
+	--tr-stick: #d9a066;
+	--tr-pin: #dee2e6;
+	--tr-ground: #5c636a;
+	--tr-brace: #51cf66;
+	--tr-push: #ff922b;
+}
