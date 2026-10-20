@@ -40,12 +40,7 @@
 					name: 'hair follicles',
 					lines: ['WNT and its inhibitor DKK', 'Sick 2006']
 				},
-				{ icon: 'palate', name: 'palate ridges', lines: ['FGF and SHH', 'Economou 2012'] },
-				{
-					icon: 'feathers',
-					name: 'feather buds',
-					lines: ['BMP inhibits; cell mechanics', 'helps start them (Shyer 2017)']
-				}
+				{ icon: 'palate', name: 'palate ridges', lines: ['FGF and SHH', 'Economou 2012'] }
 			]
 		},
 		{
@@ -54,11 +49,16 @@
 			colour: 'var(--tp-mixed)',
 			cases: [
 				{
+					icon: 'feathers',
+					name: 'feather buds',
+					lines: ['cells contract and gather first,', 'then the genes switch on', '(Shyer 2017)']
+				},
+				{
 					icon: 'zebrafish',
 					name: 'zebrafish stripes',
 					lines: [
 						'Turing-like, but made by pigment',
-						'cells that touch and move',
+						'cells that repel at short range',
 						'(Nakamasu 2009)'
 					]
 				},
@@ -118,7 +118,8 @@
 	const CW = 288;
 	const TOP = 40;
 	const ROW = 124;
-	const NOTE_Y = TOP + 330;
+	/** A column's note sits under its cases, never higher than with two of them. */
+	const noteY = (cases: number) => Math.max(TOP + 330, TOP + 20 + cases * ROW);
 	const tt = $derived(reduced ? 10 : t);
 	const show = (col: number, i: number) => smoothstep(0, 0.5, tt - 0.2 - col * 0.5 - i * 0.18);
 </script>
@@ -232,7 +233,7 @@
 				<g opacity={show(ci, col.cases.length + 1)}>
 					<rect
 						x={CX[ci] + 16}
-						y={NOTE_Y}
+						y={noteY(col.cases.length)}
 						width={CW - 32}
 						height={34 + col.note.lines.length * 17}
 						rx="8"
@@ -243,7 +244,7 @@
 					<Label
 						anchor="start"
 						x={CX[ci] + 30}
-						y={NOTE_Y + 22}
+						y={noteY(col.cases.length) + 22}
 						text={col.note.title}
 						size={12}
 						weight={600}
@@ -254,7 +255,7 @@
 						<Label
 							anchor="start"
 							x={CX[ci] + 30}
-							y={NOTE_Y + 42 + j * 17}
+							y={noteY(col.cases.length) + 42 + j * 17}
 							text={line}
 							size={11}
 							halo={false}

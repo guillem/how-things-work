@@ -4,7 +4,7 @@ The self-handover. If work is interrupted, this file alone must be enough to con
 top to bottom, then run the commands under "Resume". **Update it at every commit**, not just at
 the end of a development.
 
-Last updated: 2026-10-20 11:40 UTC, 55 of the proposal's topics built; v1.1.2 live (154 topics); `main` has the post-v1 fact-check round, Paths v1 and radar-sonar, unreleased. No release until Claude's turing-patterns scene fix (see "Waiting for Claude's finishing touch").
+Last updated: 2026-10-20 16:00 UTC, 55 of the proposal's topics built; v1.1.2 live (154 topics); `main` has the post-v1 fact-check round (verified, TP-1 scene fixed), Paths v1 and radar-sonar, unreleased. Paths' visual pass should land before the release that ships them.
 
 ## How we work
 
@@ -218,15 +218,19 @@ Built-state params in use: `web:<step>`, `board:build`, `bridge:build`, `bits:<s
 `ft:curve`, `dope:<step>`, `pick:<step>`.
 
 **Fact-check round after v1 (2026-10-20).** Grok audited topics 101–155 at `f72fadb1` (the
-report stays outside the repository for now). Codex fixed 29 findings in the text, Grok reviewed
+report is not kept). Codex fixed 29 findings in the text, Grok reviewed
 the diff, and its three follow-ups went in: OA-1 (onset 550–635 ppm), CACHE-1 (now 239 vs 249
 cycles, the model's 10-cycle difference; L2 paragraph rewritten), LO-1 (percentages credited to
 Ozbudak's fit), TLM-1, and ECG record 100 retitled "Sinus rhythm" (its e2e test updated on
 purpose). SD-1 rejected (Leviathan et al. 2023, Table 4 gives c = 0.02); RS-1 unverified (no
 GPT-2 weights locally). Gates: `make check`, `make e2e` (245), `make e2e-full` (3,160) all pass.
-**Open: TP-1.** turing-patterns' text is fixed, but its scene still shows feather buds as "well
-supported"; it needs a Claude scene fix, and **no release until then** (user's rule). Paths v1
-(`docs/grok_paths.md`) not started.
+**Verified by Claude (2026-10-20).** Every "in this model" number recomputed from the models
+with the scenes' parameters: all match. Literature added by the second model checked against
+the sources: OA-1 reworded (635 ppm / 2070 is Orr's preferred estimate, 550 ppm / 2050 the
+equilibrium one), the cochlea's post-mortem loss is 65–80 dB (Robles and Ruggero 2001, not
+50–70), one leftover "about 240" in cache-memory-hierarchy's notes now 239; SD-1's rejection
+holds (Table 4: c = 0.02). **TP-1 done:** the evidence scene lists feather buds under "mixed",
+with a test. The audit report and the untrusted qwen itinerary draft were removed from `docs/`.
 
 **Paths v1 (2026-10-20, committed, unreleased).** Guided reading paths. `docs/PATHS.md` is the
 only source: `src/lib/paths-parse.ts` parses it and `src/lib/paths.ts` validates it against the
@@ -241,11 +245,10 @@ rejected with a regression test); tests in `e2e/paths.e2e.ts` and `e2e/paths-mod
 first (carbon-cycle before greenhouse-effect).
 
 **Waiting for Claude's finishing touch** (the user's rule since 2026-10-20: visual and artistic
-work is always Claude's, to match the existing style). No release until item 1 is done; item 2
-should land before the release that ships paths.
+work is always Claude's, to match the existing style). Item 1 is done; item 2 should land
+before the release that ships paths.
 
-1. turing-patterns scene (TP-1): the text was corrected in the fact-check round, but the scene
-   still shows feather buds as "well supported". Make the scene match the text.
+1. ~~turing-patterns scene (TP-1)~~: done 2026-10-20.
 2. Paths v1 visual design, deliberately functional for now:
    - the Path control on the index (reuses the `group` / `chip` classes; above Area on wide
      screens, its own row under search on phones);

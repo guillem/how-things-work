@@ -88,3 +88,13 @@ test('on a phone the critical ratio is listed under the stage', async ({ page })
 	await expect(panel).toContainText('Critical ratio');
 	await expect(panel).toContainText('21×');
 });
+
+test('feather buds are listed as mixed evidence, not well supported', async ({ page }) => {
+	// Shyer et al. (2017): a mechanical instability starts the feather spacing, as the text says.
+	await page.setViewportSize({ width: 390, height: 844 });
+	await page.goto('./turing-patterns/#nature');
+	const row = (label: string) =>
+		page.getByRole('group', { name: 'Readouts' }).locator('.row', { hasText: label });
+	await expect(row('mixed')).toContainText('feather buds');
+	await expect(row('well supported')).not.toContainText('feather');
+});
