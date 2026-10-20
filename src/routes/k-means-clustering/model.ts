@@ -127,14 +127,14 @@ export const penguins: Pt[] = PENGUINS.map(([b, f]) => ({
 export const species: number[] = PENGUINS.map((p) => p[2]);
 export { SPECIES };
 
-/** Two noisy rings around the same middle, the outer one twice as wide (ring index in `ring`). */
+/** Two noisy rings around the same middle (in the page's plot), the outer one twice as wide. */
 export function rings(seed = 3, n = 180): (Pt & { ring: number })[] {
 	const rand = rng(seed);
 	return Array.from({ length: n }, (_, i) => {
 		const ring = i < n / 3 ? 0 : 1;
 		const r = (ring ? 2 : 0.9) + (rand() - 0.5) * 0.3;
 		const a = rand() * 2 * Math.PI;
-		return { x: r * Math.cos(a), y: r * Math.sin(a), ring };
+		return { x: 0.3 + r * Math.cos(a), y: 0.05 + r * Math.sin(a), ring };
 	});
 }
 
@@ -150,7 +150,7 @@ export function ownDefault(seed = 5): Pt[] {
 			const d = r * Math.sqrt(rand());
 			return { x: +(cx + d * Math.cos(a)).toFixed(2), y: +(cy + d * Math.sin(a)).toFixed(2) };
 		});
-	return [...disc(-0.9, 0, 1.4, 40), ...disc(1.3, 0.2, 0.3, 12)];
+	return [...disc(-0.6, 0, 1.4, 40), ...disc(1.6, 0.2, 0.3, 12)];
 }
 
 /** Hand-placed points stored in a control-free param: "x,y;x,y" with two decimals. */

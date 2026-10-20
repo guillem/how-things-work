@@ -1428,6 +1428,15 @@ const explainers: Explainer[] = [
 		accent: '#0c8599',
 		steps: 9,
 		minutes: 20
+	},
+	{
+		slug: 'k-means-clustering',
+		title: 'Finding groups: k-means',
+		summary:
+			'Hide the species of 342 real penguins and let a computer sort them into groups by itself: drop centres, colour by the nearest, move each centre to the middle, repeat. Then see why it needs to be told how many groups, and where it goes wrong.',
+		accent: '#1c7ed6',
+		steps: 10,
+		minutes: 15
 	}
 ];
 

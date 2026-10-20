@@ -4934,3 +4934,21 @@ kbd {
 	--rs-sea: #0f2a40;
 	--rs-sea-edge: #1c7ed6;
 }
+
+/* k-means-clustering: the six group colours (one per centre) */
+:root {
+	--km-1: #1c7ed6;
+	--km-2: #e8590c;
+	--km-3: #2f9e44;
+	--km-4: #ae3ec9;
+	--km-5: #c2255c;
+	--km-6: #0c8599;
+}
+:root[data-theme='dark'] {
+	--km-1: #4dabf7;
+	--km-2: #ff922b;
+	--km-3: #51cf66;
+	--km-4: #da77f2;
+	--km-5: #f06595;
+	--km-6: #3bc9db;
+}

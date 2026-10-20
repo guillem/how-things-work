@@ -5315,6 +5315,39 @@
 			stroke={accent}
 			stroke-width="1.8"
 		/>
+	{:else if slug === 'k-means-clustering'}
+		<!-- three groups of points, each coloured by its nearest centre (the crosses), and the
+		     halfway borders between the centres -->
+		<path
+			d="M82 120 L82 66 L22 30 M82 66 L126 58 L150 0 M126 58 L200 112"
+			fill="none"
+			stroke="currentColor"
+			stroke-width="1"
+			stroke-dasharray="3 3"
+			opacity="0.35"
+		/>
+		{#each [[60, 82], [55, 81], [69, 81], [72, 72], [61, 72], [52, 76], [62, 82], [63, 90], [67, 68]] as [x, y], i (i)}
+			<circle cx={x} cy={y} r="3" fill={accent} opacity="0.8" />
+		{/each}
+		<path d="M54 72 L66 84 M54 84 L66 72" stroke={accent} stroke-width="3" stroke-linecap="round" />
+		{#each [[106, 35], [99, 49], [102, 28], [107, 37], [94, 34], [97, 40], [99, 41], [118, 35], [96, 38]] as [x, y], i (i)}
+			<circle cx={x} cy={y} r="3" fill="var(--km-2)" opacity="0.8" />
+		{/each}
+		<path
+			d="M98 34 L110 46 M98 46 L110 34"
+			stroke="var(--km-2)"
+			stroke-width="3"
+			stroke-linecap="round"
+		/>
+		{#each [[158, 75], [159, 72], [138, 80], [139, 75], [153, 86], [149, 78], [160, 83], [146, 89], [139, 81]] as [x, y], i (i)}
+			<circle cx={x} cy={y} r="3" fill="var(--km-3)" opacity="0.8" />
+		{/each}
+		<path
+			d="M142 74 L154 86 M142 86 L154 74"
+			stroke="var(--km-3)"
+			stroke-width="3"
+			stroke-linecap="round"
+		/>
 	{:else}
 		<circle cx="100" cy="60" r="30" fill="none" stroke={accent} stroke-width="2" />
 		<circle cx="100" cy="60" r="5" fill={accent} />
