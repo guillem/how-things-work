@@ -65,12 +65,11 @@
 	// ---- side panel -----------------------------------------------------------------------------
 	const PANEL = 700;
 	const counts = $derived(rows.slice(0, shown).map(live));
-	const maxCount = $derived(Math.max(1, ...rows.map(live)));
 	const spark = $derived(
 		counts
 			.map(
 				(n, i) =>
-					`${i ? 'L' : 'M'}${(PANEL + (i / (G - 1)) * 220).toFixed(1)} ${(380 - (n / maxCount) * 90).toFixed(1)}`
+					`${i ? 'L' : 'M'}${(PANEL + (i / (G - 1)) * 220).toFixed(1)} ${(380 - (n / W) * 90).toFixed(1)}`
 			)
 			.join(' ')
 	);
@@ -158,13 +157,16 @@
 		<path d={spark} fill="none" stroke="var(--ca-changing)" stroke-width="2" />
 		<Label
 			x={PANEL + 220}
-			y={398}
+			y={412}
 			text="{counts[counts.length - 1]} now"
 			anchor="end"
 			size={12}
 			tabular
 		/>
 	</Readout>
+	<Label x={PANEL - 4} y={384} text="0" anchor="end" size={10} muted />
+	<Label x={PANEL - 4} y={294} text={String(W)} anchor="end" size={10} muted />
+	<Label x={PANEL} y={396} text="generation →" anchor="start" size={11} muted />
 	<Readout id="ca-behaviour" order={3} label="On a random ring" value={SAYS[behaviour.behaviour]}>
 		<Label x={PANEL} y={176} text="on a random ring of 61 cells:" anchor="start" size={12} muted />
 		<Label

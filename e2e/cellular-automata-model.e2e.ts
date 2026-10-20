@@ -6,6 +6,7 @@ import {
 	live,
 	outcome,
 	randomRow,
+	road,
 	settle,
 	singleCell,
 	trafficSpeed
@@ -30,7 +31,7 @@ test('rule 90 from one cell draws Pascal’s triangle mod 2 (a Sierpinski triang
 	expect(live(rows[63])).toBe(64);
 });
 
-test('rule 30 is deterministic: the same start gives the same pattern, and its centre never settles', () => {
+test('rule 30 is deterministic; the sampled centre column has no tested period', () => {
 	const a = evolve(30, singleCell(401), 200);
 	const b = evolve(30, singleCell(401), 200);
 	expect(a.map((r) => r.join(''))).toEqual(b.map((r) => r.join('')));
@@ -66,8 +67,15 @@ test('rule 184 conserves cars', () => {
 	for (const r of rows) expect(live(r)).toBe(live(rows[0]));
 });
 
-test('rule 184 traffic flows freely below half full and jams above: speed (1 - d) / d', () => {
-	expect(trafficSpeed(0.3)).toBeCloseTo(1, 2);
-	expect(trafficSpeed(0.45)).toBeCloseTo(1, 1);
-	for (const d of [0.6, 0.75, 0.9]) expect(trafficSpeed(d)).toBeCloseTo((1 - d) / d, 1);
+test('rule 184 traffic, once settled: every car moves below half full, (1 - d) / d of them above', () => {
+	for (const d of [0.1, 0.3, 0.45, 0.5, 0.55, 0.6, 0.75, 0.9, 1]) {
+		const start = road(400, d, 3);
+		const rho = live(start) / 400;
+		expect(trafficSpeed(start), `d = ${d}`).toBeCloseTo(Math.min(1, (1 - rho) / rho), 6);
+	}
+});
+
+test('a road has exactly the number of cars asked for', () => {
+	expect(live(road(120, 0.75, 11))).toBe(90);
+	expect(live(road(120, 0.51, 11))).toBe(61);
 });

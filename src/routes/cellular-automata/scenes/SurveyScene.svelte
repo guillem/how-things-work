@@ -23,8 +23,13 @@
 	const GX = 30;
 	const GY = 60;
 	const T = 30;
-	const tileX = (r: number) => GX + (r % 16) * T;
-	const tileY = (r: number) => GY + Math.floor(r / 16) * T;
+	// Grouped: the rules that die out, then those that repeat, then those that keep changing, each
+	// group in order of rule number. `order[i]` is the rule in slot i; `slot` maps a rule to its slot.
+	const GROUPS: Behaviour[] = ['uniform', 'repeats', 'keeps changing'];
+	const order = GROUPS.flatMap((g) => kinds.flatMap((k, r) => (k === g ? [r] : [])));
+	const slot = new Map(order.map((r, i) => [r, i]));
+	const tileX = (r: number) => GX + ((slot.get(r) ?? 0) % 16) * T;
+	const tileY = (r: number) => GY + Math.floor((slot.get(r) ?? 0) / 16) * T;
 
 	function pick(e: PointerEvent) {
 		const svg = (e.currentTarget as SVGGraphicsElement).ownerSVGElement;
@@ -33,13 +38,14 @@
 		const p = new DOMPoint(e.clientX, e.clientY).matrixTransform(ctm.inverse());
 		const c = Math.floor((p.x - GX) / T);
 		const r = Math.floor((p.y - GY) / T);
-		if (c >= 0 && c < 16 && r >= 0 && r < 16) setParam('rule', r * 16 + c);
+		if (c >= 0 && c < 16 && r >= 0 && r < 16) setParam('rule', order[r * 16 + c]);
 	}
 	function onKey(e: KeyboardEvent) {
 		const d: Record<string, number> = { ArrowLeft: -1, ArrowRight: 1, ArrowUp: -16, ArrowDown: 16 };
 		if (!(e.key in d)) return;
 		e.preventDefault();
-		setParam('rule', Math.min(255, Math.max(0, rule + d[e.key])));
+		const i = Math.min(255, Math.max(0, (slot.get(rule) ?? 0) + d[e.key]));
+		setParam('rule', order[i]);
 	}
 
 	// The chosen rule's pattern, from the same random start as the survey uses.

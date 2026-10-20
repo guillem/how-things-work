@@ -73,7 +73,7 @@ export const spec: ExplainerSpec = {
 			chapter: 'rule',
 			title: 'Rule 90 draws a triangle',
 			scene: 'rule',
-			hints: { phase: 'fixed', rule: 90 },
+			hints: { phase: 'fixed', rule: 90, start: 'single' },
 			duration: 18,
 			body: `
 <p>Start rule 90 from a single live cell. Its rule is simple: a cell is alive next if exactly one of its two neighbours is alive now (an exclusive or). Out comes a triangle made of triangles, each half the size of the one before: the <dfn data-def="A fractal made by repeatedly removing the middle quarter of a triangle, leaving three half-size copies.">Sierpinski triangle</dfn>.</p>
@@ -88,7 +88,7 @@ export const spec: ExplainerSpec = {
 			duration: 20,
 			controls: [start, reseed],
 			body: `
-<p>Rule 30 grows from the same single cell into a pattern with some order on its left edge and apparent chaos everywhere else. The middle column never settles into a repeating pattern, and statistical tests can’t tell it from coin flips. For years Wolfram’s Mathematica software used it to make random numbers.</p>
+<p>Rule 30 grows from the same single cell into a pattern with some order on its left edge and apparent chaos everywhere else. On an endless row started from one live cell, the middle column appears never to repeat, though nobody has managed to prove it; long computed stretches of it pass the usual statistical tests for randomness. For years Wolfram’s Mathematica software used it to make random numbers.</p>
 <p>Yet nothing about it is random. Run it again and every cell comes out the same: the pattern is completely determined by the rule and the starting row. Rule 30 shows how a simple, fully deterministic process can produce something that looks like noise.</p>`
 		},
 		{
@@ -125,7 +125,7 @@ export const spec: ExplainerSpec = {
 			duration: 24,
 			controls: [rule],
 			body: `
-<p>Here are all 256, each run from the same random ring of 61 cells for up to 1,000 generations and sorted by what happens. 28 die out, ending all dead or all alive. 200 fall into a repeating cycle: a frozen pattern, a blinking one, or one that just slides along. Only 28, from 10 of the 88 families, are still changing after 1,000 generations.</p>
+<p>Here are all 256, each run from the same random ring of 61 cells for up to 1,000 generations and grouped by what happens (in order of rule number within each group). 28 die out, ending all dead or all alive. 200 fall into a repeating cycle: a frozen pattern, a blinking one, or one that just slides along. Only 28, from 10 of the 88 families, are still changing after 1,000 generations.</p>
 <p>Wolfram sorted the rules into four classes by eye: class 1 dies out, class 2 repeats, class 3 looks random (rule 30, rule 90) and class 4 builds lasting structures (rule 110). A measurement like this one can tell the first two from the last two, but not class 3 from class 4. And flipping a single bit of a rule can jump between them: click a tile, then flip bits in the table on the first step.</p>`,
 			notes: `<p>The sort is a measurement on a small ring, not Wolfram’s classification. On only 61 cells a few rules he counts as random, such as rules 18 and 126, run into a cycle or a uniform row within 1,000 generations; on a longer row they keep going. Every ring of finite size must repeat eventually, since it has only finitely many states.</p>`
 		},
@@ -140,7 +140,7 @@ export const spec: ExplainerSpec = {
 			controls: [density],
 			body: `
 <p>Read rule 184’s live cells as cars on a one-lane ring road, all driving right. Its table says: a car moves one cell forward if the cell ahead is empty, and waits if it isn’t. Cars are never made or destroyed, so the number on the road stays the same forever.</p>
-<p>With fewer cars than half the cells, every jam soon dissolves and all cars move every step. Above half full, jams can’t clear: they drift backwards through the traffic, as real stop-and-go waves do, and the share of cars moving drops to (1 − d) / d for a road a fraction d full. Drag the number of cars across one half and watch the free flow turn into permanent jams.</p>`,
+<p>With fewer cars than half the cells, every jam soon dissolves and all cars move every step. Above half full, jams can’t clear: they drift backwards through the traffic, as real stop-and-go waves do, and once the traffic has settled, the share of cars moving drops to (1 − d) / d for a road a fraction d full. Drag the number of cars across one half and watch the free flow turn into permanent jams.</p>`,
 			notes: `<p>Rule 184 is the simplest member of a family of traffic models; the Nagel–Schreckenberg model of 1992 adds speeds and random braking, and reproduces jams that appear out of nowhere on real motorways.</p>`
 		}
 	]

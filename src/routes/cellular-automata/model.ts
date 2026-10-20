@@ -106,13 +106,26 @@ export function settle(rule: number, width = 61, steps = 1000, seed = 7): Settli
 
 // ---- rule 184 as traffic ----------------------------------------------------------------------
 
+/** A ring road of `width` cells with exactly round(width * density) cars, shuffled (seeded). */
+export function road(width: number, density: number, seed: number): Uint8Array {
+	const rand = rng(seed);
+	const cars = Math.round(width * density);
+	const row = Uint8Array.from({ length: width }, (_, i) => (i < cars ? 1 : 0));
+	for (let i = width - 1; i > 0; i--) {
+		const j = Math.floor(rand() * (i + 1));
+		[row[i], row[j]] = [row[j], row[i]];
+	}
+	return row;
+}
+
 /**
  * Rule 184 read as cars (1) on a one-lane ring road: a car moves one cell on if the cell ahead is
- * empty. Returns the share of cars that move per generation, averaged over the last `measure`
- * generations after `warmup`.
+ * empty. Returns the share of cars that move per generation on this road, averaged over
+ * `measure` generations after `warmup` generations of settling.
  */
-export function trafficSpeed(density: number, width = 400, warmup = 400, measure = 200, seed = 3) {
-	let row = randomRow(width, density, seed);
+export function trafficSpeed(start: Uint8Array, warmup = 2 * start.length, measure = 100) {
+	const width = start.length;
+	let row = start;
 	for (let g = 0; g < warmup; g++) row = step(row, 184);
 	const cars = live(row);
 	if (cars === 0) return 1;

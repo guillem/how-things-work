@@ -1,12 +1,12 @@
 <script lang="ts">
 	/**
 	 * Rule 184 as traffic: cars (blue) on a ring road of 120 cells over 70 generations, time running
-	 * down; beside it the share of cars moving against how full the road is, the flow law
-	 * min(1, (1 - d) / d) and this road's measured value.
+	 * down; beside it the share of cars moving (once settled) against how full the road is, the flow
+	 * law min(1, (1 - d) / d) and this same road's measured value.
 	 */
 	import { Axes, Label, linePath, scale } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
-	import { evolve, live, randomRow, trafficSpeed } from '../model';
+	import { evolve, live, road, trafficSpeed } from '../model';
 	import { runs } from '../runs';
 
 	let { params }: StageProps = $props();
@@ -14,10 +14,13 @@
 	const density = $derived(Number(params.density ?? 0.35));
 	const W = 120;
 	const G = 70;
-	const rows = $derived(evolve(184, randomRow(W, density, 11), G - 1));
+	// One road for everything: the picture, the measured speed, the point on the chart.
+	const start = $derived(road(W, density, 11));
+	const rows = $derived(evolve(184, start, G - 1));
 	const cells = $derived(runs(rows, 30, 60, 4, 6.6));
-	const cars = $derived(live(rows[0]));
-	const speed = $derived(trafficSpeed(density));
+	const cars = $derived(live(start));
+	const full = $derived(cars / W);
+	const speed = $derived(trafficSpeed(start));
 	const law = (d: number) => Math.min(1, (1 - d) / d);
 	const curve = Array.from({ length: 91 }, (_, i) => 0.05 + i * 0.01);
 	const sx = scale([0, 1], [560, 920]);
@@ -69,19 +72,19 @@
 		stroke="var(--ca-repeats)"
 		stroke-width="3"
 	/>
-	<circle cx={sx(density)} cy={sy(speed)} r="7" fill="var(--ca-changing)" />
+	<circle cx={sx(full)} cy={sy(speed)} r="7" fill="var(--ca-changing)" />
 	<Readout
 		id="ca-speed"
 		order={2}
 		label="Moving"
-		value="{Math.round(speed * 100)}% of cars move each step (flow law {Math.round(
-			law(density) * 100
+		value="{Math.round(speed * 100)}% of cars move each step once settled (flow law {Math.round(
+			law(full) * 100
 		)}%)"
 	>
 		<Label
 			x={920}
 			y={100}
-			text="{Math.round(speed * 100)}% of cars moving"
+			text="{Math.round(speed * 100)}% of cars moving (settled)"
 			anchor="end"
 			size={18}
 			weight={700}
@@ -92,7 +95,7 @@
 		<Label
 			x={920}
 			y={126}
-			text={density <= 0.5 ? 'free flow: jams dissolve' : 'jammed: waves drift backwards'}
+			text={full <= 0.5 ? 'free flow: jams dissolve' : 'jammed: waves drift backwards'}
 			anchor="end"
 			size={13}
 			weight={600}

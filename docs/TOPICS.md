@@ -122,7 +122,7 @@ A topic is done when:
 - [x] random-graphs
 - [x] phase-portraits
 - [x] resampling-inference
-- [ ] cellular-automata
+- [x] cellular-automata
 
 **Physics**
 - [x] newtons-laws
