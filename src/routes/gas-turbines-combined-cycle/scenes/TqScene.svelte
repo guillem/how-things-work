@@ -8,15 +8,15 @@
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { hMix, plant, T0 } from '../model';
 
-	let { step, params }: StageProps = $props();
+	let { params }: StageProps = $props();
 
-	const phase = $derived(String(step.hints?.phase ?? 'tq'));
+	// The reader's own gas turbine and boiler settings, carried from step to step.
+	const ratio = $derived(Number(params.ratio ?? 18));
+	const tit = $derived(Number(params.tit ?? 1650));
 	const pHigh = $derived(Number(params.phigh ?? 12));
-	const pinch = $derived(phase === 'tq' ? 10 : Number(params.pinch ?? 10));
-	const levels = $derived(phase === 'levels' ? Number(params.levels ?? 1) : 1);
-	const p = $derived(
-		plant({ ratio: 18, tit: 1650, pHigh: phase === 'levels' ? 12 : pHigh, pinch, levels })
-	);
+	const pinch = $derived(Number(params.pinch ?? 10));
+	const levels = $derived(Number(params.levels ?? 1));
+	const p = $derived(plant({ ratio, tit, pHigh, pinch, levels }));
 	const total = $derived(p.sections.length ? p.sections[p.sections.length - 1].q1 : 1);
 	// The exhaust's heat above 15 °C sets the width, so a fuller boiler fills more of it.
 	const available = $derived(hMix(p.gt.exhaust, p.gt.t4) - hMix(p.gt.exhaust, T0));

@@ -181,19 +181,39 @@ export const satAtP = (p: number) => lerp(SAT_P, p, 1);
 /** Saturation at temperature T (K). */
 export const satAtT = (T: number) => lerp(SAT_T, T, 0);
 
-/** h and s of water (liquid) or steam at (T, p), interpolated in T along the two nearest isobars and in log p between them. */
+/**
+ * h and s of steam (phase 1) or liquid water (phase 0) at (T, p).
+ *
+ * Steam: each isobar is read at the same superheat above its own boiling point, as a departure
+ * from its saturated vapour, and the departures are interpolated in log p and added to the
+ * saturated vapour at p. So the result is exactly the saturated vapour at the boiling point and
+ * rises from there, with no interpolation across the phase boundary.
+ *
+ * Liquid: the saturated liquid at T, plus v dp for the pressure above saturation (v = 0.001 m³/kg).
+ */
 export function steamProps(T: number, p: number, phase: 0 | 1) {
+	if (phase === 0) {
+		const sat = lerp(SAT_P, T, 0);
+		return { h: sat[2] + 0.001 * Math.max(0, p - sat[1]) * 1000, s: sat[4] };
+	}
+	const satP = satAtP(p);
+	const superheat = Math.max(0, T - satP[0]);
 	let j = 0;
 	while (j < ISOBARS.length - 2 && ISOBARS[j + 1][0] < p) j++;
-	const at = (k: number) => {
-		const rows = ISOBARS[k][1].filter((r) => r[3] === phase);
-		const r = lerp(rows, T, 0);
-		return { h: r[1], s: r[2] };
+	const departure = (k: number) => {
+		const [pk, rows] = ISOBARS[k];
+		const sk = satAtP(pk);
+		const vapour = [[sk[0], sk[3], sk[5]], ...rows.filter((r) => r[3] === 1 && r[0] > sk[0])];
+		const r = lerp(vapour, sk[0] + superheat, 0);
+		return { h: r[1] - sk[3], s: r[2] - sk[5] };
 	};
-	const a = at(j);
-	const b = at(j + 1);
+	const a = departure(j);
+	const b = departure(j + 1);
 	const u = Math.log(p / ISOBARS[j][0]) / Math.log(ISOBARS[j + 1][0] / ISOBARS[j][0]);
-	return { h: a.h + (b.h - a.h) * u, s: a.s + (b.s - a.s) * u };
+	return {
+		h: satP[3] + a.h + (b.h - a.h) * u,
+		s: satP[5] + a.s + (b.s - a.s) * u
+	};
 }
 
 // ---- the HRSG and the steam turbine -------------------------------------------------------------
@@ -258,6 +278,8 @@ function recover(gt: GasTurbine, pressures: number[], pinch: number) {
 	let q = 0;
 	const cond = satAtT(T_COND);
 	const feedH = cond[2];
+	/** Condensate pumped to pressure pj: about v dp more enthalpy (v = 0.001 m³/kg). */
+	const feed = (pj: number) => feedH + 0.001 * (pj - cond[1]) * 1000;
 	pressures.forEach((p, k) => {
 		const sat = satAtP(p);
 		const tSat = sat[0];
@@ -266,7 +288,7 @@ function recover(gt: GasTurbine, pressures: number[], pinch: number) {
 		// The water entering this level's economizer: the next level's boiling water, or the condensate.
 		const next = pressures[k + 1];
 		const tWaterIn = next === undefined ? T_COND : satAtP(next)[0];
-		const hIn = next === undefined ? feedH : steamProps(tWaterIn, p, 0).h;
+		const hIn = next === undefined ? feed(p) : steamProps(tWaterIn, p, 0).h;
 		const tPinch = tSat + pinch;
 		// A level whose evaporator the gas can no longer reach makes no steam, but its economizer
 		// still heats the water on its way to the levels above.
@@ -275,7 +297,7 @@ function recover(gt: GasTurbine, pressures: number[], pinch: number) {
 		const hSteam = steamProps(Math.max(tSteam, tSat + 1), p, 1).h;
 		let steam = 0;
 		const liquid = (T: number, pj: number) =>
-			T <= T_COND + 0.01 ? feedH + 0.001 * (pj - cond[1]) * 1000 : steamProps(T, pj, 0).h;
+			T <= T_COND + 0.01 ? feed(pj) : steamProps(T, pj, 0).h;
 		if (boils) {
 			// Superheater and evaporator: at most what the gas gives cooling to the pinch...
 			const fromPinch = (hMix(gas, tGas) - hMix(gas, tPinch)) / (hSteam - hf);

@@ -14,8 +14,15 @@
 	const full = $derived(phase === 'plant');
 	const ratio = $derived(Number(params.ratio ?? 18));
 	const tit = $derived(Number(params.tit ?? 1650));
-	const levels = $derived(full ? Number(params.levelsall ?? 3) : 3);
-	const p = $derived(plant({ ratio, tit, pHigh: 12, pinch: 10, levels }));
+	const p = $derived(
+		plant({
+			ratio,
+			tit,
+			pHigh: Number(params.phigh ?? 12),
+			pinch: Number(params.pinch ?? 10),
+			levels: Number(params.levels ?? 1)
+		})
+	);
 	const gt = $derived(p.gt);
 	const C = (T: number) => `${Math.round(T - 273.15)} °C`;
 	const pct = (x: number) => `${Math.round(x * 100)}%`;

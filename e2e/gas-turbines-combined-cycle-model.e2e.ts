@@ -97,3 +97,27 @@ test('energy balance: the heat the gas gives up equals what the water and steam 
 		expect(Math.abs(gasSide - waterSide) / gasSide).toBeLessThan(0.01);
 	}
 });
+
+test('the corners: a hot, low-ratio gas turbine with a tight pinch still keeps the gas above the water', () => {
+	for (const levels of [1, 2, 3]) {
+		const p = plant({ ratio: 4, tit: 1800, pHigh: 16, pinch: 5, levels });
+		for (const s of p.sections) expect(s.gasOut).toBeGreaterThan(s.waterIn);
+		expect(p.stack).toBeGreaterThan(306.15);
+	}
+});
+
+test('steam just above boiling has more enthalpy than saturated vapour, at every pressure', () => {
+	for (const p of [0.3, 0.4, 1, 2.5, 4, 8, 12, 16]) {
+		const sat = satAtP(p);
+		expect(steamProps(sat[0] + 1, p, 1).h).toBeGreaterThan(sat[3]);
+		expect(steamProps(sat[0], p, 1).h).toBeCloseTo(sat[3], 6);
+	}
+});
+
+test('at 1800 K the gas turbine alone peaks at a ratio below 100', () => {
+	const eff = (r: number) => gasTurbine(r, 1800).efficiency;
+	let best = 4;
+	for (let r = 4; r <= 100; r++) if (eff(r) > eff(best)) best = r;
+	expect(best).toBeLessThan(100);
+	expect(best).toBeGreaterThan(40);
+});

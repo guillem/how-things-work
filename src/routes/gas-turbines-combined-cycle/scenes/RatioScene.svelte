@@ -1,7 +1,7 @@
 <script lang="ts">
 	/**
-	 * Efficiency against pressure ratio, 4 to 70, for the gas turbine alone and for the combined
-	 * plant (three levels, 12 MPa, 10 K pinch), with each curve's best ratio marked.
+	 * Efficiency against pressure ratio, 4 to 100 in steps of 2, for the gas turbine alone and for
+	 * the combined plant with the reader's boiler settings, with each curve's best ratio marked.
 	 */
 	import { Axes, Label, linePath, scale } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
@@ -10,19 +10,22 @@
 	let { params }: StageProps = $props();
 
 	const tit = $derived(Number(params.tit ?? 1650));
-	const ratios = Array.from({ length: 67 }, (_, i) => 4 + i);
+	const pHigh = $derived(Number(params.phigh ?? 12));
+	const pinch = $derived(Number(params.pinch ?? 10));
+	const levels = $derived(Number(params.levels ?? 1));
+	const ratios = Array.from({ length: 49 }, (_, i) => 4 + 2 * i);
 	const rows = $derived(
 		ratios.map((r) => ({
 			r,
 			gt: gasTurbine(r, tit).efficiency * 100,
-			cc: plant({ ratio: r, tit, pHigh: 12, pinch: 10, levels: 3 }).efficiency * 100
+			cc: plant({ ratio: r, tit, pHigh, pinch, levels }).efficiency * 100
 		}))
 	);
 	const bestOf = (key: 'gt' | 'cc') =>
 		rows.reduce((b, row) => (row[key] > b[key] ? row : b), rows[0]);
 	const bestGt = $derived(bestOf('gt'));
 	const bestCc = $derived(bestOf('cc'));
-	const sx = scale([4, 70], [90, 880]);
+	const sx = scale([4, 100], [90, 880]);
 	const sy = scale([20, 70], [520, 70]);
 </script>
 
@@ -72,7 +75,7 @@
 				x={sx(m.b.r)}
 				y={sy(m.b[m.key]) - 14}
 				text="{m.name}: best at {m.b.r}, {m.b[m.key].toFixed(1)}%"
-				anchor={m.b.r > 50 ? 'end' : 'middle'}
+				anchor={m.b.r > 75 ? 'end' : 'middle'}
 				color={m.color}
 				weight={700}
 			/>

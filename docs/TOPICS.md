@@ -282,7 +282,7 @@ A topic is done when:
 - [x] wind-turbine-aerodynamics
 - [x] abs-brakes
 - [x] bicycle-stability
-- [ ] gas-turbines-combined-cycle
+- [x] gas-turbines-combined-cycle
 - [ ] heat-pumps-refrigeration
 
 ## Topics
@@ -1839,7 +1839,7 @@ A topic is done when:
 - **Takeaway:** A combined-cycle plant reaches about 60 percent efficiency because a steam cycle turns the gas turbine's hot exhaust into extra work, and it recovers more the more closely the steam's heating line can follow the cooling exhaust.
 - **Prerequisites:** heat-engines, entropy
 - **Related:** power-grid, heat-pumps-refrigeration
-- **Needs:** Specific heats of air and combustion products as functions of temperature (NASA Glenn thermodynamic polynomial coefficients, US government, public domain); water and steam properties from IAPWS-IF97 (freely published), as in steam-power-cycles.
+- **Needs:** Specific heats of air and combustion products as functions of temperature (NASA Glenn thermodynamic polynomial coefficients, US government, public domain); water and steam properties from the IAPWS-95 formulation as tabulated by NIST, as in heat-engines (IAPWS-IF97, its industrial fit, would serve equally).
 - **Pitfall:** The best gas turbine for a combined cycle is not the most efficient stand-alone one. A lower pressure ratio leaves a hotter exhaust for the steam cycle, so the plant's optimum pressure ratio is below the gas turbine's own. And the steam cycle burns no extra fuel: it only uses heat that would otherwise go up the stack.
 
 #### heat-pumps-refrigeration
