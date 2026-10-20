@@ -4972,3 +4972,21 @@ kbd {
 	--ab-lock: #ff6b6b;
 	--ab-road: #5c636a;
 }
+
+/* bicycle-stability: lean, steer, the self-stable band, and the eigenvalues' real and imaginary parts */
+:root {
+	--bk-lean: #1971c2;
+	--bk-steer: #e8590c;
+	--bk-band: #2f9e44;
+	--bk-re: #1c1b19;
+	--bk-im: #ae3ec9;
+	--bk-fall: #e03131;
+}
+:root[data-theme='dark'] {
+	--bk-lean: #4dabf7;
+	--bk-steer: #ff922b;
+	--bk-band: #51cf66;
+	--bk-re: #e9ecef;
+	--bk-im: #da77f2;
+	--bk-fall: #ff6b6b;
+}

@@ -5373,6 +5373,58 @@
 			stroke-width="2.2"
 		/>
 		<circle cx="111.3" cy="31.7" r="3.5" fill={accent} />
+	{:else if slug === 'bicycle-stability'}
+		<!-- a bicycle from the side, its steering axis and trail, and a lean that dies away -->
+		<circle
+			cx="40"
+			cy="76"
+			r="20"
+			fill="none"
+			stroke="currentColor"
+			stroke-width="2.2"
+			opacity="0.75"
+		/>
+		<circle
+			cx="104"
+			cy="76"
+			r="20"
+			fill="none"
+			stroke="currentColor"
+			stroke-width="2.2"
+			opacity="0.75"
+		/>
+		<path
+			d="M40 76 L66 76 L92 50 L60 50 Z M66 76 L58 44 M92 50 L104 76"
+			fill="none"
+			stroke={accent}
+			stroke-width="2.4"
+			stroke-linejoin="round"
+		/>
+		<line
+			x1="88"
+			y1="38"
+			x2="110"
+			y2="98"
+			stroke="currentColor"
+			stroke-width="1"
+			stroke-dasharray="3 2"
+			opacity="0.6"
+		/>
+		<path
+			d="M136 60 Q142 34 148 60 T160 60 T170 60 T178 60 T186 60"
+			fill="none"
+			stroke={accent}
+			stroke-width="1.8"
+		/>
+		<line
+			x1="134"
+			y1="60"
+			x2="188"
+			y2="60"
+			stroke="currentColor"
+			stroke-width="0.8"
+			opacity="0.4"
+		/>
 	{:else}
 		<circle cx="100" cy="60" r="30" fill="none" stroke={accent} stroke-width="2" />
 		<circle cx="100" cy="60" r="5" fill={accent} />

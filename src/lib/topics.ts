@@ -1446,6 +1446,15 @@ const explainers: Explainer[] = [
 		accent: '#e8590c',
 		steps: 8,
 		minutes: 20
+	},
+	{
+		slug: 'bicycle-stability',
+		title: 'Why a bicycle balances itself',
+		summary:
+			'Push a riderless bicycle and watch it fall, recover or slowly topple depending on its speed. Then find the self-stable band in the eigenvalues of its equations of motion, and see which parts of the design make it: trail, head angle, the wheels’ spin, and a bicycle with none of the usual ones.',
+		accent: '#1971c2',
+		steps: 9,
+		minutes: 20
 	}
 ];
 
