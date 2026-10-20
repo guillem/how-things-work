@@ -1,6 +1,6 @@
 # Topic catalog
 
-Source of truth for the content of an interactive web learning tool that shows how things work. It defines 164 topics in 11 categories, each built around one interactive graphic. Readers range from high-school students to university majors.
+Source of truth for the content of an interactive web learning tool that shows how things work. It defines 165 topics in 11 categories, each built around one interactive graphic. Readers range from high-school students to university majors.
 
 This file covers content only. It does not choose the stack, the visual design or the project layout; take those from the repository's own instructions.
 
@@ -97,7 +97,7 @@ A topic is done when:
 | Earth & Climate | `earth` | 13 |
 | Space | `space` | 11 |
 | Computing | `computing` | 14 |
-| Information & Networks | `networks` | 14 |
+| Information & Networks | `networks` | 15 |
 | Artificial Intelligence | `ai` | 20 |
 | Energy & Machines | `energy` | 14 |
 
@@ -250,6 +250,7 @@ A topic is done when:
 - [x] elliptic-curve-cryptography
 - [x] kalman-filter
 - [x] radar-sonar
+- [ ] barcode-stripes
 
 **Artificial Intelligence**
 - [x] learning-from-data
@@ -1551,6 +1552,15 @@ A topic is done when:
 - **Prerequisites:** waves-interference, fourier-transform, wireless-signals
 - **Related:** gps, medical-imaging, kalman-filter
 - **Pitfall:** Range comes from timing, not triangulation; stealth is mostly about where the echo goes, not about absorbing it; and the Doppler shift measures only the speed toward or away from the antenna.
+
+#### barcode-stripes
+- **Title:** Barcodes at the checkout
+- **Level:** 0
+- **Kind:** step
+- **Interaction:** Drag a scanner's red line across a barcode (a UPC-A, the 12-digit form found on many products) and watch what it sees, a trace of dark and light over time, then step through it: a start mark, six groups of stripes, a middle mark, six more and an end mark, each group of two bars and two gaps one digit. Scan slowly, fast or at a slant and the widths all stretch together, so the digits come out the same; scan it upside down and the scanner tells, from the left groups looking different from the right ones, which way to read. Smudge one stripe and the last digit, a check digit, turns the light red: the number is wrong, scan again.
+- **Takeaway:** A barcode is a number written as stripe widths, read as proportions so that speed and angle do not matter, with a last digit that catches a misread; the price is looked up afterwards.
+- **Prerequisites:** none
+- **Pitfall:** The barcode does not contain the price or the product name; it is a number the till looks up. The scanner reads ratios of widths, not absolute sizes, which is why the code can be printed at any size.
 
 ### Artificial Intelligence
 
