@@ -104,6 +104,30 @@ Run the dev server with `npm run dev` (http://localhost:5173, hot reload).
 - Labels must never overlap each other or sit on top of important shapes, and must never be
   crossed by moving particles; text anchored at the right edge must use `anchor="end"`.
 
+## Level-0 scenes
+
+Level 0 is for curious beginners (about ages 9 to 13, or adults with no science background; the
+full definition is in `TOPICS-PROPOSAL.md`, "Level 0"). Everything above still applies; what
+changes is what the scene shows and says, never what it computes.
+
+- **The same real model underneath.** The graphic is driven by a fact-checked model with its own
+  `*-model.e2e.ts` tests, like any other page (the siphon is a real siphon). Hide the equations,
+  not the physics: no faked curves, no numbers typed in to look right.
+- **No formulas anywhere**: not on the stage, not in readouts, not in captions. Numbers are counts
+  and comparisons ("twice as far", "a thousand times smaller") in everyday units (metres, degrees,
+  seconds, litres), rounded to what a reader would say aloud.
+- **Start from a thing the reader knows** (a toilet, a magnet, a shadow): draw the object
+  recognisably first, then open it up. The first step answers the question a ten-year-old asks.
+- **One control at a time.** Each step offers at most one control, and its effect is large and
+  immediate, so the reader sees the point by playing before reading. No multi-slider
+  dashboards; a step that needs two variables shows them in two steps.
+- **Plain words.** Labels name things the way the reader would ("the float", not "the ballcock
+  valve"); a technical word appears only once the picture has shown what it means, with a
+  glossary entry. Short labels, few of them: fewer callouts per step than at level 1.
+- **Six to nine steps**, under ten minutes; each step one idea. The last step points onward to the
+  topics it leads to (usually level 1).
+- Bigger, bolder shapes and text than usual: level-0 readers are often on phones and tablets.
+
 ## Phone readouts
 
 On a 390 px phone the stage is drawn at ~0.4 scale, so 13-unit text is ~5 px tall. Wrap a scene's
