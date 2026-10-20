@@ -1482,6 +1482,15 @@ const explainers: Explainer[] = [
 		accent: '#e8590c',
 		steps: 7,
 		minutes: 15
+	},
+	{
+		slug: 'life-on-a-grid',
+		title: 'Life on a grid',
+		summary:
+			'Paint a few squares, press step, and watch them live, die and be born by three simple rules about counting neighbours. Find shapes that sit still, shapes that blink and one that walks, all made by a rule nobody drew them with.',
+		accent: '#1c7ed6',
+		steps: 8,
+		minutes: 10
 	}
 ];
 

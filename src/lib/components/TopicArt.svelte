@@ -5463,6 +5463,51 @@
 			fill={accent}
 		/>
 		<line x1="34" y1="94" x2="166" y2="94" stroke="currentColor" stroke-width="1" opacity="0.4" />
+	{:else if slug === 'life-on-a-grid'}
+		<!-- a grid with a glider, a blinker and a block -->
+		{#each Array.from({ length: 6 }, (_, y) => y) as y (y)}
+			{#each Array.from({ length: 12 }, (_, x) => x) as x (x)}
+				<rect
+					x={28 + x * 12}
+					y={24 + y * 12}
+					width="10"
+					height="10"
+					rx="2"
+					fill={[
+						'1,0',
+						'2,1',
+						'0,2',
+						'1,2',
+						'2,2',
+						'6,1',
+						'6,2',
+						'6,3',
+						'9,3',
+						'10,3',
+						'9,4',
+						'10,4'
+					].includes(`${x},${y}`)
+						? accent
+						: 'currentColor'}
+					opacity={[
+						'1,0',
+						'2,1',
+						'0,2',
+						'1,2',
+						'2,2',
+						'6,1',
+						'6,2',
+						'6,3',
+						'9,3',
+						'10,3',
+						'9,4',
+						'10,4'
+					].includes(`${x},${y}`)
+						? 1
+						: 0.12}
+				/>
+			{/each}
+		{/each}
 	{:else}
 		<circle cx="100" cy="60" r="30" fill="none" stroke={accent} stroke-width="2" />
 		<circle cx="100" cy="60" r="5" fill={accent} />

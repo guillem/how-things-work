@@ -5038,3 +5038,19 @@ kbd {
 	--ca-changing: #ff922b;
 	--ca-car: #4dabf7;
 }
+
+/* life-on-a-grid: live and empty squares, squares about to die or be born */
+:root {
+	--life-live: #1c7ed6;
+	--life-on-live: #ffffff;
+	--life-empty: #edebe5;
+	--life-die: #e03131;
+	--life-born: #b2f2bb;
+}
+:root[data-theme='dark'] {
+	--life-live: #4dabf7;
+	--life-on-live: #0b1a2a;
+	--life-empty: #26282d;
+	--life-die: #ff6b6b;
+	--life-born: #2b8a3e;
+}
