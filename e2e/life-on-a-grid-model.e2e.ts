@@ -58,6 +58,17 @@ test('the same seed always gives the same future', () => {
 	expect(same(a, b)).toBe(true);
 });
 
+test('the seed under other birth numbers: spreads with 2, freezes with 4, dies with 5', () => {
+	const run = (birth: number, n: number) => {
+		let g = place(24, 15, [['rpentomino', 11, 6]]);
+		for (let i = 0; i < n; i++) g = step(g, { birth: [birth], survive: [2, 3] });
+		return g;
+	};
+	expect(population(run(2, 10))).toBeGreaterThan(40);
+	expect(same(run(4, 2), run(4, 3))).toBe(true);
+	expect(population(run(5, 10))).toBe(0);
+});
+
 test('changing the birth number changes everything: with birth on 2, a block bursts', () => {
 	const g = place(16, 16, [['block', 7, 7]]);
 	const b2 = step(g, { birth: [2], survive: [2, 3] });

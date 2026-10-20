@@ -4,7 +4,7 @@
 	 * paints squares and steps one picture at a time, with each square's count of live neighbours
 	 * shown (and, under the rules, which squares are about to die or be born). Later steps play
 	 * preset shapes: still lifes and blinkers, the glider, the wrong one-at-a-time update, a changed
-	 * birth number, and the same seed replayed.
+	 * birth number, and the same seed replayed; one step plays the reader's own painting.
 	 */
 	import { untrack } from 'svelte';
 	import { Label } from '#lib/draw/index.ts';
@@ -35,9 +35,15 @@
 		['glider', 12, 4],
 		['block', 18, 9]
 	]);
+	/** The reader's painted grid (or the starting one), before any Step presses. */
+	const painted: Grid = $derived(
+		params.cells === undefined ? PAINT_DEFAULT : decode(String(params.cells), W, H)
+	);
+	const presses = $derived(Number(params.step ?? 0));
+	const paintedAt = $derived(Number(params.paintedat ?? 0));
+	const pressed = $derived(Math.max(0, presses - paintedAt));
 	const seedGrid: Grid = $derived.by(() => {
-		if (painting)
-			return params.cells === undefined ? PAINT_DEFAULT : decode(String(params.cells), W, H);
+		if (painting || phase === 'yours') return painted;
 		if (phase === 'still')
 			return place(W, H, [
 				['block', 3, 3],
@@ -58,43 +64,57 @@
 		phase === 'rule' ? { birth: [Number(params.birth ?? 3)], survive: [2, 3] } : CONWAY
 	);
 	const wrong = $derived(phase === 'together' && params.onebyone === true);
-	/** Every picture from the seed, up to 240 of them. */
-	const history: Grid[] = $derived.by(() => {
-		const out = [seedGrid];
-		for (let i = 0; i < 240; i++) {
-			const g = out[out.length - 1];
-			out.push(wrong ? stepInPlace(g, rule) : nextGen(g, rule));
-		}
-		return out;
+	/**
+	 * The pictures from the seed, worked out as far as they are needed (a fresh list whenever the
+	 * seed, the rule or the update order changes).
+	 */
+	const sim = $derived.by(() => {
+		const list: Grid[] = [seedGrid];
+		const r = rule;
+		const inPlace = wrong;
+		return (n: number) => {
+			while (list.length <= n) {
+				const g = list[list.length - 1];
+				list.push(inPlace ? stepInPlace(g, r) : nextGen(g, r));
+			}
+			return list[n];
+		};
 	});
 
 	// ---- which picture is shown ---------------------------------------------------------------
-	// Painting steps: the Step button's presses since the grid was last painted.
-	const presses = $derived(Number(params.step ?? 0));
-	const paintedAt = $derived(Number(params.paintedat ?? 0));
-	// Playing steps: three pictures a second from when the step (or its settings) started.
+	// Playing steps: three pictures a second from when the step (or its settings) started; a pause
+	// holds the picture, and playing on continues from it. With reduced motion, the explainer's
+	// frozen frame shows one later picture.
+	const playable = $derived(phase === 'still' || phase === 'glider' || phase === 'yours');
+	const playing = $derived(playable ? params.play !== false : true);
 	let t0 = $state(0);
 	$effect(() => {
-		void history;
+		void sim;
 		void step.id;
 		void params.again;
 		t0 = untrack(() => t);
 	});
-	const local = $derived(t >= t0 ? t - t0 : t);
-	const playing = $derived(phase === 'still' || phase === 'glider' ? params.play !== false : true);
+	let pausedAt: number | null = null;
+	$effect(() => {
+		const now = untrack(() => t);
+		if (!playing) pausedAt = now;
+		else if (pausedAt !== null) {
+			const gap = now - pausedAt;
+			pausedAt = null;
+			untrack(() => (t0 += gap));
+		}
+	});
+	// Reduced motion freezes t: read it directly, so the frozen frame is a later picture, not the first.
+	const local = $derived(reduced ? t : t >= t0 ? t - t0 : t);
 	const liveGen = $derived(Math.floor(local * 3));
 	let held = $state(0);
 	$effect(() => {
 		if (playing) held = liveGen;
 	});
 	const gen = $derived(
-		painting
-			? Math.max(0, presses - paintedAt)
-			: reduced
-				? 0
-				: Math.min(history.length - 1, playing ? liveGen : held)
+		painting ? pressed : (phase === 'yours' ? pressed : 0) + (playing ? liveGen : held)
 	);
-	const grid = $derived(history[Math.min(history.length - 1, gen)]);
+	const grid = $derived(sim(gen));
 
 	// ---- painting -----------------------------------------------------------------------------
 	const C = 34;
@@ -172,7 +192,7 @@
 				stroke={fate && alive && !nextAlive ? 'var(--life-die)' : 'none'}
 				stroke-width="3.5"
 			/>
-			{#if showCounts && n > 0}
+			{#if showCounts}
 				<text
 					x={X0 + x * C + C / 2}
 					y={Y0 + y * C + C / 2 + 5}

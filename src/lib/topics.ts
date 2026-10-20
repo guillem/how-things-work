@@ -1489,6 +1489,15 @@ const explainers: Explainer[] = [
 		summary:
 			'Paint a few squares, press step, and watch them live, die and be born by three simple rules about counting neighbours. Find shapes that sit still, shapes that blink and one that walks, all made by a rule nobody drew them with.',
 		accent: '#1c7ed6',
+		steps: 9,
+		minutes: 10
+	},
+	{
+		slug: 'shadows-and-pinholes',
+		title: 'Shadows & pinholes',
+		summary:
+			'Move a lamp, a toy and a wall about a room and watch the shadow grow and shrink, because light travels in straight lines. Make its edge soft with a wide lampshade, add a second lamp, and poke a pinhole in a box to see an upside-down picture of the lamp.',
+		accent: '#f59f00',
 		steps: 8,
 		minutes: 10
 	}

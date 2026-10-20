@@ -63,8 +63,8 @@ export const spec: ExplainerSpec = {
 			controls: [stepButton],
 			body: `
 <p>Here is a grid of squares. Each square is either <strong>alive</strong> (filled in) or <strong>empty</strong>. Click squares to paint them alive, or click again to empty them.</p>
-<p>Every square has eight neighbours: the squares touching it, including the corners. The small number in a square is how many of its neighbours are alive right now.</p>
-<p>Press <strong>Step</strong> and every square decides, all at the same moment, whether it is alive in the next picture. What decides it is only that number.</p>`
+<p>Every square has eight neighbours: the squares touching it, including the corners. The small number in a square is how many of its neighbours are alive right now. This board wraps round: a square on one edge has neighbours on the opposite edge, so shapes that walk off one side come back on the other.</p>
+<p>Press <strong>Step</strong> and every square decides, all at the same moment, whether it is alive in the next picture. What decides it is that number, and whether the square is alive or empty now.</p>`
 		},
 		{
 			id: 'rules',
@@ -78,6 +78,18 @@ export const spec: ExplainerSpec = {
 <p>The whole game is three rules, invented by the mathematician John Conway in 1970:</p>
 <p><strong>Lonely dies:</strong> a live square with fewer than two live neighbours is empty next time. <strong>Crowded dies:</strong> a live square with more than three live neighbours is empty next time. <strong>Three makes one:</strong> an empty square with exactly three live neighbours comes alive.</p>
 <p>A live square with two or three neighbours just stays alive. The squares marked red are about to die, the ones marked green are about to be born. Press Step and check.</p>`
+		},
+		{
+			id: 'yours',
+			chapter: 'rules',
+			title: 'Press play',
+			scene: 'grid',
+			hints: { phase: 'yours' },
+			duration: 22,
+			controls: [play],
+			body: `
+<p>Now let your own painting run by itself: three pictures every second, every square following the rules each time. Pause it whenever you like and play on from the same picture.</p>
+<p>Most random scribbles change wildly for a while, then calm down into a few shapes that sit still or blink. Some leave behind a little shape that walks away. The next steps look at those shapes one by one. (To change the painting, go back a step.)</p>`
 		},
 		// ------------------------------------------------------------------ shapes
 		{
@@ -101,7 +113,7 @@ export const spec: ExplainerSpec = {
 			duration: 22,
 			controls: [play],
 			body: `
-<p>This little shape of five squares is called a <strong>glider</strong>. Watch it: it changes shape, changes again, and after four pictures it is back to its first shape, but one square further across and one square further down. So it walks across the grid, diagonally, forever.</p>
+<p>This little shape of five squares is called a <strong>glider</strong>. Watch it: it changes shape, changes again, and after four changes it is back to its first shape, but one square further across and one square further down. So it walks across the grid, diagonally, forever.</p>
 <p>Nobody told it to walk. The rules only talk about single squares and their neighbours. The walking comes out of the rules by itself.</p>`
 		},
 		{
@@ -127,7 +139,7 @@ export const spec: ExplainerSpec = {
 			controls: [birth],
 			body: `
 <p>Here is a little seed of five squares that, with Conway’s rules, grows into a busy, changing crowd before settling down. Now change one number: how many neighbours an empty square needs to come alive.</p>
-<p>With two, almost everything is born and the grid fills up in a few steps. With four or more, almost nothing is born, and the seed fizzles out or freezes. Three is the number that gives the most interesting mixture of growing and dying.</p>`
+<p>With one or two, this seed spreads quickly across the board, with squares appearing and disappearing all the time. With four, it turns at once into a shape that stays still. With five or six, it disappears. Changing just one number changes its whole future.</p>`
 		},
 		{
 			id: 'same',

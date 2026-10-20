@@ -43,3 +43,18 @@ test('rule: the birth number can be changed', async ({ page }) => {
 	await page.locator('input[type=range][data-control=birth]').fill('2');
 	await expect(stage(page)).toContainText('birth needs 2 neighbours');
 });
+
+test('press play: the reader’s own painting runs, and pausing holds the picture', async ({
+	page
+}) => {
+	await open(page, './life-on-a-grid/#paint', '12 squares alive');
+	await page.getByRole('button', { name: /Paint squares/ }).click({ position: { x: 10, y: 10 } });
+	await expect(stage(page)).toContainText('13 squares alive');
+	await page.getByRole('button', { name: 'Next step' }).click();
+	await page.getByRole('button', { name: 'Next step' }).click();
+	await expect(page).toHaveURL(/#yours$/);
+	// With reduced motion the frozen frame shows picture 8 of the painting.
+	await expect(stage(page)).toContainText('picture 8');
+	await page.locator('input[type=checkbox][data-control=play]').uncheck();
+	await expect(stage(page)).toContainText('picture 8');
+});

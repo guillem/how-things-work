@@ -232,7 +232,7 @@ A topic is done when:
 - [x] game-tree-search
 - [x] cache-memory-hierarchy
 - [x] hash-tables-bloom-filters
-- [ ] life-on-a-grid
+- [x] life-on-a-grid
 
 **Information & Networks**
 - [x] compression
