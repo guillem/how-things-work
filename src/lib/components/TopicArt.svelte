@@ -5517,6 +5517,13 @@
 		<rect x="80" y="50" width="8" height="20" rx="2" fill="currentColor" opacity="0.75" />
 		<rect x="168" y="14" width="10" height="92" fill={accent} opacity="0.25" />
 		<rect x="168" y="38" width="10" height="44" fill="currentColor" opacity="0.7" />
+	{:else if slug === 'fireflies-in-sync'}
+		<!-- a night meadow with fireflies flashing together -->
+		<rect x="18" y="14" width="164" height="92" rx="10" fill="#1b2236" />
+		{#each [[40, 40], [62, 70], [88, 34], [104, 62], [128, 46], [150, 76], [160, 30], [76, 88], [120, 86], [46, 80]] as [x, y], i (i)}
+			<circle cx={x} cy={y} r="7" fill={accent} opacity="0.3" />
+			<circle cx={x} cy={y} r="2.6" fill={accent} />
+		{/each}
 	{:else}
 		<circle cx="100" cy="60" r="30" fill="none" stroke={accent} stroke-width="2" />
 		<circle cx="100" cy="60" r="5" fill={accent} />

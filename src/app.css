@@ -5072,3 +5072,19 @@ kbd {
 	--sh-toy: #4dabf7;
 	--sh-flame: #ff922b;
 }
+
+/* fireflies-in-sync: the night meadow, a firefly at rest and flashing, the in-step bar */
+:root {
+	--ff-night: #1b2236;
+	--ff-grass: #26334a;
+	--ff-rest: #5c6b52;
+	--ff-flash: #e9f871;
+	--ff-meter: #74b816;
+}
+:root[data-theme='dark'] {
+	--ff-night: #0d111c;
+	--ff-grass: #151d2c;
+	--ff-rest: #3f4a38;
+	--ff-flash: #f4fc8a;
+	--ff-meter: #94d82d;
+}

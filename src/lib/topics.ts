@@ -1500,6 +1500,15 @@ const explainers: Explainer[] = [
 		accent: '#f59f00',
 		steps: 8,
 		minutes: 10
+	},
+	{
+		slug: 'fireflies-in-sync',
+		title: 'Fireflies that flash together',
+		summary:
+			'A meadow of fireflies, each with its own little clock that flashes when it gets round to twelve. Let each flash hurry the neighbours’ clocks a bit, and watch the twinkling turn into patches, then waves, then the whole field flashing as one, with no leader at all.',
+		accent: '#74b816',
+		steps: 8,
+		minutes: 10
 	}
 ];
 
