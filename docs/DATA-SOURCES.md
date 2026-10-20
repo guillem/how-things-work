@@ -526,3 +526,9 @@ Downloads log:
 | Topic                | File(s)                                | Source                                                                                                               | Licence                | Status                   |
 | -------------------- | -------------------------------------- | -------------------------------------------------------------------------------------------------------------------- | ---------------------- | ------------------------ |
 | shadows-and-pinholes | none (`shadows-and-pinholes/model.ts`) | No dataset: straight-line (geometric) optics computed from similar triangles; the room's sizes are the project's own | The project's own code | **OK.** No external data |
+
+## Added 2026-10-21 (fireflies-in-sync)
+
+| Topic             | File(s)                             | Source                                                                                                                                                                                                                                          | Licence                | Status                   |
+| ----------------- | ----------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------- | ------------------------ |
+| fireflies-in-sync | none (`fireflies-in-sync/model.ts`) | No dataset: pulse-coupled oscillators after R. E. Mirollo and S. H. Strogatz, SIAM J. Appl. Math. 50:1645 (1990), with neighbours instead of all-to-all coupling, as in Nicky Case's public-domain "Fireflies" explorable; the meadow is seeded | The project's own code | **OK.** No external data |

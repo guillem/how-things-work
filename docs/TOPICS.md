@@ -1,6 +1,6 @@
 # Topic catalog
 
-Source of truth for the content of an interactive web learning tool that shows how things work. It defines 163 topics in 11 categories, each built around one interactive graphic. Readers range from high-school students to university majors.
+Source of truth for the content of an interactive web learning tool that shows how things work. It defines 164 topics in 11 categories, each built around one interactive graphic. Readers range from high-school students to university majors.
 
 This file covers content only. It does not choose the stack, the visual design or the project layout; take those from the repository's own instructions.
 
@@ -92,7 +92,7 @@ A topic is done when:
 | Mathematics | `math` | 19 |
 | Physics | `physics` | 14 |
 | Chemistry & Materials | `chemistry` | 14 |
-| Biology | `biology` | 16 |
+| Biology | `biology` | 17 |
 | Body & Medicine | `medicine` | 14 |
 | Earth & Climate | `earth` | 13 |
 | Space | `space` | 11 |
@@ -173,6 +173,7 @@ A topic is done when:
 - [x] lac-operon
 - [x] population-genetics
 - [x] turing-patterns
+- [ ] fireflies-in-sync
 
 **Body & Medicine**
 - [x] heart-circulation
@@ -895,6 +896,15 @@ A topic is done when:
 - **Prerequisites:** morphogen-gradients, reaction-rates-equilibrium
 - **Related:** chaos-fractals
 - **Pitfall:** Not every stripe in nature is a Turing pattern. The page should name where a Turing-type mechanism is well supported (digit spacing, hair and feather follicles) and where the evidence is mixed (fish skin, where pigment cells also move). It must not claim the mechanism for zebra stripes or fingerprints without saying that is contested.
+
+#### fireflies-in-sync
+- **Title:** Fireflies that flash together
+- **Level:** 0
+- **Kind:** simulate
+- **Interaction:** A meadow of fireflies, each with its own inner clock that flashes when it strikes twelve and starts again. One control: how much a neighbour's flash nudges a firefly's clock forward. At zero the meadow twinkles at random; turn it up and patches start flashing together, then waves, then the whole field as one; drag a finger through the swarm to scramble it and watch it fall back into step.
+- **Takeaway:** Thousands of fireflies flash together with no conductor, because each one nudges its own clock a little toward every flash it sees.
+- **Prerequisites:** none
+- **Pitfall:** There is no lead firefly and no outside signal; synchrony appears only from each insect reacting to its neighbours. Only some firefly species do this.
 
 ### Body & Medicine
 
