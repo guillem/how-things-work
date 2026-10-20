@@ -78,3 +78,14 @@ test('a locked wheel cannot steer: the heading stops changing once it locks', ()
 	const abs = brake({ surface: 'dry', pedal: 1, abs: true, steer: 4 });
 	expect(at(abs, 1.5).y).toBeGreaterThan(at(run, 1.5).y + 2);
 });
+
+test('brake first, steer half a second later: without ABS the car goes straight on, with ABS it swerves', () => {
+	for (const s of surfaces) {
+		const locked = brake({ surface: s, pedal: 1, abs: false, steer: 8, steerAt: 0.5 });
+		expect(Math.abs(locked.samples[locked.samples.length - 1].y)).toBeLessThan(0.01);
+	}
+	const abs = brake({ surface: 'dry', pedal: 1, abs: true, steer: 8, steerAt: 0.5 });
+	// Past an obstacle 30 m ahead, the car is more than a car's width to the side.
+	const pass = abs.samples.find((p) => p.x >= 30)!;
+	expect(pass.y).toBeGreaterThan(2.5);
+});

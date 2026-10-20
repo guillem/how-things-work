@@ -69,6 +69,8 @@ export interface BrakeInput {
 	v0?: number;
 	/** Slip angle the driver asks for (degrees); 0 brakes in a straight line. */
 	steer?: number;
+	/** When the driver starts steering (s after the foot lands). */
+	steerAt?: number;
 }
 
 export interface Sample {
@@ -106,7 +108,14 @@ const PRESS = 0.15;
 const V_END = 1;
 
 /** Braking from v0 (100 km/h by default) until the car stops. */
-export function brake({ surface, pedal, abs, v0 = 100 / 3.6, steer = 0 }: BrakeInput): BrakeRun {
+export function brake({
+	surface,
+	pedal,
+	abs,
+	v0 = 100 / 3.6,
+	steer = 0,
+	steerAt = 0
+}: BrakeInput): BrakeRun {
 	let v = v0;
 	let omega = v0 / R;
 	let torque = 0;
@@ -124,7 +133,7 @@ export function brake({ surface, pedal, abs, v0 = 100 / 3.6, steer = 0 }: BrakeI
 	for (let i = 0; v > V_END && t < 30; i++) {
 		const slip = Math.min(1, Math.max(0, (v - omega * R) / v));
 		// Combined slip: the friction of the total slip, split between braking and sideways.
-		const sy = (1 - slip) * tanA;
+		const sy = t >= steerAt ? (1 - slip) * tanA : 0;
 		const total = Math.hypot(slip, sy);
 		const m = total > 0 ? mu(total, surface) : 0;
 		mux = total > 0 ? (m * slip) / total : 0;
