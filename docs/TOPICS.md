@@ -1,6 +1,6 @@
 # Topic catalog
 
-Source of truth for the content of an interactive web learning tool that shows how things work. It defines 155 topics in 11 categories, each built around one interactive graphic. Readers range from high-school students to university majors.
+Source of truth for the content of an interactive web learning tool that shows how things work. It defines 156 topics in 11 categories, each built around one interactive graphic. Readers range from high-school students to university majors.
 
 This file covers content only. It does not choose the stack, the visual design or the project layout; take those from the repository's own instructions.
 
@@ -98,7 +98,7 @@ A topic is done when:
 | Space | `space` | 11 |
 | Computing | `computing` | 13 |
 | Information & Networks | `networks` | 14 |
-| Artificial Intelligence | `ai` | 19 |
+| Artificial Intelligence | `ai` | 20 |
 | Energy & Machines | `energy` | 10 |
 
 ## Checklist
@@ -267,6 +267,7 @@ A topic is done when:
 - [x] kv-cache-inference
 - [x] speculative-decoding
 - [x] chain-of-thought-scratchpad
+- [ ] k-means-clustering
 
 **Energy & Machines**
 - [x] heat-engines
@@ -1550,7 +1551,7 @@ A topic is done when:
 - **Interaction:** Pan and zoom a 2D map of thousands of words in which related words cluster; search for a word to see its nearest neighbors. Add and subtract word vectors (king − man + woman) to see which other word lands closest, and compare two sentences by the angle between their vectors.
 - **Takeaway:** Meaning can be represented as position in a high-dimensional space, where distance stands for similarity and directions stand for relationships.
 - **Prerequisites:** linear-transformations
-- **Related:** tensors, tokenization
+- **Related:** tensors, tokenization, k-means-clustering
 - **Needs:** Pretrained word vectors (a subset of a few thousand words) and a 2D projection of them.
 - **Pitfall:** The 2D map is a projection that distorts distances; compute neighbors and analogies in the full space. The vector nearest to king − man + woman is usually king itself, and queen comes first only when the three input words are excluded; exclude them and say so on the page.
 
@@ -1698,6 +1699,17 @@ A topic is done when:
 - **Needs:** Two tiny transformers trained offline by the project on generated addition problems (with and without a scratchpad), shipped and run in the page; the weights are the project's own, under the site's MIT licence.
 - **Pitfall:** The written steps help because they are computation the model conditions on, not because the model narrates a hidden thought, and in large models the written reasoning is not guaranteed to be a faithful account of how the answer was reached. Do not say transformers cannot add directly (they learn it well when the answer is written least-significant digit first), and do not say a scratchpad solves length generalisation: beyond the trained lengths, both models degrade.
 
+#### k-means-clustering
+- **Title:** Finding groups: k-means
+- **Level:** 1
+- **Kind:** step
+- **Interaction:** Scatter points by hand or load real penguins measured by bill length and flipper length, with their species hidden, then step k-means: drop k centres, colour every point by its nearest centre, move each centre to the middle of its colour, and repeat until nothing moves. Change k and the starting positions and watch the groups change, reveal the species to compare, and draw two rings, one inside the other, to see k-means cut them in half because it only knows 'nearest centre'.
+- **Takeaway:** A computer can find groups in data with no labels at all, by alternately assigning points to the nearest centre and moving the centres, but which groups it finds depends on how many it is told to look for and where it starts.
+- **Prerequisites:** learning-from-data
+- **Related:** embeddings
+- **Needs:** The Palmer penguins measurements (344 penguins, three species).
+- **Pitfall:** k-means does not discover the number of groups and finds only compact, roughly round blobs of similar size; different starts give different answers, so run it several times. The groups it finds need not match the species.
+
 ### Energy & Machines
 
 #### heat-engines
@@ -1803,4 +1815,4 @@ Strong candidates that are not in the catalog. Do not build them unless the user
 - Compilers
 - Cellular automata
 - Heat pumps
-- Clustering & dimensionality reduction
+- Dimensionality reduction

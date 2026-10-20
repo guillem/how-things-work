@@ -112,6 +112,8 @@ link and a short level-0 section in `docs/scene-guide.md`, then the builds. ocea
 keeps the Orr et al. 2015 cross-check (no PyCO2SYS fixtures). mri-k-space's and
 aperture-synthesis' data stay Unconfirmed in `DATA-SOURCES.md`.
 
+**Building k-means-clustering (2026-10-20, one topic at a time in the main session):** entry promoted, penguin data and model with Node tests pushed. Next: narrative (`steps.ts`), then the scene, registration, card, browser test, fact-check, tick; then abs-brakes.
+
 **Level-0 groundwork (2026-10-20, done):** the catalogue parses level 0 (Levels table row and definition in `TOPICS.md`); the index has a "Start here" link to `?level=0`, shown once the first level-0 topic is built; `docs/scene-guide.md` has a "Level-0 scenes" section. Next: the 5 unbuilt topics left in `proposals/topics-200/data/build-order.json` (k-means-clustering, abs-brakes, bicycle-stability, gas-turbines-combined-cycle, heat-pumps-refrigeration) and cellular-automata (now unblocked; still listed under `blocked` there), then the 39 level-0 topics (not yet in the build order's `order`; their entries are in `TOPICS-PROPOSAL.md`).
 
 **Releases v1.2.0–v1.2.1 (2026-10-20).** v1.2.0 failed in CI's e2e-full and deployed nothing;
