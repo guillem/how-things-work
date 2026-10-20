@@ -63,3 +63,40 @@ test('the expansion valve flashes some liquid to vapour', () => {
 	expect(c.quality).toBeGreaterThan(0.15);
 	expect(c.quality).toBeLessThan(0.4);
 });
+
+test('settings that do not make the boiling cycle are flagged, never shown as odd numbers', () => {
+	// Subcooled below the evaporating temperature: the valve's outlet would be below the dome.
+	const sub = cycle({ fluid: 'r134a', tEvap: C(15), high: { tCond: C(25) }, subcool: 15 });
+	expect(sub.valid).toBe(false);
+	expect(sub.quality).toBeNaN();
+	// CO2 cooled only to 45 °C at 7.5 MPa: the valve's outlet is beyond the vapour side of the dome.
+	const co2 = cycle({ fluid: 'co2', tEvap: C(15), high: { p: 7.5, tOut: C(45) } });
+	expect(co2.valid).toBe(false);
+	// Off the tables: a 50% compressor squeezing CO2 to 12 MPa from -30 °C.
+	const off = cycle({
+		fluid: 'co2',
+		tEvap: C(-30),
+		high: { p: 12, tOut: C(35) },
+		eta: 0.5,
+		superheat: 15
+	});
+	expect(off.valid).toBe(false);
+});
+
+test('every valid setting stays below its Carnot reference, superheat and subcooling included', () => {
+	for (const fluid of ['r134a', 'propane'] as const)
+		for (const te of [-30, -10, 0, 15])
+			for (const tc of [25, 40, 70])
+				for (const sc of [0, 5, 15])
+					for (const sh of [0, 15]) {
+						const c = cycle({
+							fluid,
+							tEvap: C(te),
+							high: { tCond: C(tc) },
+							eta: 1,
+							superheat: sh,
+							subcool: sc
+						});
+						if (c.valid) expect(c.copHeating).toBeLessThan(c.carnotHeating);
+					}
+});

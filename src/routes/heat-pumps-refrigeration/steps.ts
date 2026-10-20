@@ -133,8 +133,8 @@ export const spec: ExplainerSpec = {
 			controls: [tEvap, tCond],
 			body: `
 <p>Heat flows by itself only from hot to cold. A refrigerator and a heat pump push it the other way: out of a cold fridge into a warm kitchen, or out of winter air into a warm house. They do it with a fluid that boils at a low temperature, and a trick: a liquid’s boiling point rises with pressure.</p>
-<p>At low pressure the refrigerant boils at 0 °C, colder than the outside air, so it soaks up heat from the air as it boils. Compressed to a higher pressure, the same fluid condenses at 40 °C, hotter than the house, so it gives the heat away as it condenses. Then a valve drops it back to low pressure, and around it goes.</p>
-<p>The diagram plots pressure (on a logarithmic scale) against the fluid’s <dfn data-def="The energy content of a kilogram of the fluid, including the work needed to push it along at its pressure; heat added at constant pressure raises it one for one.">enthalpy</dfn>. Inside the dome the fluid is a boiling mixture of liquid and vapour, left of it liquid, right of it vapour. The real properties of R-134a, a common refrigerant, draw both.</p>`
+<p>At the starting settings, at low pressure the refrigerant boils at 0 °C, colder than the outside air, so it soaks up heat from the air as it boils. Compressed to a higher pressure, the same fluid condenses at 40 °C, hotter than the house, so it gives the heat away as it condenses. Then a valve drops it back to low pressure, and around it goes.</p>
+<p>The diagram plots pressure (on a logarithmic scale) against the fluid’s <dfn data-def="The energy content of a kilogram of the fluid, including the work needed to push it along at its pressure; heat added at constant pressure raises it one for one.">enthalpy</dfn>. Inside the dome the fluid is a boiling mixture of liquid and vapour, left of it liquid, right of it vapour. The real properties of R-134a, a common refrigerant, draw both. Drag the two horizontal lines of the cycle, or use the sliders, to change the boiling and condensing temperatures.</p>`
 		},
 		{
 			id: 'legs',
@@ -145,7 +145,7 @@ export const spec: ExplainerSpec = {
 			duration: 24,
 			controls: [leg],
 			body: `
-<p>Follow one kilogram around. <strong>1 → 2, compression:</strong> the compressor squeezes the cold vapour from 0.29 to 1.02 MPa; its enthalpy rises by the work put in, and it comes out hot. <strong>2 → 3, condensation:</strong> in the condenser it cools, condenses at 40 °C and leaves as liquid, giving heat to the house. This is the useful heat of a heat pump.</p>
+<p>Follow one kilogram around, in the reference case boiling at 0 °C and condensing at 40 °C (the readouts follow your own settings). <strong>1 → 2, compression:</strong> the compressor squeezes the cold vapour from 0.29 to 1.02 MPa; its enthalpy rises by the work put in, and it comes out hot. <strong>2 → 3, condensation:</strong> in the condenser it cools, condenses at 40 °C and leaves as liquid, giving heat to the house. This is the useful heat of a heat pump.</p>
 <p><strong>3 → 4, expansion:</strong> the expansion valve drops the pressure with no heat and no work, so the enthalpy stays the same: a vertical line. About a quarter of the liquid flashes to vapour, which chills the rest to 0 °C. <strong>4 → 1, evaporation:</strong> in the evaporator the rest boils, taking heat from outside. This is the useful heat of a refrigerator.</p>
 <p>On a p-h diagram every heat and work is a horizontal distance: the condenser’s heat is the width of the top line, the compressor’s work the width of leg 1 → 2.</p>`
 		},
@@ -159,7 +159,7 @@ export const spec: ExplainerSpec = {
 			controls: [tEvap, tCond],
 			body: `
 <p>The heat delivered is the compressor’s work plus the heat taken from outside. Their ratio is the <dfn data-def="Coefficient of performance: heat delivered (for a heat pump) or heat removed (for a refrigerator) per unit of work put in.">coefficient of performance</dfn>: COP = Q<sub>hot</sub> / W. With an ideal compressor, boiling at 0 °C and condensing at 40 °C, R-134a gives a heating COP of 6.5: 6.5 units of heat for each unit of work. As a refrigerator, the same cycle removes 5.5 units per unit of work.</p>
-<p>The second law sets a ceiling: no machine working between those two temperatures can beat the Carnot COP, T<sub>hot</sub> / (T<sub>hot</sub> − T<sub>cold</sub>) in kelvin, here 7.8. The real cycle falls short because the vapour leaves the compressor hotter than 40 °C and the valve throws away the chance of getting work back from the expansion.</p>`
+<p>The second law sets a ceiling: no machine taking heat in at 0 °C and giving it out at 40 °C can beat the Carnot COP, T<sub>hot</sub> / (T<sub>hot</sub> − T<sub>cold</sub>) in kelvin, here 7.8 (the page shows it as the Carnot reference for the two temperatures you set). The real cycle falls short because the vapour leaves the compressor hotter than 40 °C and the valve throws away the chance of getting work back from the expansion.</p>`
 		},
 		// ------------------------------------------------------------------ real
 		{
@@ -183,8 +183,9 @@ export const spec: ExplainerSpec = {
 			duration: 24,
 			controls: [eta, superheat, subcool],
 			body: `
-<p>A real compressor wastes work as friction and heat: its <dfn data-def="The work an ideal (reversible, adiabatic) compressor would need, divided by the work the real one takes.">isentropic efficiency</dfn> is typically 60 to 80%. At 75%, the 0 °C to 40 °C cycle’s heating COP drops from 6.5 to about 5.1, and the vapour leaves the compressor hotter still.</p>
-<p>Two small adjustments help in practice. A few kelvin of <strong>superheat</strong> at the evaporator outlet make sure no liquid droplets reach the compressor, which they would damage. A few kelvin of <strong>subcooling</strong> at the condenser outlet means less liquid flashes in the valve, so each kilogram picks up more heat in the evaporator.</p>`
+<p>A real compressor wastes work as friction and heat: its <dfn data-def="The work an ideal (reversible, adiabatic) compressor would need, divided by the work the real one takes.">isentropic efficiency</dfn> is typically 60 to 80%. At 75%, the otherwise unchanged 0 °C to 40 °C cycle’s heating COP drops from 6.5 to about 5.1, and the vapour leaves the compressor hotter still; with the default 5 K of superheat and 5 K of subcooling it is about 5.3.</p>
+<p>Two small adjustments help in practice. A few kelvin of <strong>superheat</strong> at the evaporator outlet make sure no liquid droplets reach the compressor, which they would damage. A few kelvin of <strong>subcooling</strong> at the condenser outlet means less liquid flashes in the valve, so each kilogram picks up more heat in the evaporator.</p>`,
+			notes: `<p>The model treats the compressor as adiabatic (all its work goes into the refrigerant), ignores pressure drops in the pipes and leaves out the motor, fan and pump losses, so its COPs are those of the refrigerant cycle; a whole machine’s are lower. Subcooled liquid is given the enthalpy of saturated liquid at the same temperature. Settings that would cool the liquid below the evaporating temperature, or put the valve’s outlet outside the dome, are flagged rather than drawn.</p>`
 		},
 		// ------------------------------------------------------------------ fluids
 		{
@@ -197,8 +198,8 @@ export const spec: ExplainerSpec = {
 			controls: [fluid, tEvap, tCond],
 			body: `
 <p>R-134a does not harm the ozone layer, but a kilogram leaked into the air warms the climate about 1,400 times as much as a kilogram of CO2 over a century. European rules are phasing such fluids out in favour of natural refrigerants such as propane.</p>
-<p>Switch to propane. Its dome is a different shape and its pressures are higher (1.37 MPa at 40 °C against 1.02), but the cycle and the COP come out almost the same: what limits the COP is the temperature lift, not the fluid. Propane is flammable, so the systems hold small charges and are built to keep it sealed.</p>`,
-			notes: `<p>The 100-year global warming potential of R-134a is 1,430 in the values the EU F-gas rules use (IPCC Fourth Assessment Report); propane’s is about 3. Each fluid’s enthalpy is measured from its own reference state, so the numbers on the horizontal axis are not comparable between fluids; differences along one cycle are.</p>`
+<p>Switch to propane. Its dome is a different shape and its pressures are higher (1.37 MPa at 40 °C against 1.02), but the cycle and the COP come out almost the same. The temperature lift sets the Carnot reference; the refrigerant’s properties decide how close this cycle comes to it. Propane is flammable, so the systems hold small charges and are built to keep it sealed.</p>`,
+			notes: `<p>The EU F-gas rules use a 100-year global warming potential of 1,430 for R-134a; the European Commission’s current value for propane is 0.02. Each fluid’s enthalpy is measured from its own reference state, so the numbers on the horizontal axis are not comparable between fluids; differences along one cycle are.</p>`
 		},
 		{
 			id: 'co2',
@@ -209,7 +210,7 @@ export const spec: ExplainerSpec = {
 			duration: 24,
 			controls: [pGas, tOut, tEvap],
 			body: `
-<p>CO₂ (R-744) is a refrigerant too, with no ozone harm and a warming potential of 1 by definition. But its critical point is only 31 °C: above it, there is no boiling and no condensing, just a dense fluid. To deliver heat at a radiator’s temperatures, a CO₂ heat pump compresses to 8 to 12 MPa, above the critical pressure of 7.4 MPa, and cools the fluid in a <strong>gas cooler</strong> instead of condensing it. The cycle runs around the top of the dome rather than across it: <dfn data-def="A cycle whose high side is above the fluid's critical pressure and low side below it.">transcritical</dfn>.</p>
+<p>CO₂ (R-744) is a refrigerant too, with no ozone harm and a warming potential of 1 by definition. But its critical point is only 31 °C: above that temperature, no pressure can condense CO₂, and above its critical pressure, cooling proceeds smoothly with no change from vapour to liquid. To deliver heat at a radiator’s temperatures, a CO₂ heat pump compresses to 8 to 12 MPa, above the critical pressure of 7.4 MPa, and cools the fluid in a <strong>gas cooler</strong> instead of condensing it. The cycle runs around the top of the dome rather than across it: <dfn data-def="A cycle whose high side is above the fluid's critical pressure and low side below it.">transcritical</dfn>.</p>
 <p>Without a condensing temperature, the high pressure becomes a free choice, and it has a best value: drag it and watch the COP peak near 9 MPa for a 35 °C gas cooler outlet. Too low, and the fluid leaves the gas cooler with too much enthalpy; too high, and the compressor works for nothing. The gas cooler’s gliding temperature suits heating water from cold to 60 °C or more, which is where CO₂ heat pumps are most used.</p>`
 		},
 		{
@@ -222,7 +223,7 @@ export const spec: ExplainerSpec = {
 			controls: [tEvap, tCond],
 			body: `
 <p>A COP of 5 is sometimes advertised as “500% efficient”. It breaks no law. The electricity is not turned into five times its energy as heat: one unit of work moves four units of heat that were already outside and delivers all five indoors. The bars show the split.</p>
-<p>The second law still sets the limit, the Carnot COP for the lift. A heat pump is efficient because it moves heat instead of making it, and it moves heat more cheaply the smaller the temperature gap it has to climb.</p>`
+<p>The second law still sets the limit, the Carnot COP for the lift between the heat source and the heat sink. A heat pump is efficient because it moves heat instead of making it, and it moves heat more cheaply the smaller the temperature gap it has to climb.</p>`
 		}
 	]
 };

@@ -1,7 +1,7 @@
 <script lang="ts">
 	/**
 	 * Heating COP against condensing temperature for the ideal R-134a cycle at the chosen
-	 * evaporating temperature, under the Carnot ceiling for the same two temperatures.
+	 * evaporating temperature, under the Carnot reference for the same two temperatures.
 	 */
 	import { Axes, Label, linePath, scale } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
@@ -83,7 +83,7 @@
 		<Label
 			x={880}
 			y={108}
-			text="Carnot ceiling {now.carnotHeating.toFixed(2)}"
+			text="Carnot reference {now.carnotHeating.toFixed(2)}"
 			anchor="end"
 			size={13}
 			muted

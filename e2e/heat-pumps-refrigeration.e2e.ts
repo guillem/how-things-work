@@ -13,7 +13,7 @@ test('cop: R-134a between 0 and 40 °C gives a heating COP of 6.5 under the Carn
 	page
 }) => {
 	await open(page, './heat-pumps-refrigeration/#cop', 'heating COP 6.49');
-	await expect(stage(page)).toContainText('Carnot (heating) 7.83');
+	await expect(stage(page)).toContainText('Carnot reference 7.83');
 	await page.locator('input[type=range][data-control=tcond]').fill('60');
 	await expect(stage(page)).toContainText('heating COP 4.06');
 });
@@ -42,4 +42,15 @@ test('co2: transcritical, with a best gas cooler pressure near 9 MPa', async ({ 
 test('efficiency: the heat delivered is the work plus the heat moved in', async ({ page }) => {
 	await open(page, './heat-pumps-refrigeration/#efficiency', 'heat delivered 5.3');
 	await expect(stage(page)).toContainText('heat from outside 4.3');
+});
+
+test('dragging on the diagram: the condenser line moves the condensing temperature', async ({
+	page
+}) => {
+	await open(page, './heat-pumps-refrigeration/#cop', 'heating COP 6.49');
+	const line = page.getByRole('slider', { name: 'Drag the condensing temperature' });
+	await line.focus();
+	for (let i = 0; i < 20; i++) await line.press('ArrowUp');
+	await expect(page.locator('input[type=range][data-control=tcond]')).toHaveValue('60');
+	await expect(stage(page)).toContainText('heating COP 4.06');
 });

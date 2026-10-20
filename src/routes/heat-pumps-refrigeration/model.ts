@@ -8,7 +8,13 @@
  *   4 -> 1  the evaporator boils the rest, taking heat in
  *
  * Per kilogram of refrigerant; kJ/kg, K, MPa. Subcooled liquid is taken at the saturated liquid's
- * enthalpy at its temperature (the effect of pressure on a liquid's enthalpy is small).
+ * enthalpy at its temperature (the effect of pressure on a liquid's enthalpy is small). The
+ * compressor is adiabatic (all its work goes into the refrigerant), pipes have no pressure drop,
+ * and motor, fan and pump losses are left out: the COPs are the refrigerant cycle's.
+ *
+ * The Carnot COPs are a reference for the selected evaporating and condensing (or gas cooler
+ * outlet) temperatures, not a ceiling for every setting: a true ceiling needs the temperatures of
+ * the actual heat source and sink.
  */
 import { FLUIDS } from './data';
 
@@ -51,10 +57,14 @@ export function vapour(f: Fluid, p: number, T: number) {
 	return { h: a.h + (b.h - a.h) * u, s: a.s + (b.s - a.s) * u };
 }
 
-/** Temperature on the isobar p where the vapour's entropy (or enthalpy) has the given value. */
+/**
+ * Temperature on the isobar p where the vapour's entropy (or enthalpy) has the given value, or NaN
+ * when the value lies outside the tables (200-460 K).
+ */
 function vapourT(f: Fluid, p: number, value: number, key: 'h' | 's') {
 	let lo = 200;
 	let hi = 460;
+	if (value < vapour(f, p, lo)[key] || value > vapour(f, p, hi)[key]) return NaN;
 	for (let i = 0; i < 50; i++) {
 		const mid = (lo + hi) / 2;
 		if (vapour(f, p, mid)[key] < value) lo = mid;
@@ -98,8 +108,14 @@ export interface Cycle {
 	/** Carnot COPs for the same two temperatures (the high one being the gas cooler outlet if transcritical). */
 	carnotHeating: number;
 	carnotCooling: number;
-	/** Vapour fraction leaving the expansion valve. */
+	/** Vapour fraction leaving the expansion valve (NaN when the cycle is not valid). */
 	quality: number;
+	/**
+	 * False when the settings don't make the boiling cycle drawn here: the valve's outlet outside
+	 * the two-phase dome, the liquid subcooled below the evaporating temperature, a state off the
+	 * tables, or a heat or work that isn't positive.
+	 */
+	valid: boolean;
 }
 
 export function cycle({
@@ -135,6 +151,16 @@ export function cycle({
 	}
 	const h4 = h3;
 	const work = h2 - h1;
+	const quality = (h4 - low.hf) / (low.hg - low.hf);
+	const valid =
+		Number.isFinite(t2) &&
+		Number.isFinite(h2) &&
+		quality >= 0 &&
+		quality <= 1 &&
+		t3 > tEvap &&
+		work > 0 &&
+		h2 - h3 > 0 &&
+		h1 - h4 > 0;
 	return {
 		points: [
 			{ p: pe, h: h1, T: t1 },
@@ -150,7 +176,8 @@ export function cycle({
 		copCooling: (h1 - h4) / work,
 		carnotHeating: tHigh / (tHigh - tEvap),
 		carnotCooling: tEvap / (tHigh - tEvap),
-		quality: (h4 - low.hf) / (low.hg - low.hf)
+		quality: valid ? quality : NaN,
+		valid
 	};
 }
 

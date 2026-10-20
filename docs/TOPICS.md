@@ -285,7 +285,7 @@ A topic is done when:
 - [x] abs-brakes
 - [x] bicycle-stability
 - [x] gas-turbines-combined-cycle
-- [ ] heat-pumps-refrigeration
+- [x] heat-pumps-refrigeration
 
 ## Topics
 
@@ -1872,7 +1872,7 @@ A topic is done when:
 - **Takeaway:** A heat pump delivers several units of heat per unit of work by boiling and condensing a fluid at two pressures, and that ratio falls as the gap between the two temperatures widens.
 - **Prerequisites:** heat-engines, entropy, states-of-matter
 - **Related:** gas-turbines-combined-cycle
-- **Needs:** Saturation and superheated-vapor properties of R-134a, R-290 and R-744 from CoolProp (MIT licence), tabulated or fitted for the browser.
+- **Needs:** Saturation and superheated-vapor properties of R-134a, R-290 and R-744, tabulated for the browser: from the NIST Chemistry WebBook (as for heat-engines; CoolProp, MIT licence, would serve equally).
 - **Pitfall:** A COP of 4 is not '400 percent efficiency' and breaks no law: most of the heat delivered is moved from outside, not made from the electricity, and the second law still caps the COP at the Carnot value for the lift.
 
 ## Reserve
