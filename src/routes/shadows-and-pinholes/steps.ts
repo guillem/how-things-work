@@ -8,6 +8,10 @@ const toyAt: Control = {
 	max: 3.6,
 	step: 0.05,
 	default: 2.2,
+	bounds: (p) => [
+		Math.max(1.6, Number(p.lamp ?? 1.2) + 0.3),
+		Math.min(3.6, Number(p.wall ?? 4.2) - 0.2)
+	],
 	format: (v) => `${v.toFixed(1)} m from the left`,
 	help: 'Or drag the toy.'
 };
@@ -20,6 +24,7 @@ const lampAt: Control = {
 	max: 1.9,
 	step: 0.05,
 	default: 1.2,
+	bounds: (p) => [0.2, Math.min(1.9, Number(p.toy ?? 2.2) - 0.3)],
 	format: (v) => `${v.toFixed(1)} m from the left`,
 	help: 'Or drag the lamp.'
 };
@@ -32,6 +37,7 @@ const wallAt: Control = {
 	max: 5,
 	step: 0.05,
 	default: 4.2,
+	bounds: (p) => [Math.max(2.6, Number(p.toy ?? 2.2) + 0.2), 5],
 	format: (v) => `${v.toFixed(1)} m from the left`,
 	help: 'Or drag the wall.'
 };
@@ -117,7 +123,7 @@ export const spec: ExplainerSpec = {
 			duration: 18,
 			controls: [wallAt],
 			body: `
-<p>Now move the wall instead. The farther the wall is behind the toy, the more the lines spread before they reach it, and the bigger the shadow. Bring the wall right up behind the toy and the shadow is almost exactly the toy’s size.</p>
+<p>Now move the wall instead. The farther the wall is behind the toy, the more the lines spread before they reach it, and the bigger the shadow. Bring the wall closer and the shadow gets closer to the toy’s own size.</p>
 <p>So a shadow’s size is not fixed: it depends on where the lamp, the toy and the wall are. Follow the straight lines and you can always work it out.</p>`
 		},
 		// ------------------------------------------------------------------ more
@@ -154,9 +160,10 @@ export const spec: ExplainerSpec = {
 			duration: 24,
 			controls: [hole],
 			body: `
-<p>Poke a tiny hole in one end of a shoebox and look at the inside of the other end. A small picture of the lamp appears there, <strong>upside down</strong>. This is a pinhole camera.</p>
+<p>Poke a tiny hole in one end of a big cardboard box and look at the inside of the other end. A small picture of the lamp appears there, <strong>upside down</strong>. This is a pinhole camera.</p>
 <p>Light from the top of the lamp goes through the hole in a straight line and carries on down to the bottom of the back wall. Light from the bottom of the lamp goes up to the top. So the picture is flipped.</p>
-<p>Make the hole bigger: the picture gets brighter, because more light gets in, but blurrier, because each point of the lamp now makes a spot a little wider than the hole instead of a dot.</p>`
+<p>Make the hole bigger: the picture gets brighter, because more light gets in, but blurrier, because each point of the lamp now makes a spot a little wider than the hole instead of a dot.</p>
+<p>(This drawing follows straight lines only. Very small holes also spread the light a little, because light behaves like a wave; that extra blur is left out here.)</p>`
 		},
 		{
 			id: 'nothrown',
@@ -168,7 +175,7 @@ export const spec: ExplainerSpec = {
 			controls: [lampOn],
 			body: `
 <p>It is easy to think a lamp throws a shadow onto the wall, as if the shadow were a thing. It isn’t. Switch the lamp off: the shadow vanishes, and so does all the light around it. A shadow is simply the place where the light <strong>doesn’t arrive</strong>.</p>
-<p>The Moon’s phases are not a shadow either: the Moon is always half lit by the Sun, and we see different amounts of the lit half as it goes round us. Only during an eclipse does a shadow (the Earth’s, or the Moon’s) fall where you can see it.</p>`
+<p>The Moon’s phases are not a shadow either: the Moon is always half lit by the Sun, and we see different amounts of the lit half as it goes round us. During a lunar eclipse the Earth’s shadow falls on the Moon, and during a solar eclipse the Moon’s shadow falls on the Earth.</p>`
 		},
 		{
 			id: 'next',

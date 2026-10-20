@@ -3,7 +3,7 @@
 	 * A room seen from the side: a lamp on a stand, a toy on a shelf and a wall, all on one scale.
 	 * Straight lines of light run from the lamp to the wall, stopping at the toy; the wall is lit by
 	 * the share of each lamp it can see, so the shadow (and its soft edge) comes from the model.
-	 * The lamp, the toy and the wall can be dragged sideways.
+	 * In the step about each, the lamp, the toy or the wall can be dragged sideways.
 	 */
 	import { Label, startDrag } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
@@ -46,10 +46,15 @@
 		})
 	);
 	// Straight lines from each lamp's centre to points of the wall; those that meet the toy stop there.
+	const origins = $derived(
+		lamps.flatMap((l) =>
+			l.size > 0 ? [l.y - l.size / 2, l.y, l.y + l.size / 2].map((y) => ({ ...l, y })) : [l]
+		)
+	);
 	const rays = $derived(
-		lamps.flatMap((l, li) =>
-			Array.from({ length: 27 }, (_, i) => {
-				const yw = (ROOM_H * (i + 0.5)) / 27;
+		origins.flatMap((l, li) =>
+			Array.from({ length: l.size > 0 ? 15 : 27 }, (_, i) => {
+				const yw = (ROOM_H * (i + 0.5)) / (l.size > 0 ? 15 : 27);
 				const yAtToy = l.y + ((yw - l.y) * (toy.x - l.x)) / (wallX - l.x);
 				const blocked = yAtToy >= toy.bottom && yAtToy <= toy.top;
 				return { li, x1: l.x, y1: l.y, x2: blocked ? toy.x : wallX, y2: blocked ? yAtToy : yw };
@@ -127,22 +132,31 @@
 		/>
 	{/each}
 	<rect
-		class="sh-drag"
 		x={PX(wallX) - 6}
 		y={PY(ROOM_H)}
 		width="34"
 		height={ROOM_H * U}
-		fill="transparent"
+		fill="none"
 		stroke="var(--text-muted)"
-		role="slider"
-		tabindex="0"
-		aria-label="Wall position"
-		aria-valuenow={wallX}
-		aria-valuemin={2.6}
-		aria-valuemax={5}
-		onpointerdown={(e) => drag(e, 'wall')}
-		onkeydown={(e) => key(e, 'wall')}
 	/>
+	{#if phase === 'wall'}
+		<rect
+			class="sh-drag"
+			x={PX(wallX) - 6}
+			y={PY(ROOM_H)}
+			width="34"
+			height={ROOM_H * U}
+			fill="transparent"
+			role="slider"
+			tabindex="0"
+			aria-label="Wall position"
+			aria-valuenow={wallX}
+			aria-valuemin={2.6}
+			aria-valuemax={5}
+			onpointerdown={(e) => drag(e, 'wall')}
+			onkeydown={(e) => key(e, 'wall')}
+		/>
+	{/if}
 
 	<!-- the shelf and the toy -->
 	<line
@@ -161,21 +175,28 @@
 		stroke="var(--text-muted)"
 		stroke-width="3"
 	/>
-	<g
-		class="sh-drag"
-		role="slider"
-		tabindex="0"
-		aria-label="Toy position"
-		aria-valuenow={toyX}
-		aria-valuemin={1.6}
-		aria-valuemax={3.6}
-		onpointerdown={(e) => drag(e, 'toy')}
-		onkeydown={(e) => key(e, 'toy')}
-	>
-		<rect x={PX(toyX) - 18} y={PY(1.3)} width="36" height={0.5 * U} fill="transparent" />
+	<g>
 		<rect x={PX(toyX) - 6} y={PY(1.15)} width="12" height={0.35 * U} rx="4" fill="var(--sh-toy)" />
 		<circle cx={PX(toyX)} cy={PY(1.22)} r={0.08 * U} fill="var(--sh-toy)" />
 	</g>
+	{#if phase === 'straight'}
+		<rect
+			class="sh-drag"
+			x={PX(toyX) - 18}
+			y={PY(1.3)}
+			width="36"
+			height={0.5 * U}
+			fill="transparent"
+			role="slider"
+			tabindex="0"
+			aria-label="Toy position"
+			aria-valuenow={toyX}
+			aria-valuemin={1.6}
+			aria-valuemax={3.6}
+			onpointerdown={(e) => drag(e, 'toy')}
+			onkeydown={(e) => key(e, 'toy')}
+		/>
+	{/if}
 
 	<!-- the lamp(s) -->
 	<line
@@ -186,18 +207,7 @@
 		stroke="var(--text-muted)"
 		stroke-width="4"
 	/>
-	<g
-		class="sh-drag"
-		role="slider"
-		tabindex="0"
-		aria-label="Lamp position"
-		aria-valuenow={lampX}
-		aria-valuemin={0.2}
-		aria-valuemax={1.9}
-		onpointerdown={(e) => drag(e, 'lamp')}
-		onkeydown={(e) => key(e, 'lamp')}
-	>
-		<rect x={PX(lampX) - 24} y={PY(lamp.y) - 40} width="48" height="80" fill="transparent" />
+	<g>
 		{#if size > 0}
 			<rect
 				x={PX(lampX) - 7}
@@ -216,6 +226,24 @@
 			/>
 		{/if}
 	</g>
+	{#if phase === 'lamp'}
+		<rect
+			class="sh-drag"
+			x={PX(lampX) - 24}
+			y={PY(lamp.y) - 40}
+			width="48"
+			height="80"
+			fill="transparent"
+			role="slider"
+			tabindex="0"
+			aria-label="Lamp position"
+			aria-valuenow={lampX}
+			aria-valuemin={0.2}
+			aria-valuemax={1.9}
+			onpointerdown={(e) => drag(e, 'lamp')}
+			onkeydown={(e) => key(e, 'lamp')}
+		/>
+	{/if}
 	{#if phase === 'two' && params.second !== false}
 		<line
 			x1={PX(lampX)}

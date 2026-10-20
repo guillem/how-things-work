@@ -138,7 +138,7 @@ A topic is done when:
 - [x] musical-scales-ratios
 - [x] lasers
 - [x] ising-model
-- [ ] shadows-and-pinholes
+- [x] shadows-and-pinholes
 
 **Chemistry & Materials**
 - [x] atoms-periodic-table

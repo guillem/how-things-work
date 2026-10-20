@@ -83,7 +83,7 @@ export interface Pinhole {
  */
 export const imageOf = (p: Pinhole, h: number) => (-h * p.back) / p.front;
 
-/** The blur: each point of the object makes a spot this wide (m) on the back wall. */
+/** The geometric blur: each point of the object makes a spot this wide (m) on the back wall (diffraction ignored). */
 export const blur = (p: Pinhole) => (p.hole * (p.front + p.back)) / p.front;
 
 /** How bright the picture is, relative to a 1 mm hole: proportional to the hole's area. */

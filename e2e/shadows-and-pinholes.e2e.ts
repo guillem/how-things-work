@@ -39,7 +39,7 @@ test('two: a second lamp, a second shadow', async ({ page }) => {
 });
 
 test('pinhole: a bigger hole, a brighter and blurrier picture', async ({ page }) => {
-	await open(page, './shadows-and-pinholes/#pinhole', 'an upside-down picture, 6 cm tall');
+	await open(page, './shadows-and-pinholes/#pinhole', 'an upside-down picture, 31 cm tall');
 	await page.locator('input[type=range][data-control=hole]').fill('4');
 	await expect(stage(page)).toContainText('16 times as bright as a 1 mm hole');
 });
@@ -48,4 +48,23 @@ test('nothrown: no lamp, no shadow', async ({ page }) => {
 	await open(page, './shadows-and-pinholes/#nothrown', 'times as tall');
 	await page.locator('input[type=checkbox][data-control=on]').uncheck();
 	await expect(stage(page)).toContainText('Lamp off');
+});
+
+test('the sliders keep the lamp, the toy and the wall in order', async ({ page }) => {
+	await open(page, './shadows-and-pinholes/#straight', 'times as tall');
+	// Home and End take a slider to the end of its allowed range.
+	await page.locator('input[type=range][data-control=toy]').press('Home');
+	await page.getByRole('button', { name: 'Next step' }).click();
+	await expect(page).toHaveURL(/#lamp$/);
+	await page.locator('input[type=range][data-control=lamp]').press('End');
+	// The lamp stops 30 cm short of the toy: the shadow is never negative.
+	await expect(stage(page)).not.toContainText('-');
+	await expect(stage(page)).toContainText('lamp to toy 0.3 m');
+});
+
+test('only the step’s own object can be dragged', async ({ page }) => {
+	await open(page, './shadows-and-pinholes/#lamp', 'times as tall');
+	await expect(page.getByRole('slider', { name: 'Lamp position' })).toHaveCount(1);
+	await expect(page.getByRole('slider', { name: 'Toy position' })).toHaveCount(0);
+	await expect(page.getByRole('slider', { name: 'Wall position' })).toHaveCount(0);
 });

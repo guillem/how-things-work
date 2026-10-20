@@ -2,8 +2,8 @@
 	/**
 	 * A pinhole camera: a lamp (bulb on top, base below) in front of a shoebox with a hole, and the
 	 * upside-down picture on the box's back wall. The lines from the lamp's top and bottom cross at
-	 * the hole. A bigger hole lets in more light but blurs each point into a spot. The lamp is 2 m
-	 * from the hole and the box 30 cm deep (the drawing is not to scale).
+	 * the hole. A bigger hole lets in more light but blurs each point into a spot. The lamp is 78 cm
+	 * from the hole and the box 60 cm deep, drawn to scale (the hole and the blur enlarged).
 	 */
 	import { Label } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
@@ -12,23 +12,40 @@
 	let { params }: StageProps = $props();
 
 	const holeMm = $derived(Number(params.hole ?? 1));
-	const p: Pinhole = $derived({ front: 2, back: 0.3, hole: holeMm / 1000 });
+	// A big box: the lamp 78 cm in front of the hole, the back wall 60 cm behind it.
+	const p: Pinhole = $derived({ front: 0.78, back: 0.6, hole: holeMm / 1000 });
 	const LAMP_H = 0.4;
 	const imageH = $derived(Math.abs(imageOf(p, LAMP_H)));
 	const spot = $derived(blur(p));
 	const bright = $derived(brightness(p));
 
-	// ---- drawing (not to scale) ----------------------------------------------------------------
+	// ---- drawing: 500 px per metre across and up, so the rays are true to the numbers ----------
+	const K = 500;
 	const AXIS = 300;
 	const LX = 150;
-	const HOLE_X = 540;
-	const BACK_X = 840;
-	const OBJ = 170;
-	const IMG = $derived((OBJ * (BACK_X - HOLE_X)) / (HOLE_X - LX));
-	// The hole drawn 10 times too big, so it shows.
+	const HOLE_X = $derived(LX + p.front * K);
+	const BACK_X = $derived(HOLE_X + p.back * K);
+	const OBJ = LAMP_H * K;
+	const IMG = $derived(imageH * K);
+	const sc = $derived(IMG / OBJ);
+	// The hole drawn 3 px per mm, so it shows.
 	const holePx = $derived(Math.max(3, holeMm * 3));
-	const blurPx = $derived(Math.min(14, (spot * 1000 * 3) / 2));
-	const opacity = $derived(Math.min(1, 0.2 + 0.8 * Math.sqrt(bright / 64)));
+	// Blur: the sharp picture spread over a disc as wide as the geometric spot (drawn 10x, 5 px per
+	// mm): copies at the disc's centre and on two rings, each with an equal share of the light.
+	const blurPx = $derived(spot * 1000 * 5);
+	const offsets = $derived([
+		[0, 0],
+		...Array.from({ length: 6 }, (_, i) => [
+			0.25 * blurPx * Math.cos((i * Math.PI) / 3),
+			0.25 * blurPx * Math.sin((i * Math.PI) / 3)
+		]),
+		...Array.from({ length: 10 }, (_, i) => [
+			0.45 * blurPx * Math.cos((i * Math.PI) / 5),
+			0.45 * blurPx * Math.sin((i * Math.PI) / 5)
+		])
+	]);
+	// Light into the picture, proportional to the hole's area, shown through one fixed mapping.
+	const shown = $derived(1 - Math.exp(-bright / 6));
 </script>
 
 <g class="sh-pinhole">
@@ -78,33 +95,28 @@
 	<Label x={BACK_X} y={AXIS - 166} text="back wall" anchor="middle" size={13} />
 
 	<!-- the picture on the back wall, upside down -->
-	<!-- blur: the picture drawn several times, shifted by up to half the blur spot -->
-	{#each [-1, -0.5, 0, 0.5, 1] as k (k)}
+	<!-- the picture on the back wall, upside down, spread over the blur disc -->
+	{#each offsets as [dx, dy], k (k)}
 		<g
-			transform="translate(0 {k * blurPx}) translate({BACK_X - 14} {AXIS}) scale(1 -1) translate({-(
+			transform="translate({dx} {dy}) translate({BACK_X - 14} {AXIS}) scale(1 -1) translate({-(
 				BACK_X - 14
 			)} {-AXIS})"
-			opacity={(opacity / (blurPx > 1 ? 3 : 1)) * (blurPx > 1 || k === 0 ? 1 : 0)}
+			opacity={Math.min(1, (shown / offsets.length) * 4)}
 		>
-			<circle
-				cx={BACK_X - 14}
-				cy={AXIS - IMG / 2 + 14 * (IMG / OBJ)}
-				r={16 * (IMG / OBJ)}
-				fill="var(--sh-light)"
-			/>
+			<circle cx={BACK_X - 14} cy={AXIS - IMG / 2 + 14 * sc} r={16 * sc} fill="var(--sh-light)" />
 			<line
 				x1={BACK_X - 14}
-				y1={AXIS - IMG / 2 + 30 * (IMG / OBJ)}
+				y1={AXIS - IMG / 2 + 30 * sc}
 				x2={BACK_X - 14}
-				y2={AXIS + IMG / 2 - 10 * (IMG / OBJ)}
+				y2={AXIS + IMG / 2 - 10 * sc}
 				stroke="var(--text)"
 				stroke-width="4"
 			/>
 			<rect
-				x={BACK_X - 14 - 26 * (IMG / OBJ)}
-				y={AXIS + IMG / 2 - 12 * (IMG / OBJ)}
-				width={52 * (IMG / OBJ)}
-				height={12 * (IMG / OBJ)}
+				x={BACK_X - 14 - 26 * sc}
+				y={AXIS + IMG / 2 - 12 * sc}
+				width={52 * sc}
+				height={12 * sc}
 				fill="var(--sh-flame)"
 			/>
 		</g>
