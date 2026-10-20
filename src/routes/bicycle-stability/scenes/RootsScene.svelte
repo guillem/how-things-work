@@ -53,8 +53,8 @@
 	const bandText = $derived(
 		!band
 			? 'no self-stable speed up to ' + (tms ? 30 : 15) + ' m/s'
-			: band.to === Infinity
-				? `self-stable above ${band.from.toFixed(2)} m/s`
+			: band.truncated
+				? `self-stable from ${band.from.toFixed(2)} m/s on (checked to ${band.to} m/s)`
 				: `self-stable from ${band.from.toFixed(2)} to ${band.to.toFixed(2)} m/s`
 	);
 	const bandX0 = $derived(band ? sx(Math.min(VMAX, band.from)) : 0);

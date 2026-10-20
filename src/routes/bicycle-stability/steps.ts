@@ -48,12 +48,13 @@ const frontMass: Control = {
 	type: 'range',
 	id: 'mf',
 	label: 'Front wheel mass',
-	min: 1,
+	min: 2.5,
 	max: 10,
 	step: 0.5,
 	default: 3,
 	unit: 'kg',
-	format: (v) => `${v} kg`
+	format: (v) => `${v} kg`,
+	help: 'Mass added or taken away at the hub, with the wheel’s size and rotational inertia held fixed.'
 };
 
 const gyro: Control = {
@@ -128,7 +129,7 @@ export const spec: ExplainerSpec = {
 			duration: 22,
 			controls: [speed, push],
 			body: `
-<p>Now change the speed. At 2 m/s the wobble grows instead of dying away, and the bicycle falls over in a couple of seconds. At 8 m/s it doesn’t wobble at all: it leans over very slowly, steering gently into a widening spiral, and would take many seconds to fall.</p>
+<p>Now change the speed. At 2 m/s the wobble grows instead of dying away, and within a couple of seconds the bicycle is falling (the page stops at 20° of lean or steer, where the small-angle equations stop being trustworthy). At 8 m/s a brief wobble dies away, leaving a very slow, growing lean and steer into a tightening spiral that would take many seconds to bring it down.</p>
 <p>Between roughly 4.3 and 6 m/s (15 to 22 km/h) it recovers on its own every time. This is called <dfn data-def="A riderless bicycle that returns to upright, straight-ahead rolling by itself after a small disturbance.">self-stability</dfn>, and it holds only in a band of speeds.</p>`
 		},
 		// ------------------------------------------------------------------ eigen
@@ -144,7 +145,7 @@ export const spec: ExplainerSpec = {
 <p>For small lean φ and steer δ the motion obeys two coupled linear equations, one for each:</p>
 <p class="formula">M q̈ + v C₁ q̇ + (g K₀ + v² K₂) q = 0, &nbsp; q = (φ, δ)</p>
 <p>M holds the masses and inertias, C₁ the effects that grow with speed and rates (including the wheels’ gyroscopic effect), K₀ gravity, K₂ the effects that grow with the square of the speed (the turning of the path). Try solutions of the form e^{st}: they exist only when det(M s² + v C₁ s + g K₀ + v² K₂) = 0, a quartic in s with four roots, the <dfn data-def="The growth rates s of the motions e^{st} the equations allow. A positive real part means that motion grows; an imaginary part means it oscillates.">eigenvalues</dfn>.</p>
-<p>The plot shows their real parts against speed (solid) and the imaginary parts of the oscillating pair (dashed). A real part above zero is a motion that grows. Self-stability needs all four below zero.</p>`,
+<p>Dark dots show the real parts against speed; purple dots show the positive imaginary part of each oscillating pair. A real part above zero is a motion that grows. Self-stability needs all four below zero.</p>`,
 			notes: `<p>The matrices are computed from the 25 parameters by the formulas of the paper’s appendix, and agree with its published values to ten digits. The model assumes knife-edge wheels that roll without slipping, a rigid rider and no friction in the steering. It is linear, so it describes small leans only.</p>`
 		},
 		{
@@ -156,7 +157,7 @@ export const spec: ExplainerSpec = {
 			duration: 22,
 			controls: [speed],
 			body: `
-<p>Read the plot from left to right. At low speed a pair of eigenvalues is complex with a positive real part: the <strong>weave</strong> mode, an oscillation of lean and steer that grows. It crosses zero at the weave speed, 4.29 m/s.</p>
+<p>Read the plot from left to right. Below about 0.68 m/s all four eigenvalues are real, two of them positive: the bicycle simply falls, like an inverted pendulum. Above that speed those two merge into a complex pair with a positive real part: the <strong>weave</strong> mode, an oscillation of lean and steer that grows. Its real part crosses zero at the weave speed, 4.29 m/s.</p>
 <p>A third, real eigenvalue belongs to the <strong>capsize</strong> mode, a slow lean with no oscillation. It sits below zero until the capsize speed, 6.02 m/s, and then just above it, so slightly that the fall takes many seconds. A rider corrects it without noticing. The fourth, the <strong>castering</strong> mode, is strongly negative: the front wheel lines up behind its steering axis like a supermarket trolley’s castor.</p>
 <p>Between 4.29 and 6.02 m/s all four are negative: the self-stable band.</p>`
 		},
@@ -207,7 +208,7 @@ export const spec: ExplainerSpec = {
 			controls: [bike],
 			body: `
 <p>So are the gyroscopic effect and trail necessary? In 2011 Kooijman, Meijaard, Papadopoulos, Ruina and Schwab showed that they are not. Their theoretical <strong>two-mass-skate</strong> bicycle has no spin at all (its wheels are replaced by skates), zero trail, and only two point masses: 10 kg for the frame, high up and ahead of the front contact, and 1 kg for the front assembly, ahead of its steering axis.</p>
-<p>It is self-stable at every speed above about 2.8 m/s. Here the front mass falling to the side steers the front into the lean on its own. They built one with counter-rotating wheels and a slightly negative trail, and it balanced itself above 2.3 m/s.</p>
+<p>It is self-stable from about 2.8 m/s upwards (the page checks up to 30 m/s). Here the front mass falling to the side steers the front into the lean on its own. They built one with counter-rotating wheels and a slightly negative trail, and it balanced itself above 2.3 m/s. (These equations test only the sideways balance: the two masses alone would tip the machine forward, so the real one carries extra ballast at the rear contact, which leaves the sideways equations unchanged.)</p>
 <p>Self-stability comes from the geometry and masses of the whole bicycle working together. No single effect explains it.</p>`,
 			notes: `<p>The two-mass-skate parameters are those of the paper’s supplement, table 7.1: wheelbase 1 m, steering axis 5° from vertical, the frame’s mass at 1.2 m ahead of the rear contact and 0.4 m up, the front’s at 1.02 m ahead and 0.2 m up. The built machine had extra masses and measured inertias, which is why its band starts a little lower.</p>`
 		},

@@ -281,7 +281,7 @@ A topic is done when:
 - [x] feedback-control
 - [x] wind-turbine-aerodynamics
 - [x] abs-brakes
-- [ ] bicycle-stability
+- [x] bicycle-stability
 
 ## Topics
 
@@ -1822,7 +1822,7 @@ A topic is done when:
 - **Title:** Why a bicycle balances itself
 - **Level:** 3
 - **Kind:** simulate
-- **Interaction:** Push a riderless bicycle at a chosen speed and let its linearized equations of motion run: below a certain speed it slowly falls, in a middle band it wobbles and recovers on its own, and above it it slowly leans away. Drag the speed and watch the eigenvalues of lean and steer cross the stability boundary; change the trail, the head angle and the front-wheel mass, cancel the gyroscopic effect of the wheels and the trail in turn and see the ordinary bicycle lose its self-stable band, then load the two-mass-skate design that balances with neither; finally steer left and watch the bike first lean right.
+- **Interaction:** Push a riderless bicycle at a chosen speed and let its linearized equations of motion run: below a certain speed it slowly falls, in a middle band it wobbles and recovers on its own, and above it it slowly leans away. Drag the speed and watch the eigenvalues of lean and steer cross the stability boundary; change the trail, the head angle and the front-wheel mass, cancel the gyroscopic effect of the wheels to see the ordinary bicycle lose its self-stable band, and set the trail to zero to shrink it to a sliver (a slightly negative trail removes it), then load the two-mass-skate design that balances with neither; finally steer left and watch the bike first lean right.
 - **Takeaway:** A riderless bicycle balances itself in a band of speeds because a lean makes its front wheel steer into the fall, and that self-steering comes from the geometry and mass of the whole front assembly, not from any single effect such as the wheels' gyroscopic spin.
 - **Prerequisites:** newtons-laws, oscillations-resonance, linear-transformations
 - **Related:** feedback-control, abs-brakes

@@ -80,15 +80,21 @@ test('without trail the benchmark bicycle keeps only a sliver of a band, near 3 
 test('the two-mass-skate bicycle, with no gyroscopic effect and no trail, is self-stable above a speed', () => {
 	const band = stableBand(matrices(TWO_MASS_SKATE), 30)!;
 	expect(band).not.toBeNull();
-	expect(band.to).toBe(Infinity);
+	expect(band.from).toBeCloseTo(2.84, 2);
+	// Still stable at the end of the search: the band reaches at least 30 m/s.
+	expect(band.truncated).toBe(true);
+	expect(band.to).toBe(30);
 });
 
 test('pushed sideways in the band, the bicycle recovers; below it, it falls', () => {
 	const m = matrices(BENCHMARK);
 	const ok = simulate(BENCHMARK, m, 5, { duration: 8 });
 	expect(Math.abs(ok[ok.length - 1].phi)).toBeLessThan(0.01);
-	const slow = simulate(BENCHMARK, m, 2, { duration: 4 });
-	expect(Math.abs(slow[slow.length - 1].phi)).toBeGreaterThan(0.5);
+	// The same push at 2 m/s grows past 0.2 rad (where the small-angle model ends) within 3 s,
+	// while at 5 m/s the lean never reaches 0.2 rad.
+	const slow = simulate(BENCHMARK, m, 2, { duration: 3 });
+	expect(slow.some((st) => Math.abs(st.phi) > 0.2)).toBe(true);
+	expect(ok.every((st) => Math.abs(st.phi) < 0.2)).toBe(true);
 });
 
 test('countersteering: a steer torque to the left first steers left, which leans the bicycle right', () => {
@@ -105,4 +111,26 @@ test('countersteering: a steer torque to the left first steers left, which leans
 test('steering axes closer to vertical than 10° have no self-stable band', () => {
 	expect(stableBand(matrices({ ...BENCHMARK, lambda: (9 * Math.PI) / 180 }))).toBeNull();
 	expect(stableBand(matrices({ ...BENCHMARK, lambda: (10 * Math.PI) / 180 }))).not.toBeNull();
+});
+
+test('a search that ends while still stable says so instead of claiming stability for ever', () => {
+	const band = stableBand(matrices(BENCHMARK), 5)!;
+	expect(band.truncated).toBe(true);
+	expect(band.to).toBe(5);
+});
+
+test('below 0.68 m/s all four eigenvalues are real, two of them positive', () => {
+	const m = matrices(BENCHMARK);
+	for (const v of [0.5, 0.6]) {
+		const ev = eigenvalues(m, v);
+		expect(ev.every((e) => e.im === 0)).toBe(true);
+		expect(ev.filter((e) => e.re > 0)).toHaveLength(2);
+	}
+	expect(eigenvalues(m, 0.7).some((e) => e.im !== 0)).toBe(true);
+});
+
+test('the front-wheel masses the page offers can all hold the wheel\u2019s rotational inertia', () => {
+	// A wheel of radius r and mass m has at most m r² about its axle (all mass at the rim).
+	for (let mF = 2.5; mF <= 10; mF += 0.5)
+		expect(BENCHMARK.IFyy).toBeLessThanOrEqual(mF * BENCHMARK.rF ** 2);
 });

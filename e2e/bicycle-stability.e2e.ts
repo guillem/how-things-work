@@ -14,9 +14,11 @@ test('speeds: it recovers at 5 m/s, falls at 2 m/s and slowly capsizes at 8 m/s'
 }) => {
 	await open(page, './bicycle-stability/#speeds', 'self-stable: it recovers');
 	const speed = page.locator('input[type=range][data-control=speed]');
+	await speed.fill('0.5');
+	await expect(stage(page)).toContainText('non-oscillating instability: it falls');
 	await speed.fill('2');
 	await expect(stage(page)).toContainText('weave grows: it falls');
-	await expect(stage(page)).toContainText('fallen over');
+	await expect(stage(page)).toContainText('fall predicted');
 	await speed.fill('8');
 	await expect(stage(page)).toContainText('capsize: it slowly leans over');
 });
@@ -37,8 +39,12 @@ test('geometry: negative trail removes the band', async ({ page }) => {
 	await expect(stage(page)).toContainText('no self-stable speed');
 });
 
-test('skate: the two-mass-skate bicycle is self-stable above 2.84 m/s', async ({ page }) => {
-	await open(page, './bicycle-stability/#skate', 'self-stable above 2.84 m/s');
+test('skate: the two-mass-skate bicycle is self-stable from 2.84 m/s on', async ({ page }) => {
+	await open(
+		page,
+		'./bicycle-stability/#skate',
+		'self-stable from 2.84 m/s on (checked to 30 m/s)'
+	);
 	await page.locator('[data-control=bike][data-value=benchmark]').click();
 	await expect(stage(page)).toContainText('self-stable from 4.29 to 6.02 m/s');
 });

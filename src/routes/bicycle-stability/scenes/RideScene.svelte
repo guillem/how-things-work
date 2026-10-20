@@ -3,7 +3,7 @@
 	 * The benchmark bicycle after a sideways push (or under a steady steering torque), replayed in
 	 * real time: the lean seen from behind, the path and steering seen from above, and the lean and
 	 * steer angles against time. The linear model is only good for small angles, so a run stops
-	 * once the lean passes 45°: the bicycle has fallen.
+	 * once lean or steer passes 20°: the model then predicts a fall but can't follow it.
 	 */
 	import { untrack } from 'svelte';
 	import { Axes, Label, linePath, scale } from '#lib/draw/index.ts';
@@ -18,23 +18,26 @@
 	const torque = $derived(Number(params.torque ?? -0.3));
 	const m = matrices(BENCHMARK);
 	const DURATION = 6;
-	const FALLEN = Math.PI / 4;
+	/** Past 20° of lean or steer the small-angle equations no longer hold: the run stops there. */
+	const LIMIT = (20 * Math.PI) / 180;
 	const run: State[] = $derived.by(() => {
 		const all = simulate(BENCHMARK, m, v, {
 			push: counter ? 0 : 0.5,
 			torque: counter ? torque : 0,
 			duration: DURATION
 		});
-		const end = all.findIndex((s) => Math.abs(s.phi) > FALLEN);
+		const end = all.findIndex((s) => Math.max(Math.abs(s.phi), Math.abs(s.delta)) > LIMIT);
 		return end < 0 ? all : all.slice(0, end + 1);
 	});
-	const fell = $derived(Math.abs(run[run.length - 1].phi) > FALLEN);
+	const last = $derived(run[run.length - 1]);
+	const fell = $derived(Math.max(Math.abs(last.phi), Math.abs(last.delta)) > LIMIT);
 	const ev = $derived(eigenvalues(m, v));
 	const verdict = $derived.by(() => {
 		if (counter) return '';
 		const grow = ev.filter((e) => e.re > 1e-9);
 		if (!grow.length) return 'self-stable: it recovers';
 		if (grow.some((e) => e.im !== 0)) return 'weave grows: it falls';
+		if (grow.length > 1) return 'non-oscillating instability: it falls';
 		return 'capsize: it slowly leans over';
 	});
 
@@ -52,6 +55,10 @@
 	const now = $derived(run[idx]);
 	const shown = $derived(run.slice(0, idx + 1));
 	const deg = (r: number) => (r * 180) / Math.PI;
+	/** The rate of turning now (rad/s, positive to the right), from the benchmark's kinematics. */
+	const yawRate = $derived(
+		((v * now.delta + BENCHMARK.c * now.ddelta) * Math.cos(BENCHMARK.lambda)) / BENCHMARK.w
+	);
 
 	// ---- rear view ----------------------------------------------------------------------------
 	const RX = 175;
@@ -83,7 +90,7 @@
 	const range = $derived(
 		Math.max(5, ...run.map((s) => Math.max(Math.abs(deg(s.phi)), Math.abs(deg(s.delta)))))
 	);
-	const yMax = $derived(Math.min(45, Math.ceil(range / 5) * 5));
+	const yMax = $derived(Math.min(20, Math.ceil(range / 5) * 5));
 	const syT = $derived(scale([-yMax, yMax], [560, 330]));
 	const clampDeg = (r: number) => Math.max(-yMax, Math.min(yMax, deg(r)));
 </script>
@@ -255,12 +262,12 @@
 			id="bk-fell"
 			order={6}
 			label="Result"
-			value="fallen over (past 45°, where the linear model ends)"
+			value="small-angle limit reached (20°): a fall is predicted"
 		>
 			<Label
 				x={40}
 				y={380}
-				text="fallen over"
+				text="fall predicted"
 				anchor="start"
 				size={16}
 				weight={700}
@@ -269,7 +276,7 @@
 			<Label
 				x={40}
 				y={400}
-				text="(past 45°: the linear model ends)"
+				text="(20° reached: the small-angle model ends here)"
 				anchor="start"
 				size={12}
 				muted
@@ -281,14 +288,14 @@
 			id="bk-turn"
 			order={4}
 			label="Turning"
-			value={now.psi > 0.01 ? 'to the right' : now.psi < -0.01 ? 'to the left' : 'straight'}
+			value={yawRate > 0.01 ? 'to the right' : yawRate < -0.01 ? 'to the left' : 'straight'}
 		>
 			<Label
 				x={40}
 				y={64}
-				text="turning {now.psi > 0.01
+				text="turning {yawRate > 0.01
 					? 'right'
-					: now.psi < -0.01
+					: yawRate < -0.01
 						? 'left'
 						: 'straight'} · handlebars twisted {torque < 0
 					? 'left'

@@ -246,17 +246,22 @@ export const stableAt = (m: Matrices, v: number) => eigenvalues(m, v).every((e) 
 
 /**
  * The self-stable speed band: the first interval in (0, vMax] where every eigenvalue has a
- * negative real part, its ends refined by bisection. Null if there is none.
+ * negative real part, its ends refined by bisection. Null if there is none; `truncated` when it
+ * is still stable at vMax (so it ends at vMax or beyond).
  */
-export function stableBand(m: Matrices, vMax = 15): { from: number; to: number } | null {
+export function stableBand(
+	m: Matrices,
+	vMax = 15
+): { from: number; to: number; truncated: boolean } | null {
 	const dv = 0.01;
 	let from: number | null = null;
 	for (let v = dv; v <= vMax + 1e-9; v += dv) {
 		const s = stableAt(m, v);
 		if (s && from === null) from = refine(m, v - dv, v, false);
-		if (!s && from !== null) return { from, to: refine(m, v - dv, v, true) };
+		if (!s && from !== null) return { from, to: refine(m, v - dv, v, true), truncated: false };
 	}
-	return from === null ? null : { from, to: Infinity };
+	// Still stable at vMax: the band goes on at least that far, but higher speeds weren't checked.
+	return from === null ? null : { from, to: vMax, truncated: true };
 }
 
 /** The speed between lo and hi where stability changes (stable at lo when `stableLo`). */
