@@ -2,6 +2,8 @@
 import { expect, test } from '@playwright/test';
 import {
 	agreement,
+	groupingCount,
+	startCentres,
 	assign,
 	kmeans,
 	moveCentres,
@@ -63,7 +65,7 @@ test('with four centres, different starts end in different groupings', () => {
 	expect(ends.size).toBeGreaterThan(2);
 });
 
-test('more centres always fit tighter, so the distance alone cannot say how many groups there are', () => {
+test('the best of ten starts fits tighter for each added centre, from 2 to 7', () => {
 	const best = (k: number) =>
 		Math.min(
 			...Array.from({ length: 10 }, (_, i) => spread(penguins, last(kmeans(penguins, k, i + 1))))
@@ -109,5 +111,35 @@ test('a big loose cloud beside a small tight one: two centres give the big cloud
 		const taken = end.labels.slice(0, 40).filter((l) => l === smallGroup).length;
 		expect(taken).toBeGreaterThan(2);
 		expect(taken).toBeLessThan(20);
+	}
+});
+
+test('three centres usually find the species, but some starts settle on a worse grouping', () => {
+	// Seed 242 is one such start (found by the fact-check).
+	const bad = last(kmeans(penguins, 3, 242));
+	expect(agreement(bad.labels, species, 3)).toBeLessThan(0.85);
+	expect(spread(penguins, bad)).toBeGreaterThan(spread(penguins, last(kmeans(penguins, 3, 1))));
+});
+
+test('the six starts of the "different starts" step: six groupings at k = 6, one at k = 3', () => {
+	const ends = (k: number) =>
+		Array.from({ length: 6 }, (_, i) => last(kmeans(penguins, k, i + 1)).labels);
+	expect(groupingCount(ends(3))).toBe(1);
+	expect(groupingCount(ends(4))).toBeGreaterThan(2);
+	expect(groupingCount(ends(6))).toBeGreaterThan(4);
+});
+
+test('repeated points: the starting centres sit on distinct positions, so no group starts empty', () => {
+	const points: Pt[] = [
+		{ x: 0, y: 0 },
+		{ x: 0, y: 0 },
+		{ x: 0, y: 0 },
+		{ x: 1, y: 0 },
+		{ x: 2, y: 0 }
+	];
+	for (let seed = 1; seed <= 20; seed++) {
+		const start = startCentres(points, 3, seed);
+		expect(new Set(start.map((c) => `${c.x},${c.y}`)).size).toBe(3);
+		expect(new Set(last(run(points, start)).labels).size).toBe(3);
 	}
 });

@@ -6,7 +6,7 @@
 	 */
 	import { Label } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
-	import { penguins, run, spread, startCentres } from '../model';
+	import { groupingCount, penguins, run, spread, startCentres } from '../model';
 
 	let { params }: StageProps = $props();
 
@@ -19,7 +19,7 @@
 		})
 	);
 	const best = $derived(Math.min(...runs.map((r) => r.total)));
-	const distinct = $derived(new Set(runs.map((r) => r.total.toFixed(1))).size);
+	const distinct = $derived(groupingCount(runs.map((r) => r.end.labels)));
 
 	// Panels: 3 × 2, each a square-scaled copy of the main plot's frame.
 	const XMIN = -2.4;

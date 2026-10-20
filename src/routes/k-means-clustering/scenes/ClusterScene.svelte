@@ -11,6 +11,7 @@
 	import {
 		agreement,
 		assign,
+		distinctCount,
 		formatPoints,
 		ownDefault,
 		parsePoints,
@@ -74,7 +75,7 @@
 			)
 	);
 	const states: KState[] = $derived(
-		points.length >= k ? run(points, startCentres(points, k, seed)) : []
+		distinctCount(points) >= k ? run(points, startCentres(points, k, seed)) : []
 	);
 	const rounds = $derived(Math.max(0, states.length - 1));
 
@@ -138,7 +139,9 @@
 	const staleCount = $derived(stale.filter(Boolean).length);
 
 	const colour = (j: number) => `var(--km-${(j % 6) + 1})`;
-	const showSpecies = $derived(data === 'penguins' && params.species === true);
+	const showSpecies = $derived(
+		data === 'penguins' && (phase === 'species' || phase === 'k') && params.species === true
+	);
 	const fit = $derived(
 		data === 'penguins' && states.length ? agreement(shownLabels, species, k) : 0
 	);
@@ -230,7 +233,7 @@
 
 	const roundText = $derived(
 		!states.length
-			? 'Too few points for this many centres'
+			? 'Too few distinct points for this many centres'
 			: done
 				? `Nothing moved: done after ${rounds} round${rounds === 1 ? '' : 's'}`
 				: `Round ${view.i} of ${rounds}`

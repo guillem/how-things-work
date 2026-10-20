@@ -123,10 +123,10 @@ export const spec: ExplainerSpec = {
 			duration: 22,
 			controls: [k, start],
 			body: `
-<p>Assign, move, assign, move. As the rounds go on, fewer and fewer points change colour, until a round in which <strong>none</strong> do. Then the centres would not move either, and the algorithm stops. It usually takes a handful of rounds.</p>
+<p>Assign, move, assign, move. The number of points changing colour can rise or fall from one round to the next, but sooner or later comes a round in which <strong>none</strong> do. Then the centres would not move either, and the algorithm stops. It usually takes a handful of rounds.</p>
 <p>It always stops. Each move can only make the points closer to their centres on the whole (the total of their squared distances goes down or stays the same), and there are only finitely many ways to colour the points, so it cannot go on forever.</p>
 <p>Try another k, or new starting centres, and watch it settle again.</p>`,
-			notes: `<p>This back-and-forth is Lloyd’s algorithm, worked out by Stuart Lloyd at Bell Labs in 1957 (published in 1982); James MacQueen named it k-means in 1967. It finds a grouping that no single move can improve, but not necessarily the best grouping of all: finding that is a much harder problem, and no fast method is known for it.</p>`
+			notes: `<p>This back-and-forth is Lloyd’s algorithm, worked out by Stuart Lloyd at Bell Labs in 1957 (published in 1982); James MacQueen named it k-means in 1967. It stops at a grouping that its own two moves no longer change, which is not necessarily the best grouping of all: finding that is a much harder problem, and no fast method is known for it.</p>`
 		},
 		// ------------------------------------------------------------------ found
 		{
@@ -153,8 +153,8 @@ export const spec: ExplainerSpec = {
 			body: `
 <p>Here are the same penguins run six times with four centres, each time from different random starting centres. They don’t all end up the same: depending on where the centres started, the extra group carves off a different piece.</p>
 <p>Each panel shows the total squared distance from the points to their centres where its run stopped: smaller means tighter groups. Practitioners run k-means many times from different starts and keep the run with the smallest total (the panel marked “best”).</p>
-<p>Set k to 3 and all six agree: on these penguins, three groups are clear enough that every start finds them.</p>`,
-			notes: `<p>A better way to start, k-means++ (David Arthur and Sergei Vassilvitskii, 2007), drops the first centre on a random point and each next one on a point chosen with a probability that grows with its distance from the centres already placed. It spreads the centres out and makes bad endings rarer, but not impossible, so libraries still run it several times.</p>`
+<p>Set k to 3 and these six starts agree. Most starts do with three centres, but not all: now and then even here a start settles on a worse grouping, which is why one run is never enough.</p>`,
+			notes: `<p>A better way to start, k-means++ (David Arthur and Sergei Vassilvitskii, 2007), drops the first centre on a random point and each next one on a point chosen with a probability that grows with its distance from the centres already placed. It spreads the centres out and makes bad endings rarer, but not impossible, so running several starts can still help.</p>`
 		},
 		{
 			id: 'how-many',
@@ -165,8 +165,8 @@ export const spec: ExplainerSpec = {
 			duration: 20,
 			controls: [k, reveal],
 			body: `
-<p>k-means always finds exactly as many groups as it is told. Ask for two and it finds two. The Chinstraps get split, with some going to the Adélies and most to the Gentoos. Ask for six and it cuts the species into pieces.</p>
-<p>It cannot tell you the right k by itself. More centres always fit tighter, so the total squared distance keeps falling all the way to one centre per penguin. Choosing k takes something else: knowing the subject, checking whether the groups are useful, or a rule of thumb.</p>`
+<p>k-means always looks for exactly as many groups as it is told. Ask for two and it finds two. The Chinstraps get split, with some going to the Adélies and most to the Gentoos. Ask for six and it cuts the species into pieces.</p>
+<p>It cannot tell you the right k by itself. The best total squared distance that k centres can reach only goes down as centres are added, all the way to zero with a centre on every distinct penguin, so a small total does not mean the groups are real (a single run can land on a worse answer than the best, as the previous step showed). Choosing k takes something else: knowing the subject, checking whether the groups are useful, or a rule of thumb.</p>`
 		},
 		// ------------------------------------------------------------------ limits
 		{

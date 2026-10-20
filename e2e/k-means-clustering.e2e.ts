@@ -19,6 +19,10 @@ test('species: three groups match the species for 96 penguins in 100, and k chan
 	await page.locator('input[type=range][data-control=k]').fill('2');
 	await expect(stage(page)).toContainText('k = 2');
 	await expect(stage(page)).toContainText('80 in 100 named right');
+	// The shapes belong to this step: back on the first one the species are hidden again.
+	await page.goto('./k-means-clustering/#penguins');
+	await expect(stage(page)).toContainText('species hidden');
+	await expect(stage(page)).not.toContainText('Chinstrap');
 });
 
 test('starts: four centres end differently from different starts, three always agree', async ({
@@ -43,5 +47,5 @@ test('your own points: a click adds a point, and clearing removes them all', asy
 	await expect(stage(page)).toContainText('54 points');
 	await page.getByRole('button', { name: 'Clear the points' }).click();
 	await expect(stage(page)).toContainText('0 points');
-	await expect(stage(page)).toContainText('Too few points for this many centres');
+	await expect(stage(page)).toContainText('Too few distinct points for this many centres');
 });

@@ -267,7 +267,7 @@ A topic is done when:
 - [x] kv-cache-inference
 - [x] speculative-decoding
 - [x] chain-of-thought-scratchpad
-- [ ] k-means-clustering
+- [x] k-means-clustering
 
 **Energy & Machines**
 - [x] heat-engines

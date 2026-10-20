@@ -56,13 +56,35 @@ export function moveCentres(
 export const spread = (points: readonly Pt[], { centres, labels }: KState) =>
 	points.reduce((sum, p, i) => sum + d2(p, centres[labels[i]]), 0);
 
-/** k distinct points of the data, chosen at random, as the starting centres. */
+/** Points with distinct positions (repeated measurements counted once). */
+export const distinctCount = (points: readonly Pt[]) =>
+	new Set(points.map((p) => `${p.x},${p.y}`)).size;
+
+/**
+ * k points of the data at distinct positions, chosen at random, as the starting centres (two
+ * centres on the same spot would share every point and leave one group empty). Fewer when the
+ * data has fewer than k distinct positions.
+ */
 export function startCentres(points: readonly Pt[], k: number, seed: number): Pt[] {
 	const rand = rng(seed * 7919 + k);
-	const picked = new Set<number>();
-	const n = Math.min(k, points.length);
-	while (picked.size < n) picked.add(Math.floor(rand() * points.length));
-	return [...picked].map((i) => ({ ...points[i] }));
+	const picked = new Map<string, Pt>();
+	const n = Math.min(k, distinctCount(points));
+	while (picked.size < n) {
+		const p = points[Math.floor(rand() * points.length)];
+		picked.set(`${p.x},${p.y}`, { ...p });
+	}
+	return [...picked.values()];
+}
+
+/** The number of different groupings among runs (the same groups under other colours count once). */
+export function groupingCount(runs: readonly (readonly number[])[]) {
+	const canonical = runs.map((labels) => {
+		const rename = new Map<number, number>();
+		return labels
+			.map((l) => rename.get(l) ?? (rename.set(l, rename.size), rename.size - 1))
+			.join(',');
+	});
+	return new Set(canonical).size;
 }
 
 /**
