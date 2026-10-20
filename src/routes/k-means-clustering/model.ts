@@ -138,6 +138,21 @@ export function rings(seed = 3, n = 180): (Pt & { ring: number })[] {
 	});
 }
 
+/**
+ * The starting points of "try your own": a big, loose cloud of 40 next to a small, tight one of
+ * 12, close enough that the halfway border between their middles runs through the big cloud.
+ */
+export function ownDefault(seed = 5): Pt[] {
+	const rand = rng(seed);
+	const disc = (cx: number, cy: number, r: number, n: number) =>
+		Array.from({ length: n }, () => {
+			const a = rand() * 2 * Math.PI;
+			const d = r * Math.sqrt(rand());
+			return { x: +(cx + d * Math.cos(a)).toFixed(2), y: +(cy + d * Math.sin(a)).toFixed(2) };
+		});
+	return [...disc(-0.9, 0, 1.4, 40), ...disc(1.3, 0.2, 0.3, 12)];
+}
+
 /** Hand-placed points stored in a control-free param: "x,y;x,y" with two decimals. */
 export const parsePoints = (s: unknown): Pt[] =>
 	typeof s !== 'string' || !s

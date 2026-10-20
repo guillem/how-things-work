@@ -5,6 +5,7 @@ import {
 	assign,
 	kmeans,
 	moveCentres,
+	ownDefault,
 	penguins,
 	rings,
 	run,
@@ -94,4 +95,19 @@ test('a hand-made pair of blobs is found from any start', () => {
 	const truth = points.map((p) => (p.x < 0 ? 0 : 1));
 	const end = last(run(points, [points[0], points[1]]));
 	expect(agreement(end.labels, truth, 2)).toBe(1);
+});
+
+test('a big loose cloud beside a small tight one: two centres give the big cloud\u2019s edge to the small one', () => {
+	const points = ownDefault();
+	const small = points.slice(40);
+	for (let seed = 1; seed <= 10; seed++) {
+		const end = last(kmeans(points, 2, seed));
+		const smallGroup = end.labels[40];
+		// The small cloud is one group...
+		expect(small.every((_, i) => end.labels[40 + i] === smallGroup)).toBe(true);
+		// ...but it also takes some of the big cloud.
+		const taken = end.labels.slice(0, 40).filter((l) => l === smallGroup).length;
+		expect(taken).toBeGreaterThan(2);
+		expect(taken).toBeLessThan(20);
+	}
 });
