@@ -138,6 +138,18 @@
 		return c;
 	});
 
+	// "Start here" opens the beginners' level. It shows only once a level-0 topic is built: before
+	// that ?level=0 would match nothing (the filter ignores levels with no topic).
+	const hasBeginners = levelOptions.includes(0);
+	function startHere(e: MouseEvent) {
+		if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+		e.preventDefault();
+		path = '';
+		query = '';
+		areas = [];
+		levels = [0];
+	}
+
 	function clearProgress() {
 		if (confirm('Clear your progress on every explainer? This cannot be undone.')) progress.clear();
 	}
@@ -164,6 +176,11 @@
 		<section class="hero">
 			<h1>How things work</h1>
 			<p class="lede">{site.tagline}</p>
+			{#if hasBeginners}
+				<a class="start" href="?level=0" onclick={startHere}
+					>New to science? <strong>Start here</strong> <span aria-hidden="true">→</span></a
+				>
+			{/if}
 		</section>
 
 		<div class="layout">
@@ -389,6 +406,30 @@
 		font-weight: 500;
 		color: var(--text);
 		text-wrap: pretty;
+	}
+
+	.start {
+		display: inline-flex;
+		align-items: baseline;
+		gap: 0.35em;
+		margin-top: 16px;
+		padding: 8px 16px;
+		border: 1px solid var(--border-strong);
+		border-radius: 999px;
+		background: var(--surface);
+		color: var(--text);
+		text-decoration: none;
+		box-shadow: var(--shadow-sm);
+	}
+	.start strong {
+		color: var(--accent);
+	}
+	.start:hover {
+		border-color: var(--accent);
+	}
+	.start:focus-visible {
+		outline: 2px solid var(--focus);
+		outline-offset: 2px;
 	}
 
 	/* ---- narrow screens: a compact bar above the cards -------------------------------- */

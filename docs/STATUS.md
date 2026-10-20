@@ -112,7 +112,7 @@ link and a short level-0 section in `docs/scene-guide.md`, then the builds. ocea
 keeps the Orr et al. 2015 cross-check (no PyCO2SYS fixtures). mri-k-space's and
 aperture-synthesis' data stay Unconfirmed in `DATA-SOURCES.md`.
 
-**Level-0 groundwork (2026-10-20, in progress):** step 1 done (the catalogue parses level 0; Levels table row). Next: step 2, the index's "Start here" link to `?level=0`; then 3, a level-0 section in `docs/scene-guide.md`; then 4, STATUS and `full-picture.html`.
+**Level-0 groundwork (2026-10-20, in progress):** steps 1–2 done (the catalogue parses level 0; the index's "Start here" link to `?level=0`, hidden until a level-0 topic is built). Next: step 3, a level-0 section in `docs/scene-guide.md`; then 4, STATUS and `full-picture.html`.
 
 **Releases v1.2.0–v1.2.1 (2026-10-20).** v1.2.0 failed in CI's e2e-full and deployed nothing;
 v1.2.1 is live. Fixed on the way: resampling-inference's shuffle scene tweened under reduced

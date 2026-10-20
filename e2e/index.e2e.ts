@@ -169,3 +169,19 @@ test('on a phone the filters fold into Area and Level buttons', async ({ page })
 	await expect(physics).toBeHidden();
 	await expect(page.getByRole('button', { name: /^Area/ })).toHaveAccessibleName('Area, 1 chosen');
 });
+
+test('"Start here" opens the beginners\' level once a level-0 topic is built', async ({ page }) => {
+	await page.goto('./');
+	const start = page.getByRole('link', { name: /start here/i });
+	const grid = page.locator('main .grid');
+	// The link appears exactly when the list has a level-0 card; until the first one is built,
+	// ?level=0 would match nothing, so there is no link.
+	if ((await grid.getByText(/^Level 0$/).count()) === 0) {
+		await expect(start).toHaveCount(0);
+		return;
+	}
+	await start.click();
+	await expect(page).toHaveURL(/\/\?level=0$/);
+	await expect(grid.getByText(/^Level 0$/).first()).toBeVisible();
+	await expect(grid.getByText(/^Level [123]$/)).toHaveCount(0);
+});
