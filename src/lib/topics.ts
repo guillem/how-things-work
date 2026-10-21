@@ -1590,6 +1590,15 @@ const explainers: Explainer[] = [
 		accent: '#e03131',
 		steps: 8,
 		minutes: 9
+	},
+	{
+		slug: 'twenty-questions',
+		title: 'Twenty questions: halving the haystack',
+		summary:
+			'Think of a number from 1 to 100 and watch the page find it in seven questions. Find a word in a thousand-page dictionary by opening it in the middle, see the trick fail on a shuffled pile, then play twenty questions with 99 real animals.',
+		accent: '#0c8599',
+		steps: 8,
+		minutes: 10
 	}
 ];
 

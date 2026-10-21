@@ -5775,6 +5775,24 @@
 			stroke-width="1.5"
 			opacity="0.6"
 		/>
+	{:else if slug === 'twenty-questions'}
+		<!-- sixteen candidates halved four times, down to one, and a question mark -->
+		{#each [0, 1, 2, 3, 4] as row (row)}
+			{@const n = 16 >> row}
+			{#each { length: 16 }, i (i)}
+				<rect
+					x={20 + i * 8}
+					y={12 + row * 20}
+					width="6"
+					height="14"
+					rx="1.5"
+					fill={i >= 16 - n ? accent : 'currentColor'}
+					opacity={i >= 16 - n ? 0.9 : 0.15}
+				/>
+			{/each}
+		{/each}
+		<text x="172" y="78" text-anchor="middle" font-size="54" font-weight="800" fill={accent}>?</text
+		>
 	{:else}
 		<circle cx="100" cy="60" r="30" fill="none" stroke={accent} stroke-width="2" />
 		<circle cx="100" cy="60" r="5" fill={accent} />

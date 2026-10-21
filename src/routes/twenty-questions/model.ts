@@ -225,7 +225,7 @@ export const QUESTIONS: Question[] = [
 	feature('venomous', 'Is it venomous?'),
 	feature('fins', 'Does it have fins?'),
 	feature('tail', 'Does it have a tail?'),
-	feature('kept', 'Do people keep it as a pet or on a farm?'),
+	feature('kept', 'Is it a pet or a farm animal?'),
 	feature('big', 'Is it bigger than a cat?'),
 	{ id: 'legs0', text: 'Does it have no legs?', yes: (a) => a.legs === 0 },
 	{ id: 'legs2', text: 'Does it have two legs?', yes: (a) => a.legs === 2 },

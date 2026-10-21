@@ -5326,3 +5326,29 @@ kbd {
 	--sp-bubble: #25262b;
 	--sp-edge: #5c5f66;
 }
+
+/* twenty-questions: numbers still possible, ruled out, the pointer, found, yes and no, a page */
+:root {
+	--tq-live: #66d9e8;
+	--tq-live-edge: #0c8599;
+	--tq-gone: #dee2e6;
+	--tq-hot: #e8590c;
+	--tq-good: #2f9e44;
+	--tq-bad: #e03131;
+	--tq-yes: #ffd43b;
+	--tq-no: #a5d8ff;
+	--tq-paper: #fffdf5;
+	--tq-turner: #9c36b5;
+}
+:root[data-theme='dark'] {
+	--tq-live: #1098ad;
+	--tq-live-edge: #66d9e8;
+	--tq-gone: #373a40;
+	--tq-hot: #ff922b;
+	--tq-good: #51cf66;
+	--tq-bad: #ff6b6b;
+	--tq-yes: #b08900;
+	--tq-no: #1c5a8a;
+	--tq-paper: #25262b;
+	--tq-turner: #da77f2;
+}
