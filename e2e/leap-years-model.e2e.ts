@@ -26,7 +26,9 @@ test('the real rule: 1900 and 2100 are not leap years, 2000 and 2024 are', () =>
 	expect(n).toBe(97);
 });
 
-test('this century the June solstice falls on June 20 or 21, as almanacs list it', () => {
+// The model repeats the mean tropical year, so its solstice dates are approximate: they can be a
+// day off when the real instant is near midnight (2008: June 20, 23:59 UT; the model says June 21).
+test('this century the model puts the June solstice on June 20 or 21, as almanacs do', () => {
 	// Published UTC dates (e.g. US Naval Observatory): 2001 June 21, 2004 June 21, 2020 June 20,
 	// 2024 June 20.
 	expect(formatDate(solsticeDate(0, 'gregorian'))).toBe('June 21');

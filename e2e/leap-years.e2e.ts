@@ -13,7 +13,7 @@ test('lap: after 365 days Earth has not quite finished its lap', async ({ page }
 	await open(page, './leap-years/#lap', 'Day 365: the calendar’s year is over');
 	await expect(stage(page)).toContainText('almost 6 hours to go');
 	await page.locator('input[type=range][data-control=days]').fill('366');
-	await expect(stage(page)).toContainText('Earth has finished its lap');
+	await expect(stage(page)).toContainText('Earth is past the start of its seasons');
 });
 
 test('short: four New Years add up to almost a whole day', async ({ page }) => {
@@ -25,16 +25,16 @@ test('short: four New Years add up to almost a whole day', async ({ page }) => {
 test('slide: with no leap days the longest day slides into July, then December', async ({
 	page
 }) => {
-	await open(page, './leap-years/#slide', 'longest day: July 15');
+	await open(page, './leap-years/#slide', 'longest day: about July 15');
 	await page.locator('input[type=range][data-control=centuries]').fill('750');
-	await expect(stage(page)).toContainText('longest day: December 19');
+	await expect(stage(page)).toContainText('longest day: about December 19');
 	await expect(stage(page)).toContainText('in the calendar’s winter');
 });
 
 test('leap: one extra day every four years almost stops the slide', async ({ page }) => {
-	await open(page, './leap-years/#leap', 'longest day: January 1');
+	await open(page, './leap-years/#leap', 'longest day: about January 1');
 	await page.locator('input[type=checkbox][data-control=julian]').check();
-	await expect(stage(page)).toContainText('longest day: June 15');
+	await expect(stage(page)).toContainText('longest day: about June 15');
 });
 
 test('thousand and skip: a week off in 1,000 years; skipping hundreds years fixes it', async ({

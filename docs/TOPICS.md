@@ -228,7 +228,7 @@ A topic is done when:
 - [x] aperture-synthesis
 - [ ] comet-tails
 - [ ] earth-is-a-ball
-- [ ] leap-years
+- [x] leap-years
 
 **Computing**
 - [x] binary

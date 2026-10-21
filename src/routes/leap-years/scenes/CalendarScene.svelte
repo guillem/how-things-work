@@ -160,7 +160,7 @@
 	];
 	const shortText = $derived(
 		n4 === 0
-			? 'Start: Earth at the start of its lap'
+			? 'Start: New Year'
 			: `After ${n4} New Year${n4 === 1 ? '' : 's'}: ${SHORT_WORDS[n4]} short`
 	);
 	const lapText = $derived(
@@ -168,13 +168,13 @@
 			? `Day ${lapDays}: Earth is still on its way round`
 			: lapDays === 365
 				? 'Day 365: the calendar’s year is over'
-				: 'Day 366: Earth has finished its lap'
+				: 'Day 366: Earth is past the start of its seasons'
 	);
 	const lapNote = $derived(
 		lapDays === 365
 			? 'but Earth still has almost 6 hours to go'
 			: lapDays > 365
-				? 'it finished about 18 hours ago'
+				? 'by about 18 hours'
 				: ''
 	);
 
@@ -258,7 +258,7 @@
 	});
 	const chartTitle = $derived(
 		phase === 'same'
-			? 'Longest day, real calendar, next 400 years'
+			? 'Longest day, real calendar, 2001 to 2401'
 			: rule === 'none'
 				? 'Longest day with no leap days'
 				: rule === 'julian'
@@ -273,7 +273,9 @@
 	const lineColor = $derived(
 		rule === 'none' ? 'var(--ly-none)' : rule === 'julian' ? 'var(--ly-julian)' : 'var(--ly-greg)'
 	);
-	const yearsText = $derived(years === 0 ? 'Now' : `After ${years.toLocaleString('en-US')} years`);
+	const yearsText = $derived(
+		years === 0 ? 'In 2001' : `After ${years.toLocaleString('en-US')} years`
+	);
 	const SEASON_WORDS: Record<string, string> = {
 		winter: 'in the calendar’s winter',
 		spring: 'in the calendar’s spring',
@@ -283,9 +285,9 @@
 	/** How far the longest day has moved, in whole days, in plain words. */
 	const moved = $derived.by(() => {
 		const dd = Math.round(solsticeDay - SOLSTICE_2001);
-		if (dd === 0) return 'about the same day as now';
+		if (dd === 0) return 'about the same day as in 2001';
 		const n = Math.abs(dd);
-		return `${n} day${n === 1 ? '' : 's'} ${dd > 0 ? 'later' : 'earlier'} than now`;
+		return `${n} day${n === 1 ? '' : 's'} ${dd > 0 ? 'later' : 'earlier'} than in 2001`;
 	});
 	const whenNote = $derived(
 		phase === 'slide' || phase === 'leap'
@@ -371,7 +373,11 @@
 			anchor="start"
 			x={star.x + 18}
 			y={star.y - 22}
-			text={phase === 'lap' || phase === 'short' ? 'longest day' : `longest day: ${dateText}`}
+			text={phase === 'lap' || phase === 'short'
+				? 'longest day'
+				: phase === 'which' || phase === 'same'
+					? `longest day: ${dateText}`
+					: `longest day: about ${dateText}`}
 			size={16}
 			weight={700}
 			color="var(--ly-star)"
@@ -436,7 +442,7 @@
 			anchor="start"
 			x={TX0}
 			y={TY - 104}
-			text="The end of the lap, magnified"
+			text="The end of the year, magnified"
 			size={15}
 			weight={700}
 			halo={false}
@@ -475,7 +481,7 @@
 		<Label
 			x={FX}
 			y={TY + 30}
-			text="full lap"
+			text="seasons complete"
 			anchor="middle"
 			size={12}
 			weight={600}
@@ -581,7 +587,7 @@
 				color={phase === 'same' ? 'var(--ly-greg)' : lineColor}
 			/>
 		</Readout>
-		<Axes {sx} {sy} xLabel="years from now" {yTicks} {yFormat} />
+		<Axes {sx} {sy} xLabel="years after 2001" {yTicks} {yFormat} />
 		{#each lines as l (l.id)}
 			<path
 				d={l.d}
