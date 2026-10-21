@@ -5735,6 +5735,46 @@
 			>2</text
 		>
 		<text x="152" y="70" text-anchor="middle" font-size="26">🐐</text>
+	{:else if slug === 'spam-filter-word-counts'}
+		<!-- two message bubbles, one marked spam, and the word "free" with its two counts -->
+		<rect x="18" y="16" width="104" height="30" rx="12" fill="#ffffff" opacity="0.92" />
+		<rect
+			x="18"
+			y="16"
+			width="104"
+			height="30"
+			rx="12"
+			fill="none"
+			stroke="#e03131"
+			stroke-width="2.5"
+		/>
+		<text x="30" y="36" font-size="12" font-weight="700" fill="#e03131">WIN a FREE…</text>
+		<rect x="18" y="58" width="104" height="30" rx="12" fill="#ffffff" opacity="0.92" />
+		<rect
+			x="18"
+			y="58"
+			width="104"
+			height="30"
+			rx="12"
+			fill="none"
+			stroke="#2f9e44"
+			stroke-width="2.5"
+		/>
+		<text x="30" y="78" font-size="12" font-weight="700" fill="#2f9e44">home soon?</text>
+		<text x="160" y="30" text-anchor="middle" font-size="14" font-weight="700" fill="currentColor"
+			>free</text
+		>
+		<rect x="136" y="44" width="20" height="56" rx="3" fill="#e03131" />
+		<rect x="164" y="84" width="20" height="16" rx="3" fill="#2f9e44" />
+		<line
+			x1="130"
+			y1="100"
+			x2="190"
+			y2="100"
+			stroke="currentColor"
+			stroke-width="1.5"
+			opacity="0.6"
+		/>
 	{:else}
 		<circle cx="100" cy="60" r="30" fill="none" stroke={accent} stroke-width="2" />
 		<circle cx="100" cy="60" r="5" fill={accent} />

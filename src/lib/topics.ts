@@ -1581,6 +1581,15 @@ const explainers: Explainer[] = [
 		accent: '#c2410c',
 		steps: 6,
 		minutes: 8
+	},
+	{
+		slug: 'spam-filter-word-counts',
+		title: 'How a spam filter decides',
+		summary:
+			'A pile of real text messages, each marked spam or not. Count which words turn up in which pile, let the words of a new message vote, try to sneak past with “fr33”, and teach the filter with a “report spam” click.',
+		accent: '#e03131',
+		steps: 8,
+		minutes: 9
 	}
 ];
 

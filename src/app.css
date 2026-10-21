@@ -5312,3 +5312,17 @@ kbd {
 	--mh-win: #69db7c;
 	--mh-lose: #ff8787;
 }
+
+/* spam-filter-word-counts: the spam pile, the ordinary pile, a message bubble and its edge */
+:root {
+	--sp-spam: #e03131;
+	--sp-ok: #2f9e44;
+	--sp-bubble: #ffffff;
+	--sp-edge: #adb5bd;
+}
+:root[data-theme='dark'] {
+	--sp-spam: #ff6b6b;
+	--sp-ok: #51cf66;
+	--sp-bubble: #25262b;
+	--sp-edge: #5c5f66;
+}

@@ -4,5 +4,6 @@ export const MINE = {
 	sneaky: 'W1N a fr33 phone! Text W1N now',
 	friend: 'Are you free tonight?',
 	home: 'Text me when you get home',
-	rare: 'Is your phone free?'
+	rare: 'Is your phone free?',
+	cup: 'Our team won the cup! Call now'
 };

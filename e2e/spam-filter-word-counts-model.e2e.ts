@@ -71,6 +71,14 @@ test('the page’s messages: caught, sneaking past, and caught again after one r
 	expect(judge(taught, MINE.sneaky).spam).toBe(true);
 	// Teaching a copy leaves the original counts alone.
 	expect(counts.spam).toBe(74);
+	// Fooled the other way: a friend's good news, full of prize words, goes to the spam folder.
+	expect(judge(counts, MINE.cup).spam).toBe(true);
+});
+
+test('the shares the page quotes: “free” is in about 1 spam message in 4, 1 ordinary in 100', () => {
+	const free = vote(counts, 'free');
+	expect(Math.round(counts.spam / free.spam)).toBe(4);
+	expect(Math.round(counts.ham / free.ham / 10) * 10).toBe(100);
 });
 
 test('forgetting that spam is rare sends a friend’s question to the spam folder', () => {
