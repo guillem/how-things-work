@@ -102,6 +102,12 @@ test('every word it writes is one it has seen follow the word before', () => {
 	expect(prose(['i', 'saw', 'mr', 'tod', STOP, 'he', 'ran'])).toBe('I saw Mr. Tod. He ran');
 });
 
+test('names keep their capitals; ordinary words do not get one', () => {
+	expect(prose(['peter', 'saw', 'mr', 'mcgregor', 'in', 'the', 'garden'], all.names)).toBe(
+		'Peter saw Mr. McGregor in the garden'
+	);
+});
+
 test('reading more books makes its top guess right more often, in a story it never read', () => {
 	const one = hits(learn(library.slice(0, 1)), story.text);
 	const seven = hits(all, story.text);

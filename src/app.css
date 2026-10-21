@@ -5170,3 +5170,39 @@ kbd {
 	--sc-bad: #ff6b6b;
 	--sc-english: #adb5bd;
 }
+
+/* next-word-guessing-game: word cards, their count bars, the spinner's slices */
+:root {
+	--nw-card: #f8f9fa;
+	--nw-card-edge: #adb5bd;
+	--nw-paper: #fff9db;
+	--nw-bar: #9775fa;
+	--nw-hot: #e8590c;
+	--nw-hot-soft: #ffe8cc;
+	--nw-right: #d3f9d8;
+	--nw-s1: #9775fa;
+	--nw-s2: #4dabf7;
+	--nw-s3: #69db7c;
+	--nw-s4: #ffd43b;
+	--nw-s5: #ff8787;
+	--nw-s6: #f783ac;
+	--nw-s7: #3bc9db;
+	--nw-s8: #ced4da;
+}
+:root[data-theme='dark'] {
+	--nw-card: #25262b;
+	--nw-card-edge: #5c636a;
+	--nw-paper: #2b2a22;
+	--nw-bar: #9775fa;
+	--nw-hot: #ff922b;
+	--nw-hot-soft: #4a2f14;
+	--nw-right: #1f3b26;
+	--nw-s1: #7048e8;
+	--nw-s2: #1c7ed6;
+	--nw-s3: #2f9e44;
+	--nw-s4: #e67700;
+	--nw-s5: #e03131;
+	--nw-s6: #c2255c;
+	--nw-s7: #0c8599;
+	--nw-s8: #495057;
+}

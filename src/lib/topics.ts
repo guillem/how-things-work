@@ -1545,6 +1545,15 @@ const explainers: Explainer[] = [
 		accent: '#7048e8',
 		steps: 9,
 		minutes: 10
+	},
+	{
+		slug: 'next-word-guessing-game',
+		title: 'How a chatbot picks its next word',
+		summary:
+			'Play a guessing game against a tiny machine that has read a few children’s books: it guesses the next word from what usually came next, spins a spinner to pick one, and writes a whole story one word at a time.',
+		accent: '#7048e8',
+		steps: 8,
+		minutes: 10
 	}
 ];
 

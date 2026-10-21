@@ -5619,6 +5619,58 @@
 			fill="currentColor"
 			font-family="monospace">HELLO</text
 		>
+	{:else if slug === 'next-word-guessing-game'}
+		<!-- a sentence with a gap, and three word cards of different counts -->
+		<rect
+			x="22"
+			y="22"
+			width="156"
+			height="30"
+			rx="6"
+			fill="none"
+			stroke="currentColor"
+			opacity="0.5"
+		/>
+		<line
+			x1="32"
+			y1="37"
+			x2="110"
+			y2="37"
+			stroke="currentColor"
+			stroke-width="4"
+			stroke-linecap="round"
+			opacity="0.6"
+		/>
+		<line
+			x1="122"
+			y1="44"
+			x2="164"
+			y2="44"
+			stroke={accent}
+			stroke-width="3"
+			stroke-linecap="round"
+		/>
+		{#each [[30, 44], [82, 26], [134, 12]] as [x, h], i (i)}
+			<rect
+				{x}
+				y="64"
+				width="40"
+				height="44"
+				rx="6"
+				fill="none"
+				stroke={accent}
+				stroke-width="2.5"
+			/>
+			<rect
+				x={x + 6}
+				y={100 - h * 0.6}
+				width="28"
+				height={h * 0.6}
+				rx="2"
+				fill={accent}
+				opacity="0.7"
+			/>
+		{/each}
 	{:else}
 		<circle cx="100" cy="60" r="30" fill="none" stroke={accent} stroke-width="2" />
 		<circle cx="100" cy="60" r="5" fill={accent} />

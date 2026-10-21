@@ -21,10 +21,7 @@ const ABBREVIATIONS = new Set(['mr', 'mrs', 'dr', 'st']);
  */
 export function tokens(text: string): string[] {
 	const out: string[] = [];
-	const clean = text
-		.replace(/[’‘]/g, "'")
-		.replace(/--+/g, ' ')
-		.toLowerCase();
+	const clean = text.replace(/[’‘]/g, "'").replace(/--+/g, ' ').toLowerCase();
 	const re = /[a-z]+(?:['-][a-z]+)*|[.!?]+/g;
 	for (const m of clean.matchAll(re)) {
 		const w = m[0];
@@ -50,6 +47,11 @@ export interface Machine {
 	books: string[];
 	after1: Map<string, Map<string, number>>;
 	after2: Map<string, Map<string, number>>;
+	/**
+	 * Words the books mostly write with a capital inside a sentence (names: "Peter", "McGregor"),
+	 * with the way they are written.
+	 */
+	names: Map<string, string>;
 }
 
 function bump(map: Map<string, Map<string, number>>, key: string, next: string) {
@@ -72,7 +74,41 @@ export function learn(books: Book[]): Machine {
 			if (i >= 2) bump(after2, `${ws[i - 2]} ${ws[i - 1]}`, ws[i]);
 		}
 	}
-	return { read, books: books.map((b) => b.title), after1, after2 };
+	return { read, books: books.map((b) => b.title), after1, after2, names: capitalised(books) };
+}
+
+/** Words written with a capital inside a sentence more often than not ("Peter", "McGregor"). */
+function capitalised(books: Book[]): Map<string, string> {
+	const upper = new Map<string, number>();
+	const form = new Map<string, string>();
+	const lower = new Map<string, number>();
+	for (const b of books) {
+		// The same split as `tokens`, keeping the capitals: a word right after a sentence end
+		// (but not after "Mr.") is skipped, since every word gets a capital there.
+		let start = true;
+		let prev = '';
+		const text = b.text.replace(/[’‘]/g, "'").replace(/--+/g, ' ');
+		for (const m of text.matchAll(/[A-Za-z]+(?:['-][A-Za-z]+)*|[.!?]+/g)) {
+			const w = m[0];
+			if (/^[.!?]/.test(w)) {
+				if (!ABBREVIATIONS.has(prev)) start = true;
+				continue;
+			}
+			const key = w.toLowerCase();
+			prev = key;
+			if (start) {
+				start = false;
+				continue;
+			}
+			const big = /^[A-Z][a-z]/.test(w);
+			const map = big ? upper : lower;
+			map.set(key, (map.get(key) ?? 0) + 1);
+			if (big && !form.has(key)) form.set(key, w);
+		}
+	}
+	const out = new Map<string, string>();
+	for (const [w, n] of upper) if (n > (lower.get(w) ?? 0)) out.set(w, form.get(w) ?? w);
+	return out;
 }
 
 export interface Guess {
@@ -136,8 +172,17 @@ export function write(
 	return story;
 }
 
-/** The words as a reader would write them: capitals after a full stop, "I", "Mr. Tod". */
-export function prose(words: string[]): string {
+/** One word as a reader would write it: "Peter", "Mr.", "I", or the full stop as "." */
+export function display(w: string, names?: Map<string, string>): string {
+	if (w === STOP) return '.';
+	if (w === 'i' || w.startsWith("i'")) return 'I' + w.slice(1);
+	const named = names?.get(w);
+	const s = named ?? (ABBREVIATIONS.has(w) ? w[0].toUpperCase() + w.slice(1) : w);
+	return ABBREVIATIONS.has(w) ? s + '.' : s;
+}
+
+/** The words as a reader would write them: capitals after a full stop, for names, and "I". */
+export function prose(words: string[], names?: Map<string, string>): string {
 	let out = '';
 	let cap = true;
 	for (const w of words) {
@@ -146,8 +191,7 @@ export function prose(words: string[]): string {
 			cap = true;
 			continue;
 		}
-		let s = w === 'i' || w.startsWith("i'") ? 'I' + w.slice(1) : w;
-		if (ABBREVIATIONS.has(w)) s = s[0].toUpperCase() + s.slice(1) + '.';
+		let s = display(w, names);
 		if (cap) s = s[0].toUpperCase() + s.slice(1);
 		out += (out ? ' ' : '') + s;
 		// After a full stop, and for the name after "Mr." or "Mrs.", a capital.
