@@ -108,15 +108,16 @@ test('names keep their capitals; ordinary words do not get one', () => {
 	);
 });
 
-test('reading more books makes its top guess right more often, in a story it never read', () => {
+test('with the whole shelf its top guess is right far more often than with Peter Rabbit alone', () => {
 	const one = hits(learn(library.slice(0, 1)), story.text);
 	const seven = hits(all, story.text);
-	// About 1 word in 30 with Peter Rabbit alone; about 1 in 10 with all seven books.
+	// About 1 word in 30 with Peter Rabbit alone; about 1 in 11 with the whole shelf (full stops not
+	// counted as words). Adding a part does not always help: only the two ends are compared.
 	expect(one).toBeGreaterThan(0.02);
 	expect(one).toBeLessThan(0.05);
 	expect(seven).toBeGreaterThan(0.09);
 	expect(seven).toBeLessThan(0.12);
-	expect(all.read).toBeGreaterThan(40_000);
+	expect(all.read).toBe(38_633);
 });
 
 test('the game sentences are in Jemima Puddle-Duck, with the answers the book gives', async () => {

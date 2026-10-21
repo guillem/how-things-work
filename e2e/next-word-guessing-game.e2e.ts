@@ -17,13 +17,13 @@ test('guess: picking a card reveals the book’s word and the machine’s cards'
 	await expect(stage(page)).toContainText('what came next after “the”');
 	await expect(stage(page)).toContainText('lion');
 	await page.getByRole('button', { name: 'Another sentence' }).click();
-	await expect(stage(page)).toContainText('always found and carried');
+	await expect(stage(page)).toContainText('always found and');
 	await expect(stage(page)).toContainText('Pick a card');
 });
 
 test('cards: after “Mr.” only a few names can come', async ({ page }) => {
 	await open(page, './next-word-guessing-game/#cards', 'followed by 56 different words');
-	await page.locator('select[data-control=word]').selectOption('mr');
+	await page.getByRole('radio', { name: 'Mr.' }).click();
 	await expect(stage(page)).toContainText(
 		'Seen 36 times in the books, followed by 6 different words'
 	);
@@ -46,12 +46,12 @@ test('write: each press adds one word to the story', async ({ page }) => {
 });
 
 test('more books: the first guess gets better as the machine reads more', async ({ page }) => {
-	await open(page, './next-word-guessing-game/#more-books', 'Books read: 1 of 7');
+	await open(page, './next-word-guessing-game/#more-books', 'Shelf: 1 of 7 read');
 	await expect(stage(page)).toContainText('about 1 word in 29');
 	const more = page.getByRole('button', { name: 'Read more books' });
 	for (let k = 0; k < 6; k++) await more.click();
-	await expect(stage(page)).toContainText('Books read: 7 of 7');
-	await expect(stage(page)).toContainText('about 1 word in 10');
+	await expect(stage(page)).toContainText('Shelf: 7 of 7 read');
+	await expect(stage(page)).toContainText('about 1 word in 11');
 });
 
 test('likely: a written sentence is checked against the books', async ({ page }) => {

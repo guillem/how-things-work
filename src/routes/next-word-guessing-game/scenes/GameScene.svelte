@@ -105,7 +105,7 @@
 	// ---- writing ------------------------------------------------------------------------------
 	const MAX_WORDS = 24;
 	const written = $derived.by(() => {
-		const n = presses % (MAX_WORDS + 1);
+		const n = Math.min(presses, MAX_WORDS);
 		return write(all, [STOP], n, rng(7), 1).slice(1);
 	});
 	const writeNext = $derived(top(guess(all, written.length ? written : [STOP]).cards, 6));
@@ -114,14 +114,14 @@
 	const twoStory = $derived(write(all, [STOP], 32, rng(21), twoBack ? 2 : 1).slice(1));
 
 	// ---- more books ---------------------------------------------------------------------------
-	const nBooks = $derived(1 + (presses % LIBRARY.length));
+	const nBooks = $derived(Math.min(1 + presses, LIBRARY.length));
 	const shelf = $derived(machine(nBooks));
 	const theCards = $derived(guess(shelf, ['the']));
 	const score = $derived(hits(shelf, STORY.text));
 	const sample = $derived(write(shelf, [STOP], 22, rng(4), 2).slice(1));
 
 	// ---- likely, not true ---------------------------------------------------------------------
-	const libraryText = ` ${LIBRARY.flatMap((b) => [STOP, ...tokens(b.text)]).join(' ')} `;
+	const libraryTexts = LIBRARY.map((b) => ` ${tokens(b.text).join(' ')} `);
 	/** A sentence of at least six words (shorter ones are skipped), spun looking back two words. */
 	const sentence = $derived.by(() => {
 		const r = rng(300 + presses);
@@ -135,7 +135,7 @@
 			if (words.length >= 8) return words.slice(1);
 		}
 	});
-	const copied = $derived(libraryText.includes(` ${STOP} ${sentence.join(' ')} `));
+	const copied = $derived(libraryTexts.some((b) => b.includes(` ${sentence.join(' ')} `)));
 
 	// ---- drawing helpers ----------------------------------------------------------------------
 	function wrap(text: string, max: number): string[] {
@@ -564,11 +564,11 @@
 			/>
 		{/each}
 		<line x1={90} y1={192} x2={490} y2={192} stroke="var(--nw-card-edge)" stroke-width={4} />
-		<Readout id="books" order={1} label="Books read" value="{nBooks} of {LIBRARY.length}">
+		<Readout id="books" order={1} label="Shelf read" value="{nBooks} of {LIBRARY.length}">
 			<Label
 				x={520}
 				y={80}
-				text="Books read: {nBooks} of {LIBRARY.length}"
+				text="Shelf: {nBooks} of {LIBRARY.length} read"
 				size={17}
 				anchor="start"
 				weight={600}
@@ -635,8 +635,8 @@
 		{@const y = 180 + lines.length * 34}
 		<Readout
 			id="copied"
-			label="In its books?"
-			value={copied ? 'yes, copied word for word' : 'no, made from pieces'}
+			label="Do these words appear in a book?"
+			value={copied ? 'yes, the same words appear' : 'no, made from pieces'}
 		>
 			<rect
 				x={CX - 280}
@@ -652,8 +652,8 @@
 				x={CX}
 				y={y + 2}
 				text={copied
-					? 'This sentence is in one of its books, word for word'
-					: 'This sentence is in none of its books'}
+					? 'These same words appear in one of its books'
+					: 'These words, in this order, appear in none of its books'}
 				size={17}
 				weight={600}
 				halo={false}
@@ -662,7 +662,7 @@
 		<Label
 			x={CX}
 			y={y + 70}
-			text="Every three words in a row came from a book; nobody checked the whole"
+			text="This checks the words, not whether what they say is true"
 			size={15}
 			muted
 		/>
@@ -694,7 +694,7 @@
 			stroke="var(--nw-card-edge)"
 		/>
 		<Label x={240} y={262} text="word counts" size={17} weight={600} halo={false} />
-		<Label x={240} y={330} text="read about 40,000 words" size={15} muted />
+		<Label x={240} y={330} text="read about 39,000 words" size={15} muted />
 		<!-- a real chatbot -->
 		<Label x={700} y={70} text="A real chatbot" size={20} weight={700} />
 		{#each Array.from({ length: 64 }, (_, i) => i) as i (i)}

@@ -287,7 +287,7 @@ A topic is done when:
 - [x] speculative-decoding
 - [x] chain-of-thought-scratchpad
 - [x] k-means-clustering
-- [ ] next-word-guessing-game
+- [x] next-word-guessing-game
 - [ ] spam-filter-word-counts
 - [ ] teach-a-machine
 

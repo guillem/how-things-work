@@ -30,7 +30,7 @@ export const spec: ExplainerSpec = {
 			],
 			body: `
 <p>Here is a story that stops in the middle of a sentence. What word comes next? Pick one of the four cards.</p>
-<p>A tiny machine plays too. It has read four Beatrix Potter tales and a big book of Aesop’s fables, but never this story. Once you pick, you see its cards: every word it ever saw come next after the last word of the sentence, and how many times.</p>
+<p>A tiny machine plays too. It has read four Beatrix Potter tales and a big book of Aesop’s fables, but never this story. Once you pick, you see its cards: the words it most often saw come next after the last word of the sentence, and how many times (the rarer ones are grouped together on the last card).</p>
 <p>Try a few sentences. You will often beat it, because you understand the story. The machine only remembers what came next.</p>`
 		},
 		{
@@ -94,7 +94,8 @@ export const spec: ExplainerSpec = {
 					id: 'next',
 					label: 'Write',
 					action: 'Add a word',
-					help: 'Spin for one more word.'
+					help: 'Spin for one more word (up to 24).',
+					disabled: (p) => Number(p.next ?? 0) >= 24
 				}
 			],
 			body: `
@@ -118,7 +119,7 @@ export const spec: ExplainerSpec = {
 			],
 			body: `
 <p>Give the machine a slightly better memory: switch on “look back two words”. Now it keeps cards for every <em>pair</em> of words, so after “she went” it only uses what came after “she went”, not after any “went”.</p>
-<p>The story makes more sense, because each three words in a row come from a book. But it still forgets everything before the last two words.</p>`
+<p>The story makes more sense, because almost every three words in a row come from a book. (If it has no cards for the last two words, it uses the last word alone.) But it still forgets everything before the last two words.</p>`
 		},
 		// ------------------------------------------------------------------ more
 		{
@@ -134,12 +135,13 @@ export const spec: ExplainerSpec = {
 					id: 'more',
 					label: 'Books',
 					action: 'Read more books',
-					help: 'Add the next book on the shelf to what it has read.'
+					help: 'Add the next book on the shelf to what it has read.',
+					disabled: (p) => Number(p.more ?? 0) >= 6
 				}
 			],
 			body: `
-<p>So far the machine has read seven books. Here it starts again with just one, <em>The Tale of Peter Rabbit</em>: a thousand words. Press “read more books” to add the next one.</p>
-<p>Watch the cards after “the” fill up, and watch how often its first guess is right in Jemima Puddle-Duck’s story, which it never reads. With one book it is right about once in thirty words; with all seven, about once in ten. More reading, better guesses.</p>`
+<p>So far the machine has read four Beatrix Potter tales and Aesop’s fables, which sit on its shelf in three parts. Here it starts again with just <em>The Tale of Peter Rabbit</em>: about a thousand words. Press “read more books” to add the next one.</p>
+<p>Watch the cards after “the” fill up, and watch how often its first guess is right in Jemima Puddle-Duck’s story, which it never reads. With Peter Rabbit alone it is right about once in thirty words; with the whole shelf, about once in eleven. Not every book helps (the last part of Aesop changes almost nothing), but much more reading gives much better guesses.</p>`
 		},
 		{
 			id: 'likely',

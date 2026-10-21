@@ -41,7 +41,7 @@ export interface Card {
 
 /** What the machine has learned: for each word (and each pair of words), what came next. */
 export interface Machine {
-	/** Words read in all. */
+	/** Words read in all (full stops not counted). */
 	read: number;
 	/** Books read, by title. */
 	books: string[];
@@ -68,7 +68,7 @@ export function learn(books: Book[]): Machine {
 	for (const b of books) {
 		// Each book starts as if after the end of a sentence.
 		const ws = [STOP, ...tokens(b.text)];
-		read += ws.length - 1;
+		read += ws.filter((w) => w !== STOP).length;
 		for (let i = 1; i < ws.length; i++) {
 			bump(after1, ws[i - 1], ws[i]);
 			if (i >= 2) bump(after2, `${ws[i - 2]} ${ws[i - 1]}`, ws[i]);
@@ -201,15 +201,19 @@ export function prose(words: string[], names?: Map<string, string>): string {
 }
 
 /**
- * The guessing game played on a text: for each word of `text` after the first, does the
+ * The guessing game played on a text: for each word of `text` (full stops skipped), does the
  * machine's top card (looking back `back` words) name it? Returns the share it gets right.
  */
 export function hits(m: Machine, text: string, back: 1 | 2 = 1): number {
 	const ws = [STOP, ...tokens(text)];
 	let right = 0;
+	let tried = 0;
 	for (let i = 1; i < ws.length; i++) {
+		// Only words count: guessing where a sentence ends is not part of the game.
+		if (ws[i] === STOP) continue;
+		tried++;
 		const g = guess(m, ws.slice(Math.max(0, i - 2), i), back);
 		if (g.cards[0]?.word === ws[i]) right++;
 	}
-	return ws.length > 1 ? right / (ws.length - 1) : 0;
+	return tried ? right / tried : 0;
 }
