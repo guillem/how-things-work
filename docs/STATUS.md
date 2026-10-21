@@ -4,7 +4,7 @@ The self-handover. If work is interrupted, this file alone must be enough to con
 top to bottom, then run the commands under "Resume". **Update it at every commit**, not just at
 the end of a development.
 
-Last updated: 2026-10-20 18:00 UTC, 55 of the proposal's topics built; **v1.2.1 live** (155 topics, Paths v1, the verified post-v1 fact-check round). Next: to be discussed with the user (level 0 groundwork, or the remaining level 1–3 topics).
+Last updated: 2026-10-21 09:00 UTC, 70 of the proposal's topics built (15 since v1.2.1, unreleased); **v1.2.1 live** (155 topics). Next: finish the five half-built level-0 topics (below), then the remaining level-0 topics.
 
 ## How we work
 
@@ -74,8 +74,15 @@ Last updated: 2026-10-20 18:00 UTC, 55 of the proposal's topics built; **v1.2.1 
 
 ## Current development
 
-- **Level-0 builder A (2026-10-21):** landed forest-fire-spread; in progress: hearing-and-the-ear (then muscles-pull-in-pairs, why-spinning-makes-you-dizzy, why-you-get-sleepy, cloud-base, sea-breeze).
-**Builder D (level-0 worktree, 2026-10-21):** landed leap-years; in progress: monty-hall (then shapes-that-tile, flocking-birds, ant-trails, be-the-bird-camouflage).
+**Overnight builders, 2026-10-21 (stopped ~03:10 CEST at the usage limit; landed on `main` the
+same morning):** forest-fire-spread, secret-codes, next-word-guessing-game and leap-years, all
+ticked. Left half-built in their worktrees under `.claude/worktrees/`, uncommitted unless noted:
+monty-hall (`agent-a6134031…`, committed model, narrative and scene; browser tests and
+screenshot review left), floating-sinking-and-boats (`agent-a35d9c47…`, built; the Codex review
+in `docs/reviews/floating-sinking-and-boats.md` is half applied, uncommitted), magnets-and-poles
+(same worktree, `model.ts` only), twenty-questions (`agent-a9306168…`), spam-filter-word-counts
+(`agent-aac8896d…`, model, data, steps and scenes). Those worktrees' branches also hold the
+landed topics' original commits; take only the half-built topics' files from them.
 
 **Next topics, proposed for review (2026-10-18, after v1.0.0): a level 0 and 100 new topics.**
 The user asked for a researched proposal (no code): a new level 0 for beginners, the levels made
@@ -115,9 +122,7 @@ link and a short level-0 section in `docs/scene-guide.md`, then the builds. ocea
 keeps the Orr et al. 2015 cross-check (no PyCO2SYS fixtures). mri-k-space's and
 aperture-synthesis' data stay Unconfirmed in `DATA-SOURCES.md`.
 
-**Proposal build, one topic at a time in the main session (2026-10-20/21):** k-means-clustering, abs-brakes, bicycle-stability, gas-turbines-combined-cycle, heat-pumps-refrigeration, cellular-automata, and the level-0 life-on-a-grid (the index's "Start here" link now shows), shadows-and-pinholes, fireflies-in-sync, barcode-stripes and why-triangles-are-stiff done (ticked, fact-checked, pushed; not released). The build order is finished. Next: leap-years, then the main session's other level-0 entries (Mathematics, Physics, Chemistry & Materials, Biology; promote each with `promote.mjs`); the overnight session builds the other 21 (below). Run `make e2e-full` before a release.
-
-**Level-0 builder C (2026-10-21, worktree):** AI and Energy & Machines topics. Landed: next-word-guessing-game. In progress: spam-filter-word-counts.
+**Proposal build, one topic at a time in the main session (2026-10-20/21):** k-means-clustering, abs-brakes, bicycle-stability, gas-turbines-combined-cycle, heat-pumps-refrigeration, cellular-automata, and the level-0 life-on-a-grid (the index's "Start here" link now shows), shadows-and-pinholes, fireflies-in-sync, barcode-stripes and why-triangles-are-stiff done (ticked, fact-checked, pushed; not released). The build order is finished. Next: (leap-years done 2026-10-21, see below) the main session's other level-0 entries (Mathematics, Physics, Chemistry & Materials, Biology; promote each with `promote.mjs`); the overnight session builds the other 21 (below). Run `make e2e-full` before a release.
 
 **Overnight session, second worktree (2026-10-20 22:20 CEST, the user's request):** builds the 21 level-0 topics of Body & Medicine, Earth & Climate, Space (not leap-years), Computing, Information & Networks (not barcode-stripes), Artificial Intelligence and Energy & Machines, all promoted into `TOPICS.md` at once to claim them; each lands on `main` when done. The main session keeps the level-0 topics of Mathematics, Physics, Chemistry & Materials and Biology, plus barcode-stripes and leap-years.
 
