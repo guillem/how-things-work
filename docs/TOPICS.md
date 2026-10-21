@@ -1,6 +1,6 @@
 # Topic catalog
 
-Source of truth for the content of an interactive web learning tool that shows how things work. It defines 192 topics in 11 categories, each built around one interactive graphic. Readers range from high-school students to university majors.
+Source of truth for the content of an interactive web learning tool that shows how things work. It defines 193 topics in 11 categories, each built around one interactive graphic. Readers range from high-school students to university majors.
 
 This file covers content only. It does not choose the stack, the visual design or the project layout; take those from the repository's own instructions.
 
@@ -92,7 +92,7 @@ A topic is done when:
 | Mathematics | `math` | 21 |
 | Physics | `physics` | 16 |
 | Chemistry & Materials | `chemistry` | 15 |
-| Biology | `biology` | 17 |
+| Biology | `biology` | 18 |
 | Body & Medicine | `medicine` | 18 |
 | Earth & Climate | `earth` | 16 |
 | Space | `space` | 14 |
@@ -179,6 +179,7 @@ A topic is done when:
 - [x] population-genetics
 - [x] turing-patterns
 - [x] fireflies-in-sync
+- [ ] ant-trails
 
 **Body & Medicine**
 - [x] heart-circulation
@@ -984,6 +985,16 @@ A topic is done when:
 - **Prerequisites:** none
 - **Pitfall:** There is no lead firefly and no outside signal; synchrony appears only from each insect reacting to its neighbours. Only some firefly species do this.
 
+#### ant-trails
+- **Title:** How ants find the shortest way
+- **Level:** 0
+- **Kind:** simulate
+- **Interaction:** Ants wander out of a nest at random; one that finds the sugar walks home laying a scent, and the others tend to follow scent, so a trail forms and thickens. Drag the sugar farther away or drop a pebble on the trail and watch the colony reroute. Then offer a long bridge and a short one together and count the ants on each: ants on the short one get back first, so its scent builds up sooner and the short one wins. Open the short bridge only after a trail has formed on the long one, and the colony stays on the long one until the scent's fading is switched on.
+- **Takeaway:** A colony finds the shorter path with no map and no ant that knows it: ants on the short route return sooner, so its scent builds up faster and draws more ants, and a fading scent lets the colony give up an old route.
+- **Prerequisites:** none
+- **Related:** graph-search
+- **Pitfall:** No ant knows where the food is or compares the routes, and the queen gives no orders. Fading is not what makes the short bridge win when both are offered at once; it is what lets a colony switch to a shortcut that appears later, and real Argentine ants often do not. Real ants also use sight and memory, which the page leaves out and says so.
+
 ### Body & Medicine
 
 #### heart-circulation
@@ -1532,7 +1543,7 @@ A topic is done when:
 - **Interaction:** Draw walls and slow terrain on a grid, set a start and a goal, and watch breadth-first search, Dijkstra's algorithm and A* expand their frontiers. Compare cells visited and the cost of the path found: breadth-first search ignores terrain and returns the route with the fewest steps, which is not always the cheapest. Then switch to a road-style graph of nodes and weighted edges.
 - **Takeaway:** Finding a route is a systematic exploration of a graph, and a good estimate of the remaining distance lets the search skip most of it.
 - **Prerequisites:** none
-- **Related:** internet, pagerank, distributed-hash-tables
+- **Related:** internet, pagerank, distributed-hash-tables, ant-trails
 - **Pitfall:** A* is guaranteed to find the cheapest path only if its estimate never overestimates the remaining cost; with slow terrain, base the estimate on the cheapest terrain.
 
 #### turing-machines
