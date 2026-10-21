@@ -54,6 +54,12 @@ test('spammy words vote for spam, everyday words against, unknown words not at a
 		expect(vote(counts, w).times).toBeGreaterThan(2);
 	for (const w of ['i', 'my', 'later', 'home']) expect(vote(counts, w).times).toBeLessThan(0.5);
 	expect(vote(counts, 'fr33')).toMatchObject({ spam: 0, ham: 0, push: 0 });
+	// The page's note: "is" is in a bigger share of the spam messages (18 of 74) than of the
+	// ordinary ones (61 of 487), but a smaller share of the spam pile's words, so it votes "not spam".
+	const is = vote(counts, 'is');
+	expect([is.spam, is.ham]).toEqual([18, 61]);
+	expect(is.spam / counts.spam).toBeGreaterThan(is.ham / counts.ham);
+	expect(is.push).toBeLessThan(0);
 	expect(words('W1N a fr33 phone!')).toEqual(['w1n', 'a', 'fr33', 'phone']);
 });
 

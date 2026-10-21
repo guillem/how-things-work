@@ -10,9 +10,10 @@
 	import { Label } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { MESSAGES, MINE } from '../data';
-	import { add, copy, count, judge, vote, type Counts, type Vote } from '../model';
+	import { add, copy, count, judge, vote, words, type Counts, type Vote } from '../model';
+	import TextBox from './TextBox.svelte';
 
-	let { step, t, params, reduced }: StageProps = $props();
+	let { step, t, params, reduced, setParam }: StageProps = $props();
 
 	const phase = $derived(String(step.hints?.phase ?? 'pile'));
 	const counts = count(MESSAGES);
@@ -58,7 +59,9 @@
 	);
 
 	// ---- one word's counts --------------------------------------------------------------------
-	const word = $derived(String(params.word ?? 'free'));
+	/** The word asked about: a preset, or the first word the reader typed (as the filter reads it). */
+	const typedWord = $derived(String(params.word ?? 'free'));
+	const word = $derived(words(typedWord)[0] ?? '');
 	const wv = $derived(vote(counts, word));
 
 	/** "about 1 in 4": how many messages of a pile hold one that contains the word. */
@@ -70,6 +73,7 @@
 	}
 	/** Which pile the word is commoner in, in words (the vote compares the two piles). */
 	function lean(v: Vote): string {
+		if (v.spam + v.ham === 0) return 'in no message of either pile';
 		if (Math.abs(v.push) < 0.5) return 'about as common in both piles';
 		const side = v.push > 0 ? 'spam' : 'ordinary messages';
 		return Math.abs(v.push) >= 2 ? `much commoner in ${side}` : `commoner in ${side}`;
@@ -86,19 +90,42 @@
 	const rowIn = (i: number) => clamp01((since - 0.3 - i * 0.3) / 0.4);
 
 	// ---- the vote -----------------------------------------------------------------------------
-	const taught: Counts = $derived.by(() => {
-		const c = copy(counts);
-		const n = phase === 'report' ? presses : 0;
-		if (n > 0) add(c, MINE.sneaky, true, n);
-		return c;
-	});
 	const message = $derived.by(() => {
-		if (phase === 'vote') return MINE[String(params.message ?? 'spammy') as keyof typeof MINE];
+		if (phase === 'vote') return String(params.message ?? MINE.spammy);
 		if (phase === 'rare') return MINE.rare;
 		if (phase === 'sneak') return params.misspell === true ? MINE.sneaky : MINE.spammy;
-		if (phase === 'report') return MINE.sneaky;
+		if (phase === 'report') return String(params.mine ?? MINE.sneaky);
 		return MINE.spammy;
 	});
+	/**
+	 * The messages reported on the report step, in order: each press of "Report spam" puts the
+	 * message in the box at that moment on the spam pile. A press made before the scene was
+	 * shown (arriving by a deep link with presses) counts the message in the box.
+	 */
+	let reported: string[] = $state([]);
+	let pressesSeen = -1;
+	$effect(() => {
+		const p = presses;
+		const reporting = phase === 'report';
+		untrack(() => {
+			if (!reporting) {
+				reported = [];
+				pressesSeen = -1;
+			} else if (pressesSeen < 0 || p < pressesSeen) {
+				reported = Array.from({ length: p }, () => message);
+				pressesSeen = p;
+			} else if (p > pressesSeen) {
+				reported = [...reported, ...Array.from({ length: p - pressesSeen }, () => message)];
+				pressesSeen = p;
+			}
+		});
+	});
+	const taught: Counts = $derived.by(() => {
+		const c = copy(counts);
+		for (const m of reported) add(c, m, true);
+		return c;
+	});
+	const reportsOfThis = $derived(reported.filter((m) => m === message).length);
 	const rarity = $derived(phase === 'rare' ? params.rarity !== false : true);
 	const verdict = $derived(judge(phase === 'report' ? taught : counts, message, rarity));
 	/** The marker eases from the start to the final score over two seconds (after a press too). */
@@ -135,11 +162,13 @@
 		);
 	});
 
+	/** The reader's message may hold up to this many different words (one card each). */
+	const MAX_WORDS = 8;
 	function chips(votes: Vote[]) {
 		const gap = 12;
-		const w = Math.min(150, (880 - (votes.length - 1) * gap) / votes.length);
+		const w = Math.min(150, (900 - (votes.length - 1) * gap) / Math.max(1, votes.length));
 		const total = votes.length * w + (votes.length - 1) * gap;
-		return votes.map((v, i) => ({ v, x: CX - total / 2 + i * (w + gap), w }));
+		return votes.map((v, i) => ({ v, x: CX - total / 2 + i * (w + gap), w, narrow: w < 112 }));
 	}
 	const showVote = $derived(['vote', 'rare', 'sneak', 'report'].includes(phase));
 
@@ -258,17 +287,20 @@
 		</Readout>
 		{@render stacks(420, 1)}
 	{:else if phase === 'word'}
-		<rect
-			x={CX - 130}
-			y={36}
-			width={260}
-			height={74}
-			rx={16}
-			fill="var(--sp-bubble)"
-			stroke="var(--sp-edge)"
-			stroke-width={2}
+		<TextBox
+			id="word"
+			x={CX - 160}
+			y={30}
+			w={320}
+			value={typedWord}
+			label="A word to look up"
+			maxLength={20}
+			big
+			{setParam}
 		/>
-		<Label x={CX} y={84} text="“{word}”" size={32} weight={700} halo={false} />
+		<Readout id="typeword">
+			<Label x={CX + 176} y={74} text="← type any word" size={15} anchor="start" muted />
+		</Readout>
 		{@const maxN = Math.max(20, wv.spam, wv.ham)}
 		{#each [{ k: 'spam', n: wv.spam, of: counts.spam, x: 260 }, { k: 'ok', n: wv.ham, of: counts.ham, x: 700 }] as side (side.k)}
 			{@const col = side.k === 'spam' ? 'var(--sp-spam)' : 'var(--sp-ok)'}
@@ -302,11 +334,16 @@
 				<Label x={side.x} y={494} text={share(side.n, side.of)} size={16} muted />
 			</Readout>
 		{/each}
-		<Readout id="lean" order={3} label="So “{word}” is" value={lean(wv)}>
+		<Readout
+			id="lean"
+			order={3}
+			label={word ? `So “${word}” is` : 'Type a word'}
+			value={word ? lean(wv) : ''}
+		>
 			<Label
 				x={CX}
 				y={552}
-				text="“{word}” is {lean(wv)}"
+				text={word ? `“${word}” is ${lean(wv)}` : 'Type a word in the box'}
 				size={20}
 				weight={700}
 				color={Math.abs(wv.push) < 0.5
@@ -401,12 +438,49 @@
 			</Readout>
 		{/if}
 	{:else if showVote}
-		{@render bubble(message, 150, 30, 660, verdict.spam ? 'spam' : 'ok')}
+		{#if phase === 'vote' || phase === 'report'}
+			<TextBox
+				id={phase === 'vote' ? 'message' : 'mine'}
+				x={150}
+				y={30}
+				w={660}
+				value={message}
+				label="Your message"
+				maxLength={60}
+				maxWords={MAX_WORDS}
+				{setParam}
+			/>
+			{#if verdict.votes.length > 0}
+				<rect
+					x={710}
+					y={17}
+					width={96}
+					height={26}
+					rx={13}
+					fill={verdict.spam ? 'var(--sp-spam)' : 'var(--sp-ok)'}
+					opacity={done ? 1 : 0}
+				/>
+				<Label
+					x={758}
+					y={35}
+					text={verdict.spam ? 'spam' : 'not spam'}
+					size={14}
+					weight={700}
+					color="#fff"
+					halo={false}
+					opacity={done ? 1 : 0}
+				/>
+			{:else}
+				<Label x={CX} y={190} text="Write a message in the box" size={20} muted />
+			{/if}
+		{:else}
+			{@render bubble(message, 150, 30, 660, verdict.spam ? 'spam' : 'ok')}
+		{/if}
 		{#each chips(verdict.votes) as c (c.v.word)}
 			{@const col =
 				c.v.push > 0 ? 'var(--sp-spam)' : c.v.push < 0 ? 'var(--sp-ok)' : 'var(--sp-edge)'}
 			{@const seen = c.v.spam + c.v.ham > 0}
-			{@const len = Math.min(44, Math.abs(c.v.push) * 9)}
+			{@const len = Math.min(44, c.w / 2 - 22, Math.abs(c.v.push) * 9)}
 			<g transform="translate({c.x}, 112)">
 				<rect
 					width={c.w}
@@ -417,7 +491,14 @@
 					stroke-width={seen ? 2.5 : 1.5}
 					stroke-dasharray={seen ? 'none' : '6 5'}
 				/>
-				<Label x={c.w / 2} y={34} text={c.v.word} size={21} weight={700} halo={false} />
+				<Label
+					x={c.w / 2}
+					y={34}
+					text={c.v.word}
+					size={Math.min(21, (c.w - 12) / (0.62 * Math.max(1, c.v.word.length)))}
+					weight={700}
+					halo={false}
+				/>
 				{#if seen}
 					<line
 						x1={c.w / 2 - Math.sign(c.v.push) * 6}
@@ -444,12 +525,19 @@
 					<Label
 						x={c.w / 2}
 						y={124}
-						text="{c.v.ham} ordinary"
+						text={c.narrow ? `${c.v.ham} ord.` : `${c.v.ham} ordinary`}
 						size={14}
 						halo={false}
 						color="var(--sp-ok)"
 					/>
-					<Label x={c.w / 2} y={152} text={pull(c.v)} size={14} weight={600} halo={false} />
+					<Label
+						x={c.w / 2}
+						y={152}
+						text={c.narrow ? pull(c.v).replace('pulls a little', 'a little') : pull(c.v)}
+						size={14}
+						weight={600}
+						halo={false}
+					/>
 				{:else}
 					<Label x={c.w / 2} y={96} text="never seen" size={14} halo={false} muted />
 					<Label x={c.w / 2} y={152} text="no vote" size={14} weight={600} halo={false} muted />
@@ -554,13 +642,13 @@
 				/>
 			</Readout>
 		{:else if phase === 'report'}
-			<Readout id="reports" order={3} label="Reports" value={String(presses)}>
+			<Readout id="reports" order={3} label="Reported" value="{reportsOfThis} times">
 				<Label
 					x={CX}
 					y={510}
-					text={presses === 0
-						? 'Press “Report spam” to put it on the spam pile'
-						: `Reported ${presses} time${presses === 1 ? '' : 's'}: “w1n” and “fr33” are now on the spam pile`}
+					text={reportsOfThis === 0
+						? 'Press “Report spam” to put this message on the spam pile'
+						: `Reported ${reportsOfThis} time${reportsOfThis === 1 ? '' : 's'}: its words are now counted on the spam pile`}
 					size={17}
 					muted
 				/>
@@ -579,7 +667,7 @@
 			</Readout>
 		{/if}
 	{:else if phase === 'real'}
-		<Label x={CX} y={44} text="Fooled both ways" size={22} weight={700} />
+		<Label x={CX} y={44} text="Before any report: fooled both ways" size={22} weight={700} />
 		{@render bubble(MINE.sneaky, 90, 80, 520, advert.spam ? 'spam' : 'ok')}
 		<Readout
 			id="advert"
@@ -614,22 +702,22 @@
 				color="var(--sp-spam)"
 			/>
 		</Readout>
-		<rect
-			x={190}
-			y={270}
-			width={580}
-			height={250}
-			rx={16}
-			fill="var(--surface)"
-			stroke="var(--border)"
-			stroke-width={1.5}
-		/>
 		<Readout
 			id="real"
 			order={3}
 			label="Real email filters also check"
 			value="who sent it, where its links go, how many people got the same message"
 		>
+			<rect
+				x={190}
+				y={270}
+				width={580}
+				height={250}
+				rx={16}
+				fill="var(--surface)"
+				stroke="var(--border)"
+				stroke-width={1.5}
+			/>
 			<Label x={CX} y={312} text="Real email filters also check:" size={20} weight={700} />
 			{#each ['who sent it', 'where its links go', 'how many people got the same message', 'and much more, with far bigger learning machines'] as line, i (line)}
 				<Label x={240} y={360 + i * 42} text="•  {line}" size={18} anchor="start" muted={i === 3} />

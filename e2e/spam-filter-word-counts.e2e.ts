@@ -26,6 +26,11 @@ test('word: a word’s two counts, in spam and in ordinary messages', async ({ p
 	await page.locator('button[data-control=word][data-value=home]').click();
 	await expect(stage(page)).toContainText('“home” is much commoner in ordinary messages');
 	await expect(stage(page)).toContainText('none of them');
+	// Any word can be typed; one the messages never use has no counts.
+	await page.locator('input[data-input=word]').fill('Mum');
+	await expect(stage(page)).toContainText('“mum” is in no message of either pile');
+	await page.locator('input[data-input=word]').fill('prize');
+	await expect(stage(page)).toContainText('“prize” is much commoner in spam');
 });
 
 test('count: pressing the button counts every word', async ({ page }) => {
@@ -39,8 +44,12 @@ test('vote: an advert goes to the spam folder, a friend’s message to the inbox
 	page
 }) => {
 	await open(page, './spam-filter-word-counts/#vote', 'The votes send it to the spam folder');
-	await page.locator('button[data-control=message][data-value=friend]').click();
+	await page.locator('button[data-control=message]', { hasText: 'Are you free tonight?' }).click();
 	await expect(stage(page)).toContainText('The votes let it into the inbox');
+	// A message of the reader's own.
+	await page.locator('input[data-input=message]').fill('Claim your cash prize now');
+	await expect(stage(page)).toContainText('The votes send it to the spam folder');
+	await expect(stage(page)).toContainText('prize');
 });
 
 test('rare: forgetting that spam is rare sends a friend’s question to spam', async ({ page }) => {
@@ -60,10 +69,17 @@ test('sneak and report: a misspelling slips past until it is reported once', asy
 	await page.locator('button[data-control=report]').click();
 	await expect(stage(page)).toContainText('The votes send it to the spam folder');
 	await expect(stage(page)).not.toContainText('never seen');
+
+	// The reader's own message, reported: its new word is now counted once, in spam.
+	await page.locator('input[data-input=mine]').fill('Zorblax sale now');
+	await expect(stage(page)).toContainText('never seen');
+	await page.locator('button[data-control=report]').click();
+	await expect(stage(page)).toContainText('Reported 1 time');
+	await expect(stage(page)).not.toContainText('never seen');
 });
 
 test('real: the filter is fooled both ways', async ({ page }) => {
-	await open(page, './spam-filter-word-counts/#real', 'Fooled both ways');
+	await open(page, './spam-filter-word-counts/#real', 'Before any report: fooled both ways');
 	await expect(stage(page)).toContainText('an advert, let into the inbox');
 	await expect(stage(page)).toContainText('a friend, sent to spam');
 });

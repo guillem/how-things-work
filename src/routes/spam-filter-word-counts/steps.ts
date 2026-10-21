@@ -57,7 +57,7 @@ export const spec: ExplainerSpec = {
 				}
 			],
 			body: `
-<p>Pick a word. The filter keeps two counts for it: how many spam messages contain it, and how many ordinary messages do.</p>
+<p>Pick a word, or type any word you like in the box. The filter keeps two counts for it: how many spam messages contain it, and how many ordinary messages do.</p>
 <p>“free” is in 17 spam messages and 5 ordinary ones. That doesn’t make “free” a bad word: friends say it too (“are you free tonight?”). It is just much <em>commoner</em> in spam: there are far fewer spam messages, so 17 of them is about 1 spam message in 4, while 5 is only about 1 ordinary message in 100. “home” is the other way round: in no spam at all, but in 16 ordinary messages.</p>`
 		},
 		{
@@ -93,18 +93,18 @@ export const spec: ExplainerSpec = {
 					type: 'select',
 					id: 'message',
 					label: 'Your message',
-					default: 'spammy',
+					default: MINE.spammy,
 					options: [
-						{ value: 'spammy', label: MINE.spammy },
-						{ value: 'friend', label: MINE.friend },
-						{ value: 'home', label: MINE.home }
+						{ value: MINE.spammy, label: MINE.spammy },
+						{ value: MINE.friend, label: MINE.friend },
+						{ value: MINE.home, label: MINE.home }
 					]
 				}
 			],
 			body: `
-<p>Now a new message arrives. Each of its words votes. A word that is commoner in spam pulls toward spam, and the more times commoner, the harder it pulls; a word commoner in ordinary messages pulls the other way. A word the filter has never seen doesn’t vote.</p>
-<p>Pick a message and watch the tug of war. Where the marker ends up decides: past the middle on the red side, it goes to the spam folder.</p>`,
-			notes: `<p>The size of each pull compares how common the word is among all the words of the spam pile with how common it is among all the words of the ordinary pile. Adding up the pulls like this treats every word as if it had nothing to do with the others, which is not true, but works surprisingly well. This kind of filter is called a <em>naive Bayes</em> filter; the page on <a href="../bayes-theorem/">Bayes’ theorem</a> explains the idea behind it.</p>`
+<p>Now a new message arrives, and each different word in it votes once. Spam messages are long and full of words, so the filter doesn’t just compare messages. It pours all the words of the spam pile into one bag and all the words of the ordinary pile into another, and asks: in which bag does this word make up a bigger part? A bigger part of the spam bag pulls toward spam, and the bigger the difference, the harder it pulls; a bigger part of the ordinary bag pulls the other way. A word the filter has never seen doesn’t vote.</p>
+<p>Pick a message, or write your own in the box, and watch the tug of war. Where the marker ends up decides: past the middle on the red side, it goes to the spam folder.</p>`,
+			notes: `<p>The size of each pull compares how common the word is among all the words of the spam pile with how common it is among all the words of the ordinary pile. Before comparing, the filter adds one extra count of every word it knows to each pile, so that a word missing from one pile still gets a small share there instead of none. That is why a word can lean slightly differently from its two message counts: “is” turns up in a bigger part of the spam <em>messages</em>, but makes up a bigger part of the ordinary <em>words</em>. Adding up the pulls like this treats every word as if it had nothing to do with the others, which is not true, but works surprisingly well. This kind of filter is called a <em>naive Bayes</em> filter; the page on <a href="../bayes-theorem/">Bayes’ theorem</a> explains the idea behind it.</p>`
 		},
 		{
 			id: 'rare',
@@ -162,7 +162,7 @@ export const spec: ExplainerSpec = {
 				}
 			],
 			body: `
-<p>The sneaky message is in your inbox. Press “report spam”. The message goes on the spam pile, and its words are counted: now “W1N” and “fr33” have been seen once, in spam.</p>
+<p>The sneaky message is in your inbox. Press “report spam”. The message goes on the spam pile, and its words are counted: now “W1N” and “fr33” have been seen once, in spam. You can also write a message of your own in the box, report it, and watch its words’ counts change.</p>
 <p>Next time the same trick arrives, they vote for spam, and it is caught. Every “report spam” (and every “not spam”) click gives the filter more to count. That is how it keeps up with new tricks.</p>`
 		},
 		{
@@ -173,7 +173,7 @@ export const spec: ExplainerSpec = {
 			hints: { phase: 'real' },
 			duration: 16,
 			body: `
-<p>This filter has no idea what a message means. It counts which words turned up more in past spam than in ordinary messages, and lets them vote. It can be fooled both ways: a misspelled advert gets through, and a friend’s good news, “${MINE.cup}”, lands in the spam folder.</p>
+<p>This filter has no idea what a message means. It counts which words turned up more in past spam than in ordinary messages, and lets them vote. Before anyone reported anything, it was fooled both ways: the misspelled advert got through, and a friend’s good news, “${MINE.cup}”, landed in the spam folder.</p>
 <p>Early email spam filters worked much like this. Today’s filters still learn from “report spam” clicks, but they also check who sent the message, where its links go and how many people got the same message, and many use neural networks trained on huge numbers of examples.</p>
 <p>Next: <a href="../bayes-theorem/">Bayes’ theorem</a> is the maths behind the votes.</p>`
 		}

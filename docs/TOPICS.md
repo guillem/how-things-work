@@ -291,7 +291,7 @@ A topic is done when:
 - [x] chain-of-thought-scratchpad
 - [x] k-means-clustering
 - [x] next-word-guessing-game
-- [ ] spam-filter-word-counts
+- [x] spam-filter-word-counts
 - [ ] teach-a-machine
 
 **Energy & Machines**
