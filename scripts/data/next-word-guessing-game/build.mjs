@@ -19,17 +19,19 @@ function cut(id, from, to, after = '*** START') {
 	if (a < 0) throw new Error(`${id}: start "${from}" not found`);
 	const b = to ? body.indexOf(to, a) : body.length;
 	if (b < 0) throw new Error(`${id}: end "${to}" not found`);
-	return body
-		.slice(a, b)
-		.split(/\n\s*\n/)
-		// Drop headings (a fable's title, a chapter mark): short paragraphs with no full stop.
-		.filter((par) => /[.!?]/.test(par) || par.trim().length > 60)
-		.join(' ')
-		.replace(/\[\d+\]/g, '')
-		.replace(/\[Illustration[^\]]*\]/g, ' ')
-		.replace(/_/g, '')
-		.replace(/\s+/g, ' ')
-		.trim();
+	return (
+		body
+			.slice(a, b)
+			.split(/\n\s*\n/)
+			// Drop headings (a fable's title, a chapter mark): short paragraphs with no full stop.
+			.filter((par) => /[.!?]/.test(par) || par.trim().length > 60)
+			.join(' ')
+			.replace(/\[\d+\]/g, '')
+			.replace(/\[Illustration[^\]]*\]/g, ' ')
+			.replace(/_/g, '')
+			.replace(/\s+/g, ' ')
+			.trim()
+	);
 }
 
 const aesop = cut(21, 'The Lion And The Mouse', '\nFOOTNOTES', 'unworthy of the slightest credit');
