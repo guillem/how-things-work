@@ -77,13 +77,13 @@ Last updated: 2026-10-21, 70 of the proposal's topics built, all released; **v1.
 
 **Overnight builders, 2026-10-21 (stopped ~03:10 CEST at the usage limit; landed on `main` the
 same morning):** forest-fire-spread, secret-codes, next-word-guessing-game and leap-years, all
-ticked. Left half-built in their worktrees under `.claude/worktrees/`, uncommitted unless noted:
-monty-hall (`agent-a6134031…`, committed model, narrative and scene; browser tests and
-screenshot review left), floating-sinking-and-boats (`agent-a35d9c47…`, built; the Codex review
-in `docs/reviews/floating-sinking-and-boats.md` is half applied, uncommitted), magnets-and-poles
-(same worktree, `model.ts` only), twenty-questions (`agent-a9306168…`), spam-filter-word-counts
-(`agent-aac8896d…`, model, data, steps and scenes). Those worktrees' branches also hold the
-landed topics' original commits; take only the half-built topics' files from them.
+ticked. The five left half-built (monty-hall, floating-sinking-and-boats, magnets-and-poles,
+twenty-questions, spam-filter-word-counts) were finished the same day by fresh builders, each
+fact-checked by Codex, ticked and landed on `main`; not released yet (v1.2.2 has 170). Their old
+worktrees are removed. Small open issues: twenty-questions' question buttons have 8–9 px text on
+phones and its board shows blank tiles until 12 animals are left; magnets-and-poles' board scene
+is drawn small on phones; floating-sinking-and-boats' block is hard to see in oil and its scale
+is faint in dark mode; monty-hall's games slider goes down to 0.
 
 **Next topics, proposed for review (2026-10-18, after v1.0.0): a level 0 and 100 new topics.**
 The user asked for a researched proposal (no code): a new level 0 for beginners, the levels made
