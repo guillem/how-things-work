@@ -1527,6 +1527,15 @@ const explainers: Explainer[] = [
 		accent: '#8a5a2b',
 		steps: 9,
 		minutes: 10
+	},
+	{
+		slug: 'forest-fire-spread',
+		title: 'How a wildfire crosses a forest, or stops',
+		summary:
+			'Light one edge of a forest and watch the fire pass from tree to tree. Plant the trees a little more thinly and the fire that crossed the whole forest dies after a few rows: the change from almost never to almost always is sudden. Then cut a firebreak, add wind, and change the rule.',
+		accent: '#e8590c',
+		steps: 9,
+		minutes: 10
 	}
 ];
 

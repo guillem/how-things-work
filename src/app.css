@@ -5122,3 +5122,29 @@ kbd {
 	--tr-brace: #51cf66;
 	--tr-push: #ff922b;
 }
+
+/* forest-fire-spread: trees, fire, embers, ash, bare ground, a firebreak, wind */
+:root {
+	--ff-tree: #2f9e44;
+	--ff-fire: #e8590c;
+	--ff-ember: #fab005;
+	--ff-glow: #8f4a3a;
+	--ff-ash: #495057;
+	--ff-ground: #e9dcc4;
+	--ff-break: #c9b48a;
+	--ff-wind: #1c7ed6;
+	--ff-arrow: #c92a2a;
+	--ff-safe: #1c7ed6;
+}
+:root[data-theme='dark'] {
+	--ff-tree: #40c057;
+	--ff-fire: #ff922b;
+	--ff-ember: #ffd43b;
+	--ff-glow: #9c4a3a;
+	--ff-ash: #868e96;
+	--ff-ground: #3b342a;
+	--ff-break: #6b5a3c;
+	--ff-wind: #4dabf7;
+	--ff-arrow: #ff6b6b;
+	--ff-safe: #4dabf7;
+}

@@ -27,14 +27,14 @@ const tally: Control = {
 const size: Control = {
 	type: 'select',
 	id: 'size',
-	label: 'Size of the forests',
+	label: 'Size of the forests (in squares)',
 	default: '50',
 	options: [
-		{ value: '10', label: '10 by 10 squares' },
-		{ value: '20', label: '20 by 20 squares' },
-		{ value: '50', label: '50 by 50 squares (like the ones before)' },
-		{ value: '100', label: '100 by 100 squares' },
-		{ value: '200', label: '200 by 200 squares' }
+		{ value: '10', label: '10 by 10' },
+		{ value: '20', label: '20 by 20' },
+		{ value: '50', label: '50 by 50' },
+		{ value: '100', label: '100 by 100' },
+		{ value: '200', label: '200 by 200' }
 	]
 };
 
@@ -99,7 +99,7 @@ export const spec: ExplainerSpec = {
 			chapter: 'fire',
 			title: 'From tree to tree',
 			scene: 'forest',
-			hints: { view: 'close', density: 0.65 },
+			hints: { view: 'close' },
 			duration: 24,
 			controls: [relight],
 			body: `

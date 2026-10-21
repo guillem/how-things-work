@@ -5551,6 +5551,24 @@
 		{#each [[30, 100], [80, 100], [100, 52], [50, 52], [118, 100], [172, 100], [145, 54]] as [x, y], i (i)}
 			<circle cx={x} cy={y} r="3.5" fill="currentColor" />
 		{/each}
+	{:else if slug === 'forest-fire-spread'}
+		<!-- a grid of trees: ash on the left, a fire front, green trees ahead -->
+		{#each Array.from({ length: 60 }, (_, i) => i) as i (i)}
+			{@const col = i % 12}
+			{@const row = Math.floor(i / 12)}
+			{@const tree = (i * 37 + row * 11) % 10 < 6}
+			{#if tree}
+				<rect
+					x={28 + col * 12}
+					y={30 + row * 12}
+					width="10"
+					height="10"
+					rx="2"
+					fill={col < 4 ? 'currentColor' : col < 6 ? accent : '#2f9e44'}
+					opacity={col < 4 ? 0.35 : 1}
+				/>
+			{/if}
+		{/each}
 	{:else}
 		<circle cx="100" cy="60" r="30" fill="none" stroke={accent} stroke-width="2" />
 		<circle cx="100" cy="60" r="5" fill={accent} />
