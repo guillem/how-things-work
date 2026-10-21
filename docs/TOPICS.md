@@ -194,7 +194,7 @@ A topic is done when:
 - [x] cochlea-hearing
 - [x] mri-k-space
 - [x] ecg-arrhythmias
-- [ ] hearing-and-the-ear
+- [x] hearing-and-the-ear
 - [ ] muscles-pull-in-pairs
 - [ ] why-spinning-makes-you-dizzy
 - [ ] why-you-get-sleepy

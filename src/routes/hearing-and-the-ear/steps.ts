@@ -139,8 +139,8 @@ export const spec: ExplainerSpec = {
 			duration: 24,
 			controls: [pitch],
 			body: `
-<p>How does the brain find out where the ribbon shakes? A row of about 3,500 sensor cells sits along it, called ${hairCells}. Each one has its own nerve fibres to the brain, and each one only signals when the ribbon right under it shakes. Here each dot stands for 50 of them.</p>
-<p><strong>Slide the pitch</strong> and watch which sensors light up. The brain doesn’t get one wobbly signal, like a microphone’s: it gets thousands of separate ones, each from its own spot, and so each about its own pitch. That is how it can tell notes apart.</p>`,
+<p>How does the brain find out where the ribbon shakes? A row of about 3,500 sensor cells sits along it, called ${hairCells}. Each one has its own nerve fibres to the brain, and the shaking of the ribbon right under it changes the signals it sends along them. Here each dot stands for 50 of them, and it lights where the ribbon shakes hard enough for a sound to be heard.</p>
+<p><strong>Slide the pitch</strong> and watch which sensors light up: the brightest sit right under the bump. The brain doesn’t get one wobbly signal, like a microphone’s: it gets thousands of separate ones, each from its own spot, and so each about its own pitch. That is how it can tell notes apart.</p>`,
 			notes: `<p>There are also about 12,000 <em>outer</em> hair cells in three more rows. They don’t mainly send signals: they push on the ribbon in step with its shake, making soft sounds’ bumps taller and sharper. Very loud noise can damage them, and then soft sounds are missed. The <a href="../cochlea-hearing/">cochlea page</a> switches them on and off.</p>`
 		},
 		// ------------------------------------------------------------------ more
@@ -154,8 +154,9 @@ export const spec: ExplainerSpec = {
 			controls: [second],
 			body: `
 <p>Now two notes play at once: the note from before, and a second one. <strong>Slide the second note.</strong> Each makes its own bump at its own spot, so two groups of sensors signal and the brain hears two notes.</p>
-<p>Slide the second note right next to the first and the two bumps blur into one. Two notes that close in pitch shake the same sensors, and they sound rough together instead of like two separate notes.</p>
-<p>Music and voices are mixtures of many pitches at once. The cochlea spreads every mixture out along the ribbon, so the brain can pick the parts out.</p>`
+<p>Slide the second note right next to the first and the two bumps blur into one. Close notes shake overlapping groups of sensors: they can sound rough together, or seem to throb slowly when their pitches are almost the same. At exactly the same pitch they are simply one note, pushing twice as hard.</p>
+<p>Music and voices are mixtures of many pitches at once. The cochlea spreads every mixture out along the ribbon, so the brain can pick the parts out.</p>`,
+			notes: `<p>For this drawing, each note’s ripple is worked out on its own and their strengths are then added together. In a real ear, two notes also weaken each other’s ripples a little and make faint extra shakes at other pitches; the <a href="../cochlea-hearing/">cochlea page</a> leaves these out too.</p>`
 		},
 		{
 			id: 'loud',
@@ -166,9 +167,9 @@ export const spec: ExplainerSpec = {
 			duration: 24,
 			controls: [loud],
 			body: `
-<p>Loud and high are not the same thing. <strong>Turn the loudness up</strong>, from rustling leaves to a lawnmower: the bump <strong>grows</strong> and spreads, and more sensors signal. But it stays at about the same spot, creeping only a little towards the entrance. Changing the pitch moves the bump; changing the loudness mostly makes it bigger.</p>
-<p>The ear squeezes loud sounds. From rustling leaves to a lawnmower, the push of the sound grows about 3,000 times, yet the ribbon’s shake grows only about 250 times. That squeeze lets one ear hear both a whisper and a shout.</p>`,
-			notes: `<p>A loud sound’s bump spreads mostly towards the entrance, so loud low notes also shake the spots of higher notes. That is one reason a loud noise can hide a softer, higher sound. And very loud sounds, kept up for a long time, wear out the sensors near the entrance first: the high notes are the first to go.</p>`
+<p>Loud and high are not the same thing. <strong>Turn the loudness up</strong>, from rustling leaves to a lawnmower: the bump <strong>grows</strong> and spreads, and more sensors light up. But it stays at about the same spot, creeping only a little towards the entrance. Changing the pitch moves the bump; changing the loudness mostly makes it bigger.</p>
+<p>The ear squeezes loud sounds. From rustling leaves to a lawnmower, the push of the sound grows about 3,000 times, yet the ribbon’s shake grows by much less: only about 200 to 500 times, depending on the pitch. That squeeze helps one ear hear both a whisper and a shout.</p>`,
+			notes: `<p>A loud sound’s bump spreads mostly towards the entrance, so loud low notes also shake the spots of higher notes. That is one reason a loud noise can hide a softer, higher sound. Years of loud noise usually damage the sensors for fairly high notes first, around 4,000 shakes a second, while growing older usually takes away the very highest notes first.</p>`
 		},
 		{
 			id: 'next',

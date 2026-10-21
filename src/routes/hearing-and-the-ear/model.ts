@@ -139,19 +139,42 @@ export function drawnShake(responses: readonly Response[]): Float64Array {
 export const SQUEEZE_DB = 60;
 
 /**
- * How many of the sensors shake hard enough to signal (the ribbon there moves faster than at the
- * threshold of hearing), for several notes together.
+ * Length of ribbon (mm) shaking above the threshold of hearing, for several notes together: the
+ * stretch where the drawing lights its sensor dots. (A mechanical measure only: real nerve
+ * fibres have their own thresholds and fire even in silence, so it is not a count of signals.)
  */
-export function sensorsSignalling(responses: readonly Response[]): number {
+export function shakenMm(responses: readonly Response[]): number {
 	const e = excitation(responses);
 	let n = 0;
 	for (const db of e) if (db > 0) n++;
-	return (n / SECTIONS) * SENSORS;
+	return (n / SECTIONS) * LENGTH_MM;
 }
 
-/** How many sensors lie under the bump's top (within 10 dB, a third, of its peak shake). */
-export function sensorsUnderPeak(r: Response): number {
-	return (peakWidth(r).mm / LENGTH_MM) * SENSORS;
+/** Width (mm) of the bump's top: the stretch within 10 dB (a third) of its peak shake. */
+export function topMm(r: Response): number {
+	return peakWidth(r).mm;
+}
+
+/** A note played into the ear: its pitch (shakes a second) and loudness (dB SPL). */
+export interface Note {
+	f: number;
+	level: number;
+}
+
+/**
+ * The tones that reach the ear when notes play together. Two notes of the same pitch played in
+ * step are one note with twice the push (6 dB louder): their pushes add before the ear sorts
+ * anything, so they must be merged before the model solves each tone on its own.
+ */
+export function together(notes: readonly Note[]): Note[] {
+	const out: { f: number; push: number }[] = [];
+	for (const n of notes) {
+		const same = out.find((o) => Math.abs(o.f - n.f) < 1e-6 * n.f);
+		const push = Math.pow(10, n.level / 20);
+		if (same) same.push += push;
+		else out.push({ f: n.f, push });
+	}
+	return out.map((o) => ({ f: o.f, level: 20 * Math.log10(o.push) }));
 }
 
 /**

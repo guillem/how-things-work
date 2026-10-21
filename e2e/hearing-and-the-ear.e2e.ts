@@ -63,10 +63,23 @@ test('loud: turning it up grows the bump and lights more sensors, at about the s
 	page
 }) => {
 	await open(page, './hearing-and-the-ear/#loud', 'As loud as a quiet library');
-	await expect(stage(page)).toContainText('the bump is about 2 cm in; about 1,100 sensors signal');
+	await expect(stage(page)).toContainText('the bump is about 2 cm in');
+	const lit = page.locator('.stage svg > g:not([data-leaving]) circle[data-lit]');
+	const soft = await lit.count();
 	const loud = page.locator('input[type=range][data-control=loud]');
 	await loud.focus();
 	await loud.press('End');
 	await expect(stage(page)).toContainText('As loud as a lawnmower');
-	await expect(stage(page)).toContainText('the bump is about 2 cm in; about 2,100 sensors signal');
+	await expect(stage(page)).toContainText('the bump is about 2 cm in');
+	// More sensor dots light up.
+	await expect.poll(() => lit.count()).toBeGreaterThan(soft);
+});
+
+test('two: the same note twice makes one bump', async ({ page }) => {
+	await open(page, './hearing-and-the-ear/#two', 'Two notes, two bumps');
+	const second = page.locator('input[type=range][data-control=second]');
+	await second.focus();
+	// Down from 8,000 a second to the first note, 1,000: 36 semitones.
+	for (let i = 0; i < 36; i++) await second.press('ArrowLeft');
+	await expect(stage(page)).toContainText('The same note twice: one bump');
 });

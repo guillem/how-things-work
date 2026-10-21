@@ -13,8 +13,9 @@ import {
 	peakCm,
 	pitchHz,
 	respond,
-	sensorsSignalling,
+	shakenMm,
 	shakes,
+	together,
 	windowPush
 } from '../src/routes/hearing-and-the-ear/model';
 
@@ -89,9 +90,36 @@ test('turned up from rustling leaves to a lawnmower, the bump grows many times b
 	expect(moved).toBeGreaterThan(0);
 	// ...but by less than one octave of pitch moves it.
 	expect(moved).toBeLessThan(peakCm(respond(1000, 20)) - peakCm(respond(2000, 20)));
-	// More of the sensors signal as the note gets louder.
-	expect(sensorsSignalling([loud])).toBeGreaterThan(3 * sensorsSignalling([soft]));
-	expect(sensorsSignalling([loud])).toBeLessThan(3500);
+	// A longer stretch of ribbon shakes enough to hear as the note gets louder (more dots light).
+	expect(shakenMm([loud])).toBeGreaterThan(3 * shakenMm([soft]));
+	expect(shakenMm([loud])).toBeLessThan(35);
+	// The narrative: across the slider's pitches the shake grows "only about 200 to 500 times".
+	for (const f of [62.5, 125, 250, 500, 1000, 2000, 4000, 8000]) {
+		const a = respond(f, 20);
+		const b = respond(f, 90);
+		const times = Math.pow(10, (dbRe(b.mag[b.peak]) - dbRe(a.mag[a.peak])) / 20);
+		expect(times).toBeGreaterThan(150);
+		expect(times).toBeLessThan(550);
+	}
+});
+
+test('the same note twice is one note pushing twice as hard: one bump, at the same spot', () => {
+	const twice = together([
+		{ f: 1000, level: SOFT },
+		{ f: 1000, level: SOFT }
+	]);
+	expect(twice).toHaveLength(1);
+	expect(twice[0].level).toBeCloseTo(SOFT + 6.02, 2);
+	const r = respond(twice[0].f, twice[0].level);
+	expect(bumps([r])).toHaveLength(1);
+	expect(peakCm(r)).toBeCloseTo(peakCm(respond(1000, SOFT)), 1);
+	// Different notes stay separate.
+	expect(
+		together([
+			{ f: 1000, level: SOFT },
+			{ f: 1059, level: SOFT }
+		])
+	).toHaveLength(2);
 });
 
 test('the pitch slider and its words', () => {

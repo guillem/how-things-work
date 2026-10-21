@@ -28,9 +28,9 @@
 		peakCm,
 		pitchHz,
 		respond,
-		sensorsSignalling,
 		shakes,
 		soundsLike,
+		together,
 		type Response
 	} from '../model';
 	import HearButton from './HearButton.svelte';
@@ -43,7 +43,13 @@
 	const level = $derived(focus === 'loud' ? Number(params.loud ?? SOFT) : SOFT);
 	const notes = $derived(focus === 'two' ? [f1, f2] : [f1]);
 
-	const responses: Response[] = $derived(notes.map((f) => respond(f, level)));
+	/** The same note twice is one note, twice the push. */
+	const unison = $derived(
+		notes.length === 2 && together(notes.map((f) => ({ f, level }))).length === 1
+	);
+	const responses: Response[] = $derived(
+		together(notes.map((f) => ({ f, level }))).map((n) => respond(n.f, n.level))
+	);
 	const shake = $derived(drawnShake(responses));
 	const softShake = $derived(focus === 'loud' ? drawnShake([respond(f1, SOFT)]) : null);
 
@@ -97,7 +103,7 @@
 
 	// ---- peaks --------------------------------------------------------------------------------
 	const tops = $derived(bumps(responses));
-	const merged = $derived(focus === 'two' && tops.length < 2);
+	const merged = $derived(focus === 'two' && !unison && tops.length < 2);
 	const pins = $derived.by(() => {
 		const list = merged
 			? [
@@ -147,8 +153,6 @@
 		}
 		return out;
 	});
-	const signalling = $derived(sensorsSignalling(responses));
-	const roundCount = (n: number) => (n < 100 ? Math.round(n / 10) * 10 : Math.round(n / 100) * 100);
 
 	// ---- words --------------------------------------------------------------------------------
 	const headline = $derived.by(() => {
@@ -156,9 +160,13 @@
 			case 'unroll':
 				return 'Each push sends a ripple along the ribbon';
 			case 'sensors':
-				return `About ${roundCount(signalling).toLocaleString('en-GB')} of the ${SENSORS.toLocaleString('en-GB')} sensors are signalling`;
+				return 'The brightest sensors sit under the bump';
 			case 'two':
-				return merged ? 'Too close: the two bumps blur into one' : 'Two notes, two bumps';
+				return unison
+					? 'The same note twice: one bump'
+					: merged
+						? 'Too close: the two bumps blur into one'
+						: 'Two notes, two bumps';
 			case 'loud':
 				return `As loud as ${loudnessName(level)}`;
 			case 'next':
@@ -172,11 +180,11 @@
 			case 'unroll':
 				return 'it grows as it goes, peaks at one spot, then dies away';
 			case 'sensors':
-				return 'each dot is 50 sensors: the brightest sit under the peak';
+				return `each dot is ${SENSORS / DOTS} sensors, lit where the ribbon shakes enough to hear`;
 			case 'two':
 				return `${shakes(f1)} and ${shakes(f2)}`;
 			case 'loud':
-				return `the bump is ${placeWords(peakCm(responses[0]))}; about ${roundCount(signalling).toLocaleString('en-GB')} sensors signal`;
+				return `the bump is ${placeWords(peakCm(responses[0]))}`;
 			case 'next':
 				return 'high notes near the entrance, low notes at the far end';
 			default:
@@ -399,6 +407,7 @@
 				cx={d.x}
 				cy={DOT_Y}
 				r="5"
+				data-lit={d.on > 0 ? '' : undefined}
 				fill={d.on > 0 ? 'var(--he-sensor)' : 'var(--stage-bg)'}
 				fill-opacity={d.on > 0 ? d.on : 1}
 				stroke={d.on > 0 ? 'var(--he-sensor)' : 'var(--stage-ink-muted)'}
