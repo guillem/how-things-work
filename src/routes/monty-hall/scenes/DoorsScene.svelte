@@ -15,6 +15,9 @@
 	const phase = $derived(String(step.hints?.phase ?? 'play'));
 
 	const CAR = '🚗';
+	const of = (n: number, one: string, many: string) => `${n} ${n === 1 ? one : many}`;
+	const cars = (won: number, games: number) =>
+		`${of(won, 'car', 'cars')} in ${of(games, 'game', 'games')}`;
 	const GOAT = '🐐';
 
 	// ---- a game by hand -----------------------------------------------------------------------------
@@ -119,16 +122,16 @@
 	const nGames = $derived(Number(params.games ?? 100));
 	const stayWon = $derived(STAY_GAMES.slice(0, nGames).filter((g) => g.stayWins).length);
 	const switchWon = $derived(SWITCH_GAMES.slice(0, nGames).filter((g) => g.switchWins).length);
-	const PER_ROW = 20;
-	const DOT = 15;
+	const PER_ROW = 15;
+	const DOT = 18;
 	const pile = (n: number, x0: number) =>
 		Array.from({ length: n }, (_, k) => ({
 			k,
 			x: x0 + (k % PER_ROW) * DOT + DOT / 2,
 			y: 520 - Math.floor(k / PER_ROW) * DOT - DOT / 2
 		}));
-	const stayPile = $derived(pile(stayWon, 110));
-	const switchPile = $derived(pile(switchWon, 550));
+	const stayPile = $derived(pile(stayWon, 120));
+	const switchPile = $derived(pile(switchWon, 560));
 
 	// ---- three places the car could be ----------------------------------------------------------------
 	const first = $derived(Number(params.first ?? 0));
@@ -216,7 +219,7 @@
 	const clueDoors: DoorView[] = [0, 1, 2].map((i) => ({
 		key: `q${i}`,
 		i,
-		x: 150 + i * 230,
+		x: 165 + i * 230,
 		y: 170,
 		w: 170,
 		h: 260,
@@ -360,12 +363,7 @@
 			stroke="var(--border)"
 		/>
 		<Label x={680} y={202} text="Your games" anchor="start" size={15} weight={700} halo={false} />
-		<Readout
-			id="mh-stayed"
-			order={2}
-			label="Stayed"
-			value={`${record.stayWon} cars in ${record.stayN} games`}
-		>
+		<Readout id="mh-stayed" order={2} label="Stayed" value={cars(record.stayWon, record.stayN)}>
 			<Label
 				x={680}
 				y={240}
@@ -379,7 +377,7 @@
 			<Label
 				x={680}
 				y={262}
-				text={`${record.stayWon} cars in ${record.stayN} games`}
+				text={cars(record.stayWon, record.stayN)}
 				anchor="start"
 				size={14}
 				halo={false}
@@ -389,7 +387,7 @@
 			id="mh-switched"
 			order={3}
 			label="Switched"
-			value={`${record.switchWon} cars in ${record.switchN} games`}
+			value={cars(record.switchWon, record.switchN)}
 		>
 			<Label
 				x={680}
@@ -404,7 +402,7 @@
 			<Label
 				x={680}
 				y={324}
-				text={`${record.switchWon} cars in ${record.switchN} games`}
+				text={cars(record.switchWon, record.switchN)}
 				anchor="start"
 				size={14}
 				halo={false}
@@ -413,30 +411,30 @@
 	{:else if phase === 'tally'}
 		<line x1="80" y1="522" x2="880" y2="522" stroke="var(--stage-line)" stroke-width="2" />
 		{#each stayPile as p (p.k)}
-			<circle cx={p.x} cy={p.y} r="6" fill="var(--mh-stay)" />
+			<circle cx={p.x} cy={p.y} r="7.5" fill="var(--mh-stay)" />
 		{/each}
 		{#each switchPile as p (p.k)}
-			<circle cx={p.x} cy={p.y} r="6" fill="var(--mh-switch)" />
+			<circle cx={p.x} cy={p.y} r="7.5" fill="var(--mh-switch)" />
 		{/each}
 		<Readout
 			id="mh-stay"
 			order={1}
 			label="Always stay"
-			value={`${stayWon} cars in ${nGames} games`}
+			value={cars(stayWon, nGames)}
 			color="var(--mh-stay)"
 		>
-			<Label x={260} y={70} text="Always stay" size={18} weight={700} color="var(--mh-stay)" />
-			<Label x={260} y={96} text={`${stayWon} cars in ${nGames} games`} size={15} />
+			<Label x={255} y={70} text="Always stay" size={18} weight={700} color="var(--mh-stay)" />
+			<Label x={255} y={96} text={cars(stayWon, nGames)} size={15} />
 		</Readout>
 		<Readout
 			id="mh-switch"
 			order={2}
 			label="Always switch"
-			value={`${switchWon} cars in ${nGames} games`}
+			value={cars(switchWon, nGames)}
 			color="var(--mh-switch)"
 		>
-			<Label x={700} y={70} text="Always switch" size={18} weight={700} color="var(--mh-switch)" />
-			<Label x={700} y={96} text={`${switchWon} cars in ${nGames} games`} size={15} />
+			<Label x={695} y={70} text="Always switch" size={18} weight={700} color="var(--mh-switch)" />
+			<Label x={695} y={96} text={cars(switchWon, nGames)} size={15} />
 		</Readout>
 		<Label x={480} y={556} text="each dot is one car won" size={13} muted />
 	{:else if phase === 'cases'}
@@ -489,7 +487,7 @@
 		{/each}
 		{#if phase === 'clue'}
 			<Label
-				x={235}
+				x={250}
 				y={140}
 				text="wins 1 time in 3"
 				size={16}
@@ -497,7 +495,7 @@
 				color="var(--mh-stay)"
 			/>
 			<Label
-				x={465}
+				x={480}
 				y={140}
 				text="wins 2 times in 3"
 				size={16}
@@ -514,7 +512,7 @@
 				<Label
 					x={70}
 					y={80}
-					text={`${nDoors} doors: you pick one, the host opens ${nDoors - 2} goats`}
+					text={`${nDoors} doors: you pick one, the host opens ${of(nDoors - 2, 'goat door', 'goat doors')}`}
 					anchor="start"
 					size={16}
 					weight={600}
