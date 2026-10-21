@@ -5237,12 +5237,13 @@ kbd {
 :root {
 	--fs-water: #339af0;
 	--fs-salty: #20c997;
-	--fs-oil: #f59f00;
+	--fs-oil: #fcc419;
 	--fs-glass: #868e96;
 	--fs-string: #495057;
 	--fs-stone: #868e96;
 	--fs-wood: #c0843d;
 	--fs-grain: #8a5a2b;
+	--fs-wood-edge: #6e4214;
 	--fs-apple: #e03131;
 	--fs-leaf: #2f9e44;
 	--fs-egg: #f1e3c6;
@@ -5253,6 +5254,7 @@ kbd {
 	--fs-balance: #f8f9fa;
 	--fs-pointer: #e8590c;
 	--fs-ink: #212529;
+	--fs-tick: #343a40;
 	--fs-yes: #2b8a3e;
 	--fs-no: #c92a2a;
 	--fs-grass: #b2f2bb;
@@ -5263,22 +5265,24 @@ kbd {
 :root[data-theme='dark'] {
 	--fs-water: #4dabf7;
 	--fs-salty: #38d9a9;
-	--fs-oil: #fcc419;
-	--fs-glass: #868e96;
+	--fs-oil: #ffe066;
+	--fs-glass: #adb5bd;
 	--fs-string: #ced4da;
 	--fs-stone: #6c757d;
 	--fs-wood: #d9a066;
 	--fs-grain: #8a5a2b;
+	--fs-wood-edge: #fff4e0;
 	--fs-apple: #fa5252;
 	--fs-leaf: #51cf66;
 	--fs-egg: #e9dcc0;
 	--fs-steel: #ced4da;
 	--fs-clay: #ff8787;
 	--fs-marble: #b197fc;
-	--fs-scale: #343a40;
-	--fs-balance: #343a40;
+	--fs-scale: #5c636a;
+	--fs-balance: #495057;
 	--fs-pointer: #ff922b;
 	--fs-ink: #f1f3f5;
+	--fs-tick: #f8f9fa;
 	--fs-yes: #69db7c;
 	--fs-no: #ff8787;
 	--fs-grass: #2b5f36;

@@ -367,6 +367,22 @@
 	<!-- the water in front, so what is under it looks wet -->
 	<path d={waterPath} fill={liquidFill} fill-rule="evenodd" opacity="0.35" />
 	<line x1={TX0} y1={WY} x2={TX1} y2={WY} stroke={liquidFill} stroke-width="3" />
+	<!-- the wooden block's edge, over the liquid, so it stays clear in any liquid -->
+	{#each placed as p, i (i)}
+		{@const s = p.body.shape}
+		{#if s.kind === 'box' && p.body !== stone}
+			<rect
+				x={p.x - (s.w * S) / 2}
+				y={bottomY(p) - s.h * S}
+				width={s.w * S}
+				height={s.h * S}
+				rx="3"
+				fill="none"
+				stroke="var(--fs-wood-edge)"
+				stroke-width="2.5"
+			/>
+		{/if}
+	{/each}
 
 	<!-- the tank -->
 	<path
@@ -438,13 +454,12 @@
 		/>
 		{#each [0, 1, 2, 3, 4, 5, 6, 7] as k (k)}
 			<line
-				x1={BX - 12}
+				x1={BX - (k % 2 === 0 ? 14 : 10)}
 				y1={34 + k * 8}
-				x2={BX - 4}
+				x2={BX - 3}
 				y2={34 + k * 8}
-				stroke="var(--fs-ink)"
-				stroke-width="1.5"
-				opacity="0.6"
+				stroke="var(--fs-tick)"
+				stroke-width={k % 2 === 0 ? 2.5 : 1.5}
 			/>
 		{/each}
 		<polygon

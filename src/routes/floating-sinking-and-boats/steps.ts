@@ -168,7 +168,7 @@ export const spec: ExplainerSpec = {
 			controls: [heat],
 			body: `
 <p>Air weighs something too: the air filling a big balloon weighs about three tonnes. And air pushes up on things in it just as water does, with the weight of the air they push aside.</p>
-<p>This balloon pushes aside about 3,060 kilograms of air. With the air inside as cold as the air outside, the balloon, basket and people (600 kilograms) plus the air inside weigh more than that, so it stays on the ground. Warm the air inside with the slider. Warm air spreads out, so less of it fits in the balloon and it weighs less.</p>
+<p>This balloon pushes aside 3,063 kilograms of air. With the air inside as cold as the air outside, the balloon, basket and people (600 kilograms) plus the air inside weigh more than that, so it stays on the ground. Warm the air inside with the slider. Warm air spreads out, so less of it fits in the balloon and it weighs less.</p>
 <p>At about 85 °C everything together weighs less than the air it pushes aside, and the balloon lifts off: it floats in the air like a wooden block in water.</p>`,
 			notes: `<p>The sums assume dry air at sea-level pressure, outside air at 15 °C, and the same temperature all through the balloon. The picture only shows that the balloon lifts off: how high it goes and how fast are not worked out. (A real balloon stops rising where the thinner air higher up weighs only as much as the balloon.)</p>`
 		},
