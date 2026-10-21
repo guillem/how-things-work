@@ -28,6 +28,8 @@
 	const phase = $derived(String(step.hints?.phase ?? 'guess'));
 
 	// ---- the machines: one per number of books read (made when first needed) -------------------
+	// A plain cache (not reactive state): the machines never change once made.
+	// eslint-disable-next-line svelte/prefer-svelte-reactivity
 	const machines = new Map<number, ReturnType<typeof learn>>();
 	function machine(n: number) {
 		let m = machines.get(n);
@@ -333,7 +335,7 @@
 				size={16}
 			/>
 		</Readout>
-		{#each shown as _, i (i)}
+		{#each Array.from({ length: shown.length }, (_, i) => i) as i (i)}
 			{@const xs = row(shown.length, 112)}
 			<path
 				d="M {CX} 160 C {CX} 230, {xs[i] + 56} 230, {xs[i] + 56} 290"

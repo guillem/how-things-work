@@ -56,7 +56,7 @@ export interface Machine {
 
 function bump(map: Map<string, Map<string, number>>, key: string, next: string) {
 	let m = map.get(key);
-	if (!m) map.set(key, (m = new Map()));
+	if (!m) map.set(key, (m = new Map<string, number>()));
 	m.set(next, (m.get(next) ?? 0) + 1);
 }
 
@@ -131,7 +131,7 @@ export function guess(m: Machine, story: string[], back: 1 | 2 = 1): Guess {
 		const seen = m.after2.get(key);
 		if (seen) return toGuess([story[story.length - 2], last], seen);
 	}
-	return toGuess([last], m.after1.get(last) ?? new Map());
+	return toGuess([last], m.after1.get(last) ?? new Map<string, number>());
 }
 
 function toGuess(looked: string[], seen: Map<string, number>): Guess {
