@@ -5692,6 +5692,19 @@
 		<text x="151" y="78" text-anchor="middle" font-size="30" font-weight="700" fill={accent}
 			>29</text
 		>
+	{:else if slug === 'floating-sinking-and-boats'}
+		<!-- a clay bowl floating beside a sunken clay ball, in a tank -->
+		<rect x="30" y="56" width="140" height="50" fill={accent} opacity="0.2" />
+		<path d="M60 48 L60 66 L104 66 L104 48 L100 48 L100 62 L64 62 L64 48 Z" fill="currentColor" />
+		<circle cx="140" cy="96" r="10" fill="currentColor" />
+		<line x1="30" y1="56" x2="170" y2="56" stroke={accent} stroke-width="2.5" />
+		<path
+			d="M28 40 L28 108 L172 108 L172 56"
+			fill="none"
+			stroke="currentColor"
+			stroke-width="2"
+			opacity="0.5"
+		/>
 	{:else}
 		<circle cx="100" cy="60" r="30" fill="none" stroke={accent} stroke-width="2" />
 		<circle cx="100" cy="60" r="5" fill={accent} />

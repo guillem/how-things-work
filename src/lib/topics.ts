@@ -1563,6 +1563,15 @@ const explainers: Explainer[] = [
 		accent: '#e8590c',
 		steps: 8,
 		minutes: 9
+	},
+	{
+		slug: 'floating-sinking-and-boats',
+		title: 'Floating, sinking & boats',
+		summary:
+			'Lower a stone, an apple and a steel ball into a brim-full tank and catch the water they push aside. Squash a ball of clay into a bowl and it floats; fill it with marbles until it sinks; then warm the air in a balloon until it lifts off.',
+		accent: '#1c7ed6',
+		steps: 8,
+		minutes: 9
 	}
 ];
 
