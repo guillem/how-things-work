@@ -171,6 +171,13 @@ export function cut(m: Magnet, pieces: number, spacing = 0.6): Magnet[] {
 }
 
 /**
+ * How close (cm) the end of the page's magnets must come before a steel paper clip lying below
+ * jumps up to it. Illustrative: it depends on the clip's weight and steel; with school ferrite
+ * bars it is about a centimetre or two.
+ */
+export const CLIP_JUMP = 1.5;
+
+/**
  * A steel clip near a magnet becomes a magnet itself: the magnet's field lines up the clip's tiny
  * magnetic regions along it, so the clip's north end is the one the field points towards. Returns
  * which pole the clip's end nearest the magnet becomes.

@@ -5793,6 +5793,28 @@
 		{/each}
 		<text x="172" y="78" text-anchor="middle" font-size="54" font-weight="800" fill={accent}>?</text
 		>
+	{:else if slug === 'magnets-and-poles'}
+		<!-- two bar magnets pulling, red end to blue end, with field lines looping round them -->
+		{#each [14, 24, 34] as r (r)}
+			<path
+				d="M150 60 C150 {60 - r * 1.6} 50 {60 - r * 1.6} 50 60"
+				fill="none"
+				stroke="currentColor"
+				stroke-width="1"
+				opacity="0.4"
+			/>
+			<path
+				d="M150 60 C150 {60 + r * 1.6} 50 {60 + r * 1.6} 50 60"
+				fill="none"
+				stroke="currentColor"
+				stroke-width="1"
+				opacity="0.4"
+			/>
+		{/each}
+		<rect x="30" y="52" width="32" height="16" rx="3" fill="#1971c2" />
+		<rect x="62" y="52" width="32" height="16" rx="3" fill={accent} />
+		<rect x="106" y="52" width="32" height="16" rx="3" fill="#1971c2" />
+		<rect x="138" y="52" width="32" height="16" rx="3" fill={accent} />
 	{:else}
 		<circle cx="100" cy="60" r="30" fill="none" stroke={accent} stroke-width="2" />
 		<circle cx="100" cy="60" r="5" fill={accent} />

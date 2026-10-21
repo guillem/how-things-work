@@ -5352,3 +5352,35 @@ kbd {
 	--tq-paper: #25262b;
 	--tq-turner: #da77f2;
 }
+
+/* magnets-and-poles: north and south ends, the table, filings, pull and push arrows, metals */
+:root {
+	--mg-north: #e03131;
+	--mg-south: #1971c2;
+	--mg-board: #f3efe6;
+	--mg-filing: #343a40;
+	--mg-needle: #adb5bd;
+	--mg-pull: #2f9e44;
+	--mg-push: #e8590c;
+	--mg-steel: #5c6670;
+	--mg-nickel: #ced4da;
+	--mg-spoon: #a5adb5;
+	--mg-foil: #e9ecef;
+	--mg-copper: #c2410c;
+	--mg-gold: #e0a800;
+}
+:root[data-theme='dark'] {
+	--mg-north: #f03e3e;
+	--mg-south: #1c7ed6;
+	--mg-board: #24262b;
+	--mg-filing: #ced4da;
+	--mg-needle: #868e96;
+	--mg-pull: #51cf66;
+	--mg-push: #ff922b;
+	--mg-steel: #adb5bd;
+	--mg-nickel: #868e96;
+	--mg-spoon: #909aa3;
+	--mg-foil: #dee2e6;
+	--mg-copper: #f08c4b;
+	--mg-gold: #fcc419;
+}

@@ -60,6 +60,10 @@ test('two school magnets 1 cm apart pull like a 21 g weight; 2 cm apart, less th
 	expect(Math.round(at1)).toBe(21);
 	expect(Math.round(at2)).toBe(8);
 	expect(at2).toBeLessThan(at1 / 2);
+	// 10 cm apart, about eighty times weaker than 1 cm apart.
+	const at10 = grams(magnitude(force(...inLine(10))));
+	expect(at1 / at10).toBeGreaterThan(70);
+	expect(at1 / at10).toBeLessThan(90);
 });
 
 test('the field points away from the north end and into the south end', () => {

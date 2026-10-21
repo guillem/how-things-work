@@ -1599,6 +1599,15 @@ const explainers: Explainer[] = [
 		accent: '#0c8599',
 		steps: 8,
 		minutes: 10
+	},
+	{
+		slug: 'magnets-and-poles',
+		title: 'Magnets & poles',
+		summary:
+			'Push two bar magnets about: unlike ends pull together, like ends push apart, and the pull fades fast as they part. Watch a compass and iron filings line up around them, turn a paper clip into a magnet, find out which metals a magnet ignores, and cut a magnet in half to find two ends on each half.',
+		accent: '#e03131',
+		steps: 9,
+		minutes: 10
 	}
 ];
 
