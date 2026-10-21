@@ -1,6 +1,6 @@
 # Topic catalog
 
-Source of truth for the content of an interactive web learning tool that shows how things work. It defines 191 topics in 11 categories, each built around one interactive graphic. Readers range from high-school students to university majors.
+Source of truth for the content of an interactive web learning tool that shows how things work. It defines 192 topics in 11 categories, each built around one interactive graphic. Readers range from high-school students to university majors.
 
 This file covers content only. It does not choose the stack, the visual design or the project layout; take those from the repository's own instructions.
 
@@ -91,7 +91,7 @@ A topic is done when:
 |---|---|---|
 | Mathematics | `math` | 21 |
 | Physics | `physics` | 16 |
-| Chemistry & Materials | `chemistry` | 14 |
+| Chemistry & Materials | `chemistry` | 15 |
 | Biology | `biology` | 17 |
 | Body & Medicine | `medicine` | 18 |
 | Earth & Climate | `earth` | 16 |
@@ -159,6 +159,7 @@ A topic is done when:
 - [x] huckel-molecular-orbitals
 - [x] surface-catalysis
 - [x] transition-state-theory
+- [ ] salt-and-ice
 
 **Biology**
 - [x] the-cell
@@ -809,6 +810,16 @@ A topic is done when:
 - **Related:** surface-catalysis
 - **Needs:** LEPS (Sato) parameters for the H3 and FH2 surfaces.
 - **Pitfall:** The transition state is not an intermediate that can be isolated; it is the top of the pass, usually crossed within about one vibration (trajectories can recross), and a catalyst lowers the pass rather than pushing molecules over it.
+
+#### salt-and-ice
+- **Title:** Salt on ice: roads and ice cream
+- **Level:** 0
+- **Kind:** simulate
+- **Interaction:** A block of ice drawn as a neat stack of water particles, with a thermometer. One control at a time: sprinkle salt, and salt particles get between the water particles at the surface so the stack cannot re-form, and the ice melts although the thermometer reads below freezing. Set the weather colder and the salt stops working; pour on more salt and see the point where extra salt no longer helps. Then put a bag of cream into the salted ice: the melting pulls heat out of the cream, the bath's thermometer drops below what plain ice could reach, and the cream freezes. Behind the picture runs the measured freezing-point curve of salt water and a running count of the heat that melting takes from the bath and the cream.
+- **Takeaway:** Salt gets in the way of water re-freezing, so salted ice melts below freezing, and that melting draws so much heat out of its surroundings that a salt-and-ice bath gets colder than ice, cold enough to freeze cream.
+- **Prerequisites:** none
+- **Needs:** Freezing point of salt water against salt content (NaCl brine table and its lowest point, about minus 21 °C), from the US FHWA 'Manual of Practice for an Effective Anti-icing Program' (US government work, public domain).
+- **Pitfall:** Salt does not heat the ice or 'burn' through it, and it does not work at any cold: below about minus twenty, no amount of salt will melt ice.
 
 ### Biology
 
