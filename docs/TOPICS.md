@@ -90,7 +90,7 @@ A topic is done when:
 | Category | Id | Topics |
 |---|---|---|
 | Mathematics | `math` | 21 |
-| Physics | `physics` | 16 |
+| Physics | `physics` | 17 |
 | Chemistry & Materials | `chemistry` | 15 |
 | Biology | `biology` | 18 |
 | Body & Medicine | `medicine` | 18 |
@@ -143,6 +143,7 @@ A topic is done when:
 - [x] shadows-and-pinholes
 - [x] floating-sinking-and-boats
 - [x] magnets-and-poles
+- [ ] blue-sky-red-sunset
 
 **Chemistry & Materials**
 - [x] atoms-periodic-table
@@ -574,7 +575,7 @@ A topic is done when:
 - **Interaction:** Drag light sources, mirrors, lenses and prisms on an optical bench and trace the rays. Change the refractive index and the color of the light to see bending, focusing, total internal reflection and dispersion into a spectrum.
 - **Takeaway:** Light changes direction when its speed changes between materials, and that one rule accounts for lenses, rainbows and optical fiber.
 - **Prerequisites:** waves-interference
-- **Related:** electromagnetism, calculus-of-variations
+- **Related:** electromagnetism, calculus-of-variations, blue-sky-red-sunset
 
 #### entropy
 - **Title:** Heat, entropy & the arrow of time
@@ -673,6 +674,17 @@ A topic is done when:
 - **Prerequisites:** none
 - **Related:** electromagnetism
 - **Pitfall:** A magnet does not attract all metals, nor even all steel: it pulls iron, nickel, cobalt and most steels, but not aluminium, copper, gold or many stainless-steel spoons and sinks. And cutting a magnet never separates its poles: each piece has two.
+
+#### blue-sky-red-sunset
+- **Title:** Why the sky is blue & sunsets red
+- **Level:** 0
+- **Kind:** explore
+- **Interaction:** Scrub the Sun across a day's sky: a patch of sky overhead and the Sun's own disc take the colours that come out when sunlight scatters off air along its path, worked out colour by colour from the real sunlight spectrum and shown as screen colours. Thicken the air or add smoke and the sunset deepens to orange and the daytime sky goes paler. Pump the air away altogether and the sky turns black around a white Sun, as on the Moon.
+- **Takeaway:** Air scatters blue light out of sunlight far more than red, so the sky overhead is blue and the Sun turns red when its light has crossed a lot of air near the horizon.
+- **Prerequisites:** none
+- **Related:** light-optics
+- **Needs:** None that needs a licence: sunlight above the air as a Planck spectrum at the Sun's effective temperature (5772 K, the IAU nominal value), and the CIE 1931 colour-matching functions from the analytic fit of Wyman, Sloan & Shirley (JCGT 2013), a formula. Optional, once its licence is confirmed: the ASTM G173-03 AM0 'Etr' column from NLR/NREL as a cited cross-check.
+- **Pitfall:** The sky is not blue because it reflects the sea, nor because of ozone; and the sky is not violet, although violet scatters even more, because sunlight carries less violet and the eye is less sensitive to it.
 
 ### Chemistry & Materials
 
