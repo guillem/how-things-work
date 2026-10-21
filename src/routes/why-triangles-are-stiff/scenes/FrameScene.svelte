@@ -1,6 +1,7 @@
 <script lang="ts">
 	/**
-	 * Pin-jointed frames on the ground: a square, a triangle, a square with a diagonal, a four-box
+	 * Pin-jointed frames on the ground: a square and a triangle the reader builds by joining pins
+	 * with sticks, a square with a diagonal, a four-box
 	 * tower whose boxes take a diagonal on a click, and a gate on two hinges. Pushes are followed by
 	 * the model (every stick keeps its length), so a frame moves only if it can; the readout says
 	 * in how many ways it can wobble.
@@ -23,8 +24,35 @@
 		setParam('braced', next.map((b) => (b ? '1' : '0')).join(''));
 	}
 
+	// ---- building: in the first two steps the reader joins the pins with sticks ------------------
+	// Sticks are stored as "01,12" in a control-free param per step; click a pin, then another, to
+	// add a stick between them (or take it away again).
+	const building = $derived(phase === 'square' || phase === 'triangle');
+	const key = $derived(phase === 'triangle' ? 'tristicks' : 'sqsticks');
+	const built = $derived(
+		String(params[key] ?? '')
+			.split(',')
+			.filter((p) => p.length === 2)
+			.map((p) => [Number(p[0]), Number(p[1])] as [number, number])
+	);
+	let picked = $state<number | null>(null);
+	function pickPin(i: number) {
+		if (picked === null) {
+			picked = i;
+			return;
+		}
+		const a = Math.min(picked, i);
+		const b = Math.max(picked, i);
+		picked = null;
+		if (a === b) return;
+		const has = built.some(([x, y]) => x === a && y === b);
+		const next = has ? built.filter(([x, y]) => !(x === a && y === b)) : [...built, [a, b]];
+		setParam(key, next.map(([x, y]) => `${x}${y}`).join(',') || '-');
+	}
+
 	const frame: Frame = $derived.by(() => {
-		if (phase === 'triangle') return triangle();
+		if (phase === 'triangle') return { ...triangle(), sticks: built };
+		if (phase === 'square') return { ...square(), sticks: built };
 		if (phase === 'diagonal') return square(params.diagonal === true);
 		if (phase === 'tower' || phase === 'fewest')
 			return tower(4, phase === 'fewest' ? [true, true, true, true] : braced);
@@ -33,6 +61,11 @@
 		return square();
 	});
 	const ways = $derived(wobbles(frame));
+	/** The pins every stick should join: all of them, each to at least two others. */
+	const complete = $derived(
+		!building ||
+			frame.pts.every((_, i) => frame.sticks.filter(([a, b]) => a === i || b === i).length >= 2)
+	);
 
 	// ---- the push -----------------------------------------------------------------------------
 	// Square and triangle: a push of 0.35 eased in over a second after each press. Diagonal and
@@ -190,15 +223,40 @@
 		/>
 	{/if}
 
-	<!-- clicking the tower's boxes -->
+	<!-- building: the pins are buttons -->
+	{#if building}
+		{#each shown.pts as p, i (i)}
+			<circle
+				class="tr-box"
+				cx={PX(p.x)}
+				cy={PY(p.y)}
+				r="22"
+				fill={picked === i ? 'var(--tr-push)' : 'transparent'}
+				fill-opacity={picked === i ? 0.3 : 0}
+				stroke={picked === i ? 'var(--tr-push)' : 'none'}
+				role="button"
+				tabindex="0"
+				aria-label="Pin {i + 1}{picked === i ? ' (picked: now pick another pin)' : ''}"
+				aria-pressed={picked === i}
+				onclick={() => pickPin(i)}
+				onkeydown={(e) => {
+					if (e.key === 'Enter' || e.key === ' ') {
+						e.preventDefault();
+						pickPin(i);
+					}
+				}}
+			/>
+		{/each}
+	{/if}
+
+	<!-- clicking the tower's boxes: targets that follow the swaying boxes -->
 	{#if phase === 'tower'}
 		{#each [0, 1, 2, 3] as k (k)}
-			<rect
+			<polygon
 				class="tr-box"
-				x={PX(0) + 10}
-				y={PY(k + 1) + 10}
-				width={U - 20}
-				height={U - 20}
+				points={[2 * k, 2 * k + 1, 2 * k + 3, 2 * k + 2]
+					.map((n) => `${PX(shown.pts[n].x)},${PY(shown.pts[n].y)}`)
+					.join(' ')}
 				fill="transparent"
 				role="button"
 				tabindex="0"
@@ -216,7 +274,23 @@
 	{/if}
 
 	<!-- readouts -->
-	{#if phase !== 'why'}
+	{#if building && !complete}
+		<Readout
+			id="tr-build"
+			order={1}
+			label="Build"
+			value="click a pin, then another, to join them with a stick"
+		>
+			<Label
+				x={480}
+				y={56}
+				text="click a pin, then another, to join them with a stick"
+				anchor="middle"
+				size={18}
+				weight={700}
+			/>
+		</Readout>
+	{:else if phase !== 'why'}
 		<Readout
 			id="tr-ways"
 			order={1}
@@ -255,7 +329,7 @@
 			/>
 		</Readout>
 	{/if}
-	{#if (phase === 'square' || phase === 'triangle') && presses > 0}
+	{#if building && complete && presses > 0}
 		<Readout
 			id="tr-moved"
 			order={3}

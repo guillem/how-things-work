@@ -123,7 +123,7 @@ A topic is done when:
 - [x] phase-portraits
 - [x] resampling-inference
 - [x] cellular-automata
-- [ ] why-triangles-are-stiff
+- [x] why-triangles-are-stiff
 
 **Physics**
 - [x] newtons-laws

@@ -9,14 +9,34 @@ async function open(page: Page, url: string, text: string) {
 	await expect(stage(page)).toContainText(text);
 }
 
-test('square: pushed, it leans over', async ({ page }) => {
-	await open(page, './why-triangles-are-stiff/#square', 'wobbly: it can lean one way');
+async function join(page: Page, pairs: [number, number][]) {
+	for (const [a, b] of pairs) {
+		await page.getByRole('button', { name: new RegExp(`^Pin ${a}`) }).click();
+		await page.getByRole('button', { name: new RegExp(`^Pin ${b}`) }).click();
+	}
+}
+
+test('square: built from four sticks, then pushed, it leans over', async ({ page }) => {
+	await open(page, './why-triangles-are-stiff/#square', 'click a pin, then another');
+	await join(page, [
+		[1, 2],
+		[2, 3],
+		[3, 4],
+		[4, 1]
+	]);
+	await expect(stage(page)).toContainText('wobbly: it can lean one way');
 	await page.getByRole('button', { name: 'Push the top corner' }).click();
 	await expect(stage(page)).toContainText('pushed: it leaned over');
 });
 
-test('triangle: pushed, it does not move', async ({ page }) => {
-	await open(page, './why-triangles-are-stiff/#triangle', 'stiff: it cannot wobble');
+test('triangle: built from three sticks, then pushed, it does not move', async ({ page }) => {
+	await open(page, './why-triangles-are-stiff/#triangle', 'click a pin, then another');
+	await join(page, [
+		[1, 2],
+		[2, 3],
+		[3, 1]
+	]);
+	await expect(stage(page)).toContainText('stiff: it cannot wobble');
 	await page.getByRole('button', { name: 'Push the top corner' }).click();
 	await expect(stage(page)).toContainText('pushed: it did not move');
 });

@@ -18,7 +18,11 @@ export interface Frame {
 	pinned: number[];
 }
 
-/** The number of independent ways the free joints can move without changing any stick's length. */
+/**
+ * The number of independent ways the free joints can start to move without changing any stick's
+ * length: the dimension of the rigidity matrix's space of infinitesimal motions. For the frames on
+ * this page (no three joints in a line along a stick), that is how many ways they can wobble.
+ */
 export function wobbles(f: Frame): number {
 	const free = f.pts.map((_, i) => i).filter((i) => !f.pinned.includes(i));
 	const col = new Map(free.map((j, k) => [j, k]));
@@ -47,11 +51,14 @@ export function wobbles(f: Frame): number {
 export function rank(m: number[][]): number {
 	const a = m.map((r) => [...r]);
 	const cols = a[0]?.length ?? 0;
+	// A tolerance relative to the matrix's largest entry, so the answer doesn't depend on units.
+	const big = Math.max(0, ...a.flat().map(Math.abs));
+	const tol = big * 1e-9;
 	let r = 0;
 	for (let c = 0; c < cols && r < a.length; c++) {
 		let best = r;
 		for (let i = r + 1; i < a.length; i++) if (Math.abs(a[i][c]) > Math.abs(a[best][c])) best = i;
-		if (Math.abs(a[best][c]) < 1e-9) continue;
+		if (Math.abs(a[best][c]) <= tol) continue;
 		[a[r], a[best]] = [a[best], a[r]];
 		for (let i = 0; i < a.length; i++) {
 			if (i === r) continue;
@@ -80,16 +87,21 @@ export function push(
 	const pts = f.pts.map((p) => ({ ...p }));
 	const rest = f.sticks.map((s) => length(f, s));
 	const fixed = (i: number) => f.pinned.includes(i);
+	// A pinned joint doesn't move, however hard it is pushed.
+	if (fixed(joint)) return { ...f, pts };
 	for (let k = 0; k < steps; k++) {
 		if (down) pts[joint].y -= distance / steps;
 		else pts[joint].x += distance / steps;
-		// Put the sticks back to their lengths (repeated projection, the pushed joint included).
-		for (let it = 0; it < 60; it++) {
+		// Put the sticks back to their lengths (repeated projection, the pushed joint included),
+		// until every stick is within a billionth of its length.
+		for (let it = 0; it < 5000; it++) {
+			let worst = 0;
 			f.sticks.forEach(([i, j], s) => {
 				const dx = pts[j].x - pts[i].x;
 				const dy = pts[j].y - pts[i].y;
 				const d = Math.hypot(dx, dy) || 1e-12;
 				const err = (d - rest[s]) / d;
+				worst = Math.max(worst, Math.abs(d - rest[s]) / rest[s]);
 				// The pushed joint gives way less than the others (the hand keeps pushing it).
 				const wi = fixed(i) ? 0 : i === joint ? 0.25 : 1;
 				const wj = fixed(j) ? 0 : j === joint ? 0.25 : 1;
@@ -101,6 +113,7 @@ export function push(
 				pts[j].x -= dx * kj;
 				pts[j].y -= dy * kj;
 			});
+			if (worst < 1e-9) break;
 		}
 	}
 	return { ...f, pts };

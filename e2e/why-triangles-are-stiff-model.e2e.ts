@@ -78,3 +78,23 @@ test('the count is not enough: sixteen sticks with two diagonals in one box and 
 	expect(t.sticks.length).toBe(16);
 	expect(wobbles(t)).toBe(1);
 });
+
+test('pushing a pinned joint moves nothing', () => {
+	for (const j of [0, 1]) {
+		const s = square();
+		expect(push(s, j, 0.3, { steps: 60 }).pts).toEqual(s.pts);
+	}
+});
+
+test('the braced tower, pushed as on the page, keeps every stick its length and hardly moves', () => {
+	const t = tower(4, [true, true, true, true]);
+	const p = push(t, 9, 0.3, { steps: 60 });
+	expect(stretch(t, p)).toBeLessThan(1e-6);
+	expect(moved(t, p, 9)).toBeLessThan(0.002);
+});
+
+test('the count does not depend on units', () => {
+	const s = square(true);
+	const tiny = { ...s, pts: s.pts.map((p) => ({ x: p.x * 1e-10, y: p.y * 1e-10 })) };
+	expect(wobbles(tiny)).toBe(0);
+});

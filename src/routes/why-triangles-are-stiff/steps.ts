@@ -50,8 +50,8 @@ export const spec: ExplainerSpec = {
 			duration: 16,
 			controls: [pushIt],
 			body: `
-<p>Four sticks, joined at their ends by pins, make a square. A pin holds two sticks together but lets them turn, like the joint in a pair of scissors. The square stands on its two bottom corners.</p>
-<p>Push the top corner. The square leans over and becomes a squashed diamond. None of the sticks got longer or shorter: only the corners changed their angles.</p>`
+<p>Here are four pins, the bottom two fixed to the ground. Click a pin, then another, to join them with a stick, and build a square of four sticks. A pin holds the sticks together but lets them turn, like the joint in a pair of scissors. (Here the sticks can’t bend or stretch, and everything moves flat on the screen.)</p>
+<p>Now push the top corner. The square leans over and becomes a squashed diamond. None of the sticks got longer or shorter: only the corners changed their angles.</p>`
 		},
 		{
 			id: 'triangle',
@@ -62,7 +62,7 @@ export const spec: ExplainerSpec = {
 			duration: 14,
 			controls: [pushIt],
 			body: `
-<p>Now three sticks, joined the same way, make a triangle. Push its top corner just as hard.</p>
+<p>Now join three pins with three sticks to make a triangle, and try pushing its top corner too.</p>
 <p>Nothing moves. The pins can turn just as freely as before, but the triangle keeps its shape. It is <strong>stiff</strong>.</p>`
 		},
 		{
@@ -98,7 +98,7 @@ export const spec: ExplainerSpec = {
 			hints: { phase: 'tower' },
 			duration: 26,
 			body: `
-<p>Here is a tower of four square boxes, one above the other, standing on the ground. With no diagonals it can wobble in four different ways: each box can lean on its own.</p>
+<p>Here is a tower of four square spaces, one above the other. The ground holds its two bottom corners in place, so the lowest space needs no bottom stick. With no diagonals it can wobble in four different ways: each box can lean on its own.</p>
 <p>Click a box to put a diagonal in it, or click again to take it out. Each diagonal takes away one way to wobble. Find the fewest diagonals that make the tower stiff: you need one in every box, four in all, and it doesn’t matter which way each one goes.</p>`
 		},
 		{
@@ -111,7 +111,7 @@ export const spec: ExplainerSpec = {
 			controls: [brace],
 			body: `
 <p>A wooden gate is a rectangle of planks, hung on two hinges on one side. Its own weight pulls the far end down, and the rectangle slowly leans out of shape: the gate sags and scrapes the ground.</p>
-<p>Add one diagonal plank, a brace, from corner to corner. The rectangle becomes two triangles and the sagging stops. That is why so many garden gates have a diagonal plank across them.</p>`
+<p>Add one diagonal plank, a brace, from corner to corner. The rectangle becomes two triangles and the sagging stops. (The animation just tries moving the far end down to show how the gate can change shape; it doesn’t work out how fast a real gate sags.) That is why so many garden gates have a diagonal plank across them.</p>`
 		},
 		{
 			id: 'fewest',
@@ -123,7 +123,7 @@ export const spec: ExplainerSpec = {
 			body: `
 <p>There is a counting rule. Every corner that isn’t fixed to the ground can move two ways, across and up. Each stick, if it is placed well, takes away one of those ways. So a frame needs at least two sticks for every free corner to be stiff.</p>
 <p>The tower has eight free corners (its two bottom ones stand on the ground), so it needs at least sixteen sticks. Its frame has twelve, and the four diagonals make sixteen. Fewer than that and it must be able to wobble.</p>`,
-			notes: `<p>The count is necessary but not enough on its own: the sticks have to be in the right places. Sixteen sticks with two diagonals crammed into one box and none in another still leave a wobble. Engineers check stiffness by asking whether any movement of the corners leaves every stick’s length unchanged, which is what this page computes.</p>`
+			notes: `<p>The count is necessary but not enough on its own: the sticks have to be in the right places. Sixteen sticks with two diagonals crammed into one box and none in another still leave a wobble. Engineers check stiffness by asking whether any movement of the corners leaves every stick’s length unchanged, which is what this page computes; for frames like the ones here, that tells us how many independent ways they can wobble.</p>`
 		},
 		{
 			id: 'strong',
