@@ -39,6 +39,8 @@ export default defineConfig({
 	webServer: {
 		command: `BASE_PATH=${BASE} npm run build && node scripts/serve-pages.mjs build ${BASE} ${PORT}`,
 		url: `http://localhost:${PORT}${BASE}/`,
-		reuseExistingServer: false
+		reuseExistingServer: false,
+		// The build alone takes over a minute on a cloud session's VM (Playwright waits 60 s by default).
+		timeout: 180_000
 	}
 });

@@ -74,7 +74,7 @@ export const spec: ExplainerSpec = {
 			controls: [scent],
 			body: `
 <p>Real ants have one more trick. An ant carrying food home dabs a smell on the ground behind it, a chemical message called a <dfn data-def="A chemical an animal releases that changes how others of its kind behave. Ants make trail pheromones to mark a path.">pheromone</dfn>. Other ants smell it with their antennae, and they tend to follow it.</p>
-<p>Watch what that does. An ant that crosses a dab of scent follows it, often to the sugar, and carries a grain home, adding more scent. More scent draws more ants, who add more scent. After a minute or so, most of the colony is on one line. Switch the scent off to compare.</p>`
+<p>Watch what that does. An ant that crosses a dab of scent follows it, often to the sugar, and carries a grain home, adding more scent. More scent draws more ants, who add more scent. Within a minute or so, most of the colony is on one line. Switch the scent off to compare.</p>`
 		},
 		{
 			id: 'move',
@@ -97,7 +97,7 @@ export const spec: ExplainerSpec = {
 			controls: [pebble],
 			body: `
 <p>Drop a pebble right on the trail. The ants that reach it lose the scent and squeeze round it on one side or the other, and the ones carrying sugar lay new scent as they go.</p>
-<p>Soon the trail bends round the pebble, along the side that keeps the trip short. No ant planned the detour: it is simply where most of the new scent ended up.</p>`
+<p>Soon the trail bends round the pebble, hugging its edge, so the detour adds only a few steps. No ant planned it: it is simply where most of the new scent ended up.</p>`
 		},
 		// ------------------------------------------------------------------ bridges
 		{
@@ -122,7 +122,7 @@ export const spec: ExplainerSpec = {
 			controls: [again],
 			body: `
 <p>Now the bottom bridge is twice as long as the top one. At first, the ants choose at random. But the ants on the short bridge reach the sugar first and get back first, so the short bridge gets its scent sooner, and more of the next ants take it.</p>
-<p>The colony usually ends up on the short bridge, though not every time: run it again. No ant measured the bridges or compared them. Here the scent never fades at all, so fading is not what picks the short one: getting back sooner is.</p>`
+<p>The colony usually ends up on the short bridge, though in this model not every time: run it again. No ant measured the bridges or compared them. Here the scent never fades at all, so fading is not what picks the short one: getting back sooner is.</p>`
 		},
 		{
 			id: 'late',

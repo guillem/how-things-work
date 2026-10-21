@@ -21,6 +21,7 @@
 		type Side
 	} from '../model';
 	import { ANT, GRAIN, SIM_SPEED } from './ant';
+	import PlaceLabel from './PlaceLabel.svelte';
 
 	let { step, t, params, reduced }: StageProps = $props();
 
@@ -202,7 +203,13 @@
 	<!-- nest and sugar -->
 	<circle cx={NEST.x} cy={NEST.y} r="34" fill="var(--at-nest)" />
 	<circle cx={NEST.x} cy={NEST.y} r="9" fill="var(--at-hole)" />
-	<Label x={NEST.x} y={NEST.y + 56} text="nest" size={15} weight={600} />
+	<PlaceLabel
+		id="at-nest-name"
+		x={NEST.x}
+		y={NEST.y + 62}
+		phone={{ x: NEST.x + 10, y: NEST.y + 80 }}
+		text="nest"
+	/>
 	<g transform="translate({SUGAR.x} {SUGAR.y})">
 		<circle r="24" fill="var(--at-sugar-bed)" />
 		{#each [[-9, -6], [4, -10], [8, 4], [-4, 7], [-12, 5], [12, -3]] as [x, y], i (i)}
@@ -217,21 +224,34 @@
 			/>
 		{/each}
 	</g>
-	<Label x={SUGAR.x} y={SUGAR.y + 46} text="sugar" anchor="end" size={15} weight={600} />
+	<PlaceLabel
+		id="at-sugar-name"
+		x={SUGAR.x}
+		y={SUGAR.y + 52}
+		phone={{ x: SUGAR.x + 30, y: SUGAR.y + 70 }}
+		text="sugar"
+		anchor="end"
+	/>
 
 	<!-- bridge names -->
 	{#if equal}
-		<Label x={480} y={168} text="top bridge" size={15} weight={600} />
-		<Label x={480} y={426} text="bottom bridge" size={15} weight={600} />
+		<PlaceLabel id="at-top-name" x={480} y={164} phone={{ x: 480, y: 150 }} text="top bridge" />
+		<PlaceLabel
+			id="at-bottom-name"
+			x={480}
+			y={432}
+			phone={{ x: 480, y: 450 }}
+			text="bottom bridge"
+		/>
 	{:else}
-		<Label
+		<PlaceLabel
+			id="at-short-name"
 			x={480}
 			y={266}
+			phone={{ x: 480, y: 254 }}
 			text={late && !open0 ? 'short bridge: closed for now' : 'short bridge'}
-			size={15}
-			weight={600}
 		/>
-		<Label x={480} y={522} text="long bridge" size={15} weight={600} />
+		<PlaceLabel id="at-long-name" x={480} y={522} phone={{ x: 480, y: 510 }} text="long bridge" />
 	{/if}
 
 	<!-- the ants -->

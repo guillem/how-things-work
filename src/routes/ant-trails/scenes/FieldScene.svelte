@@ -25,6 +25,7 @@
 		type Field
 	} from '../model';
 	import { ANT, GRAIN, SIM_SPEED } from './ant';
+	import PlaceLabel from './PlaceLabel.svelte';
 
 	let { step, t, params, reduced }: StageProps = $props();
 
@@ -113,8 +114,8 @@
 			if (v > 0.4)
 				out.push({
 					i,
-					x: FX + (i % COLS) * CELL,
-					y: FY + Math.floor(i / COLS) * CELL,
+					x: FX + ((i % COLS) + 0.5) * CELL,
+					y: FY + (Math.floor(i / COLS) + 0.5) * CELL,
 					o: Math.min(0.85, 0.12 + v / 12)
 				});
 		}
@@ -135,29 +136,19 @@
 
 	<!-- the scent -->
 	{#each scentCells as c (c.i)}
-		<rect x={c.x} y={c.y} width={CELL} height={CELL} rx="4" fill="var(--at-scent)" opacity={c.o} />
+		<circle cx={c.x} cy={c.y} r={CELL * 0.62} fill="var(--at-scent)" opacity={c.o} />
 	{/each}
 
 	<!-- nest, sugar, pebble -->
 	<circle cx={FX + NEST.x} cy={FY + NEST.y} r={NEST.r + 14} fill="var(--at-nest)" />
 	<circle cx={FX + NEST.x} cy={FY + NEST.y} r="9" fill="var(--at-hole)" />
-	<Label x={FX + NEST.x} y={FY + NEST.y + NEST.r + 34} text="nest" size={15} weight={600} />
-
-	<g transform="translate({FX + sugar.x} {FY + sugar.y})">
-		<circle r={SUGAR_R} fill="var(--at-sugar-bed)" />
-		{#each [[-9, -6], [4, -10], [8, 4], [-4, 7], [-12, 5], [12, -3]] as [x, y], i (i)}
-			<rect
-				x={x - 4}
-				y={y - 4}
-				width="8"
-				height="8"
-				rx="1.5"
-				fill="var(--at-sugar)"
-				stroke="var(--at-sugar-edge)"
-			/>
-		{/each}
-	</g>
-	<Label x={FX + sugar.x} y={FY + sugar.y + SUGAR_R + 20} text="sugar" size={15} weight={600} />
+	<PlaceLabel
+		id="at-nest-name"
+		x={FX + NEST.x}
+		y={FY + NEST.y + NEST.r + 40}
+		phone={{ x: FX + NEST.x, y: FY + NEST.y + NEST.r + 60 }}
+		text="nest"
+	/>
 
 	{#if pebble}
 		<circle
@@ -182,7 +173,7 @@
 		<Handle
 			x={FX + sugar.x}
 			y={FY + sugar.y}
-			r={SUGAR_R + 4}
+			r={16}
 			color="var(--at-handle)"
 			label="The sugar"
 			value={reach}
@@ -198,6 +189,29 @@
 			ondragend={settle}
 		/>
 	{/if}
+
+	<!-- the sugar, over its handle in "move" -->
+	<g transform="translate({FX + sugar.x} {FY + sugar.y})" pointer-events="none">
+		{#if phase !== 'move'}<circle r={SUGAR_R} fill="var(--at-sugar-bed)" />{/if}
+		{#each [[-9, -6], [4, -10], [8, 4], [-4, 7], [-12, 5], [12, -3]] as [x, y], i (i)}
+			<rect
+				x={x - 4}
+				y={y - 4}
+				width="8"
+				height="8"
+				rx="1.5"
+				fill="var(--at-sugar)"
+				stroke="var(--at-sugar-edge)"
+			/>
+		{/each}
+	</g>
+	<PlaceLabel
+		id="at-sugar-name"
+		x={FX + sugar.x}
+		y={FY + sugar.y + SUGAR_R + 26}
+		phone={{ x: FX + sugar.x, y: FY + sugar.y + SUGAR_R + 44 }}
+		text="sugar"
+	/>
 
 	<!-- read-outs -->
 	<Readout id="at-home" order={1} label="Sugar carried home" value="{home} grains">
