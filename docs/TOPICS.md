@@ -1,6 +1,6 @@
 # Topic catalog
 
-Source of truth for the content of an interactive web learning tool that shows how things work. It defines 188 topics in 11 categories, each built around one interactive graphic. Readers range from high-school students to university majors.
+Source of truth for the content of an interactive web learning tool that shows how things work. It defines 189 topics in 11 categories, each built around one interactive graphic. Readers range from high-school students to university majors.
 
 This file covers content only. It does not choose the stack, the visual design or the project layout; take those from the repository's own instructions.
 
@@ -90,7 +90,7 @@ A topic is done when:
 | Category | Id | Topics |
 |---|---|---|
 | Mathematics | `math` | 20 |
-| Physics | `physics` | 14 |
+| Physics | `physics` | 15 |
 | Chemistry & Materials | `chemistry` | 14 |
 | Biology | `biology` | 17 |
 | Body & Medicine | `medicine` | 18 |
@@ -140,6 +140,7 @@ A topic is done when:
 - [x] lasers
 - [x] ising-model
 - [x] shadows-and-pinholes
+- [ ] floating-sinking-and-boats
 
 **Chemistry & Materials**
 - [x] atoms-periodic-table
@@ -638,6 +639,17 @@ A topic is done when:
 - **Related:** sun-earth-moon
 - **Pitfall:** A shadow is not something a lamp throws onto a wall; it is where no light arrives. And the Moon's phases are not Earth's shadow (the page should point to sun-earth-moon for eclipses, which are).
 
+#### floating-sinking-and-boats
+- **Title:** Floating, sinking & boats
+- **Level:** 0
+- **Kind:** manipulate
+- **Interaction:** Lower objects into a brim-full tank (a stone, an apple, a wooden block, a steel ball, a ball of modelling clay): the water each one pushes aside spills into a cup on a scale, and a spring balance holding the object shows it getting lighter as it goes in. Each one sinks, or settles where the spilled water weighs as much as it does. Reshape the clay from a ball into a bowl and the same lump floats; load it with marbles until it goes under. Change the water to salt water or to oil and see who floats now; finally warm the air inside a balloon and watch it rise through the surrounding air the same way.
+- **Takeaway:** A thing floats if it can push aside its own weight of water (or air) before it is completely under, which is why the same lump of clay sinks as a ball and floats as a bowl.
+- **Prerequisites:** none
+- **Related:** states-of-matter
+- **Needs:** A handful of handbook densities (water, sea water, oil, ice, wood, steel, air).
+- **Pitfall:** Heavy things do not simply sink and light things float: a steel ship floats and a grain of sand sinks; what matters is the weight compared with the weight of the water pushed aside.
+
 ### Chemistry & Materials
 
 #### atoms-periodic-table
@@ -676,7 +688,7 @@ A topic is done when:
 - **Interaction:** Control the temperature and pressure of a box of simulated molecules and watch it freeze, melt, boil and condense, with the current state tracked on a phase diagram. Switch the substance to water to see the open lattice of ice.
 - **Takeaway:** Solid, liquid and gas are the same molecules balancing attraction against thermal motion, and water is unusual because its solid is less dense than its liquid.
 - **Prerequisites:** chemical-bonds
-- **Related:** entropy, random-graphs, ising-model
+- **Related:** entropy, random-graphs, ising-model, floating-sinking-and-boats
 
 #### reaction-rates-equilibrium
 - **Title:** Reaction rates, catalysts & equilibrium
