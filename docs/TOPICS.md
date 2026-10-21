@@ -1,6 +1,6 @@
 # Topic catalog
 
-Source of truth for the content of an interactive web learning tool that shows how things work. It defines 190 topics in 11 categories, each built around one interactive graphic. Readers range from high-school students to university majors.
+Source of truth for the content of an interactive web learning tool that shows how things work. It defines 191 topics in 11 categories, each built around one interactive graphic. Readers range from high-school students to university majors.
 
 This file covers content only. It does not choose the stack, the visual design or the project layout; take those from the repository's own instructions.
 
@@ -90,7 +90,7 @@ A topic is done when:
 | Category | Id | Topics |
 |---|---|---|
 | Mathematics | `math` | 21 |
-| Physics | `physics` | 15 |
+| Physics | `physics` | 16 |
 | Chemistry & Materials | `chemistry` | 14 |
 | Biology | `biology` | 17 |
 | Body & Medicine | `medicine` | 18 |
@@ -142,6 +142,7 @@ A topic is done when:
 - [x] ising-model
 - [x] shadows-and-pinholes
 - [x] floating-sinking-and-boats
+- [ ] magnets-and-poles
 
 **Chemistry & Materials**
 - [x] atoms-periodic-table
@@ -562,7 +563,7 @@ A topic is done when:
 - **Interaction:** Place positive and negative charges and see the field lines and the force on a test charge. Move a magnet through a coil, or change the current in a neighboring coil, and watch a current be induced.
 - **Takeaway:** Charges create electric fields, moving charges create magnetic fields, and a changing magnetic field creates an electric one; light is the two fields sustaining each other as a wave.
 - **Prerequisites:** electric-circuits
-- **Related:** light-optics, wireless-signals
+- **Related:** light-optics, wireless-signals, magnets-and-poles
 
 #### light-optics
 - **Title:** Light & optics
@@ -660,6 +661,16 @@ A topic is done when:
 - **Related:** states-of-matter
 - **Needs:** A handful of handbook densities (water, sea water, oil, ice, wood, steel, air).
 - **Pitfall:** Heavy things do not simply sink and light things float: a steel ship floats and a grain of sand sinks; what matters is the weight compared with the weight of the water pushed aside.
+
+#### magnets-and-poles
+- **Title:** Magnets & poles
+- **Level:** 0
+- **Kind:** manipulate
+- **Interaction:** Drag two bar magnets about on a board: arrows show the pull or push between them, computed from their poles, and a compass needle and a sprinkle of iron filings line up along the field. Flip one magnet end for end and the pull turns into a push. Slide a steel paper clip toward a magnet to see it become a magnet of its own and pick up a chain of clips, then cut a magnet in half and find that each half still has two ends.
+- **Takeaway:** A magnet always has two ends; like ends push apart and unlike ends pull together, and the pull fades quickly with distance.
+- **Prerequisites:** none
+- **Related:** electromagnetism
+- **Pitfall:** A magnet does not attract all metals, nor even all steel: it pulls iron, nickel, cobalt and most steels, but not aluminium, copper, gold or many stainless-steel spoons and sinks. And cutting a magnet never separates its poles: each piece has two.
 
 ### Chemistry & Materials
 
