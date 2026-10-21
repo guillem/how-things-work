@@ -17,6 +17,7 @@
 		brush,
 		changedPieces,
 		coverCorner,
+		headerBits,
 		damage,
 		encode,
 		Kind,
@@ -77,7 +78,6 @@
 
 	// ---- the phone's reading ------------------------------------------------------------------
 	const turn = $derived(phase === 'corners' ? Number(params.turn ?? 0) : 0);
-	const reading = $derived(scan(code, paint, turn));
 	const dmg = $derived(damage(code, paint));
 
 	// ---- the code on paper ----------------------------------------------------------------------
@@ -114,21 +114,30 @@
 
 	// The spare step's "change the first letter": the same message with its first letter's case
 	// flipped, drawn with the same mask so that only the pieces' contents differ.
+	const dataPieces = $derived(code.pieceBlock.filter(([, , s]) => !s).length);
+	const sparePieces = $derived(code.codewords.length - dataPieces);
+	const canSwap = $derived(/^[A-Za-z]/.test(text));
 	const swapped = $derived.by(() => {
-		if (phase !== 'spare' || params.swap !== true || !text) return null;
-		const first = [...text][0];
+		if (phase !== 'spare' || params.swap !== true || !canSwap) return null;
+		const first = text[0];
 		const flipped = first === first.toUpperCase() ? first.toLowerCase() : first.toUpperCase();
-		const other = (flipped === first ? 'X' : flipped) + [...text].slice(1).join('');
+		const other = flipped + text.slice(1);
 		const c = encode(other, level, { mask: code.mask, version: code.version });
 		return c
 			? { code: c, changed: new Set(changedPieces(code, c)), letter: [first, other[0]] }
 			: null;
 	});
 	const shown = $derived(swapped?.code ?? code);
+	const spareNote = $derived(
+		swapped
+			? `“${swapped.letter[0]}” → “${swapped.letter[1]}”: ${[...swapped.changed].filter((w) => code.pieceBlock[w][2]).length} of ${sparePieces} spare pieces changed`
+			: params.swap === true && !canSwap
+				? 'start your message with a letter (A to Z) to try this'
+				: `${sparePieces} spare pieces, worked out from the ${dataPieces} message pieces`
+	);
+	const reading = $derived(scan(shown, paint, turn));
 
 	// Build animation (message and spare steps): how many pieces are laid down so far.
-	const dataPieces = $derived(code.pieceBlock.filter(([, , s]) => !s).length);
-	const sparePieces = $derived(code.codewords.length - dataPieces);
 	const laidData = $derived(
 		phase === 'message'
 			? reduced
@@ -243,11 +252,19 @@
 	});
 	const writing = $derived.by(() => {
 		if (phase !== 'message') return '';
-		if (laidData >= dataPieces)
-			return `${letters.length} letters, ${dataPieces} pieces with the filler`;
+		const chars = [...text].length;
+		const size =
+			chars === letters.length
+				? `${chars} letters`
+				: `${chars} letters in ${letters.length} rows of 8`;
+		if (laidData >= dataPieces) return `${size}, ${dataPieces} pieces with the filler`;
 		const bits = 8 * (laidData + 1);
-		if (bits <= 12) return `“this is text, ${letters.length} letters long”`;
-		const k = Math.floor((bits - 12 - 1) / 8);
+		const header = headerBits([...new TextEncoder().encode(text)]);
+		if (bits <= header)
+			return chars === letters.length
+				? `“this is text, ${chars} letters long”`
+				: `“this is text, ${letters.length} rows of 8 long”`;
+		const k = Math.floor((bits - header - 1) / 8);
 		if (k < letters.length)
 			return `writing letter ${k + 1}: ${letters[k] === ' ' ? 'a space' : `“${letters[k]}”`}`;
 		return 'an end mark, then filler';
@@ -517,23 +534,14 @@
 			/>
 		</Readout>
 	{:else if phase === 'spare'}
-		<Readout
-			id="spare-note"
-			order={2}
-			label="Spare pieces"
-			value={swapped
-				? `“${swapped.letter[0]}” → “${swapped.letter[1]}”: ${[...swapped.changed].filter((w) => code.pieceBlock[w][2]).length} of ${sparePieces} spare pieces changed`
-				: `${sparePieces} spare pieces, worked out from the ${dataPieces} message pieces`}
-		>
+		<Readout id="spare-note" order={2} label="Spare pieces" value={spareNote}>
 			<Label
 				x={X0 + S / 2}
 				y={Y0 + S + 26}
 				size={15}
 				weight={600}
 				color="var(--qr-spare-ink)"
-				text={swapped
-					? `“${swapped.letter[0]}” → “${swapped.letter[1]}”: ${[...swapped.changed].filter((w) => code.pieceBlock[w][2]).length} of ${sparePieces} spare pieces changed`
-					: `${sparePieces} spare pieces, worked out from the ${dataPieces} message pieces`}
+				text={spareNote}
 			/>
 		</Readout>
 	{:else if phase === 'snapshot'}
@@ -632,7 +640,7 @@
 		>
 			<rect width={n + 2 * QUIET} height={n + 2 * QUIET} fill="var(--qr-paper)" />
 			<g transform="translate({QUIET} {QUIET})">
-				<path d={pathOf(code.modules.flatMap((m, i) => (m ? [i] : [])))} fill="var(--qr-ink)" />
+				<path d={pathOf(shown.modules.flatMap((m, i) => (m ? [i] : [])))} fill="var(--qr-ink)" />
 				{#if paintPath}
 					<path d={paintPath} fill="var(--qr-paint)" opacity="0.9" />
 				{/if}

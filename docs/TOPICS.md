@@ -270,7 +270,7 @@ A topic is done when:
 - [x] kalman-filter
 - [x] radar-sonar
 - [x] barcode-stripes
-- [ ] qr-codes
+- [x] qr-codes
 - [ ] wifi-and-walls
 
 **Artificial Intelligence**
@@ -1789,7 +1789,7 @@ A topic is done when:
 - **Level:** 0
 - **Kind:** build
 - **Interaction:** Type a short message and watch it become a square of black and white cells, built the real way: the three big corner squares that tell a camera where the code is and which way up, then the message as cells, then spare cells computed from the message. Point a drawn camera at it from any angle and it reads. Now paint over cells with a brush: the message still comes out, and a counter shows how many cells are damaged; keep painting and find the moment it fails, then paint over a corner square instead, which fails at once.
-- **Takeaway:** A QR code carries its message plus spare cells computed from it, so a scratched or half-covered code still reads, until too much of the message is spoiled or a corner finder is hidden.
+- **Takeaway:** A QR code carries its message plus spare cells computed from it, so a scratched or partly covered code still reads, until too much of the message is spoiled or a corner finder is hidden.
 - **Prerequisites:** none
 - **Related:** barcode-stripes
 - **Needs:** None to ship; the page runs a real encoder and decoder (open-source implementations of the QR standard exist under MIT and Apache 2.0, e.g. qrcode-generator and jsQR).

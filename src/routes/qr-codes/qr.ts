@@ -58,6 +58,11 @@ export const dataCapacity = (version: number, level: Level) =>
 export const byteCapacity = (version: number, level: Level) =>
 	Math.floor((dataCapacity(version, level) * 8 - 12) / 8);
 
+/** UTF-8 is declared with ECI 26 (12 more bits) when the text is not plain ASCII. */
+export const needsEci = (bytes: readonly number[]) => bytes.some((b) => b >= 0x80);
+/** Bits before the text's bytes: [ECI 0111 + 00011010,] mode 0100 and the 8-bit count. */
+export const headerBits = (bytes: readonly number[]) => (needsEci(bytes) ? 24 : 12);
+
 /** What a cell is for. */
 export const Kind = {
 	None: 0,
@@ -104,12 +109,21 @@ export function utf8(text: string): number[] {
 
 /** The smallest version (1 to 6) that holds the text at the level, or null if none does. */
 export function versionFor(text: string, level: Level): number | null {
-	const n = utf8(text).length;
-	for (let v = 1; v <= MAX_VERSION; v++) if (byteCapacity(v, level) >= n) return v;
+	for (let v = 1; v <= MAX_VERSION; v++) if (fits(text, v, level)) return v;
 	return null;
 }
 
-/** Mode indicator 0100 (bytes), an 8-bit count, the bytes, a terminator, then 0xEC 0x11 padding. */
+function fits(text: string, version: number, level: Level): boolean {
+	const bytes = utf8(text);
+	return (
+		bytes.length <= 255 && headerBits(bytes) + 8 * bytes.length <= dataCapacity(version, level) * 8
+	);
+}
+
+/**
+ * For text that isn't plain ASCII, an ECI header declaring UTF-8 (0111, then 26); then the mode
+ * indicator 0100 (bytes), an 8-bit count, the bytes, a terminator, then 0xEC 0x11 padding.
+ */
 export function dataCodewords(text: string, version: number, level: Level): number[] {
 	const bytes = utf8(text);
 	const capacity = dataCapacity(version, level);
@@ -117,6 +131,10 @@ export function dataCodewords(text: string, version: number, level: Level): numb
 	const put = (value: number, len: number) => {
 		for (let i = len - 1; i >= 0; i--) bits.push((value >>> i) & 1);
 	};
+	if (needsEci(bytes)) {
+		put(0b0111, 4);
+		put(26, 8);
+	}
 	put(0b0100, 4);
 	put(bytes.length, 8);
 	for (const b of bytes) put(b, 8);
@@ -251,35 +269,52 @@ export function placementOrder(version: number): number[] {
 	return order;
 }
 
-function finderLike(line: readonly boolean[]): number {
-	// The 1:1:3:1:1 finder pattern with four light cells on one side (the standard's rule 3).
-	const P = [true, false, true, true, true, false, true];
-	let n = 0;
-	for (let i = 0; i + 7 <= line.length; i++) {
-		if (!P.every((p, k) => line[i + k] === p)) continue;
-		const lightBefore = [1, 2, 3, 4].every((k) => i - k < 0 || !line[i - k]);
-		const lightAfter = [1, 2, 3, 4].every((k) => i + 6 + k >= line.length || !line[i + 6 + k]);
-		if (lightBefore || lightAfter) n++;
-	}
-	return n;
-}
-
-/** The standard's penalty score; the mask with the lowest score is used. */
+/**
+ * The standard's penalty score; the mask with the lowest score is used. Rules 1 to 4 (runs of
+ * five or more, 2 × 2 blocks, finder-like 1:1:3:1:1 runs with four light cells on a side, the
+ * dark share), counted as in Nayuki's reference generator (a light border is assumed around the
+ * code).
+ */
 export function penalty(modules: readonly boolean[], size: number): number {
 	let score = 0;
 	const at = (r: number, c: number) => modules[r * size + c];
+	const countPatterns = (h: number[]) => {
+		const n = h[1];
+		const core = n > 0 && h[2] === n && h[3] === n * 3 && h[4] === n && h[5] === n;
+		return (
+			(core && h[0] >= n * 4 && h[6] >= n ? 1 : 0) + (core && h[6] >= n * 4 && h[0] >= n ? 1 : 0)
+		);
+	};
+	const addHistory = (run: number, h: number[]) => {
+		if (h[0] === 0) run += size; // the light border before the first run
+		h.pop();
+		h.unshift(run);
+	};
 	for (let pass = 0; pass < 2; pass++) {
 		for (let i = 0; i < size; i++) {
-			const line = Array.from({ length: size }, (_, j) => (pass === 0 ? at(i, j) : at(j, i)));
-			let run = 1;
-			for (let j = 1; j <= size; j++) {
-				if (j < size && line[j] === line[j - 1]) run++;
-				else {
-					if (run >= 5) score += 3 + (run - 5);
+			const cell = (j: number) => (pass === 0 ? at(i, j) : at(j, i));
+			let runDark = false;
+			let run = 0;
+			const h = [0, 0, 0, 0, 0, 0, 0];
+			for (let j = 0; j < size; j++) {
+				if (cell(j) === runDark) {
+					run++;
+					if (run === 5) score += 3;
+					else if (run > 5) score++;
+				} else {
+					addHistory(run, h);
+					if (!runDark) score += countPatterns(h) * 40;
+					runDark = cell(j);
 					run = 1;
 				}
 			}
-			score += 40 * finderLike(line);
+			// End of the line: the light border after it.
+			if (runDark) {
+				addHistory(run, h);
+				run = 0;
+			}
+			addHistory(run + size, h);
+			score += countPatterns(h) * 40;
 		}
 	}
 	for (let r = 0; r < size - 1; r++)
@@ -288,7 +323,8 @@ export function penalty(modules: readonly boolean[], size: number): number {
 			if (v === at(r, c + 1) && v === at(r + 1, c) && v === at(r + 1, c + 1)) score += 3;
 		}
 	const dark = modules.filter(Boolean).length;
-	score += 10 * Math.floor(Math.abs((dark * 100) / (size * size) - 50) / 5);
+	const total = size * size;
+	score += 10 * (Math.ceil(Math.abs(dark * 20 - total * 10) / total) - 1);
 	return score;
 }
 
@@ -299,7 +335,7 @@ export function encode(
 	opts: { mask?: number; version?: number } = {}
 ): QrCode | null {
 	const version = opts.version ?? versionFor(text, level);
-	if (version === null || byteCapacity(version, level) < utf8(text).length) return null;
+	if (version === null || !fits(text, version, level)) return null;
 	const size = sizeOf(version);
 	const blocks = blocksOf(version, level);
 	const data = dataCodewords(text, version, level);

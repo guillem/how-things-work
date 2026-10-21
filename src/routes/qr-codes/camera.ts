@@ -350,12 +350,20 @@ export function decodeCells(
 		for (let k = 0; k < len; k++) v = v * 2 + bitAt(from + k);
 		return v;
 	};
-	if (read(0, 4) !== 0b0100)
+	// An optional ECI header (0111 and an 8-bit designator: 26 is UTF-8), then byte mode:
+	// 0100, an 8-bit count, then the bytes.
+	let pos = 0;
+	if (read(0, 4) === 0b0111) {
+		if (read(4, 1) !== 0 || read(4, 8) !== 26)
+			return fail('too many pieces are spoiled to repair', finders, { ...base, level, mask });
+		pos = 12;
+	}
+	if (read(pos, 4) !== 0b0100)
 		return fail('too many pieces are spoiled to repair', finders, { ...base, level, mask });
-	const count = read(4, 8);
-	if (12 + 8 * count > data.length * 8)
+	const count = read(pos + 4, 8);
+	if (pos + 12 + 8 * count > data.length * 8)
 		return fail('too many pieces are spoiled to repair', finders, { ...base, level, mask });
-	const bytes = Uint8Array.from({ length: count }, (_, k) => read(12 + 8 * k, 8));
+	const bytes = Uint8Array.from({ length: count }, (_, k) => read(pos + 12 + 8 * k, 8));
 	return {
 		ok: true,
 		text: new TextDecoder().decode(bytes),

@@ -162,3 +162,17 @@ test('higher levels can repair a bigger share of each block, and the code grows'
 	expect(share.map((s) => s.size)).toEqual([25, 25, 25, 29]);
 	for (let i = 1; i < 4; i++) expect(share[i].share).toBeGreaterThan(share[i - 1].share);
 });
+
+test('the mask is chosen by the standard’s penalty score (as the reference generator does)', () => {
+	// Nayuki's reference QR generator picks mask 6 for "Meet at 4" at level M.
+	expect(encode('Meet at 4', 'M')!.mask).toBe(6);
+});
+
+test('text that isn’t plain ASCII is declared as UTF-8 (ECI 26) before the bytes', () => {
+	const plain = encode('Hello', 'M')!;
+	expect(plain.data[0] >> 4).toBe(0b0100);
+	const accented = encode('Café', 'M')!;
+	// 0111 (ECI) 00011010 (26 = UTF-8) 0100 (bytes) 00000101 (5 bytes: é is two).
+	expect(accented.data.slice(0, 3)).toEqual([0b01110001, 0b10100100, 0b00000101]);
+	expect(scan(accented).text).toBe('Café');
+});

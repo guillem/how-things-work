@@ -6,7 +6,7 @@
 import { decodePicture, photograph, type Reading } from './camera';
 import { encode, Kind, type Level, type QrCode } from './qr';
 
-export { encode, LEVELS, type Level, type QrCode, Kind, versionFor, byteCapacity } from './qr';
+export { encode, headerBits, LEVELS, type Level, type QrCode, Kind } from './qr';
 export { decodeCells, type Reading } from './camera';
 
 /** The longest message the page accepts, in bytes of UTF-8 (fits version 4 even at level H). */

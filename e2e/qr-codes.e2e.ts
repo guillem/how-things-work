@@ -30,6 +30,8 @@ test('changing one letter changes every spare piece', async ({ page }) => {
 	await open(page, './qr-codes/#spare', '16 spare pieces, worked out from the 28 message pieces');
 	await page.locator('input[type=checkbox][data-control=swap]').check();
 	await expect(stage(page)).toContainText('“H” → “h”: 16 of 16 spare pieces changed');
+	// The phone reads the changed code.
+	await expect(stage(page)).toContainText('Reads:hello from a QR code');
 });
 
 test('painting: a little paint is repaired, a corner square painted over is fatal, wiping restores it', async ({
