@@ -140,7 +140,7 @@ A topic is done when:
 - [x] lasers
 - [x] ising-model
 - [x] shadows-and-pinholes
-- [ ] floating-sinking-and-boats
+- [x] floating-sinking-and-boats
 
 **Chemistry & Materials**
 - [x] atoms-periodic-table
