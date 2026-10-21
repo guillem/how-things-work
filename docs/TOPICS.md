@@ -124,7 +124,7 @@ A topic is done when:
 - [x] resampling-inference
 - [x] cellular-automata
 - [x] why-triangles-are-stiff
-- [ ] monty-hall
+- [x] monty-hall
 
 **Physics**
 - [x] newtons-laws
