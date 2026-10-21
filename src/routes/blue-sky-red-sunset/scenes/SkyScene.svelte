@@ -245,11 +245,13 @@
 				6} L{EYE.x + 7} {HY + 4} Z"
 		/>
 	</g>
-	{#each [[90, 'east'], [180, 'south'], [270, 'west']] as const as [az, name] (name)}
-		<text x={PX(az)} y={HY + 30} text-anchor="middle" font-size="13" fill="var(--sb-ground-ink)"
-			>{name}</text
-		>
-	{/each}
+	<Readout id="sb-compass">
+		{#each [[90, 'east'], [180, 'south'], [270, 'west']] as const as [az, name] (name)}
+			<text x={PX(az)} y={HY + 30} text-anchor="middle" font-size="13" fill="var(--sb-ground-ink)"
+				>{name}</text
+			>
+		{/each}
+	</Readout>
 	<Readout id="sb-up">
 		<Label x={PX(180)} y={TOP + 20} text="↑ straight overhead" size={12} muted />
 	</Readout>
@@ -269,7 +271,7 @@
 			order={10 + i}
 			label={s.label[0].toUpperCase() + s.label.slice(1)}
 			marker={i + 1}
-			at={[s.x, 520]}
+			at={[s.x, 572]}
 		>
 			<Label x={s.x} y={570} text={s.label} size={12} />
 		</Readout>
@@ -396,7 +398,7 @@
 				y={548}
 				text={noAir
 					? 'all of the Sun’s light gets through'
-					: `of the low Sun’s light, ${sunThrough} gets through`}
+					: `of the low Sun’s light, ${sunThrough} ${sunThrough === 'almost none' ? 'gets' : 'get'} through`}
 				anchor="start"
 				size={13}
 				tabular

@@ -5,15 +5,15 @@
 	 * that bounces is the model's, for a crossing of four times the air above us (so the drawing
 	 * shows enough bounces); the readout gives the share for one trip straight down.
 	 */
-	import { Label, Photon, cycle, hash, smoothstep } from '#lib/draw/index.ts';
+	import { Label, Photon, cycle, hash, smoothstep, wavelengthToColor } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
-	import { NM, glareColour, rayleighDepth, transmitted } from '../model';
+	import { rayleighDepth, transmitted } from '../model';
 	import { colourName } from '../steps';
 
 	let { t, params }: StageProps = $props();
 
 	const nm = $derived(Number(params.nm ?? 450));
-	const colour = $derived(glareColour(NM.map((w) => Math.max(0, 1 - Math.abs(w - nm) / 5))));
+	const colour = $derived(wavelengthToColor(nm));
 	const name = $derived(colourName(nm));
 	/** Shares bounced off: for the drawing's box (four times the air), and straight down. */
 	const DRAWN_AIR = 4;

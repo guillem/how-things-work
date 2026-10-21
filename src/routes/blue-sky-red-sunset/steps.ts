@@ -108,7 +108,7 @@ export const spec: ExplainerSpec = {
 			hints: { phase: 'look' },
 			duration: 14,
 			body: `
-<p>On a clear day, look up: the sky is <strong>blue</strong>. Look at the setting Sun (carefully, only when it is low and dim) and it is <strong>orange or red</strong>. But the Sun sends us the same light all day. So where do the blue and the red come from?</p>
+<p>On a clear day, look up: the sky is <strong>blue</strong>. Watch a sunset (never look straight at the Sun) and the setting Sun is <strong>orange or red</strong>. But the Sun sends us the same light all day. So where do the blue and the red come from?</p>
 <p>The picture is a clear day in March or September, seen from somewhere 40° north of the equator, such as Madrid, New York or Beijing, looking south. It is noon, and the Sun is as high as it gets that day.</p>
 <p>Every colour on this page is <strong>worked out</strong>, not picked: from the light the Sun sends, and from what air does to it.</p>`
 		},
@@ -136,7 +136,7 @@ export const spec: ExplainerSpec = {
 <p>Air is made of tiny bits, far too small to see, that fly about with lots of empty space between them. Now and then a bit of light hits one and bounces off in a new direction. This is called ${scatter}.</p>
 <p>Here is the surprise: the tiny bits of air bounce <strong>blue light far more than red</strong>. Change the colour of the light and watch how many bounce off. Blue light is bounced about six times as often as red, and violet even more.</p>
 <p>Coming straight down through all the air above us, about 20 in every 100 bits of blue light get bounced off on the way, but only about 4 in 100 of red.</p>`,
-			notes: `<p>Bits of air (molecules) are a thousand times smaller than the waves of light. For things that small, the shorter the wave, the more it is scattered, and quite steeply: halve the wavelength and the scattering goes up sixteen times. Blue light has shorter waves than red. Lord Rayleigh worked this out in 1871, which is why it is called Rayleigh scattering.</p>`
+			notes: `<p>Bits of air (molecules) are more than a thousand times smaller than the waves of light. For things that small, the shorter the wave, the more it is scattered, and quite steeply: halve the wavelength and the scattering goes up sixteen times. Blue light has shorter waves than red. Lord Rayleigh worked this out in 1871, which is why it is called Rayleigh scattering.</p>`
 		},
 		{
 			id: 'sky',
@@ -176,7 +176,7 @@ export const spec: ExplainerSpec = {
 			controls: [smoke],
 			body: `
 <p>Now it is a quarter to six in the evening, and the Sun is low, just 3° above the horizon. Add smoke or haze to the air: tiny drops and specks, much bigger than the bits of air.</p>
-<p>The low Sun turns a <strong>deeper orange, then red</strong>, and dimmer, because smoke takes away even more of its light, the blue most of all. But smoke and haze bounce all colours almost alike, so the midday sky (the small circle) turns <strong>paler</strong>, from blue to milky white.</p>
+<p>The low Sun turns a <strong>deeper orange, then red</strong>, and dimmer, because smoke takes away even more of its light, the blue most of all. But smoke and haze bounce all colours much more evenly than air does, so the sky at noon (the third circle) turns <strong>paler</strong>, from blue to milky white.</p>
 <p>That is why sunsets after a big forest fire or a volcano can be so red.</p>`
 		},
 		{

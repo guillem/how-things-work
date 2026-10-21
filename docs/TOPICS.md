@@ -143,7 +143,7 @@ A topic is done when:
 - [x] shadows-and-pinholes
 - [x] floating-sinking-and-boats
 - [x] magnets-and-poles
-- [ ] blue-sky-red-sunset
+- [x] blue-sky-red-sunset
 
 **Chemistry & Materials**
 - [x] atoms-periodic-table

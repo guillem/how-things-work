@@ -7,7 +7,7 @@
 	 */
 	import { Tween } from 'svelte/motion';
 	import { cubicInOut } from 'svelte/easing';
-	import { Label, Photon, cycle, smoothstep } from '#lib/draw/index.ts';
+	import { Label, Photon, cycle, smoothstep, wavelengthToColor } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import {
 		NM,
@@ -31,8 +31,8 @@
 	);
 	const SUN = NM.map(sunlight);
 	const SKY = zenithSpectrum(sunAt(12));
-	/** The colour of each bar: that one colour of light alone, at full brightness. */
-	const barColour = BARS.map((b) => glareColour(NM.map((_, j) => (j === b.i ? 1 : 0))));
+	/** The colour of each bar: the site's rainbow key (a single colour of light is beyond a screen). */
+	const barColour = BARS.map((b) => wavelengthToColor(b.nm));
 
 	/** Bar heights (0-1), and in the sky phase an outline of plain sunlight with the sky's red. */
 	const weighed = (spectrum: number[], weigh: boolean) =>

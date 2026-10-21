@@ -4,10 +4,11 @@
  * Sunlight above the air is a Planck spectrum at the Sun's effective temperature, 5772 K (the IAU
  * 2015 nominal value), sampled every 5 nm from 380 to 780 nm. Air scatters it with Rayleigh's
  * fourth-power law: the vertical optical depth of the whole atmosphere at sea level is the fit of
- * Hansen & Travis (1974), 0.0973 at 550 nm (Bodhaine et al. 1999 give 0.0973 too). Haze or smoke
- * adds an aerosol optical depth with Ångström's law (exponent 1.3, the typical value he found),
- * scattering mostly forwards (Henyey-Greenstein, g = 0.7) and absorbing a tenth of what it meets
- * (single-scattering albedo 0.9).
+ * Hansen & Travis (1974), 0.097 at 550 nm (standard-atmosphere tables give 0.097 to 0.10). Haze
+ * or smoke adds an aerosol optical depth with Ångström's law (exponent 1.3, a typical value for
+ * continental haze), scattering mostly forwards (Henyey-Greenstein, g = 0.7, a usual aerosol
+ * value) and absorbing a tenth of what it meets (single-scattering albedo 0.9; measured smoke
+ * ranges from about 0.85 to 0.97).
  *
  * The air is flat and layered (every scatterer with the same vertical profile), and light is
  * scattered once: a view direction's light is the sunlight scattered into it at every height,
@@ -54,7 +55,7 @@ export function rayleighDepth(nm: number): number {
 	return 0.008569 * um ** -4 * (1 + 0.0113 * um ** -2 + 0.00013 * um ** -4);
 }
 
-/** Ångström exponent of the haze (Ångström's typical value). */
+/** Ångström exponent of the haze (a typical value for continental haze). */
 export const ANGSTROM = 1.3;
 /** Haze scatters mostly forwards (Henyey-Greenstein asymmetry). */
 const HAZE_G = 0.7;
