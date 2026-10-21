@@ -5857,6 +5857,36 @@
 			opacity="0.5"
 		/>
 		<line x1="128" y1="56" x2="134" y2="56" stroke="currentColor" stroke-width="5" opacity="0.5" />
+	{:else if slug === 'salt-and-ice'}
+		<!-- a thermometer below freezing beside a block of ice with salt grains melting into it -->
+		<rect x="70" y="40" width="80" height="56" rx="8" fill={accent} opacity="0.25" />
+		<rect
+			x="70"
+			y="40"
+			width="80"
+			height="56"
+			rx="8"
+			fill="none"
+			stroke={accent}
+			stroke-width="2.5"
+		/>
+		<path d="M66 100 Q110 92 154 100 L154 106 L66 106 Z" fill={accent} opacity="0.5" />
+		{#each [80, 94, 108, 122, 136] as x, i (x)}
+			<rect {x} y={30 + (i % 2) * 6} width="7" height="6" rx="1.5" fill="currentColor" />
+		{/each}
+		<rect
+			x="28"
+			y="18"
+			width="12"
+			height="70"
+			rx="6"
+			fill="none"
+			stroke="currentColor"
+			stroke-width="2"
+		/>
+		<circle cx="34" cy="94" r="9" fill="#e03131" />
+		<rect x="31" y="62" width="6" height="30" fill="#e03131" />
+		<line x1="40" y1="52" x2="48" y2="52" stroke="currentColor" stroke-width="2" />
 	{:else}
 		<circle cx="100" cy="60" r="30" fill="none" stroke={accent} stroke-width="2" />
 		<circle cx="100" cy="60" r="5" fill={accent} />

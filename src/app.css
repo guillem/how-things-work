@@ -5428,3 +5428,67 @@ kbd {
 	--he-sensor: #f06595;
 	--he-nerve: #ffd43b;
 }
+
+/* salt-and-ice */
+:root {
+	--sa-sky: #dbe9f6;
+	--sa-snow: #f1f5f9;
+	--sa-path: #a7adb4;
+	--sa-path-line: #8b9197;
+	--sa-post: #8a5a2b;
+	--sa-ice: #c5e4fb;
+	--sa-ice-edge: #74b4e6;
+	--sa-water: #4dabf7;
+	--sa-salt: #ffffff;
+	--sa-salt-edge: #868e96;
+	--sa-glass: #f8f9fa;
+	--sa-glass-edge: #868e96;
+	--sa-red: #e03131;
+	--sa-zoom: #eef5fc;
+	--sa-ice-particle: #4c8fd6;
+	--sa-water-particle: #a5d8ff;
+	--sa-particle-edge: #1c5d99;
+	--sa-salt-particle: #f08c00;
+	--sa-melt: #c92a2a;
+	--sa-freeze: #1864ab;
+	--sa-line: #1971c2;
+	--sa-cream: #fff3d6;
+	--sa-cream-ink: #7a5a1f;
+	--sa-bag: #adb5bd;
+	--sa-crystal: #4dabf7;
+	--sa-heat: #e8590c;
+	--sa-bowl: #495057;
+	--sa-yes: #2b8a3e;
+	--sa-no: #c92a2a;
+}
+:root[data-theme='dark'] {
+	--sa-sky: #1b2633;
+	--sa-snow: #2a2f36;
+	--sa-path: #474d55;
+	--sa-path-line: #5c636b;
+	--sa-post: #a9784a;
+	--sa-ice: #5a87ad;
+	--sa-ice-edge: #9fd0f5;
+	--sa-water: #339af0;
+	--sa-salt: #f1f3f5;
+	--sa-salt-edge: #adb5bd;
+	--sa-glass: #343a40;
+	--sa-glass-edge: #adb5bd;
+	--sa-red: #ff6b6b;
+	--sa-zoom: #1a222c;
+	--sa-ice-particle: #4c8fd6;
+	--sa-water-particle: #9fd0f5;
+	--sa-particle-edge: #d0ebff;
+	--sa-salt-particle: #ffa94d;
+	--sa-melt: #ff8787;
+	--sa-freeze: #74c0fc;
+	--sa-line: #74c0fc;
+	--sa-cream: #f3e3bf;
+	--sa-cream-ink: #6b4e16;
+	--sa-bag: #ced4da;
+	--sa-crystal: #1971c2;
+	--sa-heat: #ff922b;
+	--sa-bowl: #ced4da;
+	--sa-yes: #69db7c;
+	--sa-no: #ff8787;
+}

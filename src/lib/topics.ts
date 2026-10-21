@@ -1617,6 +1617,15 @@ const explainers: Explainer[] = [
 		accent: '#c2255c',
 		steps: 8,
 		minutes: 10
+	},
+	{
+		slug: 'salt-and-ice',
+		title: 'Salt on ice: roads and ice cream',
+		summary:
+			'Sprinkle salt on an icy path and the ice melts although the thermometer stays below freezing. Zoom in to see the salt getting in the way of the ice re-forming, find the cold at which salt stops working, then pack salt and ice round a bag of cream and freeze it into ice cream.',
+		accent: '#1971c2',
+		steps: 8,
+		minutes: 9
 	}
 ];
 
