@@ -989,11 +989,11 @@ A topic is done when:
 - **Title:** How ants find the shortest way
 - **Level:** 0
 - **Kind:** simulate
-- **Interaction:** Ants wander out of a nest at random; one that finds the sugar walks home laying a scent, and the others tend to follow scent, so a trail forms and thickens. Drag the sugar farther away or drop a pebble on the trail and watch the colony reroute. Then offer a long bridge and a short one together and count the ants on each: ants on the short one get back first, so its scent builds up sooner and the short one wins. Open the short bridge only after a trail has formed on the long one, and the colony stays on the long one until the scent's fading is switched on.
-- **Takeaway:** A colony finds the shorter path with no map and no ant that knows it: ants on the short route return sooner, so its scent builds up faster and draws more ants, and a fading scent lets the colony give up an old route.
+- **Interaction:** Ants wander out of a nest at random; one that finds the sugar walks home laying a scent, and the others tend to follow scent, so a trail forms and thickens. Drag the sugar farther away or drop a pebble on the trail and watch the colony reroute. Then offer a long bridge and a short one together and count the ants on each: ants on the short one get back first, so its scent builds up sooner and the short one wins. Open the short bridge only after a trail has formed on the long one, and the colony stays on the long one, with the scent's fading switched on or off: every ant on the long bridge tops its scent up faster than it fades.
+- **Takeaway:** A colony finds the shorter path with no map and no ant that knows it: ants on the short route return sooner, so its scent builds up faster and draws more ants, and a fading scent lets the colony give up a route that no longer leads to food.
 - **Prerequisites:** none
 - **Related:** graph-search
-- **Pitfall:** No ant knows where the food is or compares the routes, and the queen gives no orders. Fading is not what makes the short bridge win when both are offered at once; it is what lets a colony switch to a shortcut that appears later, and real Argentine ants often do not. Real ants also use sight and memory, which the page leaves out and says so.
+- **Pitfall:** No ant knows where the food is or compares the routes, and the queen gives no orders. Fading is not what makes the short bridge win when both are offered at once, and it does not let a colony switch to a shortcut that appears later while the old trail is still walked (models of real trails predict this, and real Argentine ants stayed on the long bridge); ant-inspired computer programs switch only because their ants lay more scent on shorter routes. Fading lets the colony forget a trail nobody walks any more. Real ants also use sight and memory, which the page leaves out and says so.
 
 ### Body & Medicine
 
