@@ -8,17 +8,22 @@
 	import { untrack } from 'svelte';
 	import { Label } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
+	import { useReadouts } from '#lib/explainer/readouts.svelte.ts';
 	import { cases, play, playMany, rng, tally, type Game } from '../model';
 
 	let { step, params }: StageProps = $props();
 
 	const phase = $derived(String(step.hints?.phase ?? 'play'));
+	// On a phone the captions move to the panel under the stage: draw the doors and bars bigger.
+	const readouts = useReadouts();
+	const narrow = $derived(readouts?.out ?? false);
+	const markSize = $derived(narrow ? 22 : 13);
 
 	const CAR = '🚗';
+	const GOAT = '🐐';
 	const of = (n: number, one: string, many: string) => `${n} ${n === 1 ? one : many}`;
 	const cars = (won: number, games: number) =>
 		`${of(won, 'car', 'cars')} in ${of(games, 'game', 'games')}`;
-	const GOAT = '🐐';
 
 	// ---- a game by hand -----------------------------------------------------------------------------
 	let gameNo = $state(0);
@@ -89,7 +94,7 @@
 	}
 
 	// ---- the hand game's doors ----------------------------------------------------------------------
-	const PLAY_X = [70, 250, 430];
+	const PLAY_X = $derived(narrow ? [105, 375, 645] : [70, 250, 430]);
 	const playDoors = $derived<DoorView[]>(
 		[0, 1, 2].map((i) => {
 			const opened = hand?.opened.includes(i) ?? false;
@@ -98,9 +103,9 @@
 				key: `p${i}`,
 				i,
 				x: PLAY_X[i],
-				y: 150,
-				w: 150,
-				h: 250,
+				y: narrow ? 100 : 150,
+				w: narrow ? 210 : 150,
+				h: narrow ? 360 : 250,
 				open: opened || revealed,
 				content: i === prize ? CAR : GOAT,
 				picked: (final ?? pick) === i,
@@ -137,7 +142,7 @@
 	const first = $derived(Number(params.first ?? 0));
 	const rows = $derived(cases(first));
 	const ROW_Y = [104, 260, 416];
-	const CASE_X = [170, 270, 370];
+	const CASE_X = $derived(narrow ? [255, 410, 565] : [170, 270, 370]);
 	const caseDoors = $derived<DoorView[]>(
 		rows.flatMap((g, r) =>
 			[0, 1, 2].map((i) => ({
@@ -145,7 +150,7 @@
 				i,
 				x: CASE_X[i],
 				y: ROW_Y[r],
-				w: 80,
+				w: narrow ? 140 : 80,
 				h: 120,
 				open: true,
 				content: i === g.prize ? CAR : GOAT,
@@ -165,7 +170,7 @@
 		Array.from({ length: nDoors }, (_, i) => ({
 			key: `m${i}`,
 			i,
-			x: 70 + i * (manyW + 10),
+			x: 480 - (nDoors * (manyW + 10) - 10) / 2 + i * (manyW + 10),
 			y: 110,
 			w: manyW,
 			h: 170,
@@ -183,8 +188,10 @@
 	const randTally = $derived(tally(playMany(300, 900, { hostKnows })));
 
 	// ---- bars for tallies --------------------------------------------------------------------------------
-	const BAR_X = 330;
-	const BAR_W = 520;
+	const BAR_X = $derived(narrow ? 80 : 330);
+	const BAR_W = $derived(narrow ? 720 : 520);
+	const BAR_H = $derived(narrow ? 56 : 30);
+	const BAR_GAP = $derived(narrow ? 90 : 60);
 	const barsMany = $derived([
 		{ id: 'stay', label: 'Always stay', n: manyTally.stayWins, of: 300, color: 'var(--mh-stay)' },
 		{
@@ -213,7 +220,7 @@
 		}
 	]);
 	const bars = $derived(phase === 'ten' ? barsMany : phase === 'random' ? barsRandom : []);
-	const barY0 = $derived(phase === 'ten' ? 380 : 330);
+	const barY0 = $derived(narrow ? (phase === 'ten' ? 360 : 200) : phase === 'ten' ? 380 : 330);
 
 	// ---- the summing-up picture ---------------------------------------------------------------------------
 	const clueDoors: DoorView[] = [0, 1, 2].map((i) => ({
@@ -321,9 +328,9 @@
 		{#if d.mark}
 			<Label
 				x={d.x + d.w / 2}
-				y={d.y + d.h + 22}
+				y={d.y + d.h + (narrow ? 26 : 22)}
 				text={d.mark}
-				size={13}
+				size={markSize}
 				weight={600}
 				color={d.markColor}
 			/>
@@ -353,16 +360,18 @@
 				{@render door(d)}
 			</g>
 		{/each}
-		<rect
-			x="660"
-			y="170"
-			width="270"
-			height="200"
-			rx="10"
-			fill="var(--surface)"
-			stroke="var(--border)"
-		/>
-		<Label x={680} y={202} text="Your games" anchor="start" size={15} weight={700} halo={false} />
+		<Readout id="mh-box">
+			<rect
+				x="660"
+				y="170"
+				width="270"
+				height="200"
+				rx="10"
+				fill="var(--surface)"
+				stroke="var(--border)"
+			/>
+			<Label x={680} y={202} text="Your games" anchor="start" size={15} weight={700} halo={false} />
+		</Readout>
 		<Readout id="mh-stayed" order={2} label="Stayed" value={cars(record.stayWon, record.stayN)}>
 			<Label
 				x={680}
@@ -436,23 +445,25 @@
 			<Label x={695} y={70} text="Always switch" size={18} weight={700} color="var(--mh-switch)" />
 			<Label x={695} y={96} text={cars(switchWon, nGames)} size={15} />
 		</Readout>
-		<Label x={480} y={556} text="each dot is one car won" size={13} muted />
+		<Readout id="mh-dot" order={3} label="Each dot" value="one car won">
+			<Label x={480} y={556} text="each dot is one car won" size={13} muted />
+		</Readout>
 	{:else if phase === 'cases'}
 		{#each rows as g, r (r)}
-			<Label
-				x={150}
-				y={ROW_Y[r] + 66}
-				text={`Car behind door ${g.prize + 1}`}
-				anchor="end"
-				size={14}
-				weight={600}
-			/>
 			<Readout
 				id="mh-row{r}"
 				order={1 + r}
 				label={`Car behind door ${g.prize + 1}`}
 				value={`stay ${g.stayWins ? 'wins' : 'loses'}, switch ${g.switchWins ? 'wins' : 'loses'}`}
 			>
+				<Label
+					x={150}
+					y={ROW_Y[r] + 66}
+					text={`Car behind door ${g.prize + 1}`}
+					anchor="end"
+					size={14}
+					weight={600}
+				/>
 				<Label
 					x={510}
 					y={ROW_Y[r] + 52}
@@ -478,6 +489,14 @@
 		{#each caseDoors as d (d.key)}
 			{@render door(d)}
 		{/each}
+		<Label
+			x={CASE_X[first] + (narrow ? 70 : 40)}
+			y={ROW_Y[0] - 16}
+			text="your pick"
+			size={markSize}
+			weight={600}
+			color="var(--mh-pick)"
+		/>
 		<Readout id="mh-count" order={4} label="Count" value="stay wins 1 row, switch wins 2">
 			<Label x={480} y={584} text="Staying wins in 1 row, switching in 2" size={15} weight={700} />
 		</Readout>
@@ -490,7 +509,7 @@
 				x={250}
 				y={140}
 				text="wins 1 time in 3"
-				size={16}
+				size={narrow ? 26 : 16}
 				weight={700}
 				color="var(--mh-stay)"
 			/>
@@ -498,7 +517,7 @@
 				x={480}
 				y={140}
 				text="wins 2 times in 3"
-				size={16}
+				size={narrow ? 26 : 16}
 				weight={700}
 				color="var(--mh-switch)"
 			/>
@@ -510,10 +529,9 @@
 				value={`${nDoors}: the host opens ${nDoors - 2}`}
 			>
 				<Label
-					x={70}
+					x={480}
 					y={80}
 					text={`${nDoors} doors: you pick one, the host opens ${of(nDoors - 2, 'goat door', 'goat doors')}`}
-					anchor="start"
 					size={16}
 					weight={600}
 				/>
@@ -537,7 +555,9 @@
 					weight={700}
 				/>
 			</Readout>
-			<Label x={480} y={140} text="300 games, you pick a door at random" size={14} muted />
+			<Readout id="mh-games" order={6} label="Games" value="300, you pick a door at random">
+				<Label x={480} y={140} text="300 games, you pick a door at random" size={14} muted />
+			</Readout>
 			{#if !hostKnows}
 				<Readout
 					id="mh-even"
@@ -554,23 +574,35 @@
 					/>
 				</Readout>
 			{:else}
-				<Label x={480} y={250} text="Switching wins about twice as often" size={15} weight={600} />
+				<Readout id="mh-even" order={5} label="Result" value="switching wins about twice as often">
+					<Label
+						x={480}
+						y={250}
+						text="Switching wins about twice as often"
+						size={15}
+						weight={600}
+					/>
+				</Readout>
 			{/if}
 		{/if}
-		<Label x={BAR_X} y={barY0 - 30} text="out of 300 games" anchor="start" size={13} muted />
+		<Readout id="mh-outof">
+			<Label x={BAR_X} y={barY0 - 30} text="out of 300 games" anchor="start" size={13} muted />
+		</Readout>
 		{#each bars as b, k (b.id)}
-			{@const y = barY0 + k * 60}
-			<Label
-				x={BAR_X - 14}
-				y={y + 20}
-				text={b.label}
-				anchor="end"
-				size={15}
-				weight={600}
-				color={b.color}
-			/>
-			<rect x={BAR_X} {y} width={BAR_W} height="30" rx="4" fill="var(--stage-grid)" />
-			<rect x={BAR_X} {y} width={(BAR_W * b.n) / b.of} height="30" rx="4" fill={b.color} />
+			{@const y = barY0 + k * BAR_GAP}
+			<Readout id="mh-barlabel-{b.id}">
+				<Label
+					x={BAR_X - 14}
+					y={y + 20}
+					text={b.label}
+					anchor="end"
+					size={15}
+					weight={600}
+					color={b.color}
+				/>
+			</Readout>
+			<rect x={BAR_X} {y} width={BAR_W} height={BAR_H} rx="4" fill="var(--stage-grid)" />
+			<rect x={BAR_X} {y} width={(BAR_W * b.n) / b.of} height={BAR_H} rx="4" fill={b.color} />
 			<Readout
 				id="mh-bar-{b.id}"
 				order={2 + k}
@@ -580,7 +612,7 @@
 			>
 				<Label
 					x={BAR_X + (BAR_W * b.n) / b.of + 10}
-					y={y + 20}
+					y={y + BAR_H * 0.67}
 					text={String(b.n)}
 					anchor="start"
 					size={15}
