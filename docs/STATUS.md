@@ -80,10 +80,11 @@ same morning):** forest-fire-spread, secret-codes, next-word-guessing-game and l
 ticked. The five left half-built (monty-hall, floating-sinking-and-boats, magnets-and-poles,
 twenty-questions, spam-filter-word-counts) were finished the same day by fresh builders, each
 fact-checked by Codex, ticked and landed on `main`; not released yet (v1.2.2 has 170). Their old
-worktrees are removed. Small open issues: twenty-questions' question buttons have 8–9 px text on
-phones and its board shows blank tiles until 12 animals are left; magnets-and-poles' board scene
-is drawn small on phones; floating-sinking-and-boats' block is hard to see in oil and its scale
-is faint in dark mode; monty-hall's games slider goes down to 0.
+worktrees are removed. The small issues found then are fixed on `main` too: twenty-questions has
+a phone layout (every animal named, readable questions), magnets-and-poles' board fills the phone
+stage, floating-sinking-and-boats' block shows in oil and its scales read in dark mode, and
+monty-hall's games slider starts at 10. Still open: spam-filter-word-counts' "mum" isn't in any
+message.
 
 **Next topics, proposed for review (2026-10-18, after v1.0.0): a level 0 and 100 new topics.**
 The user asked for a researched proposal (no code): a new level 0 for beginners, the levels made
