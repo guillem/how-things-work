@@ -1541,7 +1541,7 @@ const explainers: Explainer[] = [
 		slug: 'secret-codes',
 		title: 'Secret codes & code-breaking',
 		summary:
-			'Turn a code wheel to write a secret message, then play the spy: try all 25 turns and watch the one that makes words jump out. Scramble the alphabet instead, and break it by counting letters, because E is the commonest letter however it is disguised, as long as the message is long enough.',
+			'Turn a code wheel to write a secret message, then play the spy: try all 25 turns and watch the one that makes words jump out. Scramble the alphabet instead, and break it by counting letters, because disguising a letter doesn’t change how often it comes: in a long message, E is usually still the commonest.',
 		accent: '#7048e8',
 		steps: 9,
 		minutes: 10

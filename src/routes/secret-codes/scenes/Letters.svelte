@@ -23,6 +23,8 @@
 		markColor?: string;
 		/** Colour of the character at index `i` (falls back to `color`). */
 		colorAt?: (i: number) => string | undefined;
+		/** Width of one character column (by default from `size`). */
+		pitch?: number;
 		/** Draws '_' gaps as short lines rather than underscores. */
 		gaps?: boolean;
 	}
@@ -38,10 +40,11 @@
 		mark = -1,
 		markColor = 'var(--sc-hi)',
 		colorAt,
-		gaps = false
+		gaps = false,
+		pitch
 	}: Props = $props();
 
-	const cw = $derived(size * 0.62);
+	const cw = $derived(pitch ?? size * 0.62);
 	const lines = $derived(wrap(text, width));
 </script>
 

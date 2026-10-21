@@ -132,7 +132,7 @@
 		<Label
 			x={COL[1] + 44}
 			y={ROW0 + 12 * PITCH + 2}
-			text={best ? `✓ Turn ${best.turn} makes words!` : 'No line makes words'}
+			text={best ? `✓ Turn ${best.turn} makes words!` : 'No line stands out: read them all'}
 			anchor="start"
 			size={20}
 			weight={700}

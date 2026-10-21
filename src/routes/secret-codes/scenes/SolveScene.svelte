@@ -140,6 +140,7 @@
 			y={64}
 			text={secret}
 			width={WIDTH}
+			pitch={SIZE * 0.62}
 			size={14}
 			lineHeight={52}
 			weight={600}
@@ -150,6 +151,7 @@
 			y={88}
 			text={reading}
 			width={WIDTH}
+			pitch={SIZE * 0.62}
 			size={SIZE}
 			lineHeight={52}
 			gaps
@@ -275,7 +277,7 @@
 			<Label
 				x={480}
 				y={ROW_P}
-				text="{reads} of {secret.replace(/[^A-Z]/g, '').length} letters read right"
+				text="{reads} of {secret.replace(/[^A-Z]/g, '').length} letters in words read right"
 				anchor="middle"
 				size={17}
 				muted

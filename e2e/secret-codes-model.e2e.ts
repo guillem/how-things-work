@@ -59,15 +59,21 @@ test('the spy who tries all 25 turns finds the message, whatever the turn', () =
 		}
 });
 
-test('a scrambled alphabet: every letter gets its own partner, and reading it back works', () => {
+test('a scrambled alphabet: every letter gets a partner of its own, and reading it back works', () => {
 	for (let seed = 0; seed < 30; seed++) {
 		const key = scramble(seed);
 		expect([...key].sort().join('')).toBe('ABCDEFGHIJKLMNOPQRSTUVWXYZ');
-		expect([...key].every((ch, i) => ch !== 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'[i])).toBe(true);
 		expect(decode(encode(LETTER, key), key)).toBe(LETTER);
 	}
 	expect(scramble(1)).not.toBe(scramble(2));
 	expect(scramble(1)).toBe(scramble(1));
+});
+
+test('a very short message can fool the spy, or give no word at all', () => {
+	// HI turned 3 places is KL; turned back 23 places it reads NO, a word too.
+	expect(bestTry(allTries(turnLetters('HI', 3)))?.text).toBe('NO');
+	// HELLO and WORLD are not among the story's 200 commonest words: no line stands out.
+	expect(bestTry(allTries(turnLetters('HELLO WORLD', 3)))).toBeNull();
 });
 
 test('trying the 25 turns finds nothing in a scrambled message', () => {

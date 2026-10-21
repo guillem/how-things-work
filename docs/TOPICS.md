@@ -244,7 +244,7 @@ A topic is done when:
 - [x] cache-memory-hierarchy
 - [x] hash-tables-bloom-filters
 - [x] life-on-a-grid
-- [ ] secret-codes
+- [x] secret-codes
 - [ ] twenty-questions
 
 **Information & Networks**
@@ -1542,7 +1542,7 @@ A topic is done when:
 - **Level:** 0
 - **Kind:** step
 - **Interaction:** Turn the inner ring of a code wheel and type a message: each letter steps along the alphabet by the same amount, and your friend turns the ring back to read it. A spy who does not know the turn tries all 25 turns at once and the one that reads as words jumps out. Scramble the alphabet instead; now the spy counts the letters in the secret message and lines its bars up with the bars of ordinary English: the tallest few give E, T and A, half-words like TH_ appear, and the reader swaps the remaining letters until the message reads.
-- **Takeaway:** A code that shifts every letter the same way falls to trying all 25 shifts, and a code that scrambles the alphabet falls to counting letters, because in a long message E stays the most common letter however it is disguised.
+- **Takeaway:** A code that shifts every letter the same way falls to trying all 25 shifts, and a code that scrambles the alphabet falls to counting letters, because disguising a letter does not change how often it comes, and in a long message E is usually still the most common.
 - **Prerequisites:** none
 - **Related:** twenty-questions
 - **Needs:** English letter frequencies counted at build time by a script from a public-domain text, e.g. Project Gutenberg's Alice's Adventures in Wonderland (public domain), not typed in from memory.

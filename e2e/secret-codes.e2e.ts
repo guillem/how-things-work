@@ -57,7 +57,7 @@ test('short: counting fails on the one-line note and works on the long letter', 
 test('solve: a guess typed for a secret letter shows, and hints finish the letter', async ({
 	page
 }) => {
-	await open(page, './secret-codes/#solve', 'letters read right');
+	await open(page, './secret-codes/#solve', 'words read right');
 	const blank = stage(page)
 		.getByRole('button', { name: /no guess yet/ })
 		.first();

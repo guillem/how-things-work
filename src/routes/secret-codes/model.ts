@@ -106,19 +106,17 @@ function random(seed: number) {
 }
 
 /**
- * A scrambled alphabet made from `seed`: a shuffle of the 26 letters in which no letter is its own
- * partner (so every letter of the message really changes).
+ * A scrambled alphabet made from `seed`: a shuffle of the 26 letters (any of the 26 × 25 × … × 1
+ * orders, so a letter may now and then keep its own place).
  */
 export function scramble(seed: number): Key {
 	const rnd = random(seed * 7919 + 17);
-	for (;;) {
-		const a = ALPHABET.split('');
-		for (let i = 25; i > 0; i--) {
-			const j = Math.floor(rnd() * (i + 1));
-			[a[i], a[j]] = [a[j], a[i]];
-		}
-		if (a.every((ch, i) => ch !== ALPHABET[i])) return a.join('');
+	const a = ALPHABET.split('');
+	for (let i = 25; i > 0; i--) {
+		const j = Math.floor(rnd() * (i + 1));
+		[a[i], a[j]] = [a[j], a[i]];
 	}
+	return a.join('');
 }
 
 /** Writes `text` with the scrambled alphabet. */
