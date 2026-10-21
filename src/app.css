@@ -5540,3 +5540,51 @@ kbd {
 	--sb-air: #1d232c;
 	--sb-molecule: #adb5bd;
 }
+
+/* qr-codes: the paper and its ink, message (blue) and spare (orange) pieces, the corner squares
+   found (green), paint and spoiled pieces, the phone */
+:root {
+	--qr-paper: #ffffff;
+	--qr-ink: #1c1b19;
+	--qr-data: #1c5fc4;
+	--qr-data-light: #d3e4fb;
+	--qr-data-ink: #1c5fc4;
+	--qr-spare: #d9480f;
+	--qr-spare-light: #ffe0c7;
+	--qr-spare-ink: #c2410c;
+	--qr-changed: #7048e8;
+	--qr-found: #2f9e44;
+	--qr-found-ink: #2b8a3e;
+	--qr-paint: #5f3dc4;
+	--qr-bad: #e03131;
+	--qr-bad-ink: #c92a2a;
+	--qr-ok-bg: #ebfbee;
+	--qr-bad-bg: #fff5f5;
+	--qr-phone: #25262b;
+	--qr-screen: #f8f9fa;
+	--qr-world: #868e96;
+	/* labels printed on the paper, which stays light in both themes */
+	--qr-on-paper-found: #2b8a3e;
+	--qr-on-paper-muted: #5c636a;
+}
+:root[data-theme='dark'] {
+	--qr-paper: #f1f3f5;
+	--qr-ink: #111214;
+	--qr-data: #1c5fc4;
+	--qr-data-light: #c5dbf9;
+	--qr-data-ink: #74c0fc;
+	--qr-spare: #d9480f;
+	--qr-spare-light: #ffd8b8;
+	--qr-spare-ink: #ff922b;
+	--qr-changed: #7048e8;
+	--qr-found: #40c057;
+	--qr-found-ink: #69db7c;
+	--qr-paint: #5f3dc4;
+	--qr-bad: #ff6b6b;
+	--qr-bad-ink: #ff8787;
+	--qr-ok-bg: #16281b;
+	--qr-bad-bg: #2c1717;
+	--qr-phone: #0b0c0e;
+	--qr-screen: #1e2025;
+	--qr-world: #495057;
+}

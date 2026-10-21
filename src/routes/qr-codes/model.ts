@@ -92,8 +92,8 @@ export function specks(code: QrCode): Set<number> {
 }
 
 /**
- * One blot of the same number of cells as `count`, in a corner of the message area: the
- * roundest patch of message cells with the fewest spoiled pieces, nearest the bottom-right.
+ * One round blot of `count` cells on the message area: of all such patches, one that spoils
+ * the fewest pieces, nearest a spot towards the bottom-right.
  */
 export function blot(code: QrCode, count: number): Set<number> {
 	const n = code.size;
@@ -114,8 +114,8 @@ export function blot(code: QrCode, count: number): Set<number> {
 			if (cells.length < count || !cells.every(isMsg)) continue;
 			const d = damage(code, new Set(cells));
 			const worst = Math.max(...d.spoiled.map((s, b) => s - d.fixable[b]));
-			// Fewest spoiled pieces first; then nearest the bottom-right corner.
-			const score = worst * 1000 - (r0 + c0);
+			// Fewest spoiled pieces first; then nearest a spot towards the bottom-right corner.
+			const score = worst * 1000 + Math.hypot(r0 - 0.72 * n, c0 - 0.72 * n);
 			if (!best || score < best.score) best = { cells, score };
 		}
 	return new Set(best?.cells ?? []);

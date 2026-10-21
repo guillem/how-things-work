@@ -1520,6 +1520,15 @@ const explainers: Explainer[] = [
 		minutes: 10
 	},
 	{
+		slug: 'qr-codes',
+		title: 'QR codes',
+		summary:
+			'Type a message and watch it become a square of black and white cells: three corner squares for the camera to find, the message as cells, then spare cells worked out from it. Turn the phone and it still reads; paint over cells and it still reads, until too many pieces are spoiled or a corner square is hidden.',
+		accent: '#1c5fc4',
+		steps: 9,
+		minutes: 10
+	},
+	{
 		slug: 'why-triangles-are-stiff',
 		title: 'Why triangles are stiff',
 		summary:

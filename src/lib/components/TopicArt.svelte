@@ -5531,6 +5531,25 @@
 			<rect {x} y="28" width={w} height="56" fill="#1c1b19" />
 		{/each}
 		<line x1="24" y1="56" x2="176" y2="56" stroke={accent} stroke-width="2" />
+	{:else if slug === 'qr-codes'}
+		<!-- a small QR-like square: three corner squares, a few cells, a blot of paint -->
+		<rect x="52" y="12" width="96" height="96" rx="6" fill="#ffffff" opacity="0.92" />
+		{#each [[58, 18], [114, 18], [58, 74]] as [x, y], i (i)}
+			<rect
+				x={x + 2}
+				y={y + 2}
+				width="24"
+				height="24"
+				fill="none"
+				stroke="#1c1b19"
+				stroke-width="4"
+			/>
+			<rect x={x + 9} y={y + 9} width="10" height="10" fill="#1c1b19" />
+		{/each}
+		{#each [[90, 20], [98, 28], [90, 44], [106, 52], [66, 52], [82, 60], [98, 68], [114, 76], [122, 92], [90, 84], [106, 92], [74, 100], [130, 60], [122, 52]] as [x, y], i (i)}
+			<rect {x} {y} width="7" height="7" fill={y > 50 && x > 85 ? accent : '#1c1b19'} />
+		{/each}
+		<circle cx="118" cy="86" r="11" fill="#5f3dc4" opacity="0.85" />
 	{:else if slug === 'why-triangles-are-stiff'}
 		<!-- a square leaning over beside a stiff triangle -->
 		<line x1="18" y1="100" x2="182" y2="100" stroke="currentColor" stroke-width="2" opacity="0.5" />
