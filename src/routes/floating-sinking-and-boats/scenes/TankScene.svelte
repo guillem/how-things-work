@@ -155,8 +155,28 @@
 		hanging ? Math.max(0, placed[0].body.mass - placed[0].pushed) : 0
 	);
 	const showCup = $derived(phase === 'lower' || phase === 'objects' || phase === 'bowl');
-	const spilled = $derived(showCup ? placed[0].pushed : 0);
-	const spilling = $derived(showCup && !reduced && !placed[0].settled && placed[0].depth > 0);
+	/** Water the thing pushes aside right now, g. */
+	const pushedNow = $derived(showCup ? placed[0].pushed : 0);
+	// What spilled stays in the cup: the most ever pushed aside since the step (or the thing)
+	// changed. Lifting the thing back out lowers the tank's water instead.
+	let spilled = $state(0);
+	let lastKey = '';
+	$effect(() => {
+		const k = `${step.id}|${String(params.thing)}|${String(params.bowl)}`;
+		const p = pushedNow;
+		untrack(() => {
+			if (k !== lastKey) {
+				lastKey = k;
+				spilled = p;
+			} else if (p > spilled) spilled = p;
+		});
+	});
+	/** How far the surface has dropped below the brim, px (tank floor 28 cm by 20 cm). */
+	const sink = $derived(Math.max(0, ((spilled - pushedNow) / (28 * 20)) * S));
+	const WY = $derived(SY + sink);
+	const spilling = $derived(
+		showCup && !reduced && !placed[0].settled && placed[0].depth > 0 && sink < 0.01
+	);
 
 	// ---- drawing helpers --------------------------------------------------------------------------
 	const bottomY = (p: Placed) => SY + p.depth * S;
@@ -172,7 +192,7 @@
 	}
 	/** The water, with holes where a floating bowl keeps air inside it below the surface. */
 	const waterPath = $derived.by(() => {
-		let d = `M${TX0},${SY} L${TX1},${SY} L${TX1},${SB} L${TX0},${SB} Z`;
+		let d = `M${TX0},${WY} L${TX1},${WY} L${TX1},${SB} L${TX0},${SB} Z`;
 		for (const p of placed) {
 			if (p.body.shape.kind !== 'hull' || !p.floats) continue;
 			const { w, t: th } = p.body.shape;
@@ -335,7 +355,7 @@
 
 	<!-- the water in front, so what is under it looks wet -->
 	<path d={waterPath} fill={liquidFill} fill-rule="evenodd" opacity="0.35" />
-	<line x1={TX0} y1={SY} x2={TX1} y2={SY} stroke={liquidFill} stroke-width="3" />
+	<line x1={TX0} y1={WY} x2={TX1} y2={WY} stroke={liquidFill} stroke-width="3" />
 
 	<!-- the tank -->
 	<path
@@ -378,11 +398,11 @@
 			stroke-width="4"
 		/>
 		<rect x={TX1 + 22} y={522} width="120" height="22" rx="5" fill="var(--fs-scale)" />
-		<Readout id="fs-spill" order={2} label="Spilled into the cup" value={fmt(spilled)}>
+		<Readout id="fs-spill" order={2} label="Water in the cup" value={fmt(spilled)}>
 			<Label
 				x={TX1 + 82}
 				y={568}
-				text="spilled: {fmt(spilled)}"
+				text="in the cup: {fmt(spilled)}"
 				size={17}
 				weight={700}
 				color="var(--fs-ink)"

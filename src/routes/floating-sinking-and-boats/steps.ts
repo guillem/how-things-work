@@ -89,7 +89,7 @@ export const spec: ExplainerSpec = {
 			controls: [lower],
 			body: `
 <p>A stone hangs from a spring balance over a tank filled right to the brim. In the air the balance reads 324 grams: that is how heavy the stone is.</p>
-<p>Lower it into the water with the slider. As the stone goes in, it pushes water aside, and that water spills over the edge into the cup on the kitchen scale. At the same time the balance reads less and less: the water is pushing the stone up.</p>
+<p>Lower it into the water with the slider. As the stone goes in, it pushes water aside, and that water spills over the edge into the cup on the kitchen scale. At the same time the balance reads less and less: the water is pushing the stone up. (Pull the stone back up and the water in the tank drops below the brim: what spilled stays in the cup.)</p>
 <p>Once the stone is all the way under, 120 grams of water have spilled, and the balance reads 204 grams: 324 take away 120. The stone feels lighter by exactly the weight of the water it pushed aside.</p>`
 		},
 		{
@@ -169,7 +169,8 @@ export const spec: ExplainerSpec = {
 			body: `
 <p>Air weighs something too: the air filling a big balloon weighs about three tonnes. And air pushes up on things in it just as water does, with the weight of the air they push aside.</p>
 <p>This balloon pushes aside about 3,060 kilograms of air. With the air inside as cold as the air outside, the balloon, basket and people (600 kilograms) plus the air inside weigh more than that, so it stays on the ground. Warm the air inside with the slider. Warm air spreads out, so less of it fits in the balloon and it weighs less.</p>
-<p>At about 85 °C everything together weighs less than the air it pushes aside, and the balloon lifts off: it floats in the air like a wooden block in water.</p>`
+<p>At about 85 °C everything together weighs less than the air it pushes aside, and the balloon lifts off: it floats in the air like a wooden block in water.</p>`,
+			notes: `<p>The sums assume dry air at sea-level pressure, outside air at 15 °C, and the same temperature all through the balloon. The picture only shows that the balloon lifts off: how high it goes and how fast are not worked out. (A real balloon stops rising where the thinner air higher up weighs only as much as the balloon.)</p>`
 		},
 		{
 			id: 'next',

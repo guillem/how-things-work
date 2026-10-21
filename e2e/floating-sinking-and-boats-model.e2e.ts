@@ -2,6 +2,7 @@
 import { expect, test } from '@playwright/test';
 import {
 	DENSITY,
+	MARBLE,
 	airDensity,
 	apple,
 	balloon,
@@ -93,4 +94,22 @@ test('the balloon stays down with outside-temperature air and rises above about 
 	expect(balloon(100).rises).toBe(true);
 	expect(liftOffTemperature()).toBeGreaterThan(80);
 	expect(liftOffTemperature()).toBeLessThan(90);
+});
+
+test('a sunken, flooded bowl pushes aside only its clay and marbles', () => {
+	const sunk = clayBowl(18);
+	const r = settle(sunk, DENSITY.water);
+	expect(r.floats).toBe(false);
+	// 65.4 cm³ of clay and 18 marbles of 2.14 cm³: about 104 g of water.
+	expect(r.displaced).toBeCloseTo(solidVolume(clayBall.shape) + 18 * (MARBLE / DENSITY.glass), 6);
+	expect(r.displaced).toBeGreaterThan(103);
+	expect(r.displaced).toBeLessThan(105);
+	expect(lowered(sunk, DENSITY.water, 99).spilled).toBeCloseTo(r.displaced, 6);
+});
+
+test('a thing exactly as dense as the liquid neither floats nor sinks', () => {
+	const cube = { name: 'cube', shape: { kind: 'box', w: 1, d: 1, h: 1 } as const, mass: 1 };
+	const r = settle(cube, DENSITY.water);
+	expect(r.neutral).toBe(true);
+	expect(r.displaced).toBeCloseTo(1, 9);
 });

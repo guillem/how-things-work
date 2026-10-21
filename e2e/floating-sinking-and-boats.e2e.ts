@@ -11,12 +11,16 @@ async function open(page: Page, url: string, text: string) {
 
 test('lowering the stone: the balance drops by the water that spills', async ({ page }) => {
 	await open(page, './floating-sinking-and-boats/#lower', 'balance: 324 g');
-	await expect(stage(page)).toContainText('spilled: 0 g');
+	await expect(stage(page)).toContainText('in the cup: 0 g');
 	const slider = page.locator('input[type=range][data-control=lower]');
 	await slider.focus();
 	await page.keyboard.press('End');
 	await expect(stage(page)).toContainText('balance: 204 g');
-	await expect(stage(page)).toContainText('spilled: 120 g');
+	await expect(stage(page)).toContainText('in the cup: 120 g');
+	// Pulled back out, the stone weighs its full weight again and the spilled water stays spilled.
+	await page.keyboard.press('Home');
+	await expect(stage(page)).toContainText('balance: 324 g');
+	await expect(stage(page)).toContainText('in the cup: 120 g');
 });
 
 test('sink or float: the apple floats and spills its own weight', async ({ page }) => {
@@ -24,7 +28,7 @@ test('sink or float: the apple floats and spills its own weight', async ({ page 
 	await page.getByRole('radio', { name: 'an apple' }).click();
 	await expect(stage(page)).toContainText('apple: floats');
 	await expect(stage(page)).toContainText('balance: 0 g');
-	await expect(stage(page)).toContainText('spilled: 184 g');
+	await expect(stage(page)).toContainText('in the cup: 184 g');
 });
 
 test('the same clay sinks as a ball and floats as a bowl', async ({ page }) => {

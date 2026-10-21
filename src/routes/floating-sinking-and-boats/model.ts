@@ -40,6 +40,8 @@ export interface Body {
 	shape: Shape;
 	/** Grams, including any load (marbles in a bowl). */
 	mass: number;
+	/** Volume of any load carried inside a hull (marbles), cm³: it displaces water once flooded. */
+	cargo?: number;
 }
 
 /** Height of the shape, cm. */
@@ -73,6 +75,8 @@ export function maxDisplaced(s: Shape): number {
 
 export interface Settled {
 	floats: boolean;
+	/** Exactly as dense as the liquid: it stays wherever it is put under the surface. */
+	neutral?: boolean;
 	/** How deep the bottom sits under the surface, cm (the full height when it sinks). */
 	depth: number;
 	/** Liquid pushed aside, g: its own mass when it floats, less when it sinks. */
@@ -82,9 +86,12 @@ export interface Settled {
 /** Where a body comes to rest in a liquid of density `rho` (g/cm³). */
 export function settle(body: Body, rho: number): Settled {
 	const s = body.shape;
-	if (body.mass >= rho * maxDisplaced(s)) {
-		// It goes under. A hull floods, so only its walls push liquid aside.
-		const v = s.kind === 'hull' ? solidVolume(s) : maxDisplaced(s);
+	const most = rho * maxDisplaced(s);
+	if (s.kind !== 'hull' && Math.abs(body.mass - most) <= 1e-9 * most)
+		return { floats: false, neutral: true, depth: height(s), displaced: body.mass };
+	if (body.mass >= most) {
+		// It goes under. A hull floods, so only its walls and its load push liquid aside.
+		const v = s.kind === 'hull' ? solidVolume(s) + (body.cargo ?? 0) : maxDisplaced(s);
 		return { floats: false, depth: height(s), displaced: rho * v };
 	}
 	let lo = 0;
@@ -105,7 +112,11 @@ export function settle(body: Body, rho: number): Settled {
 export function lowered(body: Body, rho: number, depth: number) {
 	const rest = settle(body, rho);
 	const d = Math.max(0, Math.min(depth, rest.floats ? rest.depth : height(body.shape)));
-	const spilled = rho * submerged(body.shape, d);
+	// A hull that cannot float floods as it goes in: only its walls and load push water aside.
+	const flooded = body.shape.kind === 'hull' && !rest.floats;
+	const spilled = flooded
+		? (rest.displaced * d) / height(body.shape)
+		: rho * submerged(body.shape, d);
 	return {
 		depth: d,
 		balance: Math.max(0, body.mass - spilled),
@@ -156,7 +167,8 @@ export function clayBowl(marbles = 0): Body {
 	return {
 		name: 'clay bowl',
 		shape: { kind: 'hull', w, d: w, h, t: (lo + hi) / 2 },
-		mass: clayBall.mass + marbles * MARBLE
+		mass: clayBall.mass + marbles * MARBLE,
+		cargo: (marbles * MARBLE) / DENSITY.glass
 	};
 }
 

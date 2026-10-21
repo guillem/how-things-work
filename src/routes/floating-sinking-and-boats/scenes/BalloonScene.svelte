@@ -87,7 +87,7 @@
 	const warm = $derived(Math.min(1, (heat - BALLOON.outside) / 90));
 	const flame = $derived(warm);
 
-	const kg = (v: number) => `${(Math.round(v / 10) * 10).toLocaleString('en-GB')} kg`;
+	const kg = (v: number) => `${Math.round(v).toLocaleString('en-GB')} kg`;
 </script>
 
 <g class="fs">
@@ -182,6 +182,9 @@
 			weight={700}
 			color={b.rises ? 'var(--fs-yes)' : 'var(--fs-no)'}
 		/>
+	</Readout>
+	<Readout id="fs-height">
+		<Label x={800} y={262} text="(how high it goes is not worked out)" size={12} muted />
 	</Readout>
 	<Readout id="fs-key">
 		<Label x={800} y={240} text="each dot: some air" size={13} muted />
