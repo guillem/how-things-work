@@ -128,7 +128,7 @@
 				}
 			];
 		}
-		if (phase === 'heavy') return [drop(steelPan, BX - 100), drop(smallSteelBall, BX + 170, 0.4)];
+		if (phase === 'heavy') return [drop(steelPan, BX - 70), drop(smallSteelBall, BX + 170, 0.4)];
 		if (phase === 'bowl') return [drop(params.bowl === true ? clayBowl() : clayBall, BX)];
 		if (phase === 'marbles') {
 			const body = clayBowl(nMarbles);

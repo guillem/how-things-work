@@ -54,12 +54,35 @@
 	const jig = (i: number, j: number, k: number) =>
 		Math.sin(i * 12.9898 + j * 78.233 + k) * 0.5 * 6 +
 		(reduced ? 0 : Math.sin(t * (3 + spread) + i * 1.7 + j * 2.3 + k) * 2.5);
+	/** The envelope's right-hand curve, sampled top to bottom: [y, half-width]. */
+	const rim = $derived.by(() => {
+		const p = [
+			[0, cy - R],
+			[R + 14, cy - R],
+			[R + 18, cy + R * 0.55],
+			[34, my]
+		];
+		const pts: [number, number][] = [];
+		for (let k = 0; k <= 48; k++) {
+			const u = k / 48;
+			const w = [(1 - u) ** 3, 3 * u * (1 - u) ** 2, 3 * u * u * (1 - u), u ** 3];
+			pts.push([
+				w.reduce((s, c, n) => s + c * p[n][1], 0),
+				w.reduce((s, c, n) => s + c * p[n][0], 0)
+			]);
+		}
+		return pts;
+	});
+	/** Is (x, y) inside the envelope, grown (or shrunk, pad < 0) by `pad`? */
 	function inBalloon(x: number, y: number, pad = 8) {
-		const dx = (x - CX) / (R + pad);
-		const dy = (y - cy) / (R + pad);
-		if (y <= cy + R * 0.3) return dx * dx + dy * dy < 1;
-		const half = 34 + ((R + pad - 34) * (my - y)) / (my - cy - R * 0.3);
-		return y < my && Math.abs(x - CX) < half;
+		if (y < cy - R - pad || y > my) return false;
+		const yy = Math.max(cy - R, y);
+		let k = 1;
+		while (k < rim.length - 1 && rim[k][0] < yy) k++;
+		const [y0, h0] = rim[k - 1];
+		const [y1, h1] = rim[k];
+		const half = y1 > y0 ? h0 + ((h1 - h0) * (yy - y0)) / (y1 - y0) : h1;
+		return Math.abs(x - CX) < half + pad;
 	}
 	const outside = $derived.by(() => {
 		const pts: { x: number; y: number }[] = [];
