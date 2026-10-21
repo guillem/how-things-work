@@ -217,12 +217,12 @@ export const MOUNTAIN = { height: 2000, groundC: 20, rh: 0.7 };
 
 /**
  * The bubble's trip over the mountain, `u` from 0 (the plain on the windy side) to 1 (the plain on
- * the far side). It follows the ground: flat to u = 0.2, up to the top at u = 0.5, down to the far
- * plain at u = 0.8. Its droplets fall out as rain on the way up.
+ * the far side). It follows the ground: flat to u = 0.12, up to the top at u = 0.5, down to the far
+ * plain at u = 0.88. Its droplets fall out as rain on the way up.
  */
 export function groundHeight(u: number, height = MOUNTAIN.height): number {
-	if (u <= 0.2 || u >= 0.8) return 0;
-	const s = u < 0.5 ? (u - 0.2) / 0.3 : (0.8 - u) / 0.3;
+	if (u <= 0.12 || u >= 0.88) return 0;
+	const s = u < 0.5 ? (u - 0.12) / 0.38 : (0.88 - u) / 0.38;
 	// A smooth hill: steepest halfway up.
 	return height * (s * s * (3 - 2 * s));
 }

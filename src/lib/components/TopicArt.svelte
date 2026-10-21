@@ -5950,6 +5950,35 @@
 		<rect x="18" y="14" width="164" height="78" rx="8" fill="url(#art-bsrs-sky)" />
 		<circle cx="128" cy="90" r="12" fill="#ff7a1a" />
 		<rect x="18" y="90" width="164" height="16" rx="4" fill="#2b3a2e" />
+	{:else if slug === 'cloud-base'}
+		<!-- bubbles rising from the ground, turning white at one height under flat-bottomed clouds -->
+		<line
+			x1="10"
+			y1="104"
+			x2="190"
+			y2="104"
+			stroke="currentColor"
+			stroke-width="1.5"
+			opacity="0.5"
+		/>
+		<line
+			x1="10"
+			y1="50"
+			x2="190"
+			y2="50"
+			stroke="currentColor"
+			stroke-width="1"
+			stroke-dasharray="4 4"
+			opacity="0.5"
+		/>
+		{#each [50, 150] as x (x)}
+			<rect x={x - 30} y="34" width="60" height="16" rx="5" fill={accent} opacity="0.85" />
+			<circle cx={x - 16} cy="34" r="12" fill={accent} opacity="0.85" />
+			<circle cx={x + 4} cy="28" r="15" fill={accent} opacity="0.85" />
+			<circle cx={x + 20} cy="36" r="10" fill={accent} opacity="0.85" />
+			<circle cx={x} cy="70" r="8" fill="none" stroke={accent} stroke-width="1.5" />
+			<circle cx={x + 6} cy="92" r="7" fill="none" stroke={accent} stroke-width="1.5" />
+		{/each}
 	{:else}
 		<circle cx="100" cy="60" r="30" fill="none" stroke={accent} stroke-width="2" />
 		<circle cx="100" cy="60" r="5" fill={accent} />

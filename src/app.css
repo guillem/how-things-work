@@ -5588,3 +5588,47 @@ kbd {
 	--qr-screen: #1e2025;
 	--qr-world: #495057;
 }
+
+/* cloud-base: sky, ground, clouds, the bubble of warm air, droplets, vapour, rain, the mountain */
+:root {
+	--cld-sky-top: #8fc3ec;
+	--cld-sky-low: #e3f1fb;
+	--cld-ground: #9ccc74;
+	--cld-ground-edge: #5c9a3e;
+	--cld-tree: #2f9e44;
+	--cld-trunk: #8b5a2b;
+	--cld-house: #f1e3c8;
+	--cld-roof: #c0563a;
+	--cld-sun: #fcc419;
+	--cld-cloud: #ffffff;
+	--cld-cloud-edge: #9fb2c4;
+	--cld-warm: #e8590c;
+	--cld-hot: #e03131;
+	--cld-lens: #f8fbff;
+	--cld-vapour: #1c7ed6;
+	--cld-drop: #339af0;
+	--cld-rain: #1c7ed6;
+	--cld-rock: #a39a8c;
+	--cld-rock-edge: #6f665a;
+}
+:root[data-theme='dark'] {
+	--cld-sky-top: #0d1b2e;
+	--cld-sky-low: #1d3450;
+	--cld-ground: #2f4f26;
+	--cld-ground-edge: #4a7a38;
+	--cld-tree: #2b8a3e;
+	--cld-trunk: #7a5230;
+	--cld-house: #8a7c66;
+	--cld-roof: #a8452d;
+	--cld-sun: #fab005;
+	--cld-cloud: #dfe6ee;
+	--cld-cloud-edge: #8a9bb0;
+	--cld-warm: #ff922b;
+	--cld-hot: #ff6b6b;
+	--cld-lens: #18212e;
+	--cld-vapour: #74c0fc;
+	--cld-drop: #4dabf7;
+	--cld-rain: #74c0fc;
+	--cld-rock: #5a534a;
+	--cld-rock-edge: #8a8073;
+}

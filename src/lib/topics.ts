@@ -1653,6 +1653,15 @@ const explainers: Explainer[] = [
 		accent: '#1c7ed6',
 		steps: 9,
 		minutes: 10
+	},
+	{
+		slug: 'cloud-base',
+		title: 'Why clouds form, and why their bottoms are flat',
+		summary:
+			'Drag a bubble of warm air up from the ground: it swells, cools about a degree for every hundred metres, and turns white where its invisible water becomes droplets. Every bubble does so at the same height, so clouds have flat bottoms; damper air brings them lower. Then blow the bubble over a mountain: rain on one side, warm dry wind on the other.',
+		accent: '#3b8fd4',
+		steps: 8,
+		minutes: 10
 	}
 ];
 

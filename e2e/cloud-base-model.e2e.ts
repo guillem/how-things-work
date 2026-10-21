@@ -100,6 +100,10 @@ test('over the mountain the bubble rains on the windy side and arrives warmer an
 	const trip = overMountain();
 	const first = trip.at(0);
 	expect(first.t).toBe(MOUNTAIN.groundC);
+	// The page quotes: cloud from about 700 m, 26 °C and 36 % on the far plain.
+	expect(Math.round(cloudBase(MOUNTAIN.groundC, MOUNTAIN.rh) / 50) * 50).toBe(700);
+	expect(Math.round(trip.end.t)).toBe(26);
+	expect(Math.round(trip.end.rh * 100)).toBe(36);
 	expect(trip.cloudFrom).not.toBeNull();
 	expect(trip.top.rained).toBeGreaterThan(0);
 	// Nothing more falls on the far side.
