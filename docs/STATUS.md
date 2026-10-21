@@ -84,8 +84,8 @@ fact-checked by Codex, ticked and landed on `main`; released in v1.2.3. Their ol
 worktrees are removed. The small issues found then are fixed on `main` too: twenty-questions has
 a phone layout (every animal named, readable questions), magnets-and-poles' board fills the phone
 stage, floating-sinking-and-boats' block shows in oil and its scales read in dark mode, and
-monty-hall's games slider starts at 10. Still open: spam-filter-word-counts' "mum" isn't in any
-message.
+monty-hall's games slider starts at 10, and spam-filter-word-counts drops an ending "'s", so
+"mum's" counts as "mum" (2,075 words, not 2,088; unreleased).
 
 **Next topics, proposed for review (2026-10-18, after v1.0.0): a level 0 and 100 new topics.**
 The user asked for a researched proposal (no code): a new level 0 for beginners, the levels made

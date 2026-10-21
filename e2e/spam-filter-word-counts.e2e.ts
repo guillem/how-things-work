@@ -26,9 +26,12 @@ test('word: a word’s two counts, in spam and in ordinary messages', async ({ p
 	await page.locator('button[data-control=word][data-value=home]').click();
 	await expect(stage(page)).toContainText('“home” is much commoner in ordinary messages');
 	await expect(stage(page)).toContainText('none of them');
-	// Any word can be typed; one the messages never use has no counts.
+	// Any word can be typed: "mum's" in a message counts as "mum"; a word never used has no counts.
 	await page.locator('input[data-input=word]').fill('Mum');
-	await expect(stage(page)).toContainText('“mum” is in no message of either pile');
+	await expect(stage(page)).toContainText('1contain it, out of 487');
+	await expect(stage(page)).toContainText('“mum” is about as common in both piles');
+	await page.locator('input[data-input=word]').fill('giraffe');
+	await expect(stage(page)).toContainText('“giraffe” is in no message of either pile');
 	await page.locator('input[data-input=word]').fill('prize');
 	await expect(stage(page)).toContainText('“prize” is much commoner in spam');
 });
@@ -36,7 +39,7 @@ test('word: a word’s two counts, in spam and in ordinary messages', async ({ p
 test('count: pressing the button counts every word', async ({ page }) => {
 	await open(page, './spam-filter-word-counts/#count', 'Press “Count every word”');
 	await page.locator('button[data-control=count]').click();
-	await expect(stage(page)).toContainText('2,088 different words counted');
+	await expect(stage(page)).toContainText('2,075 different words counted');
 	await expect(stage(page)).toContainText('prize');
 });
 

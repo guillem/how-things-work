@@ -14,13 +14,16 @@ export interface Message {
 	text: string;
 }
 
-/** The words of a message, lower case, each once (the filter asks "does it contain it?"). */
+/**
+ * The words of a message, lower case, each once (the filter asks "does it contain it?"). An
+ * ending "'s" is dropped, so "mum's" counts as "mum" (and "it's" as "it").
+ */
 export function words(text: string): string[] {
 	const found = text
 		.toLowerCase()
 		.replace(/&amp;/g, '&')
 		.replace(/&lt;#&gt;/g, ' ')
-		.match(/[a-z0-9£]+(?:'[a-z]+)?/g);
+		.match(/[a-z0-9£]+(?:'(?!s\b)[a-z]+)?/g);
 	return [...new Set(found ?? [])];
 }
 
