@@ -1,6 +1,6 @@
 # Topic catalog
 
-Source of truth for the content of an interactive web learning tool that shows how things work. It defines 189 topics in 11 categories, each built around one interactive graphic. Readers range from high-school students to university majors.
+Source of truth for the content of an interactive web learning tool that shows how things work. It defines 190 topics in 11 categories, each built around one interactive graphic. Readers range from high-school students to university majors.
 
 This file covers content only. It does not choose the stack, the visual design or the project layout; take those from the repository's own instructions.
 
@@ -89,7 +89,7 @@ A topic is done when:
 
 | Category | Id | Topics |
 |---|---|---|
-| Mathematics | `math` | 20 |
+| Mathematics | `math` | 21 |
 | Physics | `physics` | 15 |
 | Chemistry & Materials | `chemistry` | 14 |
 | Biology | `biology` | 17 |
@@ -124,6 +124,7 @@ A topic is done when:
 - [x] resampling-inference
 - [x] cellular-automata
 - [x] why-triangles-are-stiff
+- [ ] monty-hall
 
 **Physics**
 - [x] newtons-laws
@@ -379,7 +380,7 @@ A topic is done when:
 - **Interaction:** Sliders set how common a disease is and how often the test is right for sick and for healthy people. A grid of 1,000 people is colored into true and false positives and negatives, and the chance that a positive result is real is read off by counting.
 - **Takeaway:** What a piece of evidence means depends on the base rate: a positive result from an accurate test for a rare condition can still be more likely false than true.
 - **Prerequisites:** none
-- **Related:** central-limit-theorem, learning-from-data, ensemble-weather-forecasting
+- **Related:** central-limit-theorem, learning-from-data, ensemble-weather-forecasting, monty-hall
 
 #### central-limit-theorem
 - **Title:** Distributions & the central limit theorem
@@ -505,6 +506,16 @@ A topic is done when:
 - **Takeaway:** A triangle is the one shape whose sides fix its corners, so a floppy frame goes stiff the moment a diagonal cuts it into triangles.
 - **Prerequisites:** none
 - **Pitfall:** Stiff is not strong: the page is about shapes holding their angles, not about how much load a stick can carry; do not colour sticks by force or claim triangles 'spread the load'.
+
+#### monty-hall
+- **Title:** The three doors
+- **Level:** 0
+- **Kind:** simulate
+- **Interaction:** Pick one of three doors; the host, who knows where the prize is, opens another to show a goat, and you stay or switch. Play by hand, then let the page play a hundred games with 'always stay' and a hundred with 'always switch', the wins piling into two columns at about two to one. Flip the board to see the three places the prize could be and which choice wins in each, then try ten doors where the host opens eight.
+- **Takeaway:** Switching wins twice as often as staying, because the first pick is right only one time in three and the host's open door points to the prize the rest of the time.
+- **Prerequisites:** none
+- **Related:** bayes-theorem
+- **Pitfall:** The host must know where the prize is and always open a goat door; if the host opens a door at random and happens to show a goat, the two remaining doors really are equal, and the page should show that case too.
 
 ### Physics
 
