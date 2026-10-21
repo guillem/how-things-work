@@ -1,6 +1,6 @@
 # Topic catalog
 
-Source of truth for the content of an interactive web learning tool that shows how things work. It defines 187 topics in 11 categories, each built around one interactive graphic. Readers range from high-school students to university majors.
+Source of truth for the content of an interactive web learning tool that shows how things work. It defines 188 topics in 11 categories, each built around one interactive graphic. Readers range from high-school students to university majors.
 
 This file covers content only. It does not choose the stack, the visual design or the project layout; take those from the repository's own instructions.
 
@@ -95,7 +95,7 @@ A topic is done when:
 | Biology | `biology` | 17 |
 | Body & Medicine | `medicine` | 18 |
 | Earth & Climate | `earth` | 16 |
-| Space | `space` | 13 |
+| Space | `space` | 14 |
 | Computing | `computing` | 16 |
 | Information & Networks | `networks` | 17 |
 | Artificial Intelligence | `ai` | 23 |
@@ -228,6 +228,7 @@ A topic is done when:
 - [x] aperture-synthesis
 - [ ] comet-tails
 - [ ] earth-is-a-ball
+- [ ] leap-years
 
 **Computing**
 - [x] binary
@@ -1297,7 +1298,7 @@ A topic is done when:
 - **Interaction:** Launch a body around a star with a chosen speed and direction and get a circle, an ellipse or an escape path. Overlays show equal areas swept in equal times and a plot of period against orbit size; add a second planet to see the two disturb each other.
 - **Takeaway:** An orbit is continuous free fall, and a single law of gravity produces all three of Kepler's laws.
 - **Prerequisites:** newtons-laws
-- **Related:** sun-earth-moon, gps, calculus-of-variations
+- **Related:** sun-earth-moon, gps, calculus-of-variations, leap-years
 
 #### rockets
 - **Title:** Rockets & orbital maneuvers
@@ -1405,6 +1406,16 @@ A topic is done when:
 - **Takeaway:** The world is a ball, so the sea itself hides the bottom of a distant ship, and 'down' means toward the middle wherever you stand.
 - **Prerequisites:** none
 - **Pitfall:** People on the far side are not upside down and do not have to hold on: the page draws no fixed up arrow anywhere. The ship does not vanish because it got too small, and magnifying it does not bring the hull back. The bulge is drawn much bigger than it really is, and air bends light a little so you see slightly farther than the plain geometry says; the page does not claim exact distances.
+
+#### leap-years
+- **Title:** Leap years: why February gets an extra day
+- **Level:** 0
+- **Kind:** explore
+- **Interaction:** A calendar wheel turns inside Earth's orbit: one lap of the Sun takes 365 days and about a quarter more, so each New Year falls a quarter-day short. Scrub forward with no leap days and watch the first day of summer slide through the calendar, a month after a century and into winter after seven or eight centuries; switch on 'one extra day every four years' and the slide almost stops; zoom out over a thousand years to see the small drift that is left and the 'skip every hundred, keep every four hundred' rule that fixes it.
+- **Takeaway:** A year is not a whole number of days, so a calendar without leap days drifts out of step with the seasons; an extra day every four years, with a few skipped, keeps them matched.
+- **Prerequisites:** none
+- **Related:** orbits-kepler
+- **Pitfall:** A leap day fixes the calendar, not the orbit; nothing about the seasons changes. The rule is not simply every four years: 1900 was not a leap year and 2000 was.
 
 ### Computing
 
