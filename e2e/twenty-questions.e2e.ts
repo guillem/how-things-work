@@ -87,7 +87,7 @@ test('animals: questions hide animals, and guessing by name finds the secret', a
 		await chip.click();
 	}
 	// Then guess by name until it is found.
-	const guesses = stage(page).getByRole('button', { name: /^Guess: is it an? / });
+	const guesses = stage(page).getByRole('button', { name: /^Guess: is it an? /i });
 	for (let i = 0; i < 99; i++) {
 		if (
 			await stage(page)
@@ -111,4 +111,60 @@ test('penguin: "Is it a penguin?" hides one animal, a good question about half',
 	await expect(stage(page)).toContainText('54 animals left');
 	await expect(stage(page)).toContainText('45 animals left');
 	await expect(stage(page)).toContainText('About half are gone');
+});
+
+test.describe('on a phone', () => {
+	test.use({ viewport: { width: 390, height: 844 }, hasTouch: true });
+
+	/** The rendered height of an element's text, in CSS pixels. */
+	const height = async (page: Page, name: string | RegExp) =>
+		(await stage(page).getByText(name, { exact: true }).first().boundingBox())?.height ?? 0;
+
+	/** Each of the `n` animals the reader can still guess shows its name, big enough to read. */
+	async function namesReadable(page: Page, n: number) {
+		const guesses = stage(page).getByRole('button', { name: /^Guess: is it an? /i });
+		await expect(guesses).toHaveCount(n);
+		const names = await guesses.evaluateAll((els) =>
+			els.map((e) => /^Guess: Is it an? (.+)\?$/.exec(e.getAttribute('aria-label') ?? '')?.[1])
+		);
+		for (const name of names) {
+			await expect(stage(page).getByText(name ?? '?', { exact: true })).toBeVisible();
+			expect(await height(page, name ?? '?')).toBeGreaterThanOrEqual(10);
+		}
+	}
+
+	test('animals: every animal left is named on the board, and the questions read', async ({
+		page
+	}) => {
+		const panel = page.getByRole('group', { name: 'Readouts' });
+		await page.emulateMedia({ reducedMotion: 'reduce' });
+		await page.goto('./twenty-questions/#animals');
+		await expect(panel).toContainText('99 of 99, after 0 questions');
+		await namesReadable(page, 99);
+
+		await stage(page).getByRole('button', { name: 'Ask a question' }).click();
+		const feathers = stage(page).getByRole('button', { name: 'Does it have feathers?' });
+		await expect(feathers).toBeVisible();
+		expect(await height(page, 'Feathers?')).toBeGreaterThanOrEqual(11);
+		await feathers.click();
+		await expect(panel).toContainText(/(20|79) of 99, after 1 question/);
+		const left = Number(/(\d+) of 99/.exec((await panel.textContent()) ?? '')?.[1]);
+		await namesReadable(page, left);
+
+		// Guess by name until it is found.
+		const guesses = stage(page).getByRole('button', { name: /^Guess: is it an? /i });
+		const found = stage(page).getByText(/^It’s the .+!$/);
+		for (let i = 0; i < 99 && !(await found.isVisible()); i++) await guesses.first().click();
+		await expect(found).toBeVisible();
+		await expect(panel).toContainText(/Found\s*the .+, in \d+ questions/);
+	});
+
+	test('penguin: the split board names every animal', async ({ page }) => {
+		await page.emulateMedia({ reducedMotion: 'reduce' });
+		await page.goto('./twenty-questions/#penguin');
+		await expect(stage(page).getByText('penguin', { exact: true })).toBeVisible();
+		expect(await height(page, 'penguin')).toBeGreaterThanOrEqual(10);
+		for (const name of ['aardvark', 'vampire bat', 'wren'])
+			await expect(stage(page).getByText(name, { exact: true })).toBeVisible();
+	});
 });
