@@ -5815,6 +5815,48 @@
 		<rect x="62" y="52" width="32" height="16" rx="3" fill={accent} />
 		<rect x="106" y="52" width="32" height="16" rx="3" fill="#1971c2" />
 		<rect x="138" y="52" width="32" height="16" rx="3" fill={accent} />
+	{:else if slug === 'hearing-and-the-ear'}
+		<!-- sound arcs into an ear: canal, eardrum, three tiny bones and the snail-shaped cochlea -->
+		{#each [14, 26, 38] as x (x)}
+			<path
+				d="M{x} 46 Q {x + 7} 60 {x} 74"
+				fill="none"
+				stroke="currentColor"
+				stroke-width="1.6"
+				stroke-linecap="round"
+				opacity="0.45"
+			/>
+		{/each}
+		<path
+			d="M70 30 C 48 22 40 44 50 54 L 50 66 C 40 76 48 98 70 90"
+			fill="none"
+			stroke="currentColor"
+			stroke-width="2"
+			opacity="0.6"
+		/>
+		<path
+			d="M52 55 L 98 52 M52 65 L 98 68"
+			stroke="currentColor"
+			stroke-width="1.4"
+			opacity="0.6"
+		/>
+		<path d="M98 46 Q 104 60 98 74" fill="none" stroke={accent} stroke-width="2.4" />
+		<path
+			d="M101 60 L 106 44 L 116 44 L 118 56 L 128 56"
+			fill="none"
+			stroke={accent}
+			stroke-width="2.4"
+			stroke-linejoin="round"
+		/>
+		<path
+			d="M134 56 C 134 36 170 34 170 58 C 170 78 142 80 142 60 C 142 48 160 48 160 59 C 160 66 151 67 151 61"
+			fill="none"
+			stroke="currentColor"
+			stroke-width="5"
+			stroke-linecap="round"
+			opacity="0.5"
+		/>
+		<line x1="128" y1="56" x2="134" y2="56" stroke="currentColor" stroke-width="5" opacity="0.5" />
 	{:else}
 		<circle cx="100" cy="60" r="30" fill="none" stroke={accent} stroke-width="2" />
 		<circle cx="100" cy="60" r="5" fill={accent} />

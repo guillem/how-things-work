@@ -97,6 +97,8 @@ test('turned up from rustling leaves to a lawnmower, the bump grows many times b
 test('the pitch slider and its words', () => {
 	expect(pitchHz(5)).toBe(1000);
 	expect(shakes(1000)).toBe('1,000 times a second');
-	expect(shakes(pitchHz(0))).toBe('30 times a second');
+	expect(shakes(pitchHz(0))).toBe('31 times a second');
+	// A semitone above 1,000 is told apart from it.
+	expect(shakes(pitchHz(5 + 1 / 12))).toBe('1,060 times a second');
 	expect(shakes(pitchHz(9))).toBe('16,000 times a second');
 });

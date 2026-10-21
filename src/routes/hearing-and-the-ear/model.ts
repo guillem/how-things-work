@@ -73,7 +73,7 @@ export function pitchHz(octaves: number): number {
 
 /** A frequency as "1,000 times a second", rounded to what a reader would say aloud. */
 export function shakes(f: number): string {
-	const digits = f < 100 ? 1 : f < 1000 ? 2 : f < 10000 ? 2 : 3;
+	const digits = f < 100 ? 2 : 3;
 	const p = Math.pow(10, Math.floor(Math.log10(f)) - digits + 1);
 	const r = Math.round(f / p) * p;
 	return `${r.toLocaleString('en-GB')} times a second`;
@@ -81,13 +81,13 @@ export function shakes(f: number): string {
 
 /** An everyday sound of about this pitch (the note's main shake rate). */
 export function soundsLike(f: number): string {
-	if (f < 80) return 'a deep rumble, lower than any voice';
+	if (f < 80) return 'like a deep rumble, lower than most voices';
 	if (f < 180) return 'as low as a man’s speaking voice';
 	if (f < 350) return 'as high as a woman’s or a child’s speaking voice';
-	if (f < 1100) return 'a high note, like a soprano singing';
-	if (f < 4200) return 'a whistle or a bird’s chirp';
+	if (f < 1100) return 'like a high note sung by a soprano';
+	if (f < 4200) return 'like a whistle or a bird’s chirp';
 	if (f < 9000) return 'very high, like the hiss in an “s”';
-	return 'a thin whine many grown-ups can no longer hear';
+	return 'like a thin whine that many grown-ups can no longer hear';
 }
 
 // ------------------------------------------------------------------------------- loudness

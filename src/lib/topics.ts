@@ -1608,6 +1608,15 @@ const explainers: Explainer[] = [
 		accent: '#e03131',
 		steps: 9,
 		minutes: 10
+	},
+	{
+		slug: 'hearing-and-the-ear',
+		title: 'How your ear hears',
+		summary:
+			'Send a note into an ear and follow the shake from the eardrum through three tiny bones into the snail-shaped cochlea. Slide the pitch and watch a ripple peak at a different spot for every note, play two notes and see two bumps, and turn the loudness up to make the bump grow.',
+		accent: '#c2255c',
+		steps: 8,
+		minutes: 10
 	}
 ];
 

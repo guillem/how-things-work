@@ -5388,3 +5388,43 @@ kbd {
 	--mg-copper: #f08c4b;
 	--mg-gold: #fcc419;
 }
+
+/* hearing-and-the-ear */
+:root {
+	--he-accent: #c2255c;
+	--he-accent-text: #a61e4d;
+	--he-tissue: #f6e7e1;
+	--he-skin: #f1c9b5;
+	--he-skin-edge: #c98f78;
+	--he-bone: #ece6d6;
+	--he-bone-edge: #b9ab8a;
+	--he-drum: #d9480f;
+	--he-ossicle: #fffaf0;
+	--he-ossicle-edge: #8a7a5c;
+	--he-fluid: #cfe8f7;
+	--he-fluid-edge: #74a9cf;
+	--he-ribbon: #7b2d57;
+	--he-air: #4c6ef5;
+	--he-push: #e8590c;
+	--he-sensor: #e64980;
+	--he-nerve: #f2b705;
+}
+:root[data-theme='dark'] {
+	--he-accent: #f06595;
+	--he-accent-text: #f783ac;
+	--he-tissue: #2b2224;
+	--he-skin: #5a3f37;
+	--he-skin-edge: #9a6e5d;
+	--he-bone: #34312a;
+	--he-bone-edge: #7d7258;
+	--he-drum: #ff8a4c;
+	--he-ossicle: #4a4436;
+	--he-ossicle-edge: #d8c9a6;
+	--he-fluid: #1d3a50;
+	--he-fluid-edge: #4f86ad;
+	--he-ribbon: #f3b2d2;
+	--he-air: #91a7ff;
+	--he-push: #ff922b;
+	--he-sensor: #f06595;
+	--he-nerve: #ffd43b;
+}
