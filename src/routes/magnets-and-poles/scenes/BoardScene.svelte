@@ -4,13 +4,15 @@
 	 * Everything comes from the pole model: the arrows are the force on each magnet, the compass
 	 * needle follows the field plus the Earth's, the iron filings line up along the field, and a
 	 * cut magnet's pieces each get two ends. Positions are in centimetres from the board's centre;
-	 * a camera (pixels per centimetre and centre) zooms out for the compass.
+	 * a camera (pixels per centimetre and centre) zooms out for the compass. On phones the readouts
+	 * move under the stage, so the table fills the whole stage and the camera zooms in.
 	 */
 	import { untrack } from 'svelte';
 	import { Tween } from 'svelte/motion';
 	import { cubicInOut } from 'svelte/easing';
 	import { Label, hash, smoothstep, startDrag, wave } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
+	import { useReadouts } from '#lib/explainer/readouts.svelte.ts';
 	import {
 		MAGNET_LENGTH,
 		SIDE,
@@ -28,6 +30,9 @@
 	} from '../model';
 
 	let { step, t, params, reduced, setParam }: StageProps = $props();
+	const readouts = useReadouts();
+	/** A phone: the headline and hint are in the panel under the stage, so the table takes it all. */
+	const phone = $derived(readouts?.out ?? false);
 
 	const phase = $derived(String(step.hints?.phase ?? 'pull'));
 	const L = MAGNET_LENGTH;
@@ -35,9 +40,12 @@
 	const THICK = SIDE;
 
 	// ---- where things are, per phase (cm, board centre at 0, 0) --------------------------------
-	const ax = $derived(Number(params.ax ?? -6));
+	// Where the two magnets start, 3 cm apart (centred on a phone, where the table is tighter).
+	const startA = $derived(phone ? -4.5 : -6);
+	const startB = $derived(startA + 9);
+	const ax = $derived(Number(params.ax ?? startA));
 	const ay = $derived(Number(params.ay ?? 0));
-	const bx = $derived(Number(params.bx ?? 3));
+	const bx = $derived(Number(params.bx ?? startB));
 	const by = $derived(Number(params.by ?? 0));
 	const gap = $derived(Number(params.gap ?? 1));
 	const flipped = $derived(params.flip === true);
@@ -56,6 +64,8 @@
 		zoom: number;
 	}
 	const layout: Layout = $derived.by(() => {
+		// Pixels per cm: bigger on a phone, as far as the widest arrangement of the step still fits.
+		const near = phone ? 50 : 36;
 		const pair = (g: number, flip: boolean): Layout => ({
 			ax: -(g / 2 + L / 2),
 			ay: 0,
@@ -63,23 +73,24 @@
 			by: 0,
 			bAngle: flip ? Math.PI : 0,
 			bShown: 1,
-			zoom: 36
+			zoom: near
 		});
 		switch (phase) {
 			case 'pull':
-				return { ax, ay, bx, by, bAngle: 0, bShown: 1, zoom: 36 };
+				return { ax, ay, bx, by, bAngle: 0, bShown: 1, zoom: near };
 			case 'push':
-				return { ...pair(3, flipped), ax: -6, bx: 3 };
+				return { ...pair(3, flipped), ax: startA, bx: startB };
 			case 'fade':
-				return pair(gap, false);
+				// 10 cm apart the two magnets span 22 cm.
+				return { ...pair(gap, false), zoom: phone ? 41 : 36 };
 			case 'compass':
-				return { ax: -16, ay: 0, bx: -16, by: 0, bAngle: 0, bShown: 0, zoom: 18 };
+				return { ax: -16, ay: 0, bx: -16, by: 0, bAngle: 0, bShown: 0, zoom: phone ? 20 : 18 };
 			case 'filings':
 				return filingsMode === 'one'
-					? { ax: 0, ay: 0, bx: 0, by: 0, bAngle: 0, bShown: 0, zoom: 36 }
+					? { ax: 0, ay: 0, bx: 0, by: 0, bAngle: 0, bShown: 0, zoom: near }
 					: pair(4, filingsMode === 'push');
 			case 'cut':
-				return { ax: 0, ay: 0, bx: 0, by: 0, bAngle: 0, bShown: 0, zoom: 36 };
+				return { ax: 0, ay: 0, bx: 0, by: 0, bAngle: 0, bShown: 0, zoom: near };
 			default:
 				return pair(4, false);
 		}
@@ -92,12 +103,16 @@
 		opts
 	);
 	let lastPhase = untrack(() => phase);
+	let lastPhone = untrack(() => phone);
 	$effect(() => {
 		const target = layout;
 		const p = phase;
+		const ph = phone;
 		untrack(() => {
-			const instant = reduced || (p === lastPhase && (p === 'pull' || p === 'fade'));
+			const instant =
+				reduced || ph !== lastPhone || (p === lastPhase && (p === 'pull' || p === 'fade'));
 			lastPhase = p;
+			lastPhone = ph;
 			void pos.set(target, instant ? { duration: 0 } : opts);
 		});
 	});
@@ -121,13 +136,20 @@
 
 	// ---- camera ---------------------------------------------------------------------------------
 	const U = $derived(pos.current.zoom);
+	/** The table, px: under the headline on wide screens, the whole stage on a phone. */
+	const board = $derived(
+		phone ? { x0: 8, y0: 8, x1: 952, y1: 592 } : { x0: 16, y0: 64, x1: 944, y1: 584 }
+	);
 	const CX = 480;
-	const CY = 330;
+	const CY = $derived(phone ? 300 : 330);
 	const PX = (x: number) => CX + x * U;
 	const PY = (y: number) => CY + y * U;
 	/** Visible half-size of the board, cm. */
-	const halfW = $derived((944 - CX) / U);
-	const halfH = $derived((584 - CY) / U);
+	const halfW = $derived((board.x1 - CX) / U);
+	const halfH = $derived((board.y1 - CY) / U);
+	/** Line widths, text sizes and grab margins: thicker on a phone, where the stage is drawn small. */
+	const big = $derived(phone ? 1.8 : 1);
+	const grab = $derived(phone ? 26 : 8);
 
 	// ---- the pull or push between the two magnets ------------------------------------------------
 	const fAB = $derived(twoShown && phase !== 'cut' ? force(A, B) : { x: 0, y: 0 });
@@ -148,7 +170,7 @@
 		].map((a) => {
 			// From the end facing away from the tug, so two arrows pulling together never cross.
 			const x0 = PX(a.m.x) - a.dx * (L / 2) * U;
-			const y0 = PY(a.m.y) - (THICK / 2) * U - 16;
+			const y0 = PY(a.m.y) - (THICK / 2) * U - 16 * big;
 			return { id: a.id, x1: x0, y1: y0, x2: x0 + a.dx * len, y2: y0 + a.dy * len };
 		});
 	});
@@ -208,7 +230,7 @@
 	}
 
 	// ---- the compass ----------------------------------------------------------------------------
-	const COMPASS_R = 1.8;
+	const COMPASS_R = $derived(phone ? 2.6 : 1.8);
 	function placeCompass(x: number, y: number) {
 		const lx = halfW - COMPASS_R - 0.5;
 		const ly = halfH - COMPASS_R - 0.5;
@@ -317,7 +339,12 @@
 		return magnets.slice(1).map((m, i) => {
 			const left = magnets[i];
 			const xGap = (left.x + left.length / 2 + m.x - m.length / 2) / 2;
-			return { id: i, x: PX(xGap), y: PY(0) + (THICK / 2) * U + 22, pull: pulls(left, m) };
+			return {
+				id: i,
+				x: PX(xGap),
+				y: PY(0) + (THICK / 2) * U + 22 * big,
+				pull: pulls(left, m)
+			};
 		});
 	});
 
@@ -360,10 +387,10 @@
 <g class="mg-board">
 	<!-- the table -->
 	<rect
-		x="16"
-		y="64"
-		width="928"
-		height="520"
+		x={board.x0}
+		y={board.y0}
+		width={board.x1 - board.x0}
+		height={board.y1 - board.y0}
 		rx="14"
 		fill="var(--mg-board)"
 		stroke="var(--border)"
@@ -387,7 +414,9 @@
 	{#each drawn as { m, o }, i (i)}
 		{@const w = m.length * U}
 		{@const h = THICK * U}
-		{@const big = w >= 50}
+		{@const lettered = w >= 50}
+		{@const fs = phone ? (U >= 30 ? Math.min(26, U * 0.48) : 16) : U >= 30 ? 17 : 12}
+		{@const fy = phone ? fs * 0.36 : U >= 30 ? 6 : 4}
 		<g transform="translate({PX(m.x)} {PY(m.y)}) rotate({(m.angle * 180) / Math.PI})" opacity={o}>
 			<rect
 				x={-w / 2}
@@ -401,25 +430,15 @@
 			<rect x="0" y={-h / 2} width={w / 2} height={h} rx="4" fill="var(--mg-north)" />
 			<rect x={-w / 2 + 3} y={-h / 2} width={w / 2 - 3} height={h} fill="var(--mg-south)" />
 			<line x1="0" y1={-h / 2} x2="0" y2={h / 2} stroke="var(--mg-board)" stroke-width="1" />
-			{#if big}
+			{#if lettered}
 				<g transform="rotate({(-m.angle * 180) / Math.PI} {w / 4} 0)">
-					<text
-						x={w / 4}
-						y={U >= 30 ? 6 : 4}
-						text-anchor="middle"
-						font-size={U >= 30 ? 17 : 12}
-						font-weight="700"
-						fill="#fff">N</text
+					<text x={w / 4} y={fy} text-anchor="middle" font-size={fs} font-weight="700" fill="#fff"
+						>N</text
 					>
 				</g>
 				<g transform="rotate({(-m.angle * 180) / Math.PI} {-w / 4} 0)">
-					<text
-						x={-w / 4}
-						y={U >= 30 ? 6 : 4}
-						text-anchor="middle"
-						font-size={U >= 30 ? 17 : 12}
-						font-weight="700"
-						fill="#fff">S</text
+					<text x={-w / 4} y={fy} text-anchor="middle" font-size={fs} font-weight="700" fill="#fff"
+						>S</text
 					>
 				</g>
 			{/if}
@@ -432,15 +451,15 @@
 			{@const dist = Math.round(Math.hypot(B.x - A.x, B.y - A.y))}
 			<rect
 				class="mg-drag"
-				x={PX(d.m.x) - (L / 2) * U - 8}
-				y={PY(d.m.y) - (THICK / 2) * U - 8}
-				width={L * U + 16}
-				height={THICK * U + 16}
-				rx="8"
+				x={PX(d.m.x) - (L / 2) * U - grab}
+				y={PY(d.m.y) - (THICK / 2) * U - grab}
+				width={L * U + 2 * grab}
+				height={THICK * U + 2 * grab}
+				rx={grab}
 				fill="transparent"
 				stroke="var(--focus)"
-				stroke-width="1.5"
-				stroke-dasharray="5 5"
+				stroke-width={1.5 * big}
+				stroke-dasharray="{5 * big} {5 * big}"
 				role="slider"
 				tabindex="0"
 				aria-label={d.name}
@@ -468,7 +487,7 @@
 			x2={a.x2}
 			y2={a.y2}
 			stroke={pulling ? 'var(--mg-pull)' : 'var(--mg-push)'}
-			stroke-width="5"
+			stroke-width={5 * big}
 			stroke-linecap="round"
 			marker-end="url(#arrowhead)"
 		/>
@@ -477,21 +496,21 @@
 	<!-- cut pieces pull on each other across every cut -->
 	{#each cutArrows as c (c.id)}
 		<line
-			x1={c.x - 16}
+			x1={c.x - 16 * big}
 			y1={c.y}
-			x2={c.x - 4}
+			x2={c.x - 4 * big}
 			y2={c.y}
 			stroke="var(--mg-pull)"
-			stroke-width="3"
+			stroke-width={3 * big}
 			marker-end="url(#arrowhead)"
 		/>
 		<line
-			x1={c.x + 16}
+			x1={c.x + 16 * big}
 			y1={c.y}
-			x2={c.x + 4}
+			x2={c.x + 4 * big}
 			y2={c.y}
 			stroke="var(--mg-pull)"
-			stroke-width="3"
+			stroke-width={3 * big}
 			marker-end="url(#arrowhead)"
 		/>
 	{/each}
@@ -499,23 +518,24 @@
 	<!-- the compass, which follows the magnet near it and the Earth far away -->
 	{#if phase === 'compass'}
 		{@const r = COMPASS_R * U}
+		{@const nw = 5 * big}
 		<g transform="translate({PX(cx)} {PY(cy)})">
-			<circle {r} fill="var(--surface)" stroke="var(--stage-ink-muted)" stroke-width="2" />
+			<circle {r} fill="var(--surface)" stroke="var(--stage-ink-muted)" stroke-width={2 * big} />
 			<g transform="rotate({((needleAngle.current + wobble) * 180) / Math.PI})">
-				<path d="M0 -5 L{r - 4} 0 L0 5 Z" fill="var(--mg-north)" />
-				<path d="M0 -5 L{-(r - 4)} 0 L0 5 Z" fill="var(--mg-needle)" />
+				<path d="M0 {-nw} L{r - 4 * big} 0 L0 {nw} Z" fill="var(--mg-north)" />
+				<path d="M0 {-nw} L{-(r - 4 * big)} 0 L0 {nw} Z" fill="var(--mg-needle)" />
 			</g>
-			<circle r="3" fill="var(--stage-ink)" />
+			<circle r={3 * big} fill="var(--stage-ink)" />
 		</g>
 		<circle
 			class="mg-drag"
 			cx={PX(cx)}
 			cy={PY(cy)}
-			r={COMPASS_R * U + 8}
+			r={COMPASS_R * U + grab}
 			fill="transparent"
 			stroke="var(--focus)"
-			stroke-width="1.5"
-			stroke-dasharray="5 5"
+			stroke-width={1.5 * big}
+			stroke-dasharray="{5 * big} {5 * big}"
 			role="slider"
 			tabindex="0"
 			aria-label="Compass"
@@ -527,39 +547,41 @@
 			onkeydown={(e) => keyMove(e, (dx, dy) => placeCompass(cx + dx, cy + dy), 1)}
 		/>
 		<!-- which way is north, and how big the zoomed-out table is -->
-		<g transform="translate(900 120)">
+		<g transform="translate({phone ? 890 : 900} {phone ? 70 : 120})">
 			<line
 				x1="0"
-				y1="26"
+				y1={26 * big}
 				x2="0"
-				y2="-14"
+				y2={-14 * big}
 				stroke="var(--stage-ink-muted)"
-				stroke-width="3"
+				stroke-width={3 * big}
 				marker-end="url(#arrowhead)"
 			/>
-			<Label x={0} y={46} text="north" muted size={14} />
+			<Label x={0} y={46 * big} text="north" muted size={14 * big} />
 		</g>
 	{/if}
 	{#if U < 30 || phase === 'fade'}
+		{@const sy = phone ? 562 : 560}
 		<g opacity={U < 30 ? 1 : 0.8}>
 			<line
 				x1="40"
-				y1="560"
+				y1={sy}
 				x2={40 + 10 * U}
-				y2="560"
+				y2={sy}
 				stroke="var(--stage-ink-muted)"
-				stroke-width="3"
+				stroke-width={3 * big}
 			/>
-			<line x1="40" y1="553" x2="40" y2="567" stroke="var(--stage-ink-muted)" stroke-width="2" />
-			<line
-				x1={40 + 10 * U}
-				y1="553"
-				x2={40 + 10 * U}
-				y2="567"
-				stroke="var(--stage-ink-muted)"
-				stroke-width="2"
-			/>
-			<Label x={40 + 5 * U} y={546} text="10 cm" muted size={13} />
+			{#each [40, 40 + 10 * U] as x (x)}
+				<line
+					x1={x}
+					y1={sy - 7 * big}
+					x2={x}
+					y2={sy + 7 * big}
+					stroke="var(--stage-ink-muted)"
+					stroke-width={2 * big}
+				/>
+			{/each}
+			<Label x={40 + 5 * U} y={sy - 14 * big} text="10 cm" muted size={13 * big} />
 		</g>
 	{/if}
 

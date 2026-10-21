@@ -125,3 +125,44 @@ test('cut: every piece of a cut magnet has a red and a blue end', async ({ page 
 	await expect(stage(page).getByText('N', { exact: true })).toHaveCount(4);
 	await expect(stage(page).getByText('S', { exact: true })).toHaveCount(4);
 });
+
+// On a phone the readouts are text under the stage, so the table fills the stage, zoomed in.
+test.describe('on a phone', () => {
+	test.use({ viewport: { width: 390, height: 844 }, hasTouch: true, reducedMotion: 'reduce' });
+	const readouts = (page: Page) => page.getByRole('group', { name: 'Readouts' });
+
+	test('pull: each magnet is a finger-sized target, and dragging one alongside the other makes them push', async ({
+		page
+	}) => {
+		await page.goto('./magnets-and-poles/#pull');
+		await expect(readouts(page)).toContainText('pulling together');
+		const left = await page.getByRole('slider', { name: 'Left magnet' }).boundingBox();
+		const right = await page.getByRole('slider', { name: 'Right magnet' }).boundingBox();
+		const svg = await page.locator('.stage svg').boundingBox();
+		if (!left || !right || !svg) throw new Error('magnets or stage not drawn');
+		expect(right.height).toBeGreaterThanOrEqual(40);
+		expect(right.width).toBeGreaterThanOrEqual(120);
+		// Drag the right magnet onto the left one, 2 cm higher (50 stage units per cm on a phone).
+		const cm = (50 * svg.width) / 960;
+		await page.mouse.move(right.x + right.width / 2, right.y + right.height / 2);
+		await page.mouse.down();
+		await page.mouse.move(left.x + left.width / 2, left.y + left.height / 2 - 2 * cm, {
+			steps: 8
+		});
+		await page.mouse.up();
+		await expect(readouts(page)).toContainText('pushing apart');
+	});
+
+	test('compass: the zoomed-in table still reaches far enough for the Earth to win', async ({
+		page
+	}) => {
+		await page.goto('./magnets-and-poles/#compass');
+		await expect(readouts(page)).toContainText('near the magnet: the needle follows the magnet');
+		const compass = page.getByRole('slider', { name: 'Compass' });
+		await compass.focus();
+		for (let i = 0; i < 40; i++) await compass.press('ArrowRight');
+		await expect(readouts(page)).toContainText(
+			'far away: the Earth wins, and the needle points north'
+		);
+	});
+});
