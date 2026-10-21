@@ -5148,3 +5148,25 @@ kbd {
 	--ff-arrow: #ff6b6b;
 	--ff-safe: #4dabf7;
 }
+
+/* secret-codes: the wheel's rings, secret letters, the highlight, right and wrong */
+:root {
+	--sc-ring-outer: #f3f0ff;
+	--sc-ring-inner: #e5dbff;
+	--sc-secret: #7048e8;
+	--sc-hi: #ffe066;
+	--sc-hi-ink: #e8590c;
+	--sc-good: #2f9e44;
+	--sc-bad: #e03131;
+	--sc-english: #868e96;
+}
+:root[data-theme='dark'] {
+	--sc-ring-outer: #1f1a33;
+	--sc-ring-inner: #2c2350;
+	--sc-secret: #b197fc;
+	--sc-hi: #8f6d00;
+	--sc-hi-ink: #ff922b;
+	--sc-good: #51cf66;
+	--sc-bad: #ff6b6b;
+	--sc-english: #adb5bd;
+}

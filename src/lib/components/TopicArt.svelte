@@ -5569,6 +5569,56 @@
 				/>
 			{/if}
 		{/each}
+	{:else if slug === 'secret-codes'}
+		<!-- a code wheel: an outer ring of letters around a turned inner ring -->
+		<circle
+			cx="70"
+			cy="60"
+			r="46"
+			fill="none"
+			stroke="currentColor"
+			stroke-width="2"
+			opacity="0.5"
+		/>
+		<circle cx="70" cy="60" r="32" fill={accent} opacity="0.18" />
+		<circle cx="70" cy="60" r="18" fill="none" stroke={accent} stroke-width="2" />
+		{#each ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'] as ch, i (ch)}
+			{@const a = -Math.PI / 2 + (i * Math.PI) / 4}
+			<text
+				x={70 + 39 * Math.cos(a)}
+				y={64 + 39 * Math.sin(a)}
+				text-anchor="middle"
+				font-size="11"
+				font-weight="700"
+				fill="currentColor">{ch}</text
+			>
+			<text
+				x={70 + 25 * Math.cos(a)}
+				y={63 + 25 * Math.sin(a)}
+				text-anchor="middle"
+				font-size="9"
+				font-weight="700"
+				fill={accent}>{'DEFGHIJK'[i]}</text
+			>
+		{/each}
+		<text
+			x="148"
+			y="52"
+			text-anchor="middle"
+			font-size="16"
+			font-weight="800"
+			fill={accent}
+			font-family="monospace">KHOOR</text
+		>
+		<text
+			x="148"
+			y="78"
+			text-anchor="middle"
+			font-size="16"
+			font-weight="800"
+			fill="currentColor"
+			font-family="monospace">HELLO</text
+		>
 	{:else}
 		<circle cx="100" cy="60" r="30" fill="none" stroke={accent} stroke-width="2" />
 		<circle cx="100" cy="60" r="5" fill={accent} />
