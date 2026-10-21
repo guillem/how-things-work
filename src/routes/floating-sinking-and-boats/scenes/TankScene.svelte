@@ -157,20 +157,26 @@
 	const showCup = $derived(phase === 'lower' || phase === 'objects' || phase === 'bowl');
 	/** Water the thing pushes aside right now, g. */
 	const pushedNow = $derived(showCup ? placed[0].pushed : 0);
-	// What spilled stays in the cup: the most ever pushed aside since the step (or the thing)
-	// changed. Lifting the thing back out lowers the tank's water instead.
-	let spilled = $state(0);
-	let lastKey = '';
+	// What spilled stays in the cup. Dropped things only ever go deeper, so there the cup holds
+	// what is pushed aside now. The stone on its slider can be pulled back up: the cup keeps the
+	// most it ever pushed aside since the step began, and the tank's water drops instead. (This
+	// depends on the slider only, never on `t`.)
+	const pushedByStone = $derived(
+		phase === 'lower' ? lowered(stone, rho, Number(params.lower ?? 0) - 3).spilled : 0
+	);
+	let stoneMost = $state(0);
+	let lastStep = '';
 	$effect(() => {
-		const k = `${step.id}|${String(params.thing)}|${String(params.bowl)}`;
-		const p = pushedNow;
+		const id = step.id;
+		const p = pushedByStone;
 		untrack(() => {
-			if (k !== lastKey) {
-				lastKey = k;
-				spilled = p;
-			} else if (p > spilled) spilled = p;
+			if (id !== lastStep) {
+				lastStep = id;
+				stoneMost = p;
+			} else if (p > stoneMost) stoneMost = p;
 		});
 	});
+	const spilled = $derived(phase === 'lower' ? Math.max(stoneMost, pushedNow) : pushedNow);
 	/** How far the surface has dropped below the brim, px (tank floor 28 cm by 20 cm). */
 	const sink = $derived(Math.max(0, ((spilled - pushedNow) / (28 * 20)) * S));
 	const WY = $derived(SY + sink);
