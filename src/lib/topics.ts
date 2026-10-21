@@ -1635,6 +1635,15 @@ const explainers: Explainer[] = [
 		accent: '#b4531f',
 		steps: 9,
 		minutes: 10
+	},
+	{
+		slug: 'blue-sky-red-sunset',
+		title: 'Why the sky is blue & sunsets red',
+		summary:
+			'Scrub the Sun across a day’s sky and watch the sky overhead and the Sun’s own disc take their colours, worked out colour by colour from sunlight bouncing off air. Add smoke for a deeper sunset, pump the air away for a black sky around a white Sun, and find out why the sky isn’t violet.',
+		accent: '#1c7ed6',
+		steps: 9,
+		minutes: 10
 	}
 ];
 

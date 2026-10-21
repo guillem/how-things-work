@@ -5919,6 +5919,18 @@
 				<path d="M1 0L-3 -5M1 0L5 -5M1 0L-3 5M1 0L5 5" stroke="currentColor" stroke-width="1" />
 			</g>
 		{/each}
+	{:else if slug === 'blue-sky-red-sunset'}
+		<!-- a sky going from day blue overhead to a red Sun setting on the horizon -->
+		<defs>
+			<linearGradient id="art-bsrs-sky" x1="0" y1="0" x2="0" y2="1">
+				<stop offset="0" stop-color="#4f7fc4" />
+				<stop offset="0.6" stop-color="#9fbfe0" />
+				<stop offset="1" stop-color="#f4c58a" />
+			</linearGradient>
+		</defs>
+		<rect x="18" y="14" width="164" height="78" rx="8" fill="url(#art-bsrs-sky)" />
+		<circle cx="128" cy="90" r="12" fill="#ff7a1a" />
+		<rect x="18" y="90" width="164" height="16" rx="4" fill="#2b3a2e" />
 	{:else}
 		<circle cx="100" cy="60" r="30" fill="none" stroke={accent} stroke-width="2" />
 		<circle cx="100" cy="60" r="5" fill={accent} />

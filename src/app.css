@@ -5526,3 +5526,17 @@ kbd {
 	--at-meter: #da77f2;
 	--at-handle: #ff922b;
 }
+
+/* blue-sky-red-sunset: the ground below the sky, its lettering, air seen up close and its bits */
+:root {
+	--sb-ground: #2f3e2f;
+	--sb-ground-ink: #e9ecef;
+	--sb-air: #eef3fa;
+	--sb-molecule: #868e96;
+}
+:root[data-theme='dark'] {
+	--sb-ground: #1f2a20;
+	--sb-ground-ink: #ced4da;
+	--sb-air: #1d232c;
+	--sb-molecule: #adb5bd;
+}
