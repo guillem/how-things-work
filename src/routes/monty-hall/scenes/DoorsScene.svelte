@@ -124,7 +124,9 @@
 	// ---- many games ---------------------------------------------------------------------------------
 	const STAY_GAMES = playMany(300, 11);
 	const SWITCH_GAMES = playMany(300, 12);
-	const nGames = $derived(Number(params.games ?? 100));
+	const nGames = $derived(
+		Math.max(1, Math.min(300, Math.round(Number(params.games ?? 100)) || 100))
+	);
 	const stayWon = $derived(STAY_GAMES.slice(0, nGames).filter((g) => g.stayWins).length);
 	const switchWon = $derived(SWITCH_GAMES.slice(0, nGames).filter((g) => g.switchWins).length);
 	const PER_ROW = 15;

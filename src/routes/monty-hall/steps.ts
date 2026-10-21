@@ -11,7 +11,7 @@ const games: Control = {
 	type: 'range',
 	id: 'games',
 	label: 'Games played with each plan',
-	min: 0,
+	min: 10,
 	max: 300,
 	step: 10,
 	default: 100,

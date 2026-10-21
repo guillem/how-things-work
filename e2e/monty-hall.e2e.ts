@@ -46,6 +46,17 @@ test('tally: over 300 games each, switching wins about twice as often', async ({
 	expect(sw).toBeLessThan(220);
 });
 
+test('tally: the games slider stops at 10 games, and the tallies still read', async ({ page }) => {
+	await open(page, './monty-hall/#tally', 'Always switch');
+	const slider = page.locator('input[type=range][data-control=games]');
+	await slider.focus();
+	await page.keyboard.press('Home');
+	await expect(slider).toHaveValue('10');
+	await expect(stage(page)).toContainText(/Always stay\s*\d+ cars? in 10 games/);
+	await expect(stage(page)).toContainText(/Always switch\s*\d+ cars? in 10 games/);
+	await expect(stage(page)).not.toContainText(/NaN|in 0 games/);
+});
+
 test('cases: whichever door you pick, staying wins one row and switching two', async ({ page }) => {
 	await open(page, './monty-hall/#cases', 'Staying wins in 1 row, switching in 2');
 	for (const n of [1, 2, 3]) {
