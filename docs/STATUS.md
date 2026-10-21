@@ -4,7 +4,7 @@ The self-handover. If work is interrupted, this file alone must be enough to con
 top to bottom, then run the commands under "Resume". **Update it at every commit**, not just at
 the end of a development.
 
-Last updated: 2026-10-21 09:00 UTC, 70 of the proposal's topics built (15 since v1.2.1, unreleased); **v1.2.1 live** (155 topics). Next: finish the five half-built level-0 topics (below), then the remaining level-0 topics.
+Last updated: 2026-10-21, 70 of the proposal's topics built, all released; **v1.2.2 live** (170 topics). Next: finish the five half-built level-0 topics (below), then the remaining level-0 topics.
 
 ## How we work
 
@@ -35,9 +35,10 @@ Last updated: 2026-10-21 09:00 UTC, 70 of the proposal's topics built (15 since 
 
 ## Current state
 
-- **All 100 catalogue topics are built, fact-checked and ticked** (done 2026-10-15). **v1.2.1**
-  (2026-10-20) is live: 155 topics, the 100 plus 55 of the proposal's, and Paths v1 (one
-  reading path, language models). Before it, v1.1.2 (2026-10-19): 154 topics. Before it, v1.0.0
+- **All 100 catalogue topics are built, fact-checked and ticked** (done 2026-10-15). **v1.2.2**
+  (2026-10-21) is live: 170 topics, the 100 plus 70 of the proposal's (the first nine at level 0,
+  with the index's "Start here" link). Before it, v1.2.1 (2026-10-20): 155 topics and Paths v1
+  (one reading path, language models). Before that, v1.1.2 (2026-10-19): 154 topics. Before it, v1.0.0
   (2026-10-17): the 100 topics plus the index search and filters (a sticky
   sidebar on wide screens), faster browser tests and the overnight backlog round described below.
   Earlier: v0.1.21 (2026-10-15) the housekeeping, stage-text fix and public polish; v0.1.19 the
@@ -100,7 +101,7 @@ promoted into `TOPICS.md` as their builds start (next paragraph).
 time in worktrees, each fact-checked by Codex (`scripts/local-review.mjs`) and pushed to `main`;
 the entry is promoted into `TOPICS.md` when its build starts. Order:
 `proposals/topics-200/data/build-order.json` (the LLM ladder first, then the level 1–3 topics;
-level 0 last, pending the user's answer on its definition). Built so far: 55 of the 100, all released (v1.2.1).
+level 0 last, pending the user's answer on its definition). Built so far: 70 of the 100, all released (v1.2.2).
 
 **Resumed 2026-10-18 night on the new machine** (the user's weekly limit is now 98%). Landed
 since: ocean-acidification, tsunamis, carbonate-silicate-thermostat, radiative-convective-column,
