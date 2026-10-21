@@ -5286,3 +5286,29 @@ kbd {
 	--fs-flame: #ff922b;
 	--fs-envelope: #f06595;
 }
+
+/* monty-hall: the doors, the inside of an open door, your pick, stay and switch, win and lose */
+:root {
+	--mh-door: #c2410c;
+	--mh-door-edge: #7c2d12;
+	--mh-knob: #ffd43b;
+	--mh-inside: #f1f3f5;
+	--mh-pick: #f59f00;
+	--mh-stay: #1971c2;
+	--mh-switch: #d6336c;
+	--mh-spoil: #868e96;
+	--mh-win: #2f9e44;
+	--mh-lose: #c92a2a;
+}
+:root[data-theme='dark'] {
+	--mh-door: #b8460f;
+	--mh-door-edge: #f08c4a;
+	--mh-knob: #ffe066;
+	--mh-inside: #2b2f36;
+	--mh-pick: #fcc419;
+	--mh-stay: #4dabf7;
+	--mh-switch: #f06595;
+	--mh-spoil: #868e96;
+	--mh-win: #69db7c;
+	--mh-lose: #ff8787;
+}

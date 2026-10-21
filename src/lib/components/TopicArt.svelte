@@ -5705,6 +5705,36 @@
 			stroke-width="2"
 			opacity="0.5"
 		/>
+	{:else if slug === 'monty-hall'}
+		<!-- three doors: one picked, one opened on a goat -->
+		{#each [0, 1, 2] as i (i)}
+			<rect
+				x={28 + i * 52}
+				y="22"
+				width="40"
+				height="76"
+				rx="4"
+				fill={i === 2 ? 'none' : accent}
+				stroke={accent}
+				stroke-width="2"
+			/>
+		{/each}
+		<rect
+			x="23"
+			y="17"
+			width="50"
+			height="86"
+			rx="6"
+			fill="none"
+			stroke="#f59f00"
+			stroke-width="3"
+		/>
+		<text x="48" y="54" text-anchor="middle" font-size="18" font-weight="700" fill="#ffffff">1</text
+		>
+		<text x="100" y="54" text-anchor="middle" font-size="18" font-weight="700" fill="#ffffff"
+			>2</text
+		>
+		<text x="152" y="70" text-anchor="middle" font-size="26">🐐</text>
 	{:else}
 		<circle cx="100" cy="60" r="30" fill="none" stroke={accent} stroke-width="2" />
 		<circle cx="100" cy="60" r="5" fill={accent} />

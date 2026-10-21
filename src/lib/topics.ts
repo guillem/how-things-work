@@ -1572,6 +1572,15 @@ const explainers: Explainer[] = [
 		accent: '#1c7ed6',
 		steps: 8,
 		minutes: 9
+	},
+	{
+		slug: 'monty-hall',
+		title: 'The three doors',
+		summary:
+			'A car is behind one of three doors, goats behind the other two. You pick a door, the host opens another to show a goat, and you may switch. Should you? Play it, then let the page play hundreds of games, and find out why switching wins twice as often, and when it doesn’t.',
+		accent: '#c2410c',
+		steps: 6,
+		minutes: 8
 	}
 ];
 
