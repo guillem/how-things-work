@@ -179,7 +179,7 @@ A topic is done when:
 - [x] population-genetics
 - [x] turing-patterns
 - [x] fireflies-in-sync
-- [ ] ant-trails
+- [x] ant-trails
 
 **Body & Medicine**
 - [x] heart-circulation
