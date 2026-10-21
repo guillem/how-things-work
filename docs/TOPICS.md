@@ -142,7 +142,7 @@ A topic is done when:
 - [x] ising-model
 - [x] shadows-and-pinholes
 - [x] floating-sinking-and-boats
-- [ ] magnets-and-poles
+- [x] magnets-and-poles
 
 **Chemistry & Materials**
 - [x] atoms-periodic-table
@@ -666,7 +666,7 @@ A topic is done when:
 - **Title:** Magnets & poles
 - **Level:** 0
 - **Kind:** manipulate
-- **Interaction:** Drag two bar magnets about on a board: arrows show the pull or push between them, computed from their poles, and a compass needle and a sprinkle of iron filings line up along the field. Flip one magnet end for end and the pull turns into a push. Slide a steel paper clip toward a magnet to see it become a magnet of its own and pick up a chain of clips, then cut a magnet in half and find that each half still has two ends.
+- **Interaction:** Drag two bar magnets about on a board: arrows show the pull or push between them, computed from their poles, and a compass needle and a sprinkle of iron filings line up along the field. Flip one magnet end for end and the pull turns into a push. Lower a magnet towards a heap of steel paper clips: one jumps up to it, becomes a magnet of its own and holds a chain of clips, then cut a magnet in half and find that each half still has two ends.
 - **Takeaway:** A magnet always has two ends; like ends push apart and unlike ends pull together, and the pull fades quickly with distance.
 - **Prerequisites:** none
 - **Related:** electromagnetism

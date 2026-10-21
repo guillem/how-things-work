@@ -1,18 +1,22 @@
 /**
- * Bar magnets on a board, in the pole (Gilbert) picture: a slender, evenly magnetised bar acts
- * like a north pole at one end and an equal south pole at the other. Like poles push, unlike
- * poles pull, each with a force that falls with the square of the distance between them; the
- * field at a point (which a compass needle and iron filings line up with) points away from north
- * poles and towards south poles. Positions are in centimetres on the board, y down the screen.
+ * Bar magnets on a board, in the pole (Gilbert) picture. An evenly magnetised bar acts like a
+ * sheet of "north" magnetic charge spread over one end face and an equal sheet of "south" charge
+ * over the other (each with Br/μ0 per square metre). Like charges push, unlike ones pull, each
+ * with a force that falls with the square of the distance; the field at a point (which a compass
+ * needle and iron filings line up with) points away from north ends and towards south ends.
+ * Each end face is integrated with a 3 × 3 Gauss rule. Positions are in centimetres on the
+ * board, y down the screen, z out of the board (the bars lie with their middle at z = 0).
  *
  * The magnets are school ferrite bars 6 cm long with a 1 cm square end. Ferrite's remanence is
- * about 0.39 T, so each end carries a pole strength of Br·A/μ0 ≈ 31 A·m. The Earth adds a weak
- * field of about 20 µT pointing north (up the board), as at mid-latitudes in Europe.
+ * about 0.39 T, so each end carries a total pole strength of Br·A/μ0 ≈ 31 A·m. The Earth adds a
+ * weak field of about 20 µT pointing north (up the board), as at mid-latitudes in Europe.
  */
 
 export interface Vec {
 	x: number;
 	y: number;
+	/** Height above the board's middle plane, cm (0 when left out). */
+	z?: number;
 }
 
 export interface Magnet {
@@ -33,29 +37,51 @@ export interface Pole extends Vec {
 export const magnitude = (v: Vec) => Math.hypot(v.x, v.y);
 
 const MU0 = 4e-7 * Math.PI;
-/** Ferrite remanence, T, and the bar's end area, m². */
-const BR = 0.39;
-const AREA = 1e-4;
-/** Pole strength of one end of the page's magnets, A·m. */
-export const POLE = (BR * AREA) / MU0;
+/** Ferrite remanence, T. */
+export const BR = 0.39;
+/** Side of the bars' square end, cm. */
+export const SIDE = 1;
+/** Total pole strength of one end of the page's magnets, A·m. */
+export const POLE = (BR * (SIDE / 100) ** 2) / MU0;
 /** The Earth's horizontal field, T, pointing up the board (north). */
 export const EARTH = 20e-6;
 
 export const MAGNET_LENGTH = 6;
 
+/** 3-point Gauss rule on [-1/2, 1/2]: offsets and weights (summing to 1). */
+const GAUSS = [
+	[-Math.sqrt(3 / 5) / 2, 5 / 18],
+	[0, 8 / 18],
+	[Math.sqrt(3 / 5) / 2, 5 / 18]
+] as const;
+
 /**
- * The two poles of a magnet: north first. Each sits half a centimetre in from its end (or a sixth
- * of the length in, for a piece shorter than 3 cm).
+ * The magnetic charges of a magnet: its north end face first (nine points carrying +POLE in
+ * all), then its south end face (−POLE).
  */
-export function poles(m: Magnet, strength = POLE): [Pole, Pole] {
-	const h = m.length / 2 - Math.min(0.5, m.length / 6);
+export function poles(m: Magnet, strength = POLE): Pole[] {
+	const h = m.length / 2;
 	const c = Math.cos(m.angle);
 	const s = Math.sin(m.angle);
-	return [
-		{ x: m.x + h * c, y: m.y + h * s, q: strength },
-		{ x: m.x - h * c, y: m.y - h * s, q: -strength }
-	];
+	const out: Pole[] = [];
+	for (const sign of [1, -1]) {
+		for (const [u, wu] of GAUSS) {
+			for (const [v, wv] of GAUSS) {
+				// u runs across the face in the board's plane, v up out of it.
+				out.push({
+					x: m.x + sign * h * c - u * SIDE * s,
+					y: m.y + sign * h * s + u * SIDE * c,
+					z: v * SIDE,
+					q: sign * strength * wu * wv
+				});
+			}
+		}
+	}
+	return out;
 }
+
+/** Magnetic moment of a magnet, A·m² (pole strength times length): it adds up over pieces. */
+export const moment = (m: Magnet) => (POLE * m.length) / 100;
 
 /** The ends of a magnet (north end first), cm. */
 export function ends(m: Magnet): [Vec, Vec] {
@@ -75,7 +101,8 @@ export function field(p: Vec, ps: Pole[], earth = false): Vec {
 	for (const q of ps) {
 		const dx = (p.x - q.x) / 100;
 		const dy = (p.y - q.y) / 100;
-		const r2 = dx * dx + dy * dy;
+		const dz = ((p.z ?? 0) - (q.z ?? 0)) / 100;
+		const r2 = dx * dx + dy * dy + dz * dz;
 		if (r2 < 1e-10) continue;
 		const k = (MU0 / (4 * Math.PI)) * (q.q / (r2 * Math.sqrt(r2)));
 		bx += k * dx;
@@ -139,20 +166,31 @@ export const grams = (newtons: number) => (newtons / 9.81) * 1000;
 
 /**
  * Materials a magnet pulls: the ferromagnetic metals (iron, nickel, cobalt) and most steels,
- * which are mostly iron. Austenitic stainless steel (the common 18/8 kind of spoons and sinks)
- * is not ferromagnetic; aluminium, copper and gold are not either.
+ * which are mostly iron. Austenitic stainless steel (the 18/8 kind of many spoons and sinks)
+ * is hardly magnetic; aluminium, copper and gold are not either.
  */
 export const MATERIALS = {
 	nail: { name: 'iron nail', magnetic: true },
 	clip: { name: 'steel paper clip', magnetic: true },
 	nickel: { name: 'nickel strip', magnetic: true },
-	spoon: { name: 'stainless-steel spoon', magnetic: false },
+	spoon: { name: '18/8 stainless-steel spoon', magnetic: false },
 	foil: { name: 'aluminium foil', magnetic: false },
 	copper: { name: 'copper wire', magnetic: false },
 	gold: { name: 'gold ring', magnetic: false }
 } as const;
 
 export type Material = keyof typeof MATERIALS;
+
+/** The things the page puts under the magnet, in turn: pulled ones and ignored ones mixed. */
+export const MATERIAL_ORDER: Material[] = [
+	'nail',
+	'spoon',
+	'clip',
+	'foil',
+	'nickel',
+	'copper',
+	'gold'
+];
 
 /**
  * A magnet cut into `pieces` equal pieces along its length: every piece is a magnet with its
@@ -171,11 +209,46 @@ export function cut(m: Magnet, pieces: number, spacing = 0.6): Magnet[] {
 }
 
 /**
- * How close (cm) the end of the page's magnets must come before a steel paper clip lying below
- * jumps up to it. Illustrative: it depends on the clip's weight and steel; with school ferrite
- * bars it is about a centimetre or two.
+ * A steel paper clip (a standard 28 mm one) hanging straight below a magnet's end. Soft steel in
+ * a field becomes a magnet whose strength is limited by its own shape: for a long, thin object
+ * magnetised along its length the apparent susceptibility is about 1/N, with N the
+ * demagnetising factor of a prolate ellipsoid of the same proportions. The clip's three legs of
+ * wire side by side make it about 8 times longer than it is thick.
  */
-export const CLIP_JUMP = 1.5;
+export const CLIP = { length: 2.8, aspect: 8, density: 7850 };
+
+/** Apparent susceptibility of a soft-iron rod `aspect` times longer than thick (1/N). */
+export function rodSusceptibility(aspect: number): number {
+	const N = (Math.log(2 * aspect) - 1) / (aspect * aspect);
+	return 1 / N;
+}
+
+/**
+ * How many times its own weight a magnet pulls up on a clip hanging below its north end, with
+ * the clip's top `gap` cm below it. For a thin induced magnet along the field, the pull per unit
+ * cross-section is χ(B_top² − B_bottom²)/(2μ0), the weight ρ g ℓ: the clip's thickness cancels.
+ */
+export function clipLift(gap: number): number {
+	const m: Magnet = { x: 0, y: 0, angle: Math.PI / 2, length: MAGNET_LENGTH };
+	const ps = poles(m);
+	const top = magnitude(field({ x: 0, y: MAGNET_LENGTH / 2 + gap }, ps));
+	const bottom = magnitude(field({ x: 0, y: MAGNET_LENGTH / 2 + gap + CLIP.length }, ps));
+	const chi = rodSusceptibility(CLIP.aspect);
+	const pull = (chi * (top * top - bottom * bottom)) / (2 * MU0);
+	return pull / (CLIP.density * 9.81 * (CLIP.length / 100));
+}
+
+/** The gap, cm, from which a clip below the magnet's end jumps up to it (its pull beats its weight). */
+export function clipJumpGap(): number {
+	let lo = 0;
+	let hi = 10;
+	for (let i = 0; i < 40; i++) {
+		const mid = (lo + hi) / 2;
+		if (clipLift(mid) > 1) lo = mid;
+		else hi = mid;
+	}
+	return lo;
+}
 
 /**
  * A steel clip near a magnet becomes a magnet itself: the magnet's field lines up the clip's tiny

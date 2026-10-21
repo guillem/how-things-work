@@ -23,6 +23,16 @@ test('pull: unlike ends pull; dragged alongside, red beside red, the magnets pus
 	await expect(page).toHaveURL(/#pull$/);
 });
 
+test('pull: the left magnet can be dragged too', async ({ page }) => {
+	await open(page, './magnets-and-poles/#pull', 'pulling together');
+	const magnet = page.getByRole('slider', { name: 'Left magnet' });
+	await magnet.focus();
+	// 2 cm down, then right until it lies alongside the other magnet, red beside red.
+	for (let i = 0; i < 4; i++) await magnet.press('ArrowDown');
+	for (let i = 0; i < 18; i++) await magnet.press('ArrowRight');
+	await expect(stage(page)).toContainText('pushing apart');
+});
+
 test('push: turning one magnet round turns the pull into a push', async ({ page }) => {
 	await open(page, './magnets-and-poles/#push', 'pulling together');
 	const flip = page.locator('input[type=checkbox][data-control=flip]');
@@ -33,15 +43,15 @@ test('push: turning one magnet round turns the pull into a push', async ({ page 
 	await expect(stage(page)).toContainText('pulling together');
 });
 
-test('fade: 1 cm apart the pull is 21 g; 2 cm apart, less than half; 10 cm, about 80 times weaker', async ({
+test('fade: 1 cm apart the pull is 65 g; 2 cm apart, under a third; 10 cm, about 150 times weaker', async ({
 	page
 }) => {
-	await open(page, './magnets-and-poles/#fade', '1 cm apart: they pull like a 21 g weight');
+	await open(page, './magnets-and-poles/#fade', '1 cm apart: they pull like a 65 g weight');
 	const gap = page.locator('input[type=range][data-control=gap]');
 	await gap.fill('2');
-	await expect(stage(page)).toContainText('2 cm apart: they pull like a 8.4 g weight');
+	await expect(stage(page)).toContainText('2 cm apart: they pull like a 19 g weight');
 	await gap.fill('10');
-	await expect(stage(page)).toContainText('79 times weaker than 1 cm apart');
+	await expect(stage(page)).toContainText('157 times weaker than 1 cm apart');
 });
 
 test('compass: near the magnet the needle follows it; far away it points north', async ({
@@ -89,16 +99,23 @@ test('clips: the magnet can be lowered with the keyboard', async ({ page }) => {
 	await expect(stage(page)).toContainText('it is a magnet now');
 });
 
-test('metals: the magnet picks up iron and nickel but ignores a stainless spoon and gold', async ({
+test('metals: the magnet picks up iron, steel and nickel but ignores a stainless spoon, aluminium, copper and gold', async ({
 	page
 }) => {
 	await open(page, './magnets-and-poles/#metals', 'iron nail: the magnet picks it up');
-	await page.locator('[data-control=material][data-value=spoon]').click();
-	await expect(stage(page)).toContainText('stainless-steel spoon: the magnet ignores it');
-	await page.locator('[data-control=material][data-value=nickel]').click();
-	await expect(stage(page)).toContainText('nickel strip: the magnet picks it up');
-	await page.locator('[data-control=material][data-value=gold]').click();
-	await expect(stage(page)).toContainText('gold ring: the magnet ignores it');
+	const next = page.locator('button[data-control=material]');
+	for (const text of [
+		'18/8 stainless-steel spoon: the magnet ignores it',
+		'steel paper clip: the magnet picks it up',
+		'aluminium foil: the magnet ignores it',
+		'nickel strip: the magnet picks it up',
+		'copper wire: the magnet ignores it',
+		'gold ring: the magnet ignores it',
+		'iron nail: the magnet picks it up'
+	]) {
+		await next.click();
+		await expect(stage(page)).toContainText(text);
+	}
 });
 
 test('cut: every piece of a cut magnet has a red and a blue end', async ({ page }) => {

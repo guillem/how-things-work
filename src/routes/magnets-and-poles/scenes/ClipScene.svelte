@@ -11,13 +11,23 @@
 	import { cubicInOut, cubicOut } from 'svelte/easing';
 	import { Label, hash, startDrag, wave } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
-	import { CLIP_JUMP, MATERIALS, inducedNearPole, type Magnet, type Material } from '../model';
+	import {
+		CLIP as CLIP_SIZE,
+		MATERIALS,
+		MATERIAL_ORDER,
+		clipJumpGap,
+		inducedNearPole,
+		type Magnet,
+		type Material
+	} from '../model';
 
 	let { step, t, params, reduced, setParam }: StageProps = $props();
 
 	const phase = $derived(String(step.hints?.phase ?? 'clips'));
 	const height = $derived(Number(params.height ?? 6));
-	const material = $derived(String(params.material ?? 'nail') as Material);
+	const material: Material = $derived(
+		MATERIAL_ORDER[Number(params.material ?? 0) % MATERIAL_ORDER.length]
+	);
 	const info = $derived(MATERIALS[material] ?? MATERIALS.nail);
 
 	// ---- one scale: 32 px per centimetre ---------------------------------------------------------
@@ -25,10 +35,12 @@
 	const TABLE = 540;
 	const MX = 330;
 	const MAG_L = 6 * U;
-	const MAG_W = 1.2 * U;
+	const MAG_W = 1 * U;
 	/** Top of the heap of clips (and of the object on the metals step), px. */
 	const HEAP_TOP = TABLE - 1.2 * U;
-	const CLIP_L = 2.2 * U;
+	/** How close the magnet's end must come for a clip to jump up to it, cm (from the model). */
+	const JUMP = clipJumpGap();
+	const CLIP_L = CLIP_SIZE.length * U;
 	const CLIP_W = 0.8 * U;
 
 	// On the metals step the magnet is held just above the object, and lifted once it has caught it.
@@ -39,9 +51,9 @@
 	const bottom = $derived(reduced ? magBottomTarget : magBottom.current);
 
 	// ---- clips: caught once the magnet has come close enough, and kept when it is lifted ---------
-	let caught = $state(untrack(() => Number(params.height ?? 6) <= CLIP_JUMP));
+	let caught = $state(untrack(() => Number(params.height ?? 6) <= JUMP));
 	$effect(() => {
-		if (phase === 'clips' && height <= CLIP_JUMP) untrack(() => (caught = true));
+		if (phase === 'clips' && height <= JUMP) untrack(() => (caught = true));
 	});
 	const jump = new Tween(
 		untrack(() => (caught ? 1 : 0)),
@@ -74,7 +86,7 @@
 	});
 	// Which pole the clip's top end becomes, from the field of the magnet just above it.
 	const magnet: Magnet = { x: 0, y: 0, angle: Math.PI / 2, length: 6 };
-	const clipTop = inducedNearPole(magnet, { x: 0, y: 3.1 }, { x: 0, y: 3 + 2.2 });
+	const clipTop = inducedNearPole(magnet, { x: 0, y: 3.1 }, { x: 0, y: 3 + CLIP_SIZE.length });
 
 	// The heap: clips lying about in a mound (one fewer once one has jumped up).
 	const heap = Array.from({ length: 9 }, (_, i) => ({
@@ -157,7 +169,7 @@
 				? `${info.name}: the magnet picks it up`
 				: `${info.name}: the magnet ignores it`;
 		if (!caught)
-			return height > CLIP_JUMP + 1 ? 'too far: the pull is too weak' : 'nearly close enough…';
+			return height > JUMP + 1 ? 'too far: the pull is too weak' : 'nearly close enough…';
 		return chain.length > 1
 			? `a chain of ${chain.length} clips: each one is a magnet now`
 			: 'a clip jumped up: it is a magnet now';

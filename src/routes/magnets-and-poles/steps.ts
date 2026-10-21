@@ -1,5 +1,5 @@
 import type { Control, ExplainerSpec } from '#lib/explainer/index.ts';
-import { MATERIALS } from './model';
+import { MATERIALS, MATERIAL_ORDER } from './model';
 
 const flip: Control = {
 	type: 'toggle',
@@ -44,11 +44,11 @@ const lower: Control = {
 };
 
 const material: Control = {
-	type: 'select',
+	type: 'action',
 	id: 'material',
 	label: 'What is under the magnet',
-	default: 'nail',
-	options: Object.entries(MATERIALS).map(([value, m]) => ({ value, label: m.name }))
+	action: 'Put the next thing under it',
+	help: `In turn: ${MATERIAL_ORDER.map((m) => MATERIALS[m].name).join(', ')}.`
 };
 
 const pieces: Control = {
@@ -87,8 +87,8 @@ export const spec: ExplainerSpec = {
 			duration: 18,
 			body: `
 <p>Here are two bar magnets lying on a table, seen from above. Each one has two ends, painted <strong class="mg-n">red</strong> and <strong class="mg-s">blue</strong>. The ends are called the magnet’s ${pole}: the red one is its <strong>north</strong> end and the blue one its <strong>south</strong> end (the compass, later on, shows why).</p>
-<p>The red end of the left magnet faces the blue end of the right one, and the arrows show them <strong>pulling together</strong>, without even touching. <strong>Drag the right magnet</strong> about the table and watch the arrows: they show which way each magnet is tugged, and how hard.</p>
-<p>Lay it alongside the other magnet, red beside red, and something changes: the arrows turn round and push the magnets apart.</p>`
+<p>The red end of the left magnet faces the blue end of the right one, and the arrows show them <strong>pulling together</strong>, without even touching. <strong>Drag either magnet</strong> about the table and watch the arrows: they show which way each magnet is tugged, and the longer the arrow, the harder the tug.</p>
+<p>Lay one alongside the other, red beside red, and something changes: the arrows turn round and push the magnets apart.</p>`
 		},
 		{
 			id: 'push',
@@ -112,9 +112,9 @@ export const spec: ExplainerSpec = {
 			duration: 18,
 			controls: [gap],
 			body: `
-<p>Close together, these two magnets pull as hard as a 21-gram weight hanging on a string: about four sugar cubes. <strong>Widen the gap</strong> and watch the number.</p>
-<p>At 2 centimetres apart the pull is already less than half as strong; at 10 centimetres it is about eighty times weaker, too weak to slide a magnet across a table. Far apart, every doubling of the distance makes the pull <strong>sixteen times</strong> weaker. A magnet’s pull is strong up close and fades very quickly.</p>`,
-			notes: `<p>The numbers come from treating each end as a small point where the magnet’s pull is concentrated, using the strength of ordinary grey ferrite school magnets 6 cm long. Real magnets differ in strength, but the way the pull fades is the same.</p>`
+<p>One centimetre apart, these two magnets pull as hard as the weight of an egg: about 65 grams hanging on a string. <strong>Widen the gap</strong> and watch the number (the arrows are drawn squashed, so that a weak pull still shows: the number is the one to compare).</p>
+<p>At 2 centimetres apart the pull is already less than a third as strong; at 10 centimetres it is about 150 times weaker, too weak to slide a magnet across a table. Far apart, every doubling of the distance makes the pull <strong>sixteen times</strong> weaker. A magnet’s pull is strong up close and fades very quickly.</p>`,
+			notes: `<p>The numbers come from treating each end face as covered evenly in magnetic “charge”, using the strength of ordinary grey ferrite school magnets 6 cm long with a 1 cm square end. Real magnets differ in strength, but the way the pull fades is the same.</p>`
 		},
 		// ------------------------------------------------------------------ around
 		{
@@ -127,7 +127,7 @@ export const spec: ExplainerSpec = {
 			body: `
 <p>A compass needle is a tiny magnet on a pin, free to turn. Its red end is its north end. <strong>Drag the compass</strong> around the magnet: the needle’s red end turns away from the magnet’s red end and towards its blue end, following the push and pull.</p>
 <p>Drag it far away and the needle swings round to point <strong>north</strong>. The whole Earth acts like a huge, weak magnet, and far from the bar magnet the Earth’s pull is the stronger one. That is where the names come from: a magnet’s north end is the end that turns to point north.</p>`,
-			notes: `<p>Since a needle’s north end is pulled towards the north, the Earth’s magnet has its <em>south</em> end up near the North Pole (unlike ends pull). The Earth’s magnetic poles are also a long way from the geographic ones, and they wander a few kilometres every year.</p>`
+			notes: `<p>Since a needle’s north end is pulled towards the north, the Earth’s magnet has its <em>south</em> end up near the North Pole (unlike ends pull). The magnetic poles are not at the geographic ones, and they move over the years: in 2025 the north magnetic pole was drifting about 35 kilometres a year.</p>`
 		},
 		{
 			id: 'filings',
@@ -151,9 +151,10 @@ export const spec: ExplainerSpec = {
 			duration: 22,
 			controls: [lower],
 			body: `
-<p>A steel paper clip is not a magnet: two paper clips don’t pull on each other. <strong>Lower the magnet</strong> towards a heap of them. Once it is close enough, a clip jumps up and sticks to its end.</p>
-<p>Touching the magnet, the clip <strong>becomes a magnet itself</strong>: it gets a blue end next to the magnet’s red end, and a red end at the bottom. That new magnet can pick up a second clip, which becomes a magnet too and holds a third: a chain.</p>
-<p>Lift the magnet and the chain comes with it. Pull the top clip off the magnet, though, and the chain falls apart: a steel clip is a magnet mostly while it touches one, and loses most of its magnetism when it is taken away.</p>`
+<p>A steel paper clip is not a magnet: two paper clips don’t pull on each other. <strong>Lower the magnet</strong> towards a heap of them. Once it is a centimetre or two away, a clip jumps up and sticks to its end.</p>
+<p>Near the magnet, even before it touches, the clip <strong>becomes a magnet itself</strong>: it gets a blue end next to the magnet’s red end, and a red end at the bottom. That new magnet can pick up a second clip, which becomes a magnet too and holds a third: a chain.</p>
+<p>Lift the magnet and the chain comes with it. Take the clips away from the magnet, though, and most of their magnetism goes, so the chain usually falls apart (steel clips can keep a little).</p>`,
+			notes: `<p>When the clip jumps comes from the same sums as the rest of the page: the magnet’s pull on the clip, which the clip’s own shape limits, is compared with the clip’s weight. How long a chain can grow depends on the magnet and the clips, and the drawing simply shows three.</p>`
 		},
 		{
 			id: 'metals',
@@ -164,9 +165,9 @@ export const spec: ExplainerSpec = {
 			duration: 22,
 			controls: [material],
 			body: `
-<p>A magnet does not pull every metal. <strong>Put different things under it.</strong> It picks up an iron nail, a steel paper clip and a strip of nickel. It ignores aluminium foil, copper wire and a gold ring.</p>
-<p>Only a few metals are pulled: <strong>iron, nickel and cobalt</strong>, and most kinds of steel, which is mostly iron. Even steel can fool you: most stainless-steel spoons and kitchen sinks are made of a kind of steel that a magnet hardly pulls at all.</p>`,
-			notes: `<p>Stainless steel comes in several kinds. The common one for cutlery and sinks (“18/8”, with chromium and nickel mixed in) is not magnetic, though bending it can make it slightly so. Other kinds, used for some knives and fridge doors, are magnetic. Coins are no guide either: many “nickel” coins are mostly copper and ignore a magnet.</p>`
+<p>A magnet does not pull every metal. <strong>Put one thing after another under it.</strong> It picks up an iron nail, a steel paper clip and a strip of nickel. It ignores aluminium foil, copper wire and a gold ring.</p>
+<p>Only a few metals are pulled: <strong>iron, nickel and cobalt</strong>, and most kinds of steel, which is mostly iron. Even steel can fool you: many stainless-steel spoons and kitchen sinks are made of a kind of steel that a magnet hardly pulls at all, while other stainless spoons are pulled strongly.</p>`,
+			notes: `<p>Stainless steel comes in several kinds. A common one for cutlery and sinks (“18/8”, with chromium and nickel mixed in) is hardly magnetic, though bending it can make it slightly so. Other kinds (“18/0”, used for cheaper cutlery, some knives and fridge doors) are pulled strongly. Coins are no guide either: many “nickel” coins are mostly copper and ignore a magnet.</p>`
 		},
 		{
 			id: 'cut',
@@ -189,7 +190,7 @@ export const spec: ExplainerSpec = {
 			duration: 14,
 			body: `
 <p>A magnet always has two ends; like ends push apart and unlike ends pull together, and the pull fades quickly with distance.</p>
-<p>Magnets have a close cousin: electricity. A wire carrying a current is a magnet while the current flows, and a magnet moving past a coil of wire makes a current. The page on <a href="../electromagnetism/">electromagnetism</a> shows how electric and magnetic pulls are two sides of one thing.</p>`
+<p>Magnets have a close cousin: electricity. A wire carrying a current is a magnet while the current flows, and pushing a magnet into or out of a coil of wire makes a current flow, if the wire makes a complete loop. The page on <a href="../electromagnetism/">electromagnetism</a> shows how electric and magnetic pulls are two sides of one thing.</p>`
 		}
 	]
 };

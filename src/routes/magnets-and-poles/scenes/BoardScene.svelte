@@ -13,6 +13,7 @@
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import {
 		MAGNET_LENGTH,
+		SIDE,
 		compass,
 		cut,
 		field,
@@ -30,10 +31,12 @@
 
 	const phase = $derived(String(step.hints?.phase ?? 'pull'));
 	const L = MAGNET_LENGTH;
-	/** Drawn thickness of a bar, cm. */
-	const THICK = 1.2;
+	/** Thickness of a bar as seen from above, cm. */
+	const THICK = SIDE;
 
 	// ---- where things are, per phase (cm, board centre at 0, 0) --------------------------------
+	const ax = $derived(Number(params.ax ?? -6));
+	const ay = $derived(Number(params.ay ?? 0));
 	const bx = $derived(Number(params.bx ?? 3));
 	const by = $derived(Number(params.by ?? 0));
 	const gap = $derived(Number(params.gap ?? 1));
@@ -64,7 +67,7 @@
 		});
 		switch (phase) {
 			case 'pull':
-				return { ax: -6, ay: 0, bx, by, bAngle: 0, bShown: 1, zoom: 36 };
+				return { ax, ay, bx, by, bAngle: 0, bShown: 1, zoom: 36 };
 			case 'push':
 				return { ...pair(3, flipped), ax: -6, bx: 3 };
 			case 'fade':
@@ -131,7 +134,7 @@
 	const fMag = $derived(magnitude(fAB));
 	const pulling = $derived(twoShown && pulls(A, B));
 	/** Arrow length in pixels: a log scale, so both a strong and a faint pull show. */
-	const arrowLen = (f: number) => Math.max(0, Math.min(160, 46 * (Math.log10(f) + 3.3)));
+	const arrowLen = (f: number) => Math.max(0, Math.min(220, 60 * (Math.log10(f) + 3.3)));
 	const breathe = $derived(reduced ? 1 : 0.94 + 0.06 * wave(t, 1.6));
 	const arrows = $derived.by(() => {
 		if (!twoShown || phase === 'cut' || phase === 'filings' || phase === 'next') return [];
@@ -143,7 +146,8 @@
 			{ id: 'b', m: B, dx: ux, dy: uy },
 			{ id: 'a', m: A, dx: -ux, dy: -uy }
 		].map((a) => {
-			const x0 = PX(a.m.x);
+			// From the end facing away from the tug, so two arrows pulling together never cross.
+			const x0 = PX(a.m.x) - a.dx * (L / 2) * U;
 			const y0 = PY(a.m.y) - (THICK / 2) * U - 16;
 			return { id: a.id, x1: x0, y1: y0, x2: x0 + a.dx * len, y2: y0 + a.dy * len };
 		});
@@ -158,33 +162,34 @@
 		return `${r < 10 ? r.toFixed(1) : Math.round(r)} times weaker than 1 cm apart`;
 	});
 
-	// ---- dragging the right magnet (first step) ------------------------------------------------
-	function placeB(x: number, y: number) {
+	// ---- dragging either magnet (first step) ---------------------------------------------------
+	function place(id: 'a' | 'b', x: number, y: number) {
+		const other = id === 'a' ? B : A;
 		const lx = halfW - L / 2 - 0.3;
 		const ly = halfH - THICK / 2 - 0.3;
 		let nx = Math.max(-lx, Math.min(lx, x));
 		let ny = Math.max(-ly, Math.min(ly, y));
 		// Keep the bars from overlapping: push the dragged one out along the shorter way.
-		const ox = L + 0.2 - Math.abs(nx - A.x);
-		const oy = THICK + 0.4 - Math.abs(ny - A.y);
+		const ox = L + 0.2 - Math.abs(nx - other.x);
+		const oy = THICK + 0.4 - Math.abs(ny - other.y);
 		if (ox > 0 && oy > 0) {
-			if (ox < oy) nx = A.x + Math.sign(nx - A.x || 1) * (L + 0.2);
-			else ny = A.y + Math.sign(ny - A.y || 1) * (THICK + 0.4);
+			if (ox < oy) nx = other.x + Math.sign(nx - other.x || 1) * (L + 0.2);
+			else ny = other.y + Math.sign(ny - other.y || 1) * (THICK + 0.4);
 		}
-		setParam('bx', Math.round(nx * 10) / 10);
-		setParam('by', Math.round(ny * 10) / 10);
+		setParam(id + 'x', Math.round(nx * 10) / 10);
+		setParam(id + 'y', Math.round(ny * 10) / 10);
 	}
-	let grab = { dx: 0, dy: 0 };
-	function dragB(e: PointerEvent) {
+	function dragMagnet(e: PointerEvent, id: 'a' | 'b') {
 		let first = true;
+		let off = { dx: 0, dy: 0 };
 		startDrag(e, (p) => {
 			const x = (p.x - CX) / U;
 			const y = (p.y - CY) / U;
 			if (first) {
-				grab = { dx: bx - x, dy: by - y };
+				off = id === 'a' ? { dx: ax - x, dy: ay - y } : { dx: bx - x, dy: by - y };
 				first = false;
 			}
-			placeB(x + grab.dx, y + grab.dy);
+			place(id, x + off.dx, y + off.dy);
 		});
 	}
 	function keyMove(e: KeyboardEvent, move: (dx: number, dy: number) => void, stepCm: number) {
@@ -248,6 +253,8 @@
 			void needleAngle.set(a, reduced ? { duration: 0 } : undefined);
 		});
 	});
+	// The needle quivers for a moment when the step opens, as a real one does when set down.
+	const wobble = $derived(reduced ? 0 : 0.35 * Math.exp(-1.6 * t) * Math.sin(9 * t));
 	const compassText = $derived(
 		needle.vsEarth > 3
 			? 'near the magnet: the needle follows the magnet'
@@ -337,7 +344,7 @@
 	const sub = $derived.by(() => {
 		switch (phase) {
 			case 'pull':
-				return 'drag the right magnet';
+				return 'drag either magnet';
 			case 'push':
 				return flipped ? 'red faces red' : 'red faces blue';
 			case 'fade':
@@ -419,29 +426,38 @@
 		</g>
 	{/each}
 
-	<!-- the right magnet is the one to drag on the first step -->
+	<!-- on the first step either magnet can be dragged -->
 	{#if phase === 'pull'}
-		<rect
-			class="mg-drag"
-			x={PX(B.x) - (L / 2) * U - 8}
-			y={PY(B.y) - (THICK / 2) * U - 8}
-			width={L * U + 16}
-			height={THICK * U + 16}
-			rx="8"
-			fill="transparent"
-			stroke="var(--focus)"
-			stroke-width="1.5"
-			stroke-dasharray="5 5"
-			role="slider"
-			tabindex="0"
-			aria-label="Right magnet"
-			aria-valuenow={Math.round(Math.hypot(B.x - A.x, B.y - A.y) * 10) / 10}
-			aria-valuetext={`${headline}, ${Math.round(Math.hypot(B.x - A.x, B.y - A.y))} cm from the other magnet`}
-			aria-valuemin={0}
-			aria-valuemax={30}
-			onpointerdown={dragB}
-			onkeydown={(e) => keyMove(e, (dx, dy) => placeB(bx + dx, by + dy), 0.5)}
-		/>
+		{#each [{ id: 'a' as const, m: A, name: 'Left magnet' }, { id: 'b' as const, m: B, name: 'Right magnet' }] as d (d.id)}
+			{@const dist = Math.round(Math.hypot(B.x - A.x, B.y - A.y))}
+			<rect
+				class="mg-drag"
+				x={PX(d.m.x) - (L / 2) * U - 8}
+				y={PY(d.m.y) - (THICK / 2) * U - 8}
+				width={L * U + 16}
+				height={THICK * U + 16}
+				rx="8"
+				fill="transparent"
+				stroke="var(--focus)"
+				stroke-width="1.5"
+				stroke-dasharray="5 5"
+				role="slider"
+				tabindex="0"
+				aria-label={d.name}
+				aria-valuenow={dist}
+				aria-valuetext={`${headline}, ${dist} cm between their middles`}
+				aria-valuemin={0}
+				aria-valuemax={30}
+				onpointerdown={(e) => dragMagnet(e, d.id)}
+				onkeydown={(e) =>
+					keyMove(
+						e,
+						(dx, dy) =>
+							d.id === 'a' ? place('a', ax + dx, ay + dy) : place('b', bx + dx, by + dy),
+						0.5
+					)}
+			/>
+		{/each}
 	{/if}
 
 	<!-- force arrows: which way each magnet is tugged -->
@@ -485,7 +501,7 @@
 		{@const r = COMPASS_R * U}
 		<g transform="translate({PX(cx)} {PY(cy)})">
 			<circle {r} fill="var(--surface)" stroke="var(--stage-ink-muted)" stroke-width="2" />
-			<g transform="rotate({(needleAngle.current * 180) / Math.PI})">
+			<g transform="rotate({((needleAngle.current + wobble) * 180) / Math.PI})">
 				<path d="M0 -5 L{r - 4} 0 L0 5 Z" fill="var(--mg-north)" />
 				<path d="M0 -5 L{-(r - 4)} 0 L0 5 Z" fill="var(--mg-needle)" />
 			</g>
@@ -545,6 +561,19 @@
 			/>
 			<Label x={40 + 5 * U} y={546} text="10 cm" muted size={13} />
 		</g>
+	{/if}
+
+	{#if arrows.length}
+		<Readout id="mg-arrow-key">
+			<Label
+				x={930}
+				y={570}
+				text="longer arrow, harder pull (drawn squashed)"
+				anchor="end"
+				size={12}
+				muted
+			/>
+		</Readout>
 	{/if}
 
 	<!-- readouts -->
