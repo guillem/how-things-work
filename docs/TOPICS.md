@@ -1984,7 +1984,7 @@ A topic is done when:
 - **Takeaway:** This kind of spam filter has no idea what a message means: it counts which words turned up more in past spam than in ordinary messages, which is why spammers misspell and why your 'report spam' clicks teach it.
 - **Prerequisites:** none
 - **Related:** teach-a-machine
-- **Needs:** The SMS Spam Collection (Almeida, Gómez Hidalgo and Silva, UCI Machine Learning Repository, 5,574 messages), reduced to a hand-checked subset of a few hundred messages with adult or crude spam removed, since the audience is children.
+- **Needs:** The SMS Spam Collection (Almeida and Gómez Hidalgo, UCI Machine Learning Repository, 5,574 messages), reduced to a hand-checked subset of a few hundred messages with adult or crude spam removed, since the audience is children.
 - **Pitfall:** No word is bad: 'free' is only commoner in spam. The filter can be fooled both ways, and how much spam exists overall matters, so a rare kind of message needs stronger evidence; keep that as counts, not Bayes' formula. Do not say this is how every modern mail filter works: real ones also look at the sender, the links and use neural networks.
 
 #### teach-a-machine
