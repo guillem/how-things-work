@@ -4,7 +4,7 @@ The self-handover. If work is interrupted, this file alone must be enough to con
 top to bottom, then run the commands under "Resume". **Update it at every commit**, not just at
 the end of a development.
 
-Last updated: 2026-10-21, 70 of the proposal's topics built, all released; **v1.2.2 live** (170 topics). Next: finish the five half-built level-0 topics (below), then the remaining level-0 topics.
+Last updated: 2026-10-21, 75 of the proposal's topics built, all released; **v1.2.3 live** (175 topics). Next: the remaining level-0 topics.
 
 ## How we work
 
@@ -35,9 +35,10 @@ Last updated: 2026-10-21, 70 of the proposal's topics built, all released; **v1.
 
 ## Current state
 
-- **All 100 catalogue topics are built, fact-checked and ticked** (done 2026-10-15). **v1.2.2**
-  (2026-10-21) is live: 170 topics, the 100 plus 70 of the proposal's (the first nine at level 0,
-  with the index's "Start here" link). Before it, v1.2.1 (2026-10-20): 155 topics and Paths v1
+- **All 100 catalogue topics are built, fact-checked and ticked** (done 2026-10-15). **v1.2.3**
+  (2026-10-21) is live: 175 topics, the 100 plus 75 of the proposal's (14 at level 0). Before it,
+  v1.2.2 (2026-10-21): 170 topics, the first nine at level 0 with the index's "Start here" link.
+  Before that, v1.2.1 (2026-10-20): 155 topics and Paths v1
   (one reading path, language models). Before that, v1.1.2 (2026-10-19): 154 topics. Before it, v1.0.0
   (2026-10-17): the 100 topics plus the index search and filters (a sticky
   sidebar on wide screens), faster browser tests and the overnight backlog round described below.
@@ -79,7 +80,7 @@ Last updated: 2026-10-21, 70 of the proposal's topics built, all released; **v1.
 same morning):** forest-fire-spread, secret-codes, next-word-guessing-game and leap-years, all
 ticked. The five left half-built (monty-hall, floating-sinking-and-boats, magnets-and-poles,
 twenty-questions, spam-filter-word-counts) were finished the same day by fresh builders, each
-fact-checked by Codex, ticked and landed on `main`; not released yet (v1.2.2 has 170). Their old
+fact-checked by Codex, ticked and landed on `main`; released in v1.2.3. Their old
 worktrees are removed. The small issues found then are fixed on `main` too: twenty-questions has
 a phone layout (every animal named, readable questions), magnets-and-poles' board fills the phone
 stage, floating-sinking-and-boats' block shows in oil and its scales read in dark mode, and
@@ -102,7 +103,7 @@ promoted into `TOPICS.md` as their builds start (next paragraph).
 time in worktrees, each fact-checked by Codex (`scripts/local-review.mjs`) and pushed to `main`;
 the entry is promoted into `TOPICS.md` when its build starts. Order:
 `proposals/topics-200/data/build-order.json` (the LLM ladder first, then the level 1–3 topics;
-level 0 last, pending the user's answer on its definition). Built so far: 70 of the 100, all released (v1.2.2).
+level 0 last, pending the user's answer on its definition). Built so far: 75 of the 100, all released (v1.2.3).
 
 **Resumed 2026-10-18 night on the new machine** (the user's weekly limit is now 98%). Landed
 since: ocean-acidification, tsunamis, carbonate-silicate-thermostat, radiative-convective-column,
