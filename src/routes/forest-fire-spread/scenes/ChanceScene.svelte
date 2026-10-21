@@ -48,7 +48,7 @@
 		yLabel="forests crossed"
 		xTicks={[0.3, 0.4, 0.5, 0.6, 0.7, 0.8]}
 		yTicks={[0, 0.5, 1]}
-		xFormat={(v) => String(pct(v))}
+		xFormat={(v: number) => String(pct(v))}
 		yFormat={(v) => (v === 0 ? 'none' : v === 1 ? 'all' : 'half')}
 	/>
 	<line

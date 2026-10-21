@@ -211,7 +211,7 @@ A topic is done when:
 - [x] carbonate-silicate-thermostat
 - [x] radiative-convective-column
 - [ ] cloud-base
-- [ ] forest-fire-spread
+- [x] forest-fire-spread
 - [ ] sea-breeze
 
 **Space**

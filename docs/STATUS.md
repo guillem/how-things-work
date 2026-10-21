@@ -74,6 +74,8 @@ Last updated: 2026-10-20 18:00 UTC, 55 of the proposal's topics built; **v1.2.1 
 
 ## Current development
 
+- **Level-0 builder A (2026-10-21):** landed forest-fire-spread; in progress: hearing-and-the-ear (then muscles-pull-in-pairs, why-spinning-makes-you-dizzy, why-you-get-sleepy, cloud-base, sea-breeze).
+
 **Next topics, proposed for review (2026-10-18, after v1.0.0): a level 0 and 100 new topics.**
 The user asked for a researched proposal (no code): a new level 0 for beginners, the levels made
 more even (level 3 has 6 topics today), 100 new entries. Done:

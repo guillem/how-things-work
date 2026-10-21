@@ -185,7 +185,7 @@ export const spec: ExplainerSpec = {
 <p>Is 59 in every 100 a magic number for forests? No: it belongs to this grid and this rule. Let the fire also reach the trees touching a burning tree at its corners, so that each tree has eight neighbours instead of four. This half-planted forest, where the fire died near the edge, now burns right across. With corners, the coin toss moves down to about 41 trees in every 100 squares.</p>
 <p>Real forests aren’t grids, and real fires depend on wind, slopes, how dry the plants are and how much there is to burn, which this toy leaves out. What carries over is the idea: when something can only spread from neighbour to neighbour, there is a tipping point, and close to it, small changes decide whether it gets through.</p>`,
 			notes: `
-<p>With eight neighbours the tipping point of an endlessly big forest is about 40.7 trees in every 100 squares (Malarz and Galam, 2005). Other grids and other rules each have their own number: a grid of triangles, where each square has six neighbours, tips at exactly half.</p>`
+<p>With eight neighbours the tipping point of an endlessly big forest is about 40.7 trees in every 100 squares (Malarz and Galam, 2005). Other grids and other rules each have their own number: trees placed at the corners of a grid of triangles, each linked to its six nearest neighbours, tip at exactly half.</p>`
 		},
 		{
 			id: 'next',
