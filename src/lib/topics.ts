@@ -1554,6 +1554,15 @@ const explainers: Explainer[] = [
 		accent: '#7048e8',
 		steps: 8,
 		minutes: 10
+	},
+	{
+		slug: 'leap-years',
+		title: 'Leap years: why February gets an extra day',
+		summary:
+			'Earth takes 365 days and almost six hours to go once round the Sun. Watch what those six hours do to a calendar with no leap days, how one extra day every four years almost fixes it, and why 1900 had no 29 February but 2000 did.',
+		accent: '#e8590c',
+		steps: 8,
+		minutes: 9
 	}
 ];
 

@@ -5206,3 +5206,29 @@ kbd {
 	--nw-s7: #0c8599;
 	--nw-s8: #495057;
 }
+
+/* leap-years: the Sun, Earth, the calendar ring's seasons, the longest-day star, the drift lines */
+:root {
+	--ly-sun: #f59f00;
+	--ly-earth: #1c7ed6;
+	--ly-winter: #a5d8ff;
+	--ly-spring: #b2f2bb;
+	--ly-summer: #ffd8a8;
+	--ly-autumn: #e6c9a8;
+	--ly-star: #e8590c;
+	--ly-none: #e03131;
+	--ly-julian: #1971c2;
+	--ly-greg: #2f9e44;
+}
+:root[data-theme='dark'] {
+	--ly-sun: #fcc419;
+	--ly-earth: #4dabf7;
+	--ly-winter: #1c3d5a;
+	--ly-spring: #1f4a2a;
+	--ly-summer: #5c3d17;
+	--ly-autumn: #4a3a2a;
+	--ly-star: #ff922b;
+	--ly-none: #ff6b6b;
+	--ly-julian: #4dabf7;
+	--ly-greg: #69db7c;
+}

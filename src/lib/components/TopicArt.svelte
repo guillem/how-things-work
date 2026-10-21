@@ -5671,6 +5671,27 @@
 				opacity="0.7"
 			/>
 		{/each}
+	{:else if slug === 'leap-years'}
+		<!-- the Sun, Earth's orbit, and a calendar page showing 29 February -->
+		<circle
+			cx="70"
+			cy="60"
+			r="42"
+			fill="none"
+			stroke="currentColor"
+			stroke-width="1.5"
+			opacity="0.5"
+		/>
+		<circle cx="70" cy="60" r="14" fill="#f59f00" />
+		<circle cx="70" cy="18" r="6" fill="#1c7ed6" />
+		<rect x="122" y="26" width="58" height="66" rx="6" fill="#ffffff" opacity="0.92" />
+		<rect x="122" y="26" width="58" height="16" rx="6" fill={accent} />
+		<text x="151" y="38" text-anchor="middle" font-size="10" font-weight="700" fill="#ffffff"
+			>FEB</text
+		>
+		<text x="151" y="78" text-anchor="middle" font-size="30" font-weight="700" fill={accent}
+			>29</text
+		>
 	{:else}
 		<circle cx="100" cy="60" r="30" fill="none" stroke={accent} stroke-width="2" />
 		<circle cx="100" cy="60" r="5" fill={accent} />

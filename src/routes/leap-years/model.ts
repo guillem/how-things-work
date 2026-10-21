@@ -150,3 +150,16 @@ export function weekday(year: number, month: number, day: number): number {
 	n += day - 1;
 	return (((1 + n) % 7) + 7) % 7;
 }
+
+/**
+ * For years 0..n, the solstice's date as a day of an ordinary 365-day year (0 = 1 January,
+ * 171 = 21 June), with the fraction of the day; a leap year's 29 February is left out of the count
+ * so that the same number is the same date every year. Not wrapped at the year's end: 365 is the
+ * next 1 January.
+ */
+export function solsticeSeries(n: number, rule: Rule): number[] {
+	return driftSeries(n, rule).map((d, k) => {
+		const leapShift = isLeap(START_YEAR + k, rule) ? 1 : 0;
+		return FIRST_SOLSTICE + d - leapShift;
+	});
+}

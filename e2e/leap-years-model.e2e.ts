@@ -8,6 +8,7 @@ import {
 	leapReason,
 	shortfallKm,
 	solsticeDate,
+	solsticeSeries,
 	weekday
 } from '../src/routes/leap-years/model';
 
@@ -81,4 +82,16 @@ test('weekdays: 1 January 2000 was a Saturday, 1 February 2024 a Thursday', () =
 	expect(weekday(2024, 1, 1)).toBe(4);
 	expect(weekday(1900, 0, 1)).toBe(1);
 	expect(weekday(2001, 0, 1)).toBe(1);
+});
+
+test('the chart series names the same dates as the calendar', () => {
+	const s = solsticeSeries(2000, 'gregorian');
+	for (const n of [0, 3, 19, 23, 99, 1999]) {
+		const d = solsticeDate(n, 'gregorian');
+		// Day of an ordinary year: June 20 is 170, June 21 is 171.
+		expect(Math.floor(s[n])).toBe(
+			d.day === 20 ? 170 : d.day === 21 ? 171 : d.day === 22 ? 172 : -1
+		);
+	}
+	expect(Math.floor(solsticeSeries(100, 'none')[100])).toBe(195); // July 15
 });
