@@ -59,8 +59,13 @@ test('an egg sinks in water and floats in very salty water', async ({ page }) =>
 test('the balloon lifts off once the air inside is hot enough', async ({ page }) => {
 	await open(page, './floating-sinking-and-boats/#balloon', 'heavier: it stays down');
 	const slider = page.locator('input[type=range][data-control=heat]');
-	await slider.fill('80');
+	// One degree flips it, and the sums on the stage show why.
+	await slider.fill('85');
+	await expect(stage(page)).toContainText('all together: 3,064 kg');
+	await expect(stage(page)).toContainText('air it pushes aside: 3,063 kg');
 	await expect(stage(page)).toContainText('heavier: it stays down');
-	await slider.fill('90');
+	await slider.fill('86');
+	await expect(stage(page)).toContainText('all together: 3,057 kg');
+	await expect(stage(page)).toContainText('air it pushes aside: 3,063 kg');
 	await expect(stage(page)).toContainText('lighter: it rises');
 });
