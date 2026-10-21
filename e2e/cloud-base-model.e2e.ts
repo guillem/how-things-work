@@ -77,6 +77,9 @@ test('damper air makes a lower cloud base; air too dry makes none below the ther
 	expect(cloudBase(DAY.groundC, 0.35)).toBeGreaterThan(DAY.thermalTop);
 	expect(cloudBase(DAY.groundC, 0.4)).toBeLessThan(DAY.thermalTop);
 	expect(cloudBase(DAY.groundC, 1)).toBe(0);
+	// Air with no water, or almost none, never makes cloud.
+	expect(cloudBase(DAY.groundC, 0)).toBe(Infinity);
+	expect(cloudBase(DAY.groundC, 0.001)).toBe(Infinity);
 });
 
 test('saturated air cools more slowly: about 4.3 °C per km at 20 °C and 6.5 at 0 °C (1000 hPa)', () => {

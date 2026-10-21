@@ -173,9 +173,14 @@ export function moveTo(b0: Bubble, z: number, groundC: number, rain = false): Bu
 	return b;
 }
 
-/** Height, m, at which a bubble from the ground turns into cloud (the lifting condensation level). */
+/**
+ * Height, m, at which a bubble from the ground turns into cloud (the lifting condensation level):
+ * 0 for saturated air, and Infinity for air with no water or too dry to reach saturation below
+ * 8 km (the range the pressure model covers).
+ */
 export function cloudBase(groundC: number, rh0: number): number {
 	if (rh0 >= 1) return 0;
+	if (!(rh0 > 0)) return Infinity;
 	const b = start(groundC, rh0);
 	// Dry ascent keeps the vapour fixed: find where it becomes saturated, by bisection.
 	const sat = (z: number) => {
@@ -185,6 +190,7 @@ export function cloudBase(groundC: number, rh0: number): number {
 	};
 	let lo = 0;
 	let hi = 8000;
+	if (sat(hi) > 0) return Infinity;
 	for (let i = 0; i < 60; i++) {
 		const mid = (lo + hi) / 2;
 		if (sat(mid) > 0) lo = mid;

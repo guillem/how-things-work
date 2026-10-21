@@ -122,8 +122,8 @@
 		}
 		return { body, puffs };
 	})();
-	/** Rain falls from the upper part of the cloud, where its droplets have had time to grow. */
-	const rainFrom = $derived(trip.cloudFrom === null ? 1 : trip.cloudFrom + 0.05);
+	/** The model lets every droplet fall as rain at once, so rain falls from the whole cloud. */
+	const rainFrom = $derived(trip.cloudFrom === null ? 1 : trip.cloudFrom + 0.01);
 	const rainStreaks = Array.from({ length: 26 }, (_, i) => ({
 		i,
 		f: hash(i, 51),
@@ -156,9 +156,9 @@
 			return u === 0 ? 'on the plain, with the wind behind it' : 'blown towards the mountain';
 		if (u <= 0.5) {
 			if (!inCloud) return 'pushed up the slope: it swells and cools';
-			return u > rainFrom
+			return u > (trip.cloudFrom ?? 1) + 0.03
 				? 'inside the cloud: its water falls as rain'
-				: 'it turns white: a cloud forms';
+				: 'it turns white: a cloud forms, and rain begins';
 		}
 		if (u < 0.88) return 'going down: squeezed, it warms up';
 		return 'on the far plain: warmer and drier';

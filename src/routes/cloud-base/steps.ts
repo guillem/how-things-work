@@ -79,7 +79,7 @@ export const spec: ExplainerSpec = {
 			controls: [height],
 			body: `
 <p>The Sun warms the ground, and the ground warms the air touching it. A <strong>bubble</strong> of that warm air is lighter than the cooler air around it, so the cooler air pushes it up, like a beach ball let go under water. Today the air near the ground is ${DAY.groundC} °C.</p>
-<p><strong>Drag the bubble up</strong> and watch its thermometer. It drops about <strong>one degree for every hundred metres</strong>: 500 metres up, the bubble is already 5 degrees colder. And the bubble <strong>swells</strong>: the dotted circle shows how big it was on the ground.</p>
+<p><strong>Drag the bubble up</strong> and watch its thermometer. It drops about <strong>one degree for every hundred metres</strong>: 500 metres up, the bubble is already 5 degrees colder. And the bubble <strong>swells</strong>: the dotted circle shows how big it was on the ground. (Here you choose how high the bubble goes; the page works out how much it cools and swells.)</p>
 <p>Higher up there is less air above pressing down, so the bubble spreads out. Air that spreads out cools down: it uses up some of its warmth pushing the air around it aside. You can feel it in the cold puff of air from a bicycle tyre’s valve, or a spray can that gets cold in your hand.</p>`,
 			notes: `<p>It is not colder up high because you are farther from the Sun. The Sun is 150 million kilometres away; climbing 2 kilometres brings you closer by one part in 75 million, which changes nothing. The air up a mountain is cold because air that rises swells and cools, and it is the ground, not the sunshine on the air, that warms the air from below.</p><p>The air around a mountain is not quite as cold as a bubble that rose there: on average it gets about 6 or 7 degrees colder for each kilometre, a little less than a rising bubble’s 10.</p>`
 		},
@@ -107,8 +107,8 @@ export const spec: ExplainerSpec = {
 			duration: 20,
 			body: `
 <p>Now let bubble after bubble rise from the same warm ground. They all start with the same warmth and the same water, so they all cool the same way, and every one of them <strong>turns white at the same height</strong>.</p>
-<p>That is the flat floor under the clouds: the ${base}. Below it, the rising air is still clear; above it, it is cloud. On this day the bubbles stop rising at about 2,000 metres, so the clouds are lumpy heaps from 1,200 metres to the top.</p>`,
-			notes: `<p>How high the bubbles go depends on the day. They stop where the air around them is no longer colder than they are; on a sunny summer afternoon that is often 1 to 2 kilometres up. On some days they keep going much higher, and the clouds tower into thunderstorms.</p>`
+<p>That is the flat floor under the clouds: the ${base}. Below it, the rising air is still clear; above it, it is cloud. On this day the page lets the bubbles rise to 2,000 metres, so the clouds are lumpy heaps from 1,200 metres to the top.</p>`,
+			notes: `<p>Real bubbles keep rising while they are lighter than the air around them, and how high that is depends on the day and on how much the bubbles mix with the air around them; on a sunny summer afternoon it is often 1 to 2 kilometres up. The page doesn’t work that height out: it simply chooses 2,000 metres. On some days bubbles keep going much higher, and the clouds tower into thunderstorms.</p>`
 		},
 		{
 			id: 'humid',
@@ -135,7 +135,7 @@ export const spec: ExplainerSpec = {
 			body: `
 <p>Air rises in another way too: wind can push it up a mountainside. Here the wind blows from the left towards a mountain 2,000 metres high, on a day of 20 °C with damp air (70 %).</p>
 <p><strong>Blow the bubble over the mountain.</strong> On the way up the slope it cools about a degree every hundred metres, and at about 700 metres it turns white: a cloud forms on the side facing the wind. Higher still, its droplets grow and bump together into drops big enough to fall, and it <strong>rains on the slope</strong>.</p>
-<p>The rain takes water away for good: by the top, the bubble has lost about a quarter of the water it started with.</p>`,
+<p>The rain takes water away for good. The page keeps it simple: all the water that turns into droplets falls out as rain at once (real clouds keep some of their droplets, and it takes time for them to grow into raindrops). With that, by the top the bubble has lost about a quarter of the water it started with.</p>`,
 			notes: `<p>Inside the cloud, the bubble cools only about half a degree for every hundred metres, because turning vapour into droplets gives off a little warmth. That is what makes the far side warm: watch it in the next step.</p>`
 		},
 		{
@@ -146,7 +146,7 @@ export const spec: ExplainerSpec = {
 			hints: { phase: 'far' },
 			duration: 22,
 			body: `
-<p>Over the top, the wind pushes the bubble <strong>down</strong> the far side. Going down, it is squeezed by the air above it, and air that is squeezed warms up: about a degree for every hundred metres, all the way down. Its droplets vanish as soon as it starts to sink, so there is no cloud on this side.</p>
+<p>Over the top, the wind pushes the bubble <strong>down</strong> the far side. Going down, it is squeezed by the air above it, and air that is squeezed warms up: about a degree for every hundred metres, all the way down. Its droplets have already fallen as rain, so as it sinks and warms it stays clear: there is no cloud on this side.</p>
 <p>It arrives on the far plain at about <strong>26 °C</strong>, six degrees warmer than it started, and much drier: its humidity has dropped from 70 % to 36 %. It cooled slowly going up inside the cloud but warms quickly all the way down, and the rain it left behind can’t come back.</p>
 <p>That is why the far side of a mountain range is often dry, with a warm, dry wind blowing down from the peaks. In the Alps it is called the föhn; in the Rocky Mountains, the chinook.</p>`
 		},

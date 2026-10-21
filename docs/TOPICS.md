@@ -216,7 +216,7 @@ A topic is done when:
 - [x] tsunamis
 - [x] carbonate-silicate-thermostat
 - [x] radiative-convective-column
-- [ ] cloud-base
+- [x] cloud-base
 - [x] forest-fire-spread
 - [ ] sea-breeze
 
