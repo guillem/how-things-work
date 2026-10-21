@@ -159,7 +159,7 @@ A topic is done when:
 - [x] huckel-molecular-orbitals
 - [x] surface-catalysis
 - [x] transition-state-theory
-- [ ] salt-and-ice
+- [x] salt-and-ice
 
 **Biology**
 - [x] the-cell
