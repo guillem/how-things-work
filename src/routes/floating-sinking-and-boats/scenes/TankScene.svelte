@@ -226,6 +226,11 @@
 
 	const fmt = (g: number) => `${Math.round(g)} g`;
 	const verdict = (p: Placed) => (!p.settled ? 'going in…' : p.floats ? 'floats' : 'sinks');
+	const hangingVerdict = $derived(
+		phase === 'lower' && !placed[0].settled
+			? `weighs ${fmt(placed[0].body.mass)}`
+			: verdict(placed[0])
+	);
 	const pointerY = $derived(34 + Math.min(1, balanceReading / 350) * 56);
 	const cupLevel = $derived(Math.min(104, spilled * 0.5));
 	const bowlMass = $derived(clayBowl(nMarbles).mass);
@@ -462,13 +467,11 @@
 
 	<!-- names and verdicts -->
 	{#if hanging}
-		<Readout id="fs-verdict" order={3} label={placed[0].body.name} value={verdict(placed[0])}>
+		<Readout id="fs-verdict" order={3} label={placed[0].body.name} value={hangingVerdict}>
 			<Label
 				x={BX + 34}
 				y={80}
-				text="{placed[0].body.name}: {phase === 'lower' && !placed[0].settled
-					? `weighs ${fmt(placed[0].body.mass)}`
-					: verdict(placed[0])}"
+				text="{placed[0].body.name}: {hangingVerdict}"
 				anchor="start"
 				size={16}
 				weight={600}
