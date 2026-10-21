@@ -1626,6 +1626,15 @@ const explainers: Explainer[] = [
 		accent: '#1971c2',
 		steps: 8,
 		minutes: 9
+	},
+	{
+		slug: 'ant-trails',
+		title: 'How ants find the shortest way',
+		summary:
+			'A line of ants marches between their nest and a drop of sugar, and nobody leads it. Watch ants wander, find the sugar and leave a scent on the way home, see a trail grow out of it, move the sugar and block the path, then give the colony two bridges and watch it pick the short one.',
+		accent: '#b4531f',
+		steps: 9,
+		minutes: 10
 	}
 ];
 

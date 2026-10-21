@@ -5887,6 +5887,38 @@
 		<circle cx="34" cy="94" r="9" fill="#e03131" />
 		<rect x="31" y="62" width="6" height="30" fill="#e03131" />
 		<line x1="40" y1="52" x2="48" y2="52" stroke="currentColor" stroke-width="2" />
+	{:else if slug === 'ant-trails'}
+		<!-- a nest, a sugar pile and a line of ants on a scent trail between them -->
+		<path
+			d="M40 82 Q100 30 160 44"
+			fill="none"
+			stroke={accent}
+			stroke-width="9"
+			stroke-linecap="round"
+			opacity="0.3"
+		/>
+		<circle cx="38" cy="84" r="14" fill="currentColor" opacity="0.45" />
+		<circle cx="38" cy="84" r="4" fill="currentColor" />
+		{#each [[154, 40], [164, 46], [158, 50], [166, 38]] as [x, y], i (i)}
+			<rect
+				x={x - 3}
+				y={y - 3}
+				width="6"
+				height="6"
+				rx="1"
+				fill="#ffffff"
+				stroke="currentColor"
+				stroke-width="0.8"
+			/>
+		{/each}
+		{#each [[64, 64, -38], [88, 50, -28], [112, 42, -14], [136, 40, -6]] as [x, y, a], i (i)}
+			<g transform="translate({x} {y}) rotate({a})">
+				<circle cx="5" cy="0" r="2.4" fill="currentColor" />
+				<circle cx="0.5" cy="0" r="2" fill="currentColor" />
+				<ellipse cx="-5" cy="0" rx="4" ry="3" fill="currentColor" />
+				<path d="M1 0L-3 -5M1 0L5 -5M1 0L-3 5M1 0L5 5" stroke="currentColor" stroke-width="1" />
+			</g>
+		{/each}
 	{:else}
 		<circle cx="100" cy="60" r="30" fill="none" stroke={accent} stroke-width="2" />
 		<circle cx="100" cy="60" r="5" fill={accent} />

@@ -5492,3 +5492,37 @@ kbd {
 	--sa-yes: #69db7c;
 	--sa-no: #ff8787;
 }
+
+/* ant-trails: the ground, the ants, the scent, the nest, the sugar, the pebble, the bridges */
+:root {
+	--at-ground: #efe3c8;
+	--at-ant: #3a2617;
+	--at-scent: #ae3ec9;
+	--at-nest: #a47148;
+	--at-hole: #4a2f1b;
+	--at-sugar: #ffffff;
+	--at-sugar-edge: #9a8f7e;
+	--at-sugar-bed: #e2d5ba;
+	--at-pebble: #9aa0a6;
+	--at-pebble-edge: #6c7177;
+	--at-bridge: #d2b48c;
+	--at-gate: #e03131;
+	--at-meter: #ae3ec9;
+	--at-handle: #b4531f;
+}
+:root[data-theme='dark'] {
+	--at-ground: #2a241c;
+	--at-ant: #e8c79a;
+	--at-scent: #da77f2;
+	--at-nest: #6b4a2e;
+	--at-hole: #17100a;
+	--at-sugar: #ffffff;
+	--at-sugar-edge: #8a8070;
+	--at-sugar-bed: #3d352a;
+	--at-pebble: #5f646a;
+	--at-pebble-edge: #8a9096;
+	--at-bridge: #5c4a32;
+	--at-gate: #ff6b6b;
+	--at-meter: #da77f2;
+	--at-handle: #ff922b;
+}
