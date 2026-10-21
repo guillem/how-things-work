@@ -38,6 +38,10 @@ test('at the slowest pace every sample can be followed: one every four seconds',
 });
 
 test('drawing the starting shape and averaging bigger samples', async ({ page }) => {
+	// fill() scrolls the slider into view; with motion on, that scroll is smooth and still under
+	// way when fill() returns, so the chart would move under the drag. Reduced motion makes it
+	// instant.
+	await page.emulateMedia({ reducedMotion: 'reduce' });
 	await page.goto('./central-limit-theorem/#clt');
 	await expect(stage(page)).toContainText('Two humps');
 	// The clt step's sample-size control starts at n = 30 (n = 1 shows no bell).
@@ -48,14 +52,6 @@ test('drawing the starting shape and averaging bigger samples', async ({ page })
 	// Dragging over the top chart reshapes it: tall bars on the left move the mean down.
 	const chart = stage(page).locator('[role=slider]');
 	await chart.scrollIntoViewIfNeeded();
-	// The page may still be smooth-scrolling to the step: measure once it holds still.
-	await page.waitForFunction(
-		() =>
-			new Promise((done) => {
-				const y = scrollY;
-				requestAnimationFrame(() => requestAnimationFrame(() => done(scrollY === y)));
-			})
-	);
 	const box = (await chart.boundingBox())!;
 	await page.mouse.move(box.x + box.width * 0.02, box.y + box.height * 0.2);
 	await page.mouse.down();
