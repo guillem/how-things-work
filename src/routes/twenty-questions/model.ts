@@ -304,10 +304,13 @@ export function playBest(secret: Animal): { rounds: Round[]; left: Animal[] } {
 export const secretAnimal = (k: number): Animal =>
 	BOARD[(((61 + 37 * k) % BOARD.length) + BOARD.length) % BOARD.length];
 
+/** "a" or "an", as said before `word`. */
+export const article = (word: string) => (/^[aeiou]/.test(word) ? 'an' : 'a');
+
 /** The question "Is it a …?" about one animal of the board. */
 export const isIt = (a: Animal): Question => ({
 	id: `is:${a.name}`,
-	text: `Is it a ${a.name}?`,
+	text: `Is it ${article(a.name)} ${a.name}?`,
 	yes: (b) => b.name === a.name
 });
 

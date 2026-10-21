@@ -123,8 +123,8 @@ export const spec: ExplainerSpec = {
 			duration: 26,
 			controls: [word],
 			body: `
-<p>Now race the halving against someone who starts at page 1 and looks at <strong>every page</strong> in turn. Pick a word and watch both counters.</p>
-<p>The halving reader is finished after ten opens or fewer. The page-turner is still going: to reach “kitten” they look at 428 pages, and “zebra” takes 997. Checking things one at a time takes hundreds of looks; halving takes a handful.</p>`
+<p>Now compare halving with someone who starts at page 1 and looks at <strong>every page</strong> in turn. Pick a word and watch both counters. (The page-turner is sped up a lot, or you would be waiting for minutes: compare the counts, not who finishes first.)</p>
+<p>The halving reader needs ten opens or fewer. The page-turner needs 428 looks to reach “kitten”, and 997 for “zebra”. Checking things one at a time takes hundreds of looks; halving takes a handful.</p>`
 		},
 		{
 			id: 'shuffled',
@@ -151,8 +151,8 @@ export const spec: ExplainerSpec = {
 <p>Now the page has a secret: one of the 99 animals on the board. Click a question to ask it. The page answers yes or no, and every animal that would answer the other way is <strong>hidden</strong>.</p>
 <p>Try to find the animal in as few questions as you can. A question that hides about half the animals left is a good one. When only a few are left, click an animal to ask “Is it a…?”. Some animals answer every question on the list the same way (a lion and a wolf, for one), and then only guessing by name tells them apart.</p>`,
 			notes: `
-<p>The animals and their answers come from the Zoo dataset that Richard Forsyth put together in 1990, kept by the UCI Machine Learning Repository (CC BY 4.0). It records 15 yes-or-no facts about each animal and its number of legs. We left out one row that is a person, not an animal, and a second frog.</p>
-<p>The dataset is a simple list, and a few answers are judgement calls: “hunts other animals” and “bigger than a cat” are its makers’ choices.</p>`
+<p>The animals and their answers come from the Zoo dataset that Richard Forsyth put together in 1990, kept by the UCI Machine Learning Repository (CC BY 4.0). It records 15 yes-or-no facts about each animal and its number of legs. We left out its one human (a girl) and a second copy of the frog.</p>
+<p>The dataset has a few plain mistakes, which we corrected: it gives a crab four legs (a crab has ten, counting its two claws), a squirrel two, and says a sea snake doesn’t breathe air (it does: it comes up to the surface to breathe). Some other answers are judgement calls, such as which animals “hunt other animals” or are “bigger than a cat”: the page keeps the dataset’s choices.</p>`
 		},
 		{
 			id: 'penguin',

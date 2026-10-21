@@ -248,7 +248,7 @@ A topic is done when:
 - [x] hash-tables-bloom-filters
 - [x] life-on-a-grid
 - [x] secret-codes
-- [ ] twenty-questions
+- [x] twenty-questions
 
 **Information & Networks**
 - [x] compression
@@ -1586,7 +1586,7 @@ A topic is done when:
 - **Title:** Twenty questions: halving the haystack
 - **Level:** 0
 - **Kind:** step
-- **Interaction:** Think of a number from 1 to 100 and answer the page's 'higher or lower' questions: a bar of candidates shrinks by half each answer and the counter stops at seven. Now find a word in a thousand-page dictionary by opening it in the middle, then in the middle of the right half, counting the opens, against a search that flips through every page. Then play animal twenty questions: each yes/no question hides half of the hundred animals on the board until one is left.
+- **Interaction:** Think of a number from 1 to 100 and answer the page's 'higher or lower' questions: a bar of candidates shrinks by half each answer and the counter stops at seven. Now find a word in a thousand-page dictionary by opening it in the middle, then in the middle of the right half, counting the opens, against a search that flips through every page. Then play animal twenty questions on 99 animals of a real dataset: each yes/no question hides the animals that would answer the other way, a good question hides about half, and when no question on the list tells the last few apart, guess by name.
 - **Takeaway:** A question that splits what is left in half finds the answer in a handful of steps, where checking one at a time takes hundreds.
 - **Prerequisites:** none
 - **Related:** secret-codes

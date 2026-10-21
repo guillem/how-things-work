@@ -135,7 +135,7 @@
 	const bigNames = $derived(narrow && phase === 'game' && left.length <= 12 && !found);
 	const chipAt = (i: number) =>
 		narrow
-			? { x: 16 + (i % 2) * 472, y: 266 + Math.floor(i / 2) * 33, w: 456, h: 29 }
+			? { x: 16 + (i % 2) * 472, y: 262 + Math.floor(i / 2) * 33.5, w: 456, h: 31 }
 			: { x: 656, y: 92 + i * 24, w: 288, h: 21 };
 	const bob = $derived(reduced ? 0 : 3 * wave(t, 1.8));
 	/** Breaks a sentence into lines of at most `width` characters. */
@@ -234,7 +234,7 @@
 				h={52}
 				size={24}
 				text={a.name}
-				label="Is it a {a.name}?"
+				label="Guess: {isIt(a).text}"
 				onpress={() => put(isIt(a))}
 			/>
 		{/each}
@@ -255,7 +255,7 @@
 						weight={600}
 						anchor="middle"
 						text={narrow ? '' : a.name}
-						label="Is it a {a.name}?"
+						label="Guess: {isIt(a).text}"
 						onpress={() => put(isIt(a))}
 					/>
 				{:else}
@@ -312,7 +312,7 @@
 				y={c.y}
 				w={c.w}
 				h={c.h}
-				size={narrow ? 18 : 12.5}
+				size={narrow ? 22 : 12.5}
 				weight={600}
 				text={q.text}
 				tag={done ? (q.yes(secret) ? 'yes' : 'no') : undefined}

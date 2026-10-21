@@ -71,7 +71,7 @@
 	const many = $derived(phase === 'next' ? 1_000_000 : Number(params.many ?? 100) || 100);
 	const rows = $derived(ladder(many));
 	const fmt = (n: number) => n.toLocaleString('en-US');
-	const nice = (n: number) => (n === 1_000_000 ? 'a million' : fmt(n));
+	const nice = (n: number) => (n === 1_000_000 ? 'A million' : fmt(n));
 	let since = $state(0);
 	let lastMany = untrack(() => many);
 	$effect(() => {
@@ -268,7 +268,7 @@
 		<Readout
 			id="nb-ladder"
 			order={1}
-			label="Halving {nice(many)} numbers"
+			label="Halving {fmt(many)} numbers"
 			value="{rows.length - 1} questions"
 			color="var(--tq-hot)"
 		>

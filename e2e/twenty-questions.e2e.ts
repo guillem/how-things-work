@@ -31,9 +31,9 @@ test(
 		await expect(stage(page)).toContainText('would take 37 questions');
 		await page.getByRole('button', { name: 'Start again' }).click();
 		await expect(stage(page)).toContainText('Is your number bigger than 50?');
-		await play(page, 100);
+		await play(page, 2);
 		await expect(stage(page)).toContainText('Your number, found with 7 questions');
-		await expect(stage(page)).toContainText('would take 100 questions');
+		await expect(stage(page)).toContainText('would take 2 questions');
 	}
 );
 
@@ -42,7 +42,7 @@ test('doubling: a million numbers take twenty questions', async ({ page }) => {
 	await page.getByRole('radio', { name: '200' }).click();
 	await expect(stage(page)).toContainText('200 numbers: 8 questions');
 	await page.getByRole('radio', { name: 'a million' }).click();
-	await expect(stage(page)).toContainText('a million numbers: 20 questions');
+	await expect(stage(page)).toContainText('A million numbers: 20 questions');
 });
 
 test('dictionary: opening in the middle finds a word in ten opens or fewer', async ({ page }) => {
@@ -87,7 +87,7 @@ test('animals: questions hide animals, and guessing by name finds the secret', a
 		await chip.click();
 	}
 	// Then guess by name until it is found.
-	const guesses = stage(page).getByRole('button', { name: /^Is it a / });
+	const guesses = stage(page).getByRole('button', { name: /^Guess: is it an? / });
 	for (let i = 0; i < 99; i++) {
 		if (
 			await stage(page)
@@ -110,5 +110,5 @@ test('penguin: "Is it a penguin?" hides one animal, a good question about half',
 	await page.getByRole('radio', { name: 'Does it hunt other animals?' }).click();
 	await expect(stage(page)).toContainText('54 animals left');
 	await expect(stage(page)).toContainText('45 animals left');
-	await expect(stage(page)).toContainText('About half are gone, whichever the answer.');
+	await expect(stage(page)).toContainText('About half are gone');
 });

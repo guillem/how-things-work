@@ -193,6 +193,21 @@
 				<Label x={340} y={160} text={first} size={22} weight={700} halo={false} mono />
 				<Label x={340} y={186} text="…" size={18} muted halo={false} />
 				<Label x={340} y={218} text={last} size={22} weight={700} halo={false} mono />
+				{#snippet narrow()}
+					<Label x={340} y={150} text={first} size={30} weight={700} halo={false} mono />
+					<Label x={340} y={210} text={last} size={30} weight={700} halo={false} mono />
+					<path
+						d={open.verdict === 'after'
+							? 'M 560 170 h 120 l -16 -11 m 16 11 l -16 11'
+							: open.verdict === 'before'
+								? 'M 680 170 h -120 l 16 -11 m -16 11 l 16 11'
+								: 'M 580 170 l 25 25 l 50 -55'}
+						fill="none"
+						stroke={open.verdict === 'here' ? 'var(--tq-good)' : 'var(--tq-hot)'}
+						stroke-width="6"
+						stroke-linecap="round"
+					/>
+				{/snippet}
 			</Readout>
 			<Readout
 				id="bk-verdict"
@@ -407,7 +422,7 @@
 			<Label
 				x={SX}
 				y={RY - 14}
-				text="Someone turning the pages one by one, from page 1"
+				text="Someone turning the pages one by one, from page 1 (sped up: compare the counts)"
 				size={13}
 				muted
 				anchor="start"

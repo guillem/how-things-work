@@ -133,6 +133,10 @@ test.describe('the animal board (UCI Zoo)', () => {
 		expect(get('dolphin').has.milk).toBe(true);
 		expect(get('dolphin').legs).toBe(0);
 		expect(get('platypus').has.milk && get('platypus').has.eggs).toBe(true);
+		// Three plain mistakes of the dataset are corrected (build.mjs).
+		expect(get('crab').legs).toBe(10);
+		expect(get('squirrel').legs).toBe(4);
+		expect(get('sea snake').has.breathes).toBe(true);
 		// Every mammal feeds its babies milk, and only mammals do; only birds have feathers.
 		for (const a of BOARD) {
 			expect(a.has.milk).toBe(a.type === 1);
@@ -158,7 +162,7 @@ test.describe('the animal board (UCI Zoo)', () => {
 		expect(Math.min(y, 99 - y)).toBeGreaterThanOrEqual(45);
 	});
 
-	test('good questions find any animal, or a group the board cannot tell apart, in 8 or fewer', () => {
+	test('good questions find any animal, or a group the board cannot tell apart, in 7 or fewer', () => {
 		let most = 0;
 		for (const secret of BOARD) {
 			const { rounds, left } = playBest(secret);
@@ -167,7 +171,7 @@ test.describe('the animal board (UCI Zoo)', () => {
 			// What is left answers every question alike: only "Is it a …?" can tell them apart.
 			expect(bestQuestion(left)).toBeNull();
 		}
-		expect(most).toBe(8);
+		expect(most).toBe(7);
 	});
 
 	test('some animals answer every question alike: a lion and a wolf, for one', () => {
