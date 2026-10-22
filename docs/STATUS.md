@@ -4,7 +4,7 @@ The self-handover. If work is interrupted, this file alone must be enough to con
 top to bottom, then run the commands under "Resume". **Update it at every commit**, not just at
 the end of a development.
 
-Last updated: 2026-10-22, 81 of the proposal's topics built (75 released); **v1.2.3 live** (175 topics; 181 on `main`). Paused to spare the weekly usage; next: the last 19 level-0 topics after the 2026-10-28 reset.
+Last updated: 2026-10-22, 81 of the proposal's topics built, all released; **v1.2.4 live** (181 topics). Paused to spare the weekly usage; next: the last 19 level-0 topics after the 2026-10-28 reset.
 
 ## How we work
 
@@ -35,8 +35,9 @@ Last updated: 2026-10-22, 81 of the proposal's topics built (75 released); **v1.
 
 ## Current state
 
-- **All 100 catalogue topics are built, fact-checked and ticked** (done 2026-10-15). **v1.2.3**
-  (2026-10-21) is live: 175 topics, the 100 plus 75 of the proposal's (14 at level 0). Before it,
+- **All 100 catalogue topics are built, fact-checked and ticked** (done 2026-10-15). **v1.2.4**
+  (2026-10-22) is live: 181 topics, the 100 plus 81 of the proposal's (20 at level 0). Before it,
+  v1.2.3 (2026-10-21): 175 topics. Before that,
   v1.2.2 (2026-10-21): 170 topics, the first nine at level 0 with the index's "Start here" link.
   Before that, v1.2.1 (2026-10-20): 155 topics and Paths v1
   (one reading path, language models). Before that, v1.1.2 (2026-10-19): 154 topics. Before it, v1.0.0
@@ -77,7 +78,7 @@ Last updated: 2026-10-22, 81 of the proposal's topics built (75 released); **v1.
 ## Current development
 
 **Level-0 round toward v1.3.0 (2026-10-21/22, paused).** The user asked for v1.3.0 with all 200
-topics, keeping the weekly usage under 80%. Landed on `main`, not released: hearing-and-the-ear,
+topics, keeping the weekly usage under 80%. Landed on `main` and released in v1.2.4 (2026-10-22, CI and the live smoke test green): hearing-and-the-ear,
 cloud-base and qr-codes (local builders, fact-checked by Codex) and blue-sky-red-sunset,
 salt-and-ice and ant-trails (Claude Code cloud sessions on the user's trial credit; fact-checked
 afterwards on the laptop by grok, because Codex could no longer read files: "timed out negotiating
@@ -115,7 +116,7 @@ promoted into `TOPICS.md` as their builds start (next paragraph).
 time in worktrees, each fact-checked by Codex (`scripts/local-review.mjs`) and pushed to `main`;
 the entry is promoted into `TOPICS.md` when its build starts. Order:
 `proposals/topics-200/data/build-order.json` (the LLM ladder first, then the level 1–3 topics;
-level 0 last, pending the user's answer on its definition). Built so far: 75 of the 100, all released (v1.2.3).
+level 0 last, pending the user's answer on its definition). Built so far: 81 of the 100, all released (v1.2.4).
 
 **Resumed 2026-10-18 night on the new machine** (the user's weekly limit is now 98%). Landed
 since: ocean-acidification, tsunamis, carbonate-silicate-thermostat, radiative-convective-column,
