@@ -4,7 +4,7 @@ The self-handover. If work is interrupted, this file alone must be enough to con
 top to bottom, then run the commands under "Resume". **Update it at every commit**, not just at
 the end of a development.
 
-Last updated: 2026-10-21, 75 of the proposal's topics built, all released; **v1.2.3 live** (175 topics). Next: the remaining level-0 topics.
+Last updated: 2026-10-22, 81 of the proposal's topics built (75 released); **v1.2.3 live** (175 topics; 181 on `main`). Paused to spare the weekly usage; next: the last 19 level-0 topics after the 2026-10-28 reset.
 
 ## How we work
 
@@ -75,6 +75,18 @@ Last updated: 2026-10-21, 75 of the proposal's topics built, all released; **v1.
   those registries from `main` plus each branch's own entry).
 
 ## Current development
+
+**Level-0 round toward v1.3.0 (2026-10-21/22, paused).** The user asked for v1.3.0 with all 200
+topics, keeping the weekly usage under 80%. Landed on `main`, not released: hearing-and-the-ear,
+cloud-base and qr-codes (local builders, fact-checked by Codex) and blue-sky-red-sunset,
+salt-and-ice and ant-trails (Claude Code cloud sessions on the user's trial credit; fact-checked
+afterwards on the laptop by grok, because Codex could no longer read files: "timed out negotiating
+with the code-mode host"). `make e2e-full` passed on `main` (3,605) before the three grok fixes;
+their topics' tests pass. Cost: a level-0 topic took about 5% of the weekly usage locally (19% to
+37% for three plus the lead's work), and the cloud sessions spent about $18 of $59 before their
+first real commit. The user then paused: 19 left, all level 0 (13 promoted and unticked in
+`TOPICS.md`, 6 still in `TOPICS-PROPOSAL.md` only: shapes-that-tile, vibrations-and-sound,
+why-metal-feels-cold, dissolving-sugar-and-salt, be-the-bird-camouflage, flocking-birds).
 
 **Overnight builders, 2026-10-21 (stopped ~03:10 CEST at the usage limit; landed on `main` the
 same morning):** forest-fire-spread, secret-codes, next-word-guessing-game and leap-years, all
