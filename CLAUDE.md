@@ -102,5 +102,8 @@ pushed work survives, so:
 
 - Other apps run on this machine: port 4173 is taken. The test server uses `PW_PORT` (default
   4180).
+- `rm`, `cp` and `mv` are aliased to their `-i` form in the user's shells, so a plain call that
+  removes or overwrites a file waits for a confirmation no script gives (and seems to hang). Once
+  you have checked the target, write `rm -f`, `cp -f`, `mv -f`.
 - Screenshot review of scenes: `scripts/shot.mjs` (see README and `docs/scene-guide.md`).
   Screenshots go to a scratch directory outside the repository.
