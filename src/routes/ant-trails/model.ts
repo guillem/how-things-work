@@ -369,10 +369,14 @@ export function choice(a: number, b: number) {
 
 const isOpen = (b: Bridges, side: Side) => b.time >= b.opens[side];
 
-/** The scent an ant at a fork smells on each bridge: the first two patches from that fork. */
+/**
+ * The scent an ant at a fork smells on each bridge: the patch at that fork. One ant's passage
+ * adds one unit to it, as in Deneubourg's fit (after one ant, the next takes its bridge with
+ * chance 21²/(21² + 20²) = 0.524).
+ */
 function smell(b: Bridges, side: Side, atNest: boolean) {
 	const p = b.scent[side];
-	return atNest ? p[0] + p[1] : p[p.length - 1] + p[p.length - 2];
+	return atNest ? p[0] : p[p.length - 1];
 }
 
 function choose(b: Bridges, atNest: boolean): Side {

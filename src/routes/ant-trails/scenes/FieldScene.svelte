@@ -179,7 +179,7 @@
 			value={reach}
 			min={0}
 			max={900}
-			valuetext="{reach} steps from the nest"
+			valuetext="distance from the nest: {reach}"
 			onmove={(p: Point) => moveSugar(p.x - FX, p.y - FY)}
 			onkey={(k) => {
 				const d = k === 'start' ? -900 : k === 'end' ? 900 : k * 10;

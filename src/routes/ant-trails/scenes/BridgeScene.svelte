@@ -30,7 +30,7 @@
 	const late = $derived(phase === 'late');
 	const fading = $derived(late && params.fade === true);
 	/** "Run it again" picks the next colony; the first one of each step is a typical run. */
-	const seed = $derived(late ? 2 : 2 + Number(params.again ?? 0));
+	const seed = $derived(late ? 2 : 3 + Number(params.again ?? 0));
 	/** The short bridge opens late in "late" (simulated seconds). */
 	const OPENS = 40;
 	const FROZEN = $derived(late ? 200 : 150);
@@ -43,13 +43,20 @@
 	const top = smooth([F1, { x: 230, y: 205 }, { x: 480, y: 190 }, { x: 730, y: 205 }, F2]);
 	const bottom = smooth([F1, { x: 230, y: 375 }, { x: 480, y: 390 }, { x: 730, y: 375 }, F2]);
 	const straight = [F1, F2];
+	// The long bridge winds along the bottom so that it is drawn twice as long as the straight
+	// one (1,240 px against 620), and ants walk both at the same speed on screen.
 	const deep = smooth([
 		F1,
 		{ x: 178, y: 440 },
 		{ x: 215, y: 530 },
-		{ x: 300, y: 552 },
-		{ x: 660, y: 552 },
-		{ x: 745, y: 530 },
+		{ x: 290, y: 552 },
+		{ x: 360, y: 481 },
+		{ x: 430, y: 552 },
+		{ x: 500, y: 481 },
+		{ x: 570, y: 552 },
+		{ x: 640, y: 481 },
+		{ x: 700, y: 552 },
+		{ x: 750, y: 525 },
 		{ x: 782, y: 440 },
 		F2
 	]);
@@ -251,7 +258,7 @@
 			phone={{ x: 480, y: 254 }}
 			text={late && !open0 ? 'short bridge: closed for now' : 'short bridge'}
 		/>
-		<PlaceLabel id="at-long-name" x={480} y={522} phone={{ x: 480, y: 510 }} text="long bridge" />
+		<PlaceLabel id="at-long-name" x={480} y={440} phone={{ x: 480, y: 430 }} text="long bridge" />
 	{/if}
 
 	<!-- the ants -->

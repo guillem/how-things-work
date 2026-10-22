@@ -85,7 +85,7 @@ export const spec: ExplainerSpec = {
 			duration: 40,
 			body: `
 <p>Drag the sugar somewhere else. The ants at the end of the old trail find nothing there, so they carry nothing home and stop adding scent to it.</p>
-<p>Real trail scent fades away, and so does it here. Without new dabs, the old trail fades, the ants spread out searching again, and before long a new trail leads to the sugar’s new place. Fading lets the colony forget a route that has stopped leading anywhere.</p>`
+<p>Real trail scent fades away, and so does it here, only quicker, so you can watch. In the Argentine ant experiments the scent lasts on the order of half an hour; here it fades in under a minute. Without new dabs, the old trail fades, the ants spread out searching again, and before long a new trail leads to the sugar’s new place. Fading lets the colony forget a route that has stopped leading anywhere.</p>`
 		},
 		{
 			id: 'pebble',
@@ -148,7 +148,7 @@ export const spec: ExplainerSpec = {
 			body: `
 <p>A colony can find a short way to food with no map, and no ant that knows the way: ants on a shorter route get back sooner, so its scent builds up faster and draws more ants. A fading scent lets the colony give up a trail that leads nowhere.</p>
 <p>Real ants are cleverer than these ones. Many also use their eyes and memory: some remember landmarks, and desert ants find their way home by the sun and by counting their steps. There are more than 14,000 kinds of ant, and they don’t all use trails the same way.</p>
-<p>Computers find shortest routes too, but with a map, checking paths one by one: see <a href="../graph-search/">how a computer finds the shortest route</a>.</p>`
+<p>Computers find shortest routes too, but they start with a map and search it on purpose: see <a href="../graph-search/">how a computer finds the shortest route</a>.</p>`
 		}
 	]
 };
