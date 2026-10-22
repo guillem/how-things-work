@@ -163,18 +163,20 @@ export function bath(ice: number, salt: number): BathState {
 /**
  * The ice-cream mix of Scientific American's "Making ice cream in a bag": half a cup of
  * half-and-half and a tablespoon of sugar. About 72 % of it is water; the sugar and the milk's
- * own sugars and salts make it start to freeze at about −2 °C (a rich ice-cream mix, at −2.5 °C;
- * low-sugar mixes up to −1.4 °C, Goff & Hartel). As water freezes out the rest gets more
- * concentrated, so the fraction of the water frozen at `temp` is about 1 − (−2)/temp.
+ * own sugars and salts make it start to freeze at about −1.3 °C (Goff's sucrose-equivalent
+ * method: about 18 g of sucrose equivalent per 100 g of water, 1.1 °C, plus about 0.23 °C from
+ * the milk salts; a low-sugar mix, where commercial mixes start at −1.4 to −3 °C). As water
+ * freezes out the rest gets more concentrated, so the fraction of the water frozen at `temp` is
+ * about 1 − (−1.3)/temp.
  */
-export const CREAM = { mass: 133, water: 0.72, startsFreezing: -2, start: 5, cp: 3.3 } as const;
+export const CREAM = { mass: 133, water: 0.72, startsFreezing: -1.3, start: 5, cp: 3.3 } as const;
 
 /** Fraction of the cream's water that is ice at `temp`. */
 export function creamFrozen(temp: number): number {
 	return temp >= CREAM.startsFreezing ? 0 : 1 - CREAM.startsFreezing / temp;
 }
 
-/** The cream is frozen like soft ice cream once half its water is ice (at −4 °C). */
+/** The cream is frozen like soft ice cream once half its water is ice (at −2.6 °C). */
 export const SOFT = 0.5;
 
 function creamHeat(temp: number): number {

@@ -140,7 +140,7 @@ export const spec: ExplainerSpec = {
 			body: `
 <p>The saltier the water, the colder it has to get before it freezes. This line was measured in laboratories: put more salt in 100 grams of salty water with the slider, and follow the dot down.</p>
 <p>Sea water has about 3½ grams of salt in every 100, and freezes at about −2 °C. With 10 grams it freezes at about −7 °C.</p>
-<p>The line stops falling at 23 grams of salt, at −21 °C. Add more salt than that and the water gets no harder to freeze: in that cold the extra salt comes back out as grains, and the rest of the water still freezes at −21 °C. That is the coldest that salty water can ever be and stay liquid.</p>`
+<p>The line stops falling at 23 grams of salt, at −21 °C. Add more salt than that and the water gets no harder to freeze: in that cold the extra salt comes back out as grains, and the rest of the water still freezes at −21 °C. That is the coldest that water with table salt in it can be and stay liquid.</p>`
 		},
 		{
 			id: 'weather',
@@ -181,8 +181,8 @@ export const spec: ExplainerSpec = {
 			controls: [bag],
 			body: `
 <p>To make ice cream in a bag: put half a cup of cream (half milk, half cream) and a spoonful of sugar in a small bag, and shake it inside a big bag holding four cups of ice and half a cup of salt. The clock on the stage runs ten minutes.</p>
-<p>The cold ice keeps melting, and the heat for it now comes out of the cream. The cream cools down, past 0 °C, and its water starts to turn to ice crystals at about −2 °C. After about five minutes half its water is ice, and it is soft ice cream.</p>
-<p>Pick plain ice instead. The cream cools to 0 °C and stops there, because plain ice is never colder than 0 °C: it stays runny. With a single spoonful of salt it works, but takes about twice as long, and the bowl warms up as its ice melts.</p>`,
+<p>The cold ice keeps melting, and the heat for it now comes out of the cream. The cream cools down, past 0 °C, and its water starts to turn to ice crystals at about −1.3 °C. After about five minutes half its water is ice, and it is soft ice cream.</p>
+<p>Pick plain ice instead. The cream cools to 0 °C and stops there, because a bowl of ice and meltwater stays at 0 °C while any ice is left, so the cream never gets cold enough to freeze: it stays runny. With a single spoonful of salt it works, but takes about twice as long, and the bowl warms up as its ice melts.</p>`,
 			notes: `<p>How fast heat leaks in from the kitchen and passes from the cream into the ice depends on the bag and the shaking. The page picks values that freeze the recipe’s cream in about five minutes, as the recipe says; everything else follows from the freezing line of salty water and the heat that melting takes.</p>`
 		},
 		{

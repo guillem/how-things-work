@@ -10,7 +10,15 @@
 	import { cubicOut } from 'svelte/easing';
 	import { Flow, Label, clamp, hash } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
-	import { SOFT, SPOON, bath, simulateBath, type BathSample } from '../model';
+	import {
+		EUTECTIC,
+		SOFT,
+		SPOON,
+		bath,
+		saltinessAt,
+		simulateBath,
+		type BathSample
+	} from '../model';
 	import { degrees, grams } from '../format';
 	import Thermometer from './Thermometer.svelte';
 
@@ -110,7 +118,13 @@
 			y: RIM + 20 + hash(i, 6) * 40
 		}))
 	);
-	const dissolved = $derived(spoons > 0 ? clamp(melted / 40) : 0);
+	// The share of the salt dissolved: no more than the meltwater can hold at the bowl's
+	// temperature; the rest stays as grains.
+	const dissolved = $derived.by(() => {
+		if (spoons === 0 || bathTemp >= 0) return 0;
+		const c = saltinessAt(bathTemp) ?? EUTECTIC.salt;
+		return clamp((melted * c) / (100 - c) / (spoons * SPOON));
+	});
 	const sparkles = $derived(
 		Array.from({ length: Math.round(frozen * 26) }, (_, i) => ({
 			i,

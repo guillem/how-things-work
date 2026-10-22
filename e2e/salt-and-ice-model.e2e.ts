@@ -65,10 +65,10 @@ test('the heat the cooling takes out of the bowl is what melting that ice takes'
 	expect(meltHeat / coolHeat).toBeLessThan(1.4);
 });
 
-test('the cream starts to freeze below about −2 °C, and is half frozen at −4 °C', () => {
+test('the cream starts to freeze below about −1.3 °C, and is half frozen at −2.6 °C', () => {
 	expect(creamFrozen(0)).toBe(0);
-	expect(creamFrozen(-2)).toBe(0);
-	expect(creamFrozen(-4)).toBeCloseTo(0.5, 6);
+	expect(creamFrozen(-1.3)).toBe(0);
+	expect(creamFrozen(-2.6)).toBeCloseTo(0.5, 6);
 	expect(creamFrozen(-16)).toBeGreaterThan(0.7);
 });
 

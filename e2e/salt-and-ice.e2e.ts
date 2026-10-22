@@ -87,5 +87,5 @@ test('salt and ice freeze the cream in about five minutes; plain ice leaves it r
 	await expect(stage(page)).toContainText('bowl: 0 °C');
 	await expect(stage(page)).toContainText('cream: 0 °C');
 	await page.getByRole('radio', { name: 'ice and 1 spoonful of salt' }).click();
-	await expect(stage(page)).toContainText('frozen after 10 min');
+	await expect(stage(page)).toContainText('frozen after 8 min');
 });
