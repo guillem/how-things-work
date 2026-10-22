@@ -266,7 +266,9 @@ export function chromaticity(spectrum: readonly number[]): [number, number] {
 
 /**
  * The single wavelength whose colour, mixed with white sunlight, matches the spectrum's hue (its
- * dominant wavelength), nm; NaN for a purple, which no single wavelength gives.
+ * dominant wavelength), nm; NaN for a purple, which no single wavelength gives. Only for blues
+ * and greens: past about 650 nm the colour-matching fit leaves the spectral locus, so reds and
+ * oranges come out far too long (the horizon Sun, about 594 nm, reads near 695).
  */
 export function dominantWavelength(spectrum: readonly number[]): number {
 	const [wx, wy] = chromaticity(NM.map(sunlight));

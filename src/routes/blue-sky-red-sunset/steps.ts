@@ -134,7 +134,7 @@ export const spec: ExplainerSpec = {
 			controls: [colour],
 			body: `
 <p>Air is made of tiny bits, far too small to see, that fly about with lots of empty space between them. Now and then a bit of light hits one and bounces off in a new direction. This is called ${scatter}.</p>
-<p>Here is the surprise: the tiny bits of air bounce <strong>blue light far more than red</strong>. Change the colour of the light and watch how many bounce off. Blue light is bounced about six times as often as red, and violet even more.</p>
+<p>Here is the surprise: the tiny bits of air bounce <strong>blue light far more than red</strong>. Change the colour of the light and watch how many bounce off. A bit of air bounces blue light about six times as readily as red, and violet even more.</p>
 <p>Coming straight down through all the air above us, about 20 in every 100 bits of blue light get bounced off on the way, but only about 4 in 100 of red.</p>`,
 			notes: `<p>Bits of air (molecules) are more than a thousand times smaller than the waves of light. For things that small, the shorter the wave, the more it is scattered, and quite steeply: halve the wavelength and the scattering goes up sixteen times. Blue light has shorter waves than red. Lord Rayleigh worked this out in 1871, which is why it is called Rayleigh scattering.</p>`
 		},
@@ -162,9 +162,9 @@ export const spec: ExplainerSpec = {
 			controls: [time],
 			body: `
 <p>Move the Sun through the day. When it is low, its light comes in sideways, and crosses far <strong>more air</strong> before it reaches you: at the horizon, about 38 times as much as from straight overhead.</p>
-<p>Along that long road the air bounces away nearly all the blue, and much of the green. What is left to come straight on is mostly orange and red, so the Sun looks <strong>orange, then red</strong>. Even of the red, only about a quarter gets through.</p>
+<p>Along that long road the air bounces away nearly all the blue, and much of the green. What is left to come straight on is mostly orange and red, so the Sun looks yellow and then a <strong>deep orange</strong>. Even of the red, only about a quarter gets through.</p>
 <p>The sky above you darkens too: less light reaches it, and it has lost its blue on the way.</p>`,
-			notes: `<p>With the Sun on the horizon this page’s sky overhead turns a dull grey-blue. The real one stays a deeper blue, because the thin layer of ozone high up soaks up some of the orange and yellow of that long-travelled light (worked out by Edward Hulburt in 1953). In daytime that effect is small: the blue of the daytime sky comes from the bouncing.</p>`
+			notes: `<p>With the Sun on the horizon this page’s sky overhead turns a dull grey. The real one stays a deeper blue, because the thin layer of ozone high up soaks up some of the orange and yellow of that long-travelled light (worked out by Edward Hulburt in 1953). In daytime that effect is small: the blue of the daytime sky comes from the bouncing.</p>`
 		},
 		{
 			id: 'smoke',
@@ -212,7 +212,7 @@ export const spec: ExplainerSpec = {
 			hints: { phase: 'next' },
 			duration: 14,
 			body: `
-<p>Air bounces blue light about far more than red. The bounced blue comes at us from all over the sky, so the sky looks blue; and when the Sun is low, its light crosses so much air that only the orange and red get through.</p>
+<p>Air bounces blue light far more than red. The bounced blue comes at us from all over the sky, so the sky looks blue; and when the Sun is low, its light crosses so much air that only the orange and red get through, and the Sun turns orange.</p>
 <p>The page on <a href="../light-optics/">light and optics</a> splits white light into its colours with a prism and follows rays as they bend. And the page on the <a href="../greenhouse-effect/">greenhouse effect</a> shows what air does to the Sun’s light and to the warmth the Earth sends back.</p>`
 		}
 	]

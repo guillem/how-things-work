@@ -415,11 +415,11 @@
 				weight={700}
 			/>
 		</Readout>
-		<Readout id="sb-next2" order={2} label="So" value="the sky is blue, and a low Sun is red">
+		<Readout id="sb-next2" order={2} label="So" value="the sky is blue, and a low Sun turns orange">
 			<Label
 				x={RX}
 				y={532}
-				text="so the sky is blue, and a low Sun is red"
+				text="so the sky is blue, and a low Sun turns orange"
 				anchor="start"
 				size={13}
 				muted

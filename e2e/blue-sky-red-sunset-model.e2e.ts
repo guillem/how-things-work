@@ -95,7 +95,6 @@ test('the Sun goes from white at noon to orange-red on the horizon', () => {
 	expect(r).toBe(255);
 	expect(g).toBeLessThan(140);
 	expect(b).toBe(0);
-	expect(dominantWavelength(horizon)).toBeGreaterThan(590);
 });
 
 test('the sky overhead dims as the Sun goes down', () => {
@@ -124,9 +123,10 @@ test('more air: a deeper sunset and a paler daytime sky; no air: a black sky and
 
 test('smoke: a redder low Sun and a whiter daytime sky', () => {
 	const low = sunAt(6.25);
-	expect(dominantWavelength(sunSpectrum(low.elevation, { smoke: 1 }))).toBeGreaterThan(
-		dominantWavelength(sunSpectrum(low.elevation))
-	);
+	// Redder: less green left beside the full red.
+	const [, gSmoke] = rgb(glareColour(sunSpectrum(low.elevation, { smoke: 1 })));
+	const [, gClear] = rgb(glareColour(sunSpectrum(low.elevation)));
+	expect(gSmoke).toBeLessThan(gClear);
 	const [r0, , b0] = balancedRGB(zenithSpectrum(sunAt(12)));
 	const [r1, , b1] = balancedRGB(zenithSpectrum(sunAt(12), { smoke: 0.3 }));
 	expect(r1 / b1).toBeGreaterThan(r0 / b0);
