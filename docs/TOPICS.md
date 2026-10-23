@@ -315,7 +315,7 @@ A topic is done when:
 - [x] heat-pumps-refrigeration
 - [ ] clock-escapement
 - [ ] drone-four-rotors
-- [ ] hydraulics-digger-arm
+- [x] hydraulics-digger-arm
 - [ ] light-bulb-hot-wire
 - [ ] toilet-flush
 
