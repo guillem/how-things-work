@@ -6148,6 +6148,35 @@
 		/>
 		<line x1="100" y1="8" x2="108" y2="104" stroke={accent} stroke-width="2.5" />
 		<circle cx="108" cy="104" r="9" fill={accent} />
+	{:else if slug === 'why-spinning-makes-you-dizzy'}
+		<!-- a ring of fluid with its flap bent by the fluid running on, and a spin arrow -->
+		<circle cx="100" cy="64" r="34" fill="none" stroke="#4dabf7" stroke-width="10" opacity="0.8" />
+		<path
+			d="M100 22 Q86 31 100 40"
+			fill="none"
+			stroke="#f59f00"
+			stroke-width="4"
+			stroke-linecap="round"
+		/>
+		<circle cx="134" cy="64" r="4" fill="#1c7ed6" />
+		<circle cx="76" cy="40" r="4" fill="#1c7ed6" />
+		<circle cx="76" cy="88" r="4" fill="#1c7ed6" />
+		<path d="M40 100 Q20 64 40 28" fill="none" stroke={accent} stroke-width="3" />
+		<path d="M34 34 L40 28 L46 35" fill="none" stroke={accent} stroke-width="3" />
+		<path
+			d="M160 28 Q180 64 160 100"
+			fill="none"
+			stroke="currentColor"
+			stroke-width="2"
+			opacity="0.6"
+		/>
+		<path
+			d="M154 95 L160 100 L166 93"
+			fill="none"
+			stroke="currentColor"
+			stroke-width="2"
+			opacity="0.6"
+		/>
 	{:else}
 		<circle cx="100" cy="60" r="30" fill="none" stroke={accent} stroke-width="2" />
 		<circle cx="100" cy="60" r="5" fill={accent} />

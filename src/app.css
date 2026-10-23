@@ -5936,3 +5936,57 @@ kbd {
 	--ce-watch: #4dabf7;
 	--ce-blur: rgba(212, 165, 60, 0.35);
 }
+
+/* why-spinning-makes-you-dizzy: the child and the chair, the room, the ear's rings, fluid and flap, the feeling */
+:root {
+	--dz-skin: #ffd8b1;
+	--dz-hair: #5c3d2e;
+	--dz-eye: #2b1e15;
+	--dz-shirt: #4dabf7;
+	--dz-trousers: #495057;
+	--dz-shoe: #c92a2a;
+	--dz-chair: #868e96;
+	--dz-chair-edge: #495057;
+	--dz-chair-line: #495057;
+	--dz-window: #d0ebff;
+	--dz-frame: #adb5bd;
+	--dz-fluid: #a5d8ff;
+	--dz-fluid-dot: #1c7ed6;
+	--dz-tube-edge: #4dabf7;
+	--dz-flap: #fff3bf;
+	--dz-flap-edge: #f59f00;
+	--dz-hair-cell: #e64980;
+	--dz-nerve: #f783ac;
+	--dz-feel: #f76707;
+	--dz-feel-ink: #d9480f;
+	--dz-bone: #f1e9dc;
+	--dz-bone-edge: #c9b79c;
+	--dz-snail: #fcc2d7;
+	--dz-lit: #f76707;
+}
+:root[data-theme='dark'] {
+	--dz-skin: #e0b48c;
+	--dz-hair: #8a5a44;
+	--dz-eye: #1a120d;
+	--dz-shirt: #1c7ed6;
+	--dz-trousers: #868e96;
+	--dz-shoe: #e03131;
+	--dz-chair: #5c636a;
+	--dz-chair-edge: #adb5bd;
+	--dz-chair-line: #ced4da;
+	--dz-window: #1c3a52;
+	--dz-frame: #5c636a;
+	--dz-fluid: #1c3d5a;
+	--dz-fluid-dot: #74c0fc;
+	--dz-tube-edge: #339af0;
+	--dz-flap: #5c4d1a;
+	--dz-flap-edge: #fcc419;
+	--dz-hair-cell: #f06595;
+	--dz-nerve: #f783ac;
+	--dz-feel: #ff922b;
+	--dz-feel-ink: #ffa94d;
+	--dz-bone: #3a342c;
+	--dz-bone-edge: #7a6a55;
+	--dz-snail: #7a3b55;
+	--dz-lit: #ff922b;
+}

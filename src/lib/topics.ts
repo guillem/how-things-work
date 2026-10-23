@@ -1725,6 +1725,15 @@ const explainers: Explainer[] = [
 		accent: '#b8860b',
 		steps: 7,
 		minutes: 9
+	},
+	{
+		slug: 'why-spinning-makes-you-dizzy',
+		title: 'Why spinning makes you dizzy',
+		summary:
+			'Spin on a chair and look inside the flat ring of fluid in your ear: the fluid falls behind and bends a little flap that tells your brain you are turning. Keep spinning and the feeling fades; stop, and the fluid keeps going, bends the flap the other way, and you feel yourself turning backwards while the room stands still.',
+		accent: '#e8590c',
+		steps: 8,
+		minutes: 9
 	}
 ];
 

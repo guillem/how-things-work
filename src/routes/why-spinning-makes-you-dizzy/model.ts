@@ -192,9 +192,14 @@ export function howMuch(v: number, ref: number): string {
 /** A feeling below this share of the spin's speed is "not turning" on the page. */
 export const UNFELT = 0.08;
 
-/** "turning right, about half as fast as the chair", or "not turning". */
-export function feelWords(v: number, ref: number): string {
+/** "turning right", "turning left", or "not turning" when it is too weak to feel. */
+export function dirWords(v: number, ref: number): string {
 	if (ref <= 0 || Math.abs(v) < UNFELT * ref) return 'not turning';
-	const dir = v > 0 ? 'right' : 'left';
-	return `turning ${dir}, ${howMuch(v, ref)} the chair spun`;
+	return v > 0 ? 'turning right' : 'turning left';
+}
+
+/** "turning right, about half as fast as the chair spun", or "not turning". */
+export function feelWords(v: number, ref: number): string {
+	const dir = dirWords(v, ref);
+	return dir === 'not turning' ? dir : `${dir}, ${howMuch(v, ref)} the chair spun`;
 }
