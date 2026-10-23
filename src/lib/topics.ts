@@ -1680,6 +1680,15 @@ const explainers: Explainer[] = [
 		accent: '#7048e8',
 		steps: 8,
 		minutes: 9
+	},
+	{
+		slug: 'muscles-pull-in-pairs',
+		title: 'Muscles pull in pairs',
+		summary:
+			'Bend a cutaway arm and watch the biceps shorten and bulge, then press on a scale and feel the triceps take over. A muscle can only pull, so every joint needs a pair. Hang a bag of shopping from the hand and find out why the biceps pulls about eight times the bag\u2019s weight.',
+		accent: '#d6336c',
+		steps: 8,
+		minutes: 10
 	}
 ];
 

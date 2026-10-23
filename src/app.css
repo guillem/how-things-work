@@ -5677,6 +5677,43 @@ kbd {
 	--sbz-flag: #ff922b;
 	--sbz-pole: #ced4da;
 	--sbz-card: rgba(20, 26, 36, 0.82);
+
+/* muscles-pull-in-pairs: skin, bones, muscles relaxed and pulling, tendons, the bag, table and scale */
+:root {
+	--mus-skin: rgba(246, 214, 190, 0.55);
+	--mus-skin-edge: #c99a7a;
+	--mus-bone: #ece4d2;
+	--mus-bone-edge: #a89a7c;
+	--mus-relaxed: #f2c4c4;
+	--mus-active: #d6336c;
+	--mus-edge: #a8425c;
+	--mus-fibre: #ffe3ea;
+	--mus-tendon: #e9dcc0;
+	--mus-pull: #c2255c;
+	--mus-name: #a61e4d;
+	--mus-bag: #e9d8b4;
+	--mus-bag-edge: #9c7f4e;
+	--mus-bag-ink: #5c4423;
+	--mus-table: #b08a5e;
+	--mus-scale: #dee2e6;
+}
+:root[data-theme='dark'] {
+	--mus-skin: rgba(120, 88, 70, 0.4);
+	--mus-skin-edge: #a07a62;
+	--mus-bone: #cfc6b2;
+	--mus-bone-edge: #8a7f68;
+	--mus-relaxed: #6b3a46;
+	--mus-active: #f06595;
+	--mus-edge: #c45c7a;
+	--mus-fibre: #ffd6e2;
+	--mus-tendon: #c9bc9e;
+	--mus-pull: #ff8cb0;
+	--mus-name: #ff8cb0;
+	--mus-bag: #6b5a3c;
+	--mus-bag-edge: #b89a64;
+	--mus-bag-ink: #f3e3c3;
+	--mus-table: #6e5536;
+	--mus-scale: #495057;
 }
 
 /* why-you-get-sleepy: the face, the tank of sleep pressure, the clock's lines, sleep and its rounds */

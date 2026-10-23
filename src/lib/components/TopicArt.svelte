@@ -6029,6 +6029,43 @@
 			stroke-width="2"
 			stroke-dasharray="5 4"
 		/>
+	{:else if slug === 'muscles-pull-in-pairs'}
+		<!-- a bent arm: the biceps bulging in front pulls the forearm up, the triceps behind relaxed -->
+		<line
+			x1="80"
+			y1="14"
+			x2="80"
+			y2="84"
+			stroke="currentColor"
+			stroke-width="6"
+			stroke-linecap="round"
+			opacity="0.45"
+		/>
+		<line
+			x1="80"
+			y1="84"
+			x2="160"
+			y2="50"
+			stroke="currentColor"
+			stroke-width="5"
+			stroke-linecap="round"
+			opacity="0.45"
+		/>
+		<circle cx="80" cy="84" r="5" fill="currentColor" opacity="0.6" />
+		<path d="M84 18 Q112 46 92 78 Q90 48 84 18 Z" fill={accent} />
+		<line x1="92" y1="78" x2="96" y2="80" stroke={accent} stroke-width="3" />
+		<path d="M76 20 Q62 50 74 86 Q70 50 76 20 Z" fill={accent} opacity="0.35" />
+		<rect
+			x="148"
+			y="66"
+			width="30"
+			height="34"
+			rx="3"
+			fill="none"
+			stroke="currentColor"
+			stroke-width="1.5"
+		/>
+		<line x1="163" y1="52" x2="163" y2="66" stroke="currentColor" stroke-width="1.5" />
 	{:else}
 		<circle cx="100" cy="60" r="30" fill="none" stroke={accent} stroke-width="2" />
 		<circle cx="100" cy="60" r="5" fill={accent} />
