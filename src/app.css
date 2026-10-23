@@ -5678,3 +5678,49 @@ kbd {
 	--sbz-pole: #ced4da;
 	--sbz-card: rgba(20, 26, 36, 0.82);
 }
+
+/* why-you-get-sleepy: the face, the tank of sleep pressure, the clock's lines, sleep and its rounds */
+:root {
+	--sl-face: #ffe3c2;
+	--sl-face-edge: #c98f5a;
+	--sl-eye: #ffffff;
+	--sl-ink: #3b2a1e;
+	--sl-tank: #b197fc;
+	--sl-tank-ink: #6741d9;
+	--sl-tank-bg: #f3f0ff;
+	--sl-tank-edge: #7950f2;
+	--sl-over: #f06595;
+	--sl-line: #f08c00;
+	--sl-line-ink: #d9480f;
+	--sl-wake: #12b886;
+	--sl-wake-ink: #087f5b;
+	--sl-sleep: #364fc7;
+	--sl-bed: #bac8ff;
+	--sl-bar-bg: #f1f3f5;
+	--sl-deep: #364fc7;
+	--sl-deep-ink: #364fc7;
+	--sl-dream: #e64980;
+	--sl-dream-ink: #c2255c;
+}
+:root[data-theme='dark'] {
+	--sl-face: #d9b48f;
+	--sl-face-edge: #a8784d;
+	--sl-eye: #f8f9fa;
+	--sl-ink: #2b1e15;
+	--sl-tank: #7048e8;
+	--sl-tank-ink: #b197fc;
+	--sl-tank-bg: #1e1830;
+	--sl-tank-edge: #9775fa;
+	--sl-over: #e64980;
+	--sl-line: #ffa94d;
+	--sl-line-ink: #ffa94d;
+	--sl-wake: #38d9a9;
+	--sl-wake-ink: #63e6be;
+	--sl-sleep: #5c7cfa;
+	--sl-bed: #4a5078;
+	--sl-bar-bg: #25262b;
+	--sl-deep: #5c7cfa;
+	--sl-deep-ink: #91a7ff;
+	--sl-dream: #f06595;
+	--sl-dream-ink: #faa2c1;
+}

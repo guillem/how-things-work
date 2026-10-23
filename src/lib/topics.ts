@@ -1671,6 +1671,15 @@ const explainers: Explainer[] = [
 		accent: '#1f9fb0',
 		steps: 8,
 		minutes: 9
+	},
+	{
+		slug: 'why-you-get-sleepy',
+		title: 'Why you get sleepy',
+		summary:
+			'A tank of sleep pressure fills all day and drains at night, and a body clock sets the hours when sleep comes easily: sleepiness is the gap between them. Move your bedtime and your alarm, stay up all night, take a nap, and look inside one night’s ninety-minute rounds of light, deep and dreaming sleep.',
+		accent: '#7048e8',
+		steps: 8,
+		minutes: 9
 	}
 ];
 

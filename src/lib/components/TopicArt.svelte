@@ -5994,6 +5994,41 @@
 		<path d="M48 74 L36 80 L48 86" fill="none" stroke={accent} stroke-width="2.5" />
 		<line x1="98" y1="92" x2="98" y2="58" stroke="currentColor" stroke-width="2" />
 		<path d="M98 58 L78 62 L98 68 Z" fill={accent} />
+	{:else if slug === 'why-you-get-sleepy'}
+		<!-- a sleepy face beside a tank of sleep pressure that rises by day and falls by night -->
+		<circle
+			cx="52"
+			cy="58"
+			r="30"
+			fill="none"
+			stroke="currentColor"
+			stroke-width="2"
+			opacity="0.7"
+		/>
+		<path
+			d="M38 54 Q44 58 50 54 M56 54 Q62 58 68 54"
+			fill="none"
+			stroke="currentColor"
+			stroke-width="2"
+			stroke-linecap="round"
+			opacity="0.7"
+		/>
+		<text x="80" y="34" font-size="14" font-weight="700" fill={accent}>z</text>
+		<text x="90" y="22" font-size="18" font-weight="700" fill={accent}>z</text>
+		<path
+			d="M104 96 L120 74 L136 66 L144 92 L160 70 L176 62 L186 90"
+			fill="none"
+			stroke={accent}
+			stroke-width="3"
+			stroke-linejoin="round"
+		/>
+		<path
+			d="M104 70 Q130 52 150 68 T190 66"
+			fill="none"
+			stroke="#f08c00"
+			stroke-width="2"
+			stroke-dasharray="5 4"
+		/>
 	{:else}
 		<circle cx="100" cy="60" r="30" fill="none" stroke={accent} stroke-width="2" />
 		<circle cx="100" cy="60" r="5" fill={accent} />

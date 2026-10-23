@@ -74,6 +74,13 @@ test('an earlier alarm leaves the tank fuller in the morning and you sleepier al
 	expect(early.nights[0].sAtWake).toBeGreaterThan(normal.nights[0].sAtWake + 0.04);
 	for (let h = 8; h <= 22; h++)
 		expect(gap(at(early.series, 24 + h))).toBeGreaterThan(gap(at(normal.series, 24 + h)));
+	// An alarm at 8:00 or later never rings: you wake by yourself at about 7:30.
+	for (const wake of [8, 10]) {
+		const n = run({ ...DEFAULT_PLAN, wake }).nights[0];
+		expect(n.natural).toBe(true);
+		expect(n.wake % 24).toBeGreaterThan(7.25);
+		expect(n.wake % 24).toBeLessThan(7.75);
+	}
 	// A routine of short nights settles: the third morning is no worse than the first.
 	expect(early.nights[2].sAtWake).toBeCloseTo(early.nights[0].sAtWake, 2);
 });
