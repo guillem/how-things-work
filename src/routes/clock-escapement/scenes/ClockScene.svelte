@@ -34,7 +34,7 @@
 
 	const phase = $derived(String(step.hints?.phase ?? 'clock'));
 	const settings = $derived.by((): Settings => ({
-		length: phase === 'length' ? Number(params.length ?? 99) / 100 : SECONDS_LENGTH,
+		length: phase === 'length' ? Number(params.length ?? 99.4) / 100 : SECONDS_LENGTH,
 		weight: phase === 'weight' ? Number(params.weight ?? DEFAULT_WEIGHT) : DEFAULT_WEIGHT,
 		anchor: phase === 'runaway' ? params.anchor === true : true,
 		driven: phase === 'push' ? params.unhook !== true : true
@@ -176,6 +176,8 @@
 	const wW = $derived(30 + 1.5 * kg);
 	const wTop = $derived(232 + Math.min(120, turns * SINK_PER_TURN * 300));
 	const length = $derived(settings.length);
+	/** The length in centimetres, as the slider shows it. */
+	const cm = $derived((settings.length * 100).toFixed(1));
 	const bob = $derived({ x: PX, y: PY + PS * length });
 	const swingNow = $derived(settledSwing(settings.weight, settings.length));
 
@@ -676,20 +678,8 @@
 				</Readout>
 			{/if}
 		{:else if phase === 'length'}
-			<Readout
-				id="len"
-				order={6}
-				label="Pendulum"
-				value="{Math.round(settings.length * 100)} cm long"
-			>
-				<Label
-					x={PX + 34}
-					y={bob.y + 6}
-					text="{Math.round(settings.length * 100)} cm"
-					anchor="start"
-					size={14}
-					weight={700}
-				/>
+			<Readout id="len" order={6} label="Pendulum" value="{cm} cm long">
+				<Label x={PX + 34} y={bob.y + 6} text="{cm} cm" anchor="start" size={14} weight={700} />
 			</Readout>
 			<Readout id="tpm" order={7} label="Ticks a minute" value={String(Math.round(tpm))}>
 				<Label x={692} y={448} text="{Math.round(tpm)} ticks a minute" size={16} weight={700} />

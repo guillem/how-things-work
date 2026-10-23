@@ -313,7 +313,7 @@ A topic is done when:
 - [x] bicycle-stability
 - [x] gas-turbines-combined-cycle
 - [x] heat-pumps-refrigeration
-- [ ] clock-escapement
+- [x] clock-escapement
 - [ ] drone-four-rotors
 - [x] hydraulics-digger-arm
 - [ ] light-bulb-hot-wire
@@ -2187,8 +2187,8 @@ A topic is done when:
 - **Title:** Pendulum clocks & the escapement
 - **Level:** 0
 - **Kind:** simulate
-- **Interaction:** Hang a weight on a cord that turns a toothed wheel and watch the wheel spin away in a blur; add the anchor that rocks with a pendulum, and the wheel can now advance only one tooth per swing, with a tick each time a tooth is caught and a tiny push back to the pendulum to keep it going. Lengthen or shorten the pendulum, or hang a heavier weight, and count ticks against a reference second hand to see which change alters the rate.
-- **Takeaway:** The weight drives the clock and the pendulum only meters it out, one tooth per swing, so the length of the pendulum sets the time and a heavier weight hardly changes the rate.
+- **Interaction:** Hang a weight on a cord that turns a toothed wheel and watch the wheel spin away in a blur; add the anchor that rocks with a pendulum, and the wheel can now advance only half a tooth per swing, with a tick each time a tooth is caught and a tiny push back to the pendulum to keep it going. Lengthen or shorten the pendulum, or hang a heavier weight, and count ticks against a reference second hand to see which change alters the rate.
+- **Takeaway:** The weight drives the clock and the pendulum only meters it out, half a tooth per swing, so the length of the pendulum sets the time and a heavier weight hardly changes the rate.
 - **Prerequisites:** none
 - **Pitfall:** The pendulum does not power the clock, and a bigger swing does not tick faster: for small swings the length alone sets the period.
 

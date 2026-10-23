@@ -55,6 +55,7 @@ test('push: without the weight nothing ticks, though the pendulum swings on', as
 test('length: a pendulum a quarter as long ticks twice as fast', async ({ page }) => {
 	await open(page, './clock-escapement/#length', '60 ticks a minute');
 	await expect(stage(page)).toContainText('in step with the stopwatch');
+	await expect(stage(page)).toContainText('right to within seconds a day');
 	await page.locator('input[type=range][data-control=length]').fill('25');
 	await expect(stage(page)).toContainText('120 ticks a minute');
 	await expect(stage(page)).toContainText('2.0 times as fast as the stopwatch');

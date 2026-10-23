@@ -28,9 +28,9 @@ const length: Control = {
 	label: 'Length of the pendulum',
 	min: 25,
 	max: 100,
-	step: 1,
-	default: 99,
-	format: (v) => `${v} cm`
+	step: 0.1,
+	default: 99.4,
+	format: (v) => `${v.toFixed(1)} cm`
 };
 
 const weight: Control = {
@@ -128,7 +128,7 @@ export const spec: ExplainerSpec = {
 			body: `
 <p>So what decides how fast the clock goes? <strong>Change the pendulum’s length</strong> and count the ticks against the stopwatch.</p>
 <p>About a metre long, it ticks once a second: 60 ticks a minute, in step with the stopwatch. Shorter, it swings faster and the clock races ahead. A pendulum <strong>a quarter as long ticks twice as fast</strong>, 120 ticks a minute, and the clock’s second hand goes round twice for each turn of the stopwatch’s.</p>
-<p>That is how a clockmaker sets a clock right: a nut under the pendulum’s bob raises or lowers it a little. Lowering the bob by just one millimetre makes the clock lose about 43 seconds a day.</p>`,
+<p>That is how a clockmaker sets a clock right: a nut under the round weight at the bottom of the pendulum, the bob, raises or lowers it a little. Lowering the bob by just one millimetre makes the clock lose about 43 seconds a day.</p>`,
 			notes: `<p>A real pendulum takes an hour or so to settle into a new swing after it is changed; the page skips ahead to it. A pendulum’s length is measured from its pivot to the middle of the bob. The time of a swing does not depend on how heavy the bob is.</p>`
 		},
 		{
@@ -143,7 +143,7 @@ export const spec: ExplainerSpec = {
 <p>The weight drives the clock, so surely a heavier weight makes it go faster? <strong>Hang a heavier weight</strong> and count the ticks again.</p>
 <p>The ticks hardly change. A heavier weight gives the pendulum harder pushes, so it swings wider: four times the weight, twice as wide. But a wider swing does not tick faster. It has farther to go and goes faster to cover it, so each swing still takes about a second. The tiny difference goes the other way: the wider swing is a little <strong>slower</strong>, and the clock loses about half a minute a day.</p>
 <p>The length sets the time; the weight only keeps it going.</p>`,
-			notes: `<p>For small swings, how long a swing takes depends only on the length of the pendulum. Wider swings take slightly longer, and clockmakers call this the circular error. A swing of 3 degrees each side takes long enough to lose about 15 seconds a day against a tiny swing, so a good clock keeps its swing small and steady. As with the length, a real clock takes an hour or so to settle into its new swing; the page skips ahead.</p>`
+			notes: `<p>For small swings, how long a swing takes depends only on the length of the pendulum. Wider swings take slightly longer, and clockmakers call this the circular error. A swing of 3 degrees each side takes long enough to lose about 15 seconds a day against a tiny swing, so a good clock keeps its swing small and steady. On this page the energy the pendulum loses each swing grows with the square of the swing, so four times the weight settles at twice the swing. If the air’s drag on the bob grows faster than that, as it may, the swing grows more slowly and the clock loses a little less. As with the length, a real clock takes an hour or so to settle into its new swing; the page skips ahead.</p>`
 		},
 		// ---------------------------------------------------------------- next
 		{
@@ -154,7 +154,7 @@ export const spec: ExplainerSpec = {
 			hints: { phase: 'next' },
 			duration: 14,
 			body: `
-<p>A pendulum clock splits the work in two. The falling weight drives the wheels and gives the pendulum a tiny push each swing. The pendulum lets the wheels move on one small step per swing, and its length alone sets how long a swing takes. Christiaan Huygens built the first pendulum clock in 1656; clocks that had been out by about a quarter of an hour a day were soon right to within seconds.</p>
+<p>A pendulum clock splits the work in two. The falling weight drives the wheels and gives the pendulum a tiny push each swing. The pendulum lets the wheels move on one small step per swing, and its length alone sets how long a swing takes. Christiaan Huygens invented the pendulum clock in December 1656, and the clockmaker Salomon Coster built the first ones in 1657. Clocks that had been out by about a quarter of an hour a day were soon right to about fifteen seconds a day.</p>
 <p>The page on <a href="../oscillations-resonance/">oscillations and resonance</a> looks at swinging things more closely: how a pendulum’s length sets its swing, and what happens when you push a swing in time with it.</p>`
 		}
 	]
