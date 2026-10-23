@@ -238,13 +238,7 @@
 		stroke-width="1.2"
 	/>
 	{#if cliffH.current > 0.5}
-		<Label
-			x={52}
-			y={f(cliffTop + 18)}
-			text="cliff {Math.round(cliffH.current)} m"
-			size={12}
-			muted
-		/>
+		<Label x={52} y={cliffTop + 18} text="cliff {Math.round(cliffH.current)} m" size={12} muted />
 	{/if}
 
 	<!-- lines of sight -->
@@ -359,7 +353,7 @@
 		/>
 		<circle cx="2" r="3.6" fill="var(--eb-eye)" />
 	</g>
-	<Label x={eyeX - 4} y={f(eyeY - 16)} text="you" size={14} weight={700} anchor="middle" />
+	<Label x={eyeX - 4} y={eyeY - 16} text="you" size={14} weight={700} anchor="middle" />
 
 	{#if phase === 'sail'}
 		<Handle

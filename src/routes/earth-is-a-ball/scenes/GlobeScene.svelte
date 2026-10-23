@@ -166,8 +166,8 @@
 			</g>
 		{/each}
 		<Label
-			x={f(at(0, R - 84).x)}
-			y={f(at(0, R - 84).y)}
+			x={at(0, R - 84).x}
+			y={at(0, R - 84).y}
 			text="everyone’s down"
 			size={13}
 			weight={600}
@@ -214,7 +214,7 @@
 				opacity={ballFade}
 			/>
 		{/if}
-		<Label x={f(sky.x)} y={f(sky.y + 5)} text="sky" size={13} muted anchor="middle" />
+		<Label x={sky.x} y={sky.y + 5} text="sky" size={13} muted anchor="middle" />
 		<Handle
 			x={at(a, R + HEAD + 26).x}
 			y={at(a, R + HEAD + 26).y}
