@@ -5979,6 +5979,21 @@
 			<circle cx={x} cy="70" r="8" fill="none" stroke={accent} stroke-width="1.5" />
 			<circle cx={x + 6} cy="92" r="7" fill="none" stroke={accent} stroke-width="1.5" />
 		{/each}
+	{:else if slug === 'sea-breeze'}
+		<!-- a coast: warm land, cool sea, and the loop of the breeze with a flag on the beach -->
+		<line x1="10" y1="92" x2="96" y2="92" stroke="currentColor" stroke-width="2" opacity="0.6" />
+		<path d="M96 92 L190 92" stroke={accent} stroke-width="3" opacity="0.6" />
+		<circle cx="40" cy="22" r="10" fill={accent} opacity="0.85" />
+		<path
+			d="M168 80 L40 80 Q22 80 22 64 L22 46 Q22 30 40 30 L168 30 Q182 30 182 46 L182 64"
+			fill="none"
+			stroke={accent}
+			stroke-width="2.5"
+			stroke-dasharray="6 5"
+		/>
+		<path d="M48 74 L36 80 L48 86" fill="none" stroke={accent} stroke-width="2.5" />
+		<line x1="98" y1="92" x2="98" y2="58" stroke="currentColor" stroke-width="2" />
+		<path d="M98 58 L78 62 L98 68 Z" fill={accent} />
 	{:else}
 		<circle cx="100" cy="60" r="30" fill="none" stroke={accent} stroke-width="2" />
 		<circle cx="100" cy="60" r="5" fill={accent} />

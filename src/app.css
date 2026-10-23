@@ -5632,3 +5632,49 @@ kbd {
 	--cld-rock: #5a534a;
 	--cld-rock-edge: #8a8073;
 }
+
+/* sea-breeze: sky by day and night, land, beach, sea, the air's specks, warm and cool, the flag */
+:root {
+	--sbz-sky-day-top: #7fbbe8;
+	--sbz-sky-day-low: #dcefff;
+	--sbz-sky-night-top: #0b1730;
+	--sbz-sky-night-low: #26385a;
+	--sbz-star: #f1f3f5;
+	--sbz-sun: #fcc419;
+	--sbz-moon: #e9ecef;
+	--sbz-grass: #7cb45a;
+	--sbz-soil: #a07850;
+	--sbz-sand: #e9d3a0;
+	--sbz-sea: #3d8fd1;
+	--sbz-sea-deep: #1d5f99;
+	--sbz-speck: #495057;
+	--sbz-hot: #f03e3e;
+	--sbz-cool: #1971c2;
+	--sbz-onshore: #0c8599;
+	--sbz-offshore: #f76707;
+	--sbz-flag: #e8590c;
+	--sbz-pole: #495057;
+	--sbz-card: rgba(255, 255, 255, 0.82);
+}
+:root[data-theme='dark'] {
+	--sbz-sky-day-top: #1c3d63;
+	--sbz-sky-day-low: #35597f;
+	--sbz-sky-night-top: #060b16;
+	--sbz-sky-night-low: #141f33;
+	--sbz-star: #dee2e6;
+	--sbz-sun: #fab005;
+	--sbz-moon: #ced4da;
+	--sbz-grass: #3f6b2e;
+	--sbz-soil: #6b4f35;
+	--sbz-sand: #8c7a55;
+	--sbz-sea: #1f5c8f;
+	--sbz-sea-deep: #123c60;
+	--sbz-speck: #dee2e6;
+	--sbz-hot: #ff6b6b;
+	--sbz-cool: #74c0fc;
+	--sbz-onshore: #3bc9db;
+	--sbz-offshore: #ff922b;
+	--sbz-flag: #ff922b;
+	--sbz-pole: #ced4da;
+	--sbz-card: rgba(20, 26, 36, 0.82);
+}

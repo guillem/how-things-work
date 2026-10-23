@@ -1662,6 +1662,15 @@ const explainers: Explainer[] = [
 		accent: '#3b8fd4',
 		steps: 8,
 		minutes: 10
+	},
+	{
+		slug: 'sea-breeze',
+		title: 'Where wind comes from: the sea breeze',
+		summary:
+			'Drag the Sun across the sky over a beach: the land warms far faster than the sea, the warm air over it is pushed up, and cooler air from over the sea slides in underneath as a breeze. At night the land cools below the sea and the breeze turns round. Uneven heating is enough to make a wind.',
+		accent: '#1f9fb0',
+		steps: 8,
+		minutes: 9
 	}
 ];
 
