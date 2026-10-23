@@ -150,7 +150,7 @@ export const spec: ExplainerSpec = {
 			duration: 18,
 			body: `
 <p>Here is the comet itself, close up: the ${nucleus}, a lump of <strong>ice mixed with dust and rock</strong>, about 15 km long and 8 km wide, the size of a big city. Its crust is <strong>darker than coal</strong>.</p>
-<p>Far out beyond Neptune, the sunlight is <strong>${round(1 / sunlight(aph.r) / 50) * 50} times weaker</strong> than here on Earth. A dark lump out there stays colder than ${round(darkTemperature(aph.r) / 10) * 10} °C. Nothing happens to it: no fuzz, no tail, just a dark lump far too small and dim to see without a giant telescope.</p>`
+<p>Far out beyond Neptune, the sunlight is <strong>${round(1 / sunlight(aph.r) / 50) * 50} times weaker</strong> than here on Earth. A dark lump out there stays at about −${-round(darkTemperature(aph.r) / 5) * 5} °C. Nothing happens to it: no fuzz, no tail, just a dark lump far too small and dim to see without a giant telescope.</p>`
 		},
 		{
 			id: 'warming',
