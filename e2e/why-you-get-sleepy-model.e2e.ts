@@ -43,7 +43,8 @@ test('the tank fills all day and drains all night, and a night clears what a day
 	const night = series.filter((x) => x.t > n.onset && x.t < n.wake);
 	for (let i = 1; i < day.length; i++) expect(day[i].s).toBeGreaterThan(day[i - 1].s);
 	for (let i = 1; i < night.length; i++) expect(night[i].s).toBeLessThan(night[i - 1].s);
-	// It drains about four times as fast as it fills: 8 hours empty what 16 built.
+	// Over the day and the night the level changes about twice as fast asleep as awake, so one
+	// night clears the day.
 	expect(ns[1].sAtWake).toBeCloseTo(n.sAtWake, 2);
 	expect(n.sAtOnset).toBeGreaterThan(0.6);
 	expect(n.sAtWake).toBeLessThan(0.1);

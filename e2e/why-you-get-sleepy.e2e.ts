@@ -10,7 +10,7 @@ async function open(page: Page, url: string, text: string) {
 	await expect(stage(page)).toContainText(text);
 }
 
-test('the tank is about two thirds full at bedtime and you feel a bit tired at 21:00', async ({
+test('the tank is a bit more than half full at bedtime and you feel a bit tired at 21:00', async ({
 	page
 }) => {
 	await open(page, './why-you-get-sleepy/#sleepy', 'At bedtime the tank is 62 % full');

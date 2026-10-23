@@ -46,7 +46,7 @@ const nap: Control = {
 const pressure =
 	'<dfn data-def="The need for sleep that builds up in your brain the longer you are awake, and drains away while you sleep. The page draws it as a tank.">sleep pressure</dfn>';
 const bodyClock =
-	'<dfn data-def="A timer in your brain that runs on a 24-hour beat, even in a cave with no daylight. It makes sleep easy to fall into at some hours and hard at others.">body clock</dfn>';
+	'<dfn data-def="A timer in your brain that keeps ticking even in a cave with no daylight, on a beat a little longer than 24 hours; daylight locks that beat to the day. It makes sleep easy to fall into at some hours and hard at others.">body clock</dfn>';
 const rem =
 	'<dfn data-def="The part of sleep when most dreams happen: your eyes dart about under the lids, and the rest of your body goes floppy so that you don’t act out the dream. Its grown-up name is REM sleep.">dreaming sleep</dfn>';
 
@@ -71,9 +71,9 @@ export const spec: ExplainerSpec = {
 			duration: 24,
 			body: `
 <p>In the morning you jump out of bed; by bedtime you can hardly keep your eyes open. What changed? You have been <strong>awake all day</strong>, and your brain keeps count.</p>
-<p>Think of a <strong>tank</strong> in your head. Every hour you are awake, it fills up a little more with ${pressure}. Every hour you sleep, it drains, and it drains <strong>about four times as fast</strong> as it fills: eight hours in bed empty what sixteen hours awake put in.</p>
-<p>Watch three ordinary days: to bed at 22:30, up at 7:00. The tank starts the morning almost empty, is <strong>about two thirds full</strong> by bedtime, and is almost empty again when the alarm rings. The face shows how you feel.</p>`,
-			notes: `<p>Nobody has found a real tank, of course. Scientists measure the pressure by the slow, deep brain waves of sleep: the longer someone has been awake, the bigger those waves are when they fall asleep, and they shrink through the night. Part of it is a chemical called adenosine, which builds up in the brain while you are awake. Coffee keeps you awake by blocking it.</p><p>The page’s numbers are for a grown-up, who needs about 8 hours a night. Children need more: doctors advise 9 to 12 hours for ages 6 to 12, and 8 to 10 for teenagers.</p>`
+<p>Think of a <strong>tank</strong> in your head. Every hour you are awake, it fills up a little more with ${pressure}. Every hour you sleep, it drains, and it drains <strong>about twice as fast</strong> as it fills: eight hours in bed empty what sixteen hours awake put in.</p>
+<p>Watch three ordinary days: to bed at 22:30, up at 7:00. The tank starts the morning almost empty, is <strong>a bit more than half full</strong> by bedtime, and is almost empty again when the alarm rings. The face shows how you feel.</p>`,
+			notes: `<p>Nobody has found a real tank, of course. Scientists measure the pressure by the slow, deep brain waves of sleep: the longer someone has been awake, the bigger those waves are when they fall asleep, and they shrink through the night. Part of it is a chemical called adenosine, which builds up in the brain while you are awake. Coffee keeps you awake by blocking the parts of brain cells that adenosine acts on. It does not empty the tank: adenosine keeps building up while you are awake.</p><p>The page’s numbers are for a grown-up, who needs about 8 hours a night. Children need more: doctors advise 9 to 12 hours for ages 6 to 12, and 8 to 10 for teenagers.</p>`
 		},
 		{
 			id: 'clock',
@@ -105,14 +105,14 @@ export const spec: ExplainerSpec = {
 		{
 			id: 'alarm',
 			chapter: 'play',
-			title: 'An early alarm leaves the tank half drained',
+			title: 'An early alarm leaves the tank fuller',
 			scene: 'days',
 			hints: { phase: 'alarm' },
 			duration: 22,
 			controls: [alarm],
 			body: `
 <p><strong>Move the alarm.</strong> Set it to <strong>5:00</strong> and you get out of bed before the tank has drained: it starts the day with half as much again as after a full night. The face looks tired sooner, and by 22:00 you are already past the sleep line.</p>
-<p>Let it ring at <strong>8:00</strong> or later and nothing changes: the tank reaches the waking line at about 7:30 and you wake up by yourself before the alarm.</p>`,
+<p>Let it ring at <strong>8:00</strong> or later and you are already awake: the tank reaches the waking line at about 7:30. A later alarm does not add sleep; stay in bed and the tank starts filling again.</p>`,
 			notes: `<p>In this simple model a routine of short nights settles into a new, more tired normal after a few days. Real experiments find something worse: people kept to six hours a night for two weeks did as badly on attention tests as people kept awake for a whole night, while saying they felt only a little sleepy.</p>`
 		},
 		{
@@ -140,7 +140,7 @@ export const spec: ExplainerSpec = {
 			body: `
 <p><strong>Take a nap</strong> at 15:00 on day 2. While you nap the tank drains, so it is lower all evening and reaches the sleep line later: you go to bed at 22:30 as usual and lie awake.</p>
 <p>A <strong>20-minute</strong> nap puts tonight’s sleep about 40 minutes later. A <strong>90-minute</strong> nap puts it more than two hours later. A short nap can still be useful: it takes the edge off a sleepy afternoon, as long as tonight can wait a little.</p>`,
-			notes: `<p>The page lets you fall asleep for the nap whenever you choose. Real naps are easiest in the early afternoon, when many people feel a dip; this simple clock doesn’t draw that dip.</p>`
+			notes: `<p>The page puts you to sleep for the nap at 15:00 even if the tank has not reached the sleep line. Real naps are easiest in the early afternoon, when many people feel a dip; this simple clock doesn’t draw that dip.</p>`
 		},
 		// ------------------------------------------------------------------ inside
 		{
@@ -165,7 +165,7 @@ export const spec: ExplainerSpec = {
 			body: `
 <p>Sleepiness is a pressure that builds all day and drains at night, and a body clock that opens a window for sleep. When the two agree you fall asleep quickly and wake up fresh; when they disagree you lie awake tired, or nod off in the afternoon.</p>
 <p>The toy keeps the body clock fixed, but a real one <strong>moves</strong>. Morning daylight pulls it earlier; bright screens in the evening and late lie-ins push it later. That is why a weekend of sleeping in makes Monday morning feel like jet lag: your clock has drifted later, and the alarm rings before it is ready.</p>
-<p>And the page shows <strong>when</strong> you get sleepy, not <strong>why</strong> animals sleep at all. Every animal studied sleeps, or does something like it, but what sleep is for is still an open question. The page on <a href="../homeostasis/">homeostasis</a> shows another way your body keeps itself steady, by feedback.</p>`
+<p>And the page shows <strong>when</strong> you get sleepy, not <strong>why</strong> animals sleep at all. Sleep, or something like it, has been found in animals from jellyfish to humans, but what it is for is still an open question. The page on <a href="../homeostasis/">homeostasis</a> shows another way your body keeps itself steady, by feedback.</p>`
 		}
 	]
 };

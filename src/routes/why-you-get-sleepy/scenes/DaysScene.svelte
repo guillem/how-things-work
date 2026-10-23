@@ -313,7 +313,7 @@
 			}
 			case 'alarm':
 				return {
-					a: `Tank when you get up: ${pct(n0.sAtWake)} (usually ${pct(b0.sAtWake)})`,
+					a: `Tank when you ${n0.natural ? 'wake' : 'get up'}: ${pct(n0.sAtWake)} (usually ${pct(b0.sAtWake)})`,
 					b: n0.natural
 						? `You wake by yourself at ${clockText(n0.wake)}, before the alarm`
 						: `The alarm rings at ${clockText(n0.wake)}`

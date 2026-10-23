@@ -200,7 +200,7 @@ A topic is done when:
 - [x] hearing-and-the-ear
 - [ ] muscles-pull-in-pairs
 - [ ] why-spinning-makes-you-dizzy
-- [ ] why-you-get-sleepy
+- [x] why-you-get-sleepy
 
 **Earth & Climate**
 - [x] plate-tectonics
