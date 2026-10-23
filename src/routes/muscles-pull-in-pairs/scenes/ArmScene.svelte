@@ -13,6 +13,7 @@
 	import { cubicIn, cubicInOut } from 'svelte/easing';
 	import { Handle, Label, cycle, smooth, smoothstep } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
+	import { useReadouts } from '#lib/explainer/readouts.svelte.ts';
 	import {
 		BICEPS_GRIP,
 		FULLY_BENT,
@@ -31,6 +32,9 @@
 	} from '../model';
 
 	let { step, t, params, reduced, setParam }: StageProps = $props();
+	const readouts = useReadouts();
+	/** A phone: the stage is drawn small, so the hand's handle is drawn bigger for a finger. */
+	const phone = $derived(readouts?.out ?? false);
 
 	const phase = $derived(String(step.hints?.phase ?? 'arm'));
 	const elbowParam = $derived(Number(params.elbow ?? 60));
@@ -716,7 +720,7 @@
 		<Handle
 			x={handP.x}
 			y={handP.y}
-			r={12}
+			r={phone ? 28 : 12}
 			label="Hand"
 			value={elbowParam}
 			min={20}
