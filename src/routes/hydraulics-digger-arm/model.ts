@@ -195,10 +195,11 @@ export const SCOOP: { pose: Pose; by: CylinderName | null; what: string }[] = [
 	{ pose: { boom: 30, arm: -100, bucket: -40 }, by: null, what: 'ready' },
 	{ pose: { boom: 30, arm: -35, bucket: -40 }, by: 'arm', what: 'reach out' },
 	{ pose: { boom: 4, arm: -35, bucket: -40 }, by: 'boom', what: 'lower into the ground' },
-	{ pose: { boom: 4, arm: -82, bucket: -40 }, by: 'arm', what: 'drag through the dirt' },
-	{ pose: { boom: 4, arm: -82, bucket: -125 }, by: 'bucket', what: 'curl the bucket: scoop' },
-	{ pose: { boom: 45, arm: -82, bucket: -125 }, by: 'boom', what: 'lift' },
-	{ pose: { boom: 45, arm: -82, bucket: 15 }, by: 'bucket', what: 'open the bucket: dump' }
+	{ pose: { boom: 4, arm: -72, bucket: -40 }, by: 'arm', what: 'drag through the dirt' },
+	{ pose: { boom: 4, arm: -72, bucket: -125 }, by: 'bucket', what: 'curl the bucket: scoop' },
+	{ pose: { boom: 45, arm: -72, bucket: -125 }, by: 'boom', what: 'lift' },
+	{ pose: { boom: 45, arm: -125, bucket: -125 }, by: 'arm', what: 'pull in, away from the hole' },
+	{ pose: { boom: 45, arm: -125, bucket: 10 }, by: 'bucket', what: 'open the bucket: dump' }
 ];
 
 const smoothstep01 = (u: number) => u * u * (3 - 2 * u);
@@ -260,7 +261,7 @@ export function geometry(p: Pose): ArmGeometry {
 		armTail,
 		bucketBack,
 		cylinders: {
-			boom: [ARM.boomBase, add(pivot, 2.5, a1, -0.45)],
+			boom: [ARM.boomBase, add(pivot, 2.5, a1, 0.05)],
 			arm: [add(pivot, 2.9, a1, 0.55), armTail],
 			bucket: [add(boomTip, 0.55, a2, 0.3), add(armTip, -0.35, a3, 0.3)]
 		}

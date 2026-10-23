@@ -105,8 +105,9 @@ test('the scoop digs below the ground, curls the dirt in, lifts it high, and tip
 	expect(at('drag').teeth.y).toBeLessThan(-1);
 	expect(at('curl').teeth.y).toBeGreaterThan(at('drag').teeth.y + 1);
 	expect(at('lift').armTip.y).toBeGreaterThan(3.5);
-	// Dumping turns the bucket's teeth out and down, away from the digger.
-	expect(at('open').teeth.x).toBeGreaterThan(at('lift').teeth.x + 2);
+	// The dirt is tipped out beside the hole, not back into it.
+	expect(at('open').teeth.y).toBeLessThan(at('pull').teeth.y - 1);
+	expect(at('open').armTip.x).toBeLessThan(at('curl').teeth.x - 0.5);
 	expect(scoopAt(0).pose).toEqual(SCOOP[0].pose);
 	expect(scoopAt(1).pose).toEqual(SCOOP[SCOOP.length - 1].pose);
 });

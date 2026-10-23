@@ -6066,6 +6066,23 @@
 			stroke-width="1.5"
 		/>
 		<line x1="163" y1="52" x2="163" y2="66" stroke="currentColor" stroke-width="1.5" />
+	{:else if slug === 'hydraulics-digger-arm'}
+		<!-- a thin piston pushed down, oil along a pipe, a wide piston lifting a heavy block -->
+		<rect x="40" y="58" width="12" height="40" fill={accent} opacity="0.55" />
+		<rect x="40" y="92" width="120" height="12" fill={accent} opacity="0.55" />
+		<rect x="110" y="70" width="50" height="28" fill={accent} opacity="0.55" />
+		<path
+			d="M38 40 V104 H162 V58 M54 40 V90 H108 V58"
+			fill="none"
+			stroke="currentColor"
+			stroke-width="1.5"
+			opacity="0.6"
+		/>
+		<rect x="40" y="52" width="12" height="6" fill="currentColor" opacity="0.7" />
+		<line x1="46" y1="16" x2="46" y2="44" stroke="currentColor" stroke-width="2" />
+		<path d="M41 38 L46 46 L51 38" fill="none" stroke="currentColor" stroke-width="2" />
+		<rect x="110" y="62" width="50" height="8" fill="currentColor" opacity="0.7" />
+		<rect x="114" y="30" width="42" height="32" rx="3" fill={accent} />
 	{:else}
 		<circle cx="100" cy="60" r="30" fill="none" stroke={accent} stroke-width="2" />
 		<circle cx="100" cy="60" r="5" fill={accent} />

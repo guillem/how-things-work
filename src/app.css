@@ -5762,3 +5762,43 @@ kbd {
 	--sl-dream: #f06595;
 	--sl-dream-ink: #faa2c1;
 }
+
+/* hydraulics-digger-arm: oil, steel cylinders and rods, air, the digger's paint, dirt, loads */
+:root {
+	--hyd-oil: #f2a93b;
+	--hyd-oil-dark: #c77d14;
+	--hyd-steel: #ced4da;
+	--hyd-steel-edge: #6c757d;
+	--hyd-rod: #e9ecef;
+	--hyd-air: #ffffff;
+	--hyd-push: #e03131;
+	--hyd-paint: #f5b400;
+	--hyd-paint-edge: #a37400;
+	--hyd-track: #495057;
+	--hyd-hose: #343a40;
+	--hyd-dirt: #b08455;
+	--hyd-dirt-dark: #7f5a35;
+	--hyd-car: #4c6ef5;
+	--hyd-crate: #c08a4a;
+	--hyd-rock: #9c9488;
+	--hyd-active: #e8590c;
+}
+:root[data-theme='dark'] {
+	--hyd-oil: #d38a1f;
+	--hyd-oil-dark: #f2a93b;
+	--hyd-steel: #495057;
+	--hyd-steel-edge: #adb5bd;
+	--hyd-rod: #868e96;
+	--hyd-air: #e7f5ff;
+	--hyd-push: #ff6b6b;
+	--hyd-paint: #d99a00;
+	--hyd-paint-edge: #ffd43b;
+	--hyd-track: #868e96;
+	--hyd-hose: #adb5bd;
+	--hyd-dirt: #8a6a45;
+	--hyd-dirt-dark: #b08455;
+	--hyd-car: #5c7cfa;
+	--hyd-crate: #a87a42;
+	--hyd-rock: #6f685e;
+	--hyd-active: #ff922b;
+}

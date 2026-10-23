@@ -1689,6 +1689,15 @@ const explainers: Explainer[] = [
 		accent: '#d6336c',
 		steps: 8,
 		minutes: 10
+	},
+	{
+		slug: 'hydraulics-digger-arm',
+		title: 'Diggers and hydraulics: a small push becomes a huge one',
+		summary:
+			'Push a small piston and oil shoves a bigger one: ten times the area gets ten times the push, but moves only a tenth as far. Make the big piston wider and lift a car, then a boulder; let air into the pipe and it goes spongy. Then work a digger’s three cylinders to scoop and dump.',
+		accent: '#e0a100',
+		steps: 9,
+		minutes: 10
 	}
 ];
 
