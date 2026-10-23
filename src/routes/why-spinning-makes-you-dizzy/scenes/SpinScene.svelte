@@ -88,6 +88,8 @@
 
 	// ---- focus ---------------------------------------------------------------------------------
 	const ringO = $derived(focus === 'chair' ? 0.35 : 1);
+	/** The flap's readout, left out where the step is about something else (keeps phones' panels short). */
+	const earShown = $derived(ringO > 0.5 && focus !== 'long');
 
 	// ---- the child on the chair ----------------------------------------------------------------
 	const VIEW: View = { cx: 178, cy: 412, s: 2.35, elev: 0.26 };
@@ -560,9 +562,9 @@
 			order={2}
 			label="Your ear’s flap says"
 			value={earSays}
-			opacity={ringO > 0.5 ? 1 : 0}
+			opacity={earShown ? 1 : 0}
 		>
-			{#if ringO > 0.5}
+			{#if earShown}
 				<Label x={RX} y={180} text="Your ear’s flap says" size={12} muted anchor="start" />
 				<Label
 					x={RX}
@@ -664,7 +666,7 @@
 		/>
 		<circle cx={sx(now)} cy={sy(chairV)} r="4.5" fill="var(--dz-chair-line)" />
 		<circle cx={sx(now)} cy={sy(feelV)} r="5" fill="var(--dz-feel)" />
-		<Readout id="legend-chair" label="grey: the chair">
+		<Readout id="legend" label="grey: the chair · orange: what you feel">
 			<line
 				x1={CH.x1 - 236}
 				y1={CH.y0 - 14}
@@ -674,8 +676,7 @@
 				stroke-width="2.5"
 			/>
 			<Label x={CH.x1 - 208} y={CH.y0 - 10} text="the chair" size={12} anchor="start" />
-		</Readout>
-		<Readout id="legend-feel" label="orange: what you feel" color="var(--dz-feel)">
+
 			<line
 				x1={CH.x1 - 130}
 				y1={CH.y0 - 14}
