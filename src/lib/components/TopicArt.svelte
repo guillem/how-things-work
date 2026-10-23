@@ -6116,6 +6116,38 @@
 		<path d="M41 38 L46 46 L51 38" fill="none" stroke="currentColor" stroke-width="2" />
 		<rect x="110" y="62" width="50" height="8" fill="currentColor" opacity="0.7" />
 		<rect x="114" y="30" width="42" height="32" rx="3" fill={accent} />
+	{:else if slug === 'clock-escapement'}
+		<!-- an escape wheel held by the anchor's two pallets, the pendulum hanging below -->
+		<circle
+			cx="100"
+			cy="46"
+			r="22"
+			fill="none"
+			stroke="currentColor"
+			stroke-width="2"
+			opacity="0.6"
+		/>
+		{#each Array.from({ length: 15 }, (_, k) => k) as k (k)}
+			<line
+				x1={100 + 22 * Math.sin((k * 24 * Math.PI) / 180)}
+				y1={46 - 22 * Math.cos((k * 24 * Math.PI) / 180)}
+				x2={100 + 28 * Math.sin(((k * 24 + 8) * Math.PI) / 180)}
+				y2={46 - 28 * Math.cos(((k * 24 + 8) * Math.PI) / 180)}
+				stroke="currentColor"
+				stroke-width="2"
+				opacity="0.6"
+			/>
+		{/each}
+		<path
+			d="M70 30 L100 8 L130 30"
+			fill="none"
+			stroke={accent}
+			stroke-width="4"
+			stroke-linecap="round"
+			stroke-linejoin="round"
+		/>
+		<line x1="100" y1="8" x2="108" y2="104" stroke={accent} stroke-width="2.5" />
+		<circle cx="108" cy="104" r="9" fill={accent} />
 	{:else}
 		<circle cx="100" cy="60" r="30" fill="none" stroke={accent} stroke-width="2" />
 		<circle cx="100" cy="60" r="5" fill={accent} />

@@ -1716,6 +1716,15 @@ const explainers: Explainer[] = [
 		accent: '#1971c2',
 		steps: 8,
 		minutes: 9
+	},
+	{
+		slug: 'clock-escapement',
+		title: 'Pendulum clocks & the escapement',
+		summary:
+			'Open up a grandfather clock: a falling weight turns the wheels, and a swinging pendulum lets them move on only one small step at a time, with a tick for each step. Take out the anchor and the wheels whirr away; lengthen the pendulum or hang a heavier weight and count the ticks to see which one changes the time.',
+		accent: '#b8860b',
+		steps: 7,
+		minutes: 9
 	}
 ];
 

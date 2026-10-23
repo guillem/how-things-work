@@ -5896,3 +5896,43 @@ kbd {
 	--ct-nucleus-edge: #9a8c7e;
 	--ct-ice: #d0ebff;
 }
+
+/* clock-escapement: the case, the face and hands, brass wheels and bob, the anchor, the weight, the tick and the push */
+:root {
+	--ce-case: #f3e6d3;
+	--ce-case-edge: #8b5e34;
+	--ce-face: #fffaf0;
+	--ce-face-edge: #a07850;
+	--ce-hand: #343a40;
+	--ce-second: #c92a2a;
+	--ce-brass: #e0b354;
+	--ce-brass-edge: #9a7425;
+	--ce-anchor: #495057;
+	--ce-anchor-edge: #212529;
+	--ce-weight: #adb5bd;
+	--ce-weight-edge: #495057;
+	--ce-cord: #868e96;
+	--ce-tick: #e8590c;
+	--ce-push: #2f9e44;
+	--ce-watch: #1c7ed6;
+	--ce-blur: rgba(224, 179, 84, 0.35);
+}
+:root[data-theme='dark'] {
+	--ce-case: #2e2418;
+	--ce-case-edge: #a07a50;
+	--ce-face: #f1e9da;
+	--ce-face-edge: #b89468;
+	--ce-hand: #212529;
+	--ce-second: #e03131;
+	--ce-brass: #d4a53c;
+	--ce-brass-edge: #f0c86a;
+	--ce-anchor: #ced4da;
+	--ce-anchor-edge: #f1f3f5;
+	--ce-weight: #868e96;
+	--ce-weight-edge: #ced4da;
+	--ce-cord: #adb5bd;
+	--ce-tick: #ff922b;
+	--ce-push: #51cf66;
+	--ce-watch: #4dabf7;
+	--ce-blur: rgba(212, 165, 60, 0.35);
+}
