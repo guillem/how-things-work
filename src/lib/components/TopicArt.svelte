@@ -5690,6 +5690,23 @@
 				opacity="0.7"
 			/>
 		{/each}
+	{:else if slug === 'earth-is-a-ball'}
+		<!-- a ship half sunk behind the curve of the sea, seen past the bulge -->
+		<path d="M10 92 Q100 40 190 92 L190 110 L10 110 Z" fill={accent} opacity="0.75" />
+		<line x1="118" y1="38" x2="118" y2="62" stroke="currentColor" stroke-width="2" />
+		<line x1="138" y1="44" x2="138" y2="66" stroke="currentColor" stroke-width="2" />
+		<path d="M110 42 L126 42 L125 56 L111 56 Z" fill="#ffffff" stroke="currentColor" />
+		<path d="M131 48 L145 48 L144 60 L132 60 Z" fill="#ffffff" stroke="currentColor" />
+		<circle cx="22" cy="74" r="4" fill="currentColor" />
+		<line
+			x1="22"
+			y1="74"
+			x2="150"
+			y2="60"
+			stroke="#e8590c"
+			stroke-width="1.5"
+			stroke-dasharray="4 3"
+		/>
 	{:else if slug === 'leap-years'}
 		<!-- the Sun, Earth's orbit, and a calendar page showing 29 February -->
 		<circle

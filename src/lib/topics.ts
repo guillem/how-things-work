@@ -1698,6 +1698,15 @@ const explainers: Explainer[] = [
 		accent: '#e0a100',
 		steps: 9,
 		minutes: 10
+	},
+	{
+		slug: 'earth-is-a-ball',
+		title: 'Earth is a ball',
+		summary:
+			'Drag a ship out to sea and watch it from the shore. On a flat world it would only shrink; on the real one its hull sinks behind a hill of water before its sails, and binoculars can’t bring it back but a cliff can. Then walk a little figure round the globe and drop a ball: down always means towards the middle.',
+		accent: '#1971c2',
+		steps: 8,
+		minutes: 9
 	}
 ];
 

@@ -5802,3 +5802,57 @@ kbd {
 	--hyd-rock: #6f685e;
 	--hyd-active: #ff922b;
 }
+
+/* earth-is-a-ball: sky, sea, beach, the ship, the line of sight, the globe, the figure and its ball */
+:root {
+	--eb-sky-top: #a5d8ff;
+	--eb-sky: #e7f5ff;
+	--eb-sea: #4dabf7;
+	--eb-sea-edge: #1864ab;
+	--eb-crest: #e7f5ff;
+	--eb-sand: #f3d9a4;
+	--eb-sand-edge: #b08a4a;
+	--eb-hull: #5c3d1e;
+	--eb-mast: #5c3d1e;
+	--eb-sail: #fffdf5;
+	--eb-sail-edge: #868e96;
+	--eb-sight: #e8590c;
+	--eb-hidden: #c92a2a;
+	--eb-eye: #343a40;
+	--eb-eye-white: #ffffff;
+	--eb-lens: #343a40;
+	--eb-handle: #e8590c;
+	--eb-globe-sea: #74c0fc;
+	--eb-globe-land: #69db7c;
+	--eb-middle: #c92a2a;
+	--eb-down: #c92a2a;
+	--eb-person: #343a40;
+	--eb-ball: #f59f00;
+	--eb-ball-edge: #a05a00;
+}
+:root[data-theme='dark'] {
+	--eb-sky-top: #1c3d5a;
+	--eb-sky: #26415a;
+	--eb-sea: #1864ab;
+	--eb-sea-edge: #74c0fc;
+	--eb-crest: #a5d8ff;
+	--eb-sand: #6b5531;
+	--eb-sand-edge: #b08a4a;
+	--eb-hull: #a0703f;
+	--eb-mast: #c08a52;
+	--eb-sail: #e9ecef;
+	--eb-sail-edge: #868e96;
+	--eb-sight: #ff922b;
+	--eb-hidden: #ff8787;
+	--eb-eye: #e9ecef;
+	--eb-eye-white: #343a40;
+	--eb-lens: #adb5bd;
+	--eb-handle: #ff922b;
+	--eb-globe-sea: #1c7ed6;
+	--eb-globe-land: #2f9e44;
+	--eb-middle: #ff6b6b;
+	--eb-down: #ff8787;
+	--eb-person: #e9ecef;
+	--eb-ball: #fcc419;
+	--eb-ball-edge: #f08c00;
+}
