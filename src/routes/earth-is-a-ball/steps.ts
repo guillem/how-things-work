@@ -23,7 +23,7 @@ const cliff: Control = {
 	id: 'cliff',
 	label: 'Climb the cliff',
 	min: 0,
-	max: 60,
+	max: 50,
 	step: 1,
 	default: 0,
 	format: (v) => `${v} m up`
@@ -86,7 +86,7 @@ export const spec: ExplainerSpec = {
 			controls: [distance],
 			body: `
 <p>That is not what sailors see. On the real sea a ship sailing away doesn’t just shrink: it sinks. First the hull goes out of sight, then the bottom of the sails, and last of all the top of the mast.</p>
-<p>That is because the sea is the curved skin of a huge ball. Between you and the ship the water bulges up like a very low hill, and the hill hides the bottom of the ship. The top picture draws the hill about seventy times taller than it really is, so you can see it; the distances are real.</p>
+<p>That is because the sea is the curved skin of a huge ball. Between you and the ship the water bulges up like a very low hill, and the hill hides the bottom of the ship. The top picture draws the hill about 120 times taller than it really is, so you can see it; the distances are real.</p>
 <p>Drag the ship out. Up to about 5 kilometres you see all of it: that is where your view skims the top of the hill, the <dfn data-def="The line where the sea seems to meet the sky. It is where your view just skims the curve of the sea; anything farther away starts to sink behind it.">horizon</dfn>. At about 14 kilometres the hull is gone, and at about 26 kilometres the whole ship has sunk out of sight.</p>`
 		},
 		{
@@ -111,7 +111,7 @@ export const spec: ExplainerSpec = {
 			controls: [cliff],
 			body: `
 <p>What does bring the hull back is climbing. The higher your eyes, the farther your view reaches over the curve before it touches the sea.</p>
-<p>The ship is 20 kilometres out, and from the beach its hull and the bottom half of its sails are hidden. Climb the cliff: at about 30 metres up, as high as a ten-storey building, the whole ship is back. That’s why ships have a lookout at the top of the mast.</p>
+<p>The ship is 20 kilometres out, and from the beach its hull and the bottom third of its sails are hidden. Climb the cliff: at about 30 metres up, as high as a ten-storey building, the whole ship is back. That’s why ships have a lookout at the top of the mast.</p>
 <p>Air bends light very slightly round the curve, so on most days you see a little farther than these drawings say: from the beach, the horizon is about 300 metres farther away. On some days it bends a lot more and faraway coasts pop into view, so the exact numbers change with the weather. The hull still always goes first.</p>`,
 			notes: `<p>The numbers on this page are plain geometry on a ball of radius 6,371 km, for eyes 1.7 m above the water, without the bending of light by the air. Surveyors allow for the usual bending by pretending the Earth is about a seventh bigger: the horizon from a beach is then about 5.0 km instead of 4.7 km, and a little less of a faraway ship is hidden. Warm air over cold water can bend light much more, and then distant ships and islands can be seen that the geometry says are hidden. The ship here is a tall sailing ship 36 m from waterline to masthead, with a 7 m hull.</p>`
 		},

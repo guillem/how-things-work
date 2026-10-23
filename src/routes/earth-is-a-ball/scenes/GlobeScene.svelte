@@ -18,8 +18,8 @@
 	const phase = $derived(String(step.hints?.phase ?? 'walk'));
 
 	const CX = 350;
-	const CY = 306;
-	const R = 196;
+	const CY = 300;
+	const R = 180;
 	const f = (v: number) => v.toFixed(1);
 	/** Screen point at `r` from the middle, `deg` degrees clockwise from the top of the picture. */
 	const at = (deg: number, r: number) => {
@@ -36,8 +36,8 @@
 	const a = $derived(angle.current);
 
 	// Figure, in its own frame: feet at the origin, head up the page (−y). 2 m is HAND px.
-	const HEAD = 40;
-	const HAND = 52;
+	const HEAD = 52;
+	const HAND = 62;
 	const setWalk = (deg: number) =>
 		setParam('walk', (((Math.round(deg / 5) * 5) % 360) + 360) % 360);
 	const angleOf = (p: Point) => (Math.atan2(p.x - CX, CY - p.y) * 180) / Math.PI;
@@ -107,16 +107,16 @@
 
 {#snippet person(color: string, holding: boolean)}
 	<g stroke={color} stroke-width="4" stroke-linecap="round" fill="none">
-		<line x1="-6" y1="0" x2="0" y2="-18" />
-		<line x1="6" y1="0" x2="0" y2="-18" />
-		<line x1="0" y1="-18" x2="0" y2={-HEAD + 9} />
-		<line x1="0" y1="-30" x2="-10" y2="-20" />
+		<line x1="-7" y1="0" x2="0" y2="-22" />
+		<line x1="7" y1="0" x2="0" y2="-22" />
+		<line x1="0" y1="-22" x2="0" y2={-HEAD + 10} stroke-width="6" />
+		<line x1="0" y1="-38" x2="-13" y2="-26" />
 		{#if holding}
-			<line x1="0" y1="-30" x2="14" y2={-HAND + 4} />
+			<line x1="0" y1="-38" x2="15" y2={-HAND + 3} />
 		{:else}
-			<line x1="0" y1="-30" x2="10" y2="-20" />
+			<line x1="0" y1="-38" x2="13" y2="-26" />
 		{/if}
-		<circle cx="0" cy={-HEAD} r="7" fill={color} />
+		<circle cx="0" cy={-HEAD} r="9" fill={color} />
 	</g>
 {/snippet}
 
@@ -138,12 +138,19 @@
 		{#each LAND as d, i (i)}<path {d} fill="var(--eb-globe-land)" opacity="0.9" />{/each}
 	</g>
 	<circle cx={CX} cy={CY} r="6" fill="var(--eb-middle)" />
-	<Label x={CX} y={CY + 26} text="the middle" size={14} weight={700} anchor="middle" />
+	<Label
+		x={phase === 'everyone' ? CX : at(a + 180, 30).x}
+		y={phase === 'everyone' ? CY + 26 : at(a + 180, 30).y + 5}
+		text="the middle"
+		size={14}
+		weight={700}
+		anchor="middle"
+	/>
 
 	{#if phase === 'everyone'}
 		{#each PEOPLE as p (p)}
 			{@const feet = at(p, R)}
-			{@const tip = at(p, R - 70)}
+			{@const tip = at(p, R - 62)}
 			<line
 				x1={f(feet.x)}
 				y1={f(feet.y)}
@@ -159,8 +166,8 @@
 			</g>
 		{/each}
 		<Label
-			x={f(at(0, R - 95).x)}
-			y={f(at(0, R - 95).y)}
+			x={f(at(0, R - 84).x)}
+			y={f(at(0, R - 84).y)}
 			text="everyone’s down"
 			size={13}
 			weight={600}
@@ -170,7 +177,7 @@
 	{:else}
 		{@const feet = at(a, R)}
 		{@const tip = at(a, 14)}
-		{@const sky = at(a, R + 92)}
+		{@const sky = at(a, R + HEAD + 52)}
 		<line
 			x1={f(feet.x)}
 			y1={f(feet.y)}
@@ -209,8 +216,8 @@
 		{/if}
 		<Label x={f(sky.x)} y={f(sky.y + 5)} text="sky" size={13} muted anchor="middle" />
 		<Handle
-			x={at(a, R + HEAD).x}
-			y={at(a, R + HEAD).y}
+			x={at(a, R + HEAD + 26).x}
+			y={at(a, R + HEAD + 26).y}
 			r={13}
 			color="var(--eb-handle)"
 			label="The figure"

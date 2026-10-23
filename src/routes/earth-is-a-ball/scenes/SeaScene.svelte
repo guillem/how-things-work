@@ -69,13 +69,15 @@
 	const X0 = 96;
 	/** px per km along the sea, px per m up. */
 	const KX = 26;
-	const VY = 1.8;
-	const Y0 = 176;
+	const VY = 3;
+	const Y0 = 232;
 	const BOTTOM = 318;
 	/** How much taller than real the side view draws heights, against its distances. */
 	const STRETCH = Math.round(VY / (KX / 1000) / 10) * 10;
 	const sx = (m: number) => X0 + (m / 1000) * KX;
-	const sy = (x: number, y: number) => Y0 + (r * seaDrop(x) - y) * VY;
+	// The sea is drawn level at the shore and under the ship, so that it bulges up between them (a
+	// vertical shear: it keeps straight lines straight, so the view still just skims the sea).
+	const sy = (x: number, y: number) => Y0 + (r * (seaDrop(x) - (x / d) * seaDrop(d)) - y) * VY;
 
 	const seaPath = $derived.by(() => {
 		let p = `M${X0 - 6} ${f(sy(0, 0))}`;
@@ -133,8 +135,8 @@
 	const shape = (pts: number[][], px: (x: number) => number, py: (y: number) => number) =>
 		'M' + pts.map(([x, y]) => `${f(px(x))} ${f(py(y))}`).join('L') + 'Z';
 
-	// Side view: the ship is drawn 1 px per 1.5 m along (its real length would be under 2 px).
-	const sideX = (x: number) => shipX + x / 1.5;
+	// Side view: the ship is drawn 1 px per 1.2 m along (its real length would be under 2 px).
+	const sideX = (x: number) => shipX + x / 1.2;
 	const sideY = (y: number) => shipY - y * VY;
 
 	// ---- the eye view ------------------------------------------------------------------------------
@@ -155,11 +157,13 @@
 	const horizonY = $derived(Math.min(VB, ey(dip)));
 	/** Eye-view position of a point of the ship, from its height (metres per degree vary little). */
 	const viewY = (y: number) => ey(elev(y));
-	const viewX = (x: number) => VCX + ((x / d) * 180 * scale) / Math.PI;
+	const viewX = (x: number) => VCX + zoom * (LX - VCX) + ((x / d) * 180 * scale) / Math.PI;
 	const beyond = $derived(r > 0.5 && d > horizonDistance(eye));
 
 	const binoLens = $derived(zoom > 0.02);
 	const lensR = 116;
+	/** Middle of the binoculars' view. */
+	const LX = 548;
 
 	// ---- drag the ship -----------------------------------------------------------------------------
 	const setDistance = (km: number) =>
@@ -171,7 +175,9 @@
 			: allGone
 				? 'all of it'
 				: seeAll
-					? 'nothing yet'
+					? phase === 'cliff'
+						? 'nothing'
+						: 'nothing yet'
 					: hidden < SHIP.hull
 						? `the bottom ${Math.max(1, Math.round(hidden))} m of the hull`
 						: hidden < SHIP.sailFoot
@@ -183,10 +189,13 @@
 
 <g>
 	<defs>
+		<clipPath id="eb-side-panel">
+			<rect x="16" y="16" width="928" height={BOTTOM - 16} rx="10" />
+		</clipPath>
 		<clipPath id="eb-view-clip">
 			{#if binoLens}
-				<circle cx={VCX - 92} cy={464} r={lensR} />
-				<circle cx={VCX + 92} cy={464} r={lensR} />
+				<circle cx={LX - 92} cy={464} r={lensR} />
+				<circle cx={LX + 92} cy={464} r={lensR} />
 			{:else}
 				<rect x={VX0} y={VT} width={VX1 - VX0} height={VB - VT} rx="10" />
 			{/if}
@@ -207,17 +216,19 @@
 		fill="url(#eb-sky-grad)"
 		opacity="0.55"
 	/>
-	<path d={seaFill} fill="var(--eb-sea)" opacity="0.85" />
-	<path d={seaPath} fill="none" stroke="var(--eb-sea-edge)" stroke-width="2" />
-	{#each crests as c (c.k)}
-		<path
-			d="M{f(c.x - 6)} {f(c.y)}q3 -3 6 0t6 0"
-			fill="none"
-			stroke="var(--eb-crest)"
-			stroke-width="1.3"
-			opacity="0.7"
-		/>
-	{/each}
+	<g clip-path="url(#eb-side-panel)">
+		<path d={seaFill} fill="var(--eb-sea)" opacity="0.85" />
+		<path d={seaPath} fill="none" stroke="var(--eb-sea-edge)" stroke-width="2" />
+		{#each crests as c (c.k)}
+			<path
+				d="M{f(c.x - 6)} {f(c.y)}q3 -3 6 0t6 0"
+				fill="none"
+				stroke="var(--eb-crest)"
+				stroke-width="1.3"
+				opacity="0.7"
+			/>
+		{/each}
+	</g>
 
 	<!-- the beach and the cliff -->
 	<path
@@ -293,9 +304,16 @@
 				height={f(Math.max(0, sideY(shown) - sideY(SHIP.top + 4)))}
 			/>
 		</clipPath>
-		<g opacity="0.28">
-			<path d={shape(HULL, sideX, sideY)} fill="var(--eb-hull)" />
-			{#each SAILS as s, i (i)}<path d={shape(s, sideX, sideY)} fill="var(--eb-sail)" />{/each}
+		<g
+			fill="var(--eb-hidden)"
+			fill-opacity="0.12"
+			stroke="var(--eb-hidden)"
+			stroke-width="1"
+			stroke-dasharray="3 2"
+			opacity="0.8"
+		>
+			<path d={shape(HULL, sideX, sideY)} />
+			{#each SAILS as s, i (i)}<path d={shape(s, sideX, sideY)} />{/each}
 		</g>
 		<g clip-path="url(#eb-side-clip)">
 			{#each MASTS as m, i (i)}
@@ -346,7 +364,7 @@
 	{#if phase === 'sail'}
 		<Handle
 			x={shipX}
-			y={sideY(SHIP.top) - 14}
+			y={sideY(SHIP.top) - 22}
 			r={11}
 			color="var(--eb-handle)"
 			label="The ship"
@@ -359,16 +377,25 @@
 		/>
 	{/if}
 
-	<Label
-		x={32}
-		y={40}
-		text={world === 'flat'
-			? 'From the side: a flat sea'
-			: `From the side: the round sea (its curve drawn ${STRETCH} times taller)`}
-		size={15}
-		weight={700}
-		anchor="start"
-	/>
+	<Readout
+		id="eb-top"
+		order={5}
+		label="Top picture"
+		value={world === 'flat'
+			? 'from the side, a flat sea'
+			: `from the side, the round sea, its curve drawn ${STRETCH} times taller`}
+	>
+		<Label
+			x={32}
+			y={40}
+			text={world === 'flat'
+				? 'From the side: a flat sea'
+				: `From the side: the round sea (its curve drawn ${STRETCH} times taller)`}
+			size={15}
+			weight={700}
+			anchor="start"
+		/>
+	</Readout>
 	<Readout id="eb-ship" order={1} label="The ship" value="{km(targetD)} km out">
 		<Label
 			x={928}
@@ -399,6 +426,23 @@
 	{/if}
 
 	<!-- ============================== eye view ============================== -->
+	{#if binoLens}
+		<g fill="none" stroke="var(--eb-lens)" stroke-width="9" opacity={zoom}>
+			<circle cx={LX - 92} cy={464} r={lensR} />
+			<circle cx={LX + 92} cy={464} r={lensR} />
+		</g>
+	{:else}
+		<rect
+			x={VX0}
+			y={VT}
+			width={VX1 - VX0}
+			height={VB - VT}
+			rx="10"
+			fill="none"
+			stroke="var(--border)"
+			stroke-width="1.2"
+		/>
+	{/if}
 	<g clip-path="url(#eb-view-clip)">
 		<rect x={VX0} y={VT} width={VX1 - VX0} height={VB - VT} fill="url(#eb-sky-grad)" />
 		{#snippet ship()}
@@ -442,41 +486,34 @@
 		/>
 		{#if !beyond}{@render ship()}{/if}
 	</g>
-	{#if binoLens}
-		<g fill="none" stroke="var(--eb-lens)" stroke-width="5" opacity={zoom}>
-			<circle cx={VCX - 92} cy={464} r={lensR} />
-			<circle cx={VCX + 92} cy={464} r={lensR} />
-		</g>
-	{:else}
-		<rect
-			x={VX0}
-			y={VT}
-			width={VX1 - VX0}
-			height={VB - VT}
-			rx="10"
-			fill="none"
-			stroke="var(--border)"
-			stroke-width="1.2"
-		/>
-	{/if}
-	<Label
-		x={32}
-		y={VT + 24}
-		text={binoLens ? 'Through the binoculars (7 times bigger)' : 'What your eyes see'}
-		size={15}
-		weight={700}
-		anchor="start"
-	/>
-	{#if r > 0.5 && !seeAll && !allGone}
+
+	<Readout
+		id="eb-bottom"
+		order={6}
+		label="Bottom picture"
+		value={binoLens ? 'through the binoculars, 7 times bigger' : 'what your eyes see'}
+	>
 		<Label
-			x={VCX + (binoLens ? 220 : 130)}
-			y={horizonY + 22}
-			text="the sea hides the bottom"
-			size={13}
-			weight={600}
-			color="var(--eb-hidden)"
+			x={32}
+			y={VT + 24}
+			text={binoLens ? 'Through the binoculars (7 times bigger)' : 'What your eyes see'}
+			size={15}
+			weight={700}
 			anchor="start"
 		/>
+	</Readout>
+	{#if r > 0.5 && !seeAll && !allGone}
+		<Readout id="eb-hides">
+			<Label
+				x={binoLens ? LX + 216 : VCX + 130}
+				y={horizonY + 22}
+				text="the sea hides the bottom"
+				size={13}
+				weight={600}
+				color="var(--eb-hidden)"
+				anchor="start"
+			/>
+		</Readout>
 	{/if}
 	{#if allGone}
 		<Label
