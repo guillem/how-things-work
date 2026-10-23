@@ -5996,6 +5996,22 @@
 			<circle cx={x} cy="70" r="8" fill="none" stroke={accent} stroke-width="1.5" />
 			<circle cx={x + 6} cy="92" r="7" fill="none" stroke={accent} stroke-width="1.5" />
 		{/each}
+	{:else if slug === 'comet-tails'}
+		<!-- the Sun, a comet on its stretched path, and its two tails pointing away from the Sun -->
+		<ellipse
+			cx="96"
+			cy="60"
+			rx="82"
+			ry="30"
+			fill="none"
+			stroke="currentColor"
+			stroke-width="1.5"
+			opacity="0.45"
+		/>
+		<circle cx="160" cy="60" r="10" fill="#f59f00" />
+		<path d="M130 34 L64 14 L60 26 Z" fill={accent} opacity="0.8" />
+		<path d="M130 34 Q90 28 62 40" fill="none" stroke="#e8c36a" stroke-width="5" opacity="0.8" />
+		<circle cx="130" cy="34" r="6" fill={accent} />
 	{:else if slug === 'sea-breeze'}
 		<!-- a coast: warm land, cool sea, and the loop of the breeze with a flag on the beach -->
 		<line x1="10" y1="92" x2="96" y2="92" stroke="currentColor" stroke-width="2" opacity="0.6" />

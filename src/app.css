@@ -5856,3 +5856,43 @@ kbd {
 	--eb-ball: #fcc419;
 	--eb-ball-edge: #f08c00;
 }
+
+/* comet-tails: the Sun, the paths, the comet's head, its gas and dust tails, the nucleus */
+:root {
+	--ct-sun: #f59f00;
+	--ct-sun-ink: #d9480f;
+	--ct-planet: #adb5bd;
+	--ct-orbit: #748ffc;
+	--ct-head: #4263eb;
+	--ct-coma: #91a7ff;
+	--ct-gas: #3b5bdb;
+	--ct-gas-ink: #364fc7;
+	--ct-dust: #d4a017;
+	--ct-dust-ink: #a8740c;
+	--ct-wind: #f08c00;
+	--ct-wind-ink: #d9480f;
+	--ct-nucleus: #4a4038;
+	--ct-nucleus-lit: #6e6152;
+	--ct-nucleus-dark: #2b2520;
+	--ct-nucleus-edge: #2b2520;
+	--ct-ice: #e7f5ff;
+}
+:root[data-theme='dark'] {
+	--ct-sun: #ffa94d;
+	--ct-sun-ink: #ffc078;
+	--ct-planet: #5c636a;
+	--ct-orbit: #5c7cfa;
+	--ct-head: #dbe4ff;
+	--ct-coma: #bac8ff;
+	--ct-gas: #74c0fc;
+	--ct-gas-ink: #74c0fc;
+	--ct-dust: #ffe08a;
+	--ct-dust-ink: #ffd43b;
+	--ct-wind: #ffc078;
+	--ct-wind-ink: #ffc078;
+	--ct-nucleus: #5a4e44;
+	--ct-nucleus-lit: #85776a;
+	--ct-nucleus-dark: #2f2924;
+	--ct-nucleus-edge: #9a8c7e;
+	--ct-ice: #d0ebff;
+}

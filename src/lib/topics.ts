@@ -1664,6 +1664,15 @@ const explainers: Explainer[] = [
 		minutes: 10
 	},
 	{
+		slug: 'comet-tails',
+		title: 'Comets and their tails',
+		summary:
+			'Drag Halley’s comet along its real 76-year path: frozen for decades far beyond Neptune, then swinging close to the Sun, where its ice turns to gas and two tails stream out. The tails point away from the Sun, whichever way the comet is going, so it leaves tail-first.',
+		accent: '#4c6ef5',
+		steps: 9,
+		minutes: 9
+	},
+	{
 		slug: 'sea-breeze',
 		title: 'Where wind comes from: the sea breeze',
 		summary:

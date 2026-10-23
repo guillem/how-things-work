@@ -253,3 +253,28 @@ export const daysOfYear = (year: number) => (year - 2000) * 365.25 + 2451545 - H
 
 /** Total days of one orbit spent closer to the Sun than `r` au. */
 export const daysWithin = (r: number) => 2 * daysAtDistance(r, 1);
+
+/**
+ * Days after the 1986 perihelion at which the comet passes closest to the point (`x`, `y`) au,
+ * between `lo` and `hi` days: for dragging the comet along its path.
+ */
+export function nearestDay(x: number, y: number, lo: number, hi: number, samples = 400): number {
+	let best = lo;
+	let bestD = Infinity;
+	// Sample evenly in the eccentric anomaly, which spreads the samples along the path.
+	const { a, e, period } = HALLEY;
+	const b = a * Math.sqrt(1 - e * e);
+	const n = (2 * Math.PI) / period;
+	const E0 = eccentric(Math.max(-Math.PI, n * lo), e);
+	const E1 = eccentric(Math.min(Math.PI, n * hi), e);
+	for (let i = 0; i <= samples; i++) {
+		const E = E0 + (i / samples) * (E1 - E0);
+		const d = ((E - e * Math.sin(E)) * period) / (2 * Math.PI);
+		const dd = (a * (Math.cos(E) - e) - x) ** 2 + (b * Math.sin(E) - y) ** 2;
+		if (dd < bestD) {
+			bestD = dd;
+			best = d;
+		}
+	}
+	return best;
+}
