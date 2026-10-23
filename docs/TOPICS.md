@@ -232,7 +232,7 @@ A topic is done when:
 - [x] exoplanets
 - [x] lagrange-points-three-body
 - [x] aperture-synthesis
-- [ ] comet-tails
+- [x] comet-tails
 - [x] earth-is-a-ball
 - [x] leap-years
 

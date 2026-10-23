@@ -106,6 +106,13 @@
 	);
 	const temp = $derived(Math.round(darkTemperature(r) / 5) * 5);
 	const tempText = $derived(`${temp < 0 ? '−' : ''}${Math.abs(temp)} °C`);
+	/**
+	 * While frozen, how cold a dark lump gets there; once the ice turns to gas, the warmth goes
+	 * into that and the ice stays far below freezing (only a dry dust crust can get hotter).
+	 */
+	const heat = $derived(
+		active < 0.02 ? `a dark lump: ${tempText}` : 'the ice stays below freezing'
+	);
 	const whenText = $derived(
 		stop === STOPS.length - 1 ? 'closest to the Sun' : `${when(stopDays[stop])} its closest`
 	);
@@ -249,6 +256,16 @@
 		stroke-width="1.5"
 	/>
 	<Label x={NX} y={NY + 162} text="about 15 km" size={12} muted />
+	<Readout id="ct-nucleus-note">
+		<Label
+			x={944}
+			y={580}
+			text="the Sun is drawn here only to show where its light comes from"
+			anchor="end"
+			size={11}
+			muted
+		/>
+	</Readout>
 
 	{#if phase === 'warming' && active > 0.3}
 		<Readout id="ct-burn">
@@ -265,9 +282,9 @@
 
 	<Readout id="ct-nucleus-card">
 		<rect
-			x="586"
+			x="530"
 			y="20"
-			width="354"
+			width="410"
 			height="128"
 			rx="10"
 			fill="var(--surface)"
@@ -284,16 +301,11 @@
 	<Readout id="ct-nucleus-light" order={3} label="Sunlight" value={lightText}>
 		<Label x={924} y={98} text="sunlight {lightText}" anchor="end" size={13} halo={false} />
 	</Readout>
-	<Readout
-		id="ct-nucleus-status"
-		order={4}
-		label="The ice"
-		value="{status} (a dark lump here: {tempText})"
-	>
+	<Readout id="ct-nucleus-status" order={4} label="The ice" value="{status} · {heat}">
 		<Label
 			x={924}
 			y={128}
-			text="{status} · a dark lump: {tempText}"
+			text="{status} · {heat}"
 			anchor="end"
 			size={14}
 			weight={700}

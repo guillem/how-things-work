@@ -138,7 +138,7 @@ export const spec: ExplainerSpec = {
 <p>Halley’s comet goes round the Sun like the planets do, but on a long, stretched path. <strong>Drag the comet along it</strong>, or move through the years.</p>
 <p>At its farthest it is out beyond Neptune, <strong>${round(aph.r)} times as far from the Sun as Earth</strong>, and it crawls along at less than 1 km a second. It spends ${round(beyondNeptune)} of its ${round(HALLEY.period / YEAR)} years out there, beyond Neptune.</p>
 <p>Then it falls back in, faster and faster, and swings round the Sun closer than Venus at <strong>${round(speed(peri))} km a second</strong>, about ${round(speed(peri) / speed(aph) / 10) * 10} times faster than it crawls far out. It spends only about a year closer than 3 times Earth’s distance, and that is the only time it has a tail.</p>`,
-			notes: `<p>The path is the one worked out by NASA’s Jet Propulsion Laboratory from 8,518 sightings of Halley between 1835 and 1994 (orbital elements courtesy NASA/JPL-Caltech). The page draws it flat; really it is tilted by 18 degrees to the planets’ paths, and Halley goes round the opposite way to the planets. The planets’ pulls change each trip a little, so the returns are 74 to 79 years apart, and it was really farthest out in December 2023, a few weeks before this single path says.</p>`
+			notes: `<p>The path is the one worked out by NASA’s Jet Propulsion Laboratory from 8,518 sightings of Halley between 1835 and 1994 (orbital elements courtesy NASA/JPL-Caltech). The page draws it flat; really it is tilted by 18 degrees to the planets’ paths, and Halley goes round the opposite way to the planets. The planets’ pulls change each trip a little, so the returns are 74 to 79 years apart, and it was really farthest out on 9 December 2023, about two months before this single path says.</p>`
 		},
 		// ------------------------------------------------------------------ ice
 		{
@@ -163,8 +163,8 @@ export const spec: ExplainerSpec = {
 			body: `
 <p><strong>Bring the comet in</strong> towards the Sun. The closer it gets, the stronger the sunlight, and once it is closer than about 3 times Earth’s distance, its ice starts turning <strong>straight into gas</strong>, without melting first, the way frost can vanish on a cold, sunny morning. Out in space there is no air to keep the water in liquid form.</p>
 <p>The gas bursts out on the sunny side and carries dust with it, and they make a huge fuzzy cloud round the nucleus: the comet’s head, or ${coma}. At its closest the ice turns to gas about ${round(iceRate(HALLEY.q) / iceRate(3) / 100) * 100} times faster than at 3 times Earth’s distance.</p>
-<p>So a comet is <strong>not a burning rock</strong>. Nothing burns: it is ice turning to gas in sunlight.</p>`,
-			notes: `<p>How fast the ice turns to gas follows the curve astronomers use for water ice (Marsden, Sekanina and Yeomans, 1973). Halley’s ice is mostly water, with some carbon dioxide and carbon monoxide ice that can turn to gas farther out. When the spacecraft Giotto flew through Halley’s head on 14 March 1986, the comet was giving off about 20 tonnes of water vapour every second.</p>`
+<p>The warmth goes into turning the ice into gas, so the ice itself stays well below freezing. So a comet is <strong>not a burning rock</strong>. Nothing burns: it is ice turning to gas in sunlight.</p>`,
+			notes: `<p>How fast the ice turns to gas follows the curve astronomers use for water ice (Marsden, Sekanina and Yeomans, 1973). Halley’s ice is mostly water, with some carbon dioxide and carbon monoxide ice that can turn to gas farther out. When the spacecraft Giotto flew through Halley’s head on 14 March 1986, the comet was giving off about 16 tonnes of water vapour every second.</p>`
 		},
 		// ------------------------------------------------------------------ tails
 		{
@@ -176,7 +176,7 @@ export const spec: ExplainerSpec = {
 			duration: 24,
 			controls: [day('dayIn', -70)],
 			body: `
-<p>Now we are near the Sun, inside Earth’s path. <strong>Drag the comet</strong> round its closest point to the Sun, and watch its tail.</p>
+<p>Now the comet is near the Sun, still outside Earth’s path. <strong>Drag the comet</strong> round its closest point, in past Earth’s path, and watch its tail.</p>
 <p>The tail swings round as the comet goes, and it always points <strong>away from the Sun</strong>. The Sun pushes it out: sunlight presses on the dust, and the ${wind}, a thin stream the Sun blows out in every direction at about 400 km a second, sweeps the gas away.</p>`
 		},
 		{
