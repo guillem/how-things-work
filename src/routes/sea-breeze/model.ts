@@ -14,8 +14,10 @@
  * - The breeze: Bjerknes's circulation theorem for the loop of air over the coast (Holton,
  *   "An Introduction to Dynamic Meteorology", §4.1): warmer air on the land side drives the loop
  *   round, in at the bottom from the sea and out at the top, with a push in proportion to the
- *   temperature difference; friction with the ground holds it back. The friction is chosen so the
- *   afternoon sea breeze blows about 5 m/s, a typical sea breeze. Earth's spin is left out.
+ *   temperature difference; friction with the ground holds it back. In the theorem the difference
+ *   is between the two columns' mean temperatures up to the loop's top; the page uses the
+ *   difference of the air near the ground, with the friction chosen so the afternoon sea breeze
+ *   peaks at about 6.5 m/s, a typical sea breeze. Earth's spin is left out.
  *
  * Times in hours of solar time (12 = noon), temperatures in °C, speeds in m/s.
  */
@@ -46,7 +48,8 @@ export function sunrise(): number {
 	return 12 - Math.acos(c) / DEG / 15;
 }
 
-/** Clear-sky sunlight on flat ground, W/m², at solar `hour` (Meinel's air-mass formula). */
+/** Clear-sky direct sunlight on flat ground, W/m², at solar `hour` (Meinel's air-mass formula; the
+ * sky's diffuse light, about a tenth more, is left out: the loss rate is tuned to the day anyway). */
 export function sunlight(hour: number): number {
 	const h = sunHeight(hour);
 	if (h <= 0) return 0;

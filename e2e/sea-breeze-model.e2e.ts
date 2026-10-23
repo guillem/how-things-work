@@ -26,7 +26,7 @@ test('at 40° N near midsummer the Sun rises about 4:35, sets about 19:25 (sun t
 	expect(sunlight(2)).toBe(0);
 });
 
-test('clear-sky sunlight at noon is about 900 W per square metre, and weaker when the Sun is low', () => {
+test('clear-sky direct sunlight at noon is about 900 W per square metre, and weaker when the Sun is low', () => {
 	expect(sunlight(12)).toBeGreaterThan(850);
 	expect(sunlight(12)).toBeLessThan(950);
 	expect(sunlight(7)).toBeLessThan(sunlight(12) / 2);
@@ -46,8 +46,9 @@ test('the sea warms by less than half a degree all day, though it soaks up more 
 	const sea = extremes('sea');
 	expect(sea.max - sea.min).toBeLessThan(0.5);
 	expect(1 - SEA.albedo).toBeGreaterThan(1 - LAND.albedo);
-	// It takes about a hundred times as much warmth to warm the sea's stirred layer as the land’s.
-	expect(SEA.capacity / LAND.capacity).toBeGreaterThan(50);
+	// It takes about 80 times as much warmth to warm the sea’s stirred layer as the land’s.
+	expect(SEA.capacity / LAND.capacity).toBeGreaterThan(70);
+	expect(SEA.capacity / LAND.capacity).toBeLessThan(90);
 });
 
 test('the page’s afternoon: at 3 pm the land is about 31 °C, the sea 22 °C, the breeze about 23 km/h off the sea', () => {

@@ -54,7 +54,7 @@ export const spec: ExplainerSpec = {
 			hints: { phase: 'beach' },
 			duration: 14,
 			body: `
-<p>On a hot, sunny afternoon at the beach, a cool wind often blows in from the sea. The flag on the lifeguard’s tower stands out stiff, pointing inland. In the morning the same flag hung limp, and late at night it may point the other way, out to sea.</p>
+<p>On a hot, sunny afternoon at the beach, a cool wind often blows in from the sea. The flag on the lifeguard’s tower stands out stiff, pointing inland. Around sunrise the same flag pointed the other way, out to sea, and it went slack late in the morning as the wind turned.</p>
 <p>Nobody switched that wind on. So where does it come from, and why does it come in the afternoon? Here is a beach from the side, with land on the left, sea on the right, and the air above drawn as drifting specks.</p>`
 		},
 		{
@@ -67,7 +67,7 @@ export const spec: ExplainerSpec = {
 			controls: [time('morning', 6)],
 			body: `
 <p>The same sunshine falls on the land and on the sea. <strong>Drag the Sun across the sky</strong> and watch the two thermometers: one for the air over the land, one for the air over the sea.</p>
-<p>From a cool ${round(at(6).land)} °C at dawn, the air over the land climbs to about <strong>${round(afternoon.land)} °C by 3 in the afternoon</strong>. The air over the sea hardly moves: it stays near <strong>${round(afternoon.sea)} °C</strong> all day, and the water itself warms by less than half a degree.</p>
+<p>From a cool ${round(at(6).land)} °C at 6 am, the air over the land climbs to about <strong>${round(afternoon.land)} °C by 3 in the afternoon</strong>. The air over the sea hardly moves: it stays near <strong>${round(afternoon.sea)} °C</strong> all day, and the water itself warms by less than half a degree.</p>
 <p>So by mid-afternoon the land side is about <strong>${round(afternoon.land - afternoon.sea)} degrees warmer</strong> than the sea side. That difference is what makes the wind.</p>`
 		},
 		{
@@ -79,9 +79,9 @@ export const spec: ExplainerSpec = {
 			duration: 20,
 			body: `
 <p>The sea actually soaks up <em>more</em> of the sunshine than the land does: dark water reflects less of it than sand or fields. So why doesn’t it warm up?</p>
-<p>On land, the warmth stays in a <strong>thin top layer</strong>: the day’s warming reaches only about ${round(LAND_DEPTH * 100)} centimetres into the ground (think of hot sand on your feet, and cool sand when you dig a hand’s depth down). In the sea, the sunlight shines metres into the water and the waves stir it, so the same warmth is shared through the <strong>top ${SEA_DEPTH} metres</strong> of water, ${round(SEA_DEPTH / LAND_DEPTH)} times deeper.</p>
+<p>On land, the warmth stays in a <strong>thin top layer</strong>: the day’s warming reaches only about ${round(LAND_DEPTH * 100)} centimetres into the ground (think of hot sand on your feet, and cool sand when you dig a hand’s depth down). In the sea, the sunlight shines metres into the water and the waves stir it, so that warmth, and a bit more, is shared through the <strong>top ${SEA_DEPTH} metres</strong> of water, ${round(SEA_DEPTH / LAND_DEPTH)} times deeper.</p>
 <p>And litre for litre, water needs more warmth to heat up than soil does. Spread out that thin, the day’s sunshine barely warms the sea at all.</p>`,
-			notes: `<p>The page’s land keeps its warmth in about its top ${round(LAND_DEPTH * 100)} cm of moist soil, and the sea in a stirred top layer ${SEA_DEPTH} m deep. Warming the sea’s layer by a degree takes about ${round(SEA.capacity / LAND.capacity / 10) * 10} times as much heat as warming the land’s. That is also why the sea is warmest in late summer and coolest in late winter, weeks after the land.</p>`
+			notes: `<p>The page’s land keeps its warmth in about its top ${round(LAND_DEPTH * 100)} cm of moist soil, and the sea in a stirred top layer ${SEA_DEPTH} m deep. Warming the sea’s layer by a degree takes about ${round(SEA.capacity / LAND.capacity / 10) * 10} times as much heat as warming the land’s. Over a whole summer the sea stores heat through a much deeper layer than this day’s top ${SEA_DEPTH} m, which is why it is warmest in late summer and coolest in late winter, weeks after the land.</p>`
 		},
 		// ------------------------------------------------------------------ wind
 		{
@@ -107,7 +107,7 @@ export const spec: ExplainerSpec = {
 			controls: [time('hour', 15)],
 			body: `
 <p>The rising air has to be replaced. Cooler, heavier air from over the sea slides in along the ground to take its place: that is the ${breeze}, and the flag on the beach shows it. High up, the warm air spreads back out over the sea, cools and sinks, closing the loop.</p>
-<p>At 3 pm the breeze blows at about <strong>${kmh(afternoon.breeze)} km/h</strong>, as fast as a bicycle. <strong>Drag the Sun back</strong> to the morning: while the land is still cooler than the sea there is no sea breeze; it starts around 9 am, once the land has warmed past the sea, and grows as the difference grows.</p>`,
+<p>At 3 pm the breeze blows at about <strong>${kmh(afternoon.breeze)} km/h</strong>, as fast as a bicycle. <strong>Drag the Sun back</strong> to the morning: while the land is still cooler than the sea there is no sea breeze; it starts shortly after 9 am, once the land has warmed past the sea, and grows as the difference grows.</p>`,
 			notes: `<p>The breeze is held back by rubbing on the ground, the trees and the waves, so it settles to a speed that follows the temperature difference. The push behind it is the one a meteorologist works out for a loop of air 20 km wide and 1 km high (half over the sea, half over the land), and the page sets the rubbing so an afternoon with the land 9 degrees warmer gives a typical sea breeze.</p><p>A real sea breeze pushes inland as a sharp edge, the sea-breeze front, often 20 to 50 km by evening; puffy clouds can line up along it, where the air is pushed up.</p>`
 		},
 		// ------------------------------------------------------------------ day
@@ -118,11 +118,11 @@ export const spec: ExplainerSpec = {
 			scene: 'coast',
 			hints: { phase: 'night' },
 			duration: 22,
-			controls: [time('night', 3)],
+			controls: [time('night', 3, 'Or drag the Moon across the sky.')],
 			body: `
 <p>After sunset the land loses its warmth as fast as it gained it, while the sea hardly cools at all. By 3 am the air over the land is down to about <strong>${round(night.land)} °C</strong>, and the sea is still about <strong>${round(night.sea)} °C</strong>.</p>
 <p>Now the land side is the cooler, heavier one. The warmer air over the sea is pushed up, and air from the land slides out to sea along the ground: a <strong>land breeze</strong> of about ${kmh(night.breeze)} km/h. The flag points out to sea.</p>
-<p>It is gentler than the afternoon’s sea breeze, because at night the land is only about ${round(night.sea - night.land)} degrees cooler than the sea, while in the afternoon it was ${round(afternoon.land - afternoon.sea)} degrees warmer.</p>`
+<p>It is gentler than the afternoon’s sea breeze: the gap is only about ${round(night.sea - night.land)} degrees, against ${round(afternoon.land - afternoon.sea)} in the afternoon, and the cool ground at night keeps the loop of air shallower and weaker.</p>`
 		},
 		{
 			id: 'whole-day',

@@ -218,7 +218,7 @@ A topic is done when:
 - [x] radiative-convective-column
 - [x] cloud-base
 - [x] forest-fire-spread
-- [ ] sea-breeze
+- [x] sea-breeze
 
 **Space**
 - [x] sun-earth-moon

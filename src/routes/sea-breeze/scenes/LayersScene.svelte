@@ -218,15 +218,15 @@
 	<Readout
 		id="sbz-land-swing"
 		order={4}
-		label="The land’s air"
-		value="up {landSwing} degrees from dawn to afternoon"
+		label="The air over the land"
+		value="rises about {landSwing} degrees by the afternoon"
 	>
 		<Label
 			x={230}
 			y={586}
-			text="land: up {landSwing} degrees from dawn to afternoon"
+			text="the land’s air warms about {landSwing} degrees by afternoon"
 			anchor="middle"
-			size={16}
+			size={15}
 			weight={600}
 		/>
 	</Readout>
@@ -236,7 +236,7 @@
 			y={586}
 			text="sea: warms {seaSwing} all day"
 			anchor="middle"
-			size={16}
+			size={15}
 			weight={600}
 		/>
 	</Readout>
