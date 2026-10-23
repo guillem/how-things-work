@@ -129,7 +129,7 @@ export const spec: ExplainerSpec = {
 			controls: [press],
 			body: `
 <p>Put a bathroom scale on a table and press down on it with your hand, elbow bent. Now the job is to <strong>straighten</strong> the elbow against the scale pushing back, and that is the triceps’ job. <strong>Press harder</strong> and watch it.</p>
-<p>The triceps grips the point of the elbow, only about 2 centimetres behind the hinge, while your hand is 35 centimetres in front. So to press 10 kilograms on the scale, the triceps pulls as hard as a weight of about <strong>160 kilograms</strong>: some sixteen times harder. The biceps relaxes and lets itself be stretched.</p>
+<p>The triceps grips the point of the elbow, only about 2 centimetres behind the hinge, while your hand is 35 centimetres in front: about seventeen times farther. Your forearm’s own weight helps a little, so to press 10 kilograms on the scale the triceps pulls as hard as a weight of about <strong>160 kilograms</strong>, some sixteen times what the scale reads. The biceps relaxes and lets itself be stretched.</p>
 <p>Pushing yourself up out of a chair with your arms, or doing a push-up, works the same way: the triceps pulls to straighten your elbows.</p>`,
 			notes: `<p>Your forearm’s own weight helps press, a little under one kilogram on the scale, so the triceps only has to pull for the rest. Real arms have a few more muscles at work than the two drawn here, but the biceps and triceps are the main pair.</p>`
 		},
@@ -170,7 +170,7 @@ export const spec: ExplainerSpec = {
 			controls: [bigger],
 			body: `
 <p>Does a big, strong biceps get a better deal? <strong>Give the arm a much bigger biceps.</strong></p>
-<p>The muscle swells, but its tendon still grips the forearm in the same place, close to the elbow. So it still has to pull about <strong>eight times</strong> the bag’s weight. A bigger muscle can pull harder, so it can hold a heavier bag before it tires; it does not make the lever any better.</p>`
+<p>The muscle swells, but its tendon still grips the forearm in the same place, close to the elbow. So it still has to pull about <strong>eight times</strong> the bag’s weight. A bigger muscle can pull harder, so it can hold a heavier bag before it tires; it does not pull from any better spot.</p>`
 		},
 		{
 			id: 'grip',

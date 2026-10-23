@@ -198,7 +198,7 @@ A topic is done when:
 - [x] mri-k-space
 - [x] ecg-arrhythmias
 - [x] hearing-and-the-ear
-- [ ] muscles-pull-in-pairs
+- [x] muscles-pull-in-pairs
 - [ ] why-spinning-makes-you-dizzy
 - [x] why-you-get-sleepy
 

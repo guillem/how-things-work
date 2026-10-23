@@ -31,6 +31,7 @@ test('squeeze: the biceps bends the arm, the triceps straightens it, neither let
 	await open(page, './muscles-pull-in-pairs/#squeeze', 'the biceps pulls: the elbow bends');
 	await page.locator('[data-control=squeeze][data-value=triceps]').click();
 	await expect(stage(page)).toContainText('the triceps pulls: the arm goes straight');
+	await expect(stage(page)).toContainText('the triceps gets shorter');
 	await page.locator('[data-control=squeeze][data-value=none]').click();
 	await expect(stage(page)).toContainText('neither pulls: the forearm flops down');
 	await expect(stage(page)).toContainText('it can’t push');
@@ -47,9 +48,11 @@ test('press: 10 kg on the scale takes a 162 kg triceps pull, 16 times as much', 
 
 test('bag: the biceps pulls 8 times the bag, plus the forearm', async ({ page }) => {
 	await open(page, './muscles-pull-in-pairs/#bag', 'the biceps pulls like a 43 kg weight');
-	await expect(stage(page)).toContainText('38 kg of it for the 5 kg bag: 8 times its weight');
+	await expect(stage(page)).toContainText(
+		'38 kg of it for the 5 kg bag: nearly 8 times its weight'
+	);
 	await page.locator('input[type=range][data-control=bag]').fill('10');
-	await expect(stage(page)).toContainText('the biceps pulls like a 81 kg weight');
+	await expect(stage(page)).toContainText('the biceps pulls like an 81 kg weight');
 });
 
 test('lower: the biceps keeps pulling while it lowers the bag; relaxed, the bag drops', async ({

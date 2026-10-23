@@ -208,13 +208,15 @@
 	const triceps = $derived.by(() => {
 		const ol = onForearm(angle, -0.5, -2);
 		const stretch = tricepsStretch(angle);
-		const belly0 = 17;
+		// The belly's lower end moves down as the elbow bends, so the belly itself gets longer (and
+		// thinner, keeping its volume) by the model's stretch; the tendon below it keeps its length.
+		const belly0 = 15.5;
 		const w = 1.6 * Math.sqrt(belly0 / (belly0 + stretch));
 		const outer: Point[] = [];
 		const inner: Point[] = [];
 		const n = 12;
 		const a = { x: T_TOP.x, y: T_TOP.y + 2 };
-		const b = T_WRAP;
+		const b = { x: T_WRAP.x, y: T_WRAP.y - 4.5 + stretch };
 		for (let k = 0; k <= n; k++) {
 			const s = k / n;
 			const bump = Math.sin(Math.PI * s) ** 0.8;
@@ -358,6 +360,11 @@
 
 	// ---- words ---------------------------------------------------------------------------------------
 	const kg = (v: number) => `${Math.round(v)} kg`;
+	/** “a 43 kg weight”, “an 81 kg weight”. */
+	const aKg = (v: number) => {
+		const n = Math.round(v);
+		return `${String(n).startsWith('8') || n === 11 || n === 18 ? 'an' : 'a'} ${kg(v)}`;
+	};
 	const shorter = $derived(Math.round(bicepsShortening(0, angle)));
 	const longer = $derived(Math.round(tricepsStretch(angle)));
 	const moveWord = $derived(loop.move);
@@ -374,7 +381,7 @@
 						? 'the triceps pulls: the arm goes straight'
 						: 'neither pulls: the forearm flops down';
 			case 'press':
-				return `the triceps pulls like a ${kg(tPull)} weight`;
+				return `the triceps pulls like ${aKg(tPull)} weight`;
 			case 'lower':
 				if (relaxed) return 'biceps relaxed: nothing brakes the bag';
 				return moveWord === 'lower'
@@ -383,13 +390,13 @@
 						? 'lifting: the biceps pulls, and gets shorter'
 						: 'holding: the biceps pulls, and stays the same length';
 			case 'bigger':
-				return `the biceps still pulls like a ${kg(bPull)} weight`;
+				return `the biceps still pulls like ${aKg(bPull)} weight`;
 			case 'grip':
-				return `gripping ${grip} cm from the elbow: it pulls like a ${kg(bPull)} weight`;
+				return `gripping ${grip} cm from the elbow: it pulls like ${aKg(bPull)} weight`;
 			case 'next':
 				return 'a muscle can only pull: two muscles take turns';
 			default:
-				return `the biceps pulls like a ${kg(bPull)} weight`;
+				return `the biceps pulls like ${aKg(bPull)} weight`;
 		}
 	});
 	const sub = $derived.by(() => {
@@ -399,17 +406,19 @@
 			case 'squeeze':
 				return squeeze === 'none'
 					? 'a relaxed muscle goes soft: it can’t push'
-					: 'the other muscle relaxes and gets stretched';
+					: squeeze === 'triceps'
+						? 'the triceps gets shorter; the biceps relaxes and gets stretched'
+						: 'the triceps relaxes and gets stretched';
 			case 'press':
 				return tPull < 0.5
 					? 'your hand just rests on the scale'
 					: `${Math.round(tPull / press)} times what the scale reads`;
 			case 'bag':
-				return `${Math.round(bagOn * (HAND / bicepsLever(90)))} kg of it for the ${bagOn} kg bag: ${Math.round(HAND / bicepsLever(90))} times its weight`;
+				return `${Math.round(bagOn * (HAND / bicepsLever(90)))} kg of it for the ${bagOn} kg bag: nearly 8 times its weight`;
 			case 'lower':
 				return relaxed
 					? 'the bag drops'
-					: `pulling like a ${kg(bPull)} weight, ${Math.round(bLen)} cm long`;
+					: `pulling like ${aKg(bPull)} weight, ${Math.round(bLen)} cm long`;
 			case 'bigger':
 				return bigger
 					? 'a bigger muscle, gripping the same spot'
@@ -710,7 +719,7 @@
 		</Readout>
 		{#if phase === 'arm' || phase === 'squeeze'}
 			<Readout id="mus-elbow">
-				<Label x={E.x - 46} y={E.y + 6} text="elbow" size={14} muted anchor="end" />
+				<Label x={E.x - 44} y={E.y + 34} text="elbow" size={14} muted anchor="end" />
 			</Readout>
 		{/if}
 	{/if}
