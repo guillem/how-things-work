@@ -164,14 +164,14 @@
 	<!-- the depth scale between them -->
 	{#each [0, 2, 4, 6, 8, 10] as z (z)}
 		<line
-			x1="462"
+			x1="466"
 			y1={SURFACE + z * PX}
-			x2="498"
+			x2="494"
 			y2={SURFACE + z * PX}
 			stroke="var(--stage-ink-muted)"
 			stroke-width="1.5"
 		/>
-		<Label x={480} y={SURFACE + z * PX - 6} text="{z} m" anchor="middle" size={14} muted tabular />
+		<Label x={458} y={SURFACE + z * PX + 5} text="{z} m" anchor="end" size={14} muted tabular />
 	{/each}
 	<line
 		x1="480"
@@ -219,12 +219,12 @@
 		id="sbz-land-swing"
 		order={4}
 		label="The land’s air"
-		value="{landSwing} degrees warmer by the afternoon"
+		value="up {landSwing} degrees from dawn to afternoon"
 	>
 		<Label
 			x={230}
 			y={586}
-			text="land: {landSwing} degrees warmer by the afternoon"
+			text="land: up {landSwing} degrees from dawn to afternoon"
 			anchor="middle"
 			size={16}
 			weight={600}
