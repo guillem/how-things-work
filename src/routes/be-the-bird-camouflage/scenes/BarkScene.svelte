@@ -197,7 +197,7 @@
 	<Readout id="generation" label="Generation" value={`${generation}`} order={2}>
 		<Label x={315} y={544} text={`Generation ${generation} · ${status}`} size={18} weight={600} />
 	</Readout>
-	<Readout id="hunt" label={status} note={instruction} order={3}>
+	<Readout id="hunt" label="Hunt" value={status} note={instruction} order={3}>
 		<Label x={480} y={579} text={instruction} size={16} muted />
 	</Readout>
 </g>

@@ -6356,6 +6356,16 @@
 			stroke="currentColor"
 			stroke-width="3"
 		/>
+	{:else if slug === 'flocking-birds'}
+		{#each [0, 1, 2, 3, 4, 5, 6, 7, 8] as bird (bird)}
+			<path
+				d="M8 0 L-6 -5 L-2 0 L-6 5 Z"
+				transform="translate({45 + (bird % 3) * 48} {30 + Math.floor(bird / 3) * 30}) rotate(-18)"
+				fill={accent}
+				opacity={bird === 4 ? 1 : 0.6}
+			/>
+		{/each}
+		<circle cx="93" cy="60" r="15" stroke={accent} fill="none" stroke-width="2" />
 	{:else}
 		<circle cx="100" cy="60" r="30" fill="none" stroke={accent} stroke-width="2" />
 		<circle cx="100" cy="60" r="5" fill={accent} />

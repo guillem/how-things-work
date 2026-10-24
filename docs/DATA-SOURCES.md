@@ -711,3 +711,21 @@ All polygons, corner fits and floor patches are computed from Euclidean geometry
 ## vibrations-and-sound
 
 The ideal steel ruler uses the first Euler–Bernoulli cantilever mode, following [TU Graz, Cantilever beam](https://lampz.tugraz.at/~hadley/memm/mechanics/cbeam.php). The fixed-free mode root is computed as its standard numerical value; illustrative material parameters are stiffness 200 GPa, density 7,850 kg/m³ and thickness 1 mm, not measurements of a specific ruler. All geometry, frequencies and audio are computed locally, with no recordings or third-party assets. [OpenStax University Physics 17.1](https://openstax.org/books/university-physics-volume-1/pages/17-1-sound-waves), [17.2](https://openstax.org/books/university-physics-volume-1/pages/17-2-speed-of-sound) and [17.3](https://openstax.org/books/university-physics-volume-1/pages/17-3-sound-intensity) supply the travelling-wave description, sound speed (343 m/s near room temperature), amplitude–intensity relation and spherical spreading. The jar is an explicitly idealized prescribed-motion source: density and acoustic impedance fall with air pressure at fixed temperature, so radiated airborne power falls linearly with the fraction of air left; structural transmission through stand and glass is excluded and disclosed. No source text or data is redistributed. OpenStax text is CC BY 4.0; the implementation and drawing are original.
+
+## Flocks without a leader (`flocking-birds`)
+
+No imported data or images. An original implementation of Reynolds-style separation, alignment
+and cohesion steering with seven nearest neighbours, constant speed, simultaneous updates,
+a wrapping two-dimensional sky, and a prescribed one-pass hawk avoidance force. Parameters are
+illustrative, not fitted to bird measurements; the page explicitly distinguishes the toy from
+real bird behaviour. Initial positions/headings are deterministic procedural samples.
+
+- [Craig Reynolds, Boids](https://www.red3d.com/cwr/boids/) and his
+  [steering-behaviour paper](https://www.red3d.com/cwr/steer/gdc99/): primary descriptions of
+  the three steering ideas. No source code, media or data copied.
+- [Ballerini et al. (2008), PNAS](https://doi.org/10.1073/pnas.0711437105),
+  [author preprint](https://arxiv.org/abs/0709.1916): field evidence for about six or seven
+  nearest neighbours in starling flocks. Used as qualitative background and to choose seven
+  neighbours; no field data reproduced and no claim that this implements measured starling rules.
+
+Original code MIT, original text and drawings CC BY 4.0; no external asset licence required.

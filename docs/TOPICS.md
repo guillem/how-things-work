@@ -183,8 +183,8 @@ A topic is done when:
 - [x] turing-patterns
 - [x] fireflies-in-sync
 - [x] ant-trails
-- [ ] be-the-bird-camouflage
-- [ ] flocking-birds
+- [x] be-the-bird-camouflage
+- [x] flocking-birds
 
 **Body & Medicine**
 - [x] heart-circulation
