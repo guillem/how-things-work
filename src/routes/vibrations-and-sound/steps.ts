@@ -65,7 +65,7 @@ export const spec: ExplainerSpec = {
 				}
 			],
 			duration: 24,
-			body: `<p>Keep the ruler the same length and pull its end farther before letting go. The wobble is bigger, and the pushes on the air are stronger. The note gets <strong>louder</strong>.</p><p>But count the wobbles: they are not faster. A stronger twang changes the loudness without changing the pitch in this small-bend model. Try a gentle twang and a strong one, listening each time.</p>`
+			body: `<p>Back with ten centimetres of ruler sticking out, pull its end farther before letting go. The wobble is bigger, and the pushes on the air are stronger. The note gets <strong>louder</strong>.</p><p>But count the wobbles: they are not faster. A stronger twang changes the loudness without changing the pitch in this small-bend model. Try a gentle twang and a strong one, listening each time.</p>`
 		},
 		{
 			id: 'distance',
@@ -85,7 +85,7 @@ export const spec: ExplainerSpec = {
 				}
 			],
 			duration: 24,
-			body: `<p>Move the ear away. The sound spreads out in all directions. The same sound energy has to cover more space, so less reaches a little patch at the ear.</p><p>Twice as far away, that patch gets a quarter of the sound energy in the same time. The note is fainter, but it has the same pitch. The bar shows the energy arriving each moment, compared with one metre away; it is not a measure of how loud your ear thinks it is.</p>`,
+			body: `<p>Use the ten-centimetre ruler and the same medium twang each time, then move the ear away. The sound spreads out in all directions. The same sound energy has to cover more space, so less reaches a little patch at the ear.</p><p>Twice as far away, that patch gets a quarter of the sound energy in the same time. The note is fainter, but it has the same pitch. The bar shows the energy arriving each moment, compared with one metre away; it is not a measure of how loud your ear thinks it is.</p>`,
 			notes: `<p>This is open space, without walls or echoes. Sound energy spreads over growing spheres. Real rooms reflect sound, and air gradually absorbs it too. See <a href="https://openstax.org/books/university-physics-volume-1/pages/17-3-sound-intensity">OpenStax’s sound intensity</a>. The picture keeps the wave row the same width and changes its distance scale as you move the ear.</p>`
 		},
 		{

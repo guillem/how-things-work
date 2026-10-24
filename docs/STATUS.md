@@ -77,7 +77,7 @@ Last updated: 2026-10-24, 94 of the proposal's topics built (194, every promoted
 
 ## Current development
 
-**Final six, Codex physics worktree (2026-10-24):** shapes-that-tile and vibrations-and-sound implemented with model/browser tests and both-theme screenshot review. Both independently checked by the lead against primary sources and ticked after local QA; no release or push from this worktree.
+**Final six, Codex physics worktree (2026-10-24):** shapes-that-tile and vibrations-and-sound implemented with model/browser tests and both-theme screenshot review. Both independently checked by the lead against primary sources and ticked after local QA (sound experiments explicitly name their reset settings); no release or push from this worktree.
 
 **Final six, Codex handover (2026-10-24, in progress).** The user asked Codex to finish the
 200-topic milestone in the existing style and try Claude for reviews. Three builders:
