@@ -1752,6 +1752,15 @@ const explainers: Explainer[] = [
 		accent: '#f08c00',
 		steps: 9,
 		minutes: 9
+	},
+	{
+		slug: 'drone-four-rotors',
+		title: 'How a drone steers with four rotors',
+		summary:
+			'A drone has no wings, flaps or rudder: only four rotors. Speed them all up and it climbs; speed up the back pair and it tips and flies forward; speed up the two that spin clockwise and it turns on the spot. Fly a palm-sized drone one stick at a time, then try the four speeds yourself.',
+		accent: '#1c7ed6',
+		steps: 8,
+		minutes: 9
 	}
 ];
 

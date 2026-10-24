@@ -6232,6 +6232,31 @@
 			stroke-width="2"
 			opacity="0.5"
 		/>
+	{:else if slug === 'drone-four-rotors'}
+		<!-- a drone seen from above: four rotors in an X, two spinning each way, the front marked -->
+		<line x1="66" y1="30" x2="134" y2="98" stroke="currentColor" stroke-width="5" opacity="0.6" />
+		<line x1="134" y1="30" x2="66" y2="98" stroke="currentColor" stroke-width="5" opacity="0.6" />
+		<rect x="90" y="52" width="20" height="24" rx="4" fill={accent} />
+		<circle cx="100" cy="49" r="3.5" fill="#e03131" />
+		{#each [[66, 30, 1], [134, 30, 0], [134, 98, 1], [66, 98, 0]] as [x, y, cw] (`${x}:${y}`)}
+			<circle
+				cx={x}
+				cy={y}
+				r="20"
+				fill={cw ? '#4dabf7' : '#ff922b'}
+				fill-opacity="0.25"
+				stroke={cw ? '#1c7ed6' : '#e8590c'}
+				stroke-width="2.5"
+			/>
+			<path
+				d={cw
+					? `M${x + 12} ${y - 6} A13 13 0 1 1 ${x + 6} ${y + 12}`
+					: `M${x - 12} ${y - 6} A13 13 0 1 0 ${x - 6} ${y + 12}`}
+				fill="none"
+				stroke={cw ? '#1c7ed6' : '#e8590c'}
+				stroke-width="2.5"
+			/>
+		{/each}
 	{:else}
 		<circle cx="100" cy="60" r="30" fill="none" stroke={accent} stroke-width="2" />
 		<circle cx="100" cy="60" r="5" fill={accent} />

@@ -196,7 +196,10 @@ export class Drone {
 	settings: Settings;
 	peaks: Peaks = { pitch: 0, roll: 0, yaw: 0 };
 
-	constructor(settings: Settings, start: { height: number; rpm?: number } = { height: HOLD_HEIGHT }) {
+	constructor(
+		settings: Settings,
+		start: { height: number; rpm?: number } = { height: HOLD_HEIGHT }
+	) {
 		this.settings = settings;
 		const rpm = start.rpm ?? (start.height > 0 ? HOVER_RPM : 0);
 		this.state = {
@@ -270,7 +273,11 @@ export class Drone {
 		const vb = [0, 1, 2].map(
 			(j) => R[0][j] * st.vel[0] + R[1][j] * st.vel[1] + R[2][j] * st.vel[2]
 		);
-		const fb = [-DRAG_XY * spinSum * vb[0], -DRAG_XY * spinSum * vb[1], T - DRAG_Z * spinSum * vb[2]];
+		const fb = [
+			-DRAG_XY * spinSum * vb[0],
+			-DRAG_XY * spinSum * vb[1],
+			T - DRAG_Z * spinSum * vb[2]
+		];
 		for (let i = 0; i < 3; i++) {
 			const f = R[i][0] * fb[0] + R[i][1] * fb[1] + R[i][2] * fb[2];
 			st.vel[i] += (f / MASS - (i === 2 ? G : 0)) * DT;
@@ -366,4 +373,5 @@ export function fly(
 	return d;
 }
 
-export const hover: Settings = { mode: 'assisted', forward: 0, right: 0, turn: 0 };
+export type Assisted = Extract<Settings, { mode: 'assisted' }>;
+export const hover: Assisted = { mode: 'assisted', forward: 0, right: 0, turn: 0 };

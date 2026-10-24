@@ -6098,3 +6098,61 @@ kbd {
 	--lbh-gas: #ced4da;
 	--lbh-oxygen: #4dabf7;
 }
+
+/* drone-four-rotors: the sky and the field, the pad and trees, the drone, its spins, pushes, weight and twist */
+:root {
+	--dr-sky: #d0ebff;
+	--dr-ground: #b2d8a0;
+	--dr-grid: rgba(47, 98, 40, 0.28);
+	--dr-pad: #e9ecef;
+	--dr-pad-edge: #868e96;
+	--dr-tree: #5c9a4a;
+	--dr-trunk: #8b5e34;
+	--dr-shadow: #1b3a14;
+	--dr-body: #495057;
+	--dr-body-edge: #212529;
+	--dr-arm: #343a40;
+	--dr-motor: #868e96;
+	--dr-nose: #e03131;
+	--dr-cw: #1c7ed6;
+	--dr-ccw: #e8590c;
+	--dr-push: #2f9e44;
+	--dr-push-ink: #2b8a3e;
+	--dr-weight: #868e96;
+	--dr-weight-ink: #495057;
+	--dr-along: #ae3ec9;
+	--dr-along-ink: #9c36b5;
+	--dr-twist: #7048e8;
+	--dr-twist-ink: #6741d9;
+	--dr-bar: #868e96;
+	--dr-faster: #2f9e44;
+	--dr-slower: #c92a2a;
+}
+:root[data-theme='dark'] {
+	--dr-sky: #1c3a52;
+	--dr-ground: #24401f;
+	--dr-grid: rgba(178, 216, 160, 0.22);
+	--dr-pad: #495057;
+	--dr-pad-edge: #ced4da;
+	--dr-tree: #3d6b30;
+	--dr-trunk: #a07a50;
+	--dr-shadow: #000;
+	--dr-body: #adb5bd;
+	--dr-body-edge: #f1f3f5;
+	--dr-arm: #ced4da;
+	--dr-motor: #868e96;
+	--dr-nose: #ff6b6b;
+	--dr-cw: #4dabf7;
+	--dr-ccw: #ff922b;
+	--dr-push: #51cf66;
+	--dr-push-ink: #69db7c;
+	--dr-weight: #adb5bd;
+	--dr-weight-ink: #ced4da;
+	--dr-along: #da77f2;
+	--dr-along-ink: #e599f7;
+	--dr-twist: #9775fa;
+	--dr-twist-ink: #b197fc;
+	--dr-bar: #adb5bd;
+	--dr-faster: #51cf66;
+	--dr-slower: #ff6b6b;
+}
