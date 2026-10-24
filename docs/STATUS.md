@@ -5,7 +5,8 @@ top to bottom, then run the commands under "Resume". **Update it at every commit
 the end of a development.
 
 Last updated: 2026-10-24. **All 200 topics are built, reviewed and ticked**, including all
-100 proposed additions. The merged tree has passed its final checks and is ready for **v1.3.0** after local validation.
+100 proposed additions. The pre-review tree passed its checks; **Claude review corrections are now in progress**
+before the final v1.3.0 validation.
 **v1.2.5 remains live** (194 topics). Next: the user's local validation, then release v1.3.0.
 
 ## How we work
@@ -92,12 +93,24 @@ ion motion, dense histogram layout, sound-scene geometry and explicit experiment
 Audio is opt-in and tested against the calculated note. Flocking has model and browser
 regressions for the hawk splitting the seeded flock and the flock reuniting afterwards.
 
-**Reviewer availability:** Claude Code is installed but signed out, including when checked with
-normal account access. Automatic approval review rejected sending source to Grok without the
-user's explicit authorization; no source was sent. Primary-source review was completed locally
-instead. `node scripts/local-review.mjs <slug> claude` is now supported with restricted read/web
-tools and no MCP servers, for future signed-in reviews; a stub-CLI smoke test checked its arguments
-and report output. No claim of Claude/Grok review is made for these six topics.
+**Claude review follow-up (2026-10-24, in progress).** The user signed Claude Code in and
+requested Claude reviews instead of Grok. All six read-only reviews have returned in
+`docs/reviews/<slug>.md` (runner logs `/tmp/htw-claude-<slug>.log`). Three isolated builders
+are applying valid findings in `/tmp/htw-review-physics`, `/tmp/htw-review-chemistry` and
+`/tmp/htw-review-biology` (branches `codex/review-final-*`). The lead checks suggested changes
+against sources and actual model outputs, then integrates and verifies the combined changes.
+Key findings: model-derived polygon gaps, perfect-contact qualifications and hot-room colour/
+comparison readouts, sound-state cleanup, clearer solubility/capacity/volume illustrations,
+camouflage cursor/position clues, and a meaningful flock-spread measure with a coherent hawk
+pass. Do not blindly adopt suggested numerical changes: the reviewer's largest-connected-flock
+metric fails for the actual seeded flock, and a universal air-pressure-squared jar law or
+speaker loudness compensation would need additional assumptions/calibration. Apply reports,
+record decisions here, then delete the reports per the normal workflow.
+
+The earlier **2,265 model / 3,903 browser** checks belong to the pre-Claude-fix tree. Run the
+appropriate checks again after integrating behavior changes. Release still awaits local
+validation. No source was sent to Grok. Claude's runner is restricted to read/web tools with
+no MCP servers.
 
 **Validation:** each builder's `make check` and topic/browser/scene tests passed. More than 500
 screenshots were inspected across every step, both themes, early/late motion, reduced motion,
