@@ -1743,6 +1743,15 @@ const explainers: Explainer[] = [
 		accent: '#1971c2',
 		steps: 7,
 		minutes: 8
+	},
+	{
+		slug: 'light-bulb-hot-wire',
+		title: 'Why a light bulb glows (and gets hot)',
+		summary:
+			'Turn a dimmer up and watch the thin wire inside an old-style bulb glow dull red, orange, then white as it heats, and see where its electricity goes: a sliver of light and dozens of times as much heat, mostly invisible infrared. Then swap in an LED bulb: the same light from an eighth of the electricity.',
+		accent: '#f08c00',
+		steps: 9,
+		minutes: 9
 	}
 ];
 

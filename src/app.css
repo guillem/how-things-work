@@ -6034,3 +6034,63 @@ kbd {
 	--tf-gurgle: #ff922b;
 	--tf-ink-soft: #adb5bd;
 }
+
+/* light-bulb-hot-wire: the dim room, glass, base, the wire, light and heat, infrared, the LED */
+:root {
+	--lbh-room: #262a31;
+	--lbh-room-ink: #f1f3f5;
+	--lbh-glass: rgba(208, 226, 244, 0.14);
+	--lbh-glass-edge: #8fa6bf;
+	--lbh-frost: rgba(233, 236, 239, 0.32);
+	--lbh-led-light: #fff8e8;
+	--lbh-crack: #e9ecef;
+	--lbh-support: #868e96;
+	--lbh-wire: #5c636a;
+	--lbh-wire-edge: #343a40;
+	--lbh-smoke: #f1f3f5;
+	--lbh-board: #495057;
+	--lbh-chip: #ffe066;
+	--lbh-sink: #ced4da;
+	--lbh-metal: #adb5bd;
+	--lbh-metal-dark: #6c757d;
+	--lbh-heat: #e8590c;
+	--lbh-heat-ink: #c2410c;
+	--lbh-ir: #c92a2a;
+	--lbh-ir-ink: #b02525;
+	--lbh-light: #fab005;
+	--lbh-light-ink: #b07800;
+	--lbh-track: #5c636a;
+	--lbh-knob: #f59f00;
+	--lbh-atom: #8a4b14;
+	--lbh-electron: #1098ad;
+	--lbh-hair: #6f4e37;
+}
+:root[data-theme='dark'] {
+	--lbh-room: #101215;
+	--lbh-room-ink: #e9ecef;
+	--lbh-glass: rgba(170, 190, 215, 0.1);
+	--lbh-glass-edge: #6f86a0;
+	--lbh-frost: rgba(220, 224, 230, 0.2);
+	--lbh-led-light: #fff4dc;
+	--lbh-crack: #dee2e6;
+	--lbh-support: #868e96;
+	--lbh-wire: #6c757d;
+	--lbh-wire-edge: #212529;
+	--lbh-smoke: #e9ecef;
+	--lbh-board: #343a40;
+	--lbh-chip: #ffe066;
+	--lbh-sink: #adb5bd;
+	--lbh-metal: #868e96;
+	--lbh-metal-dark: #495057;
+	--lbh-heat: #f76707;
+	--lbh-heat-ink: #ff922b;
+	--lbh-ir: #e03131;
+	--lbh-ir-ink: #ff8787;
+	--lbh-light: #fcc419;
+	--lbh-light-ink: #ffd43b;
+	--lbh-track: #495057;
+	--lbh-knob: #fab005;
+	--lbh-atom: #8a4b14;
+	--lbh-electron: #22b8cf;
+	--lbh-hair: #a0785a;
+}

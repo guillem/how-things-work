@@ -161,6 +161,10 @@ export function planck(nm: number, kelvin: number): number {
 	return (2 * H * C * C) / l ** 5 / Math.expm1(x) / 1e9;
 }
 
+/** What the whole wire sends out at `nm` when it is at `kelvin`, W per nm. */
+export const wireSpectrum = (nm: number, kelvin: number) =>
+	emissivity(kelvin) * AREA * Math.PI * planck(nm, kelvin);
+
 /** A black body's radiance over all wavelengths (W m⁻² sr⁻¹). */
 const total = (kelvin: number) => (SIGMA * kelvin ** 4) / Math.PI;
 

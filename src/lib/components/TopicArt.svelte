@@ -6205,6 +6205,33 @@
 			stroke-width="2"
 			opacity="0.6"
 		/>
+	{:else if slug === 'light-bulb-hot-wire'}
+		<!-- an old bulb with its glowing coil, and its electricity split: a sliver of light, the rest heat -->
+		<circle cx="62" cy="48" r="34" fill={accent} opacity="0.18" />
+		<path
+			d="M50 92 C50 80 34 72 34 50 A28 28 0 1 1 90 50 C90 72 74 80 74 92 Z"
+			fill="none"
+			stroke="currentColor"
+			stroke-width="2"
+			opacity="0.7"
+		/>
+		<rect x="50" y="92" width="24" height="14" rx="2" fill="currentColor" opacity="0.5" />
+		<path d="M54 92 L50 52 M70 92 L74 52" stroke="currentColor" stroke-width="1.5" opacity="0.6" />
+		<path
+			d="M50 52 q2 -6 4 0 q2 6 4 0 q2 -6 4 0 q2 6 4 0 q2 -6 4 0 q2 6 4 0"
+			fill="none"
+			stroke={accent}
+			stroke-width="2.5"
+		/>
+		<rect x="112" y="44" width="4" height="22" fill={accent} />
+		<rect x="116" y="44" width="70" height="22" fill="currentColor" opacity="0.35" />
+		<path
+			d="M120 82 q4 -4 8 0 t8 0 t8 0 M150 82 q4 -4 8 0 t8 0 t8 0"
+			fill="none"
+			stroke="currentColor"
+			stroke-width="2"
+			opacity="0.5"
+		/>
 	{:else}
 		<circle cx="100" cy="60" r="30" fill="none" stroke={accent} stroke-width="2" />
 		<circle cx="100" cy="60" r="5" fill={accent} />
