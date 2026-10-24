@@ -230,7 +230,7 @@
 		primed
 			? 'full of water from end to end'
 			: filling
-				? `filling up, ${Math.round(sim.bend * 10) * 10}% full`
+				? `filling up, ${Math.min(90, Math.round(sim.bend * 10) * 10)}% full`
 				: sim.spill > 0.02
 					? 'a stream runs down it, air gets past'
 					: 'empty, with water at the bottom'
@@ -274,7 +274,7 @@
 		}
 	});
 	const rows = $derived([
-		{ id: 'tank', label: 'Tank', value: litres(sim.tank) },
+		{ id: 'tank', label: 'Left to flush', value: litres(sim.tank) },
 		{ id: 'drain', label: 'Down the drain', value: drainText },
 		{ id: 'gone', label: 'Gone so far', value: litres(sim.drained) },
 		{ id: 'extra', ...extra }

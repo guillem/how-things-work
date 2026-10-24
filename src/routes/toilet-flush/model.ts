@@ -64,8 +64,12 @@ export const BOWL_FLARE = 0.2;
 export const WEIR = 1.7;
 /** How far the bend's outlet, at the floor, is below the top of the bend, m (an estimate). */
 export const OUTLET_DROP = 0.3;
-/** Losses in the full bend: its entrance, two turns and the exit (an estimate). */
-export const BEND_LOSSES = 1.5;
+/**
+ * Losses in the full bend: its entrance, two turns and the exit (an estimate), set so that the
+ * siphon peaks near 2.5 L/s, as measured 6 L siphonic bowls do (1.9 to 2.5 L/s: Kagami, Otsuka
+ * and Nakato, CIB W062 2013, table 3; Kobayashi and Otsuka, CIB W062 2012, table 2).
+ */
+export const BEND_LOSSES = 3.5;
 
 export type BowlKind = 'siphonic' | 'washdown';
 

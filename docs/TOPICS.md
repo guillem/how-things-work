@@ -317,7 +317,7 @@ A topic is done when:
 - [ ] drone-four-rotors
 - [x] hydraulics-digger-arm
 - [ ] light-bulb-hot-wire
-- [ ] toilet-flush
+- [x] toilet-flush
 
 ## Topics
 

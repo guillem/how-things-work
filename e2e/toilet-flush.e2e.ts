@@ -21,11 +21,11 @@ test('toilet: the bowl rests level with the hump; a jug of water only spills ove
 	await expect(stage(page)).toContainText('a jug of water poured in');
 });
 
-test('flush: the tank fills the bend and the bowl siphons at about 3 litres a second', async ({
+test('flush: the tank fills the bend and the bowl siphons at about 2 litres a second', async ({
 	page
 }) => {
 	await open(page, './toilet-flush/#flush', 'the bend is full: the bowl drains itself');
-	await expect(stage(page)).toContainText('down the drain: about 3 litres a second');
+	await expect(stage(page)).toContainText('down the drain: about 2 litres a second');
 	await expect(stage(page)).toContainText('the bend: full of water from end to end');
 });
 
