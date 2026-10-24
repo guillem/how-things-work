@@ -1,9 +1,31 @@
+<script lang="ts" module>
+	import { initialFlock, advance, type Bird, type Rules } from '../model';
+
+	// Reduced motion shows one settled frame per set of rules: 18 s in, or 25 s with the hawk,
+	// after it has crossed (it leaves at ~22 s) and the flock is one group again (the model
+	// tests check 25 s). Replaying up to 750 steps takes a noticeable moment,
+	// so each frame is computed once and kept, and toggling a rule back and forth is instant.
+	// A plain cache, read inside a $derived: nothing needs to react when it fills.
+	// eslint-disable-next-line svelte/prefer-svelte-reactivity
+	const frozen = new Map<string, { birds: Bird[]; time: number }>();
+	function frozenFrame(rules: Rules) {
+		const key = `${rules.separation}/${rules.alignment}/${rules.cohesion}/${rules.hawk}`;
+		let frame = frozen.get(key);
+		if (!frame) {
+			const frames = (rules.hawk ? 25 : 18) * 30;
+			let birds = initialFlock();
+			for (let i = 0; i < frames; i++) birds = advance(birds, rules, i / 30);
+			frame = { birds, time: frames / 30 };
+			frozen.set(key, frame);
+		}
+		return frame;
+	}
+</script>
+
 <script lang="ts">
 	import { Label } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import {
-		initialFlock,
-		advance,
 		steering,
 		agreement,
 		crowdedPairs,
@@ -14,8 +36,6 @@
 		displacement,
 		WIDTH,
 		HEIGHT,
-		type Bird,
-		type Rules,
 		type Vector
 	} from '../model';
 
@@ -45,7 +65,7 @@
 	const config = $derived(
 		`${phase}/${rules.separation}/${rules.alignment}/${rules.cohesion}/${rules.hawk}`
 	);
-	const followed = $derived(phase === 'follow' ? (Number(params.follow ?? 0) * 37) % 100 : 42);
+	const followed = $derived(phase === 'follow' ? (42 + Number(params.follow ?? 0) * 37) % 100 : 42);
 
 	// Fixed-step deterministic integration, cached between frames. A reset or backwards clock
 	// replays from the same initial flock. No wall-clock animation or effect reading t.
@@ -55,6 +75,7 @@
 	let origin = 0;
 	let lastT = 0;
 	const snapshot = $derived.by(() => {
+		if (reduced) return frozenFrame(rules);
 		const key = config;
 		const now = t;
 		if (key !== lastConfig || now < lastT) {
@@ -64,7 +85,7 @@
 			origin = now;
 		}
 		lastT = now;
-		const target = Math.floor((reduced ? (rules.hawk ? 10 : 18) : Math.max(0, now - origin)) * 30);
+		const target = Math.floor(Math.max(0, now - origin) * 30);
 		while (frame < target) {
 			cached = advance(cached, rules, frame / 30);
 			frame++;
@@ -137,7 +158,12 @@
 			><rect x="50" y="98" width={WIDTH} height={HEIGHT} rx="16" /></clipPath
 		></defs
 	>
-	<Label x={480} y={43} text="A flock from three small rules" size={24} weight={650} />
+	<Readout id="title">
+		<Label x={480} y={43} text="A flock from three small rules" size={24} weight={650} />
+		{#snippet narrow()}
+			<Label x={480} y={66} text="A flock from three small rules" size={40} weight={700} />
+		{/snippet}
+	</Readout>
 	<Readout id="caption" label="The flock" value={caption} order={0}>
 		<Label x={480} y={75} text={caption} size={17} muted />
 	</Readout>
@@ -175,6 +201,7 @@
 		{/if}
 		{#each birds as bird, i (i)}
 			<g
+				data-testid="bird"
 				transform="translate({50 + bird.x} {98 + bird.y}) rotate({(Math.atan2(bird.vy, bird.vx) *
 					180) /
 					Math.PI})"
@@ -187,6 +214,7 @@
 			</g>
 		{/each}
 		<circle
+			data-testid="ringed-bird"
 			cx={50 + one.x}
 			cy={98 + one.y}
 			r="15"
