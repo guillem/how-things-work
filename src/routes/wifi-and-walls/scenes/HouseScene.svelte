@@ -193,7 +193,9 @@
 	}
 
 	// ---- readouts -----------------------------------------------------------------------------
-	const speedText = $derived(now.yours > 0 ? `${fmt(now.yours)} Mbit/s` : 'no link');
+	/** The big number: the laptop's speed, or on the internet step what a download gets. */
+	const shown = $derived(phase === 'internet' ? Math.min(now.yours, lineMbit) : now.yours);
+	const speedText = $derived(shown > 0 ? `${fmt(shown)} Mbit/s` : 'no link');
 	const wallCount = $derived(now.crossed.length);
 	const wallText = $derived(wallCount === 0 ? 'none' : String(wallCount));
 	const rungText = $derived(
@@ -203,9 +205,9 @@
 		{ id: 'living', x: 4, y: 0.7, name: 'living room' },
 		{ id: 'kitchen', x: 11, y: 0.7, name: 'kitchen' },
 		{ id: 'study', x: 17, y: 0.7, name: 'study' },
-		{ id: 'play', x: 4, y: 6.7, name: 'playroom' },
-		{ id: 'bed', x: 11, y: 6.7, name: 'bedroom' },
-		{ id: 'back', x: 17.5, y: 6.7, name: 'back bedroom' }
+		{ id: 'play', x: 4, y: 11.5, name: 'playroom' },
+		{ id: 'bed', x: 11, y: 11.5, name: 'bedroom' },
+		{ id: 'back', x: 16, y: 11.5, name: 'back bedroom' }
 	];
 	const caption = $derived(
 		{
@@ -407,7 +409,7 @@
 			{/if}
 		</g>
 		<Readout id="obstacle" order={3} label="In the way" value="a {obName[obstacle]}">
-			<Label x={ob.c.x} y={ob.c.y - ob.len / 2 - 10} text={obName[obstacle]} anchor="middle" pill />
+			<Label x={ob.c.x + 20} y={ob.c.y - 28} text={obName[obstacle]} anchor="start" pill />
 		</Readout>
 	{/if}
 
@@ -482,6 +484,12 @@
 		<Label anchor="start" x={r0.x + 22} y={r0.y - 14} text="router" weight={600} />
 	</Readout>
 
+	{#if phase === 'things'}
+		<!-- the bed the laptop is on -->
+		<rect x={lap.x - 34} y={lap.y - 24} width="68" height="48" rx="5" fill="var(--ww-bed)" />
+		<rect x={lap.x + 20} y={lap.y - 20} width="10" height="40" rx="3" fill="var(--ww-pillow)" />
+	{/if}
+
 	<!-- the laptop -->
 	<g transform="translate({lap.x}, {lap.y})" pointer-events="none">
 		<rect x="-15" y="-12" width="30" height="19" rx="2" fill="var(--ww-laptop)" />
@@ -505,7 +513,14 @@
 
 	<!-- the panel: speed and the ladder -->
 	<Readout id="speed" order={1} label="Laptop’s speed" value={speedText}>
-		<Label anchor="start" x={LX} y={136} text="laptop’s speed" size={13} muted />
+		<Label
+			anchor="start"
+			x={LX}
+			y={136}
+			text={phase === 'internet' ? 'what the laptop gets' : 'laptop’s speed'}
+			size={13}
+			muted
+		/>
 		<Label
 			anchor="start"
 			x={LX}
@@ -514,7 +529,7 @@
 			size={30}
 			weight={700}
 			tabular
-			color={now.yours > 0 ? 'var(--stage-ink)' : 'var(--ww-nolink)'}
+			color={shown > 0 ? 'var(--stage-ink)' : 'var(--ww-nolink)'}
 		/>
 	</Readout>
 	<Readout id="walls" order={2} label="Walls and things in the way" value={wallText}>

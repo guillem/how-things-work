@@ -201,7 +201,7 @@ export function nearestSpot(p: Point): number {
 
 export type Obstacle = 'none' | 'glass' | 'brick' | 'concrete' | 'tank' | 'fridge';
 
-/** Where the laptop sits while things are put in the way: on the bed in the bedroom. */
+/** Where the laptop sits while things are put in the way: on the bed in the back bedroom. */
 export const BED_SPOT = 80;
 
 /**

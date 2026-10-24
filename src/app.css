@@ -6203,6 +6203,8 @@ kbd {
 	--ww-neighbour: #ae3ec9;
 	--ww-line: #2b8a3e;
 	--ww-nolink: #e03131;
+	--ww-bed: #e9dccb;
+	--ww-pillow: #fdfaf5;
 }
 :root[data-theme='dark'] {
 	--ww-floor: #24221f;
@@ -6225,4 +6227,6 @@ kbd {
 	--ww-neighbour: #da77f2;
 	--ww-line: #69db7c;
 	--ww-nolink: #ff6b6b;
+	--ww-bed: #4a4037;
+	--ww-pillow: #6b5f53;
 }
