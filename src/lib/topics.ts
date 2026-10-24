@@ -1761,6 +1761,15 @@ const explainers: Explainer[] = [
 		accent: '#1c7ed6',
 		steps: 8,
 		minutes: 9
+	},
+	{
+		slug: 'teach-a-machine',
+		title: 'Teach a machine to tell things apart',
+		summary:
+			'Show a machine a pile of drawn cats and houses, each with its label, then draw a new one: it shrinks every drawing to 100 squares, finds the stored drawings most like yours square by square, and lets them vote. Watch it fail with too few examples, teach it your own, and trick it with a pile where every cat sits at the top.',
+		accent: '#7048e8',
+		steps: 9,
+		minutes: 9
 	}
 ];
 

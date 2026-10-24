@@ -6156,3 +6156,27 @@ kbd {
 	--dr-faster: #51cf66;
 	--dr-slower: #ff6b6b;
 }
+
+/* teach-a-machine: the two labels, the pad and its pen, inked squares, the grid, squares that differ, a right answer */
+:root {
+	--tam-cat: #e8590c;
+	--tam-house: #1971c2;
+	--tam-pad: #ffffff;
+	--tam-pad-edge: #ced4da;
+	--tam-ink: #212529;
+	--tam-square: #495057;
+	--tam-grid: #e9ecef;
+	--tam-differ: #d6336c;
+	--tam-right: #2f9e44;
+}
+:root[data-theme='dark'] {
+	--tam-cat: #ff922b;
+	--tam-house: #4dabf7;
+	--tam-pad: #1f2125;
+	--tam-pad-edge: #495057;
+	--tam-ink: #e9ecef;
+	--tam-square: #ced4da;
+	--tam-grid: #343a40;
+	--tam-differ: #f783ac;
+	--tam-right: #51cf66;
+}

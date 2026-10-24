@@ -271,3 +271,17 @@ export function fish(seed: number): Doodle {
 		p.line([40, 56], [46, 59], [52, 56])
 	];
 }
+
+/** Ready drawings the reader can put on the pad instead of drawing (the keyboard's way in). */
+export const READY: Record<string, { name: string; doodle: Doodle }> = {
+	cat: { name: 'A cat', doodle: TESTS[0].doodle },
+	sitting: { name: 'A sitting cat', doodle: TESTS[2].doodle },
+	round: { name: 'A cat with round ears', doodle: TESTS[4].doodle },
+	house: { name: 'A house', doodle: TESTS[1].doodle },
+	chimney: { name: 'A house with a chimney', doodle: TESTS[3].doodle },
+	wide: { name: 'A wide house', doodle: TESTS[5].doodle },
+	catLow: { name: 'A cat at the bottom', doodle: TRAP_TESTS.catLow },
+	houseHigh: { name: 'A house at the top', doodle: TRAP_TESTS.houseHigh },
+	catHigh: { name: 'A cat at the top', doodle: TRAP_TESTS.catHigh },
+	fish: { name: 'A fish', doodle: fish(9) }
+};

@@ -6257,6 +6257,33 @@
 				stroke-width="2.5"
 			/>
 		{/each}
+	{:else if slug === 'teach-a-machine'}
+		<!-- a doodled cat and house, and a drawing shrunk to a grid of inked squares between them -->
+		<g fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" opacity="0.85">
+			<circle cx="38" cy="66" r="20" />
+			<path d="M22 56 L24 36 L34 47 M54 56 L52 36 L42 47" />
+			<path d="M30 62 v3 M46 62 v3 M34 72 l4 3 l4 -3 M18 72 h-12 M58 72 h12" />
+			<path d="M140 62 v34 h44 v-34 M134 62 L162 38 L190 62 Z M156 96 v-16 h12 v16" />
+		</g>
+		<g fill={accent}>
+			<rect x="82" y="44" width="9" height="9" rx="1.5" />
+			<rect x="91" y="35" width="9" height="9" rx="1.5" />
+			<rect x="100" y="35" width="9" height="9" rx="1.5" />
+			<rect x="109" y="44" width="9" height="9" rx="1.5" />
+			<rect x="82" y="53" width="9" height="9" rx="1.5" />
+			<rect x="109" y="53" width="9" height="9" rx="1.5" />
+			<rect x="82" y="62" width="9" height="9" rx="1.5" />
+			<rect x="91" y="71" width="9" height="9" rx="1.5" />
+			<rect x="100" y="71" width="9" height="9" rx="1.5" />
+			<rect x="109" y="62" width="9" height="9" rx="1.5" />
+		</g>
+		<path
+			d="M82 35 h36 v45 h-36 Z M91 35 v45 M100 35 v45 M109 35 v45 M82 44 h36 M82 53 h36 M82 62 h36 M82 71 h36"
+			fill="none"
+			stroke="currentColor"
+			stroke-width="1"
+			opacity="0.5"
+		/>
 	{:else}
 		<circle cx="100" cy="60" r="30" fill="none" stroke={accent} stroke-width="2" />
 		<circle cx="100" cy="60" r="5" fill={accent} />
