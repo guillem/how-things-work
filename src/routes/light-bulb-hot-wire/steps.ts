@@ -48,9 +48,11 @@ const n = (v: number) => v.toLocaleString('en-US');
 const half = bulb(0.5);
 const ledFull = led(FULL.lumens);
 const hot = n(celsius(FULL.kelvin));
-const heatTimes = round(FULL.heat / FULL.light / 5) * 5;
+const heatTimes = round(FULL.heat / FULL.light);
 const ir = round(infraredShare(FULL.kelvin) * 10);
-const ledWatts = round(ledFull.watts);
+const ledWatts = (round(ledFull.watts * 10) / 10).toFixed(1);
+/** Per cent of the electricity that leaves as glow between violet and deep red, counted as plain energy. */
+const visiblePercent = round((1 - infraredShare(FULL.kelvin)) * 100);
 const ledShare = round(FULL.watts / ledFull.watts);
 const ledHeatShare = round(FULL.heat / ledFull.heat);
 
@@ -61,7 +63,7 @@ const tungsten =
 const infrared =
 	'<dfn data-def="Light just past the red end of the rainbow, too red for your eyes to see. You feel it as warmth on your skin, like the heat from a fire or a hot pan.">infrared</dfn>';
 const ledWord =
-	'<dfn data-def="Light-emitting diode: a tiny chip that turns electricity straight into light without getting very hot. A white LED bulb has many of them.">LED</dfn>';
+	'<dfn data-def="Light-emitting diode: a tiny chip that turns electricity straight into light, without heating a wire until it glows. A white LED bulb has many of them.">LED</dfn>';
 
 export const spec: ExplainerSpec = {
 	slug: 'light-bulb-hot-wire',
@@ -137,9 +139,9 @@ export const spec: ExplainerSpec = {
 			controls: [dimmer('level', 1)],
 			body: `
 <p>Everything that goes into the bulb comes out again. The bar splits the electricity into the two things it turns into: <strong>light</strong> and <strong>heat</strong>.</p>
-<p>At full, the bulb takes 60 watts, and only about <strong>1 watt</strong> of that comes out as light. The other <strong>${round(FULL.heat)} watts</strong> come out as heat: the heat is about <strong>${heatTimes} times</strong> the light.</p>
+<p>At full, the bulb takes 60 watts. Counted the way your eyes judge brightness, only <strong>${FULL.light.toFixed(1)} watts</strong> of that is light. The other <strong>${round(FULL.heat)} watts</strong> come out as heat: the heat is <strong>${heatTimes} times</strong> the light.</p>
 <p><strong>Turn the dimmer down</strong>: the light bar shrinks even faster than the heat. An old bulb is really a heater that gives off a little light.</p>`,
-			notes: `<p>The light bar counts light the way your eye does: by how bright it looks. Each watt of it is a watt of the yellow-green light the eye sees best (683 lumens); the bulb at full gives about ${round(FULL.lumens / 10) * 10} lumens, like a real 60 W bulb. Counted as plain energy instead, a bit more of the glow is light you can see, about a tenth of the electricity, but much of it is deep red that the eye sees only dimly. Either way, the heat is many times the light.</p>`
+			notes: `<p>The light bar counts light the way your eye does: by how bright it looks. Each watt of it is a watt of the yellow-green light the eye sees best (683 lumens); the bulb at full gives about ${round(FULL.lumens / 10) * 10} lumens, like a real 60 W bulb. Counted as plain energy instead, several times more of the glow is light you can see, about ${visiblePercent} per cent of the electricity, but much of it is deep red that the eye sees only dimly. Either way, the heat is many times the light.</p>`
 		},
 		{
 			id: 'infrared',
@@ -173,9 +175,9 @@ export const spec: ExplainerSpec = {
 			],
 			body: `
 <p>A wire at ${hot} °C, in air, would burn like a sparkler: the oxygen in the air would eat it away in a moment. So the bulb holds <strong>no air</strong>. Either it is empty inside, or it is filled with a gas such as argon that nothing can burn in.</p>
-<p><strong>Crack the glass</strong> and see what air does to the hot wire: it burns to a puff of white smoke, snaps, and the light goes out.</p>
+<p><strong>Crack the glass</strong> and see what air does to the hot wire: it burns to a puff of yellow smoke, snaps, and the light goes out.</p>
 <p>Sealed away from air, the wire doesn’t burn, but it slowly boils away, a few atoms at a time. After about a <strong>thousand hours</strong> of light it has thinned somewhere until it snaps, often with a flash just as you switch it on.</p>`,
-			notes: `<p>The smoke is tungsten oxide, the white powder tungsten turns into when it burns. The atoms that boil off the wire settle on the inside of the glass, which is why old bulbs go grey.</p>`
+			notes: `<p>The smoke is tungsten trioxide, the yellow powder tungsten turns into when it burns. The atoms that boil off the wire settle on the inside of the glass, which is why old bulbs go grey.</p>`
 		},
 		// ------------------------------------------------------------------ led
 		{

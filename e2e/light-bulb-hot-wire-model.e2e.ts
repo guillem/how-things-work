@@ -51,7 +51,7 @@ test('at full the bulb takes 60 W from 230 V, its wire at about 2,450 °C, and g
 	expect(VOLTS).toBe(230);
 	expect(FULL.watts).toBeCloseTo(WATTS, 6);
 	expect(celsius(FULL.kelvin)).toBe(2450);
-	// Real 60 W bulbs: 710 lumens (EU rating) to about 800.
+	// A measured 230 V, 60 W lamp gives about 750 lm (one laboratory result: 746 lm at 2680 K).
 	expect(FULL.lumens).toBeGreaterThan(700);
 	expect(FULL.lumens).toBeLessThan(800);
 	expect(FULL.lumens / FULL.watts).toBeGreaterThan(11);

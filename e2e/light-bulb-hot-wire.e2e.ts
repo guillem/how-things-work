@@ -39,12 +39,12 @@ test('split: at full, 1.1 W of light and 59 W of heat; dimmed, the light shrinks
 	page
 }) => {
 	await open(page, './light-bulb-hot-wire/#split', 'Electricity in: 60 W');
-	await expect(stage(page)).toContainText('light: 1.1 W');
+	await expect(stage(page)).toContainText('light, to your eyes: 1.1 W');
 	await expect(stage(page)).toContainText('heat: 59 W');
 	await expect(stage(page)).toContainText('the heat is 54 times the light');
 	await page.locator('input[type=range][data-control=level]').fill('0.5');
 	await expect(stage(page)).toContainText('Electricity in: 20 W');
-	await expect(stage(page)).toContainText('light: 0.1 W');
+	await expect(stage(page)).toContainText('light, to your eyes: 0.1 W');
 	await expect(stage(page)).toContainText('the heat is 257 times the light');
 });
 
@@ -70,6 +70,6 @@ test('led: the LED bulb gives the same light from 7.4 W, with a ninth of the hea
 	await open(page, './light-bulb-hot-wire/#led', 'Old-style bulb: 60 W');
 	await page.locator('[data-control=kind][data-value=led]').click();
 	await expect(stage(page)).toContainText('LED bulb: 7.4 W');
-	await expect(stage(page)).toContainText('light 1.1 W · heat 6.3 W');
+	await expect(stage(page)).toContainText('light to your eyes 1.1 W · heat 6.3 W');
 	await expect(stage(page)).toContainText('about 9 times smaller');
 });

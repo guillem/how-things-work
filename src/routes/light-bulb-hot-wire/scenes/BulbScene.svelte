@@ -696,7 +696,7 @@
 			<Label
 				x={572}
 				y={210}
-				text="light: {fmtW(m.light)}"
+				text="light, to your eyes: {fmtW(m.light)}"
 				anchor="start"
 				size={18}
 				weight={700}
@@ -817,7 +817,7 @@
 				<Label
 					x={572}
 					y={row.y + 68}
-					text="light {fmtW(row.b.light)} · heat {fmtW(row.b.heat)}"
+					text="light to your eyes {fmtW(row.b.light)} · heat {fmtW(row.b.heat)}"
 					anchor="start"
 					size={14}
 					muted

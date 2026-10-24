@@ -316,7 +316,7 @@ A topic is done when:
 - [x] clock-escapement
 - [ ] drone-four-rotors
 - [x] hydraulics-digger-arm
-- [ ] light-bulb-hot-wire
+- [x] light-bulb-hot-wire
 - [x] toilet-flush
 
 ## Topics
@@ -2215,8 +2215,8 @@ A topic is done when:
 - **Title:** Why a light bulb glows (and gets hot)
 - **Level:** 0
 - **Kind:** manipulate
-- **Interaction:** Slide a dimmer and watch the thin wire inside an old-style bulb go from dark to dull red to orange to white as it heats, while a bar splits what the bulb takes into light you can see and heat. At full brightness the heat bar is dozens of times the light bar, and most of that heat leaves as invisible infrared you feel on your hand. Swap in an LED bulb giving the same light: the electricity it needs, and so its heat bar, shrinks to about a tenth, though the LED still makes more heat than light and warms its base instead of glowing in infrared.
-- **Takeaway:** An old bulb makes light by heating a wire until it glows white and wastes nearly all its electricity as heat, while an LED makes the same light from about a tenth of the electricity, so far less heat.
+- **Interaction:** Slide a dimmer and watch the thin wire inside an old-style bulb go from dark to dull red to orange to white as it heats, while a bar splits what the bulb takes into light you can see and heat. At full brightness the heat bar is dozens of times the light bar, and most of that heat leaves as invisible infrared you feel on your hand. Swap in an LED bulb giving the same light: the electricity it needs shrinks to about an eighth and its heat bar to about a tenth, though the LED still makes more heat than light and warms its base instead of glowing in infrared.
+- **Takeaway:** An old bulb makes light by heating a wire until it glows white and wastes nearly all its electricity as heat, while an LED makes the same light from about an eighth of the electricity, so far less heat.
 - **Prerequisites:** none
 - **Needs:** The CIE 1931 colour-matching functions and the photopic V(lambda) curve, to turn the filament's temperature into an on-screen colour and a light-versus-heat split (CIE open-access datasets, CC BY-SA 4.0, cie.co.at/data-tables; also at cvrl.org). Tungsten's resistivity and emissivity against temperature from Jones & Langmuir (1927, General Electric Review), quoted as numbers, or a grey-body emissivity of about 0.4 documented as an approximation. The LED's efficiency is a documented typical value (white LED bulbs at about 90 to 100 lm/W, against about 15 lm/W for incandescent).
 - **Pitfall:** The wire does not burn: there is no oxygen inside the bulb, which is why a tungsten filament lasts about a thousand hours. Brightness does not rise in step with the dimmer: a little more current makes the wire much hotter, much brighter and whiter. And an LED is not cold: it still turns over half its electricity into heat, only much less electricity overall.
