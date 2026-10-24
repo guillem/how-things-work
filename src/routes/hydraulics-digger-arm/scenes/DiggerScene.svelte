@@ -134,7 +134,8 @@
 		})
 	);
 
-	// ---- hoses from the pump to each barrel's far end -------------------------------------------------
+	// ---- hoses from the pump to each barrel's two ends: oil into the far (blind) end pushes the rod
+	// out, oil into the rod end pulls it in ------------------------------------------------------------
 	const hoses = $derived(
 		cyl.map((k) => {
 			const pts: Point[] = [
@@ -151,8 +152,15 @@
 					y: g.pivot.y + dy * s + (dx / L) * 0.5
 				});
 			}
-			pts.push(k.a);
-			return { c: k.c, d: `M${pts.map(P).join(' L')}` };
+			const dx = k.end.x - k.a.x;
+			const dy = k.end.y - k.a.y;
+			const L = Math.hypot(dx, dy);
+			const side = (p: Point) => ({ x: p.x - (dy / L) * 0.3, y: p.y + (dx / L) * 0.3 });
+			return {
+				c: k.c,
+				blind: `M${[...pts, k.a].map(P).join(' L')}`,
+				rod: `M${[...pts, side(k.a), side(k.end), k.end].map(P).join(' L')}`
+			};
 		})
 	);
 
@@ -173,6 +181,18 @@
 		y: Y(bucketMid.y) + 5
 	});
 </script>
+
+{#snippet hose(d: string, on: boolean)}
+	<path
+		{d}
+		fill="none"
+		stroke={on ? 'var(--hyd-oil-dark)' : 'var(--hyd-hose)'}
+		stroke-width={on ? 4 : 2.5}
+		stroke-linejoin="round"
+		stroke-dasharray={on ? '8 6' : undefined}
+		stroke-dashoffset={on ? -tt * 30 : 0}
+	/>
+{/snippet}
 
 <g class="digger-scene">
 	<!-- the ground, the hole and the heap -->
@@ -282,15 +302,7 @@
 	{/if}
 	<!-- hoses -->
 	{#each hoses as h (h.c)}
-		<path
-			d={h.d}
-			fill="none"
-			stroke={active?.name === h.c ? 'var(--hyd-oil-dark)' : 'var(--hyd-hose)'}
-			stroke-width={active?.name === h.c ? 4 : 2.5}
-			stroke-linejoin="round"
-			stroke-dasharray={active?.name === h.c ? '8 6' : undefined}
-			stroke-dashoffset={active?.name === h.c ? -tt * 30 : 0}
-		/>
+		{@render hose(h.blind, active?.name === h.c && active.out)}
 	{/each}
 
 	{#each [g.pivot, g.boomTip, g.armTip] as pin, i (i)}
@@ -345,6 +357,9 @@
 		/>
 		<circle cx={X(k.a.x)} cy={Y(k.a.y)} r="4" fill="var(--hyd-steel)" stroke="var(--stage-ink)" />
 		<circle cx={X(k.b.x)} cy={Y(k.b.y)} r="4" fill="var(--hyd-steel)" stroke="var(--stage-ink)" />
+	{/each}
+	{#each hoses as h (h.c)}
+		{@render hose(h.rod, active?.name === h.c && !active.out)}
 	{/each}
 
 	<!-- labels -->

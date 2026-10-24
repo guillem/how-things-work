@@ -93,7 +93,7 @@ export const spec: ExplainerSpec = {
 <p>Here is a pipe full of oil with a ${piston} at each end: a snug plug that slides but lets nothing past. Both pistons are the same size.</p>
 <p><strong>Push the left piston down.</strong> The right one rises, exactly as far. Oil can’t be squashed into less room, so every drop you push in at one end has to come out at the other, and it pushes the other piston up.</p>
 <p>You can try this with two syringes joined by a tube of water: push one, and the other one’s plunger pops out.</p>`,
-			notes: `<p>Oil does squash a tiny bit. Even pressed as hard as in a digger, it gets only about 2 parts in 100 smaller. Air pressed that hard would shrink to a 340th of its size. That difference is the whole secret of hydraulics, as you will see with an air bubble later.</p>`
+			notes: `<p>Oil does squash a tiny bit. Even pressed as hard as in a digger, it gets only about 2 parts in 100 smaller. A bubble of air held that hard, once it has cooled back to the temperature of the room, would be about a 340th of its size (squashed in a hurry it heats up and shrinks only to about a 60th, still far more than the oil). That difference is the whole secret of hydraulics, as you will see with an air bubble later.</p>`
 		},
 		{
 			id: 'bigger',
@@ -119,7 +119,8 @@ export const spec: ExplainerSpec = {
 			controls: [big],
 			body: `
 <p><strong>Change how wide the big piston is.</strong> The counters show what you get and what you pay.</p>
-<p>Make it twice as wide and its face is four times as big: four times the push, a quarter of the distance. Three times as wide: nine times the push, a ninth of the distance. Whatever you choose, the two numbers trade places <strong>exactly</strong>: as many times stronger as it is shorter.</p>
+<p>Make it three times as wide and its face is nine times as big: nine times the push, a ninth of the distance. Wider still, the two numbers keep trading places <strong>exactly</strong>: as many times stronger as it is shorter.</p>
+<p>Twice as wide would give four times the push, but your hand gives only 20 kg and four times that is 80 kg: not enough for the 100 kg crate, which stays put until the piston is a little over 4.5 cm across.</p>
 <p>So hydraulics don’t make anything for free. Your hand gives a small push over a long way; the big piston gives a huge push over a short way. A lever, a ramp and a bicycle’s low gear make the same swap.</p>`,
 			notes: `<p>Scientists call push times distance the <dfn data-def="What it takes to move something against a push: the push times how far it moves. It comes from your muscles, or an engine, and can't be made from nothing.">work</dfn> done. The work your hand puts in equals the work done lifting, minus a sliver lost to friction in real machines. Hydraulics, like levers, move work around; they never make more.</p>`
 		},
@@ -135,7 +136,7 @@ export const spec: ExplainerSpec = {
 			body: `
 <p>Now a car of 1,200 kg sits on the big piston, and your hand still pushes only as hard as lifting 20 kg. <strong>Make the big piston wider</strong> until the car rises.</p>
 <p>It needs a face 60 times as big as the small piston’s: about <strong>15.5 cm</strong> across, almost eight times as wide. Any narrower, and the push of the oil can’t hold the car up.</p>
-<p>And the price: one whole push of 30 cm lifts the car only about <strong>half a centimetre</strong>. To raise it 10 cm, you would push twenty times. That is just what a car jack does: you pump its handle up and down, and a little valve lets fresh oil into the small piston after each push.</p>`
+<p>And the price: one whole push of 30 cm lifts the car only about <strong>half a centimetre</strong>. To raise it 10 cm, you would push twenty times. That is just what a hydraulic bottle jack does: you pump its handle up and down, and each time the handle comes back up a little valve lets fresh oil in under the small piston.</p>`
 		},
 		{
 			id: 'boulder',

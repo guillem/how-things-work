@@ -35,13 +35,16 @@ test('bigger: ten times the face, ten times the push, a tenth of the distance', 
 	await expect(stage(page)).toContainText('the same push on every square');
 });
 
-test('trade: twice as wide is four times the push; the push and the distance always trade exactly', async ({
+test('trade: three times as wide is nine times the push; twice as wide is too little for the crate', async ({
 	page
 }) => {
 	await open(page, './hydraulics-digger-arm/#trade', 'push on the crate: 100 kg');
+	await control(page, 'big').fill('6');
+	await expect(stage(page)).toContainText('9 times the push');
+	await expect(stage(page)).toContainText('9 times less far');
 	await control(page, 'big').fill('4');
-	await expect(stage(page)).toContainText('4 times the push');
-	await expect(stage(page)).toContainText('4 times less far');
+	await expect(stage(page)).toContainText('the crate doesn’t move');
+	await expect(stage(page)).toContainText('only 80 kg: too little');
 	await control(page, 'big').fill('13');
 	await expect(stage(page)).toContainText('42 times the push');
 	await expect(stage(page)).toContainText('42 times less far');

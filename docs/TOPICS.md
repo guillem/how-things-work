@@ -2206,7 +2206,7 @@ A topic is done when:
 - **Title:** Diggers and hydraulics: a small push becomes a huge one
 - **Level:** 0
 - **Kind:** manipulate
-- **Interaction:** Push a small piston and watch oil shove a much bigger piston at the digger's arm: the big one moves with many times the force but only a fraction of the distance, and a counter shows the two trade places exactly. Change the piston sizes and lift a car, then a boulder; let an air bubble into the pipe and the arm goes spongy. Drive the three cylinders of a digger's boom, arm and bucket to scoop and dump.
+- **Interaction:** Push a small piston and watch oil shove a much bigger piston at the digger's arm: the big one moves with many times the force but only a fraction of the distance, and a counter shows the two trade places exactly. Change the piston sizes and lift a car, then a boulder; let an air bubble into the pipe and the lift goes spongy. Drive the three cylinders of a digger's boom, arm and bucket to scoop and dump.
 - **Takeaway:** A trapped liquid passes on the same push on every bit of surface it touches, so a piston with ten times the area gets ten times the push, paid for by moving only a tenth as far.
 - **Prerequisites:** none
 - **Pitfall:** Hydraulics make no energy: the work in equals the work out, and the small piston simply travels much farther. The liquid does not pass on the same total force; it passes on the same push per bit of area, which is why the bigger piston gets more. A liquid barely squashes, which is the whole point; a spongy brake pedal is air in the line.

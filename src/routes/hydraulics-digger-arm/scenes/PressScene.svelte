@@ -83,7 +83,10 @@
 	const ramTop = $derived(bFace - RAM);
 	const handleY = $derived(sFace - 52);
 
-	const fmtKg = (kg: number) => `${Math.round(kg).toLocaleString('en-GB')} kg`;
+	const fmtKg = (kg: number) =>
+		kg < 0.95 && kg > 0
+			? `${(Math.round(kg * 10) / 10).toLocaleString('en-GB')} kg`
+			: `${Math.round(kg).toLocaleString('en-GB')} kg`;
 	function fmtCm(cm: number) {
 		if (cm < 0.005) return '0 cm';
 		if (cm >= 9.95) return `${Math.round(cm)} cm`;
@@ -143,7 +146,9 @@
 			? 'pushed down ' + fmtCm(pushCm)
 			: strong
 				? `your push: ${fmtKg(phase === 'air' ? st.handKg : needKg)}`
-				: `your push: ${fmtKg(HAND.pushKg)}, not enough`
+				: phase === 'trade'
+					? `your push: ${fmtKg(HAND.pushKg)}`
+					: `your push: ${fmtKg(HAND.pushKg)}, not enough`
 	);
 	const bigText = $derived(
 		phase === 'same'
@@ -379,7 +384,9 @@
 			id="hyd-trade"
 			order={6}
 			label="The swap"
-			value="{times(n)} the push, {times(n)} less far"
+			value={strong
+				? `${times(n)} the push, ${times(n)} less far`
+				: `${times(n)} the push: only ${fmtKg(HAND.pushKg * n)}, too little`}
 		>
 			<g transform="translate(480 40)">
 				<Label x={0} y={0} text="big face: {times(n)} as big" anchor="middle" size={14} />
@@ -395,7 +402,7 @@
 				<Label
 					x={0}
 					y={48}
-					text="{times(n)} less far"
+					text={strong ? `${times(n)} less far` : `only ${fmtKg(HAND.pushKg * n)}: too little`}
 					anchor="middle"
 					size={16}
 					weight={700}
