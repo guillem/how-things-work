@@ -5,7 +5,7 @@ top to bottom, then run the commands under "Resume". **Update it at every commit
 the end of a development.
 
 Last updated: 2026-10-24. **All 200 topics are built, reviewed and ticked**, including all
-100 proposed additions. The merged tree is undergoing final release checks for **v1.3.0**.
+100 proposed additions. The merged tree has passed its final checks and is ready for **v1.3.0** after local validation.
 **v1.2.5 remains live** (194 topics). Next: the user's local validation, then release v1.3.0.
 
 ## How we work
@@ -37,7 +37,7 @@ Last updated: 2026-10-24. **All 200 topics are built, reviewed and ticked**, inc
 
 ## Current state
 
-- **All 100 catalogue topics are built, fact-checked and ticked** (done 2026-10-15). **v1.2.5** (2026-10-24) is live: 194 topics, every promoted catalogue topic (13 more level-0 topics). Before it, **v1.2.4**
+- **All 200 catalogue topics are built, reviewed and ticked** (2026-10-24; v1.3.0 awaits local validation). The original 100 were done on 2026-10-15. **v1.2.5** (2026-10-24) is live: 194 topics, every promoted catalogue topic (13 more level-0 topics). Before it, **v1.2.4**
   (2026-10-22) is live: 181 topics, the 100 plus 81 of the proposal's (20 at level 0). Before it,
   v1.2.3 (2026-10-21): 175 topics. Before that,
   v1.2.2 (2026-10-21): 170 topics, the first nine at level 0 with the index's "Start here" link.
@@ -46,8 +46,7 @@ Last updated: 2026-10-24. **All 200 topics are built, reviewed and ticked**, inc
   (2026-10-17): the 100 topics plus the index search and filters (a sticky
   sidebar on wide screens), faster browser tests and the overnight backlog round described below.
   Earlier: v0.1.21 (2026-10-15) the housekeeping, stage-text fix and public polish; v0.1.19 the
-  user's external audit (`docs/codex-fact-check-complete.md`). **The proposal's topics are being
-  built onto `main` (see "Current development").** What is
+  user's external audit (`docs/codex-fact-check-complete.md`). **All proposal topics are now built on `main` (see "Current development").** What is
   left open, and the decisions left for the user, are in [`BACKLOG.md`](BACKLOG.md) ("Open after
   the backlog round").
 - Licence: MIT code, CC BY 4.0 content, third-party data under its own terms (`LICENSE`,
@@ -104,13 +103,22 @@ and report output. No claim of Claude/Grok review is made for these six topics.
 screenshots were inspected across every step, both themes, early/late motion, reduced motion,
 phones and control extremes. Per-step QA handovers are `/tmp/physics-shots/REVIEW.md`,
 `/tmp/chemistry-handoff.md` and `/tmp/htw-biology-qa/QA.md`. The lead's source-review notes are
-`/tmp/htw-final-six-review.md`. Final merged `make check` and the entire browser suite with two
-workers are in progress; record their results here before handover.
+`/tmp/htw-final-six-review.md`. Final merged `make check` passed (formatting, full ESLint, zero Svelte/TypeScript errors or
+warnings, **2,265 model tests**). The full production/sub-path browser suite passed once with
+`npx playwright test --workers=2`: **3,903 tests in 13.1 minutes**. Initial browser startup was
+blocked by the filesystem/network sandbox's local-port restriction; rerunning with permission
+to serve localhost passed. No browser test failed or was weakened. The six new pages also pass
+a structural check: 6–9 steps and at most one control per step (49 new steps total).
+
+The checked source is committed on main; only these result notes and the completed-backlog
+entry were updated after verification. Review-script smoke test and final documentation
+formatting also pass. Logs: `/tmp/htw-200-check.log`, `/tmp/htw-200-e2e.log`. A production preview
+is served at `http://localhost:5190/how-things-work/?level=0` for local validation.
 
 **Release:** local validation is still required by the recorded user workflow above. No push,
 release tag or deployment yet. After approval: `make release V=v1.3.0`. The live tag remains
-v1.2.5. The three temporary worktrees can be removed once integration checks pass; all topic
-commits have been merged into main.
+v1.2.5. The three temporary builder worktrees and merged branches have been removed; all topic
+commits are preserved on main. Older Claude-owned worktrees were left alone.
 
 **Level-0 round, second part (2026-10-23/24).** The user raised the weekly cap to 85% (41% at the start) and gave the last $27 of cloud credit. Landed on `main`, ticked, not released: muscles-pull-in-pairs, why-you-get-sleepy, sea-breeze, why-spinning-makes-you-dizzy, comet-tails and clock-escapement (three local builders at a time, sessions in app worktrees, each fact-checked by grok and landed by itself), and hydraulics-digger-arm and earth-is-a-ball (cloud sessions; fact-checked by grok on the laptop by the lead). Cost: the first three local topics took 6% of the weekly usage together (about 2% each); the second three plus the lead's two fact-checks took 11%; three builders at once fill about half the 5-hour window, and the second batch hit it once (resumed after the reset). Then toilet-flush, light-bulb-hot-wire, drone-four-rotors, wifi-and-walls and teach-a-machine landed the same way, built by background agents in worktrees (the app can't start sessions from Remote Control, and proposal cards don't show on mobile); about 4% of the weekly usage each, and two of them hit the 5-hour limit mid-rebase and were resumed after the reset. Stopped at 81%. Next, after the 2026-10-28 reset: the 6 still in `TOPICS-PROPOSAL.md` only (shapes-that-tile, vibrations-and-sound, why-metal-feels-cold, dissolving-sugar-and-salt, be-the-bird-camouflage, flocking-birds; promote each with `promote.mjs`), then `make e2e-full` and v1.3.0. Released as **v1.2.5** (2026-10-24): `make e2e-full` (3,818) green locally with 4 and with 2 workers, then CI, the deploy and the live smoke test green. The builders' worktrees are under `.claude/worktrees/` (the app removes them when their sessions are archived).
 

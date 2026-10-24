@@ -101,18 +101,19 @@ local worktree, merged into `main`) cleared almost everything that was open; wha
 November); the last ten fact-checks were done in-house by an agent that reviews with web search
 and then applies the fixes.
 
-## Next topics (after v1.0.0)
+## The 200-topic milestone — built (2026-10-24)
 
-A level 0 and 100 new topics are proposed: [`TOPICS-PROPOSAL.md`](TOPICS-PROPOSAL.md) (how it was
-made: [`proposals/topics-200/README.md`](proposals/topics-200/README.md)). Being built since
-2026-10-18 in the order of `proposals/topics-200/data/build-order.json` (the brief:
-`proposals/topics-200/build-brief.md`): 24 of the 100 are on `main` as of 2026-10-18, none
-released; each entry is promoted into `TOPICS.md` when its build starts. Still waiting on the
-user's review of the open questions (the level-0 definition, the 39 / 10 / 3 / 48 split and
-the LLM ladder's second wave, the optional Everyday things category, the re-levelling footnote,
-the Reserve dispositions, the water cycle). The level-0 entries come last in the build order;
-promoting the first one also needs the parser change under "Index search and filters" below
-(level 0 in `Level`, `levelNames` and the level check).
+All 100 additions from [`TOPICS-PROPOSAL.md`](TOPICS-PROPOSAL.md) are built, promoted into
+[`TOPICS.md`](TOPICS.md), reviewed and ticked. Together with the original catalogue, that makes
+200 explainers. Level 0, its parser support and the index's “Start here” link are complete;
+the new topics follow the agreed 39 / 10 / 3 / 48 split at levels 0–3. The last six are
+shapes-that-tile, vibrations-and-sound, why-metal-feels-cold, dissolving-sugar-and-salt,
+be-the-bird-camouflage and flocking-birds. See [`STATUS.md`](STATUS.md) for final checks and
+v1.3.0 release readiness. No topic from this proposal remains to build.
+
+The research record and runners-up remain in
+[`proposals/topics-200/README.md`](proposals/topics-200/README.md). Runners-up, including the
+LLM ladder's second wave and the water cycle, need a separate go-ahead before building.
 
 ## Site and framework work
 
