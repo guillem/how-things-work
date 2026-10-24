@@ -5,7 +5,7 @@ const hunt: Control = {
 	id: 'hunt',
 	label: 'Your turn as the bird',
 	action: 'Hunt / next generation',
-	help: 'Press to begin. Tap moths for twelve seconds; press again to finish early. After the hunt, press for their offspring. With reduced motion, the hunt is untimed.'
+	help: 'Press to begin. Tap moths for twelve seconds at normal speed; press again to finish early. After the hunt, press for their offspring. With reduced motion, the hunt is untimed.'
 };
 const bark: Control = {
 	type: 'toggle',
@@ -38,7 +38,7 @@ export const spec: ExplainerSpec = {
 			title: 'Catch the ones you can see',
 			scene: 'bark',
 			controls: [hunt],
-			body: `<p>Press <strong>Hunt / next generation</strong>, then tap every moth you spot. You have twelve seconds. The stage clock pauses when you pause the page, and the hunt is untimed if your device asks for reduced motion. You can also focus a moth with Tab and catch it with Enter or Space.</p><p>The moths you catch disappear. The ones you miss stay alive. This time, <em>you</em> decide who gets eaten: the computer does not secretly favour any colour. Press the button again if you want to finish early.</p>`,
+			body: `<p>Press <strong>Hunt / next generation</strong>, then tap every moth you spot. You have twelve seconds at normal speed. The timer stops when you pause the animation, and the hunt is untimed if your device asks for reduced motion. You can also focus a moth with Tab and catch it with Enter or Space. Tab visits even well-hidden moths, so for a visual hunt try to catch only the ones you could spot by eye.</p><p>The moths you catch disappear. The ones you miss stay alive. This time, <em>you</em> decide who gets eaten: the computer does not secretly favour any colour. Press the button again if you want to finish early.</p>`,
 			duration: 24
 		},
 		{
@@ -47,7 +47,7 @@ export const spec: ExplainerSpec = {
 			title: 'The ones you miss have babies',
 			scene: 'bark',
 			controls: [hunt],
-			body: `<p>After a hunt, the little bars show the shades of the moths still alive. Did you catch more dark ones than pale ones? If so, more of the parents left behind are pale.</p><p>Press the button for the next generation. Each new moth takes its shade from a randomly chosen survivor, with a little variation. The eaten moths have no babies. The population returns to 24, unless you caught every moth: then this colony has died out, and the button starts a separate new colony.</p>`,
+			body: `<p>After a hunt, the little bars show the shades of the moths still alive. Did you catch more dark ones than pale ones? If so, more of the parents left behind are pale.</p><p>Press the button for the next generation. Each new moth takes its shade from a randomly chosen survivor, with a little variation. The eaten moths have no babies. The population returns to 24, unless you caught every moth: then these moths have died out, and the button starts a separate new group of moths.</p>`,
 			duration: 24
 		},
 		{
@@ -74,7 +74,7 @@ export const spec: ExplainerSpec = {
 			title: 'The winners can change',
 			scene: 'bark',
 			controls: [hunt],
-			body: `<p>Keep hunting on whichever bark you chose. If the tree is dark, the pale moths may now be the easiest meals. More dark moths can survive, have babies, and gradually become common.</p><p>That change can take many generations, especially if hardly any dark moths remain. A new background does not summon the colour an animal needs. In this toy, only inherited shade, small random differences, chance and your hunting change the population.</p>`,
+			body: `<p>Keep hunting on whichever bark you chose. If the tree is dark, the pale moths may now be the easiest meals. More dark moths can survive, have babies, and gradually become common.</p><p>That change can take many generations, especially if hardly any dark moths remain. A new background does not summon the colour an animal needs. In this toy, only inherited shade, small random differences, chance and your hunting change the population.</p><p>If you catch every moth, this group dies out. Pressing the button then starts a new group with all shades: that is a fresh start, not the old moths changing. To watch the same population change, leave a few moths uncaught.</p>`,
 			duration: 25
 		},
 		{

@@ -31,6 +31,8 @@ export const WIDTH = 860;
 export const HEIGHT = 370;
 export const SPEED = 48;
 const DT = 1 / 30;
+export const HAWK_START = 3;
+export const HAWK_END = HAWK_START + (WIDTH + 60) / 48;
 export const ALL_RULES: Rules = { separation: true, alignment: true, cohesion: true, hawk: false };
 
 export function initialFlock(seed = 138): Bird[] {
@@ -65,7 +67,7 @@ export function displacement(a: Bird | Vector, b: Bird | Vector): Vector {
 
 export function hawkAt(time: number): Vector {
 	// A single pass through the sky, not an intelligent predator or a bird controller.
-	return { x: WIDTH + 30 - Math.min(18, Math.max(0, time - 3)) * 48, y: HEIGHT / 2 };
+	return { x: WIDTH + 30 - Math.max(0, time - HAWK_START) * 48, y: HEIGHT / 2 };
 }
 
 export function steering(
@@ -109,8 +111,11 @@ export function steering(
 		cohesion.x = rules.cohesion ? (cohesion.x / n) * 0.65 : 0;
 		cohesion.y = rules.cohesion ? (cohesion.y / n) * 0.65 : 0;
 	}
-	if (rules.hawk && time >= 3 && time < 21) {
-		const d = displacement(hawkAt(time), bird);
+	if (rules.hawk && time >= HAWK_START && time < HAWK_END) {
+		const hawk = hawkAt(time);
+		// The birds wrap; the passing hawk does not. Otherwise an off-screen
+		// hawk on the right would invisibly repel birds at the left edge.
+		const d = { x: bird.x - hawk.x, y: bird.y - hawk.y };
 		const distance = Math.hypot(d.x, d.y);
 		if (distance < 110 && distance > 0.0001) {
 			const strength = (110 - distance) * 5;
@@ -180,16 +185,24 @@ export function crowdedPairs(birds: readonly Bird[]): number {
 	return count;
 }
 
-export function neighbourDistance(birds: readonly Bird[]): number {
+/** Mean distance to the k-th nearest bird, accounting for the wrapping sky. */
+export function neighbourDistance(birds: readonly Bird[], rank = 1): number {
+	if (birds.length < 2) return 0;
+	const k = Math.max(1, Math.min(birds.length - 1, Math.floor(rank)));
 	let total = 0;
 	for (let i = 0; i < birds.length; i++) {
-		let best = Infinity;
+		const nearest: number[] = [];
 		for (let j = 0; j < birds.length; j++)
 			if (i !== j) {
 				const d = displacement(birds[i], birds[j]);
-				best = Math.min(best, Math.hypot(d.x, d.y));
+				const distance = Math.hypot(d.x, d.y);
+				if (nearest.length === k && distance >= nearest[k - 1]) continue;
+				let at = nearest.findIndex((n) => distance < n);
+				if (at < 0) at = nearest.length;
+				nearest.splice(at, 0, distance);
+				if (nearest.length > k) nearest.pop();
 			}
-		total += best;
+		total += nearest[k - 1];
 	}
 	return total / birds.length;
 }

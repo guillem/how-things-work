@@ -41,19 +41,20 @@
 			: done
 				? living.length
 					? 'Hunt over · the survivors can breed'
-					: 'No survivors · this colony died out'
+					: 'No survivors · these moths died out'
 				: 'Look closely: can you spot 24 moths?'
 	);
+	const canHunt = $derived(step.controls?.some((c) => c.id === 'hunt') ?? false);
 	const instruction = $derived(
 		hunting
 			? 'Tap a moth to catch it'
-			: done
-				? living.length
-					? 'Press the button for their offspring'
-					: 'Press the button for a new colony'
-				: step.controls?.some((c) => c.id === 'hunt')
-					? 'Press the button to begin a hunt'
-					: 'Each adult keeps its own shade'
+			: !canHunt
+				? 'Each adult keeps its own shade'
+				: done
+					? living.length
+						? 'Press the button for their offspring'
+						: 'Press the button for a new group of moths'
+					: 'Press the button to begin a hunt'
 	);
 
 	// Step navigation stops the hunt without discarding the reader's catches.
@@ -99,7 +100,7 @@
 	}
 </script>
 
-<g class="camouflage-bark">
+<g class="camouflage-bark" class:hunting>
 	<!-- Procedural bark, no external texture or image data. -->
 	<rect x="28" y="74" width="574" height="436" rx="28" fill={shadeColor(soot ? 0.88 : 0.12)} />
 	<path
@@ -128,9 +129,8 @@
 				aria-disabled={!hunting}
 				onclick={() => catchMoth(moth.id)}
 				onkeydown={(e) => keyCatch(e, moth.id)}
-				class:hunting
 			>
-				<!-- Large transparent target stays on the insect; no visible outline gives its position away. -->
+				<!-- Accessible tap target; the same cursor covers the whole bark, so hovering does not reveal a hidden moth. -->
 				<circle r="30" fill="transparent" />
 				<path
 					d="M0 -11 C-8 -25 -28 -24 -27 -5 L-17 15 L-5 10 L0 20 L5 10 L17 15 L27 -5 C28 -24 8 -25 0 -11 Z"

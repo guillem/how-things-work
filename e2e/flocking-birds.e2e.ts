@@ -25,9 +25,13 @@ test('turning spacing off produces crowded clumps', async ({ page }) => {
 
 test('without gathering the neighbours are farther apart', async ({ page }) => {
 	await open(page, 'together');
-	await expect(stage(page)).toContainText('Nearest bird: about 1.5 bird lengths away (on average)');
+	await expect(stage(page)).toContainText(
+		'Farthest of seven neighbours: about 2.5 bird lengths away (on average)'
+	);
 	await page.locator('input[data-control=cohesion]').uncheck();
-	await expect(stage(page)).toContainText('Nearest bird: about 2 bird lengths away (on average)');
+	await expect(stage(page)).toContainText(
+		'Farthest of seven neighbours: about 4 bird lengths away (on average)'
+	);
 });
 
 test('a passing hawk adds a local danger without changing bird count', async ({ page }) => {

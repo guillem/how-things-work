@@ -78,6 +78,8 @@ Last updated: 2026-10-24. **All 200 topics are built, reviewed and ticked**, inc
 
 ## Current development
 
+**Biology Claude review follow-up (2026-10-24):** after the user signed Claude in, applied both real Claude reports in an isolated worktree. Camouflage no longer reveals moths through per-insect cursors or fixed occupied slots; instructions, keyboard caveat and population restarts are explicit. Flocking measures the extent of each seven-neighbour group, uses a non-wrapping complete hawk pass, and distinguishes the watched bird from the direction arrow. Focused model/browser/scene checks, lint, types and fresh both-theme/phone screenshot matrices pass. Rejected the suggested forced increase in inherited variation, an unsupported catalogue Leads-to field, and the largest-connected-group metric (it misclassified the actual seeded states). Lead handles report removal and merged release checks.
+
 **200-topic milestone, Codex handover (2026-10-24).** The final six level-0 explainers are
 integrated on `main`: shapes-that-tile, vibrations-and-sound, why-metal-feels-cold,
 dissolving-sugar-and-salt, be-the-bird-camouflage and flocking-birds. All 200 catalogue entries,

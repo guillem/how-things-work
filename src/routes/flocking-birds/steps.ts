@@ -3,19 +3,22 @@ import type { Control, ExplainerSpec } from '#lib/explainer/index.ts';
 const spacing: Control = {
 	type: 'toggle',
 	id: 'spacing',
-	label: 'Keep a little distance',
+	label: 'Space',
+	help: 'Turn away from neighbours that are too close.',
 	default: true
 };
 const alignment: Control = {
 	type: 'toggle',
 	id: 'alignment',
-	label: 'Fly the neighbours’ way',
+	label: 'Same way',
+	help: 'Turn toward the neighbours’ shared direction.',
 	default: true
 };
 const cohesion: Control = {
 	type: 'toggle',
 	id: 'cohesion',
-	label: 'Stay near the neighbours',
+	label: 'Stay near',
+	help: 'Drift toward the middle of the seven neighbours.',
 	default: true
 };
 const missing: Control = {
@@ -25,9 +28,9 @@ const missing: Control = {
 	default: 'none',
 	options: [
 		{ value: 'none', label: 'All three' },
-		{ value: 'separation', label: 'No spacing' },
-		{ value: 'alignment', label: 'No matching' },
-		{ value: 'cohesion', label: 'No gathering' }
+		{ value: 'separation', label: 'Space off' },
+		{ value: 'alignment', label: 'Same way off' },
+		{ value: 'cohesion', label: 'Stay near off' }
 	]
 };
 const hawk: Control = {
@@ -68,7 +71,7 @@ export const spec: ExplainerSpec = {
 			scene: 'sky',
 			duration: 25,
 			controls: [spacing],
-			body: `<p>If another bird is too close, turn away a little. The orange arrow on the ringed bird shows that push. This rule stops the birds piling up.</p><p>Switch the rule off. Each switch starts the same flock again, so you can compare fairly. Give it a few seconds: the birds squeeze into clumps. Switch it back on and they keep a little room between them. The counter below counts pairs flying very close together.</p>`
+			body: `<p>If another bird is too close, turn away a little. The orange arrow on the ringed bird shows that push. This rule stops the birds piling up. The thin lines join the ringed bird to the seven neighbours it watches.</p><p>Switch the rule off. Each switch starts the same flock again, so you can compare fairly. Give it a few seconds: the birds squeeze into clumps. Switch it back on and they keep a little room between them. The counter below counts pairs flying very close together.</p>`
 		},
 		{
 			id: 'direction',
@@ -86,7 +89,7 @@ export const spec: ExplainerSpec = {
 			scene: 'sky',
 			duration: 25,
 			controls: [cohesion],
-			body: `<p>Drift toward the middle of your nearby group. The green arrow points that way. Each bird finds the middle of <em>its own neighbours</em>; none finds the middle of the whole flock.</p><p>Switch this rule off. The birds can still match directions and avoid collisions, but the group spreads farther apart. Switch it back on and that gentle pull keeps the neighbours nearer. The readout compares the distance to the nearest bird with one bird’s length, averaged over the flock.</p>`
+			body: `<p>Drift toward the middle of your nearby group. The green arrow points that way. Each bird finds the middle of <em>its own neighbours</em>; none finds the middle of the whole flock.</p><p>Switch this rule off. The birds can still match directions and avoid collisions, but the group spreads farther apart. Switch it back on and that gentle pull keeps the neighbours nearer. The readout shows how far away the last of each bird’s seven neighbours is, compared with one bird’s length and averaged over all birds. The longer those lines stretch, the more spread out the little groups are.</p>`
 		},
 		{
 			id: 'try',
@@ -95,7 +98,7 @@ export const spec: ExplainerSpec = {
 			scene: 'sky',
 			duration: 24,
 			controls: [missing],
-			body: `<p>Try leaving out one rule at a time. Without spacing, the birds bunch up. Without matching, they do not agree which way to fly. Without gathering, they spread out.</p><p>With all three, the little turns add up to a flock. The arrows are turns the ringed bird would make right now. A short arrow means little adjustment is needed; once a bird already matches its neighbours, its blue arrow can almost disappear.</p>`
+			body: `<p>Try leaving out one rule at a time. Without spacing, the birds bunch up. Without matching, they do not agree which way to fly. Without gathering, they spread out.</p><p>With all three, the little turns add up to a flock. The arrows are turns the ringed bird would make right now. A short arrow means little adjustment is needed; once a bird already matches its neighbours, its blue arrow can shrink to a stub, or disappear if no turn is needed.</p>`
 		},
 		{
 			id: 'hawk',
@@ -121,7 +124,7 @@ export const spec: ExplainerSpec = {
 			title: 'A model, not a bird’s instruction book',
 			scene: 'sky',
 			duration: 24,
-			body: `<p>Craig Reynolds made a famous computer flock using these three ideas. They show that simple local reactions can be enough to make flocking. They are not three rules that scientists proved every real bird obeys.</p><p>Researchers studying real starling flocks found evidence that a bird responds to about six or seven nearest neighbours, rather than every bird within a fixed distance. We use seven here. Real birds fly in three dimensions, use sight, respond to many cues, and can do much more than these little computer birds.</p>`
+			body: `<p>Craig Reynolds made a famous computer flock using these three ideas. They show that simple local reactions can be enough to make flocking. They are not three rules that scientists proved every real bird obeys.</p><p>Researchers studying real starling flocks found evidence that a bird responds to about six or seven nearest neighbours, rather than every bird within a fixed distance. We use seven here. These model birds all fly at one steady speed. Real birds speed up and slow down, fly in three dimensions, use sight, respond to many cues, and can do much more than these little computer birds.</p>`
 		},
 		{
 			id: 'next',

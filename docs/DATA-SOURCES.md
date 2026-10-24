@@ -696,7 +696,7 @@ No imported data or images. Bark texture, moth drawings and the initial 24-moth 
 procedural illustrations. The quantitative-trait inheritance model samples surviving parents
 uniformly with small bounded independent variation; the reader's catches are its only selection.
 This is explicitly not the actual Mendelian colour genetics of peppered moths. Empty survivors
-mean extinction; the next click starts a separate colony.
+mean extinction; the next click starts a separate group of moths.
 
 Scientific background: Cook, Grant, Saccheri & Mallet (2012), [Selective bird predation on the
 peppered moth](https://doi.org/10.1098/rsbl.2011.1136), with the primary paper freely available
