@@ -6177,6 +6177,34 @@
 			stroke-width="2"
 			opacity="0.6"
 		/>
+	{:else if slug === 'toilet-flush'}
+		<!-- a bowl, the bend behind it running full over its hump down to the floor -->
+		<path
+			d="M30 40 C30 80 60 96 92 96 L110 96 L110 78 C116 64 120 52 120 40 Z"
+			fill="#a5d8ff"
+			stroke="currentColor"
+			stroke-width="2"
+			opacity="0.8"
+		/>
+		<path
+			d="M108 87 C130 87 126 50 146 50 C160 50 166 60 166 76 L166 116"
+			fill="none"
+			stroke={accent}
+			stroke-width="12"
+			stroke-linecap="round"
+		/>
+		<line x1="14" y1="116" x2="186" y2="116" stroke="currentColor" stroke-width="2" opacity="0.6" />
+		<rect
+			x="120"
+			y="8"
+			width="64"
+			height="28"
+			rx="4"
+			fill="none"
+			stroke="currentColor"
+			stroke-width="2"
+			opacity="0.6"
+		/>
 	{:else}
 		<circle cx="100" cy="60" r="30" fill="none" stroke={accent} stroke-width="2" />
 		<circle cx="100" cy="60" r="5" fill={accent} />

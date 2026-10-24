@@ -38,8 +38,9 @@ test('a flush: the tank empties in about 3 seconds, the bend fills and the bowl 
 	expect(o.tankEmptyAt! - 1).toBeGreaterThan(2.5);
 	expect(o.tankEmptyAt! - 1).toBeLessThan(3.5);
 	expect(o.siphoned).toBe(true);
-	// The siphon starts within two seconds of the lever, before the tank is empty.
-	expect(o.primedAt! - 1).toBeLessThan(2);
+	// The siphon starts about two seconds after the lever, before the tank is empty.
+	expect(o.primedAt! - 1).toBeGreaterThan(1.5);
+	expect(o.primedAt! - 1).toBeLessThan(2.5);
 	expect(o.primedAt!).toBeLessThan(o.tankEmptyAt!);
 	// It drains faster than the tank pours in, about 3 litres a second.
 	expect(o.peakDrain).toBeGreaterThan(o.peakTank);
@@ -67,13 +68,13 @@ test('after a flush the tank refills in about half a minute, the float shuts the
 });
 
 test('a bucket poured in quickly flushes; the same bucket poured slowly only spills over the top', () => {
-	for (const seconds of [1, 2, 3, 4]) {
+	for (const seconds of [1, 2, 3]) {
 		const o = outcome(bucket(seconds), 40);
 		expect(o.siphoned, `${seconds} s`).toBe(true);
 		expect(o.lowest).toBeCloseTo(-SEAL, 3);
 		expect(o.overRim).toBe(false);
 	}
-	for (const seconds of [6, 10, 20]) {
+	for (const seconds of [4, 10, 20]) {
 		const o = outcome(bucket(seconds), 60);
 		expect(o.siphoned, `${seconds} s`).toBe(false);
 		// The bowl never drops below its usual level: it stays full, and all 6 litres trickle over.

@@ -291,8 +291,9 @@ export class Toilet {
 			}
 		} else {
 			st.run += Math.min(1.5, st.spill / 1000 / area) * dt;
-			// The bend carries away up to `primeFlow`; a faster spill backs up and fills it.
-			const carried = shape.primeFlow * st.bend;
+			// The bend carries away up to `primeFlow`, as a stream that takes up more of the bend the
+			// faster it runs (a quarter of it at half that flow); a faster spill backs up and fills it.
+			const carried = shape.primeFlow * Math.sqrt(st.bend);
 			st.bend = Math.max(0, st.bend + ((st.spill - carried) / shape.bendLitres) * dt);
 			if (st.bend >= 1) {
 				st.bend = 1;

@@ -1734,6 +1734,15 @@ const explainers: Explainer[] = [
 		accent: '#e8590c',
 		steps: 8,
 		minutes: 9
+	},
+	{
+		slug: 'toilet-flush',
+		title: 'Toilet flush & siphons',
+		summary:
+			'Cut a toilet open and press the lever: the tank pours into the bowl, the water fills the bend behind it, and the bowl drains itself until air gets in and it gurgles. Pour a bucket in fast or slow to find what starts the siphon, swap in a washdown bowl that never siphons, and watch the float shut its own valve.',
+		accent: '#1971c2',
+		steps: 7,
+		minutes: 8
 	}
 ];
 

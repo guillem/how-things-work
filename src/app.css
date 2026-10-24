@@ -5990,3 +5990,47 @@ kbd {
 	--dz-snail: #7a3b55;
 	--dz-lit: #ff922b;
 }
+
+/* toilet-flush: the china, the air and water inside, the tank's parts, the bucket, gravity and the air's push */
+:root {
+	--tf-ceramic: #eef1f4;
+	--tf-ceramic-edge: #98a2ad;
+	--tf-air: #ffffff;
+	--tf-water: #74c0fc;
+	--tf-water-edge: #1c7ed6;
+	--tf-flow: #e7f5ff;
+	--tf-floor: #e9e4dc;
+	--tf-pipe: #6c757d;
+	--tf-chain: #868e96;
+	--tf-flapper: #e03131;
+	--tf-float: #ffa94d;
+	--tf-float-edge: #d9480f;
+	--tf-hand: #862e9c;
+	--tf-bucket: #ffd43b;
+	--tf-bucket-edge: #e67700;
+	--tf-gravity: #2b8a3e;
+	--tf-air-push: #6741d9;
+	--tf-gurgle: #d9480f;
+	--tf-ink-soft: #868e96;
+}
+:root[data-theme='dark'] {
+	--tf-ceramic: #343a40;
+	--tf-ceramic-edge: #8a949e;
+	--tf-air: #1b1f23;
+	--tf-water: #1c7ed6;
+	--tf-water-edge: #74c0fc;
+	--tf-flow: #a5d8ff;
+	--tf-floor: #2b2925;
+	--tf-pipe: #adb5bd;
+	--tf-chain: #ced4da;
+	--tf-flapper: #ff6b6b;
+	--tf-float: #f08c00;
+	--tf-float-edge: #ffc078;
+	--tf-hand: #da77f2;
+	--tf-bucket: #f59f00;
+	--tf-bucket-edge: #ffd43b;
+	--tf-gravity: #51cf66;
+	--tf-air-push: #9775fa;
+	--tf-gurgle: #ff922b;
+	--tf-ink-soft: #adb5bd;
+}
