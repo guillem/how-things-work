@@ -281,7 +281,7 @@
 		<Label
 			x={sx(horizonKm * 1000)}
 			y={sy(horizonKm * 1000, 0) + 24}
-			text="horizon, {Math.round(horizonKm)} km"
+			text="horizon, {horizonKm.toFixed(1)} km"
 			size={13}
 			weight={600}
 			anchor="middle"

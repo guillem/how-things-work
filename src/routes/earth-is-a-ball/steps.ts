@@ -60,7 +60,7 @@ export const spec: ExplainerSpec = {
 			duration: 18,
 			controls: [distance],
 			body: `
-<p>How do we know the world is a ball? People who lived by the sea worked it out more than two thousand years ago, just by watching ships sail away.</p>
+<p>How do we know the world is a ball? People worked it out more than two thousand years ago. Watching a ship sail away is one way to see it, and sailors still use it.</p>
 <p>The top picture shows you on the beach and a tall sailing ship, seen from the side. The bottom picture is what your eyes see. First, imagine the sea were perfectly flat, like a giant table.</p>
 <p>Drag the ship out to sea. It gets smaller and smaller, but all of it stays in view: the dark hull at the bottom, the white sails, the tip of the mast. At 30 kilometres it is a tiny speck, but a whole one.</p>`
 		},
@@ -87,7 +87,7 @@ export const spec: ExplainerSpec = {
 			body: `
 <p>That is not what sailors see. On the real sea a ship sailing away doesn’t just shrink: it sinks. First the hull goes out of sight, then the bottom of the sails, and last of all the top of the mast.</p>
 <p>That is because the sea is the curved skin of a huge ball. Between you and the ship the water bulges up like a very low hill, and the hill hides the bottom of the ship. The top picture draws the hill about 120 times taller than it really is, so you can see it; the distances are real.</p>
-<p>Drag the ship out. Up to about 5 kilometres you see all of it: that is where your view skims the top of the hill, the <dfn data-def="The line where the sea seems to meet the sky. It is where your view just skims the curve of the sea; anything farther away starts to sink behind it.">horizon</dfn>. At about 14 kilometres the hull is gone, and at about 26 kilometres the whole ship has sunk out of sight.</p>`
+<p>Drag the ship out. Up to about 4.7 kilometres you see all of it: that is where your view skims the top of the hill, the <dfn data-def="The line where the sea seems to meet the sky. It is where your view just skims the curve of the sea; anything farther away starts to sink behind it.">horizon</dfn>. At about 14 kilometres the hull is gone, and at about 26 kilometres the whole ship has sunk out of sight.</p>`
 		},
 		{
 			id: 'binoculars',
@@ -138,7 +138,7 @@ export const spec: ExplainerSpec = {
 			duration: 18,
 			controls: [walk],
 			body: `
-<p>Now the figure drops a ball. The ball falls to the ground at its feet, straight towards the middle of the world, and takes about two thirds of a second to fall two metres.</p>
+<p>Now the figure drops a ball. The ball falls to the ground at its feet, straight towards the middle of the world, and takes about 0.6 seconds to fall two metres.</p>
 <p>Walk the figure anywhere, even to the bottom of the picture, and drop it again: the ball always falls towards the middle. That is what <em>down</em> means. The whole world is pulling everything towards its middle; this pull is called <dfn data-def="The pull that every bit of stuff has on every other bit. A whole planet pulls hard enough to hold you, the air and the sea onto it, all towards its middle.">gravity</dfn>.</p>`
 		},
 		{

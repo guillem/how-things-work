@@ -47,7 +47,7 @@
 	const PERIOD = 2.6;
 	/** The pull's direction on screen (model y is up the page). */
 	const pull = $derived.by(() => {
-		const p = pullAt(target, 10, 30);
+		const p = pullAt(a, 10, 30);
 		return { x: p.x / p.g, y: -p.y / p.g };
 	});
 	const hand = $derived.by(() => {
