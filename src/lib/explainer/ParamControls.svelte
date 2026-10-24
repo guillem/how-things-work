@@ -124,7 +124,7 @@
 					disabled={off}
 					onclick={() => (params[control.id] = Number(params[control.id] ?? 0) + 1)}
 				>
-					{control.action}
+					{typeof control.action === 'function' ? control.action(params) : control.action}
 				</button>
 				{#if control.help}<span class="help">{control.help}</span>{/if}
 			</div>

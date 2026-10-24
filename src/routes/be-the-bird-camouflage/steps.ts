@@ -1,11 +1,18 @@
 import type { Control, ExplainerSpec } from '#lib/explainer/index.ts';
 
+/** What a press does next; the scene reports its phase as `huntPhase`. */
+const huntActions: Record<string, string> = {
+	ready: 'Start the hunt',
+	hunting: 'End the hunt now',
+	over: 'Let the survivors breed',
+	extinct: 'Start a new group of moths'
+};
 const hunt: Control = {
 	type: 'action',
 	id: 'hunt',
 	label: 'Your turn as the bird',
-	action: 'Hunt / next generation',
-	help: 'Press to begin. Tap moths for twelve seconds at normal speed; press again to finish early. After the hunt, press for their offspring. With reduced motion, the hunt is untimed.'
+	action: (p) => huntActions[String(p.huntPhase ?? 'ready')] ?? huntActions.ready,
+	help: 'Start the hunt, then tap moths for twelve seconds at normal speed. After the hunt, the same button lets the survivors breed. With reduced motion, the hunt is untimed.'
 };
 const bark: Control = {
 	type: 'toggle',
@@ -38,7 +45,7 @@ export const spec: ExplainerSpec = {
 			title: 'Catch the ones you can see',
 			scene: 'bark',
 			controls: [hunt],
-			body: `<p>Press <strong>Hunt / next generation</strong>, then tap every moth you spot. You have twelve seconds at normal speed. The timer stops when you pause the animation, and the hunt is untimed if your device asks for reduced motion. You can also focus a moth with Tab and catch it with Enter or Space. Tab visits even well-hidden moths, so for a visual hunt try to catch only the ones you could spot by eye.</p><p>The moths you catch disappear. The ones you miss stay alive. This time, <em>you</em> decide who gets eaten: the computer does not secretly favour any colour. Press the button again if you want to finish early.</p>`,
+			body: `<p>Press <strong>Start the hunt</strong>, then tap every moth you spot. You have twelve seconds at normal speed. The timer stops when you pause the animation, and the hunt is untimed if your device asks for reduced motion. You can also focus a moth with Tab and catch it with Enter or Space. Tab visits even well-hidden moths, so for a visual hunt try to catch only the ones you could spot by eye.</p><p>The moths you catch disappear. The ones you miss stay alive. This time, <em>you</em> decide who gets eaten: the computer does not secretly favour any colour. Press <strong>End the hunt now</strong> if you want to finish early.</p>`,
 			duration: 24
 		},
 		{
@@ -47,7 +54,7 @@ export const spec: ExplainerSpec = {
 			title: 'The ones you miss have babies',
 			scene: 'bark',
 			controls: [hunt],
-			body: `<p>After a hunt, the little bars show the shades of the moths still alive. Did you catch more dark ones than pale ones? If so, more of the parents left behind are pale.</p><p>Press the button for the next generation. Each new moth takes its shade from a randomly chosen survivor, with a little variation. The eaten moths have no babies. The population returns to 24, unless you caught every moth: then these moths have died out, and the button starts a separate new group of moths.</p>`,
+			body: `<p>After a hunt, the little bars show the shades of the moths still alive. Did you catch more dark ones than pale ones? If so, more of the parents left behind are pale.</p><p>Take your time reading the bars: nothing happens until you press <strong>Let the survivors breed</strong>. Each new moth takes its shade from a randomly chosen survivor, with a little variation. The eaten moths have no babies. The population returns to 24, unless you caught every moth: then these moths have died out, and the button starts a separate new group of moths. Then press <strong>Start the hunt</strong> to hunt the new generation.</p>`,
 			duration: 24
 		},
 		{
