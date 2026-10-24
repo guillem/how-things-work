@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { Point } from '#lib/draw/math';
+	import type { Point } from '#lib/draw/math.ts';
 	import { Handle, Label } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import {
