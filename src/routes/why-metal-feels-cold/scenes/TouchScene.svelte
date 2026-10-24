@@ -2,14 +2,7 @@
 	import type { Point } from '#lib/draw/math.ts';
 	import { Handle, Label } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
-	import {
-		HAND,
-		contactTemperature,
-		heatTransferred,
-		materials,
-		temperatureAt,
-		warmthColor
-	} from '../model';
+	import { HAND, contactTemperature, heatTransferred, materials, temperatureAt } from '../model';
 	let { step, params, setParam, t, reduced }: StageProps = $props();
 	const centers = [150, 370, 590, 810];
 	let phase = $derived(step.id);
@@ -35,6 +28,18 @@
 	let elapsed = $derived(reduced ? 0.1 : 0.015 + ((t % 8) / 8) * 0.085);
 	const cells = Array.from({ length: 80 }, (_, i) => i);
 	const flows = Array.from({ length: 9 }, (_, i) => i);
+	/** Blue-to-coral temperature key between two themed endpoints. Thermometers use the fixed
+	 * 5–45 °C range; the enlarged strip uses the two starting temperatures so its gradients
+	 * remain visible in cold and hot rooms. Equal-temperature strips use the midpoint. */
+	function warmthColor(temp: number, low = 5, high = 45): string {
+		const u = high > low ? Math.max(0, Math.min(1, (temp - low) / (high - low))) : 0.5;
+		return `color-mix(in srgb, var(--cold-warm) ${Math.round(u * 100)}%, var(--cold-cool))`;
+	}
+	let heatShare = $derived(
+		materials.map((m) =>
+			Math.round((100 * heatTransferred(m, room, 0.1)) / heatTransferred(materials[0], room, 0.1))
+		)
+	);
 	function pick(x: number) {
 		setParam('finger', Math.max(0, Math.min(3, Math.round((x - 150) / 220))));
 	}
@@ -141,17 +146,6 @@
 	{#each materials as m, i (m.id)}
 		<g>
 			<Label x={centers[i]} y={92} anchor="middle" size={18} text={m.object} />
-			<rect
-				x={centers[i] - 49}
-				y="110"
-				width="98"
-				height="38"
-				rx="19"
-				fill="var(--surface)"
-				stroke="var(--border)"
-			/>
-			<circle cx={centers[i] - 28} cy="129" r="6" fill={warmthColor(room)} />
-			<Label x={centers[i] + 8} y={135} size={19} anchor="middle" text={`${room} °C`} />
 			{@render object(i)}
 			{#if phase === 'equal' || phase === 'room'}
 				<Readout
@@ -171,42 +165,57 @@
 						text={`${contactTemperature(m, room).toFixed(1)} °C at the skin`}
 					/>
 				</Readout>
-			{:else if phase === 'compare'}
-				<g
-					role="img"
-					aria-label={`${m.object}: ${Math.round((100 * heatTransferred(m, room, 0.1)) / heatTransferred(materials[0], room, 0.1))}% of metal’s heat transfer in the same first instant`}
-				>
-					<rect
-						x={centers[i] - 76}
-						y="366"
-						width="152"
-						height="12"
-						rx="6"
-						fill="var(--stage-grid)"
-					/>
-					<rect
-						x={centers[i] - 76}
-						y="366"
-						width={(152 * heatTransferred(m, room, 0.1)) / heatTransferred(materials[0], room, 0.1)}
-						height="12"
-						rx="6"
-						fill="var(--cold-heat)"
-					/>
-				</g>
 			{/if}
 		</g>
 	{/each}
+	<Readout
+		id="thermometers"
+		order={0}
+		label={touch && phase !== 'room' ? 'Thermometers' : undefined}
+		value={`all four read ${room} °C`}
+	>
+		{#each materials as m, i (m.id)}
+			<rect
+				x={centers[i] - 49}
+				y="110"
+				width="98"
+				height="38"
+				rx="19"
+				fill="var(--surface)"
+				stroke="var(--border)"
+			/>
+			<circle cx={centers[i] - 28} cy="129" r="6" fill={warmthColor(room)} />
+			<Label x={centers[i] + 8} y={135} size={19} anchor="middle" text={`${room} °C`} />
+		{/each}
+	</Readout>
 	{#if phase === 'room' || phase === 'equal'}
 		<Readout id="ideal-heading"
 			><Label x={480} y={66} size={13} text="Ideal first touch · finger starts at 33 °C" /></Readout
 		>
 	{/if}
 	{#if phase === 'compare'}
+		<!-- Bars stay drawn on phones; their numbers go to the readout panel. -->
+		{#each materials as m, i (m.id)}
+			<g
+				role="img"
+				aria-label={`${m.object}: ${heatShare[i]}% of metal’s heat transfer in the same first instant`}
+			>
+				<rect x={centers[i] - 76} y="366" width="152" height="12" rx="6" fill="var(--stage-grid)" />
+				<rect
+					x={centers[i] - 76}
+					y="366"
+					width={(152 * heatShare[i]) / 100}
+					height="12"
+					rx="6"
+					fill="var(--cold-heat)"
+				/>
+			</g>
+		{/each}
 		<Readout
 			id="heat-key"
 			order={3}
-			label="Heat bars"
-			value="Full bar = metal"
+			label="Heat taken (metal = 100%)"
+			value={materials.map((m, i) => `${m.id} ${heatShare[i]}%`).join(' · ')}
 			note="Equal patches of skin, same first tenth of a second; shorter bars mean less heat."
 		>
 			<Label
