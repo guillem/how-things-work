@@ -11,14 +11,14 @@ async function open(page: Page, url: string, text: string | RegExp) {
 }
 const range = (page: Page, id: string) => page.locator(`input[type=range][data-control=${id}]`);
 
-test('drone: four rotors at about 240 turns a second hold it up', async ({ page }) => {
-	await open(page, './drone-four-rotors/#drone', '241 turns a second');
+test('drone: four rotors at about 280 turns a second hold it up', async ({ page }) => {
+	await open(page, './drone-four-rotors/#drone', '278 turns a second');
 	await expect(stage(page)).toContainText('hold up the weight');
 	await expect(stage(page)).toContainText('1.5 m');
 	await expect(stage(page)).toContainText('seen from above');
 });
 
-test('throttle: below 241 turns a second it sits on the pad; above, it climbs', async ({
+test('throttle: below 278 turns a second it sits on the pad; above, it climbs', async ({
 	page
 }) => {
 	await open(page, './drone-four-rotors/#throttle', 'rotors stopped');
@@ -26,7 +26,7 @@ test('throttle: below 241 turns a second it sits on the pad; above, it climbs', 
 	await range(page, 'throttle').fill('200');
 	await expect(stage(page)).toContainText('less than the weight');
 	await expect(stage(page)).toContainText('on the ground');
-	await range(page, 'throttle').fill('250');
+	await range(page, 'throttle').fill('290');
 	await expect(stage(page)).toContainText('more than the weight');
 	await expect(stage(page)).toContainText(/climbing at \d\.\d m a second/);
 });
@@ -48,11 +48,11 @@ test('forward: the back pair speeds up, it tips nose down and flies forward; bac
 	await range(page, 'forward').fill('1');
 	await expect(stage(page)).toContainText('10° nose down');
 	await expect(stage(page)).toContainText(/\d+ km\/h forward/);
-	await expect(stage(page)).toContainText('back pair: +5 turns a second');
+	await expect(stage(page)).toContainText('back pair 5 turns a second faster');
 	await range(page, 'forward').fill('-1');
 	await expect(stage(page)).toContainText('10° nose up');
 	await expect(stage(page)).toContainText(/\d+ km\/h backwards/);
-	await expect(stage(page)).toContainText('front pair: +5 turns a second');
+	await expect(stage(page)).toContainText('front pair 5 turns a second faster');
 });
 
 test('sideways: the left pair speeds up, it tips and slides right', async ({ page }) => {
@@ -60,7 +60,7 @@ test('sideways: the left pair speeds up, it tips and slides right', async ({ pag
 	await range(page, 'right').fill('1');
 	await expect(stage(page)).toContainText('10° to the right');
 	await expect(stage(page)).toContainText(/\d+ km\/h to the right/);
-	await expect(stage(page)).toContainText('left pair: +5 turns a second');
+	await expect(stage(page)).toContainText('left pair 5 turns a second faster');
 });
 
 test('turn: the clockwise pair speeds up and it turns left on the spot, holding its height', async ({
@@ -70,17 +70,17 @@ test('turn: the clockwise pair speeds up and it turns left on the spot, holding 
 	await range(page, 'turn').fill('-1');
 	await expect(stage(page)).toContainText('left, 90° a second');
 	await expect(stage(page)).toContainText('the same: it holds its height');
-	await expect(stage(page)).toContainText('clockwise pair: +5 turns a second');
+	await expect(stage(page)).toContainText('clockwise pair 24 turns a second faster');
 	await range(page, 'turn').fill('1');
 	await expect(stage(page)).toContainText('right, 90° a second');
-	await expect(stage(page)).toContainText('anticlockwise pair: +5 turns a second');
+	await expect(stage(page)).toContainText('anticlockwise pair 24 turns a second faster');
 });
 
 test('hands: even speeds keep it level; one turn a second more on the back pair and it crashes', async ({
 	page
 }) => {
 	await open(page, './drone-four-rotors/#hands', 'level, sinking');
-	await range(page, 'br').fill('242');
-	await range(page, 'bl').fill('242');
+	await range(page, 'br').fill('279');
+	await range(page, 'bl').fill('279');
 	await expect(stage(page)).toContainText('crashed! back on its feet in a moment');
 });

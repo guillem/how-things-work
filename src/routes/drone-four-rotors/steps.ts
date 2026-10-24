@@ -7,7 +7,7 @@ const throttle: Control = {
 	id: 'throttle',
 	label: 'Throttle: all four rotors together',
 	min: 0,
-	max: 260,
+	max: 320,
 	step: 1,
 	default: 0,
 	format: turns
@@ -65,9 +65,9 @@ const rotor = (id: string, label: string): Control => ({
 	id,
 	label,
 	min: 0,
-	max: 300,
+	max: 420,
 	step: 1,
-	default: 241,
+	default: 278,
 	format: turns
 });
 
@@ -100,9 +100,9 @@ export const spec: ExplainerSpec = {
 			duration: 14,
 			body: `
 <p>This little drone fits in the palm of your hand: it is about 9 cm across and weighs 27 grams, as much as five sheets of paper. It has no wings, no flaps and no rudder. All it has is four ${rotorDfn}s, one at the end of each arm.</p>
-<p>Each rotor spins very fast, about <strong>240 turns every second</strong>, and pushes air down. The air pushes the rotor up: the green arrows. Together the four pushes hold up the drone’s weight, the grey arrow, and it hovers.</p>
+<p>Each rotor spins very fast, about <strong>280 turns every second</strong>, and pushes air down. The air pushes the rotor up: the green arrows. Together the four pushes hold up the drone’s weight, the grey arrow, and it hovers.</p>
 <p>Look at the colours. Two rotors spin <strong>clockwise</strong> (blue) and two spin <strong>anticlockwise</strong> (orange), each one opposite to its neighbours. On the right, the same drone seen from above, with a bar for each rotor’s speed. Everything this drone does, it does by changing those four bars.</p>`,
-			notes: `<p>The drone on this page has the size, weight and rotor numbers of a real one, the Crazyflie, a tiny open-source drone used in universities. Its rotors are drawn turning far slower than they really do: at 240 turns a second they would just be a blur.</p>`
+			notes: `<p>The drone on this page has the size, weight and rotor numbers of a real one, the Crazyflie, a tiny open-source drone used in universities. Its rotors are drawn turning far slower than they really do: at 280 turns a second they would just be a blur.</p>`
 		},
 		{
 			id: 'throttle',
@@ -114,9 +114,9 @@ export const spec: ExplainerSpec = {
 			controls: [throttle],
 			body: `
 <p>The drone sits on its landing pad with its rotors stopped. <strong>Raise the ${throttleDfn}</strong>: all four rotors speed up together, and each pushes harder the faster it spins.</p>
-<p>At first nothing happens: the four pushes are smaller than the drone’s weight. Just past <strong>241 turns a second</strong> they become bigger, and it lifts off. A little faster, at 250 turns a second, the pushes beat the weight by more, and it climbs faster and faster until the air holds it back at about <strong>3 metres a second</strong>. Lower the throttle under 241 and the weight wins: it sinks.</p>
+<p>At first nothing happens: the four pushes are smaller than the drone’s weight. Just past <strong>278 turns a second</strong> they become bigger, and it lifts off. A little faster, at 290 turns a second, the pushes beat the weight by more, and it climbs faster and faster until the air holds it back at about <strong>3 metres a second</strong>. Lower the throttle under 278 and the weight wins: it sinks.</p>
 <p>Holding it still in the air is hard: one turn a second too slow and it sinks, one too fast and it climbs. Real drones have a ${flightComputer} that does this for you, and from the next step on it holds the drone at one and a half metres.</p>`,
-			notes: `<p>A rotor spinning twice as fast pushes about four times as hard. Flat out, at about 360 turns a second, these four rotors push two and a quarter times the drone’s weight, so it can climb while carrying a little extra, or tilt a long way without sinking.</p>`
+			notes: `<p>A rotor spinning twice as fast pushes about four times as hard. Flat out, at about 420 turns a second, these four rotors push about two and a quarter times the drone’s weight, so it can climb while carrying a little extra, or tilt a long way without sinking.</p>`
 		},
 		{
 			id: 'twist',
@@ -129,7 +129,7 @@ export const spec: ExplainerSpec = {
 			body: `
 <p>A spinning rotor does something else as well. It shoves the air round as it turns, and the air shoves back: each rotor’s motor gets a <strong>twist</strong> the other way from its spin, and passes it on to the drone. The curved arrows show each twist.</p>
 <p>A clockwise rotor twists the drone anticlockwise; an anticlockwise rotor twists it clockwise. With two of each, the twists <strong>cancel</strong>, and the drone hovers without turning.</p>
-<p><strong>Make all four rotors spin clockwise.</strong> Now all four twists point the same way, and nothing cancels them. The drone’s body whirls round <strong>anticlockwise</strong>, the opposite way to its rotors, and within a second it is spinning dozens of times a second. The flight computer can’t stop it.</p>`,
+<p><strong>Make all four rotors spin clockwise.</strong> Now all four twists point the same way, and nothing cancels them. The drone’s body whirls round <strong>anticlockwise</strong>, the opposite way to its rotors, and within a second it is spinning about ten times a second, and still speeding up. The flight computer can’t stop it.</p>`,
 			notes: `<p>So that every rotor still pushes air <em>down</em>, a clockwise rotor has propellers shaped as the mirror image of an anticlockwise one’s: drone propellers come in two kinds, marked so you fit each on the right motor. A helicopter has one big rotor, so it needs a little sideways rotor on its tail to stop the same twist. How fast the drone ends up whirling depends on how hard the air holds back its spinning arms; the page only estimates that.</p>`
 		},
 		// ---------------------------------------------------------------- steer
@@ -143,8 +143,8 @@ export const spec: ExplainerSpec = {
 			controls: [forward],
 			body: `
 <p>A drone has nothing that pushes it forward. So how does it fly forward? <strong>Push the forward stick</strong> and watch the speed bars the moment you push.</p>
-<p>The flight computer speeds up the <strong>back pair</strong> of rotors, by about 5 turns a second out of 240, and slows the front pair. The back lifts more than the front, and the drone <strong>tips</strong> nose down, 10 degrees with the stick all the way. As soon as it is tipped, the speeds even out again.</p>
-<p>Now the four pushes lean forward with the drone. Most of each push still holds the drone up, but part of it now pushes <strong>forward</strong>: the small arrow. It is the tilt that moves the drone. Flat out it builds up to about <strong>30 km/h</strong>. All four rotors spin a little faster while it leans, because only part of their push now holds it up.</p>
+<p>The flight computer speeds up the <strong>back pair</strong> of rotors and slows the front pair, until the back pair spins about 5 turns a second faster than the front, out of 280. The back lifts more than the front, and the drone <strong>tips</strong> nose down, 10 degrees with the stick all the way. A speed difference only starts the tip: as soon as the tilt is right, the four speeds match again.</p>
+<p>Now the four pushes lean forward with the drone. Most of each push still holds the drone up, but part of it now pushes <strong>forward</strong>: the small arrow. It is the tilt that moves the drone. Flat out it builds up to about <strong>25 km/h</strong>. All four rotors spin a little faster while it leans, because only part of their push now holds it up.</p>
 <p>Let go and the front pair speeds up for a moment to tip it back level. Then nothing pushes it any more, and it glides on until the air slows it down.</p>`,
 			notes: `<p>The flight computer on this page tips the drone in about half a second, slowly enough to see. A real one does it several times faster, with bigger speed differences for a shorter time. Pull the stick back and the front pair speeds up instead: the drone tips nose up and flies backwards.</p>`
 		},
@@ -189,10 +189,10 @@ export const spec: ExplainerSpec = {
 				rotor('br', 'Back right rotor (clockwise)')
 			],
 			body: `
-<p>Now the flight computer is switched off, and the four rotor speeds are yours. They start at 241 turns a second, just short of hovering, so the drone sinks very slowly.</p>
+<p>Now the flight computer is switched off, and the four rotor speeds are yours. They start at 278 turns a second, just short of hovering, so the drone sinks very slowly.</p>
 <p>Try it. Speed up the two back rotors by just <strong>one turn a second</strong>: the drone tips forward, and keeps tipping further and further, until it turns over within two seconds and crashes. A speed difference doesn’t set a tilt; it starts a tip that keeps growing until another difference stops it. When it crashes it is put back on its feet.</p>
 <p>That is why nobody flies a drone by its rotor speeds. The flight computer feels the tilt and changes the four speeds hundreds of times a second, so the sticks only have to say “forward”, “left” or “turn”.</p>`,
-			notes: `<p>To make it climb straight up by hand, set all four rotors to the same speed, above 241: with even speeds it stays level. Any difference, front against back or left against right, tips it; the clockwise pair against the other pair turns it.</p>`
+			notes: `<p>To make it climb straight up by hand, set all four rotors to the same speed, above 278: with even speeds it stays level. Any difference, front against back or left against right, tips it; the clockwise pair against the other pair turns it.</p>`
 		},
 		// ---------------------------------------------------------------- next
 		{

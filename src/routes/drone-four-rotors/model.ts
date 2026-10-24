@@ -1,14 +1,15 @@
 /**
  * A small four-rotor drone, simulated as a rigid body.
  *
- * The numbers are those of a real palm-sized drone, the Crazyflie 2.0 (27 g, its motors 4 cm from
- * the middle), as identified by Förster (2015, "System Identification of the Crazyflie 2.0 Nano
- * Quadrocopter", ETH Zurich) and used in the simulator gym-pybullet-drones (Panerati et al. 2021,
- * `cf2x.urdf`, MIT licence). Each rotor pushes up along the drone's own up direction with a force
- * that grows with the square of its speed (`KF`·rpm²) and twists the body the other way from its
- * spin with a torque that also grows with the square of its speed (`KM`·rpm²). The air drags on
- * the moving drone in proportion to its speed and to how fast the rotors spin (the same model's
- * linear rotor drag). The rotors sit in an X: front left and back right spin clockwise seen from
+ * The numbers are those of a real palm-sized drone, the Crazyflie 2.0 (27 g, 92 mm between
+ * diagonally opposite motors: Preiss et al. 2017, "Crazyswarm", ICRA). Each rotor pushes up along
+ * the drone's own up direction with a force that grows with the square of its speed (`KF`·rpm²),
+ * fitted to Bitcraze's 2015 bench table (the whole drone pushes its 27 g at about 16,700 rpm), and
+ * twists the body the other way from its spin with a torque in proportion to its push (Förster
+ * 2015, "System Identification of the Crazyflie 2.0 Nano Quadrocopter", ETH Zurich: 5.96 mN·m per
+ * newton). The moments of inertia and the linear rotor drag (the air drags on the moving drone in
+ * proportion to its speed and to how fast the rotors spin) are Förster's as used in the simulator
+ * gym-pybullet-drones (Panerati et al. 2021, `cf2x.urdf`, MIT licence). The rotors sit in an X: front left and back right spin clockwise seen from
  * above, front right and back left anticlockwise (the layout DJI's drones use).
  *
  * In every step but the last, a flight computer (as on every real drone) turns the reader's stick
@@ -25,19 +26,23 @@
  */
 
 export const G = 9.81;
-/** Crazyflie 2.0 (gym-pybullet-drones `cf2x.urdf`). */
+/** Crazyflie 2.0, kg. */
 export const MASS = 0.027;
 /** Distance from the middle to each motor, m. */
-export const ARM = 0.0397;
-/** Push of one rotor per rpm², N. */
-export const KF = 3.16e-10;
-/** Twist of one rotor on the body per rpm², N·m. */
-export const KM = 7.94e-12;
+export const ARM = 0.046;
+/** Push of one rotor per rpm², N: four rotors at 16,698 rpm lift 27 g (Bitcraze's table: 24.4 g at
+ * 15,924 rpm, 28.6 g at 17,174 rpm). */
+export const KF = 2.375e-10;
+/** Twist of one rotor on the body per rpm², N·m: 0.005964552 m times its push (Förster). */
+export const KM = 0.005964552 * KF;
 /** Moments of inertia, kg·m². */
 export const IXX = 1.4e-5;
 export const IYY = 1.4e-5;
 export const IZZ = 2.17e-5;
-/** All four rotors flat out push 2.25 times the drone's weight. */
+/**
+ * All four rotors flat out push 2.25 times the drone's weight (gym-pybullet-drones; it lands on
+ * about 25,000 rpm, the top speed Bitcraze measured, and its table reaches 57.9 g at 23,882 rpm).
+ */
 export const THRUST_TO_WEIGHT = 2.25;
 /** Linear drag, N per (m/s) per (rad/s) of the four rotors' speeds added up: sideways and up. */
 export const DRAG_XY = 9.1785e-7;

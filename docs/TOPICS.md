@@ -314,7 +314,7 @@ A topic is done when:
 - [x] gas-turbines-combined-cycle
 - [x] heat-pumps-refrigeration
 - [x] clock-escapement
-- [ ] drone-four-rotors
+- [x] drone-four-rotors
 - [x] hydraulics-digger-arm
 - [x] light-bulb-hot-wire
 - [x] toilet-flush

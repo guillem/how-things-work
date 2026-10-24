@@ -24,33 +24,33 @@ const all = (turns: number): Settings => ({
 	rpm: [turns * 60, turns * 60, turns * 60, turns * 60]
 });
 
-test('it hovers with each rotor at about 240 turns a second (14,500 rpm), and flat out they lift 2.25 times its weight', () => {
-	expect(Math.round(HOVER_TURNS)).toBe(241);
-	expect(HOVER_TURNS * 60).toBeGreaterThan(14_400);
-	expect(HOVER_TURNS * 60).toBeLessThan(14_550);
-	expect(Math.round(MAX_TURNS)).toBe(362);
+test('it hovers with each rotor at about 280 turns a second (16,700 rpm, from Bitcraze’s bench table), and flat out, at about 420, they lift 2.25 times its weight', () => {
+	expect(Math.round(HOVER_TURNS)).toBe(278);
+	expect(HOVER_TURNS * 60).toBeGreaterThan(16_600);
+	expect(HOVER_TURNS * 60).toBeLessThan(16_800);
+	expect(Math.round(MAX_TURNS / 10) * 10).toBe(420);
 	const flatOut = fly(all(MAX_TURNS), 0.01, { height: 1 });
 	expect(lift(flatOut.state)).toBeCloseTo(THRUST_TO_WEIGHT, 5);
 });
 
-test('on the pad it stays put until the rotors push harder than its weight: 241 turns a second is not quite enough, 242 lifts it', () => {
-	expect(fly(all(241), 10, { height: 0 }).state.onGround).toBe(true);
-	const up = fly(all(242), 10, { height: 0 }).state;
+test('on the pad it stays put until the rotors push harder than its weight: 278 turns a second is not quite enough, 279 lifts it', () => {
+	expect(fly(all(278), 10, { height: 0 }).state.onGround).toBe(true);
+	const up = fly(all(279), 10, { height: 0 }).state;
 	expect(up.onGround).toBe(false);
 	expect(up.pos[2]).toBeGreaterThan(1);
 	expect(fly(all(0), 5, { height: 0 }).state.pos[2]).toBe(0);
 });
 
-test('at 250 turns a second, a twenty-eighth faster, it climbs at about 3 m/s; level all the way', () => {
-	const d = fly(all(250), 10, { height: 0 });
+test('at 290 turns a second, a twenty-fourth faster, it climbs at about 3 m/s; level all the way', () => {
+	const d = fly(all(290), 10, { height: 0 });
 	expect(d.state.vel[2]).toBeGreaterThan(2.5);
 	expect(d.state.vel[2]).toBeLessThan(3.2);
 	expect(tilt(d.state)).toBeLessThan(1e-6);
 	// A little slower than hovering, it sinks.
-	expect(fly(all(235), 2, { height: 3 }).state.vel[2]).toBeLessThan(-0.5);
+	expect(fly(all(270), 2, { height: 3 }).state.vel[2]).toBeLessThan(-0.5);
 });
 
-test('forward stick: the back pair speeds up for a moment, it tips 10° in under a second and flies forward up to about 30 km/h', () => {
+test('forward stick: the back pair speeds up for a moment, it tips 10° in under a second and flies forward up to about 25 km/h', () => {
 	const d = new Drone({ ...hover, forward: 1 });
 	d.run(0.1);
 	const [fl, fr, br, bl] = d.state.rpm;
@@ -63,10 +63,10 @@ test('forward stick: the back pair speeds up for a moment, it tips 10° in under
 	const t = d.state.rpm.map((r) => r / 60);
 	expect(Math.max(...t) - Math.min(...t)).toBeLessThan(0.1);
 	expect(t[0]).toBeGreaterThan(HOVER_TURNS + 1);
-	// The back pair had to be about 5 turns a second faster than the front: 2 in a hundred.
+	// The back pair had to be about 5 turns a second faster than the front, out of 280.
 	expect(Math.round(d.peaks.pitch)).toBe(5);
 	d.run(20);
-	expect(Math.round(kmh(bodySpeed(d.state).forward) / 5) * 5).toBe(30);
+	expect(Math.round(kmh(bodySpeed(d.state).forward) / 5) * 5).toBe(25);
 	expect(d.state.pos[2]).toBeCloseTo(1.5, 1);
 	expect(Math.abs(bodySpeed(d.state).right)).toBeLessThan(1e-6);
 });
@@ -106,7 +106,8 @@ test('turn stick left: the clockwise pair speeds up and the other pair slows, th
 	expect(fl).toBeGreaterThan(HOVER_TURNS * 60);
 	expect(fr).toBeLessThan(HOVER_TURNS * 60);
 	expect(lift(d.state)).toBeCloseTo(1, 3);
-	expect(d.peaks.yaw).toBeGreaterThan(4);
+	// For a moment the clockwise pair runs about 24 turns a second faster than the other.
+	expect(Math.round(d.peaks.yaw)).toBe(24);
 	d.run(3);
 	expect(turnRate(d.state)).toBeCloseTo(0.25, 2);
 	expect(tilt(d.state)).toBeLessThan(1e-6);
@@ -116,19 +117,20 @@ test('turn stick left: the clockwise pair speeds up and the other pair slows, th
 	expect(turnRate(fly({ ...hover, turn: 1 }, 3).state)).toBeCloseTo(-0.25, 2);
 });
 
-test('with the pairs spinning opposite ways the twists cancel; all four clockwise, the body whirls anticlockwise, dozens of turns a second within a second', () => {
+test('with the pairs spinning opposite ways the twists cancel; all four clockwise, the body whirls anticlockwise, about ten turns a second after one second and still speeding up', () => {
 	const steady = fly(hover, 5);
 	expect(Math.abs(netTwist(steady.state))).toBeLessThan(1e-12);
 	expect(Math.abs(turnRate(steady.state))).toBeLessThan(1e-9);
 	const wrong = fly({ ...hover, sameWay: true }, 1);
 	expect(netTwist(wrong.state, true)).toBeGreaterThan(0);
-	expect(turnRate(wrong.state)).toBeGreaterThan(20);
+	expect(Math.round(turnRate(wrong.state))).toBe(11);
+	expect(turnRate(fly({ ...hover, sameWay: true }, 2.5).state)).toBeGreaterThan(20);
 	// It still holds its height: the twist turns it, it doesn't drop it.
 	expect(wrong.state.pos[2]).toBeCloseTo(1.5, 2);
 });
 
 test('by hand, one turn a second too fast on the back pair tips it over within two seconds; after the crash it is put back on its feet', () => {
-	const r = 241 * 60;
+	const r = 278 * 60;
 	const d = new Drone({ mode: 'manual', rpm: [r, r, r + 60, r + 60] });
 	d.run(1);
 	expect(tilt(d.state)).toBeGreaterThan(30);
@@ -138,7 +140,7 @@ test('by hand, one turn a second too fast on the back pair tips it over within t
 	d.run(at + RESET_AFTER + 0.01);
 	expect(d.state.crashedAt).toBeNull();
 	expect(tilt(d.state)).toBeLessThan(0.1);
-	// Four equal speeds keep it level, though it slowly sinks at 241 (just short of hovering).
+	// Four equal speeds keep it level, though it slowly sinks at 278 (just short of hovering).
 	const even = fly({ mode: 'manual', rpm: [r, r, r, r] }, 10);
 	expect(tilt(even.state)).toBeLessThan(1e-9);
 	expect(even.state.vel[2]).toBeLessThan(0);

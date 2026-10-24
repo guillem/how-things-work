@@ -63,7 +63,7 @@
 			case 'hands':
 				return {
 					mode: 'manual',
-					rpm: [num('fl', 241), num('fr', 241), num('br', 241), num('bl', 241)].map(
+					rpm: [num('fl', 278), num('fr', 278), num('br', 278), num('bl', 278)].map(
 						(v) => v * 60
 					) as Speeds
 				};
@@ -441,7 +441,7 @@
 	const tipText = (k: 'pitch' | 'roll' | 'yaw', pos: string, neg: string) => {
 		const v = sim.peaks[k];
 		if (Math.abs(v) < 0.3) return 'all four the same';
-		return `${v > 0 ? pos : neg}: +${Math.max(1, Math.round(Math.abs(v)))} turns a second`;
+		return `${v > 0 ? pos : neg} ${Math.max(1, Math.round(Math.abs(v)))} turns a second faster`;
 	};
 	const forwardRows = $derived([
 		{
@@ -460,7 +460,7 @@
 		},
 		{
 			id: 'tip',
-			label: 'For a moment, to tip it',
+			label: 'For a moment, the gap between pairs',
 			value: tipText('pitch', 'back pair', 'front pair')
 		}
 	]);
@@ -483,7 +483,7 @@
 		},
 		{
 			id: 'tip',
-			label: 'For a moment, to tip it',
+			label: 'For a moment, the gap between pairs',
 			value: tipText('roll', 'left pair', 'right pair')
 		}
 	]);
@@ -504,7 +504,7 @@
 		},
 		{
 			id: 'tip',
-			label: 'For a moment, to turn it',
+			label: 'For a moment, the gap between pairs',
 			value: tipText('yaw', 'clockwise pair', 'anticlockwise pair')
 		}
 	]);
@@ -568,7 +568,15 @@
 	});
 	const showTwist = $derived(phase === 'twist' || phase === 'turn');
 	const showSplit = $derived(phase === 'forward' || phase === 'sideways');
-	const splitWord = $derived(phase === 'forward' ? 'forward' : 'sideways');
+	const splitWord = $derived(
+		phase === 'forward'
+			? ang.pitch >= 0
+				? 'forward'
+				: 'backwards'
+			: ang.roll >= 0
+				? 'to the right'
+				: 'to the left'
+	);
 </script>
 
 <g>
@@ -808,15 +816,17 @@
 			/>
 		{/if}
 		{#if phase === 'twist' && sameWay}
-			<Label
-				x={body.centre.x}
-				y={VW.y + 40}
-				text="nothing cancels the twist: the body whirls the other way"
-				size={15}
-				weight={600}
-				anchor="middle"
-				color="var(--dr-twist-ink)"
-			/>
+			<Readout id="whirlNote">
+				<Label
+					x={body.centre.x}
+					y={VW.y + 40}
+					text="nothing cancels the twist: the body whirls the other way"
+					size={15}
+					weight={600}
+					anchor="middle"
+					color="var(--dr-twist-ink)"
+				/>
+			</Readout>
 		{/if}
 	</g>
 	<rect
