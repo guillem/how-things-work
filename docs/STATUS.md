@@ -108,6 +108,9 @@ pass. Do not blindly adopt suggested numerical changes: the reviewer's largest-c
 metric fails for the actual seeded flock, and a universal air-pressure-squared jar law or
 speaker loudness compensation would need additional assumptions/calibration. Apply reports,
 record decisions here, then delete the reports per the normal workflow.
+Chemistry corrections (`c4b22912`) are integrated and their two applied reports removed;
+read-only review copies are preserved in `/tmp/htw-claude-reports/`. Physics and biology
+corrections are finishing focused tests and visual QA.
 
 The earlier **2,265 model / 3,903 browser** checks belong to the pre-Claude-fix tree. Run the
 appropriate checks again after integrating behavior changes. Release still awaits local
