@@ -24,12 +24,17 @@ test('equal thermometers but different first-touch skin temperatures; keyboard m
 test('warming the room through hand temperature stops then reverses the heat', async ({ page }) => {
 	await open(page, 'room');
 	const room = page.locator('input[data-control="room"]');
+	await expect(stage(page)).toContainText('28.2 °C at the skin');
+	await expect(stage(page)).toContainText('32.6 °C at the skin');
 	await room.fill('33');
 	await expect(stage(page)).toContainText('same temperature: no heat flows');
 	await expect(stage(page)).toContainText('33.0 °C at the skin');
 	await room.fill('40');
 	await expect(stage(page)).toContainText('heat enters the finger');
 	await expect(stage(page)).toContainText('39.7 °C at the skin');
+	await expect(stage(page)).toContainText('35.6 °C at the skin');
+	await expect(stage(page)).toContainText('35.0 °C at the skin');
+	await expect(stage(page)).toContainText('33.2 °C at the skin');
 });
 
 test('touch readouts remain readable on a phone', async ({ page }) => {
@@ -37,4 +42,8 @@ test('touch readouts remain readable on a phone', async ({ page }) => {
 	await open(page, 'compare');
 	await expect(page.getByText('Skin at the contact', { exact: true })).toBeVisible();
 	await expect(page.getByRole('slider', { name: 'Move the finger' })).toBeVisible();
+	await open(page, 'room');
+	await page.locator('input[data-control="room"]').fill('40');
+	for (const value of ['39.7', '35.6', '35.0', '33.2'])
+		await expect(page.getByText(`${value} °C at the skin`, { exact: true })).toBeVisible();
 });

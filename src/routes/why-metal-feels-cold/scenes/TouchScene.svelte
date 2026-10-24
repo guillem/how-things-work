@@ -153,11 +153,14 @@
 			<circle cx={centers[i] - 28} cy="129" r="6" fill={warmthColor(room)} />
 			<Label x={centers[i] + 8} y={135} size={19} anchor="middle" text={`${room} °C`} />
 			{@render object(i)}
-			{#if phase === 'equal'}
+			{#if phase === 'equal' || phase === 'room'}
 				<Readout
 					id={'contact-' + m.id}
 					label={m.object}
 					value={`${contactTemperature(m, room).toFixed(1)} °C at the skin`}
+					note={phase === 'room' && i === 0
+						? `${direction}. Ideal contact; finger starts at 33 °C.`
+						: undefined}
 				>
 					<Label
 						x={centers[i]}
@@ -169,18 +172,51 @@
 					/>
 				</Readout>
 			{:else if phase === 'compare'}
-				<rect x={centers[i] - 76} y="366" width="152" height="12" rx="6" fill="var(--stage-grid)" />
-				<rect
-					x={centers[i] - 76}
-					y="366"
-					width={(152 * heatTransferred(m, room, 0.1)) / heatTransferred(materials[0], room, 0.1)}
-					height="12"
-					rx="6"
-					fill="var(--cold-heat)"
-				/>
+				<g
+					role="img"
+					aria-label={`${m.object}: ${Math.round((100 * heatTransferred(m, room, 0.1)) / heatTransferred(materials[0], room, 0.1))}% of metal’s heat transfer in the same first instant`}
+				>
+					<rect
+						x={centers[i] - 76}
+						y="366"
+						width="152"
+						height="12"
+						rx="6"
+						fill="var(--stage-grid)"
+					/>
+					<rect
+						x={centers[i] - 76}
+						y="366"
+						width={(152 * heatTransferred(m, room, 0.1)) / heatTransferred(materials[0], room, 0.1)}
+						height="12"
+						rx="6"
+						fill="var(--cold-heat)"
+					/>
+				</g>
 			{/if}
 		</g>
 	{/each}
+	{#if phase === 'room' || phase === 'equal'}
+		<Readout id="ideal-heading"
+			><Label x={480} y={66} size={13} text="Ideal first touch · finger starts at 33 °C" /></Readout
+		>
+	{/if}
+	{#if phase === 'compare'}
+		<Readout
+			id="heat-key"
+			order={3}
+			label="Heat bars"
+			value="Full bar = metal"
+			note="Equal patches of skin, same first tenth of a second; shorter bars mean less heat."
+		>
+			<Label
+				x={480}
+				y={405}
+				size={15}
+				text="Heat taken from equal skin patches in the first tenth of a second · full bar = metal"
+			/>
+		</Readout>
+	{/if}
 	{#if touch}
 		<g transform="translate({centers[chosen]},160)">
 			<!-- side of a finger: the pad touches the material at y=260 -->
@@ -209,16 +245,16 @@
 		<Readout
 			id="inset"
 			order={1}
-			label="Touching"
+			label={phase === 'room' ? undefined : 'Touching'}
 			value={material.object}
-			note="First touch, greatly enlarged; skin and object depth scales differ."
+			note="Ideal contact, greatly enlarged; skin and object depth scales differ."
 		>
 			<Label
 				x={80}
 				anchor="start"
 				y={427}
 				size={16}
-				text={`First touch · ${material.name.toLowerCase()} · greatly enlarged`}
+				text={`Ideal first touch · ${material.name.toLowerCase()} · greatly enlarged`}
 			/>
 		</Readout>
 		<!-- Profile is the analytic heat-equation solution, not a decorative gradient.
@@ -232,7 +268,9 @@
 				width="10.1"
 				height="54"
 				fill={warmthColor(
-					temperatureAt(material, room, depth, elapsed, skinSide ? 'skin' : 'object')
+					temperatureAt(material, room, depth, elapsed, skinSide ? 'skin' : 'object'),
+					Math.min(room, HAND),
+					Math.max(room, HAND)
 				)}
 			/>
 		{/each}
@@ -257,23 +295,33 @@
 				/>
 			{/each}
 		{/if}
-		<g transform="translate(265,560)">
-			<path d="M-23 0 A23 23 0 0 1 46 0" fill="none" stroke="var(--stage-grid)" stroke-width="6" />
-			<line
-				x1="11.5"
-				y1="0"
-				x2={11.5 + 28 * Math.cos(Math.PI + Math.max(0, Math.min(1, (contact - 5) / 40)) * Math.PI)}
-				y2={28 * Math.sin(Math.PI + Math.max(0, Math.min(1, (contact - 5) / 40)) * Math.PI)}
-				stroke="var(--cold-heat)"
-				stroke-width="3"
-				stroke-linecap="round"
-			/>
-			<circle cx="11.5" cy="0" r="4" fill="var(--stage-ink)" />
-		</g>
+		<Readout id="dial-key">
+			<g transform="translate(250,552)">
+				<path
+					d="M-25 0 A25 25 0 0 1 25 0"
+					fill="none"
+					stroke="var(--stage-grid)"
+					stroke-width="6"
+				/>
+				<line
+					x1="0"
+					y1="0"
+					x2={24 * Math.cos(Math.PI + Math.max(0, Math.min(1, (contact - 5) / 40)) * Math.PI)}
+					y2={24 * Math.sin(Math.PI + Math.max(0, Math.min(1, (contact - 5) / 40)) * Math.PI)}
+					stroke="var(--cold-heat)"
+					stroke-width="3"
+					stroke-linecap="round"
+				/>
+				<circle r="4" fill="var(--stage-ink)" />
+			</g>
+			<Label x={216} y={569} size={12} text="5°" />
+			<Label x={286} y={569} size={12} text="45°" />
+			<Label x={250} y={582} size={11} text="ideal skin temperature" />
+		</Readout>
 		<Readout
 			id="contact"
 			order={2}
-			label="Skin at the contact"
+			label={phase === 'room' ? undefined : 'Skin at the contact'}
 			value={`${contact.toFixed(1)} °C`}
 			note={direction}
 		>

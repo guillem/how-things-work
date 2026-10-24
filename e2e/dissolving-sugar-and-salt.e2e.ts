@@ -27,6 +27,8 @@ test('warming sixteen spoonfuls dissolves all the sugar but barely any more salt
 	await expect(stage(page)).toContainText('320 g dissolved');
 	await expect(stage(page)).toContainText('0 g in grains on the bottom');
 	await expect(stage(page)).toContainText('38 g dissolved');
+	await expect(stage(page)).toContainText('Limit now: 363 g · about 18 spoonfuls');
+	await expect(stage(page)).toContainText('Limit now: 38 g · about 2 spoonfuls');
 });
 
 test('cooling makes sugar crystals and evaporation recovers all added solid', async ({ page }) => {
@@ -47,4 +49,18 @@ test('phone readouts explain both glasses and remaining water', async ({ page })
 	await page.locator('input[data-control="warm"]').fill('80');
 	await expect(page.getByText('320 g dissolved · 0 g in grains', { exact: true })).toBeVisible();
 	await expect(page.getByText('38 g dissolved · 282 g in grains', { exact: true })).toBeVisible();
+	await expect(
+		page.getByText('Limit now: 363 g (about 18 spoonfuls).', { exact: true })
+	).toBeVisible();
+});
+
+test('below saturation the caption does not claim a balance with leftover grains', async ({
+	page
+}) => {
+	await open(page, 'full');
+	await page.locator('input[data-control="spoons"]').fill('1');
+	await expect(stage(page)).toContainText('Below the limit, every grain dissolves');
+	await expect(stage(page).getByText('0 g in grains on the bottom', { exact: true })).toHaveCount(
+		2
+	);
 });

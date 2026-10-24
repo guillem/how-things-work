@@ -44,7 +44,9 @@
 							? 'Cooling lets some dissolved sugar gather back into grains'
 							: phase === 'dry' || phase === 'next'
 								? 'The water leaves. The sugar and salt stay.'
-								: 'At the limit, leaving and joining balance'
+								: !states.some((s) => s.saturated)
+									? 'Below the limit, every grain dissolves'
+									: 'At the limit, leaving and joining balance'
 	);
 </script>
 
@@ -81,7 +83,11 @@
 			x={center}
 			y={172}
 			size={16}
-			text={spoons === 0 ? 'plain water' : `${state.added} g added · each spoonful weighs 20 g`}
+			text={phase === 'warm' || phase === 'cool'
+				? `Limit now: ${Math.round(state.capacity)} g · about ${Math.round(state.capacity / 20)} spoonfuls`
+				: spoons === 0
+					? 'plain water'
+					: `${state.added} g added · each spoonful weighs 20 g`}
 		/>
 		<path
 			d="M{x} 204 L{x} 493 Q{x} 515 {x + 22} 515 L{x + 298} 515 Q{x + 320} 515 {x + 320} 493 L{x +
@@ -121,8 +127,9 @@
 		{/if}
 		{#each samples.slice(0, Math.round(spoons * 4)) as sample (sample.i)}
 			{@const i = sample.i}
-			{@const fraction = Math.max(0, Math.min(1, (state.dissolved - i * 5) / 5)) * progress}
-			{@const solidIndex = Math.max(0, i - Math.floor(state.dissolved / 5))}
+			<!-- Symbols are illustrative samples, not exact masses. Keep each whole; the readouts use the unrounded model. -->
+			{@const fraction = (i < Math.round(state.dissolved / 5) ? 1 : 0) * progress}
+			{@const solidIndex = Math.max(0, i - Math.round(state.dissolved / 5))}
 			{@const baseX = x + 80 + (solidIndex % 10) * 17}
 			{@const baseY = 502 - Math.floor(solidIndex / 10) * 16}
 			{@const targetX = x + 20 + sample.a.x * 280 + (reduced ? 0 : Math.sin(t + i * 2) * 5)}
@@ -212,6 +219,9 @@
 			order={which}
 			label={solute === 'sugar' ? 'Sugar' : 'Salt'}
 			value={`${Math.round(state.dissolved)} g dissolved · ${Math.round(state.solid)} g in grains`}
+			note={phase === 'warm' || phase === 'cool'
+				? `Limit now: ${Math.round(state.capacity)} g (about ${Math.round(state.capacity / 20)} spoonfuls).`
+				: undefined}
 		>
 			<Label
 				x={center}
