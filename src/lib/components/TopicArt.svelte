@@ -6308,6 +6308,35 @@
 			stroke-width="2"
 		/>
 		<line x1="134" y1="86" x2="180" y2="86" stroke="currentColor" stroke-width="2.5" />
+	{:else if slug === 'shapes-that-tile'}
+		<g fill={accent} fill-opacity="0.22" stroke={accent} stroke-width="2">
+			<path d="M28 35 L53 20 L78 35 L78 65 L53 80 L28 65 Z" />
+			<path d="M78 35 L103 20 L128 35 L128 65 L103 80 L78 65 Z" />
+			<path d="M53 80 L78 65 L103 80 L103 110 L78 125 L53 110 Z" transform="translate(0,-15)" />
+			<rect x="142" y="35" width="32" height="32" rx="1" />
+		</g>
+		<circle cx="78" cy="65" r="5" fill="#f59f00" />
+	{:else if slug === 'vibrations-and-sound'}
+		<path
+			d="M20 75 H72 V98 M23 61 H70 C100 61 115 33 133 45"
+			fill="none"
+			stroke={accent}
+			stroke-width="5"
+			stroke-linecap="round"
+		/>
+		<g fill={accent}>
+			{#each [0, 1, 2, 3, 4, 5, 6, 7, 8, 9] as k (k)}<circle
+					cx={20 + k * 17 + 3 * Math.sin(k)}
+					cy="24"
+					r="3"
+				/>{/each}
+		</g>
+		<path
+			d="M149 53 Q178 36 181 59 Q184 77 169 81 Q157 99 152 83 M158 61 Q174 48 171 66 L162 74"
+			fill="none"
+			stroke="currentColor"
+			stroke-width="3"
+		/>
 	{:else}
 		<circle cx="100" cy="60" r="30" fill="none" stroke={accent} stroke-width="2" />
 		<circle cx="100" cy="60" r="5" fill={accent} />

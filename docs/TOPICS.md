@@ -1,6 +1,6 @@
 # Topic catalog
 
-Source of truth for the content of an interactive web learning tool that shows how things work. It defines 194 topics in 11 categories, each built around one interactive graphic. Readers range from high-school students to university majors.
+Source of truth for the content of an interactive web learning tool that shows how things work. It defines 196 topics in 11 categories, each built around one interactive graphic. Readers range from high-school students to university majors.
 
 This file covers content only. It does not choose the stack, the visual design or the project layout; take those from the repository's own instructions.
 
@@ -89,8 +89,8 @@ A topic is done when:
 
 | Category | Id | Topics |
 |---|---|---|
-| Mathematics | `math` | 21 |
-| Physics | `physics` | 17 |
+| Mathematics | `math` | 22 |
+| Physics | `physics` | 18 |
 | Chemistry & Materials | `chemistry` | 15 |
 | Biology | `biology` | 18 |
 | Body & Medicine | `medicine` | 18 |
@@ -125,6 +125,7 @@ A topic is done when:
 - [x] cellular-automata
 - [x] why-triangles-are-stiff
 - [x] monty-hall
+- [x] shapes-that-tile
 
 **Physics**
 - [x] newtons-laws
@@ -144,6 +145,7 @@ A topic is done when:
 - [x] floating-sinking-and-boats
 - [x] magnets-and-poles
 - [x] blue-sky-red-sunset
+- [x] vibrations-and-sound
 
 **Chemistry & Materials**
 - [x] atoms-periodic-table
@@ -509,6 +511,7 @@ A topic is done when:
 - **Interaction:** Snap sticks together at their ends with pins to make a square, then push on a corner: it leans over into a diamond. Make a triangle and push: nothing moves. Add one diagonal stick to the square and push again; then build a tall tower and a garden gate and find the fewest sticks that stop them wobbling.
 - **Takeaway:** A triangle is the one shape whose sides fix its corners, so a floppy frame goes stiff the moment a diagonal cuts it into triangles.
 - **Prerequisites:** none
+- **Related:** shapes-that-tile
 - **Pitfall:** Stiff is not strong: the page is about shapes holding their angles, not about how much load a stick can carry; do not colour sticks by force or claim triangles 'spread the load'.
 
 #### monty-hall
@@ -520,6 +523,16 @@ A topic is done when:
 - **Prerequisites:** none
 - **Related:** bayes-theorem
 - **Pitfall:** The host must know where the prize is and always open a goat door; if the host opens a door at random and happens to show a goat, the two remaining doors really are equal, and the page should show that case too.
+
+#### shapes-that-tile
+- **Title:** Shapes that tile a floor
+- **Level:** 0
+- **Kind:** build
+- **Interaction:** Pick a shape from the tray (triangle, square, pentagon, hexagon, octagon) and tap a corner: the page fits copies of the shape around that corner one at a time until it closes the turn, leaves a gap or overlaps. A shape that closes the turn exactly floods the floor with copies; one that does not leaves holes. Then take a square tile and bend one edge: the opposite edge bends to match and the floor still fills, Escher-style.
+- **Takeaway:** A regular shape (all sides and corners equal) tiles a floor on its own only when copies of its corner fit together into exactly one full turn, which equilateral triangles, squares and regular hexagons do and regular pentagons and octagons do not.
+- **Prerequisites:** none
+- **Related:** why-triangles-are-stiff
+- **Pitfall:** Regular pentagons do not tile, but some irregular pentagons do (fifteen families of convex pentagons are known, and a 2017 proof says there are no more), and every triangle and every four-sided shape tiles. So the page must say 'this regular pentagon', never 'pentagons'.
 
 ### Physics
 
@@ -548,7 +561,7 @@ A topic is done when:
 - **Interaction:** Place two sources in a ripple tank and adjust wavelength and spacing to move the bands of reinforcement and cancellation. Pluck a string to find its standing-wave harmonics and hear them; move a source to see and hear the Doppler shift.
 - **Takeaway:** Waves pass through each other and add, so they can reinforce or cancel, and a confined wave can only vibrate at certain frequencies.
 - **Prerequisites:** oscillations-resonance, unit-circle
-- **Related:** exoplanets
+- **Related:** exoplanets, vibrations-and-sound
 
 #### electric-circuits
 - **Title:** Electric circuits
@@ -685,6 +698,16 @@ A topic is done when:
 - **Related:** light-optics
 - **Needs:** None that needs a licence: sunlight above the air as a Planck spectrum at the Sun's effective temperature (5772 K, the IAU nominal value), and the CIE 1931 colour-matching functions from the analytic fit of Wyman, Sloan & Shirley (JCGT 2013), a formula. Optional, once its licence is confirmed: the ASTM G173-03 AM0 'Etr' column from NLR/NREL as a cited cross-check.
 - **Pitfall:** The sky is not blue because it reflects the sea, nor because of ozone; and the sky is not violet, although violet scatters even more, because sunlight carries less violet and the eye is less sensitive to it.
+
+#### vibrations-and-sound
+- **Title:** Vibrations & sound
+- **Level:** 0
+- **Kind:** manipulate
+- **Interaction:** Twang a ruler held over the edge of a table: the strip wobbles, and a row of air particles passes the push along to an ear, each one jiggling in place while the squeeze travels down the row; the speakers play the note. Slide the ruler in to shorten it and the wobble quickens and the note rises; twang it harder and the wobble widens and the note gets louder. Move the ear away and the sound fades, then pump the air out of a jar around a ringing bell and nothing arrives at all.
+- **Takeaway:** A sound is a wobble passed along through the air: a faster wobble is a higher note, a bigger wobble a louder one, and with nothing in between to pass it on, nothing reaches the ear.
+- **Prerequisites:** none
+- **Related:** waves-interference, hearing-and-the-ear
+- **Pitfall:** Sound does not travel as air flying from the source to the ear; each bit of air jiggles in place and passes the push on. Louder is not higher: loudness and pitch are two different things. Sound needs some material to carry it, not air in particular: it travels through water, wood and metal too, and only empty space stops it.
 
 ### Chemistry & Materials
 
@@ -1150,7 +1173,7 @@ A topic is done when:
 - **Interaction:** Slide a tone from low to high and watch it shake the big eardrum, which passes the shake through three tiny bones onto a much smaller window into the fluid of the snail-shaped cochlea, concentrating the push; a ripple then runs along the cochlea's ribbon until it peaks at one spot. Each pitch peaks somewhere else, high notes near the entrance and low notes at the far end. Play two notes at once and see two bumps; turn the loudness up and the bumps grow.
 - **Takeaway:** The ear sorts sounds by pitch before the brain hears them: each note makes a different place along the spiral wiggle.
 - **Prerequisites:** none
-- **Related:** cochlea-hearing, vision-color, why-spinning-makes-you-dizzy
+- **Related:** cochlea-hearing, vision-color, why-spinning-makes-you-dizzy, vibrations-and-sound
 - **Pitfall:** The cochlea is not a microphone with one signal: it is thousands of sensors each listening at its own spot. Loud is not the same as high: loudness mainly grows the bump, pitch moves it. And the little bones are not the main amplifier: most of the boost comes from a big eardrum pushing on a tiny window.
 
 #### muscles-pull-in-pairs
