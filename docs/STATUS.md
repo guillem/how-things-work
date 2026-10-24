@@ -4,11 +4,13 @@ The self-handover. If work is interrupted, this file alone must be enough to con
 top to bottom, then run the commands under "Resume". **Update it at every commit**, not just at
 the end of a development.
 
-Last updated: 2026-10-24, 94 of the proposal's topics built (194, every promoted catalogue topic ticked); **v1.2.5 live** (194 topics, 2026-10-24). Codex is building the final six level-0 topics in three isolated worktrees, then preparing v1.3.0 for local validation. The live release remains v1.2.5 until validation and release.
+Last updated: 2026-10-24. **All 200 topics are built, reviewed and ticked**, including all
+100 proposed additions. The merged tree is undergoing final release checks for **v1.3.0**.
+**v1.2.5 remains live** (194 topics). Next: the user's local validation, then release v1.3.0.
 
 ## How we work
 
-- [`TOPICS.md`](TOPICS.md) is the catalogue (124 topics, 11 categories; content only): the first
+- [`TOPICS.md`](TOPICS.md) is the catalogue (200 topics, 11 categories; content only): the first
   100, plus the proposal's entries as `proposals/topics-200/scripts/promote.mjs` promotes them
   when their build starts. Do not change its topics or categories otherwise; the only edits we
   make are promoting an entry and ticking it once it meets the catalogue's definition of done.
@@ -77,23 +79,38 @@ Last updated: 2026-10-24, 94 of the proposal's topics built (194, every promoted
 
 ## Current development
 
-**Final six, chemistry worktree (2026-10-24):** why-metal-feels-cold and dissolving-sugar-and-salt built, with model/browser tests and screenshot matrices; primary-source review by the lead (external review unavailable). Awaiting integration with the other four final topics and whole-site release checks.
+**200-topic milestone, Codex handover (2026-10-24).** The final six level-0 explainers are
+integrated on `main`: shapes-that-tile, vibrations-and-sound, why-metal-feels-cold,
+dissolving-sugar-and-salt, be-the-bird-camouflage and flocking-birds. All 200 catalogue entries,
+checklist ticks, routes and registry entries agree. The six add 49 steps, with real models,
+keyboard-accessible interactions, phone readouts, theme support and complete reduced-motion frames.
 
-**Final six, Codex physics worktree (2026-10-24):** shapes-that-tile and vibrations-and-sound implemented with model/browser tests and both-theme screenshot review. Both independently checked by the lead against primary sources and ticked after local QA (sound experiments explicitly name their reset settings); no release or push from this worktree.
+Three isolated builders followed the existing scene style. The lead independently reviewed
+models and narrative against primary references (Euclidean tilings, cantilever/acoustic theory,
+published thermal properties, ACS solubility measurements, Cook's moth experiment, Reynolds and
+Ballerini). Corrections include triangle coverage, heat-source attribution and colour coding,
+ion motion, dense histogram layout, sound-scene geometry and explicit experiment reset wording.
+Audio is opt-in and tested against the calculated note. Flocking has model and browser
+regressions for the hawk splitting the seeded flock and the flock reuniting afterwards.
 
-**Final six, Codex handover (2026-10-24, in progress).** The user asked Codex to finish the
-200-topic milestone in the existing style and try Claude for reviews. Three builders:
-`/tmp/htw-final-physics` (`codex/final-physics`: shapes-that-tile, vibrations-and-sound),
-`/tmp/htw-final-chemistry` (`codex/final-chemistry`: why-metal-feels-cold,
-dissolving-sugar-and-salt), and `/tmp/htw-final-biology` (`codex/final-biology`:
-be-the-bird-camouflage, flocking-birds). Each owns its worktree; the lead integrates and runs
-the final full browser suite. Claude Code is installed but signed out (normal account access
-also checked); Grok's account responds and is the existing fallback. `scripts/local-review.mjs`
-now accepts `claude` with file-read and web tools only, restricted mode and no MCP servers.
-A stub CLI smoke test verified its arguments and report output; formatting and lint pass.
-No release until the completed build has its recorded local validation.
+**Reviewer availability:** Claude Code is installed but signed out, including when checked with
+normal account access. Automatic approval review rejected sending source to Grok without the
+user's explicit authorization; no source was sent. Primary-source review was completed locally
+instead. `node scripts/local-review.mjs <slug> claude` is now supported with restricted read/web
+tools and no MCP servers, for future signed-in reviews; a stub-CLI smoke test checked its arguments
+and report output. No claim of Claude/Grok review is made for these six topics.
 
-**Final biology topics (Codex, 2026-10-24):** be-the-bird-camouflage and flocking-birds complete and ticked in an isolated worktree: real selection/inheritance and seven-neighbour steering models, eight/nine steps, phone readouts, both-theme screenshot matrices inspected, topic/scene browser tests green. Primary-source review by the lead against Cook et al. (2012), Reynolds and Ballerini et al. (2008); external review unavailable (Claude CLI signed out, Grok not authorized). Lead handles integration and the final full suite.
+**Validation:** each builder's `make check` and topic/browser/scene tests passed. More than 500
+screenshots were inspected across every step, both themes, early/late motion, reduced motion,
+phones and control extremes. Per-step QA handovers are `/tmp/physics-shots/REVIEW.md`,
+`/tmp/chemistry-handoff.md` and `/tmp/htw-biology-qa/QA.md`. The lead's source-review notes are
+`/tmp/htw-final-six-review.md`. Final merged `make check` and the entire browser suite with two
+workers are in progress; record their results here before handover.
+
+**Release:** local validation is still required by the recorded user workflow above. No push,
+release tag or deployment yet. After approval: `make release V=v1.3.0`. The live tag remains
+v1.2.5. The three temporary worktrees can be removed once integration checks pass; all topic
+commits have been merged into main.
 
 **Level-0 round, second part (2026-10-23/24).** The user raised the weekly cap to 85% (41% at the start) and gave the last $27 of cloud credit. Landed on `main`, ticked, not released: muscles-pull-in-pairs, why-you-get-sleepy, sea-breeze, why-spinning-makes-you-dizzy, comet-tails and clock-escapement (three local builders at a time, sessions in app worktrees, each fact-checked by grok and landed by itself), and hydraulics-digger-arm and earth-is-a-ball (cloud sessions; fact-checked by grok on the laptop by the lead). Cost: the first three local topics took 6% of the weekly usage together (about 2% each); the second three plus the lead's two fact-checks took 11%; three builders at once fill about half the 5-hour window, and the second batch hit it once (resumed after the reset). Then toilet-flush, light-bulb-hot-wire, drone-four-rotors, wifi-and-walls and teach-a-machine landed the same way, built by background agents in worktrees (the app can't start sessions from Remote Control, and proposal cards don't show on mobile); about 4% of the weekly usage each, and two of them hit the 5-hour limit mid-rebase and were resumed after the reset. Stopped at 81%. Next, after the 2026-10-28 reset: the 6 still in `TOPICS-PROPOSAL.md` only (shapes-that-tile, vibrations-and-sound, why-metal-feels-cold, dissolving-sugar-and-salt, be-the-bird-camouflage, flocking-birds; promote each with `promote.mjs`), then `make e2e-full` and v1.3.0. Released as **v1.2.5** (2026-10-24): `make e2e-full` (3,818) green locally with 4 and with 2 workers, then CI, the deploy and the live smoke test green. The builders' worktrees are under `.claude/worktrees/` (the app removes them when their sessions are archived).
 
