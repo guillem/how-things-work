@@ -237,6 +237,9 @@ interaction kind (new shared components), less once components exist. All 100 to
 
 | gap round | 20 backlog gaps across 13 built topics, in 7 worktrees merged to main | 2026-10-12 22:40 | 2026-10-13 01:10 | ~2 h 30 min | Kimi (interrupted) started 5 worktrees + the main checkout; ZCode finished them, built waves-interference/radioactivity and oscillations-resonance from scratch, completed fourier; full suite green after merge (766 tests) |
 
+| shapes-that-tile | model + geometry tests, eight-step narrative, corner/floor scene and matching-edge drag, browser tests, screenshot matrix | 2026-10-24 | 2026-10-24 | not measured | Lead fact-check against sources; geometry fix and browser assertion wording corrected; no external assets |
+| vibrations-and-sound | cantilever and acoustic models, model tests, eight-step narrative, ruler/air/bell scene, opt-in Web Audio, browser tests, screenshot matrix | 2026-10-24 | 2026-10-24 | overlapping | Lead source fact-check; first-mode synthesized notes, ideal airborne jar model; jar arc and vacuum silence fixes |
+
 ## Site work (not counted in topic estimates)
 
 | Work                                                | Start            | End              | Active      | Notes                                                                                                                                   |

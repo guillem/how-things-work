@@ -1788,6 +1788,24 @@ const explainers: Explainer[] = [
 		accent: '#5f7d3a',
 		steps: 8,
 		minutes: 9
+	},
+	{
+		slug: 'shapes-that-tile',
+		title: 'Shapes that tile a floor',
+		summary:
+			'Fit copies around a corner: triangles, squares and hexagons close a full turn; regular pentagons and octagons leave gaps. Then bend a square’s matching edges and watch the floor keep its perfect fit.',
+		accent: '#228be6',
+		steps: 8,
+		minutes: 8
+	},
+	{
+		slug: 'vibrations-and-sound',
+		title: 'Vibrations & sound',
+		summary:
+			'Twang a ruler and follow a push through the air: shorter makes a higher note, harder makes a louder one. Move the ear away, then pump the air out around a ringing bell. Hear the model’s notes through your speakers.',
+		accent: '#228be6',
+		steps: 8,
+		minutes: 8
 	}
 ];
 
