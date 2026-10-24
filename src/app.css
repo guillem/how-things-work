@@ -6308,3 +6308,20 @@ kbd {
 	--ds-exchange: #ffb04f;
 	--ds-spoon: #8ba0ad;
 }
+
+/* vibrations-and-sound: the moving ruler and the air's pushes, the watched bit of air and the
+   bell, the front of a push travelling through a material */
+:root {
+	--vs-wave: #228be6;
+	--vs-wave-text: #1971c2;
+	--vs-marked: #f59f00;
+	--vs-bell: #fab005;
+	--vs-front: #e8590c;
+}
+:root[data-theme='dark'] {
+	--vs-wave: #4dabf7;
+	--vs-wave-text: #74c0fc;
+	--vs-marked: #ffc078;
+	--vs-bell: #e8a33d;
+	--vs-front: #ff922b;
+}

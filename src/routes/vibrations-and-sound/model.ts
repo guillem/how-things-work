@@ -18,6 +18,12 @@ export function rulerMode(fraction: number): number {
 	const raw = Math.cosh(z) - Math.cos(z) - sigma * (Math.sinh(z) - Math.sin(z));
 	return raw / 2;
 }
+/** Example speeds of sound in metres per second, from OpenStax's table of speeds of sound
+ * (https://openstax.org/books/university-physics-volume-1/pages/17-2-speed-of-sound):
+ * air near room temperature, fresh water at room temperature, a longitudinal wave in bulk steel. */
+export const soundSpeed = { air: 343, water: 1480, steel: 5960 } as const;
+export type Medium = keyof typeof soundSpeed;
+
 export function waveDisplacement(
 	distanceM: number,
 	time: number,
