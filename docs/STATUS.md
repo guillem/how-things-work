@@ -4,9 +4,8 @@ The self-handover. If work is interrupted, this file alone must be enough to con
 top to bottom, then run the commands under "Resume". **Update it at every commit**, not just at
 the end of a development.
 
-Last updated: 2026-10-24. **v1.3.0 is live with all 200 topics.** All 100 proposed additions
-are built, reviewed and ticked. Claude's reviews of the final six are applied; local checks,
-clean-machine CI, deployment and the live smoke test all pass.
+Last updated: 2026-10-24. **v1.3.0 is live with all 200 topics.** Nothing is in development;
+the roadmap is in [`BACKLOG.md`](BACKLOG.md), "After v1.3.0".
 
 ## How we work
 
@@ -37,18 +36,14 @@ clean-machine CI, deployment and the live smoke test all pass.
 
 ## Current state
 
-- **All 200 catalogue topics are built, reviewed and ticked** (2026-10-24; v1.3.0 live). The original 100 were done on 2026-10-15. Previously **v1.2.5** (2026-10-24) shipped 194 topics (13 more level-0 topics). Before it, **v1.2.4**
-  (2026-10-22) is live: 181 topics, the 100 plus 81 of the proposal's (20 at level 0). Before it,
-  v1.2.3 (2026-10-21): 175 topics. Before that,
-  v1.2.2 (2026-10-21): 170 topics, the first nine at level 0 with the index's "Start here" link.
-  Before that, v1.2.1 (2026-10-20): 155 topics and Paths v1
-  (one reading path, language models). Before that, v1.1.2 (2026-10-19): 154 topics. Before it, v1.0.0
-  (2026-10-17): the 100 topics plus the index search and filters (a sticky
-  sidebar on wide screens), faster browser tests and the overnight backlog round described below.
-  Earlier: v0.1.21 (2026-10-15) the housekeeping, stage-text fix and public polish; v0.1.19 the
-  user's external audit (`docs/codex-fact-check-complete.md`). **All proposal topics are now built on `main` (see "Current development").** What is
-  left open, and the decisions left for the user, are in [`BACKLOG.md`](BACKLOG.md) ("Open after
-  the backlog round").
+- **All 200 catalogue topics are built, reviewed and ticked, and live in v1.3.0** (2026-10-24):
+  the original 100 (done 2026-10-15) and the proposal's 100 (39 / 10 / 3 / 48 at levels 0–3).
+  Nothing is in development. Releases, newest first: v1.3.0 (200 topics), v1.2.5 (194), v1.2.4
+  (181), v1.2.3 (175), v1.2.2 (170; level 0 and the "Start here" link), v1.2.1 (155; Paths v1),
+  v1.1.2 (154), v1.0.0 (the 100 plus index search and filters), v0.1.21 (housekeeping and public
+  polish), v0.1.19 (the external audit, `docs/codex-fact-check-complete.md`).
+- **What is left** is in [`BACKLOG.md`](BACKLOG.md): "After v1.3.0" (the roadmap), "Open after
+  the backlog round" (known gaps) and the decisions waiting for the user.
 - Licence: MIT code, CC BY 4.0 content, third-party data under its own terms (`LICENSE`,
   `LICENSE-CONTENT.md`, `docs/DATA-SOURCES.md`).
 - Tooling: `scripts/cloud-setup.sh` and `docs/cloud.md` for building in cloud sessions;
@@ -78,78 +73,42 @@ clean-machine CI, deployment and the live smoke test all pass.
 
 ## Current development
 
-**200-topic milestone and Claude follow-up (2026-10-24, complete; released as v1.3.0).**
-The final six level-0 explainers are integrated on `main`: shapes-that-tile,
-vibrations-and-sound, why-metal-feels-cold, dissolving-sugar-and-salt,
-be-the-bird-camouflage and flocking-birds. All 200 catalogue entries, checklist ticks,
-routes and registry entries agree. The six contain 49 steps, each with at most one control.
+None. v1.3.0 shipped the last six topics; the next work is in [`BACKLOG.md`](BACKLOG.md),
+"After v1.3.0". Parallel work (one topic or package per session) adds one line per item here.
 
-The user signed Claude Code in after the initial build. All six read-only CLI reviews completed
-successfully. Findings were verified against primary sources and actual models, then applied in
-`c4b22912` (chemistry), `8b2c11a5` (biology) and `073661af` (math/physics), all merged into main.
-The applied reports were deleted per the normal workflow; copies remain in
-`/tmp/htw-claude-reports/`. No source was sent to Grok.
+## History
 
-- **Tiling:** a tiling need not repeat. Non-tiling shapes now show their actual corner fan and
-  model-derived uncovered sector, rather than an arbitrary spaced grid. Overlap instructions,
-  regular-polygon tray names and S-bend labels match what is drawn; coverage and shared-edge
-  tests protect the geometry.
-- **Sound:** speaker status resets and audio closes on navigation; parcels stay separated,
-  controls/bar labels agree, and the materials step demonstrates air, water and bulk steel with
-  OpenStax speeds. The jar explicitly computes power given to the air inside; outside audio and
-  the arrow illustrate fading, without a glass-transmission prediction. Real ruler frequencies
-  stay intact, with a low-note/small-speaker caveat at first use.
-- **Contact heat:** the main text identifies ideal perfect contact and the fixed 33 °C finger.
-  The room slider compares all four materials, colour gradients work throughout the range,
-  and heat bars/dial are labeled. The dial reports model skin temperature, not a numerical
-  prediction of perceived temperature.
-- **Dissolving:** the main text explains the fixed drawing window and real liquid-volume rise;
-  capacity remains visible after all sugar dissolves. Whole sample symbols, saturation captions,
-  the ion key and the onward melting link now match the scene and linked page. ACS values and
-  equilibrium/conservation remain unchanged.
-- **Camouflage:** uniform hunt cursors and irregular, separated resting positions remove
-  hidden location clues. Instructions respect which controls exist; restart, keyboard selection
-  and normal-speed timing are explicit. Multi-generation selection/reversal and tap-spacing
-  tests guard the game; bark still never recolours adults or enters inheritance.
-- **Flocking:** the spread readout measures the seventh neighbour instead of nearest spacing.
-  The hawk flies completely off-screen and uses non-wrapping avoidance; the 25-second split/
-  reunion regression still passes. Constant speed is disclosed, rule names match and the watched
-  bird has a distinct colour.
+**The last six topics and v1.3.0 (2026-10-24).** shapes-that-tile, vibrations-and-sound,
+why-metal-feels-cold, dissolving-sugar-and-salt, be-the-bird-camouflage and flocking-birds (49
+steps, at most one control each) were built by Codex, reviewed read-only by Claude Code
+(`scripts/local-review.mjs <slug> claude`), and the verified findings applied in `c4b22912`
+(chemistry), `8b2c11a5` (biology) and `073661af` (maths/physics), then `0ac7e7e6`, `1241cf6b`
+and `12c270a6`. What the reviews changed:
 
-**Suggestions checked and declined:** the proposed fan-edge equation had reversed endpoints;
-a universal air-pressure-squared jar law and device loudness correction need assumptions or
-calibration absent here; increasing moth variation would manufacture a faster reversal;
-a numerical “feels like” scale would misstate the heat model; the catalogue has no Leads-to
-field. The proposed 70-unit connected-flock metric misclassified the seeded states (78 birds
-with cohesion versus 91 without), so the seventh-neighbour measure was used instead. Tests
-that merely retyped a formula were declined; real physical/behaviour checks were retained.
+- **Tiling:** a tiling need not repeat; non-tiling shapes show their real corner fan and the
+  model's uncovered sector; coverage and shared-edge tests guard the geometry.
+- **Sound:** speaker status resets and audio closes on navigation; the materials step uses
+  OpenStax speeds for air, water and steel; the jar computes the power given to the air inside
+  (no glass-transmission prediction); a low-note/small-speaker caveat at first use.
+- **Contact heat:** ideal perfect contact and the fixed 33 °C finger are stated; the dial reports
+  the model's skin temperature, not a "feels like" prediction.
+- **Dissolving:** the fixed drawing window and the real liquid-volume rise are explained; ACS
+  solubilities, equilibrium and mass conservation unchanged.
+- **Camouflage:** uniform cursors and irregular resting spots remove location clues; bark never
+  recolours adults or enters inheritance; multi-generation selection/reversal tests.
+- **Flocking:** the spread readout measures the seventh neighbour; the hawk leaves the screen and
+  avoidance doesn't wrap; the 25-second split/reunion regression still passes.
 
-**Final verification:** merged `make check` passed: formatting, full ESLint, zero Svelte/
-TypeScript errors or warnings and **2,272 model tests**. The entire production/sub-path browser
-suite passed with `npx playwright test --workers=2`: **3,908 tests in 12.8 minutes**. No browser
-test failed or was weakened. Changed topic/scene checks and visual QA also pass: 116 reviewed
-chemistry captures, 188 biology captures and 168 fresh-document/asserted physics captures,
-covering both themes, early/late motion, controls, reduced motion and phones. Original build
-QA covered more than 500 further images. Only final result documentation changed afterwards.
+Declined after checking: a fan-edge equation with reversed endpoints, a universal
+air-pressure-squared jar law, more moth variation (it would manufacture a faster reversal), a
+numerical "feels like" scale, and a 70-unit connected-flock metric (it misclassified the seeded
+states). Checks: `make check` (2,272 model tests) and `npx playwright test --workers=2` (3,908
+browser tests) locally; the release run
+([40124396601](https://github.com/guillem/how-things-work/actions/runs/40124396601)) passed
+verify, build, deploy and the live smoke test (200 topics, 451 assets). The tag points at
+`74b86388`.
 
-Logs: `/tmp/htw-200-claude-check.log`, `/tmp/htw-200-claude-e2e.log`. Review artifacts and visual
-handover files: `/tmp/chemistry-review-shots/`, `/tmp/htw-review-biology-qa/REVIEW.md`,
-`/tmp/physics-shots/new-review/REVIEW-RESULT.md`. Screenshots are outside the repository.
-All temporary builder/review worktrees and their merged branches were removed; older Claude
-worktrees were left alone. `scripts/local-review.mjs <slug> claude` remains available with
-restricted read/web tools and no MCP servers.
-
-**v1.3.0 released (2026-10-24).** The user validated the six topics and requested release.
-`make release V=v1.3.0` passed mandatory checks and atomically pushed main and the annotated
-tag at `74b8638898084a51d91060ea256d13996fbff2b7`.
-[Release run 40124396601](https://github.com/guillem/how-things-work/actions/runs/40124396601) passed all four jobs: verify, build,
-deploy and smoke. CI confirmed **2,272 model tests** and **3,908 browser tests**; the live
-smoke test confirmed build `1792870828309`, the home page, **200 topics and 451 assets**.
-[The public site](https://guillem.github.io/how-things-work/) is live. The release and CI-watch
-logs are `/tmp/htw-release-1.3.0.log` and `/tmp/htw-release-1.3.0-ci.log`.
-No application changes were needed during release; the post-release main commit only records
-the verified result and updates the dashboard. The v1.3.0 tag is immutable. No release work
-remains.
+The earlier paragraphs below are history: every "next" they name is done.
 
 **Level-0 round, second part (2026-10-23/24).** The user raised the weekly cap to 85% (41% at the start) and gave the last $27 of cloud credit. Landed on `main`, ticked, not released: muscles-pull-in-pairs, why-you-get-sleepy, sea-breeze, why-spinning-makes-you-dizzy, comet-tails and clock-escapement (three local builders at a time, sessions in app worktrees, each fact-checked by grok and landed by itself), and hydraulics-digger-arm and earth-is-a-ball (cloud sessions; fact-checked by grok on the laptop by the lead). Cost: the first three local topics took 6% of the weekly usage together (about 2% each); the second three plus the lead's two fact-checks took 11%; three builders at once fill about half the 5-hour window, and the second batch hit it once (resumed after the reset). Then toilet-flush, light-bulb-hot-wire, drone-four-rotors, wifi-and-walls and teach-a-machine landed the same way, built by background agents in worktrees (the app can't start sessions from Remote Control, and proposal cards don't show on mobile); about 4% of the weekly usage each, and two of them hit the 5-hour limit mid-rebase and were resumed after the reset. Stopped at 81%. Next, after the 2026-10-28 reset: the 6 still in `TOPICS-PROPOSAL.md` only (shapes-that-tile, vibrations-and-sound, why-metal-feels-cold, dissolving-sugar-and-salt, be-the-bird-camouflage, flocking-birds; promote each with `promote.mjs`), then `make e2e-full` and v1.3.0. Released as **v1.2.5** (2026-10-24): `make e2e-full` (3,818) green locally with 4 and with 2 workers, then CI, the deploy and the live smoke test green. The builders' worktrees are under `.claude/worktrees/` (the app removes them when their sessions are archived).
 
@@ -244,7 +203,6 @@ v1.1.1 failed in CI and deployed nothing; v1.1.2 is live. What changed on the wa
   "drawing the starting shape", site "follows a live change of the OS preference".
 
 Follow-ups the builders named: a regression test for turing-patterns' flat-dish restart.
-`docs/full-picture.html` is current to radar-sonar.
 
 **Released as v1.0.0 (2026-10-17): the backlog round (overnight) and the index work below.** Before
 releasing 1.0 the user asked to clear the backlog. One agent per package in a local worktree,
@@ -310,7 +268,7 @@ completion review and merged into `main`:
 - Public polish: footer licence line, Open Graph and Twitter tags, `sitemap.xml` (prerendered
   endpoint, pointed to from `robots.txt`), an `og-image.png`, the sun-earth-moon card vignette.
 
-**History, newest first:**
+**Earlier history, newest first:**
 
 - **Final push (2026-10-14/15):** the remaining 54 topics, built by a rolling pool of ~8 builder
   agents, one per topic in its own local worktree, fact-checked through `make review` and, once
@@ -374,7 +332,8 @@ work is always Claude's, to match the existing style). Both items are done.
 
 ## Open questions for the user
 
-None. Answered 2026-10-08: learning-from-data — dragging only is fine (ticked);
+The open decisions are listed in [`BACKLOG.md`](BACKLOG.md) ("For the user to decide" and
+"After v1.3.0"). Answered 2026-10-08: learning-from-data — dragging only is fine (ticked);
 atmosphere-weather — the fronts-from-lows and transport/spin controls are accepted (ticked);
 atoms-periodic-table — use PubChem's periodic-table data (see BACKLOG). The user also confirmed
 that other work may run in parallel on this machine, so ports can clash: use other ports.

@@ -101,19 +101,57 @@ local worktree, merged into `main`) cleared almost everything that was open; wha
 November); the last ten fact-checks were done in-house by an agent that reviews with web search
 and then applies the fixes.
 
-## The 200-topic milestone — released as v1.3.0 (2026-10-24)
+## After v1.3.0 (2026-10-24): the roadmap
 
-All 100 additions from [`TOPICS-PROPOSAL.md`](TOPICS-PROPOSAL.md) are built, promoted into
-[`TOPICS.md`](TOPICS.md), reviewed and ticked. Together with the original catalogue, that makes
-200 explainers, all live in v1.3.0. Level 0, its parser support and the index's “Start here” link are complete;
-the new topics follow the agreed 39 / 10 / 3 / 48 split at levels 0–3. The last six are
-shapes-that-tile, vibrations-and-sound, why-metal-feels-cold, dissolving-sugar-and-salt,
-be-the-bird-camouflage and flocking-birds. See [`STATUS.md`](STATUS.md) for final checks and
-v1.3.0 release readiness. No topic from this proposal remains to build.
+All 200 catalogue topics are live (the original 100 and all 100 additions from
+[`TOPICS-PROPOSAL.md`](TOPICS-PROPOSAL.md)). Nothing is left to build in the catalogue. What is
+left, in the suggested order:
 
-The research record and runners-up remain in
-[`proposals/topics-200/README.md`](proposals/topics-200/README.md). Runners-up, including the
-LLM ladder's second wave and the water cycle, need a separate go-ahead before building.
+1. **Polish the last six topics (Codex-built).** A Claude code review of `f81f896d..v1.3.0`
+   (2026-10-24) found no wrong physics and no number in the text that disagrees with the
+   models, but the user's rule is that visual work is Claude's, and these scenes need it:
+   - dissolving-sugar-and-salt: `GlassesScene` replays the dissolving from `t = 0` on every
+     step, so `cool` starts with its sugar dissolved yet shows grains rising for 2 s, and later
+     slider changes jump with no transition (animate the change, as salt-and-ice's tweens do).
+     The `dry` step says "the blue dots leave" but all 28 stay, only smaller. Salt's limit reads
+     "about 2 spoonfuls" where the text says "less than two".
+   - vibrations-and-sound: `SoundScene` makes its own `AudioContext` per press, with no
+     `navigator.webdriver` guard (real audio plays in tests) and a new context created after an
+     `await` (may stay silent on iOS Safari); use the shared audio helper the other sound topics
+     use (e.g. `cochlea-hearing/scenes/audio.ts`). Split the 457-line scene (ruler, jar,
+     materials, parcel row; the ear outline is drawn twice). Twang while paused resets the ruler.
+     The materials step barely shows a travelling push (the wavelength is far longer than the
+     row).
+   - shapes-that-tile: the scene reads `params[step.id]` as the side count, so on `bend` the
+     bend (−25…25) becomes `sides` (latent throw). The handle's valuetext says "units of bend".
+   - be-the-bird-camouflage: stage labels and generation numbers are outside `<Readout>` (about
+     6 px on phones) and moths are ~23 px touch targets; one press both breeds and starts the
+     next timed hunt, which the text doesn't say. Dark history rows may vanish in dark mode.
+   - flocking-birds: under reduced motion the hawk step freezes mid-pass, so the regrouping the
+     text describes never shows, and each toggle replays 540 frames (~140 ms); the ringed bird
+     jumps when entering `follow`.
+   - why-metal-feels-cold: `warmthColor` hard-codes colours outside the themed tokens; the
+     thermometer text and the compare bars aren't phone readouts.
+   - Both sound and tiling hard-code hex colours (no `app.css` tokens with dark variants).
+   - Tests: shapes-that-tile's "still no gaps" passes for any bend; flocking asserts exact
+     tuning numbers (288 pairs, 2.5 / 4 lengths) and a stroke-width selector, and a test named
+     "without changing bird count" never counts; dissolving's model test checks a `mass` field
+     nothing shows. Untested: tiling's triangle/octagon and drag, flocking's `missing` select,
+     the metal finger drag.
+2. **Content audit of the proposal's 100**, as v0.1.19 did for the first 100: one external
+   fact-check pass over topics 156–200 (101–155 were audited on 2026-10-20). Most of them were
+   fact-checked one at a time by grok or Codex, not cross-checked by a second model.
+3. **Paths.** One path ships (language models). Candidates now that level 0 exists: a "Start
+   here" path through level 0, and a climate path (needs carbon-cycle before
+   greenhouse-effect).
+4. **Small leftovers:** a regression test for turing-patterns' flat-dish restart (a builder's
+   follow-up, still missing); the 61 unused exports below; deep-time's axis unit on phones.
+5. **Decisions for the user** (the proposal's open questions not yet answered): the re-levelling
+   footnote (move black-holes, big-bang, medical-imaging, gps or standard-model from level 2 to
+   3?), the Reserve (five candidates left in `TOPICS.md`), and the runners-up in
+   [`proposals/topics-200/README.md`](proposals/topics-200/README.md) (the LLM ladder's second
+   wave, the water cycle). Any new topic needs the user's go-ahead first. Also the six choices
+   under "For the user to decide" above.
 
 ## Site and framework work
 
