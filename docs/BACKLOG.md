@@ -107,7 +107,7 @@ All 200 catalogue topics are live (the original 100 and all 100 additions from
 [`TOPICS-PROPOSAL.md`](TOPICS-PROPOSAL.md)). Nothing is left to build in the catalogue. What is
 left, in the suggested order:
 
-1. ~~**Polish the last six topics (Codex-built).**~~ Done 2026-10-24 (after v1.3.0, unreleased):
+1. ~~**Polish the last six topics (Codex-built).**~~ Done 2026-10-24, released as v1.3.1:
    a Claude code review of `f81f896d..v1.3.0` found no wrong physics and no number in the text
    that disagrees with the models; its scene, audio, colour and test findings were fixed in
    three worktrees (see STATUS). Left, minor: dissolving's exchange arrows sit close to the salt

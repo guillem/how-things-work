@@ -4,7 +4,7 @@ The self-handover. If work is interrupted, this file alone must be enough to con
 top to bottom, then run the commands under "Resume". **Update it at every commit**, not just at
 the end of a development.
 
-Last updated: 2026-10-24. **v1.3.0 is live with all 200 topics.** Nothing is in development;
+Last updated: 2026-10-24. **v1.3.1 is live with all 200 topics.** Nothing is in development;
 the roadmap is in [`BACKLOG.md`](BACKLOG.md), "After v1.3.0".
 
 ## How we work
@@ -37,8 +37,8 @@ the roadmap is in [`BACKLOG.md`](BACKLOG.md), "After v1.3.0".
 ## Current state
 
 - **All 200 catalogue topics are built, reviewed and ticked, and live in v1.3.0** (2026-10-24):
-  the original 100 (done 2026-10-15) and the proposal's 100 (39 / 10 / 3 / 48 at levels 0–3).
-  Nothing is in development. Releases, newest first: v1.3.0 (200 topics), v1.2.5 (194), v1.2.4
+  v1.3.1 adds the review fixes to the last six. The original 100 (done 2026-10-15) and the proposal's 100 (39 / 10 / 3 / 48 at levels 0–3).
+  Nothing is in development. Releases, newest first: v1.3.1 (fixes), v1.3.0 (200 topics), v1.2.5 (194), v1.2.4
   (181), v1.2.3 (175), v1.2.2 (170; level 0 and the "Start here" link), v1.2.1 (155; Paths v1),
   v1.1.2 (154), v1.0.0 (the 100 plus index search and filters), v0.1.21 (housekeeping and public
   polish), v0.1.19 (the external audit, `docs/codex-fact-check-complete.md`).
@@ -73,15 +73,15 @@ the roadmap is in [`BACKLOG.md`](BACKLOG.md), "After v1.3.0".
 
 ## Current development
 
-None in flight. On `main`, not released: review fixes to the six Codex-built topics (below).
+None in flight. v1.3.1 shipped the review fixes to the six Codex-built topics (below).
 The next work is in [`BACKLOG.md`](BACKLOG.md), "After v1.3.0". Parallel work (one topic or
 package per session) adds one line per item here.
 
 ## History
 
-**Review fixes to the six Codex-built topics (2026-10-24, on `main`, unreleased).** A Claude
+**Review fixes to the six Codex-built topics (2026-10-24, released as v1.3.1).** A Claude
 code review of `f81f896d..v1.3.0` found no science errors; the fixes ran in three worktrees,
-each with a screenshot pass, merged into `main`; `make check` and `make e2e-full` (3,919) green:
+each with a screenshot pass, merged into `main`; `make check` and `make e2e-full` (3,919) green; the release run ([40131750006](https://github.com/guillem/how-things-work/actions/runs/40131750006)) passed verify, build, deploy and the live smoke test:
 
 - dissolving-sugar-and-salt: steps open settled and changes tween (no replay from `t = 0`);
   water dots leave on drying; limits to one decimal; the glass's weight shown.
