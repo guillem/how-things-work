@@ -77,6 +77,8 @@ Last updated: 2026-10-24, 94 of the proposal's topics built (194, every promoted
 
 ## Current development
 
+**Final six, chemistry worktree (2026-10-24):** why-metal-feels-cold and dissolving-sugar-and-salt built, with model/browser tests and screenshot matrices; primary-source review by the lead (external review unavailable). Awaiting integration with the other four final topics and whole-site release checks.
+
 **Final six, Codex physics worktree (2026-10-24):** shapes-that-tile and vibrations-and-sound implemented with model/browser tests and both-theme screenshot review. Both independently checked by the lead against primary sources and ticked after local QA (sound experiments explicitly name their reset settings); no release or push from this worktree.
 
 **Final six, Codex handover (2026-10-24, in progress).** The user asked Codex to finish the

@@ -1815,6 +1815,24 @@ const explainers: Explainer[] = [
 		accent: '#1c7ed6',
 		steps: 9,
 		minutes: 9
+	},
+	{
+		slug: 'why-metal-feels-cold',
+		title: 'Why metal feels cold',
+		summary:
+			'Four objects on one table, four identical thermometers, four different feelings. Move a finger between metal, wood, plastic and wool to see warmth leave the skin, then heat the room above hand temperature and make the metal feel hottest.',
+		accent: '#e8590c',
+		steps: 8,
+		minutes: 8
+	},
+	{
+		slug: 'dissolving-sugar-and-salt',
+		title: 'Dissolving: where does the sugar go?',
+		summary:
+			'Tip weighed spoonfuls of sugar and salt into two glasses and follow the particles among the water. Find the limit, warm the glasses to dissolve far more sugar but barely more salt, then cool or dry them to get the grains back.',
+		accent: '#f08c00',
+		steps: 8,
+		minutes: 9
 	}
 ];
 

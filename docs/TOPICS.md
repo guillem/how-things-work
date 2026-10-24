@@ -1,6 +1,6 @@
 # Topic catalog
 
-Source of truth for the content of an interactive web learning tool that shows how things work. It defines 198 topics in 11 categories, each built around one interactive graphic. Readers range from high-school students to university majors.
+Source of truth for the content of an interactive web learning tool that shows how things work. It defines 200 topics in 11 categories, each built around one interactive graphic. Readers range from curious beginners to university majors.
 
 This file covers content only. It does not choose the stack, the visual design or the project layout; take those from the repository's own instructions.
 
@@ -91,7 +91,7 @@ A topic is done when:
 |---|---|---|
 | Mathematics | `math` | 22 |
 | Physics | `physics` | 18 |
-| Chemistry & Materials | `chemistry` | 15 |
+| Chemistry & Materials | `chemistry` | 17 |
 | Biology | `biology` | 20 |
 | Body & Medicine | `medicine` | 18 |
 | Earth & Climate | `earth` | 16 |
@@ -163,6 +163,8 @@ A topic is done when:
 - [x] surface-catalysis
 - [x] transition-state-theory
 - [x] salt-and-ice
+- [x] why-metal-feels-cold
+- [x] dissolving-sugar-and-salt
 
 **Biology**
 - [x] the-cell
@@ -749,7 +751,7 @@ A topic is done when:
 - **Interaction:** Control the temperature and pressure of a box of simulated molecules and watch it freeze, melt, boil and condense, with the current state tracked on a phase diagram. Switch the substance to water to see the open lattice of ice.
 - **Takeaway:** Solid, liquid and gas are the same molecules balancing attraction against thermal motion, and water is unusual because its solid is less dense than its liquid.
 - **Prerequisites:** chemical-bonds
-- **Related:** entropy, random-graphs, ising-model, floating-sinking-and-boats
+- **Related:** entropy, random-graphs, ising-model, floating-sinking-and-boats, dissolving-sugar-and-salt
 
 #### reaction-rates-equilibrium
 - **Title:** Reaction rates, catalysts & equilibrium
@@ -856,8 +858,31 @@ A topic is done when:
 - **Interaction:** A block of ice drawn as a neat stack of water particles, with a thermometer. One control at a time: sprinkle salt, and salt particles get between the water particles at the surface so the stack cannot re-form, and the ice melts although the thermometer reads below freezing. Set the weather colder and the salt stops working; pour on more salt and see the point where extra salt no longer helps. Then put a bag of cream into the salted ice: the melting pulls heat out of the cream, the bath's thermometer drops below what plain ice could reach, and the cream freezes. Behind the picture runs the measured freezing-point curve of salt water and a running count of the heat that melting takes from the bath and the cream.
 - **Takeaway:** Salt gets in the way of water re-freezing, so salted ice melts below freezing, and that melting draws so much heat out of its surroundings that a salt-and-ice bath gets colder than ice, cold enough to freeze cream.
 - **Prerequisites:** none
+- **Related:** why-metal-feels-cold, dissolving-sugar-and-salt
 - **Needs:** Freezing point of salt water against salt content (NaCl brine table and its lowest point, about minus 21 °C), from the US FHWA 'Manual of Practice for an Effective Anti-icing Program' (US government work, public domain).
 - **Pitfall:** Salt does not heat the ice or 'burn' through it, and it does not work at any cold: below about minus twenty, no amount of salt will melt ice.
+
+#### why-metal-feels-cold
+- **Title:** Why metal feels cold
+- **Level:** 0
+- **Kind:** manipulate
+- **Interaction:** A table with a metal spoon, a wooden spoon, a plastic cup and a woollen glove, all at room temperature, with a thermometer that reads the same on each. Drag a finger onto any one: a strip of heat colour flows out of the fingertip into the object, fast into the metal and barely at all into the wool, and a 'feels like' dial follows the temperature where skin meets object. One control: the room temperature. Warm the room past the temperature of your hand and the order flips, so the same metal now feels hottest. The flow is a heat-conduction model in which each material uses its real conductivity, density and heat capacity.
+- **Takeaway:** Everything on the table is the same temperature; the metal feels cold because it draws heat out of your finger fastest, and when the room is warmer than your hand the same metal feels hottest.
+- **Prerequisites:** none
+- **Related:** salt-and-ice
+- **Needs:** Thermal conductivity, density and specific heat of skin, a metal (steel or aluminium), wood, plastic and wool: under twenty published constants from textbook tables or Wikipedia's material-property tables (CC BY-SA). The model combines them, because contact temperature depends on all three.
+- **Pitfall:** Metal is not colder than wood, and cold does not flow into your hand: heat flows out of it, and a thermometer shows the two objects equal. The page also should not say conductivity alone decides it: how much heat the material soaks up per degree matters too.
+
+#### dissolving-sugar-and-salt
+- **Title:** Dissolving: where does the sugar go?
+- **Level:** 0
+- **Kind:** manipulate
+- **Interaction:** Two glasses of water drawn as particles, one for sugar and one for salt, and a spoonful counter under each. One control at a time: tip in another spoonful, then slide the thermometer to warm both glasses. Each grain breaks into particles that wander off among the water particles until the water will take no more, and the rest sits on the bottom. Warming lets the sugar glass take spoonful after spoonful more, while the salt glass hardly takes any extra. At the end, let the water dry away and watch the same particles gather back into grains.
+- **Takeaway:** Dissolved sugar and salt have not vanished: their particles are spread among the water's, each glass of water takes only so much, and warming lets it take far more sugar but hardly any more salt.
+- **Prerequisites:** none
+- **Related:** states-of-matter, salt-and-ice
+- **Needs:** Solubility of sucrose and of sodium chloride in water from 0 to 100 °C (about a dozen values) from the IUPAC-NIST Solubility Data Series, freely readable at NIST, or the ACS Middle School Chemistry tables; published facts, no dataset licence to clear.
+- **Pitfall:** Dissolving is not melting, and the sugar does not disappear or turn into water: every particle is still there, which is why the water tastes sweet and weighs more. A full glass is not 'out of room' between water particles: it stops because dissolving and grains re-forming have come into balance.
 
 ### Biology
 
