@@ -107,37 +107,12 @@ All 200 catalogue topics are live (the original 100 and all 100 additions from
 [`TOPICS-PROPOSAL.md`](TOPICS-PROPOSAL.md)). Nothing is left to build in the catalogue. What is
 left, in the suggested order:
 
-1. **Polish the last six topics (Codex-built).** A Claude code review of `f81f896d..v1.3.0`
-   (2026-10-24) found no wrong physics and no number in the text that disagrees with the
-   models, but the user's rule is that visual work is Claude's, and these scenes need it:
-   - dissolving-sugar-and-salt: `GlassesScene` replays the dissolving from `t = 0` on every
-     step, so `cool` starts with its sugar dissolved yet shows grains rising for 2 s, and later
-     slider changes jump with no transition (animate the change, as salt-and-ice's tweens do).
-     The `dry` step says "the blue dots leave" but all 28 stay, only smaller. Salt's limit reads
-     "about 2 spoonfuls" where the text says "less than two".
-   - vibrations-and-sound: `SoundScene` makes its own `AudioContext` per press, with no
-     `navigator.webdriver` guard (real audio plays in tests) and a new context created after an
-     `await` (may stay silent on iOS Safari); use the shared audio helper the other sound topics
-     use (e.g. `cochlea-hearing/scenes/audio.ts`). Split the 457-line scene (ruler, jar,
-     materials, parcel row; the ear outline is drawn twice). Twang while paused resets the ruler.
-     The materials step barely shows a travelling push (the wavelength is far longer than the
-     row).
-   - shapes-that-tile: the scene reads `params[step.id]` as the side count, so on `bend` the
-     bend (−25…25) becomes `sides` (latent throw). The handle's valuetext says "units of bend".
-   - be-the-bird-camouflage: stage labels and generation numbers are outside `<Readout>` (about
-     6 px on phones) and moths are ~23 px touch targets; one press both breeds and starts the
-     next timed hunt, which the text doesn't say. Dark history rows may vanish in dark mode.
-   - flocking-birds: under reduced motion the hawk step freezes mid-pass, so the regrouping the
-     text describes never shows, and each toggle replays 540 frames (~140 ms); the ringed bird
-     jumps when entering `follow`.
-   - why-metal-feels-cold: `warmthColor` hard-codes colours outside the themed tokens; the
-     thermometer text and the compare bars aren't phone readouts.
-   - Both sound and tiling hard-code hex colours (no `app.css` tokens with dark variants).
-   - Tests: shapes-that-tile's "still no gaps" passes for any bend; flocking asserts exact
-     tuning numbers (288 pairs, 2.5 / 4 lengths) and a stroke-width selector, and a test named
-     "without changing bird count" never counts; dissolving's model test checks a `mass` field
-     nothing shows. Untested: tiling's triangle/octagon and drag, flocking's `missing` select,
-     the metal finger drag.
+1. ~~**Polish the last six topics (Codex-built).**~~ Done 2026-10-24 (after v1.3.0, unreleased):
+   a Claude code review of `f81f896d..v1.3.0` found no wrong physics and no number in the text
+   that disagrees with the models; its scene, audio, colour and test findings were fixed in
+   three worktrees (see STATUS). Left, minor: dissolving's exchange arrows sit close to the salt
+   pile on `full`; metal's skin-temperature dial is hidden on phones; on the sound topic's
+   distance step the energy-bar label sits close to the caption.
 2. **Content audit of the proposal's 100**, as v0.1.19 did for the first 100: one external
    fact-check pass over topics 156–200 (101–155 were audited on 2026-10-20). Most of them were
    fact-checked one at a time by grok or Codex, not cross-checked by a second model.

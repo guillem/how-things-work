@@ -73,10 +73,32 @@ the roadmap is in [`BACKLOG.md`](BACKLOG.md), "After v1.3.0".
 
 ## Current development
 
-None. v1.3.0 shipped the last six topics; the next work is in [`BACKLOG.md`](BACKLOG.md),
-"After v1.3.0". Parallel work (one topic or package per session) adds one line per item here.
+None in flight. On `main`, not released: review fixes to the six Codex-built topics (below).
+The next work is in [`BACKLOG.md`](BACKLOG.md), "After v1.3.0". Parallel work (one topic or
+package per session) adds one line per item here.
 
 ## History
+
+**Review fixes to the six Codex-built topics (2026-10-24, on `main`, unreleased).** A Claude
+code review of `f81f896d..v1.3.0` found no science errors; the fixes ran in three worktrees,
+each with a screenshot pass, merged into `main`; `make check` and `make e2e-full` (3,919) green:
+
+- dissolving-sugar-and-salt: steps open settled and changes tween (no replay from `t = 0`);
+  water dots leave on drying; limits to one decimal; the glass's weight shown.
+- why-metal-feels-cold: warmth colours from themed `--cold-cool`/`--cold-warm` tokens (out of
+  the model); thermometers and heat shares in the phone readouts; pointer-drag and bar tests.
+- vibrations-and-sound: plays through cochlea-hearing's shared audio (one context made in the
+  press, silent under webdriver); the scene split into ruler, jar, materials, parcel row, ear
+  and button; a 16 s ring-down loop; the materials step sends one push 500 times slowed, so
+  air, water and steel visibly differ; `--vs-*` tokens.
+- shapes-that-tile: the side count is read only on tray steps; `--tl-*` tokens and a teal
+  accent; meaningful bend wording; triangle, octagon and drag tests.
+- be-the-bird-camouflage: phone-sized labels; a 22 px tap reach; breeding and hunting are
+  separate presses (the framework's action control may take a label function of the params);
+  outlined history rows.
+- flocking-birds: reduced motion shows the flock regrouped after the hawk (25 s), frozen
+  frames cached per rule set; the ringed bird stays put; tests compare states instead of
+  pinning tuning numbers.
 
 **The last six topics and v1.3.0 (2026-10-24).** shapes-that-tile, vibrations-and-sound,
 why-metal-feels-cold, dissolving-sugar-and-salt, be-the-bird-camouflage and flocking-birds (49
