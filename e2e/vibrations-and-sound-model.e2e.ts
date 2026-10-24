@@ -3,7 +3,8 @@ import {
 	receivedPower,
 	rulerFrequency,
 	rulerMode,
-	waveDisplacement
+	waveDisplacement,
+	parcelDisplacements
 } from '../src/routes/vibrations-and-sound/model';
 test('a ten-centimetre steel ruler has a low audible note; halving the length raises it by two octaves', () => {
 	expect(rulerFrequency(10)).toBeGreaterThan(80);
@@ -31,4 +32,22 @@ test('doubling distance quarters arriving energy, a stronger twang adds energy, 
 	expect(receivedPower(2, 1)).toBeCloseTo(4);
 	expect(receivedPower(1, 1, 0)).toBe(0);
 	expect(receivedPower(1, 1, 0.5)).toBeCloseTo(0.5);
+});
+
+test('magnified parcels remain separated even for the highest notes and strongest twangs', () => {
+	let smallestOrdinaryGap = Infinity,
+		smallestMarkedGap = Infinity;
+	for (const frequency of [36, 82, 326, 440])
+		for (const strength of [0.5, 1, 2])
+			for (const distance of [1, 4, 8])
+				for (let k = 0; k < 80; k++) {
+					const shifts = parcelDisplacements(k / 1000, frequency, strength, distance);
+					for (let i = 1; i < shifts.length; i++) {
+						const gap = 19 + shifts[i] - shifts[i - 1];
+						if (i === 20 || i === 21) smallestMarkedGap = Math.min(smallestMarkedGap, gap);
+						else smallestOrdinaryGap = Math.min(smallestOrdinaryGap, gap);
+					}
+				}
+	expect(smallestOrdinaryGap).toBeGreaterThan(10);
+	expect(smallestMarkedGap).toBeGreaterThan(13);
 });

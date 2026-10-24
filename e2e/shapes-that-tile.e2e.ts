@@ -18,8 +18,10 @@ test('a regular pentagon leaves a gap, then overlaps; choosing hexagons resets t
 	await add.click();
 	await add.click();
 	await expect(page.locator('.stage')).toContainText('3 corners: a gap remains');
+	await expect(page.locator('.stage')).toContainText('The red space is left uncovered');
 	await add.click();
 	await expect(page.locator('.stage')).toContainText('One tile too many: overlap');
+	await expect(page.locator('.stage')).toContainText('Overlap: tap to start again');
 	await page.locator('button[data-control=pentagon][data-value="6"]').click();
 	await expect(page.locator('.stage')).toContainText('1 corner: a gap remains');
 	await add.click();

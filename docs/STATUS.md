@@ -78,6 +78,8 @@ Last updated: 2026-10-24. **All 200 topics are built, reviewed and ticked**, inc
 
 ## Current development
 
+**Final physics topics, Claude review fixes (2026-10-24):** tiling gaps now come from the actual corner fan; sound audio status/loudness labels, labelled inside-air jar power, separated parcels and a real air/water/steel medium selector corrected. Independent source checks retained the prescribed-motion inside-air model and actual ruler frequencies rather than speculative outside-jar power or device compensation. Focused model/browser/scene tests and refreshed screenshot QA recorded by the builder; integrated checks remain with the lead.
+
 **200-topic milestone, Codex handover (2026-10-24).** The final six level-0 explainers are
 integrated on `main`: shapes-that-tile, vibrations-and-sound, why-metal-feels-cold,
 dissolving-sugar-and-salt, be-the-bird-camouflage and flocking-birds. All 200 catalogue entries,

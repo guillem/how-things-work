@@ -536,7 +536,7 @@ A topic is done when:
 - **Takeaway:** A regular shape (all sides and corners equal) tiles a floor on its own only when copies of its corner fit together into exactly one full turn, which equilateral triangles, squares and regular hexagons do and regular pentagons and octagons do not.
 - **Prerequisites:** none
 - **Related:** why-triangles-are-stiff
-- **Pitfall:** Regular pentagons do not tile, but some irregular pentagons do (fifteen families of convex pentagons are known, and a 2017 proof says there are no more), and every triangle and every four-sided shape tiles. So the page must say 'this regular pentagon', never 'pentagons'.
+- **Pitfall:** Regular pentagons do not tile, but some irregular pentagons do (fifteen families of convex pentagons are known, and a 2017 computer-assisted proof says there are no more), and every triangle and every four-sided shape tiles. So the page must say 'this regular pentagon', never 'pentagons'.
 
 ### Physics
 

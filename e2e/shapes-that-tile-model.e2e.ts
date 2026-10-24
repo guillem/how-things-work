@@ -1,5 +1,11 @@
 import { expect, test } from '@playwright/test';
-import { bentTile, cornerFit, floorTiles, polygon } from '../src/routes/shapes-that-tile/model';
+import {
+	bentTile,
+	cornerAngle,
+	cornerFit,
+	floorTiles,
+	polygon
+} from '../src/routes/shapes-that-tile/model';
 test('only triangles, squares and hexagons make a full turn from regular polygon corners', () => {
 	const winners = Array.from({ length: 30 }, (_, k) => k + 3).filter((n) => cornerFit(n).tiles);
 	expect(winners).toEqual([3, 4, 6]);
@@ -8,7 +14,7 @@ test('only triangles, squares and hexagons make a full turn from regular polygon
 	expect(cornerFit(8).gap).toBeCloseTo(90);
 	expect(cornerFit(5).overlap).toBeCloseTo(72);
 });
-test('all edges of a regular polygon stay equal when copied around a corner', () => {
+test('all edges of a rotated regular polygon stay equal', () => {
 	for (const n of [3, 4, 5, 6, 8]) {
 		const p = polygon(n, 40, 0.7);
 		for (let i = 0; i < n; i++)
@@ -44,16 +50,27 @@ test('regular tiling patches cover the area of their triangles and hexagons with
 	}
 });
 
-test('the triangular floor covers an interior rectangle exactly once, including alternate rows', () => {
-	const patch = floorTiles(3, 58);
+test('all three regular floors cover an interior rectangle exactly once', () => {
 	function inside(p: { x: number; y: number }, tile: { x: number; y: number }[]) {
 		const signs = tile.map((a, i) => {
-			const b = tile[(i + 1) % 3];
+			const b = tile[(i + 1) % tile.length];
 			return (b.x - a.x) * (p.y - a.y) - (b.y - a.y) * (p.x - a.x);
 		});
 		return signs.every((v) => v > 1e-8) || signs.every((v) => v < -1e-8);
 	}
-	for (let x = 60.173; x < 340; x += 11.37)
-		for (let y = 10.731; y < 240; y += 9.83)
-			expect(patch.filter((tile) => inside({ x, y }, tile)).length).toBe(1);
+	for (const n of [3, 4, 6]) {
+		const patch = floorTiles(n, 58);
+		for (let x = 100.173; x < 340; x += 11.37)
+			for (let y = 100.731; y < 240; y += 9.83)
+				expect(patch.filter((tile) => inside({ x, y }, tile)).length).toBe(1);
+	}
+});
+test('adjacent fan copies meet along the same edge, without inventing a gap', () => {
+	for (const n of [3, 4, 5, 6, 8])
+		for (let k = 0; k < cornerFit(n).copies - 1; k++) {
+			const before = polygon(n, 40, (k * cornerAngle(n) * Math.PI) / 180),
+				after = polygon(n, 40, ((k + 1) * cornerAngle(n) * Math.PI) / 180);
+			expect(before[n - 1].x).toBeCloseTo(after[1].x, 8);
+			expect(before[n - 1].y).toBeCloseTo(after[1].y, 8);
+		}
 });

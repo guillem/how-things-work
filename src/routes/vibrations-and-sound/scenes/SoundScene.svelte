@@ -2,10 +2,28 @@
 	import { onDestroy } from 'svelte';
 	import { Label, Handle } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
-	import { receivedPower, rulerFrequency, rulerPath, waveDisplacement } from '../model';
+	import {
+		receivedPower,
+		rulerFrequency,
+		rulerPath,
+		waveDisplacement,
+		parcelDisplacements
+	} from '../model';
 	let { step, t, reduced, params, setParam }: StageProps = $props();
 	const blue = '#228be6',
 		orange = '#f59f00';
+	const media = {
+		air: { name: 'Air', speed: 343 },
+		water: { name: 'Water', speed: 1480 },
+		steel: { name: 'Steel', speed: 5960 }
+	};
+	let material = $derived(
+		step.id === 'materials' && params.material === 'steel'
+			? media.steel
+			: step.id === 'materials' && params.material === 'water'
+				? media.water
+				: media.air
+	);
 	let jar = $derived(step.id === 'jar');
 	let length = $derived(step.id === 'pitch' ? Number(params.length ?? 10) : 10);
 	let strength = $derived(step.id === 'louder' ? Number(params.strength ?? 2) / 2 : 1);
@@ -19,6 +37,8 @@
 		if (observedStep !== step.id) {
 			observedStep = step.id;
 			offset = 0;
+			stopAudio();
+			audioMessage = 'Sound plays only when you press the button';
 		}
 	});
 	let age = $derived(((reduced ? 2.5 : Math.max(0, t - offset)) % 7) / 80);
@@ -32,12 +52,30 @@
 			: step.id === 'pitch'
 				? `${length} cm: ${Math.round(frequency)} wobbles each second`
 				: step.id === 'louder'
-					? `${strength === 0.5 ? 'Gentle' : strength === 2 ? 'Strongest' : 'Bigger'} twang: the same note`
+					? `${['', 'Gentle', 'Medium', 'Strong', 'Strongest'][Number(params.strength ?? 2)]} twang: the same note`
 					: step.id === 'distance'
 						? `${distance} ${distance === 1 ? 'metre' : 'metres'} away: ${Math.round(relative * 100)}% of the energy`
-						: 'Air jiggles here; the push travels on'
+						: step.id === 'materials'
+							? `${material.name} carries the push along`
+							: 'Air jiggles here; the push travels on'
+	);
+	let parcels = $derived(
+		parcelDisplacements(
+			age,
+			frequency,
+			strength,
+			step.id === 'distance' ? distance : 4,
+			material.speed
+		)
 	);
 	let audio: AudioContext | null = null;
+	let audioGeneration = 0;
+	function stopAudio() {
+		audioGeneration++;
+		const context = audio;
+		audio = null;
+		if (context && context.state !== 'closed') void context.close();
+	}
 	let audioMessage = $state('Sound plays only when you press the button');
 	function keyValue(
 		k: number | 'start' | 'end',
@@ -50,11 +88,13 @@
 	}
 	async function listen() {
 		offset = t;
+		const generation = ++audioGeneration;
 		if (typeof AudioContext === 'undefined') {
 			audioMessage = 'Audio is unavailable in this browser';
 			return;
 		}
 		if (audio && audio.state !== 'closed') await audio.close();
+		if (generation !== audioGeneration) return;
 		if (relative === 0) {
 			audioMessage = 'No airborne sound reaches the ear';
 			return;
@@ -62,6 +102,10 @@
 		const context = new AudioContext();
 		audio = context;
 		await context.resume();
+		if (generation !== audioGeneration) {
+			if (context.state !== 'closed') void context.close();
+			return;
+		}
 		const oscillator = context.createOscillator(),
 			gain = context.createGain();
 		oscillator.frequency.value = frequency;
@@ -78,11 +122,13 @@
 		audioMessage = air === 0 ? 'No airborne sound reaches the ear' : 'Playing the model’s note';
 		oscillator.onended = () => {
 			if (context.state !== 'closed') void context.close();
+			if (audio === context) {
+				audio = null;
+				audioMessage = 'Note finished — press to play again';
+			}
 		};
 	}
-	onDestroy(() => {
-		if (audio && audio.state !== 'closed') void audio.close();
-	});
+	onDestroy(stopAudio);
 </script>
 
 <g>
@@ -90,11 +136,63 @@
 		x={480}
 		y={46}
 		anchor="middle"
-		text={jar ? 'A ringing bell, even with the air gone' : 'A ruler, a wobble, a travelling push'}
+		text={jar
+			? 'A ringing bell, even with the air gone'
+			: step.id === 'materials'
+				? 'Other materials carry vibrations too'
+				: 'A ruler, a wobble, a travelling push'}
 		size={25}
 		weight={650}
 	/>
-	{#if jar}
+	{#if step.id === 'materials'}
+		<rect
+			x="180"
+			y="165"
+			width="600"
+			height="135"
+			rx="12"
+			fill={material === media.water
+				? 'var(--sky)'
+				: material === media.steel
+					? 'var(--membrane)'
+					: 'var(--surface)'}
+			stroke="var(--stage-line)"
+			stroke-width="3"
+		/>
+		<Label x={480} y={145} anchor="middle" text={material.name} size={24} />
+		{#each Array.from({ length: 21 }, (_, k) => k) as k (k)}
+			<circle
+				cx={205 + k * 27 + waveDisplacement(k / 5, age, frequency, 1, material.speed) * 6}
+				cy="228"
+				r="7"
+				fill={blue}
+			/>
+		{/each}
+		<rect
+			x={145 + 6 * Math.sin(2 * Math.PI * frequency * age)}
+			y="180"
+			width="35"
+			height="105"
+			rx="5"
+			fill="var(--protein)"
+			stroke="var(--stage-ink)"
+			stroke-width="2"
+		/>
+		<path
+			d="M255 270 H720"
+			fill="none"
+			stroke={blue}
+			stroke-width="2"
+			marker-end="url(#arrowhead)"
+		/>
+		<Label
+			x={480}
+			y={335}
+			anchor="middle"
+			text="A vibrating surface passes a push into the material"
+			size={20}
+		/>
+	{:else if jar}
 		<path
 			d="M140 295 V165 a110 110 0 0 1 220 0 V295 Z"
 			fill="var(--sky)"
@@ -147,19 +245,38 @@
 			x={650}
 			y={180}
 			anchor="middle"
-			text={air === 0 ? 'The bell still vibrates' : 'Less air, a fainter sound'}
+			text={air === 0
+				? 'The bell still vibrates'
+				: air === 1
+					? 'The jar is full of air'
+					: 'Less air, a fainter sound'}
 			size={23}
 		/>
 		<Label
 			x={650}
 			y={216}
 			anchor="middle"
-			text={air === 0
-				? 'Nothing carries its sound across the jar'
-				: 'The bell’s motion stays the same'}
+			text={air === 0 ? 'No sound crosses the empty space' : 'The bell’s motion stays the same'}
 			size={18}
 			muted
 		/>
+		<path
+			d="M480 245 H815"
+			stroke={blue}
+			stroke-width="2"
+			opacity={Math.sqrt(air)}
+			marker-end="url(#arrowhead)"
+		/>
+		<g transform="translate(850,160)"
+			><path
+				d="M0 72 C-35 60 -25 0 8 0 C52 0 57 51 25 76 C15 83 23 111 1 111 C-13 111 -21 95 -16 85 M-2 73 C20 58 26 32 6 29 C-8 26 -12 42 -10 49"
+				fill="var(--surface)"
+				stroke="var(--stage-ink)"
+				stroke-width="4"
+				stroke-linecap="round"
+			/></g
+		>
+		<Label x={860} y={320} anchor="middle" text="ear outside" size={18} />
 	{:else}
 		<rect
 			x="65"
@@ -241,31 +358,29 @@
 	{/if}
 	<Readout
 		id="row"
-		label="Air, enlarged and slowed"
+		label={jar ? 'Air inside the jar, enlarged' : `${material.name}, enlarged and slowed`}
 		value={air === 0
 			? 'No pushes cross the empty jar'
-			: 'Each bit of air stays near its resting mark'}
+			: `Each bit of ${material.name.toLowerCase()} stays near its resting mark`}
 		><Label
 			x={480}
-			y={385}
+			y={step.id === 'distance' ? 405 : 385}
 			anchor="middle"
-			text="A closer look along the sound’s path"
+			text={jar ? 'The air inside the jar, enlarged' : 'A closer look along the sound’s path'}
 			size={19}
 			muted
 		/></Readout
 	>
 	{#each Array.from({ length: 41 }, (_, k) => k) as k (k)}
 		{@const x = 95 + k * 19}
-		{@const d = ((step.id === 'distance' ? distance : 4) * k) / 40}
-		{@const shift =
-			air === 0 ? 0 : (waveDisplacement(d, age, frequency, strength) * 24) / Math.max(1, d)}
+		{@const shift = air === 0 ? 0 : parcels[k]}
 		<path d={`M${x} 418 V444`} stroke="var(--stage-line)" stroke-width="1" opacity="0.6" />
 		<circle
 			cx={x + shift}
 			cy="431"
 			r={k === 20 ? 8 : 5}
 			fill={k === 20 ? orange : blue}
-			opacity={jar ? Math.max(0.15, air) : 0.8}
+			opacity={jar ? (air === 0 ? 0 : Math.max(0.15, air)) : 0.8}
 		/>
 	{/each}
 	<path
@@ -278,6 +393,18 @@
 		><Label x={480} y={519} anchor="middle" text={summary} size={23} weight={600} /></Readout
 	>
 	{#if step.id === 'distance' || jar}
+		<Readout
+			id="energy"
+			label={jar ? 'Bell → air inside' : 'Energy at the ear'}
+			value={jar ? 'Compared with a full jar' : 'Compared with one metre away'}
+			><Label
+				x={630}
+				y={jar ? 275 : 380}
+				anchor="middle"
+				text={jar ? 'Bell → air inside' : 'Energy at the ear (vs 1 m)'}
+				size={16}
+			/></Readout
+		>
 		<rect x="540" y={jar ? 290 : 350} width="180" height="12" rx="6" fill="var(--stage-grid)" />
 		<rect
 			x="540"
@@ -288,41 +415,43 @@
 			fill={blue}
 		/>
 	{/if}
-	<g
-		transform={jar ? 'translate(480,0)' : undefined}
-		role="button"
-		tabindex="0"
-		aria-label={jar ? 'Ring and hear' : 'Twang and hear'}
-		onclick={() => void listen()}
-		onkeydown={(e) => {
-			if (e.key === 'Enter' || e.key === ' ') {
-				e.preventDefault();
-				void listen();
-			}
-		}}
-		style="cursor:pointer"
-	>
-		<rect
-			x="55"
-			y="76"
-			width="225"
-			height="48"
-			rx="24"
-			fill="var(--surface)"
-			stroke={blue}
-			stroke-width="2"
-		/>
-		<path d="M78 92 L78 108 L91 100 Z" fill={blue} />
-		<Label
-			x={176}
-			y={107}
-			anchor="middle"
-			text={jar ? 'Ring and hear' : 'Twang and hear'}
-			size={19}
-			color={blue}
-		/>
-	</g>
-	<Readout id="audio" label="Speakers" value={audioMessage}
-		><Label x={480} y={567} anchor="middle" text={audioMessage} size={16} muted /></Readout
-	>
+	{#if step.id !== 'materials'}
+		<g
+			transform={jar ? 'translate(480,0)' : undefined}
+			role="button"
+			tabindex="0"
+			aria-label={jar ? 'Ring and hear' : 'Twang and hear'}
+			onclick={() => void listen()}
+			onkeydown={(e) => {
+				if (e.key === 'Enter' || e.key === ' ') {
+					e.preventDefault();
+					void listen();
+				}
+			}}
+			style="cursor:pointer"
+		>
+			<rect
+				x="55"
+				y="76"
+				width="225"
+				height="48"
+				rx="24"
+				fill="var(--surface)"
+				stroke={blue}
+				stroke-width="2"
+			/>
+			<path d="M78 92 L78 108 L91 100 Z" fill={blue} />
+			<Label
+				x={176}
+				y={107}
+				anchor="middle"
+				text={jar ? 'Ring and hear' : 'Twang and hear'}
+				size={19}
+				color={blue}
+			/>
+		</g>
+		<Readout id="audio" label="Speakers" value={audioMessage}
+			><Label x={480} y={567} anchor="middle" text={audioMessage} size={16} muted /></Readout
+		>
+	{/if}
 </g>
