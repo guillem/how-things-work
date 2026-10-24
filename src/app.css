@@ -6264,6 +6264,8 @@ kbd {
 	--cold-skin-edge: #b7745a;
 	--cold-heat: #e8590c;
 	--cold-flow: #ffec99;
+	--cold-cool: #408bd5;
+	--cold-warm: #ef8063;
 }
 :root[data-theme='dark'] {
 	--cold-metal: #91a9bb;
@@ -6277,6 +6279,8 @@ kbd {
 	--cold-skin-edge: #eebaa1;
 	--cold-heat: #ff922b;
 	--cold-flow: #fff3bf;
+	--cold-cool: #3876b8;
+	--cold-warm: #dc7259;
 }
 
 /* dissolving-sugar-and-salt: magnified particle samples */

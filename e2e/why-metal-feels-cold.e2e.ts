@@ -42,8 +42,45 @@ test('touch readouts remain readable on a phone', async ({ page }) => {
 	await open(page, 'compare');
 	await expect(page.getByText('Skin at the contact', { exact: true })).toBeVisible();
 	await expect(page.getByRole('slider', { name: 'Move the finger' })).toBeVisible();
+	await expect(page.getByText('all four read 20 °C', { exact: true })).toBeVisible();
+	await expect(
+		page.getByText('metal 100% · wood 39% · plastic 29% · wool 3%', { exact: true })
+	).toBeVisible();
 	await open(page, 'room');
 	await page.locator('input[data-control="room"]').fill('40');
 	for (const value of ['39.7', '35.6', '35.0', '33.2'])
 		await expect(page.getByText(`${value} °C at the skin`, { exact: true })).toBeVisible();
+});
+
+test('dragging the finger with the pointer moves it onto another object', async ({ page }) => {
+	await open(page, 'finger');
+	const finger = page.getByRole('slider', { name: 'Move the finger' });
+	const from = await finger.boundingBox();
+	const cup = await stage(page).getByText('plastic cup', { exact: true }).boundingBox();
+	if (!from || !cup) throw new Error('finger or cup not drawn');
+	const y = from.y + from.height / 2;
+	await page.mouse.move(from.x + from.width / 2, y);
+	await page.mouse.down();
+	await page.mouse.move(cup.x + cup.width / 2, y, { steps: 5 });
+	await page.mouse.up();
+	await expect(finger).toHaveAttribute('aria-valuetext', 'plastic cup');
+	await expect(stage(page)).toContainText('Ideal first touch · pvc plastic');
+});
+
+test('the compare bars rank heat taken: metal, then wood, plastic and wool', async ({ page }) => {
+	await open(page, 'compare');
+	const share = async (object: string) => {
+		const label = await stage(page)
+			.getByRole('img', { name: new RegExp(`^${object}: `) })
+			.getAttribute('aria-label');
+		return Number(/(\d+)%/.exec(label ?? '')?.[1]);
+	};
+	const metal = await share('metal spoon');
+	const wood = await share('wooden spoon');
+	const plastic = await share('plastic cup');
+	const wool = await share('woollen glove');
+	expect(metal).toBe(100);
+	expect(metal).toBeGreaterThan(wood);
+	expect(wood).toBeGreaterThan(plastic);
+	expect(plastic).toBeGreaterThan(wool);
 });
