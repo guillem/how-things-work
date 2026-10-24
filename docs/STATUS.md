@@ -36,10 +36,10 @@ the roadmap is in [`BACKLOG.md`](BACKLOG.md), "After v1.3.0".
 
 ## Current state
 
-- **All 200 catalogue topics are built, reviewed and ticked, and live in v1.3.0** (2026-10-24):
-  v1.3.1 adds the review fixes to the last six. The original 100 (done 2026-10-15) and the proposal's 100 (39 / 10 / 3 / 48 at levels 0–3).
-  Nothing is in development. Releases, newest first: v1.3.1 (fixes), v1.3.0 (200 topics), v1.2.5 (194), v1.2.4
-  (181), v1.2.3 (175), v1.2.2 (170; level 0 and the "Start here" link), v1.2.1 (155; Paths v1),
+- **All 200 catalogue topics are built, reviewed, ticked and live** (v1.3.0, 2026-10-24): the
+  original 100 (done 2026-10-15) and the proposal's 100 (39 / 10 / 3 / 48 at levels 0–3).
+  v1.3.1 (the same day) adds the review fixes to the last six. Nothing is in development.
+  Releases, newest first: v1.3.1 (fixes), v1.3.0 (200 topics), v1.2.5 (194), v1.2.4 (181), v1.2.3 (175), v1.2.2 (170; level 0 and the "Start here" link), v1.2.1 (155; Paths v1),
   v1.1.2 (154), v1.0.0 (the 100 plus index search and filters), v0.1.21 (housekeeping and public
   polish), v0.1.19 (the external audit, `docs/codex-fact-check-complete.md`).
 - **What is left** is in [`BACKLOG.md`](BACKLOG.md): "After v1.3.0" (the roadmap), "Open after
