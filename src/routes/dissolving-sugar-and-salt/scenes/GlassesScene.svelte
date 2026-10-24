@@ -1,4 +1,7 @@
 <script lang="ts">
+	import { untrack } from 'svelte';
+	import { cubicInOut } from 'svelte/easing';
+	import { Tween } from 'svelte/motion';
 	import { Label } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { glass, samplePosition, type Solute } from '../model';
@@ -30,7 +33,39 @@
 	let evaporated = $derived(phase === 'dry' ? Number(params.dry ?? 0) : phase === 'next' ? 100 : 0);
 	let states = $derived(substances.map((s) => glass(s, spoons, temperature, evaporated)));
 	let waterTop = $derived(242 + (evaporated / 100) * 266);
-	let progress = $derived(reduced ? 1 : Math.min(1, t / 2));
+	let waterDots = $derived(Math.round(waterSamples.length * (1 - evaporated / 100)));
+	/** Grams as 20 g spoonfuls, to one decimal (363 g → "18.2"). */
+	const spoonfuls = (grams: number) => (Math.round(grams / 2) / 10).toFixed(1);
+	const N = samples.length;
+	/** Where each sample particle sits for a glass: [dissolved 0/1 × N, pile x × N, pile y × N].
+	 * One symbol stands for 5 g; the first ones dissolve, the rest stack on the bottom. */
+	function layout(dissolved: number, x: number): number[] {
+		const n = Math.round(dissolved / 5);
+		const out = new Array<number>(3 * N);
+		for (let i = 0; i < N; i++) {
+			const slot = Math.max(0, i - n);
+			out[i] = i < n ? 1 : 0;
+			out[N + i] = x + 80 + (slot % 10) * 17;
+			out[2 * N + i] = 502 - Math.floor(slot / 10) * 16;
+		}
+		return out;
+	}
+	let targets = $derived(states.map((s, which) => layout(s.dissolved, which === 0 ? 100 : 540)));
+	// A step opens on the state its text describes; only changes made within the step
+	// (a spoonful, a slider) move particles between the water and the grains.
+	const tweens = [0, 1].map(() => new Tween<number[]>([], { duration: 1500, easing: cubicInOut }));
+	let settled = $state('');
+	$effect(() => {
+		const next = targets;
+		const p = phase;
+		const r = reduced;
+		untrack(() => {
+			const instant = r || p !== settled;
+			tweens.forEach((tw, k) => void tw.set(next[k], instant ? { duration: 0 } : undefined));
+			settled = p;
+		});
+	});
+	let shown = $derived(reduced || phase !== settled ? targets : tweens.map((tw) => tw.current));
 	let caption = $derived(
 		phase === 'spoon'
 			? 'Tip a spoonful into each glass'
@@ -84,10 +119,12 @@
 			y={172}
 			size={16}
 			text={phase === 'warm' || phase === 'cool'
-				? `Limit now: ${Math.round(state.capacity)} g · about ${Math.round(state.capacity / 20)} spoonfuls`
+				? `Limit now: ${Math.round(state.capacity)} g · ${spoonfuls(state.capacity)} spoonfuls`
 				: spoons === 0
 					? 'plain water'
-					: `${state.added} g added · each spoonful weighs 20 g`}
+					: phase === 'spoon'
+						? `${state.added} g added · each spoonful weighs 20 g`
+						: `${state.added} g added · everything in it weighs ${Math.round(state.mass)} g`}
 		/>
 		<path
 			d="M{x} 204 L{x} 493 Q{x} 515 {x + 22} 515 L{x + 298} 515 Q{x + 320} 515 {x + 320} 493 L{x +
@@ -113,25 +150,26 @@
 				stroke="var(--ds-water-edge)"
 				stroke-width="2"
 			/>
-			{#each waterSamples as point, i (i)}
-				<circle
-					cx={x + 16 + point.x * 286 + (reduced ? 0 : 3 * Math.sin(t * 1.4 + i))}
-					cy={waterTop +
-						7 +
-						point.y * Math.max(0, 250 * (1 - evaporated / 100) - 10) +
-						(reduced ? 0 : (1 - evaporated / 100) * 3 * Math.cos(t * 1.2 + i))}
-					r={3.5 * Math.sqrt(1 - evaporated / 100)}
-					fill="var(--ds-water-dot)"
-				/>
-			{/each}
+			<g class="water-dots">
+				{#each waterSamples.slice(0, waterDots) as point, i (i)}
+					<circle
+						cx={x + 16 + point.x * 286 + (reduced ? 0 : 3 * Math.sin(t * 1.4 + i))}
+						cy={waterTop +
+							7 +
+							point.y * Math.max(0, 250 * (1 - evaporated / 100) - 10) +
+							(reduced ? 0 : (1 - evaporated / 100) * 3 * Math.cos(t * 1.2 + i))}
+						r="3.5"
+						fill="var(--ds-water-dot)"
+					/>
+				{/each}
+			</g>
 		{/if}
 		{#each samples.slice(0, Math.round(spoons * 4)) as sample (sample.i)}
 			{@const i = sample.i}
 			<!-- Symbols are illustrative samples, not exact masses. Keep each whole; the readouts use the unrounded model. -->
-			{@const fraction = (i < Math.round(state.dissolved / 5) ? 1 : 0) * progress}
-			{@const solidIndex = Math.max(0, i - Math.round(state.dissolved / 5))}
-			{@const baseX = x + 80 + (solidIndex % 10) * 17}
-			{@const baseY = 502 - Math.floor(solidIndex / 10) * 16}
+			{@const fraction = shown[which][i]}
+			{@const baseX = shown[which][N + i]}
+			{@const baseY = shown[which][2 * N + i]}
 			{@const targetX = x + 20 + sample.a.x * 280 + (reduced ? 0 : Math.sin(t + i * 2) * 5)}
 			{@const targetY =
 				waterTop +
@@ -220,8 +258,8 @@
 			label={solute === 'sugar' ? 'Sugar' : 'Salt'}
 			value={`${Math.round(state.dissolved)} g dissolved · ${Math.round(state.solid)} g in grains`}
 			note={phase === 'warm' || phase === 'cool'
-				? `Limit now: ${Math.round(state.capacity)} g (about ${Math.round(state.capacity / 20)} spoonfuls).`
-				: undefined}
+				? `Limit now: ${Math.round(state.capacity)} g (${spoonfuls(state.capacity)} spoonfuls).`
+				: `Everything in the glass weighs ${Math.round(state.mass)} g.`}
 		>
 			<Label
 				x={center}
