@@ -1770,6 +1770,15 @@ const explainers: Explainer[] = [
 		accent: '#7048e8',
 		steps: 9,
 		minutes: 9
+	},
+	{
+		slug: 'wifi-and-walls',
+		title: 'Wi-Fi around the house',
+		summary:
+			'Walk a laptop away from the router through a brick house and watch the map of its signal and the speed it gets. Walls, a fish tank and a fridge each cut a shadow; the link slows down a step at a time rather than cutting out; the faster band reaches less far; next door’s router on the same channel makes the two take turns; and the Wi-Fi is not the internet.',
+		accent: '#1c7ed6',
+		steps: 9,
+		minutes: 9
 	}
 ];
 

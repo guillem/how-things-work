@@ -6284,6 +6284,30 @@
 			stroke-width="1"
 			opacity="0.5"
 		/>
+	{:else if slug === 'wifi-and-walls'}
+		<!-- a router's rings spreading out, a brick wall casting a pale shadow, a laptop beyond it -->
+		<path d="M112 34 L190 14 L190 106 L112 86 Z" fill={accent} opacity="0.12" />
+		<path d="M50 60 m-22 0 a22 22 0 0 1 44 0" fill="none" stroke={accent} stroke-width="2.5" />
+		<path
+			d="M50 60 m-40 0 a40 40 0 0 1 80 0"
+			fill="none"
+			stroke={accent}
+			stroke-width="2"
+			opacity="0.6"
+		/>
+		<rect x="34" y="60" width="32" height="18" rx="4" fill={accent} />
+		<rect x="104" y="30" width="8" height="60" fill="#c0603a" opacity="0.9" />
+		<rect
+			x="140"
+			y="62"
+			width="34"
+			height="20"
+			rx="2"
+			fill="none"
+			stroke="currentColor"
+			stroke-width="2"
+		/>
+		<line x1="134" y1="86" x2="180" y2="86" stroke="currentColor" stroke-width="2.5" />
 	{:else}
 		<circle cx="100" cy="60" r="30" fill="none" stroke={accent} stroke-width="2" />
 		<circle cx="100" cy="60" r="5" fill={accent} />

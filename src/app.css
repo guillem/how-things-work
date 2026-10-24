@@ -6180,3 +6180,49 @@ kbd {
 	--tam-differ: #f783ac;
 	--tam-right: #51cf66;
 }
+
+/* wifi-and-walls: the floor, the signal map, brick and the things in the way, the router, laptop and data */
+:root {
+	--ww-floor: #f4efe6;
+	--ww-signal: #1c7ed6;
+	--ww-signal-edge: #1864ab;
+	--ww-brick: #b85c38;
+	--ww-concrete: #868e96;
+	--ww-glass: #d0ebff;
+	--ww-glass-edge: #74c0fc;
+	--ww-water: #74c0fc;
+	--ww-water-edge: #1971c2;
+	--ww-fish: #f76707;
+	--ww-metal: #dee2e6;
+	--ww-metal-edge: #495057;
+	--ww-router: #343a40;
+	--ww-light: #69db7c;
+	--ww-laptop: #495057;
+	--ww-screen: #a5d8ff;
+	--ww-data: #f08c00;
+	--ww-neighbour: #ae3ec9;
+	--ww-line: #2b8a3e;
+	--ww-nolink: #e03131;
+}
+:root[data-theme='dark'] {
+	--ww-floor: #24221f;
+	--ww-signal: #4dabf7;
+	--ww-signal-edge: #a5d8ff;
+	--ww-brick: #d9774f;
+	--ww-concrete: #adb5bd;
+	--ww-glass: #1c3a52;
+	--ww-glass-edge: #74c0fc;
+	--ww-water: #1971c2;
+	--ww-water-edge: #74c0fc;
+	--ww-fish: #ff922b;
+	--ww-metal: #495057;
+	--ww-metal-edge: #ced4da;
+	--ww-router: #ced4da;
+	--ww-light: #8ce99a;
+	--ww-laptop: #adb5bd;
+	--ww-screen: #1c7ed6;
+	--ww-data: #ffa94d;
+	--ww-neighbour: #da77f2;
+	--ww-line: #69db7c;
+	--ww-nolink: #ff6b6b;
+}

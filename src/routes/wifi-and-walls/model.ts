@@ -414,6 +414,9 @@ export function link(spot: number, s: Setup) {
 /** What a download gets: the slower of the Wi-Fi link and the line out of the house, Mbit/s. */
 export const downloadMbit = (wifiMbit: number, lineMbit: number) => Math.min(wifiMbit, lineMbit);
 
+/** Speeds of the line into the house the page offers, Mbit/s: from old copper to fast fibre. */
+export const LINE_SPEEDS = [10, 30, 100, 300, 1000];
+
 /** The signal map: signal strength, dBm, at the centre of each cell of a `cols` × `rows` grid. */
 export function signalMap(s: Setup, cols: number, rows: number) {
 	const walls = wallsOf(s);
