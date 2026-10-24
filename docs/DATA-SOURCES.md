@@ -703,3 +703,21 @@ peppered moth](https://doi.org/10.1098/rsbl.2011.1136), with the primary paper f
 [at UCL](https://discovery.ucl.ac.uk/1354483/1/609.full.pdf). Used for the qualitative role of
 predation and industrial melanism, not numerical fitting or reproduced data. Original code MIT,
 original text and drawings CC BY 4.0; no external asset licence required.
+
+## Flocks without a leader (`flocking-birds`)
+
+No imported data or images. An original implementation of Reynolds-style separation, alignment
+and cohesion steering with seven nearest neighbours, constant speed, simultaneous updates,
+a wrapping two-dimensional sky, and a prescribed one-pass hawk avoidance force. Parameters are
+illustrative, not fitted to bird measurements; the page explicitly distinguishes the toy from
+real bird behaviour. Initial positions/headings are deterministic procedural samples.
+
+- [Craig Reynolds, Boids](https://www.red3d.com/cwr/boids/) and his
+  [steering-behaviour paper](https://www.red3d.com/cwr/steer/gdc99/): primary descriptions of
+  the three steering ideas. No source code, media or data copied.
+- [Ballerini et al. (2008), PNAS](https://doi.org/10.1073/pnas.0711437105),
+  [author preprint](https://arxiv.org/abs/0709.1916): field evidence for about six or seven
+  nearest neighbours in starling flocks. Used as qualitative background and to choose seven
+  neighbours; no field data reproduced and no claim that this implements measured starling rules.
+
+Original code MIT, original text and drawings CC BY 4.0; no external asset licence required.

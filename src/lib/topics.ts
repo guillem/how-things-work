@@ -1788,6 +1788,15 @@ const explainers: Explainer[] = [
 		accent: '#5f7d3a',
 		steps: 8,
 		minutes: 9
+	},
+	{
+		slug: 'flocking-birds',
+		title: 'Flocks without a leader',
+		summary:
+			'A hundred birds follow three small rules: leave space, match the neighbours’ direction and stay near them. Switch a rule off, follow another bird, and send a hawk through the flock: nobody is in charge.',
+		accent: '#1c7ed6',
+		steps: 9,
+		minutes: 9
 	}
 ];
 

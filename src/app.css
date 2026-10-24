@@ -6230,3 +6230,23 @@ kbd {
 	--ww-bed: #4a4037;
 	--ww-pillow: #6b5f53;
 }
+
+/* Flocking: fixed semantic arrow colours, themed birds and sky. */
+:root {
+	--flock-sky: #eef5f8;
+	--flock-bird: #405767;
+	--flock-focus: #1b5b8e;
+	--flock-neighbour: #8098a7;
+	--flock-space: #c76820;
+	--flock-align: #2378be;
+	--flock-cohere: #4b812e;
+}
+:root[data-theme='dark'] {
+	--flock-sky: #14212b;
+	--flock-bird: #bfd3df;
+	--flock-focus: #8bc8ff;
+	--flock-neighbour: #7194aa;
+	--flock-space: #ffab67;
+	--flock-align: #79bfff;
+	--flock-cohere: #addc82;
+}
