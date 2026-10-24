@@ -4,7 +4,7 @@ The self-handover. If work is interrupted, this file alone must be enough to con
 top to bottom, then run the commands under "Resume". **Update it at every commit**, not just at
 the end of a development.
 
-Last updated: 2026-10-22, 81 of the proposal's topics built, all released; **v1.2.4 live** (181 topics). Paused to spare the weekly usage; next: the last 19 level-0 topics after the 2026-10-28 reset.
+Last updated: 2026-10-24, 89 of the proposal's topics built (189 on `main`); **v1.2.4 live** (181 topics). Building the last 11 level-0 topics this week, within 85% of the weekly usage.
 
 ## How we work
 
@@ -76,6 +76,8 @@ Last updated: 2026-10-22, 81 of the proposal's topics built, all released; **v1.
   those registries from `main` plus each branch's own entry).
 
 ## Current development
+
+**Level-0 round, second part (2026-10-23/24).** The user raised the weekly cap to 85% (41% at the start) and gave the last $27 of cloud credit. Landed on `main`, ticked, not released: muscles-pull-in-pairs, why-you-get-sleepy, sea-breeze, why-spinning-makes-you-dizzy, comet-tails and clock-escapement (three local builders at a time, sessions in app worktrees, each fact-checked by grok and landed by itself), and hydraulics-digger-arm and earth-is-a-ball (cloud sessions; fact-checked by grok on the laptop by the lead). Cost: the first three local topics took 6% of the weekly usage together (about 2% each); the second three plus the lead's two fact-checks took 11%; three builders at once fill about half the 5-hour window, and the second batch hit it once (resumed after the reset). Next: drone-four-rotors, light-bulb-hot-wire, toilet-flush; then wifi-and-walls, teach-a-machine and the 6 still in `TOPICS-PROPOSAL.md` only (promote each with `promote.mjs`). The builders' worktrees are under `.claude/worktrees/` (the app removes them when their sessions are archived).
 
 **Level-0 round toward v1.3.0 (2026-10-21/22, paused).** The user asked for v1.3.0 with all 200
 topics, keeping the weekly usage under 80%. Landed on `main` and released in v1.2.4 (2026-10-22, CI and the live smoke test green): hearing-and-the-ear,
