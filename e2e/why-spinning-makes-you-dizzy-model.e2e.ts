@@ -78,6 +78,6 @@ test('the sensor is linear: twice the speed, twice the bend and twice the feelin
 });
 
 test('the chair turns as many times as its speed says', () => {
-	// 5 turns in 10 s for 10 s after a 1 s push: 5 turns, plus half a turn's worth from the push.
+	// 5 turns in 10 s for 10 s after a 1 s push: 5 turns, plus a quarter turn from the push.
 	expect(chairAngle(spin(W, 0), 11) / 360).toBeCloseTo(5.25, 6);
 });

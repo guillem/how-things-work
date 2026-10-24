@@ -126,8 +126,8 @@ export const spec: ExplainerSpec = {
 			controls: [speed],
 			body: `
 <p>After half a minute of spinning, the chair stops. The ring stops with your head, but the fluid inside <strong>keeps going</strong>, like the tea that swirls on when you stop turning the cup. Running on, it pushes the flap the other way.</p>
-<p>The hair cells report what a flap bent that way always means: “turning left”. So you feel yourself spinning to the left, nearly as fast as you spun to the right, while the room stands still. <strong>That is dizzy.</strong></p>
-<p>Your eyes are fooled too: they drift sideways to follow the spin you feel and keep flicking back, so the room seems to swirl. Over about 20 seconds the flap springs straight once more, and the dizziness fades.</p>`
+<p>The hair cells report what a flap bent that way always means: “turning left”. So you feel yourself spinning to the left, about as fast as you spun to the right, while the room stands still. <strong>That is dizzy.</strong></p>
+<p>Your eyes are fooled too: they drift slowly sideways against the spin you feel and keep flicking back towards it, so the room seems to swirl. Over about 20 seconds the flap springs straight once more, and the dizziness fades.</p>`
 		},
 		// ------------------------------------------------------------------ more
 		{

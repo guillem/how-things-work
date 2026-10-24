@@ -7,7 +7,8 @@
 	 * (the canal's flap follows the head's turning speed during quick head movements).
 	 *
 	 * Geometry: each ring is a circle of 3.2 mm radius (the human canals' radius of curvature,
-	 * Curthoys & Oman 1987) in its plane: the flat ring tipped up at the front by 25°, the two
+	 * Curthoys, Blanks & Markham 1977) in its plane, all three tipped up at the front by 25° together
+	 * (so they stay at right angles to each other, the flat ring tipped like the real one), the two
 	 * upright rings at 45° to the front, at right angles to each other.
 	 */
 	import { Label, TAU, cycle } from '#lib/draw/index.ts';
@@ -84,8 +85,8 @@
 			out: [0.55, 0, -0.85],
 			n: [0, Math.cos(TIP), -Math.sin(TIP)]
 		},
-		{ id: 'front', out: [0.45, 0.8, 0.45], n: norm([0.707, 0, -0.707]) },
-		{ id: 'back', out: [0.65, -0.35, -0.65], n: norm([0.707, 0, 0.707]) }
+		{ id: 'front', out: [0.45, 0.8, 0.45], n: pitch([0.707, 0, -0.707], -TIP) },
+		{ id: 'back', out: [0.65, -0.35, -0.65], n: pitch([0.707, 0, 0.707], -TIP) }
 	];
 	/** The direction to the ring's centre, made to lie exactly in its plane. */
 	function inPlane(c: Canal): V3 {

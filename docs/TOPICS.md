@@ -199,7 +199,7 @@ A topic is done when:
 - [x] ecg-arrhythmias
 - [x] hearing-and-the-ear
 - [x] muscles-pull-in-pairs
-- [ ] why-spinning-makes-you-dizzy
+- [x] why-spinning-makes-you-dizzy
 - [x] why-you-get-sleepy
 
 **Earth & Climate**
