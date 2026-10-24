@@ -9,6 +9,8 @@
 		crowdedPairs,
 		neighbourDistance,
 		hawkAt,
+		HAWK_START,
+		HAWK_END,
 		displacement,
 		WIDTH,
 		HEIGHT,
@@ -74,7 +76,7 @@
 	const response = $derived(steering(birds, followed, rules, snapshot.time));
 	const order = $derived(agreement(birds));
 	const crowded = $derived(crowdedPairs(birds));
-	const gap = $derived(Math.round(neighbourDistance(birds)));
+	const gap = $derived(neighbourDistance(birds, 7));
 	const birdLengths = $derived(Math.round((gap / 17) * 2) / 2);
 	const agreementText = $derived(
 		order > 0.85
@@ -83,7 +85,9 @@
 				? 'Coming into line'
 				: 'Many different directions'
 	);
-	const hawkVisible = $derived(rules.hawk && snapshot.time >= 3 && snapshot.time < 21);
+	const hawkVisible = $derived(
+		rules.hawk && snapshot.time >= HAWK_START && snapshot.time < HAWK_END
+	);
 	const predator = $derived(hawkAt(snapshot.time));
 	const showNeighbours = $derived(
 		['space', 'direction', 'together', 'try', 'follow'].includes(phase)
@@ -92,7 +96,7 @@
 		rules.hawk
 			? hawkVisible
 				? 'Nearby birds turn away from the hawk'
-				: snapshot.time < 3
+				: snapshot.time < HAWK_START
 					? 'The hawk is about to enter'
 					: 'The hawk has passed · neighbours gather again'
 			: '100 birds · no leader · seven neighbours each'
@@ -262,7 +266,7 @@
 		label={phase === 'space' || (phase === 'try' && !rules.separation)
 			? 'Very close pairs'
 			: phase === 'together' || (phase === 'try' && !rules.cohesion)
-				? 'Nearest bird'
+				? 'Farthest of seven'
 				: 'Direction'}
 		value={phase === 'space' || (phase === 'try' && !rules.separation)
 			? `${crowded}`
@@ -277,7 +281,7 @@
 			text={phase === 'space' || (phase === 'try' && !rules.separation)
 				? `${crowded} very close pairs`
 				: phase === 'together' || (phase === 'try' && !rules.cohesion)
-					? `Nearest bird: about ${birdLengths} bird lengths away (on average)`
+					? `Farthest of seven neighbours: about ${birdLengths} bird lengths away (on average)`
 					: agreementText}
 			size={19}
 			weight={600}

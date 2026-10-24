@@ -6235,7 +6235,7 @@ kbd {
 :root {
 	--flock-sky: #eef5f8;
 	--flock-bird: #405767;
-	--flock-focus: #1b5b8e;
+	--flock-focus: #7048a5;
 	--flock-neighbour: #8098a7;
 	--flock-space: #c76820;
 	--flock-align: #2378be;
@@ -6244,7 +6244,7 @@ kbd {
 :root[data-theme='dark'] {
 	--flock-sky: #14212b;
 	--flock-bird: #bfd3df;
-	--flock-focus: #8bc8ff;
+	--flock-focus: #d1b1f4;
 	--flock-neighbour: #7194aa;
 	--flock-space: #ffab67;
 	--flock-align: #79bfff;

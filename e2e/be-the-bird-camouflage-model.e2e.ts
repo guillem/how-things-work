@@ -49,3 +49,36 @@ test('the histogram counts living moths, including the darkest possible shade', 
 	expect(counts.reduce((a, b) => a + b, 0)).toBe(24);
 	expect(counts[5]).toBeGreaterThan(0);
 });
+
+test('selection changes a population over generations and can reverse direction', () => {
+	const mean = (population: { shade: number }[]) =>
+		population.reduce((sum, moth) => sum + moth.shade, 0) / population.length;
+	let population = initialPopulation();
+	const initial = mean(population);
+	for (let generation = 0; generation < 5; generation++) {
+		const parents = [...population].sort((a, b) => a.shade - b.shade).slice(0, 12);
+		population = nextGeneration(parents, 100 + generation);
+	}
+	const pale = mean(population);
+	expect(pale).toBeLessThan(initial - 0.2);
+	for (let generation = 0; generation < 5; generation++) {
+		const parents = [...population].sort((a, b) => b.shade - a.shade).slice(0, 12);
+		population = nextGeneration(parents, 200 + generation);
+	}
+	expect(mean(population)).toBeGreaterThan(pale);
+});
+
+test('random resting places leave room for the wings and non-overlapping tap targets', () => {
+	for (let seed = 1; seed <= 100; seed++) {
+		const moths = initialPopulation(seed);
+		for (let i = 0; i < moths.length; i++) {
+			expect(moths[i].x - 30).toBeGreaterThan(28);
+			expect(moths[i].x + 30).toBeLessThan(602);
+			expect(moths[i].y - 30).toBeGreaterThan(74);
+			expect(moths[i].y + 30).toBeLessThan(510);
+			for (let j = i + 1; j < moths.length; j++) {
+				expect(Math.hypot(moths[i].x - moths[j].x, moths[i].y - moths[j].y)).toBeGreaterThan(60);
+			}
+		}
+	}
+});

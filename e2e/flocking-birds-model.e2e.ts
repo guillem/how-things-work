@@ -12,6 +12,9 @@ import {
 	WIDTH,
 	HEIGHT,
 	SPEED,
+	HAWK_START,
+	HAWK_END,
+	hawkAt,
 	type Bird
 } from '../src/routes/flocking-birds/model';
 
@@ -38,7 +41,9 @@ test('without alignment, neighbouring birds do not agree on a direction', () => 
 test('without attraction, the flock spreads farther apart', () => {
 	const together = simulate(ALL_RULES, 18);
 	const apart = simulate({ ...ALL_RULES, cohesion: false }, 18);
-	expect(neighbourDistance(apart)).toBeGreaterThan(neighbourDistance(together) * 1.3);
+	// Measure the extent of each seven-neighbour group, beyond the short-range
+	// spacing force. Nearest-neighbour distance alone mostly measures spacing.
+	expect(neighbourDistance(apart, 7)).toBeGreaterThan(neighbourDistance(together, 7) * 1.4);
 });
 
 test('the bird reacts to seven neighbours, not to a leader or a destination', () => {
@@ -107,4 +112,31 @@ test('the passing hawk divides the seeded flock and the birds gather again after
 	expect(groups(disturbed)).toBeGreaterThan(groups(undisturbed));
 	expect(groups(reunited)).toBe(1);
 	expect(agreement(reunited)).toBeGreaterThan(0.95);
+});
+
+test('a hawk outside the right edge does not invisibly scare birds at the left edge', () => {
+	const birds: Bird[] = [
+		{ x: 30, y: HEIGHT / 2, vx: SPEED, vy: 0 },
+		{ x: 45, y: HEIGHT / 2, vx: SPEED, vy: 0 }
+	];
+	const response = steering(birds, 0, { ...ALL_RULES, hawk: true }, HAWK_START);
+	expect(response.escape).toEqual({ x: 0, y: 0 });
+});
+
+test('the hawk flies completely across the sky rather than vanishing inside it', () => {
+	expect(hawkAt(HAWK_START).x).toBeGreaterThan(WIDTH);
+	expect(hawkAt(HAWK_END).x).toBeLessThan(-24);
+});
+
+test('the seventh-neighbour extent reaches the whole watched group, beyond nearest spacing', () => {
+	// Eight birds in a straight line, ten drawing units apart. Each watches all
+	// seven others: the farthest distances are70,60,50,40,40,50,60,70.
+	const row = Array.from({ length: 8 }, (_, i) => ({
+		x: 200 + i * 10,
+		y: HEIGHT / 2,
+		vx: SPEED,
+		vy: 0
+	}));
+	expect(neighbourDistance(row)).toBeCloseTo(10, 10);
+	expect(neighbourDistance(row, 7)).toBeCloseTo(55, 10);
 });

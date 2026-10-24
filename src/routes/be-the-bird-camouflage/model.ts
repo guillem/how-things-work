@@ -26,11 +26,34 @@ function random(seed: number): () => number {
 
 function place(shades: readonly number[], seed: number): Moth[] {
 	const rand = random(seed);
-	// One moth in each loose grid cell, leaving room for both wings and a tap target.
+	let positions: { x: number; y: number }[] = [];
+	// Random resting places, not one moth per predictable search slot. Separate the
+	// 60-unit tap circles and leave room for the wings inside the bark's edges.
+	for (let attempt = 0; positions.length < shades.length && attempt < 10000; attempt++) {
+		const point = { x: 62 + rand() * 506, y: 110 + rand() * 364 };
+		if (positions.every((p) => Math.hypot(point.x - p.x, point.y - p.y) >= 62)) {
+			positions.push(point);
+		}
+	}
+	if (positions.length < shades.length) {
+		// Bounded-retry safety net: take a random subset of 42 staggered, jittered
+		// sites, rather than recreating a full row-and-column set of occupied slots.
+		// Nearest sites remain over 62 units apart even at opposite jitter extremes.
+		positions = Array.from({ length: 42 }, (_, i) => {
+			const row = Math.floor(i / 7);
+			return {
+				x: 65 + (i % 7) * 76 + (row % 2) * 38 + (rand() - 0.5) * 8,
+				y: 112 + row * 66 + (rand() - 0.5) * 8
+			};
+		});
+		for (let i = positions.length - 1; i > 0; i--) {
+			const j = Math.floor(rand() * (i + 1));
+			[positions[i], positions[j]] = [positions[j], positions[i]];
+		}
+	}
 	return shades.map((shade, i) => ({
 		id: i,
-		x: 70 + (i % 6) * 84 + rand() * 24,
-		y: 115 + Math.floor(i / 6) * 91 + rand() * 26,
+		...positions[i],
 		angle: (rand() - 0.5) * 70,
 		shade
 	}));
@@ -58,6 +81,8 @@ export function nextGeneration(parents: readonly Moth[], seed: number): Moth[] {
 	const shades = Array.from({ length: POPULATION }, () => {
 		const parent = parents[Math.floor(rand() * parents.length)];
 		// Sum of two uniforms: small symmetric variation, clipped at the trait limits.
+		// Clipping puts some offspring exactly at an extreme and biases edge parents
+		// slightly inward; this is an illustrative trait rule, not moth genetics.
 		return Math.max(0, Math.min(1, parent.shade + (rand() + rand() - 1) * 0.08));
 	});
 	return place(shades, seed + 4001);
