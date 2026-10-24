@@ -231,7 +231,7 @@ export const TESTS: Example[] = [
 export const TRAP: Example[] = [
 	ex('cat', cat({ x: 26, y: 26, s: 32, seed: 201 })),
 	ex('house', house({ x: 50, y: 78, w: 50, h: 24, roof: 16, seed: 202 })),
-	ex('cat', cat({ x: 30, y: 22, s: 28, body: true, whiskers: false, seed: 203 })),
+	ex('cat', cat({ x: 30, y: 22, s: 28, whiskers: false, seed: 203 })),
 	ex('house', house({ x: 66, y: 76, w: 46, h: 28, roof: 16, chimney: true, seed: 204 })),
 	ex('cat', cat({ x: 24, y: 30, s: 34, pointy: false, seed: 205 })),
 	ex('house', house({ x: 36, y: 78, w: 44, h: 26, roof: 14, windows: 1, seed: 206 })),

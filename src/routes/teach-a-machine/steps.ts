@@ -95,7 +95,7 @@ export const spec: ExplainerSpec = {
 			controls: [doodle],
 			body: `
 <p>Now the machine compares the new drawing with every drawing in the pile. The three with the fewest squares different are its ${neighbourDef}, and their labels vote: two or three votes for “cat”, and the answer is cat.</p>
-<p>For this cat all three neighbours are cats. Draw a cat or a house of your own and see what it says. Try one small in a corner too: the drawings in the pile are mostly big, near the middle.</p>`,
+<p>Select “A cat”: all three neighbours are cats. Draw a cat or a house of your own and see what it says. Try one small in a corner too: the drawings in the pile are mostly big, near the middle.</p>`,
 			notes: `<p>This way of sorting is called <em>k-nearest neighbours</em>, where k is how many neighbours vote: here three, an odd number, so that two labels can never tie. It is one of the oldest ways for a computer to learn from examples, described by Evelyn Fix and Joseph Hodges in 1951. It is not a <a href="../neural-networks/">neural network</a>: it learns nothing in advance, it just keeps every example and compares. Real programs usually first move every drawing to the middle and make it the same size, and compare in a smarter way than counting squares.</p>`
 		},
 		{
@@ -119,7 +119,7 @@ export const spec: ExplainerSpec = {
 			],
 			body: `
 <p>What if the pile were tiny? Here the machine has been shown just one drawing of each: a sitting cat and a long, low house. With only two, the nearest one decides alone. Then it is tested on 8 new drawings it has never seen.</p>
-<p>It gets 3 of the 8 wrong: the only cat it knows is a sitting one. Slide to show it more. With three of each it gets all eight right, and with all eight of each, every vote is three to nothing: the votes firm up.</p>`
+<p>It gets 3 of the 8 wrong. The only cat it knows is a sitting one, so the other cats are called houses, and one house is closer to that sitting cat than to the only house. Slide to show it more. With three of each it gets all eight right, and with all eight of each, every vote is three to nothing: the votes firm up.</p>`
 		},
 		{
 			id: 'teach',

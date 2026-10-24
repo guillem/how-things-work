@@ -296,7 +296,7 @@ A topic is done when:
 - [x] k-means-clustering
 - [x] next-word-guessing-game
 - [x] spam-filter-word-counts
-- [ ] teach-a-machine
+- [x] teach-a-machine
 
 **Energy & Machines**
 - [x] heat-engines

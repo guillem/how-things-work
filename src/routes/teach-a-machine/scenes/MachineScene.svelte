@@ -46,7 +46,14 @@
 	const choice = $derived(String(params[picker.id] ?? picker.fallback));
 	const mine = $derived(decode(String(params.mine ?? '')));
 	const pad: Doodle = $derived(
-		phase === 'fish' ? READY.fish.doodle : choice === 'mine' ? mine : (READY[choice]?.doodle ?? [])
+		phase === 'fish'
+			? READY.fish.doodle
+			: // The compare step's counts are about the ready cat, whatever was picked before.
+				phase === 'compare'
+				? READY.cat.doodle
+				: choice === 'mine'
+					? mine
+					: (READY[choice]?.doodle ?? [])
 	);
 	const padCells = $derived(squares(pad));
 	/** Strokes and points kept at most, so that the drawing stays a small parameter. */
@@ -115,7 +122,7 @@
 	const PAD = { x: 36, y: 96, size: 300 };
 	const padPhases = ['squares', 'compare', 'vote', 'teach', 'trap', 'varied', 'fish'];
 	const showPad = $derived(padPhases.includes(phase));
-	const interactive = $derived(showPad && phase !== 'fish');
+	const interactive = $derived(showPad && phase !== 'fish' && phase !== 'compare');
 	/** The 4 × 4 grid of stored drawings on the right. */
 	const CARD = { w: 134, h: 100, gx: 11, gy: 12, x: 372, y: 104 };
 	const cardAt = (i: number) => ({
@@ -310,7 +317,11 @@
 			<Label
 				x={PAD.x + PAD.size / 2}
 				y={78}
-				text={phase === 'fish' ? 'Something new: a fish' : 'The drawing pad'}
+				text={phase === 'fish'
+					? 'Something new: a fish'
+					: phase === 'compare'
+						? 'A cat'
+						: 'The drawing pad'}
 				size={16}
 				weight={700}
 			/>
@@ -408,7 +419,7 @@
 	<!-- ---------------------------------------------------------------- compare -->
 	{#if phase === 'compare'}
 		<Readout id="compare-titles">
-			<Label x={GX[0] + SMALL / 2} y={GY - 16} text="Your drawing" size={15} weight={700} />
+			<Label x={GX[0] + SMALL / 2} y={GY - 16} text="The cat" size={15} weight={700} />
 			<Label
 				x={GX[1] + SMALL / 2}
 				y={GY - 16}

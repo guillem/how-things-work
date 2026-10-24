@@ -45,7 +45,10 @@ test('squares: a ready cat inks 33 squares; a line drawn across the pad inks a r
 });
 
 test('compare: a stored cat differs in 7 squares, the sitting cat in 33', async ({ page }) => {
-	await open(page, './teach-a-machine/#compare', 'squares differ');
+	// Whatever was picked on the step before, the comparison is about the ready cat.
+	await open(page, './teach-a-machine/#squares', 'squares inked');
+	await page.locator('button[data-control=doodle][data-value=house]').click();
+	await page.goto('./teach-a-machine/#compare');
 	await expect(stage(page)).toContainText('7squares differ');
 	await page.locator('button[data-control=against][data-value=sitting]').click();
 	await expect(stage(page)).toContainText('33squares differ');
