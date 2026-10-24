@@ -1,6 +1,6 @@
 # Topic catalog
 
-Source of truth for the content of an interactive web learning tool that shows how things work. It defines 194 topics in 11 categories, each built around one interactive graphic. Readers range from high-school students to university majors.
+Source of truth for the content of an interactive web learning tool that shows how things work. It defines 196 topics in 11 categories, each built around one interactive graphic. Readers range from high-school students to university majors.
 
 This file covers content only. It does not choose the stack, the visual design or the project layout; take those from the repository's own instructions.
 
@@ -92,7 +92,7 @@ A topic is done when:
 | Mathematics | `math` | 21 |
 | Physics | `physics` | 17 |
 | Chemistry & Materials | `chemistry` | 15 |
-| Biology | `biology` | 18 |
+| Biology | `biology` | 20 |
 | Body & Medicine | `medicine` | 18 |
 | Earth & Climate | `earth` | 16 |
 | Space | `space` | 14 |
@@ -181,6 +181,8 @@ A topic is done when:
 - [x] turing-patterns
 - [x] fireflies-in-sync
 - [x] ant-trails
+- [ ] be-the-bird-camouflage
+- [ ] flocking-birds
 
 **Body & Medicine**
 - [x] heart-circulation
@@ -897,7 +899,7 @@ A topic is done when:
 - **Interaction:** Run a population whose members vary in a heritable trait. Set the mutation rate, the population size and the environment (predators, food supply or an antibiotic dose) and watch the distribution of the trait shift over generations.
 - **Takeaway:** Variation, inheritance and unequal survival are enough to make a population adapt, with no foresight involved.
 - **Prerequisites:** meiosis-inheritance
-- **Related:** deep-time, game-theory-cooperation
+- **Related:** deep-time, game-theory-cooperation, be-the-bird-camouflage
 - **Pitfall:** Individuals do not adapt, and mutations do not arise because they are needed; selection acts on variation that already exists.
 
 #### ecosystems
@@ -907,7 +909,7 @@ A topic is done when:
 - **Interaction:** Set birth, death and predation rates for a predator and its prey and watch the populations cycle, both as animals on a field and as curves. In a small food web, remove or add a species and follow the knock-on effects.
 - **Takeaway:** Populations are tied together by feedback, so a change to one species ripples through the others in ways that are hard to guess.
 - **Prerequisites:** none
-- **Related:** chaos-fractals, epidemics, game-theory-cooperation, differential-equations, phase-portraits
+- **Related:** chaos-fractals, epidemics, game-theory-cooperation, differential-equations, phase-portraits, flocking-birds
 
 #### crispr
 - **Title:** CRISPR: how bacteria remember viruses
@@ -995,6 +997,7 @@ A topic is done when:
 - **Interaction:** A meadow of fireflies, each with its own inner clock that flashes when it strikes twelve and starts again. One control: how much a neighbour's flash nudges a firefly's clock forward. At zero the meadow twinkles at random; turn it up and patches start flashing together, then waves, then the whole field as one; drag a finger through the swarm to scramble it and watch it fall back into step.
 - **Takeaway:** Thousands of fireflies flash together with no conductor, because each one nudges its own clock a little toward every flash it sees.
 - **Prerequisites:** none
+- **Related:** flocking-birds
 - **Pitfall:** There is no lead firefly and no outside signal; synchrony appears only from each insect reacting to its neighbours. Only some firefly species do this.
 
 #### ant-trails
@@ -1004,8 +1007,29 @@ A topic is done when:
 - **Interaction:** Ants wander out of a nest at random; one that finds the sugar walks home laying a scent, and the others tend to follow scent, so a trail forms and thickens. Drag the sugar farther away or drop a pebble on the trail and watch the colony reroute. Then offer a long bridge and a short one together and count the ants on each: ants on the short one get back first, so its scent builds up sooner and the short one wins. Open the short bridge only after a trail has formed on the long one, and the colony stays on the long one, with the scent's fading switched on or off: every ant on the long bridge tops its scent up faster than it fades.
 - **Takeaway:** A colony finds the shorter path with no map and no ant that knows it: ants on the short route return sooner, so its scent builds up faster and draws more ants, and a fading scent lets the colony give up a route that no longer leads to food.
 - **Prerequisites:** none
-- **Related:** graph-search
+- **Related:** graph-search, be-the-bird-camouflage, flocking-birds
 - **Pitfall:** No ant knows where the food is or compares the routes, and the queen gives no orders. Fading is not what makes the short bridge win when both are offered at once, and it does not let a colony switch to a shortcut that appears later while the old trail is still walked (models of real trails predict this, and real Argentine ants stayed on the long bridge); ant-inspired computer programs switch only because their ants lay more scent on shorter routes. Fading lets the colony forget a trail nobody walks any more. Real ants also use sight and memory, which the page leaves out and says so.
+
+#### be-the-bird-camouflage
+- **Title:** Camouflage: you are the hungry bird
+- **Level:** 0
+- **Kind:** simulate
+- **Interaction:** Moths of many shades rest on a tree trunk and the reader is the bird: tap every moth you spot before the timer runs out. The survivors lay eggs that look like their parents, give or take a little, and the next generation appears; after a few rounds the reader flips the bark from pale to sooty and keeps hunting.
+- **Takeaway:** The moths you fail to see are the ones that have babies, so after a few generations the moths match the bark, and when the bark changes, so do the moths.
+- **Prerequisites:** none
+- **Related:** evolution, ant-trails, flocking-birds
+- **Needs:** Bark textures, either procedurally generated or public-domain or CC0 photographs from Wikimedia Commons; the moth population model needs no data.
+- **Pitfall:** A moth does not change colour to hide, and no moth chooses its colour; the population changes because the visible ones are eaten before they breed.
+
+#### flocking-birds
+- **Title:** Flocks without a leader
+- **Level:** 0
+- **Kind:** simulate
+- **Interaction:** A hundred birds fly across the stage following three rules, each drawn as a short arrow on one highlighted bird: keep a little distance from your neighbours, fly the way they fly, drift toward the middle of them. Switch one rule off at a time: without the first the birds pile into clumps, without the second the flock never agrees on a direction, without the third it scatters. Add a hawk and watch the flock split around it and close again with no bird in charge.
+- **Takeaway:** A flock can hold together and turn as one with no leader: in the model, three simple rules about each bird's nearest neighbours are enough to make one.
+- **Prerequisites:** none
+- **Related:** ant-trails, fireflies-in-sync, ecosystems, be-the-bird-camouflage
+- **Pitfall:** No bird leads or sees the whole flock, and the three rules are a model that reproduces flocking, not a list real birds were found to obey. Real starlings each keep track of about six or seven nearest neighbours, however far apart they are (Ballerini et al. 2008), and nobody plans the shapes of a murmuration.
 
 ### Body & Medicine
 

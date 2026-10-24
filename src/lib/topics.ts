@@ -1779,6 +1779,15 @@ const explainers: Explainer[] = [
 		accent: '#1c7ed6',
 		steps: 9,
 		minutes: 9
+	},
+	{
+		slug: 'be-the-bird-camouflage',
+		title: 'Camouflage: you are the hungry bird',
+		summary:
+			'Tap the moths you spot on a tree, then let the survivors have babies. Hunt a few generations, darken the bark and see which colours survive: each moth keeps its shade, but the population can change.',
+		accent: '#5f7d3a',
+		steps: 8,
+		minutes: 9
 	}
 ];
 

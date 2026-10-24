@@ -1,0 +1,51 @@
+import { expect, test } from '@playwright/test';
+import {
+	initialPopulation,
+	nextGeneration,
+	survivors,
+	shadeCounts
+} from '../src/routes/be-the-bird-camouflage/model';
+
+test('predation removes only the moths the reader catches', () => {
+	const original = initialPopulation();
+	const caught = new Set(original.filter((m) => m.shade > 0.5).map((m) => m.id));
+	const living = survivors(original, caught);
+	expect(living).toHaveLength(12);
+	expect(living.every((m) => m.shade < 0.5)).toBe(true);
+	// The moths themselves do not change colour when their neighbours disappear.
+	for (const m of living) expect(m.shade).toBe(original[m.id].shade);
+});
+
+test('survivors pass their shade on; an eaten parent has no offspring', () => {
+	const population = initialPopulation();
+	const pale = population.filter((m) => m.shade < 0.2);
+	const dark = population.filter((m) => m.shade > 0.8);
+	for (let seed = 1; seed <= 20; seed++) {
+		const paleChildren = nextGeneration(pale, seed);
+		const darkChildren = nextGeneration(dark, seed);
+		expect(paleChildren).toHaveLength(population.length);
+		expect(paleChildren.every((m) => m.shade < 0.28)).toBe(true);
+		expect(darkChildren.every((m) => m.shade > 0.72)).toBe(true);
+	}
+});
+
+test('small inherited variation does not produce instant recolouring', () => {
+	const parents = initialPopulation().map((m) => ({ ...m, shade: 0.5 }));
+	const children = nextGeneration(parents, 70);
+	expect(children.every((m) => m.shade >= 0.42 && m.shade <= 0.58)).toBe(true);
+	expect(new Set(children.map((m) => m.shade)).size).toBeGreaterThan(10);
+});
+
+test('eating everyone causes extinction rather than inventing survivors', () => {
+	const population = initialPopulation();
+	const living = survivors(population, new Set(population.map((m) => m.id)));
+	expect(nextGeneration(living, 17)).toEqual([]);
+});
+
+test('the histogram counts living moths, including the darkest possible shade', () => {
+	const population = initialPopulation();
+	population[0].shade = 1;
+	const counts = shadeCounts(population);
+	expect(counts.reduce((a, b) => a + b, 0)).toBe(24);
+	expect(counts[5]).toBeGreaterThan(0);
+});

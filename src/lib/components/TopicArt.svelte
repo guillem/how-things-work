@@ -6308,6 +6308,25 @@
 			stroke-width="2"
 		/>
 		<line x1="134" y1="86" x2="180" y2="86" stroke="currentColor" stroke-width="2.5" />
+	{:else if slug === 'be-the-bird-camouflage'}
+		<rect x="42" y="12" width="116" height="96" rx="14" fill={accent} opacity="0.16" />
+		<path
+			d="M65 15 Q73 50 64 105 M130 15 Q119 65 132 106"
+			fill="none"
+			stroke={accent}
+			opacity="0.3"
+			stroke-width="4"
+		/>
+		<path
+			d="M100 45 Q72 20 69 48 L80 74 L94 67 L100 82 L106 67 L120 74 L131 48 Q128 20 100 45Z"
+			fill={accent}
+		/>
+		<path
+			d="M100 38 V76 M79 44 L91 56 M121 44 L109 56"
+			fill="none"
+			stroke="var(--surface)"
+			stroke-width="2"
+		/>
 	{:else}
 		<circle cx="100" cy="60" r="30" fill="none" stroke={accent} stroke-width="2" />
 		<circle cx="100" cy="60" r="5" fill={accent} />
