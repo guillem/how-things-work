@@ -12,8 +12,12 @@
 		shapeNames
 	} from '../model';
 	let { step, params, setParam }: StageProps = $props();
-	const ink = ['#228be6', '#12b886', '#f59f00', '#845ef7', '#e64980', '#15aabf'];
-	let sides = $derived(Number(params[step.id] ?? step.hints?.sides ?? 4));
+	const ink = [1, 2, 3, 4, 5, 6].map((k) => `var(--tl-tile-${k})`);
+	/** Only the tray steps (those with a shape in their hints) choose a shape; the bend step's
+	 * control is a bend, not a side count. */
+	let sides = $derived(
+		step.hints?.sides === undefined ? 4 : Number(params[step.id] ?? step.hints.sides)
+	);
 	let fit = $derived(cornerFit(sides));
 	let count = $state(1);
 	let previous = $state('');
@@ -61,6 +65,19 @@
 	function add() {
 		count = count >= fit.copies + (fit.tiles ? 0 : 1) ? 1 : count + 1;
 	}
+	let bendText = $derived(
+		bend === 0
+			? 'Straight: the squares fit'
+			: bend > 0
+				? 'Bulge at the top, hollow below — still no gaps'
+				: 'Hollow at the top, bulge below — still no gaps'
+	);
+	let bendValue = $derived(
+		bend === 0
+			? 'Straight edges'
+			: `S-bend by ${Math.round((Math.abs(bend) / 96) * 100)}% of a side: top half bent ${bend > 0 ? 'out' : 'in'}, bottom half ${bend > 0 ? 'in' : 'out'}`
+	);
+	const instruction = 'Tap the bright corner to add a tile; after the last, start again.';
 	function setBend(value: number) {
 		setParam('bend', Math.round(Math.max(-25, Math.min(25, value))));
 	}
@@ -91,9 +108,9 @@
 		<polygon
 			transform="translate(428,196)"
 			points={points(bentTile(96, bend))}
-			fill="#f59f00"
+			fill="var(--tl-accent)"
 			fill-opacity="0.45"
-			stroke="#f59f00"
+			stroke="var(--tl-accent)"
 			stroke-width="4"
 		/>
 		<Handle
@@ -103,27 +120,14 @@
 			value={bend}
 			min={-25}
 			max={25}
-			valuetext={bend === 0 ? 'Straight edges' : `${bend} units of bend`}
-			color="#f59f00"
+			valuetext={bendValue}
+			color="var(--tl-accent)"
 			onmove={(p: { x: number; y: number }) => setBend(p.x - 524)}
 			onkey={(k: number | 'start' | 'end') =>
 				setBend(k === 'start' ? -25 : k === 'end' ? 25 : bend + k)}
 		/>
-		<Readout
-			id="bend"
-			label="Matching edges"
-			value={bend === 0
-				? 'Straight: the squares fit'
-				: 'Both edges bend together: the tiles still fit'}
-			><Label
-				x={480}
-				y={540}
-				anchor="middle"
-				text={bend === 0
-					? 'Straight: the squares fit'
-					: 'Matching bulges and hollows — still no gaps'}
-				size={20}
-			/></Readout
+		<Readout id="bend" label="Matching edges" value={bendText}
+			><Label x={480} y={540} anchor="middle" text={bendText} size={20} /></Readout
 		>
 	{:else}
 		<Label x={245} y={58} anchor="middle" text={shapeNames[sides]} size={25} weight={650} />
@@ -170,9 +174,9 @@
 						/>{/each}
 					<polygon
 						points={points(gap)}
-						fill="#fa5252"
+						fill="var(--tl-bad)"
 						fill-opacity="0.22"
-						stroke="#fa5252"
+						stroke="var(--tl-bad)"
 						stroke-width="2"
 						stroke-dasharray="6 4"
 					/>
@@ -195,9 +199,9 @@
 			{#each tiles as tile, i (i)}
 				<polygon
 					points={points(tile)}
-					fill={total > 360 && i === tiles.length - 1 ? '#fa5252' : ink[i % ink.length]}
+					fill={total > 360 && i === tiles.length - 1 ? 'var(--tl-bad)' : ink[i % ink.length]}
 					fill-opacity={total > 360 && i === tiles.length - 1 ? 0.5 : 0.28}
-					stroke={total > 360 && i === tiles.length - 1 ? '#fa5252' : 'var(--stage-ink)'}
+					stroke={total > 360 && i === tiles.length - 1 ? 'var(--tl-bad)' : 'var(--stage-ink)'}
 					stroke-width="2.5"
 				/>
 			{/each}
@@ -214,8 +218,13 @@
 				}}
 				style="cursor:pointer"
 			>
-				<circle r="30" fill="var(--stage-bg)" stroke="#f59f00" stroke-width="3" />
-				<path d="M-10 0 H10 M0 -10 V10" stroke="#f59f00" stroke-width="4" stroke-linecap="round" />
+				<circle r="30" fill="var(--stage-bg)" stroke="var(--tl-accent)" stroke-width="3" />
+				<path
+					d="M-10 0 H10 M0 -10 V10"
+					stroke="var(--tl-accent)"
+					stroke-width="4"
+					stroke-linecap="round"
+				/>
 			</g>
 		</g>
 		<Readout id="corners" label="Around the corner" value={status}
@@ -225,24 +234,14 @@
 				anchor="middle"
 				text={status}
 				size={20}
-				color={total > 360 ? '#fa5252' : undefined}
+				color={total > 360 ? 'var(--tl-bad-text)' : undefined}
 			/></Readout
 		>
 		<Readout id="floor" label="Floor" value={floorStatus}
 			><Label x={705} y={510} anchor="middle" text={floorStatus} size={19} /></Readout
 		>
-		<Readout
-			id="instruction"
-			label="Try it"
-			value="Tap the corner again to start over after the last tile"
-			><Label
-				x={480}
-				y={565}
-				anchor="middle"
-				text="Tap the bright corner to add a tile; after the last, start again."
-				size={17}
-				muted
-			/></Readout
+		<Readout id="instruction" label="Try it" value={instruction}
+			><Label x={480} y={565} anchor="middle" text={instruction} size={17} muted /></Readout
 		>
 	{/if}
 </g>

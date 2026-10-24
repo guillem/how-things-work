@@ -33,60 +33,37 @@ test('pumping all the air out keeps the bell but stops its airborne sound', asyn
 	await expect(page.locator('.stage')).not.toContainText('No airborne sound reaches the ear');
 });
 
-test('the speakers stay silent until asked, then play the shortened ruler’s computed note', async ({
-	page
-}) => {
-	await page.addInitScript(() => {
-		const trace: number[] = [];
-		(window as unknown as Window & { soundFrequencies: number[] }).soundFrequencies = trace;
-		const NativeAudioContext = AudioContext;
-		window.AudioContext = class extends NativeAudioContext {
-			override createOscillator(): OscillatorNode {
-				const oscillator = super.createOscillator(),
-					start = oscillator.start.bind(oscillator);
-				oscillator.start = (when?: number) => {
-					trace.push(oscillator.frequency.value);
-					start(when);
-				};
-				(window as unknown as { finishNote: () => void }).finishNote = () =>
-					oscillator.dispatchEvent(new Event('ended'));
-				return oscillator;
-			}
-		};
-	});
+test('the twang button reports the note it plays, then that it has finished', async ({ page }) => {
+	// Under browser automation the page stays silent (navigator.webdriver); the status line is
+	// what the visitor reads.
+	await page.clock.install();
 	await page.goto('./vibrations-and-sound/#pitch');
-	await expect(page.getByRole('button', { name: 'Twang and hear' })).toBeVisible();
-	expect(
-		await page.evaluate(
-			() => (window as unknown as Window & { soundFrequencies: number[] }).soundFrequencies
-		)
-	).toEqual([]);
+	const stage = page.locator('.stage');
+	await expect(stage).toContainText('Sound plays only when you press the button');
 	await page.locator('input[data-control=length]').fill('5');
+	await expect(stage).toContainText('5 cm: 326 wobbles each second');
 	await page.getByRole('button', { name: 'Twang and hear' }).click();
-	await expect
-		.poll(() =>
-			page.evaluate(
-				() => (window as unknown as Window & { soundFrequencies: number[] }).soundFrequencies[0]
-			)
-		)
-		.toBeGreaterThan(325);
-	const frequencies = await page.evaluate(
-		() => (window as unknown as Window & { soundFrequencies: number[] }).soundFrequencies
-	);
-	expect(frequencies).toHaveLength(1);
-	expect(frequencies[0]).toBeLessThan(327);
-	await expect(page.locator('.stage')).toContainText('Playing the model’s note');
-	await page.evaluate(() => (window as unknown as { finishNote: () => void }).finishNote());
-	await expect(page.locator('.stage')).toContainText('Note finished — press to play again');
+	await expect(stage).toContainText('Playing the model’s note');
+	await page.clock.runFor(1500);
+	await expect(stage).toContainText('Note finished — press to play again');
+	await page.getByRole('button', { name: 'Twang and hear' }).press('Enter');
+	await expect(stage).toContainText('Playing the model’s note');
 });
 
-test('the material experiment shows a push travelling through water and steel', async ({
+test('one push crosses steel first, then water, while it has barely entered the air', async ({
 	page
 }) => {
 	await page.goto('./vibrations-and-sound/#materials');
-	await expect(page.locator('.stage')).toContainText('Water carries the push along');
+	const stage = page.locator('.stage');
+	await expect(stage).toContainText('Water carries the push along');
+	// The frozen frame of reduced motion: the three fronts at very different distances.
+	await expect(stage).toContainText('1.7 m');
+	await expect(stage).toContainText('7.4 m');
+	await expect(stage).toContainText('arrived');
+	await expect(stage).toContainText('crosses 10 m in 29 thousandths of a second');
+	await expect(stage).toContainText('crosses 10 m in 2 thousandths of a second');
 	await page.locator('button[data-control=material][data-value=steel]').click();
-	await expect(page.locator('.stage')).toContainText('Steel carries the push along');
+	await expect(stage).toContainText('Steel carries the push along');
 });
 
 test('the loudness readout distinguishes Medium, Strong and Strongest twangs', async ({ page }) => {
