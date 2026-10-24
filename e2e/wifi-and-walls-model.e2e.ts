@@ -99,6 +99,7 @@ test('next door on the same channel: the two networks take turns, and the laptop
 	const same = link(kitchen, { ...DEFAULT_SETUP, neighbour: 'same' });
 	const other = link(kitchen, { ...DEFAULT_SETUP, neighbour: 'other' });
 	expect(same.turns.heard).toBe(true);
+	expect(same.turns.atRouter).toBeGreaterThanOrEqual(-82);
 	expect(same.yours).toBe(alone.yours / 2);
 	expect(other.yours).toBe(alone.yours);
 	// The link itself is just as fast: only the time on the air is shared.

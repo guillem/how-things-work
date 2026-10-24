@@ -154,8 +154,8 @@ export const INNER_WALLS: Wall[] = [
 
 export const ROUTER: Point = P(1.2, 3);
 
-/** Next door's router, just past the right-hand wall. */
-export const NEIGHBOUR: Point = P(21.2, 9);
+/** Next door's router, just past the right-hand wall, level with ours. */
+export const NEIGHBOUR: Point = P(21.2, 3);
 
 /**
  * The laptop's walk: from the sofa, through the kitchen and the bedroom, to the far corner of the
@@ -283,8 +283,8 @@ export function signalDbm(from: Point, to: Point, band: Band, walls: readonly Wa
  * channel), with two antennas sending two streams at once and the normal 800 ns guard interval.
  * `minDbm` is the standard's receiver minimum input sensitivity for each modulation and code rate
  * (IEEE Std 802.11-2020, the HT and VHT PHY receiver specifications): the weakest signal at which
- * a receiver must still read 90% of 4096-byte packets (HT) or 99% of them (VHT, which gives the
- * same levels for 20 MHz). Rates follow from the OFDM numbers: data subcarriers × bits per
+ * a receiver must still read at least 90% of 4096-byte packets, for both HT and VHT (which
+ * gives the same levels for 20 MHz). Rates follow from the OFDM numbers: data subcarriers × bits per
  * subcarrier × code rate × streams, every 4 µs.
  */
 interface Mode {
@@ -358,13 +358,14 @@ export type Neighbour = 'off' | 'same' | 'other';
 
 /**
  * Next door's router's strength at our router and at the laptop, and whether the two networks
- * must take turns: they share the channel if either of ours hears it. With both networks busy,
- * each gets the air half the time.
+ * must take turns: they share the channel if the two routers hear each other (the path is the
+ * same both ways). With both networks busy, each gets the air half the time.
  */
 export function sharing(laptop: Point, band: Band, neighbour: Neighbour, walls: readonly Wall[]) {
 	const atRouter = signalDbm(NEIGHBOUR, ROUTER, band, walls);
 	const atLaptop = signalDbm(NEIGHBOUR, laptop, band, walls);
-	const heard = Math.max(atRouter, atLaptop) >= HEAR_DBM;
+	// The level is for a 20 MHz channel; a wider one hears over more noise, 3 dB per doubling.
+	const heard = atRouter >= HEAR_DBM + 10 * Math.log10(CHANNEL[band].width / 20);
 	const share = neighbour === 'same' && heard ? 0.5 : 1;
 	return { atRouter, atLaptop, heard, share };
 }

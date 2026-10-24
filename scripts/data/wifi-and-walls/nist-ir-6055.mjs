@@ -5,7 +5,7 @@
 // The report fits the mean received signal (dB relative to free space) of each specimen with a
 // polynomial in the frequency F (GHz): M0 + M1 F + M2 F² + … Its low band runs 0.5–2.0 GHz
 // (tables "b"), its high band 3.0–8.0 GHz (tables "d"); 2.4 GHz falls in the gap, so the page
-// takes the mean of the 2.0 GHz and 3.0 GHz ends. Coefficients are copied from the tables named
+// interpolates in dB between the 2.0 GHz and 3.0 GHz ends, at 2.437 GHz. Coefficients are copied from the tables named
 // beside each curve (mean curves only, not the ±σ ones).
 //
 // Run: node scripts/data/wifi-and-walls/nist-ir-6055.mjs
@@ -45,7 +45,7 @@ for (const [name, { table, low, high }] of Object.entries(curves)) {
 	const at5 = poly(high, 5.2);
 	console.log(
 		`${name.padEnd(24)} tables ${table.padEnd(12)} 2.0 GHz ${at2.toFixed(1).padStart(6)} dB` +
-			`  3.0 GHz ${at3.toFixed(1).padStart(6)} dB  → 2.4 GHz ${((at2 + at3) / 2).toFixed(1).padStart(6)} dB` +
+			`  3.0 GHz ${at3.toFixed(1).padStart(6)} dB  → 2.437 GHz ${(at2 + 0.437 * (at3 - at2)).toFixed(1).padStart(6)} dB` +
 			`  5.2 GHz ${at5.toFixed(1).padStart(6)} dB`
 	);
 }

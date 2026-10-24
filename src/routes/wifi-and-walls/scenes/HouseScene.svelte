@@ -222,7 +222,7 @@
 					? 'next door’s router is off'
 					: neighbour === 'same'
 						? 'next door is on the same channel'
-						: 'next door is on a different channel',
+						: 'next door is on a channel that doesn’t overlap',
 			internet: 'the router passes everything on to the line',
 			next: 'brick walls with open doorways'
 		}[phase] ?? ''
@@ -232,7 +232,7 @@
 			? 'the air is all ours'
 			: turns
 				? 'taking turns: half the time each'
-				: 'a different channel: no waiting'
+				: 'channels apart: no waiting'
 	);
 
 	// ---- the ladder ---------------------------------------------------------------------------
@@ -590,12 +590,12 @@
 		<Readout id="wifi-link" order={3} label="Wi-Fi link" value="{fmt(now.yours)} Mbit/s">
 			<Label anchor="start" x={LX} y={262} text="Wi-Fi link: {fmt(now.yours)} Mbit/s" size={14} />
 		</Readout>
-		<Readout id="line" order={4} label="Line into the house" value="{lineMbit} Mbit/s">
+		<Readout id="line" order={4} label="Line out of the house" value="{lineMbit} Mbit/s">
 			<Label
 				anchor="start"
 				x={LX}
 				y={292}
-				text="line into the house: {lineMbit} Mbit/s"
+				text="line out of the house: {lineMbit} Mbit/s"
 				size={14}
 			/>
 		</Readout>

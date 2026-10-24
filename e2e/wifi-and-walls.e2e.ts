@@ -58,8 +58,8 @@ test('neighbour: on the same channel the two take turns; on another, the air is 
 	await page.getByRole('radio', { name: 'On the same channel as ours' }).click();
 	await expect(stage(page)).toContainText('taking turns: half the time each');
 	await expect(stage(page)).toContainText('65 Mbit/s');
-	await page.getByRole('radio', { name: 'On a different channel' }).click();
-	await expect(stage(page)).toContainText('a different channel: no waiting');
+	await page.getByRole('radio', { name: 'On a channel that doesn’t overlap' }).click();
+	await expect(stage(page)).toContainText('channels apart: no waiting');
 	await expect(stage(page)).toContainText('130 Mbit/s');
 });
 

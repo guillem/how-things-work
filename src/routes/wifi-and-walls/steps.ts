@@ -42,14 +42,14 @@ const neighbour: Control = {
 	options: [
 		{ value: 'off', label: 'Switched off' },
 		{ value: 'same', label: 'On the same channel as ours' },
-		{ value: 'other', label: 'On a different channel' }
+		{ value: 'other', label: 'On a channel that doesn’t overlap' }
 	]
 };
 
 const line: Control = {
 	type: 'range',
 	id: 'line',
-	label: 'Speed of the line into the house',
+	label: 'Speed of the line out of the house',
 	min: 0,
 	max: LINE_SPEEDS.length - 1,
 	step: 1,
@@ -66,7 +66,7 @@ const mcs =
 const band =
 	'<dfn data-def="A range of radio frequencies set aside for Wi-Fi. There are two main ones: 2.4 gigahertz, where the waves swing 2.4 billion times a second, and 5 gigahertz, more than twice as fast. Newer routers also use a third, at 6 gigahertz.">band</dfn>';
 const channel =
-	'<dfn data-def="A narrow slice of a band. At 2.4 GHz there is room for only three channels that don’t overlap (usually 1, 6 and 11), so neighbours often end up sharing one.">channel</dfn>';
+	'<dfn data-def="A narrow slice of a band. Neighbouring slices overlap. At 2.4 GHz the usual set that doesn’t overlap is 1, 6 and 11 (where channels 12 and 13 are allowed, as in Europe, 1, 5, 9 and 13 fit too), so neighbours often end up sharing one.">channel</dfn>';
 
 export const spec: ExplainerSpec = {
 	slug: 'wifi-and-walls',
@@ -117,7 +117,7 @@ export const spec: ExplainerSpec = {
 			controls: [spot],
 			body: `
 <p>Why does the speed drop a step at a time, instead of the Wi-Fi just stopping? Because the router and the laptop have several <strong>ways of sending</strong>, shown on the right as a ladder. The fast ones pack lots of bits into each wiggle of the wave; they only work when the signal is strong and clear. The slow ones send fewer bits each time, with extra bits for checking, so they can still be read when the signal is faint, the way you speak slowly and clearly to someone far away.</p>
-<p>Many times a second the two pick the fastest ${mcs} that still gets through. <strong>Walk the laptop</strong> and watch the lit rung. At 2.4 GHz there are eight rungs, from 130 Mbit/s down to 13. Only below the bottom one, when the signal is too faint for even the slowest way, does the link stop.</p>`,
+<p>Many times a second the two pick the fastest ${mcs} that still gets through. <strong>Walk the laptop</strong> and watch the lit rung. At 2.4 GHz, the radio waves this router uses (they swing 2.4 billion times a second), there are eight rungs, from 130 Mbit/s down to 13. Only below the bottom one, when the signal is too faint for even the slowest way, does the link stop.</p>`,
 			notes: `<p>The ladder is the one in the Wi-Fi standard (IEEE 802.11n, with two antennas sending at once on a 20 MHz channel). Next to each rung the standard says how weak a signal a Wi-Fi radio must still be able to read with it; real radios usually do a little better. The speeds are those of the radio link: what reaches you is less, because the two sides also have to wait their turn, check what arrived and send again what didn’t.</p>`
 		},
 		// ---------------------------------------------------------------- walls
@@ -144,7 +144,7 @@ export const spec: ExplainerSpec = {
 			duration: 16,
 			controls: [fast],
 			body: `
-<p>Most routers send on two ${band}s at once. So far we have used the 2.4 GHz band. <strong>Switch to the 5 GHz band.</strong> Its channels are four times wider, so its ladder goes much higher: in the kitchen the laptop now gets 351 Mbit/s instead of 130, and next to the router 780, six times as fast.</p>
+<p>Most routers send on two ${band}s at once. So far we have used the 2.4 GHz band. <strong>Switch to the 5 GHz band.</strong> The router here uses a channel four times wider on it (80 MHz instead of 20), so its ladder goes much higher: in the kitchen the laptop now gets 351 Mbit/s instead of 130. Beside the router the top of that ladder is 780, six times the fastest 2.4 GHz speed.</p>
 <p>But look at the map. The 5 GHz waves arrive about four times weaker than 2.4 GHz ones at the same distance, and they lose more in each wall: a brick wall lets through only about a thirtieth of them. The fast rungs also need a stronger signal. So the coloured patch is much smaller.</p>`
 		},
 		{
@@ -168,9 +168,9 @@ export const spec: ExplainerSpec = {
 			duration: 18,
 			controls: [neighbour],
 			body: `
-<p>Next door has a router too, just the other side of the wall. <strong>Switch it on, on the same ${channel} as ours.</strong> Two radios sending on the same channel at the same moment would garble each other, like two people talking at once. So each Wi-Fi radio first listens, and if it hears another one sending, it waits. The laptop in the kitchen can hear next door’s router, so the two networks have to <strong>take turns</strong>.</p>
-<p>The link is just as fast as before, 130 Mbit/s, but when next door is busy too, our laptop only gets the air half the time: 65 Mbit/s. Put next door on <strong>a different channel</strong> and the two don’t hear each other at all; the laptop has the air to itself again.</p>`,
-			notes: `<p>A Wi-Fi radio has to treat the channel as busy whenever it picks up another Wi-Fi signal stronger than a set level; the page uses the standard’s level, less than a hundred-millionth of a millionth of a watt. In a block of flats a laptop can hear a dozen networks, which is why Wi-Fi gets slow in the evening, when everybody is online.</p>`
+<p>Next door has a router too, just the other side of the wall. <strong>Switch it on, on the same ${channel} as ours.</strong> Two radios sending on the same channel at the same moment would garble each other, like two people talking at once. So each Wi-Fi radio first listens, and if it hears another one sending, it waits. Our router can hear next door’s, so each waits while the other is sending: the two networks have to <strong>take turns</strong>.</p>
+<p>The link is just as fast as before, 130 Mbit/s, but when next door is busy too, our laptop only gets the air half the time: 65 Mbit/s. Put next door on <strong>a channel that doesn’t overlap ours</strong> and the two don’t have to wait for each other; the laptop has the air to itself again.</p>`,
+			notes: `<p>A Wi-Fi radio has to treat the channel as busy whenever it picks up another Wi-Fi signal stronger than a set level; the page uses the standard’s level, about six millionths of a millionth of a watt. In a block of flats a laptop can hear a dozen networks, which is why Wi-Fi gets slow in the evening, when everybody is online.</p>`
 		},
 		{
 			id: 'internet',

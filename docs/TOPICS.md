@@ -271,7 +271,7 @@ A topic is done when:
 - [x] radar-sonar
 - [x] barcode-stripes
 - [x] qr-codes
-- [ ] wifi-and-walls
+- [x] wifi-and-walls
 
 **Artificial Intelligence**
 - [x] learning-from-data
