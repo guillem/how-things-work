@@ -101,11 +101,11 @@ local worktree, merged into `main`) cleared almost everything that was open; wha
 November); the last ten fact-checks were done in-house by an agent that reviews with web search
 and then applies the fixes.
 
-## The 200-topic milestone — built (2026-10-24)
+## The 200-topic milestone — released as v1.3.0 (2026-10-24)
 
 All 100 additions from [`TOPICS-PROPOSAL.md`](TOPICS-PROPOSAL.md) are built, promoted into
 [`TOPICS.md`](TOPICS.md), reviewed and ticked. Together with the original catalogue, that makes
-200 explainers. Level 0, its parser support and the index's “Start here” link are complete;
+200 explainers, all live in v1.3.0. Level 0, its parser support and the index's “Start here” link are complete;
 the new topics follow the agreed 39 / 10 / 3 / 48 split at levels 0–3. The last six are
 shapes-that-tile, vibrations-and-sound, why-metal-feels-cold, dissolving-sugar-and-salt,
 be-the-bird-camouflage and flocking-birds. See [`STATUS.md`](STATUS.md) for final checks and

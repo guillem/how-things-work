@@ -507,8 +507,8 @@
 			<header>
 				<h1>How Things Work <span class="accent">— the full picture</span></h1>
 				<span class="updated"
-					>updated 2026-10-24 · 200 topics complete · v1.3.0 approved; release in progress · v1.2.5
-					live · <a href="https://guillem.github.io/how-things-work/">live site</a></span
+					>updated 2026-10-24 · v1.3.0 live · all 200 topics released ·
+					<a href="https://guillem.github.io/how-things-work/">live site</a></span
 				>
 			</header>
 			<p class="sub">
@@ -521,11 +521,13 @@
 				>.
 			</p>
 			<div class="badges">
-				<span class="badge"><span class="dot green"></span>v1.2.5 live · 194 topics</span>
+				<span class="badge"><span class="dot green"></span>v1.3.0 live · 200 topics</span>
 				<span class="badge"
 					><span class="dot green"></span>checks green · 2,272 model / 3,908 browser tests</span
 				>
-				<span class="badge"><span class="dot amber"></span>v1.3.0 · release in progress</span>
+				<span class="badge"
+					><span class="dot green"></span>v1.3.0 · CI, deploy and live smoke passed</span
+				>
 			</div>
 			<div class="hero">
 				<div class="row">
@@ -756,16 +758,15 @@
 					<div class="col now">
 						<h3>Now — the 200-topic milestone (2026-10-24)</h3>
 
-						<div class="task todo">
-							<span class="mark">→</span>
+						<div class="task">
+							<span class="mark">✓</span>
 							<div>
-								all 200 topics built, reviewed and ticked<span class="small"
+								all 200 topics released as v1.3.0<span class="small"
 									>The final six: shapes-that-tile, vibrations-and-sound, why-metal-feels-cold,
 									dissolving-sugar-and-salt, be-the-bird-camouflage and flocking-birds. All six
-									reviewed by signed-in Claude; verified fixes applied. Final checks passed: 2,272
-									model tests and 3,908 browser tests (two workers), plus both-theme/phone visual
-									QA. The user validated the preview; v1.3.0 release is in progress. No source
-									shared with Grok.</span
+									reviewed by Claude; verified fixes and visual QA complete. Local and CI checks
+									passed: 2,272 model tests and 3,908 browser tests. The deployed build passed live
+									smoke: home page, all 200 topics and 451 assets.</span
 								>
 							</div>
 						</div>
@@ -831,23 +832,13 @@
 						<div class="task todo">
 							<span class="mark">1</span>
 							<div>
-								release v1.3.0<span class="small"
-									>Local validation approved. Running the tag-based release: mandatory checks,
-									clean-machine CI, Pages deploy and the live smoke test. v1.2.5 remains live until
-									deployment completes.</span
-								>
-							</div>
-						</div>
-						<div class="task todo">
-							<span class="mark">2</span>
-							<div>
 								nuclear-fusion q = 3 field line<span class="small"
 									>needs a torus outline or a cross-section inset (design decision)</span
 								>
 							</div>
 						</div>
 						<div class="task todo">
-							<span class="mark">3</span>
+							<span class="mark">2</span>
 							<div>
 								waiting on others<span class="small"
 									>solar-cells: NLR to add LONGi's records · photosynthesis: a licence for measured
@@ -1037,6 +1028,17 @@
 				<h2>Releases</h2>
 				<div class="releases">
 					<div class="rel latest">
+						<span class="tag">v1.3.0</span><span class="date">2026-10-24</span
+						><span
+							>All 200 topics: the final six level-0 explainers (tiling, sound, contact heat,
+							dissolving, camouflage and flocking), reviewed by Claude with verified corrections.
+							<a href="https://github.com/guillem/how-things-work/actions/runs/40124396601"
+								>CI, deploy and live smoke green</a
+							>
+							(200 topics, 451 assets).</span
+						>
+					</div>
+					<div class="rel">
 						<span class="tag">v1.2.5</span><span class="date">2026-10-24</span
 						><span
 							>13 new level-0 topics (194): muscles-pull-in-pairs, why-you-get-sleepy, sea-breeze,
@@ -1206,9 +1208,8 @@
 				</div>
 				<div>
 					Numbers come from the repo’s own books: the TOPICS.md checklist, STATUS.md, BACKLOG.md and
-					the git tags. Last updated 2026-10-24: all 200 topics built; Claude review fixes and final
-					checks complete, local validation approved and release in progress. The live release is
-					v1.2.5 (194 topics).
+					the git tags. Last updated 2026-10-24: v1.3.0 is live with all 200 topics; CI, deployment
+					and live smoke passed.
 				</div>
 			</footer>
 		</div>

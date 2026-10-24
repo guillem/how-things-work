@@ -4,10 +4,9 @@ The self-handover. If work is interrupted, this file alone must be enough to con
 top to bottom, then run the commands under "Resume". **Update it at every commit**, not just at
 the end of a development.
 
-Last updated: 2026-10-24. **All 200 topics are built, reviewed and ticked**, including all
-100 proposed additions. **Claude reviewed the final six; verified corrections are integrated
-and the final checks pass.** The user validated the preview and authorized v1.3.0; release is in progress.
-**v1.2.5 remains live** (194 topics).
+Last updated: 2026-10-24. **v1.3.0 is live with all 200 topics.** All 100 proposed additions
+are built, reviewed and ticked. Claude's reviews of the final six are applied; local checks,
+clean-machine CI, deployment and the live smoke test all pass.
 
 ## How we work
 
@@ -38,7 +37,7 @@ and the final checks pass.** The user validated the preview and authorized v1.3.
 
 ## Current state
 
-- **All 200 catalogue topics are built, reviewed and ticked** (2026-10-24; v1.3.0 release authorized, in progress). The original 100 were done on 2026-10-15. **v1.2.5** (2026-10-24) is live: 194 topics, every promoted catalogue topic (13 more level-0 topics). Before it, **v1.2.4**
+- **All 200 catalogue topics are built, reviewed and ticked** (2026-10-24; v1.3.0 live). The original 100 were done on 2026-10-15. Previously **v1.2.5** (2026-10-24) shipped 194 topics (13 more level-0 topics). Before it, **v1.2.4**
   (2026-10-22) is live: 181 topics, the 100 plus 81 of the proposal's (20 at level 0). Before it,
   v1.2.3 (2026-10-21): 175 topics. Before that,
   v1.2.2 (2026-10-21): 170 topics, the first nine at level 0 with the index's "Start here" link.
@@ -79,7 +78,7 @@ and the final checks pass.** The user validated the preview and authorized v1.3.
 
 ## Current development
 
-**200-topic milestone and Claude follow-up (2026-10-24, complete; release authorized, in progress).**
+**200-topic milestone and Claude follow-up (2026-10-24, complete; released as v1.3.0).**
 The final six level-0 explainers are integrated on `main`: shapes-that-tile,
 vibrations-and-sound, why-metal-feels-cold, dissolving-sugar-and-salt,
 be-the-bird-camouflage and flocking-birds. All 200 catalogue entries, checklist ticks,
@@ -140,11 +139,17 @@ All temporary builder/review worktrees and their merged branches were removed; o
 worktrees were left alone. `scripts/local-review.mjs <slug> claude` remains available with
 restricted read/web tools and no MCP servers.
 
-**Release v1.3.0 (2026-10-24, in progress):** the user reviewed the six new topic links,
-validated the result (“Beautiful”) and explicitly requested “release 1.3.0”. Running
-`make release V=v1.3.0` from the clean validated main; its mandatory checks/pre-push hook
-are retained. The tag triggers clean-machine CI, the Pages deployment and the live smoke test.
-Record the run and result here; v1.2.5 remains live until the deployment completes.
+**v1.3.0 released (2026-10-24).** The user validated the six topics and requested release.
+`make release V=v1.3.0` passed mandatory checks and atomically pushed main and the annotated
+tag at `74b8638898084a51d91060ea256d13996fbff2b7`.
+[Release run 40124396601](https://github.com/guillem/how-things-work/actions/runs/40124396601) passed all four jobs: verify, build,
+deploy and smoke. CI confirmed **2,272 model tests** and **3,908 browser tests**; the live
+smoke test confirmed build `1792870828309`, the home page, **200 topics and 451 assets**.
+[The public site](https://guillem.github.io/how-things-work/) is live. The release and CI-watch
+logs are `/tmp/htw-release-1.3.0.log` and `/tmp/htw-release-1.3.0-ci.log`.
+No application changes were needed during release; the post-release main commit only records
+the verified result and updates the dashboard. The v1.3.0 tag is immutable. No release work
+remains.
 
 **Level-0 round, second part (2026-10-23/24).** The user raised the weekly cap to 85% (41% at the start) and gave the last $27 of cloud credit. Landed on `main`, ticked, not released: muscles-pull-in-pairs, why-you-get-sleepy, sea-breeze, why-spinning-makes-you-dizzy, comet-tails and clock-escapement (three local builders at a time, sessions in app worktrees, each fact-checked by grok and landed by itself), and hydraulics-digger-arm and earth-is-a-ball (cloud sessions; fact-checked by grok on the laptop by the lead). Cost: the first three local topics took 6% of the weekly usage together (about 2% each); the second three plus the lead's two fact-checks took 11%; three builders at once fill about half the 5-hour window, and the second batch hit it once (resumed after the reset). Then toilet-flush, light-bulb-hot-wire, drone-four-rotors, wifi-and-walls and teach-a-machine landed the same way, built by background agents in worktrees (the app can't start sessions from Remote Control, and proposal cards don't show on mobile); about 4% of the weekly usage each, and two of them hit the 5-hour limit mid-rebase and were resumed after the reset. Stopped at 81%. Next, after the 2026-10-28 reset: the 6 still in `TOPICS-PROPOSAL.md` only (shapes-that-tile, vibrations-and-sound, why-metal-feels-cold, dissolving-sugar-and-salt, be-the-bird-camouflage, flocking-birds; promote each with `promote.mjs`), then `make e2e-full` and v1.3.0. Released as **v1.2.5** (2026-10-24): `make e2e-full` (3,818) green locally with 4 and with 2 workers, then CI, the deploy and the live smoke test green. The builders' worktrees are under `.claude/worktrees/` (the app removes them when their sessions are archived).
 
