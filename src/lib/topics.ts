@@ -1794,7 +1794,7 @@ const explainers: Explainer[] = [
 		title: 'Shapes that tile a floor',
 		summary:
 			'Fit copies around a corner: triangles, squares and hexagons close a full turn; regular pentagons and octagons leave gaps. Then bend a square’s matching edges and watch the floor keep its perfect fit.',
-		accent: '#228be6',
+		accent: '#0c8599',
 		steps: 8,
 		minutes: 8
 	},

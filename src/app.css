@@ -6325,3 +6325,27 @@ kbd {
 	--vs-bell: #e8a33d;
 	--vs-front: #ff922b;
 }
+
+/* shapes-that-tile: six tile colours, the bright corner and bent tile, a gap or overlap */
+:root {
+	--tl-tile-1: #228be6;
+	--tl-tile-2: #12b886;
+	--tl-tile-3: #f59f00;
+	--tl-tile-4: #845ef7;
+	--tl-tile-5: #e64980;
+	--tl-tile-6: #15aabf;
+	--tl-accent: #f08c00;
+	--tl-bad: #fa5252;
+	--tl-bad-text: #e03131;
+}
+:root[data-theme='dark'] {
+	--tl-tile-1: #4dabf7;
+	--tl-tile-2: #38d9a9;
+	--tl-tile-3: #fcc419;
+	--tl-tile-4: #b197fc;
+	--tl-tile-5: #f783ac;
+	--tl-tile-6: #66d9e8;
+	--tl-accent: #ffa94d;
+	--tl-bad: #ff6b6b;
+	--tl-bad-text: #ff8787;
+}
