@@ -7,9 +7,9 @@ const tray = (id: string, value: string): Control => ({
 	options: [
 		{ value: '3', label: 'Triangle' },
 		{ value: '4', label: 'Square' },
-		{ value: '5', label: 'Pentagon' },
-		{ value: '6', label: 'Hexagon' },
-		{ value: '8', label: 'Octagon' }
+		{ value: '5', label: 'Regular pentagon' },
+		{ value: '6', label: 'Regular hexagon' },
+		{ value: '8', label: 'Regular octagon' }
 	]
 });
 export const spec: ExplainerSpec = {
@@ -40,7 +40,7 @@ export const spec: ExplainerSpec = {
 			hints: { sides: 3 },
 			controls: [tray('triangle', '3')],
 			duration: 20,
-			body: `<p>This triangle has three equal sides. Each of its corners is much narrower than a square’s. Tap the corner to add copies, one at a time.</p><p>Six triangles meet with no gap. They fill a full turn, and the same meeting can repeat all across the floor. A repeating covering with no gaps or overlaps is called a <dfn data-def="A covering with shapes that fit together without gaps or overlaps.">tiling</dfn>.</p>`
+			body: `<p>This triangle has three equal sides. Each of its corners is much narrower than a square’s. Tap the corner to add copies, one at a time.</p><p>Six triangles meet with no gap. They fill a full turn, and the same meeting can repeat all across the floor. A covering with no gaps or overlaps is called a <dfn data-def="A covering with shapes that fit together without gaps or overlaps.">tiling</dfn>.</p>`
 		},
 		{
 			id: 'pentagon',
@@ -50,7 +50,7 @@ export const spec: ExplainerSpec = {
 			hints: { sides: 5 },
 			controls: [tray('pentagon', '5')],
 			duration: 22,
-			body: `<p>Try this <strong>regular pentagon</strong>: five equal sides, five equal corners. Three copies leave a small gap at the middle. Add a fourth and it overlaps the first.</p><p>Moving the tiles cannot fix that corner while keeping their edges together. This regular pentagon cannot cover a floor on its own. The floor sketch leaves space between its copies so you can see the trouble.</p>`
+			body: `<p>Try this <strong>regular pentagon</strong>: five equal sides, five equal corners. Three copies leave a small gap at the middle. Add a fourth and it overlaps the first.</p><p>Moving the tiles cannot fix that corner while keeping their edges together. This regular pentagon cannot cover a floor on its own. The right-hand picture keeps that exact gap in view, shaded red. Another pentagon cannot fit into it.</p>`
 		},
 		{
 			id: 'hexagon',
@@ -70,7 +70,7 @@ export const spec: ExplainerSpec = {
 			hints: { sides: 8 },
 			controls: [tray('octagon', '8')],
 			duration: 20,
-			body: `<p>With regular octagons, two corners leave a hole and a third overlaps. Try the whole tray: only the equal-sided triangle, square and regular hexagon close the turn exactly.</p><p>You might have seen a floor of octagons with <em>small squares between them</em>. That uses two shapes. Here the challenge is to use copies of just one regular shape.</p>`
+			body: `<p>With regular octagons, two corners leave a hole and a third overlaps. Try the whole tray: only the equal-sided triangle, square and regular hexagon close the turn exactly. Regular shapes with more than six sides have corners too wide for three copies and too narrow for two.</p><p>You might have seen a floor of octagons with <em>small squares between them</em>. That uses two shapes. Here the challenge is to use copies of just one regular shape.</p>`
 		},
 		{
 			id: 'bend',
@@ -86,11 +86,11 @@ export const spec: ExplainerSpec = {
 					max: 25,
 					default: 12,
 					step: 1,
-					format: (v) => (v === 0 ? 'Straight' : v < 0 ? 'Bend left' : 'Bend right')
+					format: (v) => (v === 0 ? 'Straight' : v < 0 ? 'S-bend, flipped' : 'S-bend')
 				}
 			],
 			duration: 24,
-			body: `<p>Now start with squares again, and bend the right edge of one tile. Drag the orange dot or move the slider. The left edge bends <em>the same way</em>, so it makes a matching hollow for its neighbour’s bulge.</p><p>Every copy gets those same two edges. Slide copies alongside each other and there are still no gaps, whatever bend you choose. This is one way artists make surprising repeating tiles: change an edge and copy that change to the opposite edge.</p>`
+			body: `<p>Now start with squares again, and bend the right edge of the orange tile; every copy follows. Drag the orange dot or move the slider. Both edges make an S shape, with an outward bend in one half and an inward bend in the other. The left edge bends <em>the same way</em> as the right, so every bulge fits the next tile’s hollow.</p><p>Every copy gets those same two edges. Slide copies alongside each other and there are still no gaps, whatever bend you choose. This is one way artists make surprising repeating tiles: change an edge and copy that change to the opposite edge.</p>`
 		},
 		{
 			id: 'not-all',

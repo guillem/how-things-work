@@ -5,6 +5,7 @@
 		bentTile,
 		cornerAngle,
 		cornerFit,
+		cornerGap,
 		floorTiles,
 		points,
 		polygon,
@@ -35,7 +36,23 @@
 				? 'One tile too many: overlap'
 				: `${count} ${count === 1 ? 'corner' : 'corners'}: a gap remains`
 	);
-	let patch = $derived(floorTiles(sides, !fit.tiles ? 26 : sides === 6 ? 36 : 46));
+	let patch = $derived(floorTiles(sides, sides === 6 ? 36 : 46));
+	let showGap = $derived(!fit.tiles && count >= fit.copies);
+	let floorStatus = $derived(
+		total > 360
+			? 'Overlap: tap to start again'
+			: closed
+				? 'No gaps or overlaps'
+				: showGap
+					? 'A gap this tile cannot fill'
+					: 'Keep adding corners'
+	);
+	let gapFan = $derived(
+		Array.from({ length: fit.copies }, (_, k) =>
+			polygon(sides, sides >= 6 ? 60 : 86, (k * angle * Math.PI) / 180)
+		)
+	);
+	let gap = $derived(cornerGap(sides, 125));
 	let tiles = $derived(
 		Array.from({ length: count }, (_, k) =>
 			polygon(sides, sides >= 6 ? 72 : 108, (k * angle * Math.PI) / 180)
@@ -114,7 +131,11 @@
 			x={704}
 			y={58}
 			anchor="middle"
-			text={closed ? 'Repeat the fit' : 'Can it fill a floor?'}
+			text={closed
+				? 'Repeat the fit'
+				: showGap
+					? 'This corner leaves a hole'
+					: 'Can it fill a floor?'}
 			size={25}
 			weight={650}
 		/>
@@ -128,7 +149,7 @@
 			stroke="var(--stage-line)"
 		/>
 		<g transform="translate(515,130)">
-			{#if closed || step.hints?.complete}
+			{#if closed}
 				{#each patch as tile, i (i)}
 					<polygon
 						points={points(tile)}
@@ -138,6 +159,26 @@
 						stroke-width="1.2"
 					/>
 				{/each}
+			{:else if showGap}
+				<g transform="translate(190,140)">
+					{#each gapFan as tile, i (i)}<polygon
+							points={points(tile)}
+							fill={ink[i % ink.length]}
+							fill-opacity="0.25"
+							stroke="var(--stage-ink)"
+							stroke-width="2"
+						/>{/each}
+					<polygon
+						points={points(gap)}
+						fill="#fa5252"
+						fill-opacity="0.22"
+						stroke="#fa5252"
+						stroke-width="2"
+						stroke-dasharray="6 4"
+					/>
+					<circle r="5" fill="var(--stage-ink)" />
+				</g>
+				<Label x={190} y={325} anchor="middle" text="The red space is left uncovered" size={18} />
 			{:else}
 				<Label x={190} y={145} anchor="middle" text="Try the bright corner" size={21} />
 				<Label x={190} y={180} anchor="middle" text="to add another tile" size={19} muted />
@@ -187,29 +228,8 @@
 				color={total > 360 ? '#fa5252' : undefined}
 			/></Readout
 		>
-		<Readout
-			id="floor"
-			label="Floor"
-			value={closed
-				? 'No gaps or overlaps'
-				: fit.tiles
-					? 'Keep adding corners'
-					: step.hints?.complete
-						? 'This regular shape cannot fill the floor'
-						: 'Try one more tile'}
-			><Label
-				x={705}
-				y={510}
-				anchor="middle"
-				text={closed
-					? 'No gaps or overlaps'
-					: fit.tiles
-						? 'Keep adding corners'
-						: step.hints?.complete
-							? 'Gaps between these copies'
-							: 'Try one more tile'}
-				size={19}
-			/></Readout
+		<Readout id="floor" label="Floor" value={floorStatus}
+			><Label x={705} y={510} anchor="middle" text={floorStatus} size={19} /></Readout
 		>
 		<Readout
 			id="instruction"

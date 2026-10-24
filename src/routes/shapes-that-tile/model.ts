@@ -19,7 +19,7 @@ export function cornerFit(sides: number) {
 	const angle = cornerAngle(sides);
 	const copies = Math.floor((360 + 1e-9) / angle);
 	const gap = Math.max(0, 360 - copies * angle);
-	return { copies, gap, tiles: gap < 1e-8, overlap: (copies + 1) * angle - 360 };
+	return { copies, gap, tiles: gap < 1e-8, overlap: gap < 1e-8 ? 0 : (copies + 1) * angle - 360 };
 }
 /** A polygon rooted at its first corner, first edge pointing right, then rotated. */
 export function polygon(sides: number, side: number, rotation = 0): Point[] {
@@ -91,16 +91,20 @@ export function floorTiles(sides: number, size = 58): Point[][] {
 					}))
 				);
 			}
-	} else {
-		const radius = size / (2 * Math.sin(Math.PI / sides));
-		for (let r = 0; r < 3; r++)
-			for (let c = 0; c < 4; c++)
-				out.push(
-					Array.from({ length: sides }, (_, k) => ({
-						x: radius + c * radius * 2.3 + radius * Math.cos((k * 2 * Math.PI) / sides),
-						y: radius + r * radius * 2.3 + radius * Math.sin((k * 2 * Math.PI) / sides)
-					}))
-				);
 	}
 	return out;
+}
+
+/** The actual uncovered sector after the largest non-overlapping fan; no arbitrary floor spacing. */
+export function cornerGap(sides: number, radius: number): Point[] {
+	const fit = cornerFit(sides);
+	if (fit.tiles) return [];
+	const start = (fit.copies * cornerAngle(sides) * Math.PI) / 180;
+	return [
+		{ x: 0, y: 0 },
+		...Array.from({ length: 17 }, (_, k) => {
+			const a = start + ((2 * Math.PI - start) * k) / 16;
+			return { x: radius * Math.cos(a), y: radius * Math.sin(a) };
+		})
+	];
 }

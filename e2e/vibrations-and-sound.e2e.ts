@@ -25,6 +25,12 @@ test('pumping all the air out keeps the bell but stops its airborne sound', asyn
 	await expect(page.locator('.stage')).toContainText('The bell still vibrates');
 	await page.getByRole('button', { name: 'Ring and hear' }).click();
 	await expect(page.locator('.stage')).toContainText('No airborne sound reaches the ear');
+	await page.evaluate(() => {
+		location.hash = '#next';
+	});
+	await expect(page.locator('.stage')).toContainText('A ruler, a wobble, a travelling push');
+	await expect(page.locator('.stage')).toContainText('Sound plays only when you press the button');
+	await expect(page.locator('.stage')).not.toContainText('No airborne sound reaches the ear');
 });
 
 test('the speakers stay silent until asked, then play the shortened ruler’s computed note', async ({
@@ -42,6 +48,8 @@ test('the speakers stay silent until asked, then play the shortened ruler’s co
 					trace.push(oscillator.frequency.value);
 					start(when);
 				};
+				(window as unknown as { finishNote: () => void }).finishNote = () =>
+					oscillator.dispatchEvent(new Event('ended'));
 				return oscillator;
 			}
 		};
@@ -68,4 +76,24 @@ test('the speakers stay silent until asked, then play the shortened ruler’s co
 	expect(frequencies).toHaveLength(1);
 	expect(frequencies[0]).toBeLessThan(327);
 	await expect(page.locator('.stage')).toContainText('Playing the model’s note');
+	await page.evaluate(() => (window as unknown as { finishNote: () => void }).finishNote());
+	await expect(page.locator('.stage')).toContainText('Note finished — press to play again');
+});
+
+test('the material experiment shows a push travelling through water and steel', async ({
+	page
+}) => {
+	await page.goto('./vibrations-and-sound/#materials');
+	await expect(page.locator('.stage')).toContainText('Water carries the push along');
+	await page.locator('button[data-control=material][data-value=steel]').click();
+	await expect(page.locator('.stage')).toContainText('Steel carries the push along');
+});
+
+test('the loudness readout distinguishes Medium, Strong and Strongest twangs', async ({ page }) => {
+	await page.goto('./vibrations-and-sound/#louder');
+	await expect(page.locator('.stage')).toContainText('Medium twang: the same note');
+	await page.locator('input[data-control=strength]').fill('3');
+	await expect(page.locator('.stage')).toContainText('Strong twang: the same note');
+	await page.locator('input[data-control=strength]').fill('4');
+	await expect(page.locator('.stage')).toContainText('Strongest twang: the same note');
 });
