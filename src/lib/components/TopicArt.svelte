@@ -6308,6 +6308,34 @@
 			stroke-width="2"
 		/>
 		<line x1="134" y1="86" x2="180" y2="86" stroke="currentColor" stroke-width="2.5" />
+	{:else if slug === 'why-metal-feels-cold'}
+		<rect x="25" y="76" width="150" height="7" rx="3" fill="currentColor" opacity="0.3" />
+		<ellipse cx="58" cy="65" rx="13" ry="19" fill="#91a7b8" />
+		<rect x="54" y="23" width="8" height="39" rx="4" fill="#91a7b8" />
+		<ellipse cx="140" cy="65" rx="13" ry="19" fill="#c09056" />
+		<rect x="136" y="23" width="8" height="39" rx="4" fill="#c09056" />
+		<path d="M77 30 Q92 44 85 60" fill="none" stroke={accent} stroke-width="4" />
+		<path d="M83 51 L85 61 L95 55" fill="none" stroke={accent} stroke-width="3" />
+		<circle cx="58" cy="98" r="5" fill="#339af0" /><circle cx="140" cy="98" r="5" fill="#f59f00" />
+	{:else if slug === 'dissolving-sugar-and-salt'}
+		<path
+			d="M24 26 L24 96 L87 96 L87 26 M115 26 L115 96 L178 96 L178 26"
+			fill="none"
+			stroke="currentColor"
+			stroke-width="2"
+			opacity="0.6"
+		/>
+		<path d="M26 44 H85 V94 H26 Z M117 44 H176 V94 H117 Z" fill="#339af0" opacity="0.18" />
+		{#each [0, 1, 2, 3, 4, 5, 6, 7] as i (i)}
+			<circle cx={35 + ((i * 17) % 42)} cy={52 + ((i * 13) % 36)} r="3.5" fill={accent} />
+			<circle
+				cx={126 + ((i * 19) % 42)}
+				cy={52 + ((i * 11) % 36)}
+				r="3"
+				fill={i % 2 ? '#845ef7' : '#20a88a'}
+			/>
+		{/each}
+		<path d="M44 15 L61 27 L80 15" fill="none" stroke={accent} stroke-width="3" />
 	{:else}
 		<circle cx="100" cy="60" r="30" fill="none" stroke={accent} stroke-width="2" />
 		<circle cx="100" cy="60" r="5" fill={accent} />

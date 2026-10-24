@@ -6230,3 +6230,61 @@ kbd {
 	--ww-bed: #4a4037;
 	--ww-pillow: #6b5f53;
 }
+
+/* why-metal-feels-cold: objects, skin and the direction of heat */
+:root {
+	--cold-metal: #94a8b8;
+	--cold-wood: #bd925a;
+	--cold-grain: #846236;
+	--cold-plastic: #69b8b0;
+	--cold-wool: #b8a0ce;
+	--cold-knit: #806495;
+	--cold-table: #cbb695;
+	--cold-skin: #f0bba3;
+	--cold-skin-edge: #b7745a;
+	--cold-heat: #e8590c;
+	--cold-flow: #ffec99;
+}
+:root[data-theme='dark'] {
+	--cold-metal: #91a9bb;
+	--cold-wood: #ad8656;
+	--cold-grain: #634b2e;
+	--cold-plastic: #438e87;
+	--cold-wool: #927da9;
+	--cold-knit: #c4add8;
+	--cold-table: #66553f;
+	--cold-skin: #ca9078;
+	--cold-skin-edge: #eebaa1;
+	--cold-heat: #ff922b;
+	--cold-flow: #fff3bf;
+}
+
+/* dissolving-sugar-and-salt: magnified particle samples */
+:root {
+	--ds-glass: #f7fafc;
+	--ds-glass-edge: #91a4b0;
+	--ds-water: #c5e8f8;
+	--ds-water-edge: #64acd1;
+	--ds-water-dot: #408fc0;
+	--ds-sugar: #f4a340;
+	--ds-sugar-edge: #b86c13;
+	--ds-sodium: #9564d6;
+	--ds-chloride: #37ad91;
+	--ds-ion-edge: #426071;
+	--ds-exchange: #d97918;
+	--ds-spoon: #a9b5be;
+}
+:root[data-theme='dark'] {
+	--ds-glass: #182329;
+	--ds-glass-edge: #718d9c;
+	--ds-water: #173e56;
+	--ds-water-edge: #4485aa;
+	--ds-water-dot: #70b8de;
+	--ds-sugar: #ffc06d;
+	--ds-sugar-edge: #c88739;
+	--ds-sodium: #bb95f0;
+	--ds-chloride: #70d3b7;
+	--ds-ion-edge: #a4c0cf;
+	--ds-exchange: #ffb04f;
+	--ds-spoon: #8ba0ad;
+}
