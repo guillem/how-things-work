@@ -29,11 +29,17 @@ test('survivors pass their shade on; an eaten parent has no offspring', () => {
 	}
 });
 
-test('small inherited variation does not produce instant recolouring', () => {
-	const parents = initialPopulation().map((m) => ({ ...m, shade: 0.5 }));
+test('offspring of alike parents stay close to their shade rather than recolouring', () => {
+	const range = (moths: { shade: number }[]) =>
+		Math.max(...moths.map((m) => m.shade)) - Math.min(...moths.map((m) => m.shade));
+	const original = initialPopulation();
+	const parents = original.map((m) => ({ ...m, shade: 0.5 }));
 	const children = nextGeneration(parents, 70);
-	expect(children.every((m) => m.shade >= 0.42 && m.shade <= 0.58)).toBe(true);
+	const mean = children.reduce((sum, m) => sum + m.shade, 0) / children.length;
+	// A little variation, centred on the parents, far narrower than the whole population's range.
 	expect(new Set(children.map((m) => m.shade)).size).toBeGreaterThan(10);
+	expect(mean).toBeCloseTo(0.5, 1);
+	expect(range(children)).toBeLessThan(range(original) / 4);
 });
 
 test('eating everyone causes extinction rather than inventing survivors', () => {

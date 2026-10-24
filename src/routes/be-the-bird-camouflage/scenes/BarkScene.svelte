@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { untrack } from 'svelte';
 	import { Label } from '#lib/draw/index.ts';
+	import { toSvg } from '#lib/draw/pointer.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import {
 		initialPopulation,
@@ -13,7 +14,7 @@
 		type Moth
 	} from '../model';
 
-	let { step, t, params, reduced }: StageProps = $props();
+	let { step, t, params, reduced, setParam }: StageProps = $props();
 	let population = $state<Moth[]>(initialPopulation());
 	let caught = $state<number[]>([]);
 	let generation = $state(1);
@@ -37,7 +38,7 @@
 		hunting
 			? reduced
 				? 'Hunting · untimed'
-				: `Hunting · ${seconds} seconds left`
+				: `Hunting · ${seconds} ${seconds === 1 ? 'second' : 'seconds'} left`
 			: done
 				? living.length
 					? 'Hunt over · the survivors can breed'
@@ -45,6 +46,14 @@
 				: 'Look closely: can you spot 24 moths?'
 	);
 	const canHunt = $derived(step.controls?.some((c) => c.id === 'hunt') ?? false);
+	// What the next press of the hunt button does; steps.ts names the button after it.
+	const phase = $derived(
+		hunting ? 'hunting' : done ? (living.length ? 'over' : 'extinct') : 'ready'
+	);
+	$effect(() => {
+		const p = phase;
+		untrack(() => setParam('huntPhase', p));
+	});
 	const instruction = $derived(
 		hunting
 			? 'Tap a moth to catch it'
@@ -52,9 +61,9 @@
 				? 'Each adult keeps its own shade'
 				: done
 					? living.length
-						? 'Press the button for their offspring'
-						: 'Press the button for a new group of moths'
-					: 'Press the button to begin a hunt'
+						? 'Press “Let the survivors breed”'
+						: 'Press “Start a new group of moths”'
+					: 'Press “Start the hunt”'
 	);
 
 	// Step navigation stops the hunt without discarding the reader's catches.
@@ -64,6 +73,8 @@
 			if (started) finished = true;
 		});
 	});
+	// One press, one thing: start a hunt, end it early, or (after a hunt) breed the survivors.
+	// Breeding never starts the next hunt, so the reader can read the bars first.
 	$effect(() => {
 		const n = Number(params.hunt ?? 0);
 		if (!n) return;
@@ -72,7 +83,7 @@
 				finished = true;
 				return;
 			}
-			if (started) {
+			if (done) {
 				if (living.length === 0) {
 					population = initialPopulation(17 + n * 41);
 					generation = 1;
@@ -83,6 +94,9 @@
 					history = [...history.slice(-4), { generation, counts: shadeCounts(population) }];
 				}
 				caught = [];
+				started = false;
+				finished = false;
+				return;
 			}
 			started = true;
 			finished = false;
@@ -91,6 +105,28 @@
 	});
 	function catchMoth(id: number) {
 		if (hunting && !caught.includes(id)) caught = [...caught, id];
+	}
+	// On a phone the stage is drawn at ~0.4 scale, so a moth's own 30-unit circle is a ~23 px
+	// target. A tap on the bark catches the nearest uncaught moth within 22 screen pixels
+	// (at least the desktop 30 units). The surface is transparent and covers the whole bark,
+	// so it shows nothing about where the moths are.
+	function catchNearest(event: MouseEvent) {
+		if (!hunting) return;
+		const el = event.currentTarget as SVGGraphicsElement;
+		const scale = el.ownerSVGElement?.getScreenCTM()?.a ?? 1;
+		const reach = Math.max(30, 22 / scale);
+		const p = toSvg(event, el);
+		let best: Moth | undefined;
+		let bestDistance = reach;
+		for (const moth of population) {
+			if (caught.includes(moth.id)) continue;
+			const d = Math.hypot(moth.x - p.x, moth.y - p.y);
+			if (d <= bestDistance) {
+				best = moth;
+				bestDistance = d;
+			}
+		}
+		if (best) catchMoth(best.id);
 	}
 	function keyCatch(event: KeyboardEvent, id: number) {
 		if (event.key === 'Enter' || event.key === ' ') {
@@ -118,7 +154,15 @@
 			fill="none"
 		/>
 	{/each}
-	<Label x={315} y={48} text={soot ? 'Sooty bark' : 'Pale bark'} size={22} weight={650} />
+	<!-- Keyboard readers catch moths through their own buttons below; this surface only widens taps. -->
+	<!-- svelte-ignore a11y_click_events_have_key_events, a11y_no_static_element_interactions -->
+	<rect x="28" y="74" width="574" height="436" rx="28" fill="transparent" onclick={catchNearest} />
+	<Readout id="bark">
+		<Label x={315} y={48} text={soot ? 'Sooty bark' : 'Pale bark'} size={22} weight={650} />
+		{#snippet narrow()}
+			<Label x={315} y={46} text={soot ? 'Sooty bark' : 'Pale bark'} size={40} weight={700} />
+		{/snippet}
+	</Readout>
 	{#each population as moth (moth.id)}
 		{#if !caught.includes(moth.id)}
 			<g
@@ -161,7 +205,12 @@
 		fill="var(--surface)"
 		stroke="var(--border)"
 	/>
-	<Label x={779} y={112} text="Who is left?" size={22} weight={650} />
+	<Readout id="who">
+		<Label x={779} y={112} text="Who is left?" size={22} weight={650} />
+		{#snippet narrow()}
+			<Label x={779} y={124} text="Who is left?" size={36} weight={700} />
+		{/snippet}
+	</Readout>
 	<Readout id="living" label="Alive" value={`${living.length} of 24`} order={1}>
 		<Label x={779} y={146} text={`${living.length} of 24 still alive`} size={18} />
 	</Readout>
@@ -177,11 +226,34 @@
 		/>
 	{/each}
 	<line x1="654" y1="232" x2="901" y2="232" stroke="var(--stage-line)" />
-	<Label x={660} y={255} text="pale" anchor="start" size={15} muted />
-	<Label x={900} y={255} text="dark" anchor="end" size={15} muted />
-	<Label x={779} y={294} text="Generations · before each hunt" size={15} />
+	<Readout id="shade-axis">
+		<Label x={660} y={255} text="pale" anchor="start" size={15} muted />
+		<Label x={900} y={255} text="dark" anchor="end" size={15} muted />
+		{#snippet narrow()}
+			<Label x={656} y={259} text="pale" anchor="start" size={26} muted />
+			<Label x={904} y={259} text="dark" anchor="end" size={26} muted />
+		{/snippet}
+	</Readout>
+	<Readout id="history-title">
+		<Label x={779} y={294} text="Generations · before each hunt" size={15} />
+		{#snippet narrow()}
+			<Label x={779} y={303} text="Generations" size={28} weight={650} />
+		{/snippet}
+	</Readout>
 	{#each history as record, i (record.generation)}
-		<Label x={656} y={326 + i * 32} text={`${record.generation}`} size={14} muted />
+		<Readout id="history-{record.generation}">
+			<Label x={656} y={326 + i * 32} text={`${record.generation}`} size={14} muted />
+			{#snippet narrow()}
+				<Label
+					x={652}
+					y={329 + i * 32}
+					text={`${record.generation}`}
+					size={26}
+					weight={650}
+					muted
+				/>
+			{/snippet}
+		</Readout>
 		{@const total = record.counts.reduce((a, b) => a + b, 0)}
 		{#each record.counts as count, j (j)}
 			{@const offset = record.counts.slice(0, j).reduce((a, b) => a + b, 0)}
@@ -191,6 +263,7 @@
 				width={(226 * count) / total}
 				height="19"
 				fill={shadeColor((j + 0.5) / 6)}
+				stroke="var(--stage-line)"
 			/>
 		{/each}
 	{/each}

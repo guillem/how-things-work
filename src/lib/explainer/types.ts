@@ -59,8 +59,11 @@ export interface SelectControl extends ControlBase {
  */
 export interface ActionControl extends ControlBase {
 	type: 'action';
-	/** Text on the button. */
-	action: string;
+	/**
+	 * Text on the button. A function lets the label follow the other params,
+	 * e.g. a param the scene sets with `setParam` to say what a press will do next.
+	 */
+	action: string | ((params: Params) => string);
 	default?: never;
 }
 

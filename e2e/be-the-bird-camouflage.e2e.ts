@@ -1,8 +1,10 @@
 import { expect, test, type Page } from '@playwright/test';
+import { playUntil } from './play';
 
 const stage = (page: Page) => page.locator('.stage svg > g:not([data-leaving])');
-const hunt = (page: Page) =>
-	page.getByRole('button', { name: 'Hunt / next generation', exact: true });
+const readouts = (page: Page) => page.getByRole('group', { name: 'Readouts' });
+/** The one hunt button; its text says what the next press does. */
+const hunt = (page: Page) => page.locator('.action button[data-control=hunt]');
 
 async function open(page: Page, hash = 'hunt') {
 	await page.emulateMedia({ reducedMotion: 'reduce' });
@@ -14,8 +16,10 @@ test('the reader catches a moth; only the survivors can produce the next generat
 	page
 }) => {
 	await open(page);
+	await expect(hunt(page)).toHaveText('Start the hunt');
 	await hunt(page).click();
 	await expect(stage(page)).toContainText('Hunting · untimed');
+	await expect(hunt(page)).toHaveText('End the hunt now');
 	const moth = stage(page).getByRole('button', { name: 'Catch moth 1', exact: true });
 	await moth.focus();
 	await moth.press('Enter');
@@ -23,9 +27,29 @@ test('the reader catches a moth; only the survivors can produce the next generat
 	await expect(stage(page)).toContainText('23 of 24 still alive');
 	await hunt(page).click();
 	await expect(stage(page)).toContainText('Hunt over · the survivors can breed');
+	await expect(hunt(page)).toHaveText('Let the survivors breed');
 	await hunt(page).click();
 	await expect(stage(page)).toContainText('Generation 2');
 	await expect(stage(page)).toContainText('24 of 24 still alive');
+});
+
+test('breeding and hunting are separate presses, so the bars can be read first', async ({
+	page
+}) => {
+	await open(page, 'survive');
+	await hunt(page).click();
+	await hunt(page).click();
+	await expect(hunt(page)).toHaveText('Let the survivors breed');
+	await hunt(page).click();
+	// The new generation waits: no hunt (and no timer) until the reader starts one.
+	await expect(stage(page)).toContainText('Generation 2 · Look closely');
+	await expect(stage(page)).not.toContainText('Hunting');
+	await expect(
+		stage(page).getByRole('button', { name: 'Catch moth 1', exact: true })
+	).toHaveAttribute('aria-disabled', 'true');
+	await expect(hunt(page)).toHaveText('Start the hunt');
+	await hunt(page).click();
+	await expect(stage(page)).toContainText('Generation 2 · Hunting');
 });
 
 test('changing bark changes the background, never an adult moth’s shade', async ({ page }) => {
@@ -55,6 +79,7 @@ test('catching all moths ends this population rather than silently rescuing a pa
 	}
 	await hunt(page).click();
 	await expect(stage(page)).toContainText('No survivors · these moths died out');
+	await expect(hunt(page)).toHaveText('Start a new group of moths');
 	await hunt(page).click();
 	await expect(stage(page)).toContainText('Generation 1');
 	await expect(stage(page)).toContainText('24 of 24 still alive');
@@ -65,9 +90,9 @@ test('the twelve-second hunt expires on the pausable stage clock', async ({ page
 	await page.goto('./be-the-bird-camouflage/#hunt');
 	await expect(stage(page)).toContainText('24 of 24 still alive');
 	await hunt(page).click();
-	await expect(stage(page)).toContainText('Hunting');
-	await page.clock.runFor(12_500);
-	await expect(stage(page)).toContainText('Hunt over · the survivors can breed');
+	await expect(stage(page)).toContainText('Hunting · 12 seconds left');
+	await playUntil(page, stage(page), 'Hunting · 1 second left', 12_000);
+	await playUntil(page, stage(page), 'Hunt over · the survivors can breed', 2_000);
 	await expect(
 		stage(page).getByRole('button', { name: 'Catch moth 1', exact: true })
 	).toHaveAttribute('aria-disabled', 'true');
@@ -99,5 +124,22 @@ test('steps without a hunting button give instructions that can actually be foll
 	await expect(stage(page)).not.toContainText('Press the button');
 	await page.getByRole('button', { name: 'Next step' }).click();
 	await expect(page).toHaveURL(/#reverse$/);
-	await expect(stage(page)).toContainText('Press the button for their offspring');
+	await expect(stage(page)).toContainText('Press “Let the survivors breed”');
+});
+
+test.describe('on a phone', () => {
+	test.use({ viewport: { width: 390, height: 844 }, hasTouch: true });
+
+	test('a tap just beside a moth still catches it', async ({ page }) => {
+		await page.emulateMedia({ reducedMotion: 'reduce' });
+		await page.goto('./be-the-bird-camouflage/#hunt');
+		await expect(readouts(page)).toContainText('24 of 24');
+		await hunt(page).click();
+		const box = await stage(page)
+			.getByRole('button', { name: 'Catch moth 1', exact: true })
+			.boundingBox();
+		// Beyond the moth's own drawn tap circle, within a fingertip's reach of it.
+		await page.touchscreen.tap(box!.x + box!.width + 3, box!.y + box!.height / 2);
+		await expect(readouts(page)).toContainText('23 of 24');
+	});
 });
