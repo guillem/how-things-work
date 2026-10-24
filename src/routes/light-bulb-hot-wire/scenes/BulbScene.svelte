@@ -148,6 +148,28 @@
 		})
 	);
 
+	// ---- the gas inside (burn step) --------------------------------------------------------------
+	const specks = Array.from({ length: 16 }, (_, i) => ({
+		i,
+		a: hash(i, 21) * Math.PI * 2,
+		r: 30 + Math.sqrt(hash(i, 22)) * 85,
+		w: (hash(i, 23) - 0.5) * 0.5,
+		o: hash(i, 24) * 9
+	}));
+	const gas = $derived(
+		specks.map((s) => {
+			const a = s.a + (reduced ? 0 : t * s.w);
+			const jx = reduced ? 0 : Math.sin(t * 1.3 + s.o) * 6;
+			return {
+				i: s.i,
+				x: CX + Math.cos(a) * s.r + jx,
+				y: GY - 12 + Math.sin(a) * s.r * 0.85,
+				// Air takes the place of the argon a speck at a time as it comes in.
+				air: air && hash(s.i, 25) < Math.min(1, p * 2.5)
+			};
+		})
+	);
+
 	// ---- smoke when the wire burns -----------------------------------------------------------------
 	const puffs = Array.from({ length: 9 }, (_, i) => ({ i, x: hash(i, 7), o: hash(i, 8) }));
 	const smoke = $derived(
@@ -332,6 +354,18 @@
 		{#each smoke as s (s.i)}
 			<circle cx={s.x} cy={s.y} r={s.r} fill="var(--lbh-smoke)" opacity={s.o} />
 		{/each}
+		{#if phase === 'burn'}
+			<!-- the gas in the bulb: argon, or air rushing in through the crack -->
+			{#each gas as s (s.i)}
+				<circle
+					cx={s.x}
+					cy={s.y}
+					r="4"
+					fill={s.air ? 'var(--lbh-oxygen)' : 'var(--lbh-gas)'}
+					opacity="0.85"
+				/>
+			{/each}
+		{/if}
 	{:else}
 		<!-- the LED chips on their board -->
 		<rect x={CX - 52} y="300" width="104" height="14" rx="4" fill="var(--lbh-board)" />
@@ -700,6 +734,53 @@
 				/>
 			</Readout>
 		{/if}
+	{:else if phase === 'burn'}
+		<circle cx="584" cy="246" r="7" fill="var(--lbh-gas)" />
+		<Readout
+			id="lbh-argon"
+			order={2}
+			label="Grey dots"
+			value="argon: nothing burns in it"
+			color="var(--lbh-gas)"
+		>
+			<Label
+				x={600}
+				y={252}
+				text="argon: nothing burns in it"
+				anchor="start"
+				size={17}
+				weight={600}
+			/>
+		</Readout>
+		<circle cx="584" cy="290" r="7" fill="var(--lbh-oxygen)" opacity={air ? 1 : 0.35} />
+		<Readout
+			id="lbh-oxygen"
+			order={3}
+			label="Blue dots"
+			value="oxygen from the air"
+			color="var(--lbh-oxygen)"
+			opacity={air ? 1 : 0}
+		>
+			<Label
+				x={600}
+				y={296}
+				text="oxygen from the air"
+				anchor="start"
+				size={17}
+				weight={600}
+				muted={!air}
+			/>
+		</Readout>
+		<Readout id="lbh-life" order={4} label="Sealed, a bulb lasts" value="about 1,000 hours">
+			<Label
+				x={572}
+				y={360}
+				text="sealed, a bulb lasts about 1,000 hours"
+				anchor="start"
+				size={15}
+				muted
+			/>
+		</Readout>
 	{:else if phase === 'led'}
 		{#each [{ id: 'old', y: 214, b: FULL, label: 'old-style bulb' }, { id: 'led', y: 350, b: ledBulb, label: 'LED bulb' }] as row (row.id)}
 			{@const on = (row.id === 'led') === isLed}

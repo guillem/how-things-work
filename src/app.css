@@ -6064,6 +6064,8 @@ kbd {
 	--lbh-atom: #8a4b14;
 	--lbh-electron: #1098ad;
 	--lbh-hair: #6f4e37;
+	--lbh-gas: #adb5bd;
+	--lbh-oxygen: #339af0;
 }
 :root[data-theme='dark'] {
 	--lbh-room: #101215;
@@ -6093,4 +6095,6 @@ kbd {
 	--lbh-atom: #8a4b14;
 	--lbh-electron: #22b8cf;
 	--lbh-hair: #a0785a;
+	--lbh-gas: #ced4da;
+	--lbh-oxygen: #4dabf7;
 }
