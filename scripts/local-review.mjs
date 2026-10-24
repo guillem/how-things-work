@@ -2,7 +2,7 @@
 // can run out): the same review instructions as scripts/batch-review.ts, but the agent reads the
 // files itself, read-only, with web search. Writes docs/reviews/<slug>.md; apply it by checking
 // each fix against its source, then delete it (CLAUDE.md).
-// Usage: node scripts/local-review.mjs <slug> [codex|grok|pi:<provider/model>]   (default codex)
+// Usage: node scripts/local-review.mjs <slug> [codex|claude|grok|pi:<provider/model>] (default codex)
 import { execFileSync } from 'node:child_process';
 import fs from 'node:fs';
 import os from 'node:os';
@@ -40,6 +40,28 @@ if (agent === 'codex') {
 		['exec', '-s', 'read-only', '--ephemeral', '-c', 'web_search=live', '-o', out, prompt],
 		opts
 	);
+} else if (agent === 'claude') {
+	// Explicitly limit the reviewer to reading files and consulting sources. In particular,
+	// it cannot edit the explainer or run the project's build/release hooks.
+	const readTools = 'Read,Glob,Grep,WebSearch,WebFetch';
+	const text = execFileSync(
+		'claude',
+		[
+			'-p',
+			'--restricted',
+			'--strict-mcp-config',
+			'--no-session-persistence',
+			'--tools',
+			readTools,
+			'--allowedTools',
+			readTools,
+			'--output-format',
+			'text',
+			prompt
+		],
+		{ ...opts, stdio: ['ignore', 'pipe', fd], encoding: 'utf8' }
+	);
+	fs.writeFileSync(out, text);
 } else if (agent === 'grok') {
 	const text = execFileSync('grok', ['-p', prompt, '-m', 'grok-4.7', '--effort', 'medium'], {
 		...opts,

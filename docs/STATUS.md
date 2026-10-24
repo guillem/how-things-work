@@ -4,7 +4,7 @@ The self-handover. If work is interrupted, this file alone must be enough to con
 top to bottom, then run the commands under "Resume". **Update it at every commit**, not just at
 the end of a development.
 
-Last updated: 2026-10-24, 94 of the proposal's topics built (194, every promoted catalogue topic ticked); **v1.2.5 live** (194 topics, 2026-10-24). Stopped at 81% of the weekly usage; next: the last 6 level-0 topics (not yet promoted) after the 2026-10-28 reset, then v1.3.0.
+Last updated: 2026-10-24, 94 of the proposal's topics built (194, every promoted catalogue topic ticked); **v1.2.5 live** (194 topics, 2026-10-24). Codex is building the final six level-0 topics in three isolated worktrees, then preparing v1.3.0 for local validation. The live release remains v1.2.5 until validation and release.
 
 ## How we work
 
@@ -76,6 +76,18 @@ Last updated: 2026-10-24, 94 of the proposal's topics built (194, every promoted
   those registries from `main` plus each branch's own entry).
 
 ## Current development
+
+**Final six, Codex handover (2026-10-24, in progress).** The user asked Codex to finish the
+200-topic milestone in the existing style and try Claude for reviews. Three builders:
+`/tmp/htw-final-physics` (`codex/final-physics`: shapes-that-tile, vibrations-and-sound),
+`/tmp/htw-final-chemistry` (`codex/final-chemistry`: why-metal-feels-cold,
+dissolving-sugar-and-salt), and `/tmp/htw-final-biology` (`codex/final-biology`:
+be-the-bird-camouflage, flocking-birds). Each owns its worktree; the lead integrates and runs
+the final full browser suite. Claude Code is installed but signed out (normal account access
+also checked); Grok's account responds and is the existing fallback. `scripts/local-review.mjs`
+now accepts `claude` with file-read and web tools only, restricted mode and no MCP servers.
+A stub CLI smoke test verified its arguments and report output; formatting and lint pass.
+No release until the completed build has its recorded local validation.
 
 **Level-0 round, second part (2026-10-23/24).** The user raised the weekly cap to 85% (41% at the start) and gave the last $27 of cloud credit. Landed on `main`, ticked, not released: muscles-pull-in-pairs, why-you-get-sleepy, sea-breeze, why-spinning-makes-you-dizzy, comet-tails and clock-escapement (three local builders at a time, sessions in app worktrees, each fact-checked by grok and landed by itself), and hydraulics-digger-arm and earth-is-a-ball (cloud sessions; fact-checked by grok on the laptop by the lead). Cost: the first three local topics took 6% of the weekly usage together (about 2% each); the second three plus the lead's two fact-checks took 11%; three builders at once fill about half the 5-hour window, and the second batch hit it once (resumed after the reset). Then toilet-flush, light-bulb-hot-wire, drone-four-rotors, wifi-and-walls and teach-a-machine landed the same way, built by background agents in worktrees (the app can't start sessions from Remote Control, and proposal cards don't show on mobile); about 4% of the weekly usage each, and two of them hit the 5-hour limit mid-rebase and were resumed after the reset. Stopped at 81%. Next, after the 2026-10-28 reset: the 6 still in `TOPICS-PROPOSAL.md` only (shapes-that-tile, vibrations-and-sound, why-metal-feels-cold, dissolving-sugar-and-salt, be-the-bird-camouflage, flocking-birds; promote each with `promote.mjs`), then `make e2e-full` and v1.3.0. Released as **v1.2.5** (2026-10-24): `make e2e-full` (3,818) green locally with 4 and with 2 workers, then CI, the deploy and the live smoke test green. The builders' worktrees are under `.claude/worktrees/` (the app removes them when their sessions are archived).
 
