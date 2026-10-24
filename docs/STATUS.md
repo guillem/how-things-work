@@ -78,6 +78,8 @@ Last updated: 2026-10-24. **All 200 topics are built, reviewed and ticked**, inc
 
 ## Current development
 
+**Claude review, final chemistry topics (2026-10-24):** applied the signed-in Claude CLI reports for why-metal-feels-cold and dissolving-sugar-and-salt. The touch page now distinguishes ideal perfect contact from a real finger, shows all four temperatures as the room crosses the hand temperature, labels heat bars/dial and uses temperature colours across the slider range. Dissolving explicitly describes its fixed-size particle window, shows warming capacity, and corrects the particle/key/link wording. Focused model/browser/scene tests, lint, types and 116 visual captures pass; lead runs the final merged release checks.
+
 **200-topic milestone, Codex handover (2026-10-24).** The final six level-0 explainers are
 integrated on `main`: shapes-that-tile, vibrations-and-sound, why-metal-feels-cold,
 dissolving-sugar-and-salt, be-the-bird-camouflage and flocking-birds. All 200 catalogue entries,

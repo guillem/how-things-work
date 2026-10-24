@@ -113,8 +113,11 @@ export function temperatureAt(
 	);
 }
 
-export function warmthColor(temp: number): string {
-	const u = Math.max(0, Math.min(1, (temp - 20) / 13));
+/** Blue-to-coral temperature key. Thermometers use the fixed5–45°C range;
+ * the enlarged strip uses the two starting temperatures so its gradients remain
+ * visible in cold and hot rooms. Equal-temperature strips use the midpoint. */
+export function warmthColor(temp: number, low = 5, high = 45): string {
+	const u = high > low ? Math.max(0, Math.min(1, (temp - low) / (high - low))) : 0.5;
 	const rgb = [64 + 175 * u, 139 - 11 * u, 213 - 114 * u];
 	return `rgb(${rgb.map(Math.round).join(' ')})`;
 }
