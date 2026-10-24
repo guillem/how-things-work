@@ -278,8 +278,15 @@
 		><Label x={480} y={519} anchor="middle" text={summary} size={23} weight={600} /></Readout
 	>
 	{#if step.id === 'distance' || jar}
-		<rect x="540" y="290" width="180" height="12" rx="6" fill="var(--stage-grid)" />
-		<rect x="540" y="290" width={180 * Math.min(1, relative)} height="12" rx="6" fill={blue} />
+		<rect x="540" y={jar ? 290 : 350} width="180" height="12" rx="6" fill="var(--stage-grid)" />
+		<rect
+			x="540"
+			y={jar ? 290 : 350}
+			width={180 * Math.min(1, relative)}
+			height="12"
+			rx="6"
+			fill={blue}
+		/>
 	{/if}
 	<g
 		transform={jar ? 'translate(480,0)' : undefined}
