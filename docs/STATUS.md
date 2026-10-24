@@ -5,9 +5,9 @@ top to bottom, then run the commands under "Resume". **Update it at every commit
 the end of a development.
 
 Last updated: 2026-10-24. **All 200 topics are built, reviewed and ticked**, including all
-100 proposed additions. The pre-review tree passed its checks; **Claude review corrections are now in progress**
-before the final v1.3.0 validation.
-**v1.2.5 remains live** (194 topics). Next: the user's local validation, then release v1.3.0.
+100 proposed additions. **Claude reviewed the final six; verified corrections are integrated
+and the final checks pass.** v1.3.0 awaits the user's local validation.
+**v1.2.5 remains live** (194 topics).
 
 ## How we work
 
@@ -79,68 +79,71 @@ before the final v1.3.0 validation.
 
 ## Current development
 
-**Claude review, final chemistry topics (2026-10-24):** applied the signed-in Claude CLI reports for why-metal-feels-cold and dissolving-sugar-and-salt. The touch page now distinguishes ideal perfect contact from a real finger, shows all four temperatures as the room crosses the hand temperature, labels heat bars/dial and uses temperature colours across the slider range. Dissolving explicitly describes its fixed-size particle window, shows warming capacity, and corrects the particle/key/link wording. Focused model/browser/scene tests, lint, types and 116 visual captures pass; lead runs the final merged release checks.
+**200-topic milestone and Claude follow-up (2026-10-24, complete; release pending local validation).**
+The final six level-0 explainers are integrated on `main`: shapes-that-tile,
+vibrations-and-sound, why-metal-feels-cold, dissolving-sugar-and-salt,
+be-the-bird-camouflage and flocking-birds. All 200 catalogue entries, checklist ticks,
+routes and registry entries agree. The six contain 49 steps, each with at most one control.
 
-**Biology Claude review follow-up (2026-10-24):** after the user signed Claude in, applied both real Claude reports in an isolated worktree. Camouflage no longer reveals moths through per-insect cursors or fixed occupied slots; instructions, keyboard caveat and population restarts are explicit. Flocking measures the extent of each seven-neighbour group, uses a non-wrapping complete hawk pass, and distinguishes the watched bird from the direction arrow. Focused model/browser/scene checks, lint, types and fresh both-theme/phone screenshot matrices pass. Rejected the suggested forced increase in inherited variation, an unsupported catalogue Leads-to field, and the largest-connected-group metric (it misclassified the actual seeded states). Lead handles report removal and merged release checks.
+The user signed Claude Code in after the initial build. All six read-only CLI reviews completed
+successfully. Findings were verified against primary sources and actual models, then applied in
+`c4b22912` (chemistry), `8b2c11a5` (biology) and `073661af` (math/physics), all merged into main.
+The applied reports were deleted per the normal workflow; copies remain in
+`/tmp/htw-claude-reports/`. No source was sent to Grok.
 
-**Final physics topics, Claude review fixes (2026-10-24):** tiling gaps now come from the actual corner fan; sound audio status/loudness labels, labelled inside-air jar power, separated parcels and a real air/water/steel medium selector corrected. Independent source checks retained the prescribed-motion inside-air model and actual ruler frequencies rather than speculative outside-jar power or device compensation. Focused model/browser/scene tests and refreshed screenshot QA recorded by the builder; integrated checks remain with the lead.
+- **Tiling:** a tiling need not repeat. Non-tiling shapes now show their actual corner fan and
+  model-derived uncovered sector, rather than an arbitrary spaced grid. Overlap instructions,
+  regular-polygon tray names and S-bend labels match what is drawn; coverage and shared-edge
+  tests protect the geometry.
+- **Sound:** speaker status resets and audio closes on navigation; parcels stay separated,
+  controls/bar labels agree, and the materials step demonstrates air, water and bulk steel with
+  OpenStax speeds. The jar explicitly computes power given to the air inside; outside audio and
+  the arrow illustrate fading, without a glass-transmission prediction. Real ruler frequencies
+  stay intact, with a low-note/small-speaker caveat at first use.
+- **Contact heat:** the main text identifies ideal perfect contact and the fixed 33 °C finger.
+  The room slider compares all four materials, colour gradients work throughout the range,
+  and heat bars/dial are labeled. The dial reports model skin temperature, not a numerical
+  prediction of perceived temperature.
+- **Dissolving:** the main text explains the fixed drawing window and real liquid-volume rise;
+  capacity remains visible after all sugar dissolves. Whole sample symbols, saturation captions,
+  the ion key and the onward melting link now match the scene and linked page. ACS values and
+  equilibrium/conservation remain unchanged.
+- **Camouflage:** uniform hunt cursors and irregular, separated resting positions remove
+  hidden location clues. Instructions respect which controls exist; restart, keyboard selection
+  and normal-speed timing are explicit. Multi-generation selection/reversal and tap-spacing
+  tests guard the game; bark still never recolours adults or enters inheritance.
+- **Flocking:** the spread readout measures the seventh neighbour instead of nearest spacing.
+  The hawk flies completely off-screen and uses non-wrapping avoidance; the 25-second split/
+  reunion regression still passes. Constant speed is disclosed, rule names match and the watched
+  bird has a distinct colour.
 
-**200-topic milestone, Codex handover (2026-10-24).** The final six level-0 explainers are
-integrated on `main`: shapes-that-tile, vibrations-and-sound, why-metal-feels-cold,
-dissolving-sugar-and-salt, be-the-bird-camouflage and flocking-birds. All 200 catalogue entries,
-checklist ticks, routes and registry entries agree. The six add 49 steps, with real models,
-keyboard-accessible interactions, phone readouts, theme support and complete reduced-motion frames.
+**Suggestions checked and declined:** the proposed fan-edge equation had reversed endpoints;
+a universal air-pressure-squared jar law and device loudness correction need assumptions or
+calibration absent here; increasing moth variation would manufacture a faster reversal;
+a numerical “feels like” scale would misstate the heat model; the catalogue has no Leads-to
+field. The proposed 70-unit connected-flock metric misclassified the seeded states (78 birds
+with cohesion versus 91 without), so the seventh-neighbour measure was used instead. Tests
+that merely retyped a formula were declined; real physical/behaviour checks were retained.
 
-Three isolated builders followed the existing scene style. The lead independently reviewed
-models and narrative against primary references (Euclidean tilings, cantilever/acoustic theory,
-published thermal properties, ACS solubility measurements, Cook's moth experiment, Reynolds and
-Ballerini). Corrections include triangle coverage, heat-source attribution and colour coding,
-ion motion, dense histogram layout, sound-scene geometry and explicit experiment reset wording.
-Audio is opt-in and tested against the calculated note. Flocking has model and browser
-regressions for the hawk splitting the seeded flock and the flock reuniting afterwards.
+**Final verification:** merged `make check` passed: formatting, full ESLint, zero Svelte/
+TypeScript errors or warnings and **2,272 model tests**. The entire production/sub-path browser
+suite passed with `npx playwright test --workers=2`: **3,908 tests in 12.8 minutes**. No browser
+test failed or was weakened. Changed topic/scene checks and visual QA also pass: 116 reviewed
+chemistry captures, 188 biology captures and 168 fresh-document/asserted physics captures,
+covering both themes, early/late motion, controls, reduced motion and phones. Original build
+QA covered more than 500 further images. Only final result documentation changed afterwards.
 
-**Claude review follow-up (2026-10-24, in progress).** The user signed Claude Code in and
-requested Claude reviews instead of Grok. All six read-only reviews have returned in
-`docs/reviews/<slug>.md` (runner logs `/tmp/htw-claude-<slug>.log`). Three isolated builders
-are applying valid findings in `/tmp/htw-review-physics`, `/tmp/htw-review-chemistry` and
-`/tmp/htw-review-biology` (branches `codex/review-final-*`). The lead checks suggested changes
-against sources and actual model outputs, then integrates and verifies the combined changes.
-Key findings: model-derived polygon gaps, perfect-contact qualifications and hot-room colour/
-comparison readouts, sound-state cleanup, clearer solubility/capacity/volume illustrations,
-camouflage cursor/position clues, and a meaningful flock-spread measure with a coherent hawk
-pass. Do not blindly adopt suggested numerical changes: the reviewer's largest-connected-flock
-metric fails for the actual seeded flock, and a universal air-pressure-squared jar law or
-speaker loudness compensation would need additional assumptions/calibration. Apply reports,
-record decisions here, then delete the reports per the normal workflow.
-Chemistry corrections (`c4b22912`) are integrated and their two applied reports removed;
-read-only review copies are preserved in `/tmp/htw-claude-reports/`. Physics and biology
-corrections are finishing focused tests and visual QA.
+Logs: `/tmp/htw-200-claude-check.log`, `/tmp/htw-200-claude-e2e.log`. Review artifacts and visual
+handover files: `/tmp/chemistry-review-shots/`, `/tmp/htw-review-biology-qa/REVIEW.md`,
+`/tmp/physics-shots/new-review/REVIEW-RESULT.md`. Screenshots are outside the repository.
+All temporary builder/review worktrees and their merged branches were removed; older Claude
+worktrees were left alone. `scripts/local-review.mjs <slug> claude` remains available with
+restricted read/web tools and no MCP servers.
 
-The earlier **2,265 model / 3,903 browser** checks belong to the pre-Claude-fix tree. Run the
-appropriate checks again after integrating behavior changes. Release still awaits local
-validation. No source was sent to Grok. Claude's runner is restricted to read/web tools with
-no MCP servers.
-
-**Validation:** each builder's `make check` and topic/browser/scene tests passed. More than 500
-screenshots were inspected across every step, both themes, early/late motion, reduced motion,
-phones and control extremes. Per-step QA handovers are `/tmp/physics-shots/REVIEW.md`,
-`/tmp/chemistry-handoff.md` and `/tmp/htw-biology-qa/QA.md`. The lead's source-review notes are
-`/tmp/htw-final-six-review.md`. Final merged `make check` passed (formatting, full ESLint, zero Svelte/TypeScript errors or
-warnings, **2,265 model tests**). The full production/sub-path browser suite passed once with
-`npx playwright test --workers=2`: **3,903 tests in 13.1 minutes**. Initial browser startup was
-blocked by the filesystem/network sandbox's local-port restriction; rerunning with permission
-to serve localhost passed. No browser test failed or was weakened. The six new pages also pass
-a structural check: 6–9 steps and at most one control per step (49 new steps total).
-
-The checked source is committed on main; only these result notes and the completed-backlog
-entry were updated after verification. Review-script smoke test and final documentation
-formatting also pass. Logs: `/tmp/htw-200-check.log`, `/tmp/htw-200-e2e.log`. A production preview
-is served at `http://localhost:5190/how-things-work/?level=0` for local validation.
-
-**Release:** local validation is still required by the recorded user workflow above. No push,
-release tag or deployment yet. After approval: `make release V=v1.3.0`. The live tag remains
-v1.2.5. The three temporary builder worktrees and merged branches have been removed; all topic
-commits are preserved on main. Older Claude-owned worktrees were left alone.
+**Release:** local validation is required by the recorded user workflow above. The refreshed
+production preview is `http://localhost:5190/how-things-work/?level=0`. No push, release tag or
+deployment yet; v1.2.5 is live. After approval: `make release V=v1.3.0` (do not rerun the browser
+suite without a new change or failure; the release workflow runs its own clean-machine checks).
 
 **Level-0 round, second part (2026-10-23/24).** The user raised the weekly cap to 85% (41% at the start) and gave the last $27 of cloud credit. Landed on `main`, ticked, not released: muscles-pull-in-pairs, why-you-get-sleepy, sea-breeze, why-spinning-makes-you-dizzy, comet-tails and clock-escapement (three local builders at a time, sessions in app worktrees, each fact-checked by grok and landed by itself), and hydraulics-digger-arm and earth-is-a-ball (cloud sessions; fact-checked by grok on the laptop by the lead). Cost: the first three local topics took 6% of the weekly usage together (about 2% each); the second three plus the lead's two fact-checks took 11%; three builders at once fill about half the 5-hour window, and the second batch hit it once (resumed after the reset). Then toilet-flush, light-bulb-hot-wire, drone-four-rotors, wifi-and-walls and teach-a-machine landed the same way, built by background agents in worktrees (the app can't start sessions from Remote Control, and proposal cards don't show on mobile); about 4% of the weekly usage each, and two of them hit the 5-hour limit mid-rebase and were resumed after the reset. Stopped at 81%. Next, after the 2026-10-28 reset: the 6 still in `TOPICS-PROPOSAL.md` only (shapes-that-tile, vibrations-and-sound, why-metal-feels-cold, dissolving-sugar-and-salt, be-the-bird-camouflage, flocking-birds; promote each with `promote.mjs`), then `make e2e-full` and v1.3.0. Released as **v1.2.5** (2026-10-24): `make e2e-full` (3,818) green locally with 4 and with 2 workers, then CI, the deploy and the live smoke test green. The builders' worktrees are under `.claude/worktrees/` (the app removes them when their sessions are archived).
 
