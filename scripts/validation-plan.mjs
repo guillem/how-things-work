@@ -60,32 +60,24 @@ export function createPlan(root, changed, requestedTopics = []) {
 		seen.add(file);
 		return imports(file).some((dep) => targets.has(dep) || reaches(dep, targets, seen));
 	}
-	const changedSources = new Set(changed.filter((file) => file.startsWith('src/')));
+	const walk = (dir) =>
+		fs
+			.readdirSync(path.join(root, dir), { withFileTypes: true })
+			.flatMap((entry) =>
+				entry.isDirectory() ? walk(`${dir}/${entry.name}`) : [`${dir}/${entry.name}`]
+			);
+	const routeFiles = new Map(topics.map((slug) => [slug, walk(`src/routes/${slug}`)]));
+	// An explicit topic has no Git diff after committing. Include its consumers too.
+	const targets = new Set([...changed, ...requestedTopics.flatMap((slug) => routeFiles.get(slug))]);
 	for (const slug of topics) {
-		const walk = (dir) =>
-			fs
-				.readdirSync(path.join(root, dir), { withFileTypes: true })
-				.flatMap((entry) =>
-					entry.isDirectory() ? walk(`${dir}/${entry.name}`) : [`${dir}/${entry.name}`]
-				);
 		if (
 			!selected.has(slug) &&
-			changedSources.size &&
-			walk(`src/routes/${slug}`).some((file) => reaches(file, changedSources))
+			targets.size &&
+			routeFiles.get(slug).some((file) => reaches(file, targets))
 		)
 			selected.add(slug);
 	}
-	const topicFiles = new Set();
-	for (const slug of selected) {
-		const walk = (dir) => {
-			for (const entry of fs.readdirSync(path.join(root, dir), { withFileTypes: true })) {
-				const file = `${dir}/${entry.name}`;
-				if (entry.isDirectory()) walk(file);
-				else topicFiles.add(file);
-			}
-		};
-		walk(`src/routes/${slug}`);
-	}
+	const topicFiles = new Set([...selected].flatMap((slug) => routeFiles.get(slug)));
 	const affected = tests.filter(
 		(file) =>
 			broad ||
@@ -93,11 +85,33 @@ export function createPlan(root, changed, requestedTopics = []) {
 			reaches(file, topicFiles) ||
 			[...selected].some((slug) => read(file).includes(`/${slug}/`))
 	);
+	const format = [
+		...new Set([...changed, ...(requestedTopics.length ? [...topicFiles, ...affected] : [])])
+	]
+		.filter(exists)
+		.sort();
+	// Recheck unchanged consumers: imported type changes can introduce lint failures
+	// without producing a TypeScript error. Include shared consumers outside routes.
+	const lintTargets = new Set([...changed, ...topicFiles]);
+	const lint = [
+		...new Set([
+			...format,
+			...topicFiles,
+			...affected,
+			...(lintTargets.size
+				? [...walk('src'), ...walk('e2e')].filter(
+						(file) => code.test(file) && reaches(file, lintTargets)
+					)
+				: [])
+		])
+	]
+		.filter((file) => exists(file) && code.test(file))
+		.sort();
 	return {
 		broad,
 		topics: [...selected].sort(),
-		format: changed.filter(exists),
-		lint: changed.filter((file) => exists(file) && code.test(file)),
+		format,
+		lint,
 		types: broad || selected.size > 0 || changed.some((file) => code.test(file)),
 		models: affected.filter(model),
 		browser: affected.filter((file) => !model(file) && file !== 'e2e/scenes.e2e.ts'),

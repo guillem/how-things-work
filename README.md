@@ -37,6 +37,10 @@ Production browser tests build the site for the `/how-things-work/` sub-path and
 [`AGENTS.md`](AGENTS.md); building topics in cloud sessions and reviewing them through the Batch API
 is in [`docs/cloud.md`](docs/cloud.md).
 
+Explicit topic checks include formatting and lint for the topic sources and affected tests,
+even on a clean checkout. Lint also rechecks unchanged consumers of affected code; only
+complete successful lint stages are cached, so `--fresh` runs ESLint without a per-file cache.
+
 The development test server uses `PW_DEV_PORT` (default 4181) and verifies it belongs to
 this checkout before reusing it. Use separate ports for simultaneous worktrees. Model,
 development-browser and production-browser artifacts use separate folders under `test-results/`.

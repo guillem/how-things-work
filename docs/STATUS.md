@@ -77,6 +77,13 @@ persistent Vite test server, shared validation cache and one full mandatory depl
 Validation: `make check` (2,271 model tests, 10 workflow regression tests, no type warnings),
 all 3,919 production browser tests, and 19 targeted development browser tests. No release requested.
 
+Review follow-up fixed two validation gaps: lint now uses whole-stage caching only and
+rechecks unchanged consumers of affected code; explicit topic checks include formatting and
+lint for topic sources and affected tests even after committing. Validated with Node 22:
+formatting, lint, types (no warnings), 11 workflow regression tests (including real type-aware
+ESLint), 2,271 model tests and all 3,919 production browser tests passed. The browser run
+required local server permissions after the sandbox blocked port 4180. No deployment.
+
 **Next development: first real use of the new workflow.** The checks above validate the tooling,
 but the next product change will be its first real development run. Be extra careful: inspect
 `make changed ARGS=--plan` before trusting the selected scope, include committed changes with

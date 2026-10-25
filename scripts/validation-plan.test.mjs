@@ -78,7 +78,18 @@ test('changed test files run even without a topic', (t) => {
 
 test('explicit topics work after committing; invalid topics fail instead of silently skipping', (t) => {
 	const root = fixture(t);
-	assert.equal(createPlan(root, [], ['electric-circuits']).scenes, true);
+	const plan = createPlan(root, [], ['electric-circuits']);
+	assert.equal(plan.scenes, true);
+	for (const file of [
+		'src/routes/electric-circuits/circuit.ts',
+		'src/routes/other/model.ts',
+		'e2e/circuit-model.e2e.ts',
+		'e2e/electric-circuits.e2e.ts'
+	]) {
+		assert.ok(plan.format.includes(file), `format ${file}`);
+		assert.ok(plan.lint.includes(file), `lint ${file}`);
+	}
+	assert.ok(!plan.lint.includes('src/routes/unrelated/steps.ts'));
 	assert.throws(() => createPlan(root, [], ['typo']), /Unknown topic/);
 });
 
@@ -120,12 +131,13 @@ if (process.env.FAIL_TOOL === '${tool}') process.exit(1);
 		encoding: 'utf8'
 	}).stdout.trim();
 	return {
+		root,
 		write(file, text) {
 			fs.writeFileSync(path.join(root, file), text);
 		},
-		check(env = {}) {
+		check(env = {}, args = ['check', '--base', emptyTree]) {
 			fs.writeFileSync(path.join(root, 'commands.log'), '');
-			const result = spawnSync(process.execPath, [cli.pathname, 'check', '--base', emptyTree], {
+			const result = spawnSync(process.execPath, [cli.pathname, ...args], {
 				cwd: root,
 				encoding: 'utf8',
 				env: { ...process.env, CI: '', ...env }
@@ -168,4 +180,51 @@ test('CI bypasses local successful-stage stamps', async (t) => {
 	const ci = fixture.check({ CI: 'true' });
 	assert.equal(ci.status, 0, ci.stderr);
 	assert.deepEqual(ci.tools, first.tools);
+});
+
+// Use real type-aware lint here: mocked tools cannot expose stale per-file caches.
+test('dependency type changes fail lint in unchanged consumers, including fresh and targeted checks', async (t) => {
+	const { spawnSync } = await import('node:child_process');
+	const f = await cacheFixture(t);
+	f.write(
+		'tsconfig.json',
+		JSON.stringify({ compilerOptions: { strict: true }, include: ['src', 'e2e'] })
+	);
+	f.write(
+		'eslint.config.mjs',
+		`import ts from ${JSON.stringify(import.meta.resolve('typescript-eslint'))};
+export default [{files: ['src/**/*.ts', 'e2e/**/*.ts'],
+languageOptions: {parser: ts.parser, parserOptions: {project: './tsconfig.json', tsconfigRootDir: import.meta.dirname}},
+plugins: {'@typescript-eslint': ts.plugin}, rules: {'@typescript-eslint/no-unsafe-return': 'error'}}];`
+	);
+	const dependency = 'src/routes/electric-circuits/circuit.ts';
+	f.write(dependency, 'export function value(): number { return 1; }');
+	f.write(
+		'e2e/circuit-model.e2e.ts',
+		"import { value } from '../src/routes/electric-circuits/circuit'; export function result(): number { return value(); }"
+	);
+	const eslint = new URL('../node_modules/eslint/bin/eslint.js', import.meta.url).pathname;
+	f.write(
+		'node_modules/.bin/eslint',
+		`#!/usr/bin/env node
+const { spawnSync } = require('node:child_process');
+const r = spawnSync(process.execPath, [${JSON.stringify(eslint)}, ...process.argv.slice(2)], {stdio: 'inherit'});
+process.exit(r.status ?? 1);
+`
+	);
+	const first = f.check();
+	assert.equal(first.status, 0, first.stdout + first.stderr);
+	for (const args of [
+		['add', '.'],
+		['-c', 'user.name=Test', '-c', 'user.email=test@example.invalid', 'commit', '-qm', 'fixture']
+	]) {
+		assert.equal(spawnSync('git', args, { cwd: f.root }).status, 0);
+	}
+	f.write(dependency, 'export function value(): any { return 1; }');
+	for (const args of [['quick'], ['check'], ['check', '--fresh']]) {
+		const result = f.check({}, args);
+		assert.equal(result.status, 1, `${args}: ${result.stdout}${result.stderr}`);
+		assert.match(result.stdout, /no-unsafe-return/);
+		assert.match(result.stdout, /circuit-model.e2e.ts/);
+	}
 });

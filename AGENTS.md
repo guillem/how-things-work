@@ -36,18 +36,20 @@ markdown files remain the detailed books.
 ## Workflow: trunk-based, releases by tag
 
 - Commit straight to `main`; no PRs or long-lived branches. Pushing deploys nothing.
-- During development use `make changed`: changed-file formatting/lint, cached project types,
+- During development use `make changed`: changed-file formatting, affected-file lint (including unchanged consumers), cached project types,
   affected model tests, and affected browser/scene tests against Vite. Topic selection follows
   imports and browser URLs; shared code, catalogue, configuration and unknown changes fall back
   to full validation. Never claim a targeted run proves the entire site works.
 - Changes are compared with `HEAD`, including staged, unstaged and untracked files. After
   committing, use `make changed BASE=<start-commit>` or `make changed TOPIC=<slug>`.
+  Explicit topics include formatting and lint for their source files and affected tests.
   Inspect selection with `make changed ARGS=--plan`.
 - Start `make test-server` once to reuse the test Vite server (port 4181, override with
   `PW_DEV_PORT`). Production tests keep their separate server on `PW_PORT` (4180).
 - Hooks run `make quick` (affected static/model checks, no browsers). The pre-push hook also
   includes commits since upstream. Successful full stages are cached by inputs, tooling and
-  Node version; documentation changes do not invalidate types or model checks. `make check`
+  Node version; documentation changes do not invalidate types or model checks.
+  Type-aware lint uses only whole-stage caching, never ESLint per-file caching. `make check`
   runs full static/model checks; `make check ARGS=--fresh` bypasses successful-stage stamps.
 - **Every live deployment must pass fresh full validation first**, including rollback:
   formatting, lint, types, workflow/model tests, and every production browser test. The release

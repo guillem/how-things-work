@@ -113,19 +113,11 @@ const types = () =>
 	]);
 if (mode === 'check' || plan.broad) {
 	stage('format', () => true, [[bin('prettier'), ['--check', '.', '--log-level', 'warn']]]);
-	stage('lint', (file) => /\.(?:[cm]?[jt]s|svelte)$/.test(file), [
-		[
-			bin('eslint'),
-			[
-				'.',
-				'--cache',
-				'--cache-strategy',
-				'content',
-				'--cache-location',
-				'.cache/validation/eslint'
-			]
-		]
+	// Type-aware rules depend on other files: cache the stage, never individual files.
+	stage('lint', (file) => source(file) || /\.(?:[cm]?[jt]s|svelte)$/.test(file), [
+		[bin('eslint'), ['.']]
 	]);
+
 	types();
 	stage('workflow', (file) => file.startsWith('scripts/validation-'), [
 		[process.execPath, ['--test', 'scripts/validation-plan.test.mjs']]
@@ -140,19 +132,8 @@ if (mode === 'check' || plan.broad) {
 			]
 		]);
 	if (plan.lint.length)
-		stage('lint-changed', (file) => /\.(?:[cm]?[jt]s|svelte)$/.test(file), [
-			[
-				bin('eslint'),
-				[
-					'--cache',
-					'--cache-strategy',
-					'content',
-					'--cache-location',
-					'.cache/validation/eslint',
-					'--',
-					...plan.lint
-				]
-			]
+		stage('lint-changed', (file) => source(file) || /\.(?:[cm]?[jt]s|svelte)$/.test(file), [
+			[bin('eslint'), ['--', ...plan.lint]]
 		]);
 	if (plan.types) types();
 	if (plan.models.length)
