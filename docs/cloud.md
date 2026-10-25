@@ -40,9 +40,13 @@ printf 'ANTHROPIC_API_KEY=%s\n' "$(pbpaste)" > .env && chmod 600 .env
 Don't export it in your shell profile or put it in Claude Code's settings: Claude Code also reads
 `ANTHROPIC_API_KEY`, and would bill the key instead of the subscription.
 
-## A batch of topics
+## An explicitly authorized cloud batch
 
-1. Start one cloud session per topic (3–4 at a time), each with:
+Local development defaults to sequential work to conserve AI usage. Use this batch procedure
+only when the user requests parallel cloud work or authorizes it to use separate cloud credits;
+past free-credit experiments do not make parallel batches the default.
+
+1. Start one cloud session per topic, with concurrency set by the authorized batch, each with:
 
    > Build `<slug>` from docs/TOPICS.md, following AGENTS.md and docs/scene-guide.md. Push after
    > every step. When it passes `make changed BASE=origin/main`, rebase onto main and push it

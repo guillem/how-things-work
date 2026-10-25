@@ -7,6 +7,32 @@ authoritative workflow for all agents; historical status entries do not add requ
 `docs/full-picture.html` is the human's one-glance dashboard (open it in a browser); the
 markdown files remain the detailed books.
 
+## AI usage and delegation
+
+- **Prioritize AI usage over elapsed time.** Default to one builder implementing one topic or
+  change at a time, directly on `main`. A request for several topics is a queue to work through
+  sequentially, not permission to create a parallel batch.
+- Do not automatically spawn topic builders, create worktrees, or add an orchestration agent.
+  Use parallel builders when the user explicitly requests parallel work, prioritizes a deadline,
+  or authorizes a batch using separately funded cloud credits. Past cloud experiments and free
+  credits are historical context, not ongoing authorization.
+- Reuse relevant context across straightforward topics. When a conversation becomes crowded,
+  use a short handover and a fresh chat or a narrowly scoped helper; sequential work does not
+  mean keeping every topic in one indefinitely growing conversation.
+- Use delegation selectively when it is likely to reduce total usage or prevent costly errors:
+  a bounded scientific/model review, isolated investigation, or verbose research summarized
+  back to the builder. Give only the necessary context and request concise, actionable results.
+  Do not routinely duplicate the whole implementation or review every file with another agent.
+- Prefer batching independent tool calls or running commands in the background to launching an
+  agent merely to wait for searches or tests. Waiting time itself does not require ongoing
+  model generation; parallel execution mainly improves elapsed time, not usage efficiency.
+- Worktree commands themselves are usually cheap; repeated discovery, delegation, reports,
+  integration and rework consume AI usage. If parallel work is authorized, keep ownership clear
+  and avoid repeated checks or unnecessary coordinator polling.
+- Do not claim a fixed token saving or cost multiplier without comparable measurements.
+  Historical weekly usage percentages combine different topics and review effort. Evaluate
+  usage per completed, validated topic, including coordination and fixes, rather than speed alone.
+
 ## Workflow: trunk-based, releases by tag
 
 - Commit straight to `main`; no PRs or long-lived branches. Pushing deploys nothing.
@@ -32,7 +58,7 @@ markdown files remain the detailed books.
   it. `make rollback` tests and redeploys an earlier tag. Tags are never moved or deleted.
 - Review screenshots of changed scenes in both themes and reduced motion using
   `scripts/shot.mjs` and `docs/scene-guide.md`. Focus review on affected scenes.
-- Parallel work uses local git worktrees. Clone `node_modules` with
+- When parallel work is authorized under the policy above, use local git worktrees. Clone `node_modules` with
   `cp -cR <main checkout>/node_modules node_modules`; never symlink it. Merge locally into
   `main`, delete merged branches, and validate the combined affected changes.
 - Stage files by path, never `git add -A`: the local `package-lock.json` has drift that must not
@@ -44,9 +70,9 @@ markdown files remain the detailed books.
 
 ## Cloud sessions
 
-Topics are often built in Claude Code cloud sessions (setup in `docs/cloud.md`): one topic per
-session, several sessions in parallel. The VM can be reclaimed when the session idles, and only
-pushed work survives, so:
+When the user requests Claude Code cloud work (setup in `docs/cloud.md`), use one topic per
+session; run several sessions in parallel only when authorized under the policy above. The VM
+can be reclaimed when the session idles, and only pushed work survives, so:
 
 - Work on one branch for the topic (the session's own branch, or `topic/<slug>`). **Commit and
   push after every meaningful step** (model and tests, narrative, each scene, review fixes). An

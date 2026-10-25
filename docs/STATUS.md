@@ -21,6 +21,10 @@ the product roadmap is in [`BACKLOG.md`](BACKLOG.md), "After v1.3.0".
 - Follow [AGENTS.md](../AGENTS.md): `make changed` during development; hooks run static/model
   checks only; every release and rollback passes fresh full validation in CI before deployment.
   CI deploys the production build tested by the suite, without rebuilding it.
+- **AI usage takes priority over elapsed time.** Work sequentially with one builder by default;
+  several requested topics form a queue. Parallel topic batches require an explicit user reason
+  (requested concurrency, a deadline priority, or authorized cloud credits). Use focused review
+  selectively; see [AGENTS.md](../AGENTS.md#ai-usage-and-delegation).
 - The quality bar is the photosynthesis explainer: narrative depth, scenes that match the text,
   both themes, reduced motion, every step screenshot-reviewed (method in `scene-guide.md`).
 - Never commit the local `package-lock.json` drift (an optional `yaml` entry dropped by a local
