@@ -5,8 +5,8 @@ import { defineConfig, devices } from '@playwright/test';
 // unknown URLs (scripts/serve-pages.mjs). Tests navigate with relative URLs
 // (`page.goto('./sorting/')`) so they resolve under the sub-path.
 // PW_PORT picks the port (4173 is often taken by another app on this machine).
-// Production validation always exercises every topic. Only the dev config enables filtering.
-process.env.PW_DEV_TOPICS = '0';
+// Release validation always exercises every topic. Only playwright.changed.config.ts narrows.
+process.env.PW_NARROW_TOPICS = '0';
 const BASE = '/how-things-work';
 const PORT = Number(process.env.PW_PORT ?? 4180);
 
@@ -20,7 +20,9 @@ export default defineConfig({
 	// CI's runner is slower than the laptop, and some steps compute for seconds as they open (a
 	// sheet of heart tissue, 9,999 shuffles): give assertions longer to come true there.
 	expect: { timeout: process.env.CI ? 15_000 : 5_000 },
-	reporter: process.env.CI ? [['list'], ['html', { open: 'never' }]] : 'list',
+	// Locally, one dot per test (failures in full) keeps agents' context small; add
+	// `--reporter=list` to see each test's name.
+	reporter: process.env.CI ? [['list'], ['html', { open: 'never' }]] : 'dot',
 	use: {
 		baseURL: `http://localhost:${PORT}${BASE}/`,
 		// Recording a trace costs about a quarter of the suite's time, so only CI keeps one for each

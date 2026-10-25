@@ -4,31 +4,26 @@
 # Port for the test server (4173 is often taken by another app on this machine).
 PW_PORT ?= 4180
 export PW_PORT
-PW_DEV_PORT ?= 4181
-export PW_DEV_PORT
 
 # A system Chromium, recorded by scripts/cloud-setup.sh when Playwright's own can't be
 # downloaded (cloud sessions).
 PW_CHROMIUM_PATH ?= $(shell cat .playwright-chromium 2>/dev/null)
 export PW_CHROMIUM_PATH
 
-.PHONY: changed quick test-server workflow-test check format-check lint typecheck test format e2e e2e-full release rollback verify review review-fetch
+.PHONY: changed quick workflow-test check format-check lint typecheck test format e2e e2e-full release rollback verify review review-fetch
 
 ## Full static/model checks, cached per stage locally; fresh in CI.
 check:
 	node scripts/validate.mjs check $(ARGS)
 
-## Validate affected topics, including browser tests on Vite. BASE includes committed changes.
+## Validate affected topics, including their browser tests on the production build. BASE
+## includes committed changes.
 changed:
 	node scripts/validate.mjs changed $(if $(BASE),--base $(BASE)) $(if $(TOPIC),--topic $(TOPIC)) $(ARGS)
 
 ## Affected static/model checks only (used by hooks).
 quick:
 	node scripts/validate.mjs quick $(if $(BASE),--base $(BASE)) $(ARGS)
-
-## Persistent HMR server for repeated targeted browser tests, on its own port.
-test-server:
-	BASE_PATH=/how-things-work npm run dev -- --host localhost --port $(PW_DEV_PORT) --strictPort
 
 ## Selection/cache regression tests, no browser or build.
 workflow-test:

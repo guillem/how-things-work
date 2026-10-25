@@ -13,14 +13,13 @@ light and dark themes.
 ## Develop
 
 ```sh
-nvm use             # match deployment Node version from .nvmrc
+node --version      # the major version in .nvmrc (26), which CI uses too
 npm install
 npm run dev          # http://localhost:5173
-make changed        # affected static/model/browser checks; no production build for topic edits
+make changed        # affected static/model checks and browser tests on the production build
 make changed TOPIC=electric-circuits  # explicitly validate a topic, including after committing
 make changed BASE=HEAD~1             # include changes in the last commit
 make changed ARGS=--plan             # inspect the selected scope without running checks
-make test-server    # optional: keep test Vite server running for fast repeated runs
 make check          # all static/model checks; successful stages cached locally
 make check ARGS=--fresh  # bypass successful-stage stamps
 make e2e            # production smoke tests (builds the whole site)
@@ -41,9 +40,12 @@ Explicit topic checks include formatting and lint for the topic sources and affe
 even on a clean checkout. Lint also rechecks unchanged consumers of affected code; only
 complete successful lint stages are cached, so `--fresh` runs ESLint without a per-file cache.
 
-The development test server uses `PW_DEV_PORT` (default 4181) and verifies it belongs to
-this checkout before reusing it. Use separate ports for simultaneous worktrees. Model,
-development-browser and production-browser artifacts use separate folders under `test-results/`.
+Targeted runs (`make changed`) use the same production build and server as release
+validation, through `playwright.changed.config.ts`, which narrows the test files that cover many
+topics to the selected ones (`e2e/topic-filter.ts`). Use a separate `PW_PORT` for each
+simultaneous worktree. Model, targeted and full browser runs keep their artifacts in separate
+folders under `test-results/`. Local runs print one dot per test (failures in full); add
+`--reporter=list` to see names.
 
 To look at a scene the way a visitor sees it, run the dev server and take screenshots of the stage
 with the helper (every step, both themes, at two different animation times):

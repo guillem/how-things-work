@@ -27,10 +27,9 @@ the product roadmap is in [`BACKLOG.md`](BACKLOG.md), "After v1.3.0".
   selectively; see [AGENTS.md](../AGENTS.md#ai-usage-and-delegation).
 - The quality bar is the photosynthesis explainer: narrative depth, scenes that match the text,
   both themes, reduced motion, every step screenshot-reviewed (method in `scene-guide.md`).
-- Never commit the local `package-lock.json` drift (an optional `yaml` entry dropped by a local
-  npm run); stage files by path, not with `git add -A`.
+- Stage files by path, not with `git add -A`.
 - Screenshots go to a scratch directory outside the repository.
-- Use `.nvmrc` locally (`nvm use`), matching the deployment runtime. No routine duplicate runs
+- Use the `.nvmrc` Node (26) locally, matching CI. No routine duplicate runs
   at different worker counts; investigate specific failures when needed.
 
 ## Current state
@@ -72,25 +71,27 @@ the product roadmap is in [`BACKLOG.md`](BACKLOG.md), "After v1.3.0".
 
 ## Current development
 
-Development workflow optimization implemented and validated locally: affected-topic checks,
-persistent Vite test server, shared validation cache and one full mandatory deployment gate.
-Validation: `make check` (2,271 model tests, 10 workflow regression tests, no type warnings),
-all 3,919 production browser tests, and 19 targeted development browser tests. No release requested.
+Development workflow optimization (2026-10-25): affected-topic checks (`make changed`), a
+shared validation cache, hooks on everything not yet pushed, and one full mandatory deployment
+gate that deploys the build it tested.
 
-Review follow-up fixed two validation gaps: lint now uses whole-stage caching only and
-rechecks unchanged consumers of affected code; explicit topic checks include formatting and
-lint for topic sources and affected tests even after committing. Validated with Node 22:
-formatting, lint, types (no warnings), 11 workflow regression tests (including real type-aware
-ESLint), 2,271 model tests and all 3,919 production browser tests passed. The browser run
-required local server permissions after the sandbox blocked port 4180. No deployment.
+Second review (same day) changed the targeted browser runs: they use the production build (13 s)
+through `playwright.changed.config.ts`, because Vite failed 20 of 3,917 tests that pass in
+production (hydration races, the 404 page); the Vite test server is gone. Test files covering
+many topics run only the selected topics (a sorting change: 30 browser tests, not 341). The
+Stop hook now also checks commits made during a turn. Tooling outside the site no longer forces
+the full suite. Node 26 everywhere (`.nvmrc`, so CI), with npm 11's lockfile (the old `yaml`
+drift is gone) and `upload-artifact@v7` (the Node 20 deprecation warning). Validated on Node 26:
+formatting, lint, types (no warnings), 14 workflow tests, 2,271 model tests and all 3,919
+production browser tests. No deployment.
 
-**Next development: first real use of the new workflow.** The checks above validate the tooling,
-but the next product change will be its first real development run. Be extra careful: inspect
-`make changed ARGS=--plan` before trusting the selected scope, include committed changes with
-`BASE=<starting-commit>` (or explicitly select the topic), and confirm the Vite server belongs
-to this checkout. If selection or cache behavior looks wrong, run the relevant checks fresh and
-fix the workflow rather than trusting a skipped check. Every deployment still requires the full
-fresh CI run; the new release/artifact path has not yet been exercised on GitHub Actions.
+**Next development: first real use of the new workflow.** Inspect `make changed ARGS=--plan`
+before trusting the selected scope, and include committed changes with
+`BASE=<starting-commit>` (or `TOPIC=<slug>`). If selection or caching looks wrong, run the
+checks fresh and fix the workflow rather than trust a skipped check. The next release is the
+first on GitHub Actions with the single build-and-deploy job and Node 26: follow it with
+`make verify`. Known flaky under full-suite load (passed 20/20 alone and in the last full run):
+`be-the-bird-camouflage.e2e.ts`, "the twelve-second hunt expires on the pausable stage clock".
 
 v1.3.1 shipped the last topic review fixes (see the history archive).
 The next work is in [`BACKLOG.md`](BACKLOG.md), "After v1.3.0". Parallel work (one topic or

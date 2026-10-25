@@ -3,6 +3,8 @@ import path from 'node:path';
 
 const code = /\.(?:[cm]?[jt]s|svelte)$/;
 const model = (file) => file.endsWith('-model.e2e.ts');
+// The validation tooling has its own regression tests (the workflow stage).
+const validation = /^scripts\/(?:validate\.mjs|validation-[^/]+|check-if-changed\.sh)$/;
 
 /** Conservative topic selection: imports cover historical test names; URLs cover browser tests. */
 export function createPlan(root, changed, requestedTopics = []) {
@@ -19,6 +21,18 @@ export function createPlan(root, changed, requestedTopics = []) {
 		if (!topics.includes(slug)) throw new Error(`Unknown topic: ${slug}`);
 	}
 	const selected = new Set(requestedTopics);
+	// Files the site and tests only use when package.json or a root config names them
+	// (scripts/serve-pages.mjs, the dev server's setup). Otherwise a test must import them.
+	const siteConfig = fs
+		.readdirSync(root)
+		.filter((file) => file === 'package.json' || /config\.[cm]?[jt]s$/.test(file))
+		.map(read)
+		.join('\n');
+	const helper = (file) =>
+		exists(file) &&
+		!siteConfig.includes(file) &&
+		(/^(?:\.claude|\.githooks|\.github|proposals|scripts)\//.test(file) ||
+			(file.startsWith('e2e/') && !file.endsWith('.e2e.ts')));
 	let broad = false;
 	for (const file of changed) {
 		const route = /^src\/routes\/([^/]+)\//.exec(file)?.[1];
@@ -28,6 +42,7 @@ export function createPlan(root, changed, requestedTopics = []) {
 		else if (/\.(?:md|txt)$/.test(file) && !['docs/TOPICS.md', 'docs/PATHS.md'].includes(file))
 			continue;
 		else if (/^e2e\/[^/]+\.e2e\.ts$/.test(file) && exists(file)) continue;
+		else if (helper(file)) continue;
 		else broad = true;
 	}
 	// Follow static imports, including cross-topic model reuse. Unresolved/dynamic topic
@@ -83,6 +98,7 @@ export function createPlan(root, changed, requestedTopics = []) {
 			broad ||
 			changed.includes(file) ||
 			reaches(file, topicFiles) ||
+			reaches(file, targets) ||
 			[...selected].some((slug) => read(file).includes(`/${slug}/`))
 	);
 	const format = [
@@ -112,9 +128,18 @@ export function createPlan(root, changed, requestedTopics = []) {
 		topics: [...selected].sort(),
 		format,
 		lint,
-		types: broad || selected.size > 0 || changed.some((file) => code.test(file)),
+		// svelte-check covers src/, e2e/ and the configs (configs are broad changes).
+		types:
+			broad ||
+			selected.size > 0 ||
+			affected.length > 0 ||
+			changed.some(
+				(file) =>
+					code.test(file) && (/^(?:src|e2e)\//.test(file) || file === 'scripts/batch-review.ts')
+			),
+		workflow: changed.some((file) => validation.test(file)),
 		models: affected.filter(model),
 		browser: affected.filter((file) => !model(file) && file !== 'e2e/scenes.e2e.ts'),
-		scenes: broad || selected.size > 0 || changed.includes('e2e/scenes.e2e.ts')
+		scenes: broad || selected.size > 0 || affected.includes('e2e/scenes.e2e.ts')
 	};
 }

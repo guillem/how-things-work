@@ -3,6 +3,9 @@
 // ~5 px tall, and are listed as text under the stage. Wider screens keep them
 // on the stage.
 import { expect, test, type Page } from '@playwright/test';
+import { skipUnselectedTopics } from './topic-filter';
+
+test.beforeEach(({ page }) => skipUnselectedTopics(page, import.meta.url));
 
 const readouts = (page: Page) => page.getByRole('group', { name: 'Readouts' });
 const drawing = (page: Page) => page.locator('.stage svg');

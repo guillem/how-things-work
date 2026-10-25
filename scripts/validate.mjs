@@ -30,6 +30,10 @@ function capture(command, argv) {
 	if (result.error || result.status !== 0) throw new Error(result.error?.message ?? result.stderr);
 	return result.stdout;
 }
+// CI installs the .nvmrc Node (and its npm); another local major can pass or fail differently.
+const nvmrc = fs.existsSync('.nvmrc') ? fs.readFileSync('.nvmrc', 'utf8').trim() : '';
+if (/^\d+$/.test(nvmrc) && process.versions.node.split('.')[0] !== nvmrc)
+	console.warn(`Warning: Node ${process.version} differs from .nvmrc (${nvmrc}), which CI uses.`);
 if (fs.lstatSync('node_modules').isSymbolicLink())
 	throw new Error(
 		'Clone node_modules into this checkout; a symlink makes type checks use another checkout.'
@@ -111,6 +115,12 @@ const types = () =>
 			['--tsconfig', './tsconfig.json', '--fail-on-warnings', '--output', 'machine']
 		]
 	]);
+const workflow = () =>
+	stage(
+		'workflow',
+		(file) => file.startsWith('scripts/validation-') || file === 'scripts/check-if-changed.sh',
+		[[process.execPath, ['--test', 'scripts/validation-plan.test.mjs']]]
+	);
 if (mode === 'check' || plan.broad) {
 	stage('format', () => true, [[bin('prettier'), ['--check', '.', '--log-level', 'warn']]]);
 	// Type-aware rules depend on other files: cache the stage, never individual files.
@@ -119,9 +129,7 @@ if (mode === 'check' || plan.broad) {
 	]);
 
 	types();
-	stage('workflow', (file) => file.startsWith('scripts/validation-'), [
-		[process.execPath, ['--test', 'scripts/validation-plan.test.mjs']]
-	]);
+	workflow();
 	stage('models', source, [[bin('playwright'), ['test', '-c', 'playwright.models.config.ts']]]);
 } else {
 	if (plan.format.length)
@@ -136,6 +144,7 @@ if (mode === 'check' || plan.broad) {
 			[bin('eslint'), ['--', ...plan.lint]]
 		]);
 	if (plan.types) types();
+	if (plan.workflow) workflow();
 	if (plan.models.length)
 		stage('models-changed', source, [
 			[bin('playwright'), ['test', '-c', 'playwright.models.config.ts', ...plan.models]]
@@ -144,11 +153,13 @@ if (mode === 'check' || plan.broad) {
 if (mode === 'changed') {
 	if (plan.broad) run(bin('playwright'), ['test']);
 	else {
-		if (plan.browser.length)
-			run(bin('playwright'), ['test', '-c', 'playwright.dev.config.ts', ...plan.browser]);
-		if (plan.scenes)
-			run(bin('playwright'), ['test', '-c', 'playwright.dev.config.ts', 'e2e/scenes.e2e.ts'], {
-				PW_TOPICS: plan.topics.join(',')
+		// One production build and run. Files covering many topics run only the selected topics
+		// (e2e/topic-filter.ts), unless the test file itself changed.
+		const browser = [...plan.browser, ...(plan.scenes ? ['e2e/scenes.e2e.ts'] : [])];
+		if (browser.length)
+			run(bin('playwright'), ['test', '-c', 'playwright.changed.config.ts', ...browser], {
+				PW_TOPICS: plan.topics.join(','),
+				PW_FULL_FILES: browser.filter((file) => changed.includes(file)).join(',')
 			});
 	}
 }

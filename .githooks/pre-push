@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-# Include committed changes since upstream as well as the current working tree.
-set -euo pipefail
-base=$(git rev-parse --verify '@{upstream}' 2>/dev/null || git hash-object -t tree /dev/null)
-exec scripts/check-if-changed.sh --base "$base"
+# Checks everything not yet pushed (commits since upstream and the working tree).
+# Enabled by `npm install` (the prepare script sets core.hooksPath to .githooks).
+exec scripts/check-if-changed.sh

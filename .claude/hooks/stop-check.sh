@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
-# Claude Code Stop hook: before Claude ends a turn, run `make quick` (skipped
-# when nothing changed since the last pass) and, if it fails, block the stop
+# Claude Code Stop hook: before Claude ends a turn, run `make quick` on everything
+# not yet pushed, including commits made during the turn (stages that already
+# passed are skipped) and, if it fails, block the stop
 # and hand Claude the failure to fix. At most 3 blocks in a row per session;
 # then the turn ends with a warning to the user, so a failure Claude can't fix
 # never loops. (Claude Code also overrides a run of 8 blocks on its own.)

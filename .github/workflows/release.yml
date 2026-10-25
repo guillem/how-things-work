@@ -59,18 +59,16 @@ jobs:
       - name: Full formatting, lint, types and model tests
         run: make check
       - run: npx playwright install --with-deps chromium
+      # playwright.config.ts never narrows topics (only playwright.changed.config.ts does).
       - name: Full browser suite on the production build
         run: make e2e-full
-        env:
-          PW_TOPICS: ''
-          PW_DEV_TOPICS: '0'
       - id: version
         run: echo "version=$(node -p "require('./build/_app/version.json').version")" >> "$GITHUB_OUTPUT"
       - uses: actions/upload-pages-artifact@v5
         with:
           path: build
       - if: failure()
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v7
         with:
           name: playwright-report
           path: playwright-report

@@ -1,5 +1,6 @@
 import { expect, test, type Page } from '@playwright/test';
 import fs from 'node:fs';
+import { runsTopic } from './topic-filter';
 
 // Site-level behaviour, checked on the production build served under the
 // /how-things-work/ sub-path the way GitHub Pages serves it. Tests tagged
@@ -43,7 +44,7 @@ test(
 	}
 );
 
-for (const slug of slugs) {
+for (const slug of slugs.filter((slug) => runsTopic(import.meta.url, slug))) {
 	test(
 		`${slug}: title, assets and links to other topics all resolve`,
 		{ tag: '@smoke' },

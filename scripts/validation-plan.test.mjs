@@ -54,20 +54,57 @@ test('status edits only need formatting', (t) => {
 	assert.equal(plan.scenes, false);
 });
 
-test('catalogue, paths, shared code, deleted tests and unknown tooling fall back to full checks', (t) => {
+test('catalogue, paths, shared code, deleted files and tooling the site uses fall back to full checks', (t) => {
 	const root = fixture(t);
+	fs.writeFileSync(path.join(root, 'playwright.config.ts'), "'node scripts/serve-pages.mjs'");
+	fs.mkdirSync(path.join(root, 'scripts'));
+	fs.writeFileSync(path.join(root, 'scripts/serve-pages.mjs'), '');
 	for (const file of [
 		'docs/TOPICS.md',
 		'docs/PATHS.md',
 		'src/lib/draw/Label.svelte',
 		'e2e/deleted.e2e.ts',
 		'package-lock.json',
-		'scripts/new.mjs'
+		'scripts/deleted.mjs',
+		'scripts/serve-pages.mjs'
 	]) {
 		const plan = createPlan(root, [file]);
 		assert.equal(plan.broad, true, file);
 		assert.equal(plan.models.length, 3, file);
 	}
+});
+
+test('tooling outside the site reruns only formatting, lint and the tests that import it', (t) => {
+	const root = fixture(t);
+	for (const [file, text] of Object.entries({
+		'scripts/shot.mjs': '',
+		'scripts/validation-plan.mjs': '',
+		'.github/workflows/release.yml': '',
+		'e2e/play.ts': '',
+		'e2e/other.e2e.ts': "import { play } from './play'; page.goto('./other/');"
+	})) {
+		fs.mkdirSync(path.dirname(path.join(root, file)), { recursive: true });
+		fs.writeFileSync(path.join(root, file), text);
+	}
+	const tooling = createPlan(root, ['.github/workflows/release.yml', 'scripts/shot.mjs']);
+	assert.equal(tooling.broad, false);
+	assert.deepEqual(tooling.format, ['.github/workflows/release.yml', 'scripts/shot.mjs']);
+	assert.deepEqual(tooling.lint, ['scripts/shot.mjs']);
+	assert.equal(tooling.types, false);
+	assert.equal(tooling.workflow, false);
+	assert.deepEqual([...tooling.models, ...tooling.browser], []);
+	assert.equal(tooling.scenes, false);
+
+	const helper = createPlan(root, ['e2e/play.ts']);
+	assert.equal(helper.broad, false);
+	assert.deepEqual(helper.browser, ['e2e/other.e2e.ts']);
+	assert.equal(helper.types, true);
+	assert.equal(helper.scenes, false);
+
+	const validation = createPlan(root, ['scripts/validation-plan.mjs']);
+	assert.equal(validation.broad, false);
+	assert.equal(validation.workflow, true);
+	assert.deepEqual(validation.browser, []);
 });
 
 test('changed test files run even without a topic', (t) => {
@@ -119,7 +156,10 @@ async function cacheFixture(t) {
 			path.join(root, 'node_modules/.bin', tool),
 			`#!/usr/bin/env node
 const fs = require('node:fs');
-fs.appendFileSync('commands.log', '${tool}\\n');
+// Targeted browser runs also record their files and topic narrowing.
+const targeted = process.env.PW_FULL_FILES === undefined ? '' :
+	\` \${process.argv.slice(2).join(' ')} | topics=\${process.env.PW_TOPICS} | full=\${process.env.PW_FULL_FILES}\`;
+fs.appendFileSync('commands.log', '${tool}' + targeted + '\\n');
 if (process.env.FAIL_TOOL === '${tool}') process.exit(1);
 `,
 			{ mode: 0o755 }
@@ -135,9 +175,24 @@ if (process.env.FAIL_TOOL === '${tool}') process.exit(1);
 		write(file, text) {
 			fs.writeFileSync(path.join(root, file), text);
 		},
-		check(env = {}, args = ['check', '--base', emptyTree]) {
+		git(...args) {
+			const result = spawnSync(
+				'git',
+				[
+					...['-c', 'user.name=Test', '-c', 'user.email=test@example.invalid'],
+					...['-c', 'commit.gpgsign=false', ...args]
+				],
+				{ cwd: root, encoding: 'utf8' }
+			);
+			assert.equal(result.status, 0, result.stderr);
+		},
+		check(
+			env = {},
+			args = ['check', '--base', emptyTree],
+			command = [process.execPath, cli.pathname]
+		) {
 			fs.writeFileSync(path.join(root, 'commands.log'), '');
-			const result = spawnSync(process.execPath, [cli.pathname, ...args], {
+			const result = spawnSync(command[0], [...command.slice(1), ...args], {
 				cwd: root,
 				encoding: 'utf8',
 				env: { ...process.env, CI: '', ...env }
@@ -227,4 +282,51 @@ process.exit(r.status ?? 1);
 		assert.match(result.stdout, /no-unsafe-return/);
 		assert.match(result.stdout, /circuit-model.e2e.ts/);
 	}
+});
+
+test('targeted browser runs share one build and narrow many-topic files, except changed ones', async (t) => {
+	const fixture = await cacheFixture(t);
+	fixture.git('add', '.');
+	fixture.git('commit', '-qm', 'fixture');
+	fixture.write('src/routes/electric-circuits/circuit.ts', '// edited\n');
+	fixture.write('e2e/phone-readouts.e2e.ts', "page.goto('./other/');");
+	const result = fixture.check({}, ['changed']);
+	assert.equal(result.status, 0, result.stdout + result.stderr);
+	assert.deepEqual(
+		result.tools.filter((line) => line.includes('|')),
+		[
+			'playwright test -c playwright.changed.config.ts e2e/electric-circuits.e2e.ts e2e/other.e2e.ts ' +
+				'e2e/phone-readouts.e2e.ts e2e/scenes.e2e.ts | topics=electric-circuits,other | ' +
+				'full=e2e/phone-readouts.e2e.ts'
+		]
+	);
+});
+
+test('hooks check commits that are not pushed yet, and nothing once they are', async (t) => {
+	const fixture = await cacheFixture(t);
+	for (const file of ['check-if-changed.sh', 'validate.mjs', 'validation-plan.mjs'])
+		fs.copyFileSync(new URL(file, import.meta.url), path.join(fixture.root, 'scripts', file));
+	const origin = fs.mkdtempSync(path.join(os.tmpdir(), 'validation-origin-'));
+	t.after(() => fs.rmSync(origin, { recursive: true, force: true }));
+	fixture.git('init', '-q', '--bare', origin);
+	fixture.git('remote', 'add', 'origin', origin);
+	fixture.git('add', '.');
+	fixture.git('commit', '-qm', 'fixture');
+	fixture.git('push', '-qu', 'origin', 'HEAD');
+	fixture.write('src/routes/electric-circuits/circuit.ts', '// edited\n');
+	fixture.git('commit', '-qam', 'edit');
+	const hook = () => fixture.check({}, [], ['bash', 'scripts/check-if-changed.sh']);
+	const unpushed = hook();
+	assert.equal(unpushed.status, 0, unpushed.stdout + unpushed.stderr);
+	assert.deepEqual(unpushed.tools, [
+		'prettier',
+		'eslint',
+		'svelte-kit',
+		'svelte-check',
+		'playwright'
+	]);
+	fixture.git('push', '-q');
+	const pushed = hook();
+	assert.equal(pushed.status, 0, pushed.stdout + pushed.stderr);
+	assert.deepEqual(pushed.tools, []);
 });

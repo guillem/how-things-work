@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Setup script for Claude Code cloud sessions (see docs/cloud.md): Node 22,
+# Setup script for Claude Code cloud sessions (see docs/cloud.md): the Node in .nvmrc,
 # the dependencies and a Chromium for the browser tests. Cloud environments
 # snapshot the result when this finishes in about five minutes, so later
 # sessions start warm. A failure stops it with an error (a broken install must
@@ -7,8 +7,8 @@
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
-# Node 22 or later (.nvmrc), as in the release workflow. If the active Node is
-# older and nvm is there, install 22 and make it the default, so the session's
+# The .nvmrc Node or later, as in the release workflow. If the active Node is
+# older and nvm is there, install that version and make it the default, so the session's
 # own shells use it too. A machine with a recent Node is left alone.
 want=$(cat .nvmrc)
 major=$(node -p 'process.versions.node.split(".")[0]')

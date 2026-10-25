@@ -37,17 +37,24 @@ markdown files remain the detailed books.
 
 - Commit straight to `main`; no PRs or long-lived branches. Pushing deploys nothing.
 - During development use `make changed`: changed-file formatting, affected-file lint (including unchanged consumers), cached project types,
-  affected model tests, and affected browser/scene tests against Vite. Topic selection follows
-  imports and browser URLs; shared code, catalogue, configuration and unknown changes fall back
-  to full validation. Never claim a targeted run proves the entire site works.
+  affected model tests, and affected browser/scene tests on the production build (it builds in
+  seconds). Topic selection follows imports and browser URLs; shared code, catalogue,
+  configuration and unknown changes fall back to full validation. Tooling outside the site
+  (`.claude/`, `.githooks/`, `.github/`, `proposals/`, `scripts/` unless `package.json` or a root
+  config names it) only needs formatting, lint and the tests that import it; validation tooling
+  also reruns its workflow tests. Never claim a targeted run proves the entire site works.
 - Changes are compared with `HEAD`, including staged, unstaged and untracked files. After
   committing, use `make changed BASE=<start-commit>` or `make changed TOPIC=<slug>`.
   Explicit topics include formatting and lint for their source files and affected tests.
   Inspect selection with `make changed ARGS=--plan`.
-- Start `make test-server` once to reuse the test Vite server (port 4181, override with
-  `PW_DEV_PORT`). Production tests keep their separate server on `PW_PORT` (4180).
-- Hooks run `make quick` (affected static/model checks, no browsers). The pre-push hook also
-  includes commits since upstream. Successful full stages are cached by inputs, tooling and
+- Targeted browser tests run in one Playwright run (`playwright.changed.config.ts`, the release
+  configuration plus narrowing). Test files that cover many topics (scenes, site, phone
+  readouts; `e2e/topic-filter.ts`) run only the selected topics, unless the test file itself
+  changed. Local runs print one dot per test; add `--reporter=list` for names. The test server
+  uses `PW_PORT` (4180); give each simultaneous worktree its own.
+- Hooks run `make quick` (affected static/model checks, no browsers) on everything not yet
+  pushed: commits since upstream, including those made during a turn, plus the working tree.
+  Successful full stages are cached by inputs, tooling and
   Node version; documentation changes do not invalidate types or model checks.
   Type-aware lint uses only whole-stage caching, never ESLint per-file caching. `make check`
   runs full static/model checks; `make check ARGS=--fresh` bypasses successful-stage stamps.
@@ -63,11 +70,11 @@ markdown files remain the detailed books.
 - When parallel work is authorized under the policy above, use local git worktrees. Clone `node_modules` with
   `cp -cR <main checkout>/node_modules node_modules`; never symlink it. Merge locally into
   `main`, delete merged branches, and validate the combined affected changes.
-- Stage files by path, never `git add -A`: the local `package-lock.json` has drift that must not
-  be committed.
+- Stage files by path, never `git add -A`, so stray local files stay out of commits.
 - Keep `docs/STATUS.md` current at meaningful milestones, rather than every commit.
   Update `docs/full-picture.html` when a release, merged batch, or roadmap change lands.
-- Use Node from `.nvmrc` (`nvm use`) locally; CI reads the same file. Do not run the suite a
+- Use the Node major version in `.nvmrc` (26) locally; CI reads the same file, so npm and the
+  lockfile match too. Validation warns when the local Node differs. Do not run the suite a
   second time with a different worker count unless investigating an actual failure.
 
 ## Cloud sessions
