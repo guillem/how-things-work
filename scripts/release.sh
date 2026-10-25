@@ -35,7 +35,11 @@ if git rev-parse -q --verify "refs/tags/$V" >/dev/null; then
 	exit 1
 fi
 
-make check
+# The pre-push hook checks affected static/model inputs; CI is the full deployment gate.
+git diff --quiet && git diff --cached --quiet && [ -z "$(git ls-files --others --exclude-standard)" ] || {
+	echo "release: commit or stash working-tree changes first; the tag must identify the code being deployed." >&2
+	exit 1
+}
 git tag -a "$V" -m "Release $V"
 date -u +%Y-%m-%dT%H:%M:%SZ >.release-started
 git push --atomic origin main "refs/tags/$V"

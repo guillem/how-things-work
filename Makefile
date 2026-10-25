@@ -1,20 +1,38 @@
-# The whole workflow in a few targets (see CLAUDE.md). Trunk-based: commit to
-# main, `make check` before pushing (the git pre-push hook and the Claude Code
-# Stop hook run it too), release by tagging with `make release`.
+# Trunk-based workflow: see AGENTS.md. Hooks run quick checks; every live
+# deployment runs fresh full validation in the release workflow.
 
 # Port for the test server (4173 is often taken by another app on this machine).
 PW_PORT ?= 4180
 export PW_PORT
+PW_DEV_PORT ?= 4181
+export PW_DEV_PORT
 
 # A system Chromium, recorded by scripts/cloud-setup.sh when Playwright's own can't be
 # downloaded (cloud sessions).
 PW_CHROMIUM_PATH ?= $(shell cat .playwright-chromium 2>/dev/null)
 export PW_CHROMIUM_PATH
 
-.PHONY: check format-check lint typecheck test format e2e e2e-full release rollback verify review review-fetch
+.PHONY: changed quick test-server workflow-test check format-check lint typecheck test format e2e e2e-full release rollback verify review review-fetch
 
-## Fast checks, under a minute: formatting, lint, types and the model tests.
-check: format-check lint typecheck test
+## Full static/model checks, cached per stage locally; fresh in CI.
+check:
+	node scripts/validate.mjs check $(ARGS)
+
+## Validate affected topics, including browser tests on Vite. BASE includes committed changes.
+changed:
+	node scripts/validate.mjs changed $(if $(BASE),--base $(BASE)) $(if $(TOPIC),--topic $(TOPIC)) $(ARGS)
+
+## Affected static/model checks only (used by hooks).
+quick:
+	node scripts/validate.mjs quick $(if $(BASE),--base $(BASE)) $(ARGS)
+
+## Persistent HMR server for repeated targeted browser tests, on its own port.
+test-server:
+	BASE_PATH=/how-things-work npm run dev -- --host localhost --port $(PW_DEV_PORT) --strictPort
+
+## Selection/cache regression tests, no browser or build.
+workflow-test:
+	node --test scripts/validation-plan.test.mjs
 
 format-check:
 	npx prettier --check . --log-level warn

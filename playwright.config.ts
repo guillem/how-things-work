@@ -5,11 +5,14 @@ import { defineConfig, devices } from '@playwright/test';
 // unknown URLs (scripts/serve-pages.mjs). Tests navigate with relative URLs
 // (`page.goto('./sorting/')`) so they resolve under the sub-path.
 // PW_PORT picks the port (4173 is often taken by another app on this machine).
+// Production validation always exercises every topic. Only the dev config enables filtering.
+process.env.PW_DEV_TOPICS = '0';
 const BASE = '/how-things-work';
 const PORT = Number(process.env.PW_PORT ?? 4180);
 
 export default defineConfig({
 	testDir: 'e2e',
+	outputDir: 'test-results/browser',
 	testMatch: '**/*.e2e.{ts,js}',
 	// The model tests run in Node without a browser: playwright.models.config.ts.
 	testIgnore: '**/*-model.e2e.ts',

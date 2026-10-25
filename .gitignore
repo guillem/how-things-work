@@ -34,3 +34,6 @@ docs/reviews/dry-run.json
 
 # When the last release/rollback started (scripts/verify.sh)
 .release-started
+
+# Local validation stamps and ESLint cache
+/.cache/

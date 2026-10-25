@@ -1,7 +1,10 @@
 # Building topics in the cloud
 
+Current validation policy: [AGENTS.md](../AGENTS.md). Use affected checks during
+development; every deployment runs a fresh full suite. Timings below are historical.
+
 How to build topics in Claude Code cloud sessions, so the laptop can stay off. The agents' rules
-for these sessions are in `CLAUDE.md` ("Cloud sessions").
+for these sessions are in `AGENTS.md` ("Cloud sessions").
 
 ## One-time environment setup
 
@@ -41,8 +44,8 @@ Don't export it in your shell profile or put it in Claude Code's settings: Claud
 
 1. Start one cloud session per topic (3–4 at a time), each with:
 
-   > Build `<slug>` from docs/TOPICS.md, following CLAUDE.md and docs/scene-guide.md. Push after
-   > every step. When it passes `make check` and `make e2e-full`, rebase onto main and push it
+   > Build `<slug>` from docs/TOPICS.md, following AGENTS.md and docs/scene-guide.md. Push after
+   > every step. When it passes `make changed BASE=origin/main`, rebase onto main and push it
    > to main.
 
 2. When they have all landed on `main`, review them in one batch (from any session, or locally):
@@ -71,10 +74,9 @@ branch rebased and passing. Merge it from the GitHub app, or ask a local session
 - **Speed:** `make check` takes about 100 s (about 1m45 cold): format 17 s, lint 48 s, types 20 s,
   model tests 12 s. That is roughly 5× the laptop's time, but under the Stop hook's 300 s timeout.
   `make e2e` takes about 33 s and `make e2e-full` about 8 min (766 tests; ~1.5 min locally). Run it in
-  the background (`… > log 2>&1 &`) and read the log afterwards, but start **no other Playwright
-  command meanwhile**, and that includes `git push`, whose pre-push hook runs the model tests. Each run
-  clears `test-results/`, and the background run then fails with `ENOENT … .trace` errors that look
-  like test failures.
+  the background (`… > log 2>&1 &`) and read the log afterwards, and avoid concurrent runs of the same suite in one checkout.
+  Model, development-browser and production-browser artifacts now use separate subdirectories
+  under `test-results/`, so these suites no longer delete each other’s output.
 - **Network:** with _Trusted_ access, WebFetch and `curl` to arbitrary sites are refused by the
   proxy (403), and only WebSearch works, so fact-checking reads search excerpts, not the papers. Add
   hosts under _Custom_ if a session needs full pages (for example `pmc.ncbi.nlm.nih.gov`,
@@ -84,10 +86,10 @@ branch rebased and passing. Merge it from the GitHub app, or ask a local session
   write the shots to the session's scratch directory. `scripts/shot.mjs` works unchanged.
 - **Pushing:** `git push --dry-run` doesn't prove write access. A real `git push origin HEAD:main`
   from the cloud session worked (the proxy didn't restrict it to the session's branch). The
-  pre-push hook runs `make check` first (about 100 s).
+  pre-push hook runs cached affected static/model checks first.
 - **Deleting branches:** the session can't delete a remote branch. `git push origin --delete`
   is cut off by the proxy, and the GitHub API answers 403. So the "delete the topic branch"
-  step of finishing (CLAUDE.md) is yours: once the session says its branch is on `main`, delete
+  step of finishing (AGENTS.md) is yours: once the session says its branch is on `main`, delete
   it from GitHub's Branches page or with `git push origin --delete <branch>` on the laptop.
 
 ## What costs what

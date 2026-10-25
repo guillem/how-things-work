@@ -10,6 +10,19 @@ const base = process.env.BASE_PATH ?? '';
 
 export default defineConfig({
 	plugins: [
+		{
+			name: 'validation-workspace',
+			apply: 'serve',
+			configureServer(server) {
+				// A persistent test server must belong to this checkout, not a sibling worktree.
+				server.middlewares.use((req, res, next) => {
+					if (req.url !== `${base}/__validation_workspace`) return next();
+					res.setHeader('content-type', 'text/plain');
+					res.setHeader('cache-control', 'no-store');
+					res.end(process.cwd());
+				});
+			}
+		},
 		sveltekit({
 			adapter: adapter({
 				// Every route is prerendered to plain HTML + assets in ./build

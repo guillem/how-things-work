@@ -13,11 +13,18 @@ light and dark themes.
 ## Develop
 
 ```sh
+nvm use             # match deployment Node version from .nvmrc
 npm install
 npm run dev          # http://localhost:5173
-make check          # prettier, eslint, svelte-check and the model tests (~20 s)
-make e2e            # smoke tests of the critical paths on the production build (~8 s)
-make e2e-full       # every browser test (2,195 of them, ~2 min 50 s)
+make changed        # affected static/model/browser checks; no production build for topic edits
+make changed TOPIC=electric-circuits  # explicitly validate a topic, including after committing
+make changed BASE=HEAD~1             # include changes in the last commit
+make changed ARGS=--plan             # inspect the selected scope without running checks
+make test-server    # optional: keep test Vite server running for fast repeated runs
+make check          # all static/model checks; successful stages cached locally
+make check ARGS=--fresh  # bypass successful-stage stamps
+make e2e            # production smoke tests (builds the whole site)
+make e2e-full       # every production browser test (mandatory in deployment CI)
 make format         # prettier --write
 npm run build        # static site in ./build
 ```
@@ -25,10 +32,14 @@ npm run build        # static site in ./build
 The first time you run the browser tests you need the browser: `npx playwright install chromium`.
 Traces are recorded only in CI (they cost about a quarter of the run); add `--trace on` to record
 one for a failing test locally.
-They build the site for the `/how-things-work/` sub-path and serve it the way GitHub Pages does
+Production browser tests build the site for the `/how-things-work/` sub-path and serve it the way GitHub Pages does
 (`scripts/serve-pages.mjs`) on port `PW_PORT` (default 4180). How we work and test is in
-[`CLAUDE.md`](CLAUDE.md); building topics in cloud sessions and reviewing them through the Batch API
+[`AGENTS.md`](AGENTS.md); building topics in cloud sessions and reviewing them through the Batch API
 is in [`docs/cloud.md`](docs/cloud.md).
+
+The development test server uses `PW_DEV_PORT` (default 4181) and verifies it belongs to
+this checkout before reusing it. Use separate ports for simultaneous worktrees. Model,
+development-browser and production-browser artifacts use separate folders under `test-results/`.
 
 To look at a scene the way a visitor sees it, run the dev server and take screenshots of the stage
 with the helper (every step, both themes, at two different animation times):
@@ -47,19 +58,19 @@ console errors.
 
 Releases happen by tag only: `make release` tags `main` (the next patch version, or
 `V=v1.2.3`) and pushes it. The tag runs `.github/workflows/release.yml`. On a clean machine it
-runs `make check` and every browser test, builds the site for the `/how-things-work/` base path
-and deploys it with GitHub Pages. Then `scripts/verify-live.mjs` waits until the live site
-serves the new build and checks every page and asset. `make verify` follows the run. Pushing to
+runs fresh `make check` and every browser test on the `/how-things-work/` production build,
+then deploys that exact tested build with GitHub Pages. There is no second build.
+`scripts/verify-live.mjs` waits until the live site serves the new build and checks every page and asset. `make verify` follows the run. Pushing to
 `main` deploys nothing.
 
 `make rollback` redeploys the release before the live one (`TO=v1.2.3` picks one) by running
-the same workflow by hand for that tag; tests are skipped, tags are not moved.
+the same workflow by hand for that tag, including fresh full tests before deploying. Tags are not moved.
 
 One-time repository settings: **Settings → Pages → Source: GitHub Actions**; **Settings →
 Environments → github-pages**: allow the tags `v*` and the branch `main`. The site is served from
-`https://<user>.github.io/<repo>/`, so the build is given the base path `/<repo>` through
-`BASE_PATH`; with a custom domain, set it to an empty string in the workflow and in
-`playwright.config.ts`.
+`https://<user>.github.io/<repo>/`, so the production test configuration builds with the base path `/<repo>`.
+For a custom domain, adjust the base path in both Playwright configurations and the
+base-path assertions in the site tests.
 
 ## Project layout
 
@@ -98,11 +109,14 @@ scripts/shot.mjs           screenshot helper for checking scenes in both themes
 scripts/serve-pages.mjs    serves ./build like GitHub Pages, for the browser tests
 scripts/release.sh         `make release`; rollback.sh: `make rollback`; verify-live.mjs: live smoke test
 scripts/batch-review.ts    `make review` / `make review-fetch`: fact-checks through the Batch API
-scripts/check-if-changed.sh  runs `make check` unless nothing changed since the last pass (hooks)
+scripts/validate.mjs      cached checks and conservative affected-topic validation
+scripts/validation-plan.mjs topic/test selection, with regression tests
+scripts/check-if-changed.sh  affected static/model checks for hooks
 scripts/cloud-setup.sh     environment setup for cloud sessions
 scripts/data/<slug>/       one-off scripts that built a topic's data files from its sources
 .githooks/                 the pre-push hook (enabled by `npm install`)
-CLAUDE.md                  the workflow and testing philosophy
+AGENTS.md                  authoritative workflow and testing philosophy
+CLAUDE.md                  entry point for Claude Code (references AGENTS.md)
 e2e/                       Playwright tests (navigation, controls, theme, a render check of every step)
 ```
 
@@ -127,8 +141,8 @@ come for free.
 ### Adding a new explainer
 
 Topics come from the catalogue in `docs/TOPICS.md`: read its preamble and the topic's entry
-first. Work on `main` (or in a local worktree for parallel work, see `CLAUDE.md`) and keep
-`docs/STATUS.md` current as you go.
+first. Work on `main` (or in a local worktree for parallel work, see `AGENTS.md`) and update
+`docs/STATUS.md` at meaningful milestones.
 
 1. Copy `src/routes/photosynthesis/` to `src/routes/<slug>/`, where `<slug>` is the catalogue
    slug.
@@ -142,7 +156,7 @@ first. Work on `main` (or in a local worktree for parallel work, see `CLAUDE.md`
    links to its prerequisites, related topics and the topics that build on it.
 5. `e2e/scenes.e2e.ts` renders every step of every explainer automatically; add a test in
    `e2e/` for any behaviour worth guarding (controls, a model's results), following the testing
-   philosophy in `CLAUDE.md`.
+   philosophy in `AGENTS.md`.
 6. When it meets the catalogue's definition of done, tick it in the `docs/TOPICS.md` checklist
    and log the time in `docs/TIMELOG.md`.
 

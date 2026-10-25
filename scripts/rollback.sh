@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Redeploys an earlier release: runs the release workflow by hand for that tag
-# (build, deploy, live smoke test; its tests passed when it was released).
+# (fresh full checks and tests, deploy their build, then live smoke test).
 # Tags are not moved. Without an argument it picks the release just before the
 # one that is live now, so running it twice goes two releases back.
 #

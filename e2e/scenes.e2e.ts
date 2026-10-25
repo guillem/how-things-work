@@ -4,8 +4,12 @@ import type { ExplainerSpec } from '../src/lib/explainer/types';
 
 // Every explainer is a directory under src/routes with a steps.ts narrative.
 const specs: ExplainerSpec[] = [];
+// Only the development configuration may narrow this exhaustive production suite.
+const requested = process.env.PW_TOPICS?.split(',').filter(Boolean) ?? [];
+const selected = process.env.PW_DEV_TOPICS === '1' ? new Set(requested) : new Set<string>();
 for (const dir of fs.readdirSync('src/routes')) {
 	if (!fs.existsSync(`src/routes/${dir}/steps.ts`)) continue;
+	if (selected.size && !selected.has(dir)) continue;
 	const mod: { spec: ExplainerSpec } = await import(`../src/routes/${dir}/steps.ts`);
 	specs.push(mod.spec);
 }
