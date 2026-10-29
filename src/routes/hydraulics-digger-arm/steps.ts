@@ -120,7 +120,7 @@ export const spec: ExplainerSpec = {
 			body: `
 <p><strong>Change how wide the big piston is.</strong> The counters show what you get and what you pay.</p>
 <p>Make it three times as wide and its face is nine times as big: nine times the push, a ninth of the distance. Wider still, the two numbers keep trading places <strong>exactly</strong>: as many times stronger as it is shorter.</p>
-<p>Twice as wide would give four times the push, but your hand gives only 20 kg and four times that is 80 kg: not enough for the 100 kg crate, which stays put until the piston is a little over 4.5 cm across.</p>
+<p>Twice as wide would give four times the push, but your hand gives only 20 kg and four times that is 80 kg: not enough for the 100 kg crate, which stays put until the piston is about 4.5 cm across.</p>
 <p>So hydraulics don’t make anything for free. Your hand gives a small push over a long way; the big piston gives a huge push over a short way. A lever, a ramp and a bicycle’s low gear make the same swap.</p>`,
 			notes: `<p>Scientists call push times distance the <dfn data-def="What it takes to move something against a push: the push times how far it moves. It comes from your muscles, or an engine, and can't be made from nothing.">work</dfn> done. The work your hand puts in equals the work done lifting, minus a sliver lost to friction in real machines. Hydraulics, like levers, move work around; they never make more.</p>`
 		},

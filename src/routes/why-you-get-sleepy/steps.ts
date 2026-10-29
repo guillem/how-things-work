@@ -111,7 +111,7 @@ export const spec: ExplainerSpec = {
 			duration: 22,
 			controls: [alarm],
 			body: `
-<p><strong>Move the alarm.</strong> Set it to <strong>5:00</strong> and you get out of bed before the tank has drained: it starts the day with half as much again as after a full night. The face looks tired sooner, and by 22:00 you are already past the sleep line.</p>
+<p><strong>Move the alarm.</strong> Set it to <strong>5:00</strong> and you get out of bed before the tank has drained: it starts the day with nearly two-thirds as much again as after a full night. The face looks tired sooner, and by 22:00 you are already past the sleep line.</p>
 <p>Let it ring at <strong>8:00</strong> or later and you are already awake: the tank reaches the waking line at about 7:30. A later alarm does not add sleep; stay in bed and the tank starts filling again.</p>`,
 			notes: `<p>In this simple model a routine of short nights settles into a new, more tired normal after a few days. Real experiments find something worse: people kept to six hours a night for two weeks did as badly on attention tests as people kept awake for a whole night, while saying they felt only a little sleepy.</p>`
 		},

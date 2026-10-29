@@ -1,7 +1,7 @@
 <script lang="ts">
 	/**
 	 * A ship sailing away, twice. Top: seen from the side, the watcher's eye on the beach or a cliff
-	 * at the left, the sea flat or curving down as on a ball (heights stretched about seventy times
+	 * at the left, the sea flat or curving down as on a ball (heights stretched about 120 times
 	 * against distances, both real), the lines of sight to the masthead and to the lowest part still
 	 * in view, and the part hidden behind the sea. Bottom: what the eye sees, the ship at its real
 	 * apparent size against the horizon, or through 7× binoculars aimed at it. Every height and

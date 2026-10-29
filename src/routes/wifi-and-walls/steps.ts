@@ -145,7 +145,7 @@ export const spec: ExplainerSpec = {
 			controls: [fast],
 			body: `
 <p>Most routers send on two ${band}s at once. So far we have used the 2.4 GHz band. <strong>Switch to the 5 GHz band.</strong> The router here uses a channel four times wider on it (80 MHz instead of 20), so its ladder goes much higher: in the kitchen the laptop now gets 351 Mbit/s instead of 130. Beside the router the top of that ladder is 780, six times the fastest 2.4 GHz speed.</p>
-<p>But look at the map. The 5 GHz waves arrive about four times weaker than 2.4 GHz ones at the same distance, and they lose more in each wall: a brick wall lets through only about a thirtieth of them. The fast rungs also need a stronger signal. So the coloured patch is much smaller.</p>`
+<p>But look at the map. The 5 GHz waves arrive about four and a half times weaker than 2.4 GHz ones at the same distance, and they lose more in each wall: a brick wall lets through only about a thirtieth of them. The fast rungs also need a stronger signal. So the coloured patch is much smaller.</p>`
 		},
 		{
 			id: 'reach',

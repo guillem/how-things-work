@@ -154,7 +154,7 @@ export const spec: ExplainerSpec = {
 <p>A steel paper clip is not a magnet: two paper clips don’t pull on each other. <strong>Lower the magnet</strong> towards a heap of them. Once it is a centimetre or two away, a clip jumps up and sticks to its end.</p>
 <p>Near the magnet, even before it touches, the clip <strong>becomes a magnet itself</strong>: it gets a blue end next to the magnet’s red end, and a red end at the bottom. That new magnet can pick up a second clip, which becomes a magnet too and holds a third: a chain.</p>
 <p>Lift the magnet and the chain comes with it. Take the clips away from the magnet, though, and most of their magnetism goes, so the chain usually falls apart (steel clips can keep a little).</p>`,
-			notes: `<p>When the clip jumps comes from the same sums as the rest of the page: the magnet’s pull on the clip, which the clip’s own shape limits, is compared with the clip’s weight. How long a chain can grow depends on the magnet and the clips, and the drawing simply shows three.</p>`
+			notes: `<p>How far away the clip jumps comes from the same sums as the rest of the page: the magnet’s pull on the clip, which the clip’s own shape limits, is compared with the clip’s weight. How long a chain can grow depends on the magnet and the clips, and the drawing simply shows three.</p>`
 		},
 		{
 			id: 'metals',

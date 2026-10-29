@@ -85,7 +85,7 @@ export const spec: ExplainerSpec = {
 <p>Deep inside each ear, right next to the snail-shaped cochlea you hear with, sit three tiny ${rings}, each about 6 millimetres across and filled with fluid. They stand at right angles to each other, like the floor and two walls in the corner of a room, so every way of turning your head stirs the fluid in at least one of them.</p>
 <p><strong>Choose how you move your head.</strong> Shaking it “no” stirs the flat ring. Nodding “yes” or tilting your head to a shoulder stirs the two upright rings.</p>
 <p>Spinning on a chair is a big “no”: it is the flat ring that feels it. The rest of the page looks inside that one.</p>`,
-			notes: `<p>The two upright rings stand at a slant, about halfway between facing forwards and facing sideways, so a nod or a tilt stirs both of them, in different mixes. The brain compares the rings of both ears to work out which way the head turned. The flat ring is not quite flat either: it is tipped up at the front, by roughly 20 to 30 degrees.</p>`
+			notes: `<p>The two upright rings stand at a slant, about halfway between facing forwards and facing sideways, so a nod or a tilt stirs both of them. The brain compares the rings of both ears to work out which way the head turned. The flat ring is not quite flat either: it is tipped up at the front, by roughly 20 to 30 degrees.</p>`
 		},
 		// ------------------------------------------------------------------ ring
 		{
