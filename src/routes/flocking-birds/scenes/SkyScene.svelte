@@ -1,9 +1,8 @@
 <script lang="ts" module>
 	import { initialFlock, advance, type Bird, type Rules } from '../model';
 
-	// Reduced motion shows one settled frame per set of rules: 18 s in, or 25 s with the hawk,
-	// after it has crossed (it leaves at ~22 s) and the flock is one group again (the model
-	// tests check 25 s). Replaying up to 750 steps takes a noticeable moment,
+	// Reduced motion shows one frame per set of rules: 18 s in, settled, or with the hawk 10 s
+	// in, mid-pass, where the flock has split around it (the model tests check 10 s). Replaying up to 750 steps takes a noticeable moment,
 	// so each frame is computed once and kept, and toggling a rule back and forth is instant.
 	// A plain cache, read inside a $derived: nothing needs to react when it fills.
 	// eslint-disable-next-line svelte/prefer-svelte-reactivity
@@ -12,7 +11,7 @@
 		const key = `${rules.separation}/${rules.alignment}/${rules.cohesion}/${rules.hawk}`;
 		let frame = frozen.get(key);
 		if (!frame) {
-			const frames = (rules.hawk ? 25 : 18) * 30;
+			const frames = (rules.hawk ? 10 : 18) * 30;
 			let birds = initialFlock();
 			for (let i = 0; i < frames; i++) birds = advance(birds, rules, i / 30);
 			frame = { birds, time: frames / 30 };

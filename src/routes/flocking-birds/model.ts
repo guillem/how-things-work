@@ -30,9 +30,10 @@ export interface Steering {
 export const WIDTH = 860;
 export const HEIGHT = 370;
 export const SPEED = 48;
+const HAWK_SPEED = 48;
 const DT = 1 / 30;
 export const HAWK_START = 3;
-export const HAWK_END = HAWK_START + (WIDTH + 60) / 48;
+export const HAWK_END = HAWK_START + (WIDTH + 60) / HAWK_SPEED;
 export const ALL_RULES: Rules = { separation: true, alignment: true, cohesion: true, hawk: false };
 
 export function initialFlock(seed = 138): Bird[] {
@@ -67,7 +68,7 @@ export function displacement(a: Bird | Vector, b: Bird | Vector): Vector {
 
 export function hawkAt(time: number): Vector {
 	// A single pass through the sky, not an intelligent predator or a bird controller.
-	return { x: WIDTH + 30 - Math.max(0, time - HAWK_START) * 48, y: HEIGHT / 2 };
+	return { x: WIDTH + 30 - Math.max(0, time - HAWK_START) * HAWK_SPEED, y: HEIGHT / 2 };
 }
 
 export function steering(

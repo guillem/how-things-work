@@ -64,9 +64,8 @@ test('a passing hawk adds a local danger without changing bird count', async ({ 
 	const birds = stage(page).getByTestId('bird');
 	await expect(birds).toHaveCount(100);
 	await page.locator('input[data-control=hawk]').check();
-	// The calm frame is after the pass: the hawk has gone and the flock has closed up again.
-	await expect(stage(page)).toContainText('The hawk has passed · neighbours gather again');
-	await expect(stage(page)).toContainText('Mostly the same way');
+	// The reduced-motion frame is mid-pass, so the split around the hawk can be seen.
+	await expect(stage(page)).toContainText('Nearby birds turn away from the hawk');
 	await expect(birds).toHaveCount(100);
 });
 

@@ -62,7 +62,7 @@ export const spec: ExplainerSpec = {
 			title: 'Who tells them where to turn?',
 			scene: 'sky',
 			duration: 22,
-			body: `<p>A flock turns, stretches and gathers again. It looks as if someone must be calling the moves. But a flock can move together without a leader.</p><p>Here are 100 model birds. Every one follows the same three rules about its seven nearest neighbours. There is no destination and no bird in charge. The sky wraps round: a bird that leaves one edge reappears at the opposite edge.</p>`
+			body: `<p>A flock turns, stretches and gathers again. It looks as if someone must be calling the moves. But a flock can move together without a leader.</p><p>Here are 100 model birds. Every one follows the same three rules about its seven nearest neighbours. There is no destination and no bird in charge. The ring marks one bird so we can watch it; it is no different from the others. The sky wraps round: a bird that leaves one edge reappears at the opposite edge.</p>`
 		},
 		{
 			id: 'space',
@@ -71,7 +71,7 @@ export const spec: ExplainerSpec = {
 			scene: 'sky',
 			duration: 25,
 			controls: [spacing],
-			body: `<p>If another bird is too close, turn away a little. The orange arrow on the ringed bird shows that push. This rule stops the birds piling up. The thin lines join the ringed bird to the seven neighbours it watches.</p><p>Switch the rule off. Each switch starts the same flock again, so you can compare fairly. Give it a few seconds: the birds squeeze into clumps. Switch it back on and they keep a little room between them. The counter below counts pairs flying very close together.</p>`
+			body: `<p>If another bird is too close, turn away a little. The orange arrow on the ringed bird shows that push. This rule stops the birds piling up. The thin lines join the ringed bird to the seven neighbours it watches.</p><p>Switch the rule off. Each switch starts the same flock again, so you can compare fairly. Give it a few seconds: the birds squeeze into clumps. Switch it back on and they keep a little room between them. The counter below counts pairs of birds closer than about one bird length.</p>`
 		},
 		{
 			id: 'direction',
@@ -98,7 +98,7 @@ export const spec: ExplainerSpec = {
 			scene: 'sky',
 			duration: 24,
 			controls: [missing],
-			body: `<p>Try leaving out one rule at a time. Without spacing, the birds bunch up. Without matching, they do not agree which way to fly. Without gathering, they spread out.</p><p>With all three, the little turns add up to a flock. The arrows are turns the ringed bird would make right now. A short arrow means little adjustment is needed; once a bird already matches its neighbours, its blue arrow can shrink to a stub, or disappear if no turn is needed.</p>`
+			body: `<p>Try leaving out one rule at a time. Without spacing, the birds bunch up. Without matching, they do not agree which way to fly. Without gathering, they spread out.</p><p>With all three, the little turns add up to a flock. The arrows show which way each rule is pulling the ringed bird right now. A short arrow means little adjustment is needed; once a bird already matches its neighbours, its blue arrow can shrink to a stub, or disappear if no turn is needed.</p>`
 		},
 		{
 			id: 'hawk',
@@ -124,7 +124,7 @@ export const spec: ExplainerSpec = {
 			title: 'A model, not a bird’s instruction book',
 			scene: 'sky',
 			duration: 24,
-			body: `<p>Craig Reynolds made a famous computer flock using these three ideas. They show that simple local reactions can be enough to make flocking. They are not three rules that scientists proved every real bird obeys.</p><p>Researchers studying real starling flocks found evidence that a bird responds to about six or seven nearest neighbours, rather than every bird within a fixed distance. We use seven here. These model birds all fly at one steady speed. Real birds speed up and slow down, fly in three dimensions, use sight, respond to many cues, and can do much more than these little computer birds.</p>`
+			body: `<p>Craig Reynolds made a famous computer flock using these three ideas. They show that simple local reactions can be enough to make flocking. They are not three rules that scientists proved every real bird obeys.</p><p>Researchers studying real starling flocks found evidence that a bird responds to about six or seven nearest neighbours, rather than every bird within a fixed distance. We use seven here. These model birds all fly at one steady speed. Real birds speed up and slow down, fly in three dimensions, cannot see behind themselves, respond to many cues, and can do much more than these little computer birds.</p>`
 		},
 		{
 			id: 'next',
