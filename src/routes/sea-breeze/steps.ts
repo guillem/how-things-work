@@ -54,7 +54,7 @@ export const spec: ExplainerSpec = {
 			hints: { phase: 'beach' },
 			duration: 14,
 			body: `
-<p>On a hot, sunny afternoon at the beach, a cool wind often blows in from the sea. The flag on the lifeguard’s tower stands out stiff, pointing inland. Around sunrise the same flag pointed the other way, out to sea, and it went slack late in the morning as the wind turned.</p>
+<p>On a hot, sunny afternoon at the beach, a cool wind often blows in from the sea. The flag on the lifeguard’s tower stands out stiff, pointing inland. Around sunrise the same flag pointed the other way, out to sea, and it went slack in the middle of the morning as the wind turned.</p>
 <p>Nobody switched that wind on. So where does it come from, and why does it come in the afternoon? Here is a beach from the side, with land on the left, sea on the right, and the air above drawn as drifting specks.</p>`
 		},
 		{
@@ -81,7 +81,7 @@ export const spec: ExplainerSpec = {
 <p>The sea actually soaks up <em>more</em> of the sunshine than the land does: dark water reflects less of it than sand or fields. So why doesn’t it warm up?</p>
 <p>On land, the warmth stays in a <strong>thin top layer</strong>: the day’s warming reaches only about ${round(LAND_DEPTH * 100)} centimetres into the ground (think of hot sand on your feet, and cool sand when you dig a hand’s depth down). In the sea, the sunlight shines metres into the water and the waves stir it, so that warmth, and a bit more, is shared through the <strong>top ${SEA_DEPTH} metres</strong> of water, ${round(SEA_DEPTH / LAND_DEPTH)} times deeper.</p>
 <p>And litre for litre, water needs more warmth to heat up than soil does. Spread out that thin, the day’s sunshine barely warms the sea at all.</p>`,
-			notes: `<p>The page’s land keeps its warmth in about its top ${round(LAND_DEPTH * 100)} cm of moist soil, and the sea in a stirred top layer ${SEA_DEPTH} m deep. Warming the sea’s layer by a degree takes about ${round(SEA.capacity / LAND.capacity / 10) * 10} times as much heat as warming the land’s. Over a whole summer the sea stores heat through a much deeper layer than this day’s top ${SEA_DEPTH} m, which is why it is warmest in late summer and coolest in late winter, weeks after the land.</p>`
+			notes: `<p>The page’s land keeps its warmth in about its top ${round(LAND_DEPTH * 100)} cm of moist soil, and the sea in a stirred top layer ${SEA_DEPTH} m deep. Warming the sea’s layer by a degree takes about ${round(SEA.capacity / LAND.capacity / 10) * 10} times as much heat as warming the land’s. Over a whole summer the sea stores heat through a much deeper layer than this day’s top ${SEA_DEPTH} m, which is why it is warmest in late summer and coolest in late winter, weeks after the land. The page treats the air over each side as being as warm as the ground or water beneath it; the warming is tuned so the land’s air swings about 14 degrees, as on a clear summer day.</p>`
 		},
 		// ------------------------------------------------------------------ wind
 		{
@@ -120,9 +120,9 @@ export const spec: ExplainerSpec = {
 			duration: 22,
 			controls: [time('night', 3, 'Or drag the Moon across the sky.')],
 			body: `
-<p>After sunset the land loses its warmth as fast as it gained it, while the sea hardly cools at all. By 3 am the air over the land is down to about <strong>${round(night.land)} °C</strong>, and the sea is still about <strong>${round(night.sea)} °C</strong>.</p>
+<p>After sunset the land keeps losing its warmth all night, while the sea hardly cools at all. By 3 am the air over the land is down to about <strong>${round(night.land)} °C</strong>, and the sea is still about <strong>${round(night.sea)} °C</strong>.</p>
 <p>Now the land side is the cooler, heavier one. The warmer air over the sea is pushed up, and air from the land slides out to sea along the ground: a <strong>land breeze</strong> of about ${kmh(night.breeze)} km/h. The flag points out to sea.</p>
-<p>It is gentler than the afternoon’s sea breeze: the gap is only about ${round(night.sea - night.land)} degrees, against ${round(afternoon.land - afternoon.sea)} in the afternoon, and the cool ground at night keeps the loop of air shallower and weaker.</p>`
+<p>It is gentler than the afternoon’s sea breeze because the gap is only about ${round(night.sea - night.land)} degrees, against ${round(afternoon.land - afternoon.sea)} in the afternoon. (Real land breezes are also shallower, because cold air near the ground at night resists being stirred, which the page leaves out.)</p>`
 		},
 		{
 			id: 'whole-day',
@@ -135,7 +135,7 @@ export const spec: ExplainerSpec = {
 			body: `
 <p>Here is the whole day at once. The two lines are the air over the land and the air over the sea; the bars underneath are the breeze, up for a sea breeze and down for a land breeze. <strong>Move through the day</strong>.</p>
 <p>The breeze follows the gap between the two lines: when the land line climbs above the sea line, the breeze blows in from the sea, and the bigger the gap, the stronger it blows. In the evening the land line drops below the sea line and the breeze turns round.</p>`,
-			notes: `<p>Times are Sun time, for a clear summer day 40 degrees north of the equator (about the latitude of Madrid or New York), with no other wind blowing. With daylight saving time, clocks read about an hour later. A strong wind from the weather can swamp a sea breeze, and clouds that block the Sun weaken it.</p>`
+			notes: `<p>Times are Sun time, for a clear summer day 40 degrees north of the equator (about the latitude of Madrid or New York), with no other wind blowing. With daylight saving time, clocks read an hour or more later than Sun time (about an hour in New York, over two hours in Madrid). A strong wind from the weather can swamp a sea breeze, and clouds that block the Sun weaken it.</p>`
 		},
 		{
 			id: 'next',
@@ -146,7 +146,7 @@ export const spec: ExplainerSpec = {
 			duration: 14,
 			body: `
 <p>Uneven heating is enough to make a wind. By day air slides in from over the cooler sea to replace the warm air pushed up over the land; at night the land cools below the sea and the breeze turns round.</p>
-<p>Not every wind is a sea breeze, though. The big winds that bring storms and change the weather cover whole countries, and over such distances Earth’s spin bends them, which this page leaves out. The page on <a href="../atmosphere-weather/">the atmosphere and weather</a> heats the whole spinning planet and gets its great winds. The page on <a href="../cloud-base/">why clouds form</a> follows one bubble of rising air up until it turns into a cloud, and <a href="../states-of-matter/">states of matter</a> shows what the molecules of a gas do when it warms and spreads out.</p>`
+<p>Not every wind is a sea breeze, though. The big winds that bring storms and change the weather cover whole countries, and over such distances, and over the days they blow for, Earth’s spin bends them (it even slowly turns a sea breeze through the afternoon), which this page leaves out. The page on <a href="../atmosphere-weather/">the atmosphere and weather</a> heats the whole spinning planet and gets its great winds. The page on <a href="../cloud-base/">why clouds form</a> follows one bubble of rising air up until it turns into a cloud, and <a href="../states-of-matter/">states of matter</a> shows what the molecules of a gas do when it warms and spreads out.</p>`
 		}
 	]
 };

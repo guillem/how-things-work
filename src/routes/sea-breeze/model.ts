@@ -96,7 +96,7 @@ export const P_TOP = 900;
 /** Height of the loop, m, and its width (half on each side of the shore), m. */
 export const LOOP_HEIGHT = 1000;
 export const LOOP_WIDTH = 20000;
-/** Friction's hold on the breeze, per second (it would stop a breeze left alone in about 17 min). */
+/** Friction's hold on the breeze, per second (a breeze left alone would lose about two-thirds of its speed in 17 min). */
 export const FRICTION = 1 / 1000;
 
 /** The breeze's acceleration, m/s², from a land-minus-sea temperature difference `dT` (°C). */
