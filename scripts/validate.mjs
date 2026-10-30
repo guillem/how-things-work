@@ -124,8 +124,10 @@ const workflow = () =>
 if (mode === 'check' || plan.broad) {
 	stage('format', () => true, [[bin('prettier'), ['--check', '.', '--log-level', 'warn']]]);
 	// Type-aware rules depend on other files: cache the stage, never individual files.
+	// Four workers halve the full lint (125 s to 57 s on the laptop); each holds its own
+	// TypeScript program, so more of them run out of memory on 16 GB.
 	stage('lint', (file) => source(file) || /\.(?:[cm]?[jt]s|svelte)$/.test(file), [
-		[bin('eslint'), ['.']]
+		[bin('eslint'), ['--concurrency', '4', '.']]
 	]);
 
 	types();

@@ -64,8 +64,9 @@ console errors.
 
 Releases happen by tag only: `make release` tags `main` (the next patch version, or
 `V=v1.2.3`) and pushes it. The tag runs `.github/workflows/release.yml`. On a clean machine it
-runs fresh `make check` and every browser test on the `/how-things-work/` production build,
-then deploys that exact tested build with GitHub Pages. There is no second build.
+builds the `/how-things-work/` production site once, then runs fresh `make check` alongside
+every browser test on that build (four parallel shards), and deploys that exact tested build
+with GitHub Pages. There is no second build.
 `scripts/verify-live.mjs` waits until the live site serves the new build and checks every page and asset. `make verify` follows the run. Pushing to
 `main` deploys nothing.
 

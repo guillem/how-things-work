@@ -93,9 +93,14 @@ production browser tests. No deployment.
 **Next development: first real use of the new workflow.** Inspect `make changed ARGS=--plan`
 before trusting the selected scope, and include committed changes with
 `BASE=<starting-commit>` (or `TOPIC=<slug>`). If selection or caching looks wrong, run the
-checks fresh and fix the workflow rather than trust a skipped check. v1.3.2 was the first
-release on the single build-and-deploy job and Node 26, and it passed; follow each release with
-`make verify`. Known flaky under full-suite load (passed 20/20 alone and in the last full run):
+checks fresh and fix the workflow rather than trust a skipped check. Follow each release with
+`make verify`.
+
+CI speed-up (2026-10-30): v1.3.2's build job took 22 min (checks 7.8 min in series, eslint alone
+4 min; browser suite 13.7 min on 4 workers). The workflow now builds once and runs `make check`
+in parallel with four browser shards (6 workers each) on that build; eslint uses 4 workers and
+the model tests 6. The npm cache is off: caches made by a tag's run are scoped to that tag, so
+none was ever restored. Known flaky under full-suite load (passed 20/20 alone and in the last full run):
 `be-the-bird-camouflage.e2e.ts`, "the twelve-second hunt expires on the pausable stage clock".
 
 v1.3.1 shipped the last topic review fixes (see the history archive).
