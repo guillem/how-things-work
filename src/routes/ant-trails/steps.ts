@@ -51,7 +51,7 @@ export const spec: ExplainerSpec = {
 			duration: 14,
 			body: `
 <p>Leave a drop of sugar on the floor and, before long, a line of ants runs between it and their nest, each ant hurrying along the same narrow path. It looks as if someone planned it.</p>
-<p>Nobody did. No ant has a map, no ant is in charge, and the queen, back in the nest, only lays eggs. So how does the line know where to go?</p>`
+<p>Nobody did. No ant has a map, no ant is in charge, and the queen, back in the nest, lays eggs and gives no orders. So how does the line know where to go?</p>`
 		},
 		{
 			id: 'wander',
@@ -85,7 +85,7 @@ export const spec: ExplainerSpec = {
 			duration: 40,
 			body: `
 <p>Drag the sugar somewhere else. The ants at the end of the old trail find nothing there, so they carry nothing home and stop adding scent to it.</p>
-<p>Real trail scent fades away, and so does it here, only quicker, so you can watch. In the Argentine ant experiments the scent lasts on the order of half an hour; here it fades in under a minute. Without new dabs, the old trail fades, the ants spread out searching again, and before long a new trail leads to the sugar’s new place. Fading lets the colony forget a route that has stopped leading anywhere.</p>`
+<p>Real trail scent fades away, and so does the scent here, only quicker, so you can watch. In experiments with Argentine ants (more on those below), the scent lasts about as long as the experiment itself, tens of minutes; here it fades in under a minute. Without new dabs, the old trail fades, the ants spread out searching again, and before long a new trail leads to the sugar’s new place. Fading lets the colony forget a route that has stopped leading anywhere.</p>`
 		},
 		{
 			id: 'pebble',
@@ -97,7 +97,7 @@ export const spec: ExplainerSpec = {
 			controls: [pebble],
 			body: `
 <p>Drop a pebble right on the trail. The ants that reach it lose the scent and squeeze round it on one side or the other, and the ones carrying sugar lay new scent as they go.</p>
-<p>Soon the trail bends round the pebble, hugging its edge, so the detour adds only a few steps. No ant planned it: it is simply where most of the new scent ended up.</p>`
+<p>Soon the trail bends round the pebble, hugging its edge, so the detour adds only a few steps. No ant planned it. Ants carrying sugar head straight for home, so they brush past the pebble’s edge, and that is where their new scent ends up; the searchers simply follow it.</p>`
 		},
 		// ------------------------------------------------------------------ bridges
 		{
@@ -109,7 +109,7 @@ export const spec: ExplainerSpec = {
 			duration: 40,
 			controls: [again],
 			body: `
-<p>Scientists in Belgium tested this with Argentine ants. They joined the nest to some food with two bridges and counted the ants on each. On these bridges, ants dab scent going both ways, as Argentine ants do.</p>
+<p>Scientists in Belgium tested this with Argentine ants. They joined the nest to some food with two bridges and counted the ants on each. On these bridges, ants dab scent going both ways, as Argentine ants do. (Many kinds of ant mark only the way home, like the ones in the field.)</p>
 <p>When the two bridges are the same length, the ants soon crowd onto one of them, but which one is luck: a few more ants happen to take one bridge at the start, it smells a little stronger, and more ants follow. Run it a few times. In the real experiments, too, each bridge won about as often as the other.</p>`
 		},
 		{
@@ -122,7 +122,7 @@ export const spec: ExplainerSpec = {
 			controls: [again],
 			body: `
 <p>Now the bottom bridge is twice as long as the top one. At first, the ants choose at random. But the ants on the short bridge reach the sugar first and get back first, so the short bridge gets its scent sooner, and more of the next ants take it.</p>
-<p>The colony usually ends up on the short bridge, though in this model not every time: run it again. No ant measured the bridges or compared them. Here the scent never fades at all, so fading is not what picks the short one: getting back sooner is.</p>`
+<p>The colony usually ends up on the short bridge, though in this model not every time (real colonies picked it in nearly every trial): run it again. No ant measured the bridges or compared them. Here the scent never fades at all, so fading is not what picks the short one: getting back sooner is.</p>`
 		},
 		{
 			id: 'late',
@@ -134,7 +134,7 @@ export const spec: ExplainerSpec = {
 			controls: [fade],
 			body: `
 <p>This time only the long bridge is there at first. When the colony has made its trail, the short bridge opens. The ants hardly use it: the long bridge smells far stronger, so nearly every ant keeps taking it.</p>
-<p>Will fading help? Switch it on and watch. The colony still stays, because every ant that walks the long bridge tops its scent up again, faster than it fades. Real Argentine ants did the same: given the short bridge half an hour late, they kept to the long one.</p>`,
+<p>Will fading help? Switch it on and watch. The colony still stays, because every ant that walks the long bridge tops its scent up again, faster than it fades. Real Argentine ants behaved much the same: given the short bridge half an hour late, most of them kept to the long one, and the short one drew only a small share of the traffic.</p>`,
 			notes: `
 <p>On a trail that is still being walked, the scent is topped up as fast as it fades, so it stays strong and keeps the ants on it. Fading only wins against a trail that nobody walks any more, like the trail to the sugar that moved. In computer programs inspired by ants, the pretend ants lay more scent on shorter routes, and then fading does let them switch to a shortcut that appears later. The ants on this page lay the same dab on every stretch they walk, whatever the length of the bridge.</p>`
 		},
@@ -147,7 +147,7 @@ export const spec: ExplainerSpec = {
 			duration: 20,
 			body: `
 <p>A colony can find a short way to food with no map, and no ant that knows the way: ants on a shorter route get back sooner, so its scent builds up faster and draws more ants. A fading scent lets the colony give up a trail that leads nowhere.</p>
-<p>Real ants are cleverer than these ones. Many also use their eyes and memory: some remember landmarks, and desert ants find their way home by the sun and by counting their steps. There are more than 14,000 kinds of ant, and they don’t all use trails the same way.</p>
+<p>Real ants are cleverer than these ones. The ants here simply know the way home; real ones work it out with their eyes and memory: some remember landmarks, and desert ants find their way home by the sun and by counting their steps. There are more than 14,000 kinds of ant, and they don’t all use trails the same way.</p>
 <p>Computers find shortest routes too, but they start with a map and search it on purpose: see <a href="../graph-search/">how a computer finds the shortest route</a>.</p>`
 		}
 	]

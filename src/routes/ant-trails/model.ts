@@ -41,7 +41,7 @@ export const FIELD_HALF_LIFE = 12;
 const SNIFF = 20;
 const SNIFF_ANGLE = 0.6;
 const STEER = 0.32;
-/** The faintest scent an ant notices (one dab, after about five half-lives). */
+/** The faintest scent an ant notices (one dab, after a little over four half-lives). */
 const SMELL = 0.05;
 const WOBBLE = 0.7;
 const WOBBLE_ON_TRAIL = 0.25;
