@@ -6,8 +6,8 @@
 	 * (`tallestGuesses`), and each guess is checked against the key.
 	 *
 	 * Phases (`step.hints.phase`):
-	 * - `count`: the long letter; `params.lineup` sorts both rows by height.
-	 * - `short`: always lined up; `params.which` picks the one-line note or the long letter, and a
+	 * - `count`: the long message; `params.lineup` sorts both rows by height.
+	 * - `short`: always lined up; `params.which` picks the one-line note or the long message, and a
 	 *   small table shows how often E is the tallest bar in pieces of the book of different lengths
 	 *   (`E_TALLEST`).
 	 */
@@ -98,13 +98,13 @@
 	<Readout
 		id="bars-top"
 		order={1}
-		label={note ? 'Secret note' : 'Secret letter'}
+		label={note ? 'Secret note' : 'Secret message'}
 		value="{total} letters"
 	>
 		<Label
 			x={40}
 			y={40}
-			text="{note ? 'The secret note' : 'The secret letter'}: {total} letters"
+			text="{note ? 'The secret note' : 'The secret message'}: {total} letters"
 			anchor="start"
 			size={17}
 			weight={700}

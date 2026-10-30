@@ -1,6 +1,6 @@
 <script lang="ts">
 	/**
-	 * Solving by hand: the long letter written with the reader's scramble, each secret line with
+	 * Solving by hand: the long message written with the reader's scramble, each secret line with
 	 * the spy's reading under it ('_' where a letter has no guess yet). The spy starts from the
 	 * three tallest bars guessed as E, T and A (`startGuess`); the reader picks a secret letter in
 	 * the row of guesses and then the letter it stands for (a click on the row below, or a key),
@@ -121,7 +121,7 @@
 		<Label
 			x={LX}
 			y={30}
-			text="Your scrambled letter, and what the spy reads so far"
+			text="Your scrambled message, and what the spy reads so far"
 			anchor="start"
 			size={15}
 			muted
@@ -259,14 +259,14 @@
 		id="solve-status"
 		order={2}
 		label="Letters still wrong"
-		value={solved ? 'none: the whole letter reads ✓' : String(wrong.length)}
+		value={solved ? 'none: the whole message reads ✓' : String(wrong.length)}
 		color={solved ? 'var(--sc-good)' : undefined}
 	>
 		{#if solved}
 			<Label
 				x={480}
 				y={ROW_P}
-				text="✓ The whole letter reads!"
+				text="✓ The whole message reads!"
 				anchor="middle"
 				size={24}
 				weight={800}

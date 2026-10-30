@@ -52,7 +52,7 @@ const which: Control = {
 	default: 'note',
 	options: [
 		{ value: 'note', label: 'the one-line note' },
-		{ value: 'letter', label: 'the long letter' }
+		{ value: 'letter', label: 'the long message' }
 	]
 };
 
@@ -110,7 +110,7 @@ export const spec: ExplainerSpec = {
 			controls: [back],
 			body: `
 <p>Your friend has a wheel just like yours, and you told them the key earlier, in secret. To read your message they set their ring to the same turn, find each secret letter on the inner ring and read the letter beside it on the outer ring. Every letter steps <strong>back</strong> by the same amount.</p>
-<p>Turn your friend’s ring. At every other turn the message stays nonsense; at the right one, it suddenly reads.</p>`
+<p>Turn your friend’s ring. At the other turns the message is almost always nonsense; at the right one, it suddenly reads.</p>`
 		},
 		{
 			id: 'spy',
@@ -148,7 +148,7 @@ export const spec: ExplainerSpec = {
 			controls: [lineUp],
 			body: `
 <p>The spy can’t try every scramble, but has another trick: <strong>counting</strong>. Some letters are much more common in English than others. Out of every 100 letters in <em>Alice in Wonderland</em>, about 13 are E, 10 are T and 8 are A, and hardly any are Z or Q.</p>
-<p>Scrambling changes what the letters look like, not how often they come. The spy has caught a long letter of about 300 letters, written with your scramble. Its letters are counted in the top bars; ordinary English is underneath. Line both up by height: in a long message, the tallest secret letter is usually E. In this one, the next two stand for T and A. Code-breakers call this <dfn data-def="Breaking a code by counting how often each secret letter comes, and matching the counts with how often letters come in ordinary language.">frequency analysis</dfn>.</p>`,
+<p>Scrambling changes what the letters look like, not how often they come. The spy has caught a long message of about 300 letters, written with your scramble. Its letters are counted in the top bars; ordinary English is underneath. Line both up by height: in a long message, the tallest secret letter is usually E. In this one, the next two stand for T and A. Code-breakers call this <dfn data-def="Breaking a code by counting how often each secret letter comes, and matching the counts with how often letters come in ordinary language.">frequency analysis</dfn>.</p>`,
 			notes: `
 <p>The oldest description of breaking codes by counting letters that we know of was written in Arabic by the scholar al-Kindi in Baghdad, in the 800s.</p>
 <p>The bars of ordinary English were counted by a small program from the whole of <em>Alice’s Adventures in Wonderland</em> by Lewis Carroll (1865), from Project Gutenberg’s free copy: 107,667 letters. Another book gives slightly different bars, but E is the commonest letter in almost any long English text.</p>`
@@ -162,8 +162,8 @@ export const spec: ExplainerSpec = {
 			duration: 24,
 			controls: [which],
 			body: `
-<p>Counting only works when there are enough letters. The note from before, MEET AT THE OLD OAK AT NOON, has just 21. Its tallest bars are simply the letters that happened to come up three or four times, and here the tallest is not E at all. The spy’s first guesses are wrong, so counting alone doesn’t break this note (though word patterns and clues might still help).</p>
-<p>We cut <em>Alice in Wonderland</em> into pieces and counted each one. In pieces of 25 letters, E was the tallest bar only about 1 time in 4. In pieces of 300 letters, like the long letter, about 4 times in 5, and in pieces of 1,000 letters, more than 9 times in 10. The longer the message, the better counting works.</p>`
+<p>Counting only works when there are enough letters. The note from before, MEET AT THE OLD OAK AT NOON, has just 21. Its tallest bars are simply the letters that happened to come up three or four times, and here the tallest is not E at all. Several bars are equally tall. The spy’s guess for E is wrong, and any guess that comes out right is luck, so counting alone doesn’t break this note (though word patterns and clues might still help).</p>
+<p>We cut <em>Alice in Wonderland</em> into pieces and counted each one. In pieces of 25 letters, E was the tallest bar only about 1 time in 4. In pieces of 300 letters, like the long message, about 4 times in 5, and in pieces of 1,000 letters, more than 9 times in 10. The longer the message, the better counting works.</p>`
 		},
 		{
 			id: 'solve',
@@ -175,9 +175,9 @@ export const spec: ExplainerSpec = {
 			controls: [fix],
 			body: `
 <p>The three tallest bars gave E, T and A. Past those, the bars of English are almost the same height (O, I, H, N and S are all close), so the bars stop helping. Now the spy looks at the words instead: half-words appear, like T_E. It could be TIE, but THE is far more common: try H in the gap, and check that it makes other words work too.</p>
-<p>Your turn. Click a secret letter in the row of guesses, then the letter you think it stands for (or type it). Words that read turn green. Keep guessing and swapping until the whole letter reads.</p>`,
+<p>Your turn. Click a secret letter in the row of guesses, then the letter you think it stands for (or type it). Words that read turn green. Keep guessing and swapping until the whole message reads.</p>`,
 			notes: `
-<p>Counting letters has decided real history. In 1586, Mary, Queen of Scots, wrote to a group of plotters in a code that swapped letters for symbols. Her letters were intercepted, and Thomas Phelippes, a code-breaker working for Queen Elizabeth I, broke the code, partly by counting which symbols were commonest. The letters he read were used at her trial.</p>`
+<p>Counting letters has decided real history. In 1586, Mary, Queen of Scots, wrote to a group of plotters in a code that swapped letters, and some whole words, for symbols. Her letters were intercepted, and Thomas Phelippes, a code-breaker working for Queen Elizabeth I, broke the code, partly by counting which symbols were commonest. The letters he read were used at her trial.</p>`
 		},
 		{
 			id: 'next',

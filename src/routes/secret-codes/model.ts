@@ -267,7 +267,7 @@ export const FIRST_MESSAGE = 'MEET AT THE OLD OAK AT NOON';
 /** The one-line note of the "too short" step. */
 export const NOTE = FIRST_MESSAGE;
 
-/** The spy's long letter (the project's own text, about 290 letters). */
+/** The spy's long message (the project's own text, about 290 letters). */
 export const LETTER = tidy(
 	'Dear Sam, the treasure is not in the old mill any more. I moved it late last night, while the others were asleep. Walk to the far end of the garden, past the apple tree, and take sixty paces toward the lake. Dig beneath the flat stone that has a white mark on it. Keep the map safe and tell nobody, not even your sister. Burn this note when you have read it. See you soon, Alex',
 	1000

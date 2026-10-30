@@ -37,24 +37,26 @@ test('spy: trying all 25 turns finds the one that makes words', async ({ page })
 	await expect(stage(page)).toContainText(/Turn \d+ makes words!/);
 });
 
-test('count: lined up by height, a long letter’s tallest bars are E, T and A', async ({ page }) => {
+test('count: lined up by height, a long message’s tallest bars are E, T and A', async ({
+	page
+}) => {
 	await open(page, './secret-codes/#count', 'Line the bars up');
 	await page.locator('input[type=checkbox][data-control=lineup]').check();
 	await expect(stage(page)).toContainText('The spy’s guesses');
 	await expect(stage(page).getByText('✓ right')).toHaveCount(3);
 });
 
-test('short: counting fails on the one-line note and works on the long letter', async ({
+test('short: counting fails on the one-line note and works on the long message', async ({
 	page
 }) => {
 	await open(page, './secret-codes/#short', 'The secret note: 21 letters');
 	await expect(stage(page)).toContainText('✗ it is');
-	await page.getByRole('radio', { name: 'the long letter' }).click();
-	await expect(stage(page)).toContainText('The secret letter: 289 letters');
+	await page.getByRole('radio', { name: 'the long message' }).click();
+	await expect(stage(page)).toContainText('The secret message: 289 letters');
 	await expect(stage(page).getByText('✓ right')).toHaveCount(3);
 });
 
-test('solve: a guess typed for a secret letter shows, and hints finish the letter', async ({
+test('solve: a guess typed for a secret letter shows, and hints finish the message', async ({
 	page
 }) => {
 	await open(page, './secret-codes/#solve', 'words read right');
@@ -70,6 +72,6 @@ test('solve: a guess typed for a secret letter shows, and hints finish the lette
 	).toBeVisible();
 	const fix = page.getByRole('button', { name: 'Fix one letter for me' });
 	for (let i = 0; i < 23; i++) await fix.click();
-	await expect(stage(page)).toContainText('The whole letter reads!');
+	await expect(stage(page)).toContainText('The whole message reads!');
 	await expect(stage(page)).toContainText('DEARSAM,THETREASURE');
 });

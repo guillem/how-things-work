@@ -91,7 +91,7 @@ test('26 letters can be put in 403,291,461,126,605,635,584,000,000 orders', () =
 	expect(years).toBeLessThan(13.8e9);
 });
 
-test('the long letter: its three tallest bars are E, T and A, however it is scrambled', () => {
+test('the long message: its three tallest bars are E, T and A, however it is scrambled', () => {
 	expect(LETTER.replace(/[^A-Z]/g, '')).toHaveLength(289);
 	for (let seed = 0; seed < 30; seed++) {
 		const key = scramble(seed);
