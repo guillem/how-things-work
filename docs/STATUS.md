@@ -4,7 +4,7 @@ The self-handover. If work is interrupted, this file alone must be enough to con
 top to bottom, then run the commands under "Resume". **Update it at meaningful milestones**.
 The authoritative workflow is [AGENTS.md](../AGENTS.md).
 
-Last updated: 2026-10-25. **v1.3.1 is live with all 200 topics.** The current tooling work is listed below;
+Last updated: 2026-10-30. **v1.3.2 is live with all 200 topics.** The current tooling work is listed below;
 the product roadmap is in [`BACKLOG.md`](BACKLOG.md), "After v1.3.0".
 
 ## How we work
@@ -36,8 +36,9 @@ the product roadmap is in [`BACKLOG.md`](BACKLOG.md), "After v1.3.0".
 
 - **All 200 catalogue topics are built, reviewed, ticked and live** (v1.3.0, 2026-10-24): the
   original 100 (done 2026-10-15) and the proposal's 100 (39 / 10 / 3 / 48 at levels 0–3).
-  v1.3.1 (the same day) adds the review fixes to the last six. Nothing is in development.
-  Releases, newest first: v1.3.1 (fixes), v1.3.0 (200 topics), v1.2.5 (194), v1.2.4 (181), v1.2.3 (175), v1.2.2 (170; level 0 and the "Start here" link), v1.2.1 (155; Paths v1),
+  v1.3.1 (the same day) adds the review fixes to the last six; v1.3.2 (2026-10-30) the content
+  audit of 156–200. Nothing is in development.
+  Releases, newest first: v1.3.2 (audit 156–200), v1.3.1 (fixes), v1.3.0 (200 topics), v1.2.5 (194), v1.2.4 (181), v1.2.3 (175), v1.2.2 (170; level 0 and the "Start here" link), v1.2.1 (155; Paths v1),
   v1.1.2 (154), v1.0.0 (the 100 plus index search and filters), v0.1.21 (housekeeping and public
   polish), v0.1.19 (the external audit, `docs/codex-fact-check-complete.md`).
 - **What is left** is in [`BACKLOG.md`](BACKLOG.md): "After v1.3.0" (the roadmap), "Open after
@@ -71,8 +72,8 @@ the product roadmap is in [`BACKLOG.md`](BACKLOG.md), "After v1.3.0".
 
 ## Current development
 
-Content audit 156–200 (2026-10-30): all 45 topics reviewed and their fixes committed, not yet
-released; the open items are in [`BACKLOG.md`](BACKLOG.md) item 2. The full suite passed after
+Content audit 156–200 (2026-10-30): all 45 topics reviewed and their fixes released in v1.3.2
+(CI: 2,275 model and 3,920 browser tests, deploy and live smoke green); the open items are in [`BACKLOG.md`](BACKLOG.md) item 2. The full suite passed after
 the shared CSS change (3,920 browser tests); each later topic passed its targeted checks.
 
 Development workflow optimization (2026-10-25): affected-topic checks (`make changed`), a
@@ -92,8 +93,8 @@ production browser tests. No deployment.
 **Next development: first real use of the new workflow.** Inspect `make changed ARGS=--plan`
 before trusting the selected scope, and include committed changes with
 `BASE=<starting-commit>` (or `TOPIC=<slug>`). If selection or caching looks wrong, run the
-checks fresh and fix the workflow rather than trust a skipped check. The next release is the
-first on GitHub Actions with the single build-and-deploy job and Node 26: follow it with
+checks fresh and fix the workflow rather than trust a skipped check. v1.3.2 was the first
+release on the single build-and-deploy job and Node 26, and it passed; follow each release with
 `make verify`. Known flaky under full-suite load (passed 20/20 alone and in the last full run):
 `be-the-bird-camouflage.e2e.ts`, "the twelve-second hunt expires on the pausable stage clock".
 
