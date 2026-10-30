@@ -5,11 +5,11 @@
 	 * digit's four widths enlarged, the recording stretched by speed, the barcode upside down, a
 	 * misprinted bar, or the till's price list. The scanner's verdict comes from the model's reader.
 	 */
-	import { Label } from '#lib/draw/index.ts';
+	import { Label, startDrag } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
 	import { encode, L_CODES, misprint, R_CODES, read, runs, slanted, smudge, sweep } from '../model';
 
-	let { step, params }: StageProps = $props();
+	let { step, params, setParam }: StageProps = $props();
 
 	const phase = $derived(String(step.hints?.phase ?? 'scan'));
 	const CODE = [0, 3, 6, 0, 0, 0, 2, 9, 1, 4, 5, 2];
@@ -19,7 +19,7 @@
 		phase === 'check' && params.misprint === true && bad
 			? bad.modules
 			: phase === 'smudge' && params.smudge === true
-				? smudge(good, 7)
+				? smudge(good, 34)
 				: good
 	);
 	const flipped = $derived(phase === 'upside' && params.flip === true);
@@ -75,6 +75,14 @@
 	});
 	const traceLen = $derived(recording.reduce((a, [, w]) => a + w, 0) * TM);
 	const laserX = $derived(BX + scanTo * 95 * MW);
+	const setScan = (x: number) =>
+		setParam('scan', Math.round(Math.min(1, Math.max(0, (x - BX) / (95 * MW))) * 100) / 100);
+	function key(e: KeyboardEvent) {
+		const d = e.key === 'ArrowRight' ? 0.05 : e.key === 'ArrowLeft' ? -0.05 : 0;
+		if (!d) return;
+		e.preventDefault();
+		setScan(laserX + d * 95 * MW);
+	}
 
 	// ---- the chosen digit's four widths ------------------------------------------------------------
 	const g = $derived(Number(params.group ?? 2) - 1);
@@ -187,13 +195,30 @@
 
 	<!-- the scanner's red line -->
 	{#if phase === 'scan'}
+		<!-- straight across the bars, as far as the spot has gone; drag the spot -->
 		<line
-			x1={laserX}
-			y1={BY - 20}
+			x1={BX - 30}
+			y1={BY + BH / 2}
 			x2={laserX}
-			y2={BY + BH + 20}
+			y2={BY + BH / 2}
 			stroke="var(--bc-laser)"
 			stroke-width="3"
+		/>
+		<circle cx={laserX} cy={BY + BH / 2} r="6" fill="var(--bc-laser)" />
+		<circle
+			class="bc-drag"
+			cx={laserX}
+			cy={BY + BH / 2}
+			r="22"
+			fill="transparent"
+			role="slider"
+			tabindex="0"
+			aria-label="How far the red line has gone"
+			aria-valuenow={Math.round(scanTo * 100)}
+			aria-valuemin={0}
+			aria-valuemax={100}
+			onpointerdown={(e) => startDrag(e, (p) => setScan(p.x))}
+			onkeydown={key}
 		/>
 	{:else}
 		<!-- straight across, or slanted through the middle of the code -->
@@ -251,7 +276,7 @@
 		/>
 		<Label x={270} y={282} text="the shop’s list (made up)" anchor="start" size={12} muted />
 		<Label x={270} y={318} text="036000291452" anchor="start" size={16} mono />
-		<Label x={270} y={348} text="Oat biscuits, 250 g" anchor="start" size={16} />
+		<Label x={270} y={348} text="Tissues, 1 box" anchor="start" size={16} />
 		<Readout
 			id="bc-price"
 			order={2}
@@ -324,3 +349,13 @@
 		</Readout>
 	{/if}
 </g>
+
+<style>
+	.bc-drag {
+		cursor: ew-resize;
+		outline: none;
+	}
+	.bc-drag:focus-visible {
+		outline: 2px solid var(--focus);
+	}
+</style>

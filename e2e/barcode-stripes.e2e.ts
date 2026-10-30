@@ -13,6 +13,10 @@ test('scan: once the red line has crossed, the scanner reads the number', async 
 	await open(page, './barcode-stripes/#scan', 'reads 0 36000 29145 2');
 	await page.locator('input[type=range][data-control=scan]').fill('0.5');
 	await expect(stage(page)).not.toContainText('reads 0 36000 29145 2');
+	// The red spot can be moved on the stage too.
+	await page.locator('.bc-drag').focus();
+	for (let i = 0; i < 10; i++) await page.keyboard.press('ArrowRight');
+	await expect(stage(page)).toContainText('reads 0 36000 29145 2');
 });
 
 test('marks: each group is one digit of two bars and two gaps', async ({ page }) => {

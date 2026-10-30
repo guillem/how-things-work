@@ -36,7 +36,7 @@ const digit: Control = {
 const speed: Control = {
 	type: 'range',
 	id: 'speed',
-	label: 'How fast the barcode passes the scanner',
+	label: 'How fast the red line crosses the barcode',
 	min: 0.4,
 	max: 2.5,
 	step: 0.1,
@@ -106,7 +106,7 @@ export const spec: ExplainerSpec = {
 			controls: [scanAt],
 			body: `
 <p>At the checkout, a red line of light sweeps across the barcode. Black stripes reflect almost no light and white gaps reflect a lot, so a light sensor in the scanner sees the brightness go dark, light, dark, light as the line passes.</p>
-<p>Slide the red line across. Below the barcode is what the scanner records: how long it saw dark and how long it saw light, one after another. That pattern of long and short is all it gets. The blank margins on either side help it find where the barcode starts and ends.</p>`
+<p>Slide the red spot along the line, or drag it. Below the barcode is what the scanner records: how long it saw dark and how long it saw light, one after another. That pattern of long and short is all it gets.</p>`
 		},
 		{
 			id: 'marks',
@@ -142,8 +142,8 @@ export const spec: ExplainerSpec = {
 			duration: 22,
 			controls: [speed],
 			body: `
-<p>The scanner can’t know how fast you moved the item. Faster or slower, every stripe looks shorter or longer, but they all stretch together.</p>
-<p>So our simple scanner doesn’t measure widths; it compares them. The barcode is always 95 thin columns wide, so it divides the recording between the start and end marks into 95 equal parts and counts how many each stripe takes. Change the speed: the recording stretches, the digits come out the same. (Real scanners measure within each digit’s group instead, to cope with imperfect printing. And they have limits: the barcode must be big and clear enough, and the scan steady.)</p>`
+<p>The scanner can’t know how fast its red line crossed the code: that depends on how far away the item is and how big the barcode was printed. Faster or slower, every stripe looks shorter or longer, but they all stretch together.</p>
+<p>So our simple scanner doesn’t measure widths; it compares them. The barcode is always 95 thin columns wide, so it divides the recording, from the start of the start mark to the end of the end mark, into 95 equal parts and counts how many each stripe takes. Change the speed: the recording stretches, the digits come out the same. For the same reason, the same barcode can be printed smaller or bigger (from about four fifths to twice the usual size) and still read the same. (Real scanners measure within each digit’s group instead, to cope with imperfect printing. And they have limits: the barcode must be big and clear enough, and the scan steady.)</p>`
 		},
 		{
 			id: 'slant',
@@ -155,7 +155,7 @@ export const spec: ExplainerSpec = {
 			controls: [slant],
 			body: `
 <p>The red line doesn’t have to cross straight. Slant it: it takes a longer path across every stripe, but every stripe gets longer by the same amount, so the proportions and the digits stay the same.</p>
-<p>Slant it too far, though, and the line runs off the top or bottom of the bars before it reaches the other end. Then part of the code is missing and the scanner can’t read it. That is why barcodes have tall bars.</p>`
+<p>Slant it too far, though, and the line runs off the top or bottom of the bars before it reaches the other end. Then part of the code is missing and the scanner can’t read it. That is why barcodes have tall bars. (The bars here are drawn shorter than on a real barcode, whose bars are about three quarters as tall as the code is wide; a real one can be read up to about 35° off straight.)</p>`
 		},
 		{
 			id: 'upside',
@@ -178,7 +178,7 @@ export const spec: ExplainerSpec = {
 			duration: 18,
 			controls: [smudged],
 			body: `
-<p>Smudge one stripe, so its edge creeps one column into the gap beside it. That group’s four widths now make a pattern that is no digit at all, and the scanner gives up: the light turns red, scan again.</p>
+<p>Smudge one black stripe, so its edge creeps one column into the gap beside it. That group’s four widths now make a pattern that is no digit at all, and the scanner gives up: the light turns red, scan again.</p>
 <p>That is no accident. The digit patterns were chosen so that moving one stripe edge by exactly one column never turns one digit into another. Bigger smudges can, which is what the last digit is for.</p>`
 		},
 		{
