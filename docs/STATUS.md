@@ -71,6 +71,10 @@ the product roadmap is in [`BACKLOG.md`](BACKLOG.md), "After v1.3.0".
 
 ## Current development
 
+Content audit 156–200 (2026-10-30): all 45 topics reviewed and their fixes committed, not yet
+released; the open items are in [`BACKLOG.md`](BACKLOG.md) item 2. The full suite passed after
+the shared CSS change (3,920 browser tests); each later topic passed its targeted checks.
+
 Development workflow optimization (2026-10-25): affected-topic checks (`make changed`), a
 shared validation cache, hooks on everything not yet pushed, and one full mandatory deployment
 gate that deploys the build it tested.

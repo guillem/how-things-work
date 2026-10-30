@@ -113,9 +113,17 @@ left, in the suggested order:
    three worktrees (see STATUS). Left, minor: dissolving's exchange arrows sit close to the salt
    pile on `full`; metal's skin-temperature dial is hidden on phones; on the sound topic's
    distance step the energy-bar label sits close to the caption.
-2. **Content audit of the proposal's 100**, as v0.1.19 did for the first 100: one external
-   fact-check pass over topics 156–200 (101–155 were audited on 2026-10-20). Most of them were
-   fact-checked one at a time by grok or Codex, not cross-checked by a second model.
+2. ~~**Content audit of the proposal's 100.**~~ Done 2026-10-30 (not yet released): every topic
+   156–200 reviewed (`scripts/local-review.mjs`, Claude), and the fixes checked and committed
+   (`43f026be..2b9974f8`, one commit per topic for the last 15). Left, needing a decision or a
+   download: gas-turbines' one-level plant already reaches 60.5%, so the catalogue's "climb past
+   60 percent" isn't shown (a 1,600 K default would show 59.4 → 61.1% but changes every quoted
+   number; or interleave the HRSG economizers); hearing's shared cochlea model squeezes loud
+   sounds less than measured basal cochleas (disclosed on the page; retuning touches
+   cochlea-hearing); secret-codes' word list keeps contraction fragments (DON, LL, VE, RE:
+   regenerate from Gutenberg #11); heat-pumps' CO₂ isobars are coarse near the critical point;
+   catalogue wording (ant-trails' Pitfall says the ants stayed, secret-codes has no "leads
+   to", gas-turbines names NASA Glenn data while the page uses GRI-Mech).
 3. **Paths.** One path ships (language models). Candidates now that level 0 exists: a "Start
    here" path through level 0, and a climate path (needs carbon-cycle before
    greenhouse-effect).
