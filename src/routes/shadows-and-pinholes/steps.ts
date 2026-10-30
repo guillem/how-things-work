@@ -64,9 +64,9 @@ const hole: Control = {
 	type: 'range',
 	id: 'hole',
 	label: 'Size of the pinhole',
-	min: 0.5,
+	min: 1,
 	max: 8,
-	step: 0.5,
+	step: 1,
 	default: 1,
 	unit: 'mm',
 	format: (v) => `${v} mm`
@@ -100,7 +100,7 @@ export const spec: ExplainerSpec = {
 			controls: [toyAt],
 			body: `
 <p>A lamp sends light out in every direction, and each bit of light travels in a <strong>straight line</strong> until it hits something. The yellow lines show a few of those paths, from the lamp to the wall.</p>
-<p>A toy stands in the way. The lines that hit the toy stop there. Behind it is a patch of wall that no line from the lamp can reach: that dark patch is the <strong>shadow</strong>. Slide the toy along and the shadow moves with it.</p>`
+<p>A toy stands in the way. The lines that hit the toy stop there. Behind it is a patch of wall that no line from the lamp can reach: that dark patch is the <strong>shadow</strong>. Slide the toy along: the dark patch is always where the lines through the toy would have landed. Watch it grow as the toy nears the lamp.</p>`
 		},
 		{
 			id: 'lamp',
@@ -111,8 +111,8 @@ export const spec: ExplainerSpec = {
 			duration: 20,
 			controls: [lampAt],
 			body: `
-<p>Move the lamp towards the toy. The lines from the lamp now spread out more steeply past the toy’s top and bottom, so the shadow on the wall gets <strong>bigger</strong>. Move the lamp away and the lines become nearly level, and the shadow shrinks back towards the toy’s own size.</p>
-<p>The readout says how many times taller than the toy its shadow is. With the lamp 1 metre from the toy and the wall 2 metres behind the toy, the shadow is three times as tall.</p>`
+<p>Move the lamp towards the toy. The lines from the lamp now spread out more steeply past the toy’s top and bottom, so the shadow on the wall gets <strong>bigger</strong>. Move the lamp away and the lines become nearly level, and the shadow shrinks, though it never gets smaller than the toy itself.</p>
+<p>The readout says how many times taller than the toy its shadow is. With the lamp 1 metre from the toy and the wall 2 metres behind the toy, the shadow is three times as tall. (The drawing doesn’t show the wall getting dimmer as the lamp moves away.)</p>`
 		},
 		{
 			id: 'wall',
@@ -148,7 +148,7 @@ export const spec: ExplainerSpec = {
 			duration: 18,
 			controls: [second],
 			body: `
-<p>Switch on a second lamp, a little higher than the first. Now there are <strong>two shadows</strong>, one for each lamp. Where only one lamp is hidden, the wall is half dark: it still gets light from the other lamp. Where the two shadows overlap, both lamps are hidden and the wall is darkest of all.</p>
+<p>A second lamp is on, higher than the first: switch it off and on to compare. With both there are <strong>two shadows</strong>, one for each lamp, marked 1 and 2 beside the wall. Where only one lamp is hidden, the wall is half dark: it still gets light from the other lamp. Where the two shadows overlap, both lamps are hidden and the wall is darkest of all.</p>
 <p>That is why a football player under stadium floodlights has several shadows at once.</p>`
 		},
 		{
@@ -161,9 +161,9 @@ export const spec: ExplainerSpec = {
 			controls: [hole],
 			body: `
 <p>Poke a tiny hole in one end of a big cardboard box and look at the inside of the other end. A small picture of the lamp appears there, <strong>upside down</strong>. This is a pinhole camera.</p>
-<p>Light from the top of the lamp goes through the hole in a straight line and carries on down to the bottom of the back wall. Light from the bottom of the lamp goes up to the top. So the picture is flipped.</p>
-<p>Make the hole bigger: the picture gets brighter, because more light gets in, but blurrier, because each point of the lamp now makes a spot a little wider than the hole instead of a dot.</p>
-<p>(This drawing follows straight lines only. Very small holes also spread the light a little, because light behaves like a wave; that extra blur is left out here.)</p>`
+<p>Light from the top of the lamp goes through the hole in a straight line and carries on downwards, so it lands low on the back wall. Light from the bottom of the lamp lands high. So the picture is flipped.</p>
+<p>Make the hole bigger: the picture gets brighter, because more light gets in, but blurrier, because each point of the lamp now makes a spot almost twice as wide as the hole instead of a dot. (The hole and the blur are drawn larger than life so you can see them.)</p>
+<p>(This drawing follows straight lines only. For a box this deep, a hole about 1 mm wide gives the sharpest picture: a smaller hole blurs the picture again, because light behaves like a wave.)</p>`
 		},
 		{
 			id: 'nothrown',

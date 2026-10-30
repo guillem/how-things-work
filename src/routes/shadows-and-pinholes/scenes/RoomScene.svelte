@@ -7,7 +7,7 @@
 	 */
 	import { Label, startDrag } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';
-	import { enlargement, lit, softEdge, type Lamp, type Toy } from '../model';
+	import { enlargement, lit, shadow, softEdge, type Lamp, type Toy } from '../model';
 
 	let { step, params, setParam }: StageProps = $props();
 
@@ -18,7 +18,7 @@
 	const size = $derived(phase === 'soft' ? Number(params.size ?? 0.25) : 0);
 	const on = $derived(phase !== 'nothrown' || params.on !== false);
 	const lamp: Lamp = $derived({ x: lampX, y: 1.05, size });
-	const second: Lamp = $derived({ x: lampX, y: 1.25, size: 0 });
+	const second: Lamp = $derived({ x: lampX, y: 1.45, size: 0 });
 	const lamps = $derived(
 		!on ? [] : phase === 'two' && params.second !== false ? [lamp, second] : [lamp]
 	);
@@ -61,6 +61,16 @@
 			})
 		)
 	);
+	// With two lamps, each one's shadow, clipped to the wall, for the brackets beside it.
+	const brackets = $derived(
+		lamps.length === 2
+			? lamps.map((l) => {
+					const s = shadow(l, toy, wallX);
+					return { bottom: Math.max(0, s.bottom), top: Math.min(ROOM_H, s.top) };
+				})
+			: []
+	);
+	const RAY = ['var(--sh-ray)', 'var(--sh-ray2)'];
 	const times = $derived(enlargement(lamp, toy, wallX));
 	const edge = $derived(softEdge(lamp, toy, wallX));
 
@@ -116,7 +126,7 @@
 			y1={PY(r.y1)}
 			x2={PX(r.x2)}
 			y2={PY(r.y2)}
-			stroke="var(--sh-ray)"
+			stroke={RAY[phase === 'two' ? r.li : 0]}
 			stroke-width="1.6"
 		/>
 	{/each}
@@ -158,7 +168,7 @@
 		/>
 	{/if}
 
-	<!-- the shelf and the toy -->
+	<!-- the shelf (fixed to the back of the room, out of the light's way) and the toy -->
 	<line
 		x1={PX(toyX) - 40}
 		y1={PY(0.8)}
@@ -166,14 +176,7 @@
 		y2={PY(0.8)}
 		stroke="var(--text-muted)"
 		stroke-width="4"
-	/>
-	<line
-		x1={PX(toyX)}
-		y1={PY(0.8)}
-		x2={PX(toyX)}
-		y2={FLOOR}
-		stroke="var(--text-muted)"
-		stroke-width="3"
+		opacity="0.35"
 	/>
 	<g>
 		<rect x={PX(toyX) - 6} y={PY(1.15)} width="12" height={0.35 * U} rx="4" fill="var(--sh-toy)" />
@@ -253,8 +256,20 @@
 			stroke="var(--text-muted)"
 			stroke-width="3"
 		/>
-		<circle cx={PX(lampX)} cy={PY(second.y)} r="9" fill="var(--sh-light)" />
+		<circle cx={PX(lampX)} cy={PY(second.y)} r="9" fill="var(--sh-light2)" />
+		<Label x={PX(lampX) - 16} y={PY(second.y) + 5} text="2" anchor="end" size={14} weight={700} />
+		<Label x={PX(lampX) - 16} y={PY(lamp.y) + 5} text="1" anchor="end" size={14} weight={700} />
 	{/if}
+	{#each brackets as b, i (i)}
+		{@const x = PX(wallX) + 36 + 12 * i}
+		<path
+			d="M{x - 4} {PY(b.top)} H{x} V{PY(b.bottom)} H{x - 4}"
+			fill="none"
+			stroke={i ? 'var(--sh-light2)' : 'var(--sh-light)'}
+			stroke-width="2.5"
+		/>
+		<Label {x} y={PY(b.top) - 6} text={String(i + 1)} anchor="middle" size={13} weight={700} />
+	{/each}
 
 	<!-- readouts -->
 	{#if !on}

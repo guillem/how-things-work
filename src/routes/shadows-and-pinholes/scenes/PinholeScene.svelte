@@ -152,7 +152,7 @@
 		<Label
 			x={480}
 			y={500}
-			text="{bright < 1.05
+			text="{Math.abs(bright - 1) < 0.05
 				? 'as bright as a 1 mm hole'
 				: `${bright.toFixed(bright < 10 ? 1 : 0)} times as bright as a 1 mm hole`} · each point blurred into a {(
 				spot * 1000
