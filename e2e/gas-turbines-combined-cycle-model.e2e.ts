@@ -5,11 +5,13 @@ import {
 	AIR,
 	cpSpecies,
 	gasTurbine,
+	hMix,
 	LHV_MASS,
 	plant,
 	satAtP,
 	satAtT,
 	steamProps,
+	T0,
 	T_COND
 } from '../src/routes/gas-turbines-combined-cycle/model';
 
@@ -120,4 +122,19 @@ test('at 1800 K the gas turbine alone peaks at a ratio below 100', () => {
 	for (let r = 4; r <= 100; r++) if (eff(r) > eff(best)) best = r;
 	expect(best).toBeLessThan(100);
 	expect(best).toBeGreaterThan(40);
+});
+
+test('energy is conserved: the fuel’s heat becomes work, steam and stack heat, and the boiler takes exactly what the exhaust gives up', () => {
+	for (const levels of [1, 2, 3]) {
+		const p = plant({ ...base, levels });
+		const { gt } = p;
+		const exhaust = hMix(gt.exhaust, gt.t4) - hMix(gt.exhaust, T0);
+		// The fuel enters at 25 °C and the air at 15 °C: a small offset, well under 1%.
+		expect(Math.abs((gt.wt - gt.wc + exhaust) / gt.q - 1)).toBeLessThan(0.01);
+		const boiler = p.sections.reduce((a, s) => a + (s.q1 - s.q0), 0);
+		const given = hMix(gt.exhaust, gt.t4) - hMix(gt.exhaust, p.stack);
+		expect(boiler / given).toBeCloseTo(1, 6);
+		// What the steam turbine doesn't turn into work goes to the condenser.
+		expect(boiler - p.wst).toBeGreaterThan(0);
+	}
 });

@@ -81,10 +81,10 @@ export const spec: ExplainerSpec = {
 			duration: 22,
 			controls: [ratio, tit],
 			body: `
-<p>A gas turbine is a jet engine bolted to the ground. Its compressor squeezes air (here 18 times), natural gas burns in it at constant pressure, and the hot gas expands through a turbine that drives both the compressor and a generator. This compression–combustion–expansion sequence is called the Brayton cycle; here it runs on real air and real combustion products, whose heat capacity changes with temperature.</p>
+<p>A gas turbine works like a jet engine bolted to the ground: its compressor squeezes air (here 18 times), natural gas burns in it at constant pressure, and the hot gas expands through a turbine that drives both the compressor and a generator. This compression–combustion–expansion sequence is called the Brayton cycle; here it runs on real air and real combustion products, whose heat capacity changes with temperature.</p>
 <p>With a 1,650 K (1,377 °C) turbine inlet, it turns about 41% of the fuel’s heat into work, and the compressor takes back 45% of what the turbine makes. The rest of the fuel’s heat, nearly 60%, leaves the exhaust at about 650 °C: hot enough to run a whole second power plant.</p>
-<p>Raise the pressure ratio: the exhaust gets cooler, while the gas turbine’s efficiency rises to an optimum and then falls (at low firing temperatures you can reach it here). Raise the firing temperature: efficiency and exhaust temperature both go up.</p>`,
-			notes: `<p>The model burns methane in dry air at 15 °C, with a compressor of isentropic efficiency 0.88, a turbine of 0.90 and a 3% pressure loss in the combustor. Gas properties come from NASA polynomials, which carry each gas’s heat of formation, so methane’s heating value (50.0 MJ/kg) falls out of the energy balance. The turbine is uncooled. Real machines bleed a fifth or more of the compressor air to cool their blades, so they need firing temperatures around 1,600 °C to reach what this model gets at 1,377 °C.</p>`
+<p>Raise the pressure ratio: the exhaust gets cooler, while the gas turbine’s efficiency rises to an optimum and then falls (at low firing temperatures you can reach it here). Raise the turbine inlet (firing) temperature: efficiency and exhaust temperature both go up.</p>`,
+			notes: `<p>The model burns methane in dry air at 15 °C, with a compressor of isentropic efficiency 0.88, a turbine of 0.90 and a 3% pressure loss in the combustor. Gas properties come from NASA polynomials, which carry each gas’s heat of formation, so methane’s lower heating value (50.0 MJ/kg, with the water leaving as vapour) falls out of the energy balance. The turbine is uncooled. Real machines bleed a fifth or more of the compressor air to cool their blades, so they need turbine inlet temperatures around 1,600 °C to reach what this model gets at 1,377 °C.</p>`
 		},
 		{
 			id: 'exhaust',
@@ -96,7 +96,7 @@ export const spec: ExplainerSpec = {
 			controls: [ratio, tit],
 			body: `
 <p>A stand-alone gas turbine (an open-cycle or “peaker” plant) sends its exhaust straight up a chimney. It starts in minutes and is cheap to build, but it throws away more than half the fuel’s heat.</p>
-<p>That exhaust is not low-grade heat. At 600 to 650 °C it is about as hot as the steam in the best coal plants. A steam power plant needs a fire, and the exhaust is one, already paid for.</p>`
+<p>That exhaust is not low-grade heat. At around 600 to 660 °C it is about as hot as the steam in the best coal plants. A steam power plant needs a fire, and the exhaust is one, already paid for.</p>`
 		},
 		// ------------------------------------------------------------------ hrsg
 		{
@@ -109,7 +109,7 @@ export const spec: ExplainerSpec = {
 			controls: [pHigh],
 			body: `
 <p>A heat-recovery steam generator (HRSG) passes the hot exhaust across bundles of water-filled tubes. Here the exchange is idealized as counterflow: the water and steam move towards ever hotter gas. Plot both against the heat passed from one to the other and you get a temperature-heat (T–Q) diagram: the gas line falls from the exhaust temperature to the stack, and the water line rises beneath it.</p>
-<p>The water line has three parts. In the <strong>economizer</strong> the water warms to its boiling point. In the <strong>evaporator</strong> it boils at constant temperature: a flat line, 325 °C at 12 MPa. In the <strong>superheater</strong> the steam heats on, here to 600 °C. The steam then drives a steam turbine, the Rankine cycle of the heat-engines page.</p>
+<p>The water line has three parts. In the <strong>economizer</strong> the water warms to its boiling point. In the <strong>evaporator</strong> it boils at constant temperature: a flat line, 325 °C at 12 MPa. In the <strong>superheater</strong> the steam heats on, here up to 600 °C, 25 K below the gas that heats it. The steam then drives a steam turbine, the Rankine cycle of the heat-engines page.</p>
 <p>Heat flows only from hotter to colder, so the water line must stay below the gas line everywhere.</p>`
 		},
 		{
@@ -148,9 +148,9 @@ export const spec: ExplainerSpec = {
 			duration: 22,
 			controls: [ratio, tit, levels],
 			body: `
-<p>Put the two together, with the boiler you set up. Of the fuel’s heat, the gas turbine turns about 41% into work. With three pressure levels the steam cycle turns another 20% into work from the exhaust, while only about 5% leaves the stack; the rest goes to the steam cycle’s condenser, as in any steam plant. In total about 62% (60.5% with one level).</p>
+<p>Put the two together, with the boiler you set up. Of the fuel’s heat, the gas turbine turns about 41% into work. With three pressure levels the steam cycle turns another 20% into work from the exhaust, while only about 5% leaves the stack; the rest goes to the steam cycle’s condenser, as in any steam plant. In total about 62% (60.5% with one level). The uncooled turbine flatters these figures, the one-level case most of all: a real plant with a single pressure level and no reheat comes in well below a three-level one (see Go deeper).</p>
 <p>The steam turbine burns no fuel of its own. Every bit of its work comes from heat the gas turbine would otherwise have thrown away, which is why recovering the exhaust heat makes this plant so much more efficient than its gas turbine alone: the gas turbine takes heat in very hot, the steam cycle rejects it almost cold.</p>`,
-			notes: `<p>The model leaves out generator and gearbox losses, auxiliary power, the boiler’s back pressure on the gas turbine and turbine cooling, and it assumes ideal combustion. Together these take a few points off. The best plants in service, with turbine inlet temperatures above 1,600 °C and reheat, are rated at around 63 to 64% on the lower heating value.</p>`
+			notes: `<p>The model leaves out generator and gearbox losses, auxiliary power, the boiler’s back pressure on the gas turbine and turbine cooling, and it assumes ideal combustion. Together these take a few points off. The best plants in service, with turbine inlet temperatures above 1,600 °C and reheat, are rated at 63 to 64% or a little more on the lower heating value, and measured at just over 63%.</p>`
 		},
 		{
 			id: 'optimum',
@@ -162,8 +162,8 @@ export const spec: ExplainerSpec = {
 			controls: [tit],
 			body: `
 <p>Here is a twist. Plot efficiency against pressure ratio for the gas turbine alone and for the whole plant. The gas turbine alone keeps improving to very high ratios. The combined plant peaks much earlier: a higher ratio cools the exhaust, which starves the steam cycle.</p>
-<p>So the best gas turbine for a combined cycle is not the most efficient one on its own. It runs at a lower pressure ratio and leaves a hotter exhaust, giving up a little of its own efficiency for a lot more steam. Manufacturers design their big machines around this.</p>`,
-			notes: `<p>Because this model’s turbine is uncooled and its component efficiencies don’t change with size, its gas turbine peaks at unrealistically high pressure ratios (66 at 1,650 K, 89 at 1,800 K). Real optima are lower for both, but the order is the same: the combined plant prefers a lower ratio than the gas turbine alone.</p>`
+<p>So the best gas turbine for a combined cycle is not the most efficient one on its own. It runs at a lower pressure ratio and leaves a hotter exhaust, giving up several points of its own efficiency for a lot more steam-turbine work. Manufacturers design their big machines around this.</p>`,
+			notes: `<p>Because this model’s turbine is uncooled and its component efficiencies don’t change with size, its gas turbine peaks at unrealistically high pressure ratios (66 at 1,650 K, about 90 at 1,800 K). Real optima are lower for both, but the order is the same: the combined plant prefers a lower ratio than the gas turbine alone.</p>`
 		}
 	]
 };

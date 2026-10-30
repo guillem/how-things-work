@@ -193,6 +193,8 @@ export const satAtT = (T: number) => lerp(SAT_T, T, 0);
  */
 export function steamProps(T: number, p: number, phase: 0 | 1) {
 	if (phase === 0) {
+		// Below 99.6 °C (0.1 MPa) the saturation table ends and lerp extrapolates; every caller
+		// today stays above 140 °C. Extend the table before adding a lower pressure level.
 		const sat = lerp(SAT_P, T, 0);
 		return { h: sat[2] + 0.001 * Math.max(0, p - sat[1]) * 1000, s: sat[4] };
 	}
