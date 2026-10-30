@@ -126,8 +126,8 @@ export const spec: ExplainerSpec = {
 			duration: 24,
 			controls: [pitch],
 			body: `
-<p><strong>Slide the pitch</strong> and watch where the ripple peaks. A high note peaks <strong>near the entrance</strong>, a low note runs almost to the <strong>far end</strong>. A middle note, shaking 1,000 times a second, peaks about 2 centimetres in.</p>
-<p>Each time the pitch doubles (going up an octave, eight white keys on a piano), the peak moves about the same distance closer to the entrance, roughly half a centimetre in the middle of the range. So the whole range of notes a person can hear, from about 20 to 20,000 shakes a second, is laid out along the ribbon like the keys of a piano.</p>
+<p><strong>Slide the pitch</strong> and watch where the ripple peaks. A high note peaks <strong>near the entrance</strong>, a low note runs almost to the <strong>far end</strong>. A note in the middle of the ear’s range, shaking 1,000 times a second, peaks about 2 centimetres in.</p>
+<p>Each time the pitch doubles (going up an octave, from one C to the next on a piano), the peak moves about the same distance closer to the entrance, roughly half a centimetre in the middle of the range. So the whole range of notes a person can hear, from about 20 to 20,000 times a second, is laid out along the ribbon like the keys of a piano.</p>
 <p>The ear has sorted the sound by pitch. Which spot is shaking tells you which note it is.</p>`
 		},
 		{
@@ -154,7 +154,7 @@ export const spec: ExplainerSpec = {
 			controls: [second],
 			body: `
 <p>Now two notes play at once: the note from before, and a second one. <strong>Slide the second note.</strong> Each makes its own bump at its own spot, so two groups of sensors signal and the brain hears two notes.</p>
-<p>Slide the second note right next to the first and the two bumps blur into one. Close notes shake overlapping groups of sensors: they can sound rough together, or seem to throb slowly when their pitches are almost the same. At exactly the same pitch they are simply one note, pushing twice as hard.</p>
+<p>Slide the second note right next to the first and the two bumps blur into one. Close notes shake overlapping groups of sensors: they can sound rough together, or seem to throb slowly when their pitches are almost the same. At exactly the same pitch, shaking in step, they are simply one note pushing twice as hard.</p>
 <p>Music and voices are mixtures of many pitches at once. The cochlea spreads every mixture out along the ribbon, so the brain can pick the parts out.</p>`,
 			notes: `<p>For this drawing, each note’s ripple is worked out on its own and their strengths are then added together. In a real ear, two notes also weaken each other’s ripples a little and make faint extra shakes at other pitches; the <a href="../cochlea-hearing/">cochlea page</a> leaves these out too.</p>`
 		},
@@ -168,8 +168,8 @@ export const spec: ExplainerSpec = {
 			controls: [loud],
 			body: `
 <p>Loud and high are not the same thing. <strong>Turn the loudness up</strong>, from rustling leaves to a lawnmower: the bump <strong>grows</strong> and spreads, and more sensors light up. But it stays at about the same spot, creeping only a little towards the entrance. Changing the pitch moves the bump; changing the loudness mostly makes it bigger.</p>
-<p>The ear squeezes loud sounds. From rustling leaves to a lawnmower, the push of the sound grows about 3,000 times, yet the ribbon’s shake grows by much less: only about 200 to 500 times, depending on the pitch. That squeeze helps one ear hear both a whisper and a shout.</p>`,
-			notes: `<p>A loud sound’s bump spreads mostly towards the entrance, so loud low notes also shake the spots of higher notes. That is one reason a loud noise can hide a softer, higher sound. Years of loud noise usually damage the sensors for fairly high notes first, around 4,000 shakes a second, while growing older usually takes away the very highest notes first.</p>`
+<p>The ear squeezes loud sounds. From rustling leaves to a lawnmower, the push of the sound grows about 3,000 times, yet the ribbon’s shake grows far less: in a real ear only a few dozen times for high notes and a few hundred for low ones. That squeeze helps one ear hear both a whisper and a shout.</p>`,
+			notes: `<p>The drawing squeezes loud sounds less than a real ear does: its bump grows a few hundred times at every pitch. A loud sound’s bump spreads mostly towards the entrance, so loud low notes also shake the spots of higher notes. That is one reason a loud noise can hide a softer, higher sound. Years of loud noise usually damage the sensors for fairly high notes first, around 4,000 shakes a second, while growing older usually takes away the very highest notes first.</p>`
 		},
 		{
 			id: 'next',
@@ -180,7 +180,7 @@ export const spec: ExplainerSpec = {
 			duration: 14,
 			body: `
 <p>Your ear sorts sounds by pitch before the brain hears them: the eardrum and the bones push the shake into the cochlea, and each note makes a different place along its ribbon shake. High notes shake near the entrance, low notes at the far end, and louder notes make bigger bumps.</p>
-<p>A sound is a wave, and waves are what the <a href="../waves-interference/">waves and interference</a> page is about. Why each spot of the ribbon shakes most at one pitch is resonance, the same thing that makes a swing go highest when you push it at the right moment: see <a href="../oscillations-resonance/">oscillations and resonance</a>. For the full mechanics of the cochlea, its amplifier and how a cochlear implant works, read <a href="../cochlea-hearing/">hearing and the cochlea</a>.</p>`
+<p>What a sound is, and why a faster shake is a higher note, is on the <a href="../vibrations-and-sound/">vibrations and sound</a> page; for waves in general, see <a href="../waves-interference/">waves and interference</a>. Why each spot of the ribbon shakes most at one pitch is resonance, the same thing that makes a swing go highest when you push it at the right moment: see <a href="../oscillations-resonance/">oscillations and resonance</a>. For the full mechanics of the cochlea, its amplifier and how a cochlear implant works, read <a href="../cochlea-hearing/">hearing and the cochlea</a>.</p>`
 		}
 	]
 };

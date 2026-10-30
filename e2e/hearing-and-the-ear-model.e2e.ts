@@ -81,8 +81,9 @@ test('turned up from rustling leaves to a lawnmower, the bump grows many times b
 	const soft = respond(1000, 20);
 	const loud = respond(1000, 90);
 	const growth = dbRe(loud.mag[loud.peak]) - dbRe(soft.mag[soft.peak]);
-	// The sound's push grows 70 dB (about 3,000 times); the ribbon's shake grows by much less,
-	// squeezed (0.2 to 0.5 dB per dB at mid levels in measured cochleas), but still many times.
+	// The sound's push grows 70 dB (about 3,000 times); the ribbon's shake grows by much less.
+	// The shared cochlea model squeezes less than measured basal cochleas (down to 0.2 dB per dB),
+	// which the page's note discloses.
 	expect(growth).toBeGreaterThan(30);
 	expect(growth).toBeLessThan(70);
 	// The peak creeps towards the entrance (measured: about half an octave at high levels)...
@@ -93,7 +94,7 @@ test('turned up from rustling leaves to a lawnmower, the bump grows many times b
 	// A longer stretch of ribbon shakes enough to hear as the note gets louder (more dots light).
 	expect(shakenMm([loud])).toBeGreaterThan(3 * shakenMm([soft]));
 	expect(shakenMm([loud])).toBeLessThan(35);
-	// The narrative: across the slider's pitches the shake grows "only about 200 to 500 times".
+	// The note: the drawing's bump grows "a few hundred times at every pitch".
 	for (const f of [62.5, 125, 250, 500, 1000, 2000, 4000, 8000]) {
 		const a = respond(f, 20);
 		const b = respond(f, 90);
