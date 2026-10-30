@@ -5,7 +5,7 @@ const tray = (id: string, value: string): Control => ({
 	label: 'Tile tray',
 	default: value,
 	options: [
-		{ value: '3', label: 'Triangle' },
+		{ value: '3', label: 'Equal-sided triangle' },
 		{ value: '4', label: 'Square' },
 		{ value: '5', label: 'Regular pentagon' },
 		{ value: '6', label: 'Regular hexagon' },
@@ -30,7 +30,7 @@ export const spec: ExplainerSpec = {
 			hints: { sides: 4 },
 			controls: [tray('square', '4')],
 			duration: 20,
-			body: `<p>A square bathroom tile has four equal sides and four matching corners. Can you cover a whole floor with copies, without gaps or overlaps?</p><p>Tap the bright corner in the drawing to put down another tile. Or focus it and press Enter. Four square corners fit around it, closing one full turn. Once they fit, the floor on the right fills too.</p>`
+			body: `<p>A square bathroom tile has four equal sides and four matching corners. Can you cover a whole floor with copies, without gaps or overlaps?</p><p>Tap the orange + at the shared corner to put down another tile. Or focus it and press Enter. Four square corners fit around it, closing one full turn. Once they fit, the floor on the right fills too.</p>`
 		},
 		{
 			id: 'triangle',
@@ -50,7 +50,7 @@ export const spec: ExplainerSpec = {
 			hints: { sides: 5 },
 			controls: [tray('pentagon', '5')],
 			duration: 22,
-			body: `<p>Try this <strong>regular pentagon</strong>: five equal sides, five equal corners. Three copies leave a small gap at the middle. Add a fourth and it overlaps the first.</p><p>Moving the tiles cannot fix that corner while keeping their edges together. This regular pentagon cannot cover a floor on its own. The right-hand picture keeps that exact gap in view, shaded red. Another pentagon cannot fit into it.</p>`
+			body: `<p>Try this <strong>regular pentagon</strong>: five equal sides, five equal corners. Three copies leave a small gap at the middle. Add a fourth and it overlaps the first.</p><p>However you slide or turn the tiles, that gap never closes. This regular pentagon cannot cover a floor on its own. The right-hand picture keeps that exact gap in view, shaded red. Another pentagon cannot fit into it.</p>`
 		},
 		{
 			id: 'hexagon',
@@ -99,7 +99,7 @@ export const spec: ExplainerSpec = {
 			scene: 'tiles',
 			hints: { sides: 5, complete: true },
 			duration: 20,
-			body: `<p>A <dfn data-def="A polygon whose sides are all equal and whose corners are all equal.">regular</dfn> shape has equal sides <em>and</em> equal corners. Our pentagon was regular. Some pentagons with unequal corners can tile perfectly; so can every triangle and every simple four-sided shape, even when their corners differ.</p><p>The corner experiment rules out our regular pentagon, not every five-sided tile. For irregular tiles, different corners of the same shape can meet.</p>`
+			body: `<p>A <dfn data-def="A polygon whose sides are all equal and whose corners are all equal.">regular</dfn> shape has equal sides <em>and</em> equal corners. Our pentagon was regular. Some pentagons with unequal corners can tile perfectly; so can every triangle and every simple four-sided shape, even when their corners differ. The floor on the right is made of one four-sided tile with four different corners: at every point where tiles meet, one of each corner fits, and together they make a full turn.</p><p>The corner experiment rules out our regular pentagon, not every five-sided tile. For irregular tiles, different corners of the same shape can meet.</p>`
 		},
 		{
 			id: 'next',

@@ -7,6 +7,8 @@
 		cornerFit,
 		cornerGap,
 		floorTiles,
+		QUAD,
+		quadTiles,
 		points,
 		polygon,
 		shapeNames
@@ -42,14 +44,19 @@
 	);
 	let patch = $derived(floorTiles(sides, sides === 6 ? 36 : 46));
 	let showGap = $derived(!fit.tiles && count >= fit.copies);
+	// The "regular is the important word" step shows an irregular tile that does fill a floor.
+	let irregular = $derived(step.id === 'not-all');
+	const quadFloor = quadTiles(QUAD, 380, 300);
 	let floorStatus = $derived(
-		total > 360
-			? 'Overlap: tap to start again'
-			: closed
-				? 'No gaps or overlaps'
-				: showGap
-					? 'A gap this tile cannot fill'
-					: 'Keep adding corners'
+		irregular
+			? 'No gaps or overlaps'
+			: total > 360
+				? 'Overlap: tap to start again'
+				: closed
+					? 'No gaps or overlaps'
+					: showGap
+						? 'A gap this tile cannot fill'
+						: 'Keep adding corners'
 	);
 	let gapFan = $derived(
 		Array.from({ length: fit.copies }, (_, k) =>
@@ -77,7 +84,7 @@
 			? 'Straight edges'
 			: `S-bend by ${Math.round((Math.abs(bend) / 96) * 100)}% of a side: top half bent ${bend > 0 ? 'out' : 'in'}, bottom half ${bend > 0 ? 'in' : 'out'}`
 	);
-	const instruction = 'Tap the bright corner to add a tile; after the last, start again.';
+	const instruction = 'Tap the orange + to add a tile; after the last, start again.';
 	function setBend(value: number) {
 		setParam('bend', Math.round(Math.max(-25, Math.min(25, value))));
 	}
@@ -135,11 +142,15 @@
 			x={704}
 			y={58}
 			anchor="middle"
-			text={closed
-				? 'Repeat the fit'
-				: showGap
-					? 'This corner leaves a hole'
-					: 'Can it fill a floor?'}
+			text={irregular
+				? 'But this four-sided tile fits'
+				: closed
+					? 'Repeat the fit'
+					: total > 360
+						? 'Too many: they overlap'
+						: showGap
+							? 'This corner leaves a hole'
+							: 'Can it fill a floor?'}
 			size={25}
 			weight={650}
 		/>
@@ -153,7 +164,27 @@
 			stroke="var(--stage-line)"
 		/>
 		<g transform="translate(515,130)">
-			{#if closed}
+			{#if irregular}
+				<clipPath id="tl-quad-floor"><rect width={380} height={300} /></clipPath>
+				<g clip-path="url(#tl-quad-floor)">
+					{#each quadFloor as q, i (i)}
+						<polygon
+							points={points(q.tile)}
+							fill={q.turned ? ink[1] : ink[0]}
+							fill-opacity="0.25"
+							stroke="var(--stage-ink)"
+							stroke-width="1.2"
+						/>
+					{/each}
+				</g>
+				<Label
+					x={190}
+					y={330}
+					anchor="middle"
+					text="Four different corners meet at every point"
+					size={18}
+				/>
+			{:else if closed}
 				{#each patch as tile, i (i)}
 					<polygon
 						points={points(tile)}
@@ -184,7 +215,7 @@
 				</g>
 				<Label x={190} y={325} anchor="middle" text="The red space is left uncovered" size={18} />
 			{:else}
-				<Label x={190} y={145} anchor="middle" text="Try the bright corner" size={21} />
+				<Label x={190} y={145} anchor="middle" text="Tap the orange +" size={21} />
 				<Label x={190} y={180} anchor="middle" text="to add another tile" size={19} muted />
 			{/if}
 		</g>

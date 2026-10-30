@@ -4,7 +4,7 @@ export interface Point {
 	y: number;
 }
 export const shapeNames: Record<number, string> = {
-	3: 'triangle',
+	3: 'equal-sided triangle',
 	4: 'square',
 	5: 'regular pentagon',
 	6: 'regular hexagon',
@@ -95,6 +95,48 @@ export function floorTiles(sides: number, size = 58): Point[][] {
 	return out;
 }
 
+/** An irregular four-sided tile: no two sides or corners alike. */
+export const QUAD: Point[] = [
+	{ x: 0, y: 0 },
+	{ x: 92, y: 18 },
+	{ x: 104, y: 96 },
+	{ x: -20, y: 70 }
+];
+/**
+ * Any four-sided tile covers a floor: turn a copy half round about the middle of an edge, and
+ * the two fit along that edge. Two such half turns make a slide by a diagonal, so the tile and
+ * its turned copy repeat on the lattice of the two diagonals. Each corner point gets one of each
+ * of the four different corners, which together make a full turn. Returns the tiles, each with
+ * whether it is a turned copy, that lie at least partly inside a width × height window.
+ */
+export function quadTiles(quad: Point[], width: number, height: number) {
+	const [p0, p1, p2, p3] = quad;
+	const d1 = { x: p2.x - p0.x, y: p2.y - p0.y };
+	const d2 = { x: p3.x - p1.x, y: p3.y - p1.y };
+	const turned = quad.map((p) => ({ x: p1.x + p2.x - p.x, y: p1.y + p2.y - p.y }));
+	const out: { tile: Point[]; turned: boolean }[] = [];
+	for (let i = -12; i <= 12; i++)
+		for (let j = -12; j <= 12; j++)
+			for (const [shape, isTurned] of [
+				[quad, false],
+				[turned, true]
+			] as const) {
+				const tile = shape.map((p) => ({
+					x: p.x + i * d1.x + j * d2.x,
+					y: p.y + i * d1.y + j * d2.y
+				}));
+				const xs = tile.map((p) => p.x);
+				const ys = tile.map((p) => p.y);
+				if (
+					Math.max(...xs) > 0 &&
+					Math.min(...xs) < width &&
+					Math.max(...ys) > 0 &&
+					Math.min(...ys) < height
+				)
+					out.push({ tile, turned: isTurned });
+			}
+	return out;
+}
 /** The actual uncovered sector after the largest non-overlapping fan; no arbitrary floor spacing. */
 export function cornerGap(sides: number, radius: number): Point[] {
 	const fit = cornerFit(sides);
