@@ -123,7 +123,7 @@ export const spec: ExplainerSpec = {
 			],
 			body: `
 <p>One more thing matters: only about 1 message in 8 is spam. So the marker doesn’t start in the middle. It starts on the “not spam” side, and a message needs strong spam votes to get past the middle.</p>
-<p>Take “${MINE.rare}”. “free” pulls hard toward spam, “your” and “phone” a little, and “is” a little the other way. Together they are not quite enough to beat the head start. Switch off “remember that spam is rare” and the marker starts in the middle: now the same pulls are enough, and a friend’s question goes to the spam folder.</p>`
+<p>Take “${MINE.rare}”. “free” pulls hard toward spam, “your” a little, and “is” and “phone” a little the other way. Together they are not quite enough to beat the head start. Switch off “remember that spam is rare” and the marker starts in the middle: now the same pulls are enough, and a friend’s question goes to the spam folder.</p>`
 		},
 		// ------------------------------------------------------------------ tricks
 		{

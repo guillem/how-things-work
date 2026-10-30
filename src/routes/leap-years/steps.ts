@@ -113,7 +113,7 @@ export const spec: ExplainerSpec = {
 			duration: 22,
 			controls: [centuries],
 			body: `
-<p>The ring inside the orbit is the calendar, its months coloured by the season they are meant to be. The star marks the <dfn data-def="The day with the most hours of daylight in the northern half of the world, and the start of summer by astronomers’ reckoning; south of the equator it is the shortest day.">longest day</dfn> of the year in the northern half of the world: astronomers call it the first day of summer. Today it falls on June 20 or 21.</p>
+<p>The ring inside the orbit is the calendar, its months coloured by the season they are meant to be, the way we usually name the seasons. The star marks the <dfn data-def="The day with the most hours of daylight in the northern half of the world, and the start of summer by astronomers’ reckoning; south of the equator it is the shortest day.">longest day</dfn> of the year in the northern half of the world: astronomers call it the first day of summer. Today it falls on June 20 or 21.</p>
 <p>The dates on this page are worked out from the average length of the seasons’ year, counting from 2001, so they are close but not exact: real longest days wander a little from that average.</p>
 <p>Suppose we never had leap days. Each year the longest day would come a quarter of a day later on the calendar. Move the years forward: after a hundred years it is in the middle of July; after seven or eight hundred years the longest day lands in December, in the middle of the calendar’s winter.</p>
 <p>The Sun and the seasons didn’t move. The calendar slid round underneath them.</p>`
