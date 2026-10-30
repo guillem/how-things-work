@@ -30,13 +30,13 @@ test('band: the benchmark bicycle is self-stable from 4.29 to 6.02 m/s', async (
 test('gyro: without the wheels’ spin the band is gone', async ({ page }) => {
 	await open(page, './bicycle-stability/#gyro', 'self-stable from 4.29 to 6.02 m/s');
 	await page.locator('input[type=checkbox][data-control=gyro]').uncheck();
-	await expect(stage(page)).toContainText('no self-stable speed up to 15 m/s');
+	await expect(stage(page)).toContainText('no self-stable band found up to 15 m/s');
 });
 
 test('geometry: negative trail removes the band', async ({ page }) => {
 	await open(page, './bicycle-stability/#geometry', 'trail 80 mm');
 	await page.locator('input[type=range][data-control=trail]').fill('-0.02');
-	await expect(stage(page)).toContainText('no self-stable speed');
+	await expect(stage(page)).toContainText('no self-stable band found');
 });
 
 test('skate: the two-mass-skate bicycle is self-stable from 2.84 m/s on', async ({ page }) => {
@@ -52,4 +52,8 @@ test('skate: the two-mass-skate bicycle is self-stable from 2.84 m/s on', async 
 test('countersteer: a twist to the left ends in a right turn', async ({ page }) => {
 	await open(page, './bicycle-stability/#countersteer', 'turning right');
 	await expect(stage(page)).toContainText('handlebars twisted left');
+	// A steady turn is not a fall, even at the slider's end.
+	await page.locator('input[type=range][data-control=torque]').fill('-0.3');
+	await expect(stage(page)).toContainText('turning right');
+	await expect(stage(page)).not.toContainText('fall predicted');
 });

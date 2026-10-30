@@ -100,7 +100,7 @@ test('pushed sideways in the band, the bicycle recovers; below it, it falls', ()
 test('countersteering: a steer torque to the left first steers left, which leans the bicycle right', () => {
 	const m = matrices(BENCHMARK);
 	// Positive steer torque steers right in the benchmark's axes; use a negative (left) one.
-	const run = simulate(BENCHMARK, m, 5, { push: 0, torque: -0.3, duration: 3 });
+	const run = simulate(BENCHMARK, m, 5, { push: 0, torque: -0.2, duration: 3 });
 	const early = run.find((s) => s.t >= 0.3)!;
 	expect(early.delta).toBeLessThan(0);
 	expect(early.phi).toBeGreaterThan(0);

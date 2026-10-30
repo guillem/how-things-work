@@ -52,7 +52,7 @@
 			: `${e.re.toFixed(2)} ${e.im > 0 ? '+' : '−'} ${Math.abs(e.im).toFixed(2)}i`;
 	const bandText = $derived(
 		!band
-			? 'no self-stable speed up to ' + (tms ? 30 : 15) + ' m/s'
+			? 'no self-stable band found up to ' + (tms ? 30 : 15) + ' m/s'
 			: band.truncated
 				? `self-stable from ${band.from.toFixed(2)} m/s on (checked to ${band.to} m/s)`
 				: `self-stable from ${band.from.toFixed(2)} to ${band.to.toFixed(2)} m/s`
@@ -129,7 +129,7 @@
 			id="bk-modes"
 			order={6}
 			label="Modes"
-			value="weave below 4.29 m/s, capsize above 6.02 m/s, castering always negative"
+			value="weave unstable below 4.29 m/s, capsize unstable above 6.02 m/s, castering always stable"
 		>
 			<Label x={sx(2.2)} y={sy(3.4)} text="weave" anchor="middle" weight={600} />
 			<Label x={sx(8.6)} y={sy(1.2)} text="capsize" anchor="middle" weight={600} />

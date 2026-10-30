@@ -87,12 +87,12 @@ const torque: Control = {
 	type: 'range',
 	id: 'torque',
 	label: 'Steering torque',
-	min: -2,
-	max: 2,
-	step: 0.1,
-	default: -0.3,
+	min: -0.3,
+	max: 0.3,
+	step: 0.05,
+	default: -0.2,
 	format: (v) =>
-		v === 0 ? 'none' : `${Math.abs(v).toFixed(1)} N m to the ${v < 0 ? 'left' : 'right'}`,
+		v === 0 ? 'none' : `${Math.abs(v).toFixed(2)} N m to the ${v < 0 ? 'left' : 'right'}`,
 	help: 'A steady twist of the handlebars, applied from the start.'
 };
 
@@ -117,7 +117,7 @@ export const spec: ExplainerSpec = {
 			duration: 18,
 			controls: [speed, push],
 			body: `
-<p>Send a bicycle off with nobody on it, at a brisk jog (5 m/s, 18 km/h), and give it a shove sideways. It doesn’t fall. It wobbles, steers left and right a little, and within a few seconds rolls on upright again.</p>
+<p>Send a bicycle off with nobody on it, at an easy cycling pace (5 m/s, 18 km/h), and give it a shove sideways. It doesn’t fall. It wobbles, steers left and right a little, and within a few seconds rolls on upright again.</p>
 <p>The bicycle here is the <strong>benchmark bicycle</strong> of Meijaard, Papadopoulos, Ruina and Schwab (2007): an ordinary bicycle with a rigid rider attached, fully described by 25 numbers (masses, sizes, inertias), whose equations the authors cross-checked against independent derivations and computer programs. The view from behind shows the lean, the view from above the path and the steering.</p>`
 		},
 		{
@@ -144,7 +144,7 @@ export const spec: ExplainerSpec = {
 			body: `
 <p>For small lean φ and steer δ the motion obeys two coupled linear equations, one for each:</p>
 <p class="formula">M q̈ + v C₁ q̇ + (g K₀ + v² K₂) q = 0, &nbsp; q = (φ, δ)</p>
-<p>M holds the masses and inertias, C₁ the effects that grow with speed and rates (including the wheels’ gyroscopic effect), K₀ gravity, K₂ the effects that grow with the square of the speed (the turning of the path). Try solutions of the form e^{st}: they exist only when det(M s² + v C₁ s + g K₀ + v² K₂) = 0, a quartic in s with four roots, the <dfn data-def="The growth rates s of the motions e^{st} the equations allow. A positive real part means that motion grows; an imaginary part means it oscillates.">eigenvalues</dfn>.</p>
+<p>M holds the masses and inertias, C₁ the effects that grow with speed and rates, K₀ gravity, K₂ the effects that grow with the square of the speed (the turning of the path); the wheels’ gyroscopic effect appears in both C₁ and K₂. Try solutions of the form e<sup>st</sup>: they exist only when det(M s² + v C₁ s + g K₀ + v² K₂) = 0, a quartic in s with four roots, the <dfn data-def="The growth rates s of the motions eˢᵗ the equations allow. A positive real part means that motion grows; an imaginary part means it oscillates.">eigenvalues</dfn>.</p>
 <p>Dark dots show the real parts against speed; purple dots show the positive imaginary part of each oscillating pair. A real part above zero is a motion that grows. Self-stability needs all four below zero.</p>`,
 			notes: `<p>The matrices are computed from the 25 parameters by the formulas of the paper’s appendix, and agree with its published values to ten digits. The model assumes knife-edge wheels that roll without slipping, a rigid rider and no friction in the steering. It is linear, so it describes small leans only.</p>`
 		},
@@ -171,7 +171,7 @@ export const spec: ExplainerSpec = {
 			controls: [speed, push],
 			body: `
 <p>How does a bicycle with nobody on it catch itself? Watch the traces of lean and steer after the push. When it leans to one side, the front assembly turns the handlebars to that same side. Steering into the lean drives the wheels back under the centre of mass, the way you would catch a broomstick balanced on your hand by moving your hand under it.</p>
-<p>Too slow, and the steering doesn’t bring the wheels back fast enough: each catch overshoots more, which is the growing weave. Too fast, and the turning response is so strong that a tiny steer holds the lean instead of undoing it: the slow capsize.</p>`
+<p>Too slow, and steering does little to push the wheels sideways (that push grows with the square of the speed), so the front must steer far and the correction comes late: each catch overshoots more, which is the growing weave. Too fast, and the turning response is so strong that a tiny steer holds the lean instead of undoing it: the slow capsize.</p>`
 		},
 		// ------------------------------------------------------------------ parts
 		{
@@ -208,7 +208,7 @@ export const spec: ExplainerSpec = {
 			controls: [bike],
 			body: `
 <p>So are the gyroscopic effect and trail necessary? In 2011 Kooijman, Meijaard, Papadopoulos, Ruina and Schwab showed that they are not. Their theoretical <strong>two-mass-skate</strong> bicycle has no spin at all (its wheels are replaced by skates), zero trail, and only two point masses: 10 kg for the frame, high up and ahead of the front contact, and 1 kg for the front assembly, ahead of its steering axis.</p>
-<p>It is self-stable from about 2.8 m/s upwards (the page checks up to 30 m/s). Here the front mass falling to the side steers the front into the lean on its own. They built one with counter-rotating wheels and a slightly negative trail, and it balanced itself above 2.3 m/s. (These equations test only the sideways balance: the two masses alone would tip the machine forward, so the real one carries extra ballast at the rear contact, which leaves the sideways equations unchanged.)</p>
+<p>It is self-stable from about 2.8 m/s upwards, and its equations show it stays so at every higher speed (the page checks up to 30 m/s). Here the front mass falling to the side steers the front into the lean on its own. They built one with counter-rotating wheels and a slightly negative trail, and with its measured parameters it is predicted to balance itself above 2.3 m/s; rolling freely in tests, it did. (These equations test only the sideways balance: the two masses alone would tip the machine forward, so the real one carries extra ballast at the rear contact, which leaves the sideways equations unchanged.)</p>
 <p>Self-stability comes from the geometry and masses of the whole bicycle working together. No single effect explains it.</p>`,
 			notes: `<p>The two-mass-skate parameters are those of the paper’s supplement, table 7.1: wheelbase 1 m, steering axis 5° from vertical, the frame’s mass at 1.2 m ahead of the rear contact and 0.4 m up, the front’s at 1.02 m ahead and 0.2 m up. The built machine had extra masses and measured inertias, which is why its band starts a little lower.</p>`
 		},
@@ -221,7 +221,7 @@ export const spec: ExplainerSpec = {
 			duration: 22,
 			controls: [torque],
 			body: `
-<p>Self-stability also explains how a rider turns. Twist the handlebars to the left with a steady 0.3 N m. The front wheel steers left at first, the wheels run out to the left from under the bicycle, and so it leans <strong>right</strong>. Steering into that lean, it then turns right, the opposite way to the first twist.</p>
+<p>The same steering into the lean also explains how a rider turns. Twist the handlebars to the left with a steady 0.2 N m. The front wheel steers left at first, the wheels run out to the left from under the bicycle, and so it leans <strong>right</strong>. Steering into that lean, it then turns right, the opposite way to the first twist.</p>
 <p>This is <dfn data-def="Briefly steering the opposite way to start a turn: the bicycle leans into the turn, and then steers into it.">countersteering</dfn>. Every cyclist does it without knowing, with a tiny flick the other way before each turn. Motorcycle riders are taught it on purpose: to turn right, push the right handlebar forward.</p>`
 		}
 	]

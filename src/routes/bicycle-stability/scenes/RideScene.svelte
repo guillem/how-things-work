@@ -15,7 +15,7 @@
 	const phase = $derived(String(step.hints?.phase ?? 'push'));
 	const counter = $derived(phase === 'counter');
 	const v = $derived(counter ? 5 : Number(params.speed ?? 5));
-	const torque = $derived(Number(params.torque ?? -0.3));
+	const torque = $derived(Number(params.torque ?? -0.2));
 	const m = matrices(BENCHMARK);
 	const DURATION = 6;
 	/** Past 20° of lean or steer the small-angle equations no longer hold: the run stops there. */
@@ -262,12 +262,14 @@
 			id="bk-fell"
 			order={6}
 			label="Result"
-			value="small-angle limit reached (20°): a fall is predicted"
+			value={counter
+				? '20° of lean reached: beyond the small-angle model'
+				: 'small-angle limit reached (20°): a fall is predicted'}
 		>
 			<Label
 				x={40}
 				y={380}
-				text="fall predicted"
+				text={counter ? '20° of lean reached' : 'fall predicted'}
 				anchor="start"
 				size={16}
 				weight={700}
