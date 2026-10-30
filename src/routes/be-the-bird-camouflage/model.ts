@@ -83,7 +83,7 @@ export function nextGeneration(parents: readonly Moth[], seed: number): Moth[] {
 		// Sum of two uniforms: small symmetric variation, clipped at the trait limits.
 		// Clipping puts some offspring exactly at an extreme and biases edge parents
 		// slightly inward; this is an illustrative trait rule, not moth genetics.
-		return Math.max(0, Math.min(1, parent.shade + (rand() + rand() - 1) * 0.08));
+		return Math.max(0, Math.min(1, parent.shade + (rand() + rand() - 1) * 0.14));
 	});
 	return place(shades, seed + 4001);
 }

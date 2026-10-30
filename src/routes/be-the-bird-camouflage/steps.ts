@@ -45,7 +45,7 @@ export const spec: ExplainerSpec = {
 			title: 'Catch the ones you can see',
 			scene: 'bark',
 			controls: [hunt],
-			body: `<p>Press <strong>Start the hunt</strong>, then tap every moth you spot. You have twelve seconds at normal speed. The timer stops when you pause the animation, and the hunt is untimed if your device asks for reduced motion. You can also focus a moth with Tab and catch it with Enter or Space. Tab visits even well-hidden moths, so for a visual hunt try to catch only the ones you could spot by eye.</p><p>The moths you catch disappear. The ones you miss stay alive. This time, <em>you</em> decide who gets eaten: the computer does not secretly favour any colour. Press <strong>End the hunt now</strong> if you want to finish early.</p>`,
+			body: `<p>Press <strong>Start the hunt</strong>, then tap every moth you spot. A bird can only peck so fast, so aim at the moths you see. You have twelve seconds at normal speed. The timer stops when you pause the animation, and the hunt is untimed if your device asks for reduced motion. You can also focus a moth with Tab and catch it with Enter or Space. Tab visits even well-hidden moths, so for a visual hunt try to catch only the ones you could spot by eye.</p><p>The moths you catch disappear. The ones you miss stay alive. This time, <em>you</em> decide who gets eaten: the computer does not secretly favour any colour. Press <strong>End the hunt now</strong> if you want to finish early.</p>`,
 			duration: 24
 		},
 		{
@@ -63,7 +63,7 @@ export const spec: ExplainerSpec = {
 			title: 'Hunt a few generations',
 			scene: 'bark',
 			controls: [hunt],
-			body: `<p>Keep hunting and breeding. Each row on the right records the shades at the start of a generation. The newest row sits at the bottom. Compare the rows: is the population getting paler?</p><p>There is no promised result. If you catch pale moths instead, you leave darker parents. If you catch none, chance still changes the mix a little. <dfn data-def="When inherited differences affect who survives to have offspring, those differences can become more or less common over generations.">Natural selection</dfn> needs a difference in who has babies, not simply a change of scenery.</p>`,
+			body: `<p>Keep hunting and breeding. Each row on the right records the shades at the start of a generation. The top row is always the first generation, and the newest sits at the bottom. Compare the rows: is the population getting paler?</p><p>There is no promised result. If you catch pale moths instead, you leave darker parents. If you catch none, chance still changes the mix a little. <dfn data-def="When inherited differences affect who survives to have offspring, those differences can become more or less common over generations.">Natural selection</dfn> needs a difference in who has babies, not simply a change of scenery.</p>`,
 			duration: 25
 		},
 		{
@@ -90,7 +90,7 @@ export const spec: ExplainerSpec = {
 			title: 'Nobody chooses a new colour',
 			scene: 'bark',
 			controls: [hunt],
-			body: `<p>A moth does not think “I should be darker” and repaint its wings. Every adult keeps its shade. What changes is the mix of moths from one generation to the next, because some survive to leave more offspring.</p><p>This is a simplified inheritance toy, with a whole range of shades. Real peppered moths have inherited colour forms controlled by genes, not a smooth shade dial. Their real hiding places, patterns and the birds’ eyesight matter too. Our moths and bark are drawn by the program; these are not measured moth populations.</p>`,
+			body: `<p>A moth does not think “I should be darker” and repaint its wings. Every adult keeps its shade. What changes is the mix of moths from one generation to the next, because some survive to leave more offspring.</p><p>This is a simplified inheritance toy, with a whole range of shades. Real peppered moths come in a few inherited colour forms; the black form is caused by a single change in one gene, not a smooth shade dial. In this toy each baby has just one parent; real moths have two. Their real hiding places, patterns and the birds’ eyesight matter too. Our moths and bark are drawn by the program; these are not measured moth populations.</p>`,
 			duration: 22
 		},
 		{

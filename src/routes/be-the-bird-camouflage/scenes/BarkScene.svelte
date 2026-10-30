@@ -34,6 +34,7 @@
 	const bins = $derived(shadeCounts(living));
 	const binScale = $derived(60 / Math.max(10, ...bins));
 	const seconds = $derived(Math.max(0, Math.ceil(HUNT_SECONDS - elapsed)));
+	const canHunt = $derived(step.controls?.some((c) => c.id === 'hunt') ?? false);
 	const status = $derived(
 		hunting
 			? reduced
@@ -41,11 +42,12 @@
 				: `Hunting · ${seconds} ${seconds === 1 ? 'second' : 'seconds'} left`
 			: done
 				? living.length
-					? 'Hunt over · the survivors can breed'
+					? canHunt
+						? 'Hunt over · the survivors can breed'
+						: `Hunt over · ${living.length} survivors`
 					: 'No survivors · these moths died out'
 				: 'Look closely: can you spot 24 moths?'
 	);
-	const canHunt = $derived(step.controls?.some((c) => c.id === 'hunt') ?? false);
 	// What the next press of the hunt button does; steps.ts names the button after it.
 	const phase = $derived(
 		hunting ? 'hunting' : done ? (living.length ? 'over' : 'extinct') : 'ready'
@@ -57,13 +59,15 @@
 	const instruction = $derived(
 		hunting
 			? 'Tap a moth to catch it'
-			: !canHunt
-				? 'Each adult keeps its own shade'
-				: done
-					? living.length
-						? 'Press “Let the survivors breed”'
-						: 'Press “Start a new group of moths”'
-					: 'Press “Start the hunt”'
+			: step.id === 'tree'
+				? 'Soon you will be the bird'
+				: !canHunt
+					? 'Each adult keeps its own shade'
+					: done
+						? living.length
+							? 'Press “Let the survivors breed”'
+							: 'Press “Start a new group of moths”'
+						: 'Press “Start the hunt”'
 	);
 
 	// Step navigation stops the hunt without discarding the reader's catches.
@@ -91,7 +95,12 @@
 				} else {
 					population = nextGeneration(living, generation * 741 + n * 31);
 					generation++;
-					history = [...history.slice(-4), { generation, counts: shadeCounts(population) }];
+					// The first generation stays on top, with the latest four below it.
+					history = [
+						history[0],
+						...history.slice(1).slice(-3),
+						{ generation, counts: shadeCounts(population) }
+					];
 				}
 				caught = [];
 				started = false;
@@ -106,15 +115,24 @@
 	function catchMoth(id: number) {
 		if (hunting && !caught.includes(id)) caught = [...caught, id];
 	}
+	// A bird can only peck so fast: a tap or click within 0.4 s of the last one does nothing, so
+	// tapping blindly all over the bark can't catch moths regardless of their shade. (Wall-clock
+	// time, so it also holds in the untimed reduced-motion hunt.)
+	let lastPeck = -Infinity;
+	function peck(event: MouseEvent): boolean {
+		if (!hunting || event.timeStamp - lastPeck < 400) return false;
+		lastPeck = event.timeStamp;
+		return true;
+	}
 	// On a phone the stage is drawn at ~0.4 scale, so a moth's own 30-unit circle is a ~23 px
-	// target. A tap on the bark catches the nearest uncaught moth within 22 screen pixels
-	// (at least the desktop 30 units). The surface is transparent and covers the whole bark,
+	// target. A tap on the bark catches the nearest uncaught moth within 22 screen pixels, but
+	// at least 30 and at most 40 units, so the catch discs never cover most of the bark. The surface is transparent and covers the whole bark,
 	// so it shows nothing about where the moths are.
 	function catchNearest(event: MouseEvent) {
-		if (!hunting) return;
+		if (!peck(event)) return;
 		const el = event.currentTarget as SVGGraphicsElement;
 		const scale = el.ownerSVGElement?.getScreenCTM()?.a ?? 1;
-		const reach = Math.max(30, 22 / scale);
+		const reach = Math.max(30, Math.min(40, 22 / scale));
 		const p = toSvg(event, el);
 		let best: Moth | undefined;
 		let bestDistance = reach;
@@ -171,7 +189,7 @@
 				tabindex={hunting ? 0 : -1}
 				aria-label="Catch moth {moth.id + 1}"
 				aria-disabled={!hunting}
-				onclick={() => catchMoth(moth.id)}
+				onclick={(e) => peck(e) && catchMoth(moth.id)}
 				onkeydown={(e) => keyCatch(e, moth.id)}
 			>
 				<!-- Accessible tap target; the same cursor covers the whole bark, so hovering does not reveal a hidden moth. -->

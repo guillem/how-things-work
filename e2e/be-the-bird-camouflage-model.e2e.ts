@@ -24,8 +24,9 @@ test('survivors pass their shade on; an eaten parent has no offspring', () => {
 		const paleChildren = nextGeneration(pale, seed);
 		const darkChildren = nextGeneration(dark, seed);
 		expect(paleChildren).toHaveLength(population.length);
-		expect(paleChildren.every((m) => m.shade < 0.28)).toBe(true);
-		expect(darkChildren.every((m) => m.shade > 0.72)).toBe(true);
+		// The variation is at most ±0.14 around the parent.
+		expect(paleChildren.every((m) => m.shade < 0.34)).toBe(true);
+		expect(darkChildren.every((m) => m.shade > 0.66)).toBe(true);
 	}
 });
 
@@ -71,7 +72,29 @@ test('selection changes a population over generations and can reverse direction'
 		const parents = [...population].sort((a, b) => b.shade - a.shade).slice(0, 12);
 		population = nextGeneration(parents, 200 + generation);
 	}
-	expect(mean(population)).toBeGreaterThan(pale);
+	// Within a session's worth of hunts, the moths follow the darkened bark past halfway.
+	for (let generation = 5; generation < 10; generation++) {
+		const parents = [...population].sort((a, b) => b.shade - a.shade).slice(0, 12);
+		population = nextGeneration(parents, 200 + generation);
+	}
+	expect(mean(population)).toBeGreaterThan(0.5);
+});
+
+test('catching moths at random, whatever their shade, shifts the population no way in particular', () => {
+	const mean = (population: { shade: number }[]) =>
+		population.reduce((sum, moth) => sum + moth.shade, 0) / population.length;
+	let total = 0;
+	const runs = 200;
+	for (let run = 0; run < runs; run++) {
+		let population = initialPopulation(run + 1);
+		for (let generation = 0; generation < 5; generation++) {
+			// Seeded "blind taps": every other moth in the drawing order, which is unrelated to shade.
+			const parents = population.filter((m) => (m.id + run + generation) % 2 === 0);
+			population = nextGeneration(parents, run * 1000 + generation);
+		}
+		total += mean(population);
+	}
+	expect(total / runs).toBeCloseTo(0.5, 1);
 });
 
 test('random resting places leave room for the wings and non-overlapping tap targets', () => {
