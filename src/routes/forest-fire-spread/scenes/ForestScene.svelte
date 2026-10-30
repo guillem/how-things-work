@@ -297,7 +297,13 @@
 		{:else}
 			<!-- the tally: one bar per forest, as far as its fire got -->
 			<Readout id="ff-first">
-				<Label x={X0 + (N * C) / 2} y={Y0 + N * C + 28} text="forest 1, burning" size={15} muted />
+				<Label
+					x={X0 + (N * C) / 2}
+					y={Y0 + N * C + 28}
+					text={done ? 'forest 1' : 'forest 1, burning'}
+					size={15}
+					muted
+				/>
 			</Readout>
 			<line
 				x1={BX + BW}

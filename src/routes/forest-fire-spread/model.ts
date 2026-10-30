@@ -9,12 +9,12 @@
  * touching the next along a side, runs from the left edge to the right edge. In a big forest the
  * chance of that jumps from almost 0 to almost 1 over a narrow band of density around the
  * site-percolation threshold of the square grid, 0.592746 (Newman & Ziff 2000, Phys. Rev. Lett.
- * 85:4104); with the corner trees counted as touching too, the threshold is 0.407254 (Malarz &
- * Galam 2005, Phys. Rev. E 71:016125).
+ * 85:4104); with the corner trees counted as touching too, the threshold is 1 − 0.592746 = 0.407254, the
+ * matching lattice's (Malarz & Galam 2005 measured 0.407, Phys. Rev. E 71:016125).
  *
  * Two additions from the topic's entry: a firebreak (a band of columns with no trees) and wind,
- * which also lets a burning tree light the tree `jump` squares beyond its downwind (right-hand)
- * neighbour, so the fire can leap a gap that narrow.
+ * which also lets a burning tree light the trees up to `jump` squares beyond its downwind
+ * (right-hand) neighbour, so the fire can leap a gap that narrow.
  */
 import { rng } from '#lib/draw/math.ts';
 
@@ -63,7 +63,7 @@ export function plant(
 export interface Rule {
 	/** Corner trees count as touching too (eight neighbours instead of four). */
 	corners?: boolean;
-	/** Wind from the left: a burning tree also lights the tree this many squares past its right-hand neighbour. */
+	/** Wind from the left: a burning tree also lights the trees up to this many squares past its right-hand neighbour. */
 	jump?: number;
 }
 

@@ -104,7 +104,7 @@ export const spec: ExplainerSpec = {
 			controls: [relight],
 			body: `
 <p>Up close, the rule is simple. At every tick of the clock, each burning tree sets fire to the trees touching its sides: above, below, left and right. Then it burns out and turns to ash. The arrows show which trees catch fire next.</p>
-<p>Two things stop the fire. Bare ground: fire can’t jump over an empty square. And corners: a tree that touches the fire only at a corner stays green. So a tree can be safe even with fire all around it.</p>`,
+<p>Two things stop the fire. Bare ground: fire can’t jump over an empty square. And corners: a tree that touches the fire only at a corner stays green. So a tree can stay green even with burnt trees at all four of its corners.</p>`,
 			notes: `
 <p>This is the rule of the “Fire” model in the NetLogo models library (Uri Wilensky, 1997), which many classrooms use: trees on a square grid, the fire lit along the left edge, spreading north, south, east and west only, with no wind.</p>`
 		},
@@ -142,7 +142,7 @@ export const spec: ExplainerSpec = {
 			duration: 26,
 			controls: [size],
 			body: `
-<p>Now do that for many forests at every thickness, and count how often the fire gets across. The line shows the result. It doesn’t climb slowly: it jumps from “almost never” to “almost always”. For forests of 50 by 50 squares, the jump happens between about 56 and 63 trees in every 100 squares.</p>
+<p>Now do that for many forests at every thickness, and count how often the fire gets across. The line shows the result. It doesn’t climb slowly: it jumps from “almost never” to “almost always”. For forests of 50 by 50 squares, the jump happens between about 56 and 63 trees in every 100 squares. The shaded band runs from where 1 forest in 10 is crossed to where 9 in 10 are.</p>
 <p>Change the size of the forests. In small forests the line climbs gently, because luck matters a lot. The bigger the forest, the steeper the jump, and it always happens near 59. For a huge forest it is almost a cliff: a few trees more or fewer in every 100 squares decide whether the fire gets through.</p>`,
 			notes: `
 <p>Scientists call this <dfn data-def="Something spreading through a grid or network from neighbour to neighbour, and the sudden change at the density where it first gets all the way across.">percolation</dfn>, like water finding a way through ground coffee. For trees on a square grid with this four-neighbour rule, the tipping point of an endlessly big forest is 59.27 trees in every 100 squares. Nobody has found a formula for it; it is known from very big computer experiments like this one (Newman and Ziff, 2000). In such a forest the line would be a perfect step.</p>`
@@ -170,7 +170,7 @@ export const spec: ExplainerSpec = {
 			controls: [wind],
 			body: `
 <p>Wind changes that. In a real fire, wind carries burning bits of wood, called <dfn data-def="Small burning pieces of wood or bark that the wind lifts and carries ahead of a fire, where they can start new fires.">embers</dfn>, ahead of the flames, where they can start new fires. Here the wind blows from the left, and a burning tree can also set fire to the tree one square past its right-hand neighbour.</p>
-<p>Turn the wind on, and the fire jumps the firebreak. Against this wind, the firebreak would have to be two squares wide. In real fires, strong winds can carry embers a long way, which is one reason a road or a river doesn’t always stop a wildfire.</p>`
+<p>Turn the wind on, and the fire jumps the firebreak. To stop this wind, the strip of bare ground has to be at least two squares wide: one wider than the wind can carry the fire. In real fires, strong winds can carry embers a long way, which is one reason a road or a river doesn’t always stop a wildfire.</p>`
 		},
 		// ------------------------------------------------------------------ rule
 		{
@@ -182,7 +182,7 @@ export const spec: ExplainerSpec = {
 			duration: 24,
 			controls: [corners],
 			body: `
-<p>Is 59 in every 100 a magic number for forests? No: it belongs to this grid and this rule. Let the fire also reach the trees touching a burning tree at its corners, so that each tree has eight neighbours instead of four. This half-planted forest, where the fire died near the edge, now burns right across. With corners, the coin toss moves down to about 41 trees in every 100 squares.</p>
+<p>Is 59 in every 100 a magic number for forests? No: it belongs to this grid and this rule. Let the fire also reach the trees touching a burning tree at its corners, so that each tree has eight neighbours instead of four. This half-planted forest, where the fire died near the edge, now burns right across. In big forests with this rule, the coin toss comes at about 41 trees in every 100 squares instead of 59.</p>
 <p>Real forests aren’t grids, and real fires depend on wind, slopes, how dry the plants are and how much there is to burn, which this toy leaves out. What carries over is the idea: when something can only spread from neighbour to neighbour, there is a tipping point, and close to it, small changes decide whether it gets through.</p>`,
 			notes: `
 <p>With eight neighbours the tipping point of an endlessly big forest is about 40.7 trees in every 100 squares (Malarz and Galam, 2005). Other grids and other rules each have their own number: trees placed at the corners of a grid of triangles, each linked to its six nearest neighbours, tip at exactly half.</p>`
@@ -196,7 +196,7 @@ export const spec: ExplainerSpec = {
 			duration: 14,
 			body: `
 <p>A fire that can only pass from tree to tree crosses a big forest almost never or almost always, and the change between the two happens over a narrow band of how thickly the trees are planted.</p>
-<p>An illness spreads from person to person in a similar way. The page on <a href="../epidemics/">epidemics</a> shows how an outbreak dies out once enough people are immune, like a fire in a forest with too many gaps. And <a href="../ecosystems/">ecosystems</a> follows animals and plants whose numbers rise and fall together.</p>`
+<p>An illness spreads from person to person in a similar way. The page on <a href="../epidemics/">epidemics</a> shows how an outbreak dies out once enough people are immune, like a fire in a forest with too many gaps.</p>`
 		}
 	]
 };
