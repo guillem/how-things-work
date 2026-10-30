@@ -146,7 +146,7 @@ export const spec: ExplainerSpec = {
 			controls: [leg],
 			body: `
 <p>Follow one kilogram around, in the reference case boiling at 0 °C and condensing at 40 °C (the readouts follow your own settings). <strong>1 → 2, compression:</strong> the compressor squeezes the cold vapour from 0.29 to 1.02 MPa; its enthalpy rises by the work put in, and it comes out hot. <strong>2 → 3, condensation:</strong> in the condenser it cools, condenses at 40 °C and leaves as liquid, giving heat to the house. This is the useful heat of a heat pump.</p>
-<p><strong>3 → 4, expansion:</strong> the expansion valve drops the pressure with no heat and no work, so the enthalpy stays the same: a vertical line. About a quarter of the liquid flashes to vapour, which chills the rest to 0 °C. <strong>4 → 1, evaporation:</strong> in the evaporator the rest boils, taking heat from outside. This is the useful heat of a refrigerator.</p>
+<p><strong>3 → 4, expansion:</strong> the expansion valve drops the pressure with no heat and no work, so the enthalpy stays the same: a vertical line. Over a quarter of the liquid (28% here) flashes to vapour, which chills the rest to 0 °C. <strong>4 → 1, evaporation:</strong> in the evaporator the rest boils, taking heat from outside. This is the useful heat of a refrigerator.</p>
 <p>On a p-h diagram every heat and work is a horizontal distance: the condenser’s heat is the width of the top line, the compressor’s work the width of leg 1 → 2.</p>`
 		},
 		{
@@ -172,7 +172,7 @@ export const spec: ExplainerSpec = {
 			controls: [tEvap, tCond],
 			body: `
 <p>The bigger the gap between the two temperatures, the more the compressor must squeeze, and the lower the COP. With the evaporator at 0 °C, the ideal R-134a cycle gives about 8.8 when condensing at 30 °C and only 4.1 at 60 °C, and the Carnot ceiling falls in step.</p>
-<p>That is why a heat pump does best with underfloor heating or large radiators, which are warm enough at 35 °C, and worst on the coldest days, when it must lift heat from freezing air. It is also why a fridge hates a hot kitchen.</p>`
+<p>That is why a heat pump does best with underfloor heating (about 35 °C) or oversized radiators (about 45 °C), and worst on the coldest days, when it must lift heat from freezing air. It is also why a fridge hates a hot kitchen.</p>`
 		},
 		{
 			id: 'losses',
@@ -211,7 +211,7 @@ export const spec: ExplainerSpec = {
 			controls: [pGas, tOut, tEvap],
 			body: `
 <p>CO₂ (R-744) is a refrigerant too, with no ozone harm and a warming potential of 1 by definition. But its critical point is only 31 °C: above that temperature, no pressure can condense CO₂, and above its critical pressure, cooling proceeds smoothly with no change from vapour to liquid. To deliver heat at a radiator’s temperatures, a CO₂ heat pump compresses to 8 to 12 MPa, above the critical pressure of 7.4 MPa, and cools the fluid in a <strong>gas cooler</strong> instead of condensing it. The cycle runs around the top of the dome rather than across it: <dfn data-def="A cycle whose high side is above the fluid's critical pressure and low side below it.">transcritical</dfn>.</p>
-<p>Without a condensing temperature, the high pressure becomes a free choice, and it has a best value: drag it and watch the COP peak near 9 MPa for a 35 °C gas cooler outlet. Too low, and the fluid leaves the gas cooler with too much enthalpy; too high, and the compressor works for nothing. The gas cooler’s gliding temperature suits heating water from cold to 60 °C or more, which is where CO₂ heat pumps are most used.</p>`
+<p>Without a condensing temperature, the high pressure becomes a free choice, and it has a best value: drag it and watch the COP peak near 9 MPa for a 35 °C gas cooler outlet. Too low, and the fluid leaves the gas cooler with too much enthalpy; too high, and the extra compressor work buys less and less extra heat. The Carnot reference shown uses the gas cooler’s outlet temperature, its coldest point, so it is a generous limit. The gas cooler’s gliding temperature suits heating water from cold to 60 °C or more, which is where CO₂ heat pumps are most used.</p>`
 		},
 		{
 			id: 'efficiency',
@@ -223,7 +223,7 @@ export const spec: ExplainerSpec = {
 			controls: [tEvap, tCond],
 			body: `
 <p>A COP of 5 is sometimes advertised as “500% efficient”. It breaks no law. The electricity is not turned into five times its energy as heat: one unit of work moves four units of heat that were already outside and delivers all five indoors. The bars show the split.</p>
-<p>The second law still sets the limit, the Carnot COP for the lift between the heat source and the heat sink. A heat pump is efficient because it moves heat instead of making it, and it moves heat more cheaply the smaller the temperature gap it has to climb.</p>`
+<p>The second law still sets the limit: no cycle boiling and condensing at these two temperatures can beat the Carnot COP shown, and the real limit, for the outdoor air and the radiator water themselves, is only a little higher. A heat pump is efficient because it moves heat instead of making it, and it moves heat more cheaply the smaller the temperature gap it has to climb.</p>`
 		}
 	]
 };

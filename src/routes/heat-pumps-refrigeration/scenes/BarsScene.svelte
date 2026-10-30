@@ -110,6 +110,15 @@
 			size={14}
 			muted
 		/>
+		<Label
+			x={480}
+			y={446}
+			text="R-134a, compressor {Math.round(Number(params.eta ?? 0.75) * 100)}%, {params.superheat ??
+				5} K superheat, {params.subcool ?? 5} K subcooling"
+			anchor="middle"
+			size={13}
+			muted
+		/>
 	{:else}
 		<Label
 			x={480}
