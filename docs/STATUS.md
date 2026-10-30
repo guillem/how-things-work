@@ -100,7 +100,8 @@ CI speed-up (2026-10-30): v1.3.2's build job took 22 min (checks 7.8 min in seri
 4 min; browser suite 13.7 min on 4 workers). The workflow now builds once and runs `make check`
 in parallel with four browser shards (6 workers each) on that build; eslint uses 4 workers and
 the model tests 6. The npm cache is off: caches made by a tag's run are scoped to that tag, so
-none was ever restored. Known flaky under full-suite load (passed 20/20 alone and in the last full run):
+none was ever restored. Tested by redeploying v1.3.2 (whose own code still lints serially): 8 min
+end to end, shards 2.9–3.4 min each, `check` the longest at 6.9 min; all green, no cache saved. Known flaky under full-suite load (passed 20/20 alone and in the last full run):
 `be-the-bird-camouflage.e2e.ts`, "the twelve-second hunt expires on the pausable stage clock".
 
 v1.3.1 shipped the last topic review fixes (see the history archive).
