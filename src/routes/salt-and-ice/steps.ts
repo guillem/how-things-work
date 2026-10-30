@@ -125,7 +125,7 @@ export const spec: ExplainerSpec = {
 			duration: 20,
 			controls: [salted],
 			body: `
-<p>Back to −5 °C. Plain water freezes here, so the stack is all ice: a particle that breaks off joins straight back on. Now sprinkle salt. The salt dissolves into the first loose water it meets: it breaks up into its own tiny particles, which mix in among the water particles.</p>
+<p>Back to −5 °C. Plain water freezes here, so the stack is all ice: a particle that breaks off joins straight back on. Now sprinkle salt. The salt dissolves into the thin film of water that wets the surface of ice even below freezing: it breaks up into its own tiny particles, which mix in among the water particles.</p>
 <p>Particles still break off the stack as often as before. But fewer water particles reach the stack to join it, because salt particles are in the way, and salt cannot join a stack of ice. So breaking off wins, and the ice melts, although it is still −5 °C.</p>
 <p>Each particle that breaks off adds more water to the layer, so the salt gets spread more thinly. Melting slows down, and stops when there are about 8 grams of salt in every 100 grams of salty water: water that salty freezes at exactly −5 °C, and the two sides balance again.</p>`
 		},
@@ -152,9 +152,9 @@ export const spec: ExplainerSpec = {
 			controls: [weather],
 			body: `
 <p>Back on the path, two spoonfuls of salt lie on the ice. Make the day colder with the slider.</p>
-<p>The colder it is, the saltier the water must be to stay liquid, so the same salt melts less ice. At −5 °C two spoonfuls melt about 420 grams; at −15 °C, only about 150. Below about −21 °C they melt nothing at all: no salty water stays liquid that cold, so the salt just sits on the ice.</p>
+<p>The colder it is, the saltier the water must be to stay liquid, so the same salt melts less ice. At −5 °C two spoonfuls melt about 420 grams; at −15 °C, only about 155. Below about −21 °C they melt nothing at all: no salty water stays liquid that cold, so the salt just sits on the ice.</p>
 <p>Long before that the salt becomes slow and weak, which is why road crews switch to sand, or to other salts that work in deeper cold, when the road gets colder than about −10 °C.</p>`,
-			notes: `<p>What counts is the temperature of the road surface, not of the air: a sunny road can be warmer than the air, and a bridge colder. Road salt also needs a little water to start dissolving, which is why crews often spray it as salty water (brine) before the snow comes.</p>`
+			notes: `<p>What counts is the temperature of the road surface, not of the air: a sunny road can be warmer than the air, and a bridge colder. Road salt also needs a little water to start dissolving, which is why crews often wet it as they spread it. Before a storm they may spray salty water (brine) on the road so that the snow cannot stick to it.</p>`
 		},
 		// ------------------------------------------------------------------ cream
 		{
@@ -182,7 +182,7 @@ export const spec: ExplainerSpec = {
 			body: `
 <p>To make ice cream in a bag: put half a cup of cream (half milk, half cream) and a spoonful of sugar in a small bag, and shake it inside a big bag holding four cups of ice and half a cup of salt. The clock on the stage runs ten minutes.</p>
 <p>The cold ice keeps melting, and the heat for it now comes out of the cream. The cream cools down, past 0 °C, and its water starts to turn to ice crystals at about −1.3 °C. After about five minutes half its water is ice, and it is soft ice cream.</p>
-<p>Pick plain ice instead. The cream cools to 0 °C and stops there, because a bowl of ice and meltwater stays at 0 °C while any ice is left, so the cream never gets cold enough to freeze: it stays runny. With a single spoonful of salt it works, but takes about twice as long, and the bowl warms up as its ice melts.</p>`,
+<p>Pick plain ice instead. The cream cools to 0 °C and stops there, because a bowl of ice and meltwater stays at 0 °C while any ice is left, so the cream never gets cold enough to freeze: it stays runny. With a single spoonful of salt it works, but takes about eight minutes instead of five, and the bowl warms up, because each bit of ice that melts makes the salty water weaker.</p>`,
 			notes: `<p>How fast heat leaks in from the kitchen and passes from the cream into the ice depends on the bag and the shaking. The page picks values that freeze the recipe’s cream in about five minutes, as the recipe says; everything else follows from the freezing line of salty water and the heat that melting takes.</p>`
 		},
 		{

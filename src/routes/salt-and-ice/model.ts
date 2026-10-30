@@ -59,6 +59,8 @@ export const MELT_HEAT = 334;
 /** Specific heats, J/(g·K): ice, and salty water (about 3.3 for strong brine). */
 export const CP_ICE = 2.1;
 export const CP_BRINE = 3.3;
+/** ...and plain water. */
+export const CP_WATER = 4.18;
 
 /** A level tablespoon of table salt, g. */
 export const SPOON = 18;
@@ -136,9 +138,9 @@ export function bathFromHeat(water: number, salt: number, h: number): BathState 
 	const most = salt > 0 ? Math.min(water, iceMeltedBy(salt, flat)) : water;
 	const low = heat(water, salt, flat, 0);
 	const high = heat(water, salt, flat, most);
-	if (h <= low) return { temp: h / (CP_ICE * water + 0.86 * salt), melted: 0 };
+	if (h <= low) return { temp: h / (CP_ICE * water), melted: 0 };
 	if (h <= high) return { temp: flat, melted: (most * (h - low)) / (high - low) };
-	if (salt <= 0) return { temp: (h - MELT_HEAT * water) / (CP_BRINE * water), melted: water };
+	if (salt <= 0) return { temp: (h - MELT_HEAT * water) / (CP_WATER * water), melted: water };
 	let lo = flat;
 	let hi = 60;
 	for (let k = 0; k < 50; k++) {

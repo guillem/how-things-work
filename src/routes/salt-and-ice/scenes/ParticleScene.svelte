@@ -41,11 +41,11 @@
 	const TOP = Y0 - (ROWS - 1) * DY - R;
 
 	// ---- how many particles are stacked -------------------------------------------------------------
-	// Stack step: 7 rows at 0 °C; freezing fills all 10, melting leaves 4. Salt step: plain, all
+	// Stack step: 7 rows at 0 °C; freezing fills all 10, melting keeps going down to one row. Salt step: plain, all
 	// 10 rows are ice; salted, it melts down to the balance (3 rows' worth of water).
 	const SALT_ROWS = 3;
 	const levelTarget = $derived(
-		phase === 'stack' ? (temp < 0 ? ROWS : temp > 0 ? 4 : 7) : salted ? ROWS - SALT_ROWS : ROWS
+		phase === 'stack' ? (temp < 0 ? ROWS : temp > 0 ? 1 : 7) : salted ? ROWS - SALT_ROWS : ROWS
 	);
 	// The edge moves slowly, like real melting and freezing.
 	const level = Tween.of(() => levelTarget, { duration: 5000, easing: cubicInOut });
