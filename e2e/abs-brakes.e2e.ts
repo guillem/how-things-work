@@ -34,6 +34,16 @@ test('threshold: the dry-road pedal locks the wheel on snow', async ({ page }) =
 	await expect(stage(page)).toContainText('wheel locked');
 });
 
+test('abs: the same full press stops in 40 m with ABS and locks the wheel without it', async ({
+	page
+}) => {
+	await open(page, './abs-brakes/#abs', 'stopped in 40 m');
+	await expect(stage(page)).not.toContainText('wheel locked');
+	await page.locator('input[type=checkbox][data-control=abs]').uncheck();
+	await expect(stage(page)).toContainText('stopped in 52 m');
+	await expect(stage(page)).toContainText('wheel locked');
+});
+
 test('compare: ABS stops shorter than a locked wheel but not shorter than the floor', async ({
 	page
 }) => {

@@ -64,6 +64,9 @@ test('ABS releases and reapplies the brake several times a second and stops shor
 		expect(hz).toBeLessThan(15);
 		expect(abs.distance).toBeLessThan(locked.distance);
 	}
+	// The page says "about seven times a second" on dry asphalt.
+	const dry = brake({ surface: 'dry', pedal: 1, abs: true });
+	expect(dry.releases / dry.time).toBeCloseTo(7, 0);
 });
 
 test('on dry asphalt a driver holding exactly the right pressure stops about as short as ABS', () => {

@@ -13,7 +13,7 @@
 
 	const surface = $derived(String(params.surface ?? 'dry') as Surface);
 	const pedal = $derived(Number(step.hints?.pedal ?? params.pedal ?? 0.3));
-	const abs = $derived(step.hints?.abs === true);
+	const abs = $derived(step.hints?.abs === true && params.abs !== false);
 	const run = $derived(brake({ surface, pedal, abs }));
 	const locked = $derived(brake({ surface, pedal: 1, abs: false }));
 	const V0 = 100 / 3.6;

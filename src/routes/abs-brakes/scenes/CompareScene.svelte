@@ -1,7 +1,7 @@
 <script lang="ts">
 	/**
 	 * Stopping distances from 100 km/h on the chosen road: a locked wheel, the best constant pedal
-	 * (searched in 1% steps), ABS, and the floor set by the peak friction held all the way.
+	 * (found by bisection), ABS, and the floor set by the peak friction held all the way.
 	 */
 	import { Label, niceMax, scale } from '#lib/draw/index.ts';
 	import { Readout, type StageProps } from '#lib/explainer/index.ts';

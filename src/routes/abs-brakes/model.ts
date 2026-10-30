@@ -12,9 +12,10 @@
  *   the wheel:                                       J domega/dt = Fx R - T
  * where Fx = mu N is the road's braking force on the tyre and T the brake torque.
  *
- * Steering uses Burckhardt's combined slip: with a slip angle alpha the tyre also slips sideways,
- * sy = (1 - s) tan(alpha); the friction mu(|(s, sy)|) is shared between the two directions in
- * proportion to the two slips. A locked wheel (s = 1) has sy = 0: no sideways force, no steering.
+ * Steering uses Burckhardt's combined slip: with q = omega R / v and slip angle alpha, the tyre
+ * slips 1 - q cos(alpha) along the direction of travel and q sin(alpha) across it; mu of their
+ * combined size is shared between the two in proportion. A locked wheel (q = 0) slips only along
+ * the travel: no sideways force, no steering.
  *
  * The ABS is the classic two-threshold cycler: release the brake pressure when the slip rises
  * past an upper threshold, reapply it when the slip falls back under a lower one. Real units also

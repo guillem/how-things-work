@@ -34,7 +34,7 @@ const pedal: Control = {
 	step: 0.01,
 	default: 0.3,
 	format: (v) => `${Math.round(v * 100)}% of a full press`,
-	help: 'The brake torque the driver asks for, held from the moment the foot lands.'
+	help: 'The brake torque the driver asks for, reached 0.15 s after the foot lands and then held.'
 };
 
 const abs: Control = {
@@ -90,7 +90,7 @@ export const spec: ExplainerSpec = {
 <p>Measured on real tyres, the friction rises steeply with the first few percent of slip, peaks, then <strong>falls</strong> as the wheel heads for locking. On dry asphalt the peak is μ ≈ 1.17 at about 17% slip, and a locked wheel gets only 0.76. Wet asphalt peaks at 0.80 near 13%, and snow at only 0.19 near 6%, with a peak so flat it barely matters where you sit on it.</p>
 <p>These curves are the Burckhardt model, μ(s) = c₁(1 − e^(−c₂s)) − c₃s, with the coefficient sets for three surfaces that are standard in the ABS literature. Past the peak, the rubber in the contact patch is sliding rather than gripping, and sliding rubber grips less.</p>
 <p>So the best braking is not a locked wheel. It is a wheel still turning, slipping just enough to sit near the peak.</p>`,
-			notes: `<p>The coefficients are Burckhardt’s (1993), as given by Kiencke and Nielsen, <i>Automotive Control Systems</i>, and reproduced in many papers (for example arXiv:2211.10336). The peak is where dμ/ds = 0: s* = ln(c₁c₂/c₃)/c₂. Real tyres differ with rubber, tread, temperature and load, and the industry’s standard description is Pacejka’s “magic formula” fitted to each tyre. The shape (a steep rise, a peak, a fall towards locking) is the same.</p>`
+			notes: `<p>The coefficients are Burckhardt’s (1993), as given by Kiencke and Nielsen, <i>Automotive Control Systems</i>, and reproduced in many papers (for example arXiv:2211.10336). The peak is where dμ/ds = 0: s* = ln(c₁c₂/c₃)/c₂. Real tyres differ with rubber, tread, temperature and load, and the industry’s standard description is Pacejka’s “magic formula” fitted to each tyre. The shape (a steep rise, a peak, a fall towards locking) is the same. Burckhardt’s ice fit (c₃ = 0) has no peak at all, so it is left out.</p>`
 		},
 		// ------------------------------------------------------------------ brake
 		{
@@ -102,7 +102,7 @@ export const spec: ExplainerSpec = {
 			duration: 20,
 			controls: [pedal, surface, replay],
 			body: `
-<p>Model one wheel carrying a quarter of a 1,500 kg car, from 100 km/h. Two equations of motion run side by side. The car slows from the road’s force on the tyre, m dv/dt = −μN, with N the weight on the wheel. The wheel spins from two torques that oppose each other: the road’s force tries to keep it turning (μN times the radius R), and the brake tries to stop it (torque T): J dω/dt = μNR − T.</p>
+<p>Model one wheel carrying a quarter of a 1,500 kg car, from 100 km/h. Two equations of motion run side by side. The car slows from the road’s force on the tyre, m dv/dt = −μN, with N the weight on the wheel. The wheel spins from two torques that oppose each other: the road’s force tries to keep it turning (μN times the radius R), and the brake tries to stop it (torque T), with J the wheel’s moment of inertia: J dω/dt = μNR − T.</p>
 <p>Press gently and the slip settles to a nearly constant value, well below the peak. The brake’s torque stays just a little greater than the road’s, so the wheel keeps slowing in step with the car until it stops. The plots show the car’s speed and the rim’s speed: divide their gap by the car’s speed to get the slip.</p>`,
 			notes: `<p>The equations are integrated in 0.1 ms steps. Below 1 m/s the slip is ill-defined (a ratio of two small numbers) and the last few centimetres are added at the last friction. Real ABS units switch off at a few km/h for the same reason.</p>`
 		},
@@ -138,10 +138,10 @@ export const spec: ExplainerSpec = {
 			scene: 'brake',
 			hints: { phase: 'abs', abs: true, pedal: 1 },
 			duration: 22,
-			controls: [surface, replay],
+			controls: [abs, surface, replay],
 			body: `
-<p>The anti-lock system watches each wheel. When the slip runs past a threshold (here 20%), a valve lets the brake pressure drop until the wheel spins back up. When the slip falls under a lower threshold (10%), the pressure builds again. The driver keeps the pedal fully down the whole time.</p>
-<p>The result is a sawtooth: the torque rises and drops about seven times a second, and the slip swings around the peak instead of running away to locking. You can feel this through the pedal of an ABS car as a rapid pulsing.</p>
+<p>The anti-lock system watches each wheel. When the slip runs past a threshold (here 20%), a valve lets the brake pressure drop until the wheel spins back up. When the slip falls under a lower threshold (10%), the pressure builds again. The driver keeps the pedal fully down the whole time. Switch ABS off to see the same stop lock up.</p>
+<p>The result is a sawtooth: the torque rises and drops about seven times a second, and the slip swings back and forth across the band around the peak instead of running away to locking. You can feel this through the pedal of an ABS car as a rapid pulsing.</p>
 <p>A fixed slip band works on every road here. Snow’s peak sits at a smaller slip than the band, but its curve is so flat there that it hardly matters.</p>`,
 			notes: `<p>This is the simplest version of the idea. Production systems (Bosch began series production of its electronic ABS in 1978; Chrysler had offered an earlier anti-skid system on the 1971 Imperial) cannot measure the car’s speed directly: they estimate it from the four wheel speeds, so they work mainly from each wheel’s deceleration and use slip as a check, with extra phases that hold the pressure. They control each wheel or axle separately and share their valves with stability control.</p>`
 		},
@@ -154,8 +154,8 @@ export const spec: ExplainerSpec = {
 			duration: 22,
 			controls: [surface],
 			body: `
-<p>Line up the stops from 100 km/h on each surface: a locked wheel, a perfect foot holding the best constant pressure, ABS, and the floor that no braking can beat, the peak friction held for the whole stop.</p>
-<p>In this model ABS stops far shorter than a locked wheel, but on none of the three roads does it beat a perfect foot: cycling around the peak loses a little compared with sitting on it. But the perfect pressure is different on every road (just over half a full press on dry asphalt, under a tenth on snow), and a driver can’t find it in an emergency. ABS’s gain is over a driver who stamps on the pedal and locks the wheels, which is what many drivers do.</p>
+<p>Line up the stops from 100 km/h on each surface: a locked wheel, ABS, a perfect foot holding the best constant pressure, and the floor that no braking can beat, the peak friction held for the whole stop.</p>
+<p>In this model ABS stops far shorter than a locked wheel, partly because Burckhardt’s curves fall more steeply past the peak than most modern tyres do. On real cars on dry roads the gain is usually much smaller, and it varies from car to car. And on none of the three roads does ABS beat a perfect foot: cycling around the peak loses a little compared with sitting on it. But the perfect pressure is different on every road (just over half a full press on dry asphalt, under a tenth on snow), and a driver can’t find it in an emergency. ABS’s gain is over a driver who stamps on the pedal and locks the wheels, which is what many drivers do.</p>
 <p>And on some surfaces the comparison flips. On loose gravel or deep fresh snow, a locked tyre ploughs up a wedge of material in front of it that helps it stop, and ABS, by keeping the wheel turning, gives that up. These curves describe packed surfaces and cannot show it.</p>`
 		},
 		{
@@ -171,7 +171,7 @@ export const spec: ExplainerSpec = {
 <p>A locked wheel slides. Its rubber has no rolling direction any more, so its whole friction points against the direction of travel, whichever way the wheel is turned. The driver turns the steering wheel and the car goes straight on.</p>
 <p>Here the driver stamps on the brake and, half a second later, steers into the next lane to miss a stopped car about 30 m ahead. Turn ABS off: the wheels lock within a third of a second and the car slides straight into it. Turn ABS on: on dry asphalt the car brakes nearly as hard <em>and</em> swerves around it.</p>
 <p>Try wet asphalt or snow. The steering still works, but there is too little grip to get around a car this close: ABS keeps control, it doesn’t create grip.</p>`,
-			notes: `<p>The model uses Burckhardt’s combined slip in the direction of travel: with q = ωR/v and slip angle α, the slip along the travel direction is 1 − q cos α and across it q sin α; the friction of their combined size is shared in proportion to the two, and the car is treated as a point that turns under the sideways force. A locked wheel has q = 0, so its sideways slip and sideways force are zero. In a real car, locked rear wheels also make the car spin, which is why every car apportions more braking to the front.</p>`
+			notes: `<p>The model uses Burckhardt’s combined slip in the direction of travel: with q = ωR/v and slip angle α, the slip along the travel direction is 1 − q cos α and across it q sin α; the friction of their combined size is shared in proportion to the two, and the car is treated as a point that turns under the sideways force. The front wheels are drawn at twice the slip angle so that it shows. A locked wheel has q = 0, so its sideways slip and sideways force are zero. In a real car, locked rear wheels also make the car spin, which is why every car apportions more braking to the front.</p>`
 		}
 	]
 };
