@@ -4,7 +4,7 @@ The self-handover. If work is interrupted, this file alone must be enough to con
 top to bottom, then run the commands under "Resume". **Update it at meaningful milestones**.
 The authoritative workflow is [AGENTS.md](../AGENTS.md).
 
-Last updated: 2026-11-03. **v1.3.2 is live with all 200 topics.** The current tooling work is listed below;
+Last updated: 2026-11-03. **v1.3.5 is live with all 200 topics.** The current tooling work is listed below;
 the product roadmap is in [`BACKLOG.md`](BACKLOG.md), "After v1.3.0".
 
 ## How we work
@@ -37,8 +37,9 @@ the product roadmap is in [`BACKLOG.md`](BACKLOG.md), "After v1.3.0".
 - **All 200 catalogue topics are built, reviewed, ticked and live** (v1.3.0, 2026-10-24): the
   original 100 (done 2026-10-15) and the proposal's 100 (39 / 10 / 3 / 48 at levels 0–3).
   v1.3.1 (the same day) adds the review fixes to the last six; v1.3.2 (2026-10-30) the content
-  audit of 156–200. Nothing is in development.
-  Releases, newest first: v1.3.2 (audit 156–200), v1.3.1 (fixes), v1.3.0 (200 topics), v1.2.5 (194), v1.2.4 (181), v1.2.3 (175), v1.2.2 (170; level 0 and the "Start here" link), v1.2.1 (155; Paths v1),
+  audit of 156–200. v1.3.5 (2026-11-03) adds dependency security fixes and reliable touch drawing.
+  Nothing is in development.
+  Releases, newest first: v1.3.5 (security and touch drawing), v1.3.2 (audit 156–200), v1.3.1 (fixes), v1.3.0 (200 topics), v1.2.5 (194), v1.2.4 (181), v1.2.3 (175), v1.2.2 (170; level 0 and the "Start here" link), v1.2.1 (155; Paths v1),
   v1.1.2 (154), v1.0.0 (the 100 plus index search and filters), v0.1.21 (housekeeping and public
   polish), v0.1.19 (the external audit, `docs/codex-fact-check-complete.md`).
 - **What is left** is in [`BACKLOG.md`](BACKLOG.md): "After v1.3.0" (the roadmap), "Open after
@@ -72,26 +73,28 @@ the product roadmap is in [`BACKLOG.md`](BACKLOG.md), "After v1.3.0".
 
 ## Current development
 
-Dependency security repair (2026-11-03), preparing v1.3.5: override minimatch to 11.0.4
+Dependency security repair (2026-11-03), released in v1.3.5: override minimatch to 11.0.4
 (CVE-2026-118764). Deepmerge has no published fix for CVE-2026-93753, so Svelte's dependency
 uses our documented, MIT-licensed local patch in `vendor/deepmerge`. It defines own data
-properties instead of invoking inherited setters. All three reported attack shapes poison
-the original 4.3.1 result; the patched implementation blocks them. Six added model tests
-cover those attacks and configuration compatibility. The override is shared with the Svelte
-consumer and verified after a clean `npm ci`. Vendor edits invalidate all validation caches.
-The npm audit is now clear (zero findings); audit databases do not certify the local patch.
-Local Node 26 validation passed formatting, lint, types (zero warnings), 14 workflow tests
-and all 2,281 model tests. The v1.3.3 release gate blocked deployment after three browser-test failures: an
-unpaused test clock overshot precise entropy/PCR states, and an unarmed horizontal touch
-stroke invoked Chrome's native Back gesture. v1.3.4 adds a paused-clock helper, samples the
-short PCR state every 250 ms, and tests unarmed scrolling with a vertical gesture. Original
-assertions are retained. All three affected browser suites passed three consecutive runs
-(78 checks, six workers, no retries), and formatting/lint/types passed. Fresh full validation
-and live verification are still required. v1.3.4 passed the animation checks but its armed
-waveform gesture was still cancelled by Chrome's native navigation. v1.3.5 applies
-`touch-action: none` to the HTML stage container while Draw is armed (rather than relying
-only on SVG graphics), and verifies that normal scrolling is restored after the stroke.
-All Fourier browser checks passed five repeated runs (65 checks, no retries).
+properties instead of invoking inherited setters. All three reproduced attacks poison the
+original 4.3.1 result; the patched implementation blocks them. Six added model tests cover
+those attacks and configuration compatibility. A clean `npm ci` verifies that Svelte uses
+the same patched copy. Vendor edits invalidate all validation caches. The npm audit reports
+zero findings; audit databases do not independently certify the local patch.
+
+[The v1.3.5 release](https://github.com/guillem/how-things-work/actions/runs/41719055904)
+passed formatting, lint, types (zero warnings), 14 workflow tests, all 2,281 model tests and
+all 3,920 browser tests, then deployed the exact tested build (`1793740159525`). Live checks
+passed for the home page, all 200 topics and 453 assets. Chrome 156.0.8078.80 also verified
+search, scene navigation and theme persistence at desktop and phone widths, plus the real
+touch drawing interaction, with no JavaScript errors.
+
+The v1.3.3 and v1.3.4 gates blocked deployment; neither failed tag was deployed or moved.
+Their failures led to explicitly paused clocks for precise animation tests and 250 ms
+sampling of the short PCR state. Touch drawing now protects the HTML stage container while
+Draw is armed, preventing Chrome from cancelling the stroke for native navigation, and
+restores scrolling afterward. Original assertions remain, with mode/restoration checks
+added. The affected suites also passed repeated local runs without retries.
 
 Browser security update (2026-11-03): Playwright upgraded to 1.64.1; production browser tests,
 screenshots and cloud/CI setup use current Chrome Stable instead of the bundled Chromium.
@@ -100,8 +103,8 @@ Local Chrome is 156.0.8078.80. OSV reports no known advisories for @playwright/t
 or playwright-core 1.64.1. `make changed` passed formatting, lint, types (no warnings),
 14 workflow tests, 2,275 model tests and all 3,920 production browser tests on Node 26.
 The screenshot helper also passed on Chrome 156.0.8078.80. Regenerating Svelte's generated
-types resolved the initial stale-type lint failure. The wider npm audit reports 17 unrelated
-low/moderate findings; no other dependency versions were changed. No release requested.
+types resolved the initial stale-type lint failure. The 17 wider dependency findings found
+at that checkpoint are resolved by the repair above. This browser update is included in v1.3.5.
 
 Content audit 156–200 (2026-10-30): all 45 topics reviewed and their fixes released in v1.3.2
 (CI: 2,275 model and 3,920 browser tests, deploy and live smoke green); the open items are in [`BACKLOG.md`](BACKLOG.md) item 2. The full suite passed after
