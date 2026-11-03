@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Setup script for Claude Code cloud sessions (see docs/cloud.md): the Node in .nvmrc,
-# the dependencies and a Chromium for the browser tests. Cloud environments
+# the dependencies and current stable Chrome for the browser tests. Cloud environments
 # snapshot the result when this finishes in about five minutes, so later
 # sessions start warm. A failure stops it with an error (a broken install must
 # not be snapshotted). Safe to run again.
@@ -28,27 +28,11 @@ fi
 npm ci --no-audit --no-fund
 npx svelte-kit sync
 
-# Playwright's own Chromium if its download host is reachable (with the system
-# libraries when apt is allowed), otherwise a browser already on the machine.
-# The Makefile reads .playwright-chromium.
-set +e
-npx playwright install --with-deps chromium || npx playwright install chromium
-ok=$?
-set -e
-if [ "$ok" -eq 0 ]; then
-	rm -f .playwright-chromium
-else
-	# The cloud image ships one at $PLAYWRIGHT_BROWSERS_PATH/chromium.
-	for b in "${PLAYWRIGHT_BROWSERS_PATH:-/opt/pw-browsers}/chromium" chromium chromium-browser \
-		google-chrome google-chrome-stable; do
-		if command -v "$b" >/dev/null; then
-			command -v "$b" >.playwright-chromium
-			echo "Using the system browser $(cat .playwright-chromium) for the tests."
-			break
-		fi
-	done
-	[ -f .playwright-chromium ] || echo "No Chromium available: the browser tests won't run." >&2
-fi
+# Use current stable Chrome rather than Playwright's pinned Chromium. Stop if
+# Chrome cannot be installed or does not meet the recorded security floor.
+npx playwright install --with-deps --force chrome
+node --input-type=module -e "import checkBrowser from './scripts/browser.mjs'; await checkBrowser();"
+rm -f .playwright-chromium
 
 git config core.hooksPath .githooks
 echo "Setup done: node $(node --version), $(npx playwright --version)."

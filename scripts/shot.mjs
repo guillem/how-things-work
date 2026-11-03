@@ -9,10 +9,9 @@
 //                        so a control that only exists on one step can be tested on the others)
 //        REDUCED=1       emulate prefers-reduced-motion (the stage renders its frozen t = 2.5 s frame)
 //        TOUCH=1         emulate a touch screen (pointer: coarse)
-//        PW_CHROMIUM_PATH=/path/to/chrome   use a specific Chromium binary
 // Example: WAIT=3000 CLIP=stage node scripts/shot.mjs shots "http://localhost:5173/photosynthesis/#atp" dark 1280 800 0 atp
 //          SET=carbons:false GOTO=reduction CLIP=stage node scripts/shot.mjs shots "http://localhost:5173/photosynthesis/#rubisco" light 1280 800 0 reduction-compact
-import { chromium } from 'playwright';
+import { launchBrowser } from './browser.mjs';
 import path from 'node:path';
 import fs from 'node:fs';
 
@@ -25,9 +24,7 @@ if (!outdir || !url) {
 	process.exit(1);
 }
 fs.mkdirSync(outdir, { recursive: true });
-const browser = await chromium.launch(
-	process.env.PW_CHROMIUM_PATH ? { executablePath: process.env.PW_CHROMIUM_PATH } : {}
-);
+const browser = await launchBrowser();
 const context = await browser.newContext({
 	viewport: { width: Number(w), height: Number(h) },
 	deviceScaleFactor: 1,

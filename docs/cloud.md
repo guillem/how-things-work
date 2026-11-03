@@ -12,15 +12,13 @@ At claude.ai/code, create or edit the environment for this repository:
 
 - **Setup script:** `bash /home/user/how-things-work/scripts/cloud-setup.sh`. The script runs in
   `/home/user`, after the clone, so the path must be absolute. It checks for the `.nvmrc` Node (switching with nvm if
-  needed), installs the dependencies and a Chromium for the browser tests, and stops with an
+  needed), installs the dependencies and current stable Chrome for the browser tests, and stops with an
   error rather than snapshot a broken install. The environment snapshots the result, so later
   sessions start warm.
-- **Network access:** _Trusted_ allows npm and GitHub. Playwright's own Chromium downloads from
-  hosts that aren't in that list. Either choose _Custom_ with the defaults plus
-  `cdn.playwright.dev` and `playwright.download.prss.microsoft.com`, or leave _Trusted_: the setup
-  script then falls back to a Chromium already on the machine (the cloud image has one in
-  `/opt/pw-browsers`, older than Playwright expects). Check the setup
-  log the first time.
+- **Network access:** allow npm, GitHub, Google's Chrome download/package hosts
+  (`dl.google.com`) and the Linux distribution's package mirrors. Setup installs Chrome Stable
+  and checks its version; it fails rather than falling back to an old browser from the image.
+  Refresh saved environment snapshots regularly so their Chrome security updates stay current.
 - **Environment variables:**
   - `BASH_DEFAULT_TIMEOUT_MS=300000` and `BASH_MAX_TIMEOUT_MS=900000`, so the full test suite
     doesn't hit the 2-minute default.

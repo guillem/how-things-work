@@ -4,7 +4,7 @@ The self-handover. If work is interrupted, this file alone must be enough to con
 top to bottom, then run the commands under "Resume". **Update it at meaningful milestones**.
 The authoritative workflow is [AGENTS.md](../AGENTS.md).
 
-Last updated: 2026-10-30. **v1.3.2 is live with all 200 topics.** The current tooling work is listed below;
+Last updated: 2026-11-03. **v1.3.2 is live with all 200 topics.** The current tooling work is listed below;
 the product roadmap is in [`BACKLOG.md`](BACKLOG.md), "After v1.3.0".
 
 ## How we work
@@ -71,6 +71,16 @@ the product roadmap is in [`BACKLOG.md`](BACKLOG.md), "After v1.3.0".
   those registries from `main` plus each branch's own entry).
 
 ## Current development
+
+Browser security update (2026-11-03): Playwright upgraded to 1.64.1; production browser tests,
+screenshots and cloud/CI setup use current Chrome Stable instead of the bundled Chromium.
+A preflight rejects Chrome older than 156.0.8078.79 (the security baseline checked today).
+Local Chrome is 156.0.8078.80. OSV reports no known advisories for @playwright/test, playwright
+or playwright-core 1.64.1. `make changed` passed formatting, lint, types (no warnings),
+14 workflow tests, 2,275 model tests and all 3,920 production browser tests on Node 26.
+The screenshot helper also passed on Chrome 156.0.8078.80. Regenerating Svelte's generated
+types resolved the initial stale-type lint failure. The wider npm audit reports 17 unrelated
+low/moderate findings; no other dependency versions were changed. No release requested.
 
 Content audit 156–200 (2026-10-30): all 45 topics reviewed and their fixes released in v1.3.2
 (CI: 2,275 model and 3,920 browser tests, deploy and live smoke green); the open items are in [`BACKLOG.md`](BACKLOG.md) item 2. The full suite passed after

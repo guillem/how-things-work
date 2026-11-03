@@ -28,7 +28,13 @@ make format         # prettier --write
 npm run build        # static site in ./build
 ```
 
-The first time you run the browser tests you need the browser: `npx playwright install chromium`.
+Browser tests and screenshots use **Google Chrome Stable**, updated independently of Playwright.
+Install Chrome if it is absent (`npx playwright install chrome`), and keep it updated.
+The browser preflight rejects versions older than **156.0.8078.79**, the security floor checked
+on 2026-11-03; this floor must be reviewed when new Chrome security updates arrive.
+Playwright 1.64.1's bundled Chromium 156.0.8078.4 predates those fixes, so it is not used.
+No fallback to the Playwright cache or an older cloud browser is allowed. CI installs current
+Chrome Stable on each run. This is a dated security baseline, not a guarantee of no future CVEs.
 Traces are recorded only in CI (they cost about a quarter of the run); add `--trace on` to record
 one for a failing test locally.
 Production browser tests build the site for the `/how-things-work/` sub-path and serve it the way GitHub Pages does

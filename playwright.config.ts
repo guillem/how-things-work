@@ -12,6 +12,7 @@ const PORT = Number(process.env.PW_PORT ?? 4180);
 
 export default defineConfig({
 	testDir: 'e2e',
+	globalSetup: './scripts/browser.mjs',
 	outputDir: 'test-results/browser',
 	testMatch: '**/*.e2e.{ts,js}',
 	// The model tests run in Node without a browser: playwright.models.config.ts.
@@ -25,6 +26,8 @@ export default defineConfig({
 	reporter: process.env.CI ? [['list'], ['html', { open: 'never' }]] : 'dot',
 	use: {
 		baseURL: `http://localhost:${PORT}${BASE}/`,
+		// Stable Chrome receives security updates independently of Playwright.
+		channel: 'chrome',
 		// Recording a trace costs about a quarter of the suite's time, so only CI keeps one for each
 		// failure (locally, rerun a failing test with `--trace on` to get one).
 		trace: process.env.CI ? 'retain-on-failure' : 'off'
@@ -33,11 +36,7 @@ export default defineConfig({
 		{
 			name: 'chromium',
 			use: {
-				...devices['Desktop Chrome'],
-				// Lets a pre-installed Chromium be used instead of the bundled download.
-				launchOptions: process.env.PW_CHROMIUM_PATH
-					? { executablePath: process.env.PW_CHROMIUM_PATH }
-					: undefined
+				...devices['Desktop Chrome']
 			}
 		}
 	],

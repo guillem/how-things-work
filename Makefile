@@ -5,11 +5,6 @@
 PW_PORT ?= 4180
 export PW_PORT
 
-# A system Chromium, recorded by scripts/cloud-setup.sh when Playwright's own can't be
-# downloaded (cloud sessions).
-PW_CHROMIUM_PATH ?= $(shell cat .playwright-chromium 2>/dev/null)
-export PW_CHROMIUM_PATH
-
 .PHONY: changed quick workflow-test check format-check lint typecheck test format e2e e2e-full release rollback verify review review-fetch
 
 ## Full static/model checks, cached per stage locally; fresh in CI.

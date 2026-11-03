@@ -105,8 +105,8 @@ jobs:
           node-version-file: .nvmrc
           package-manager-cache: false
       - run: npm ci
-      # Headless runs use only Chromium's headless shell, not the full browser or ffmpeg.
-      - run: npx playwright install --with-deps --only-shell chromium
+      # Install current stable Chrome, independently of Playwright's pinned Chromium.
+      - run: npx playwright install --with-deps --force chrome
       - uses: actions/download-artifact@v8
         with:
           name: github-pages
@@ -121,6 +121,8 @@ jobs:
           const port = Number(process.env.PW_PORT ?? 4180);
           export default {
             ...base,
+            // Old rollback tags also use current Chrome rather than their pinned Chromium.
+            projects: base.projects?.map(project => ({ ...project, use: { ...project.use, channel: 'chrome' } })),
             webServer: { ...base.webServer, command: `node scripts/serve-pages.mjs build /how-things-work ${port}` }
           };
           EOF
