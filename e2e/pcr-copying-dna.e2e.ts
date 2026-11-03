@@ -3,7 +3,7 @@
 // copies (one copy ten cycles after a thousand), the efficiency's slope, and primers that copy
 // only their own target. Reduced motion shows every curve whole, so its frames are exact.
 import { expect, test, type Page } from '@playwright/test';
-import { playUntil } from './play';
+import { installPausedClock, playUntil } from './play';
 
 const stage = (page: Page) => page.locator('.stage svg > g:not([data-leaving])');
 const range = (page: Page, id: string) => page.locator(`input[type=range][data-control="${id}"]`);
@@ -33,7 +33,7 @@ test('one cycle, stage by stage: two strands become four', async ({ page }) => {
 });
 
 test('the cycle goes round by itself', async ({ page }) => {
-	await page.clock.install();
+	await installPausedClock(page);
 	await page.goto('./pcr-copying-dna/#cycle');
 	await playUntil(page, stage(page), 'Heat · 95 °C', 10_000);
 	await playUntil(page, stage(page), 'Cool · 55 °C', 10_000);
@@ -71,9 +71,9 @@ test(
 );
 
 test('the doubling plays cycle by cycle', async ({ page }) => {
-	await page.clock.install();
+	await installPausedClock(page);
 	await page.goto('./pcr-copying-dna/#doubling');
-	await playUntil(page, stage(page), 'cycle 20 · 1.05 million copies', 15_000);
+	await playUntil(page, stage(page), 'cycle 20 · 1.05 million copies', 15_000, 250);
 	await expect(range(page, 'cycle_d')).toBeDisabled();
 });
 

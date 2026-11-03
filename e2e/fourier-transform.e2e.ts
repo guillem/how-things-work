@@ -231,7 +231,14 @@ test.describe('on a touch screen', () => {
 			x: 120 + i * 19.5,
 			y: 170 - 70 * Math.sin((i / 40) * 2 * Math.PI)
 		}));
-		await swipe(page, wave);
+		// An unarmed finger scrolls. A mostly horizontal stroke can instead invoke
+		// Chrome's native Back gesture and leave the page before the assertion.
+		await swipe(page, [
+			{ x: 480, y: 250 },
+			{ x: 480, y: 200 },
+			{ x: 480, y: 150 }
+		]);
+		await expect(page).toHaveURL(/#draw-wave$/);
 		await expect(stage(page)).toContainText('The square wave rebuilt from 1 to 5 Hz');
 		await page.getByRole('button', { name: 'Draw with a finger' }).click();
 		await swipe(page, wave);

@@ -1,5 +1,5 @@
 import { expect, test, type Page } from '@playwright/test';
-import { playUntil } from './play';
+import { installPausedClock, playUntil } from './play';
 
 const stage = (page: Page) => page.locator('.stage svg > g:not([data-leaving])');
 
@@ -28,7 +28,7 @@ test('sharing energy: the even split is the peak, ten million times the start', 
 });
 
 test('the wall is drawn whole until it really lifts, then vanishes', async ({ page }) => {
-	await page.clock.install();
+	await installPausedClock(page);
 	await page.goto('./entropy/#mix');
 	const wall = stage(page).locator('rect[fill="var(--ent-wall)"]');
 	await page.clock.runFor(200);
@@ -41,11 +41,12 @@ test('the wall is drawn whole until it really lifts, then vanishes', async ({ pa
 });
 
 test('reversing every velocity runs the film backward', async ({ page }) => {
-	await page.clock.install();
+	await installPausedClock(page);
 	await page.goto('./entropy/#backward');
 	await expect(stage(page)).toContainText('▶ forward in time');
 	await page.clock.runFor(2500); // let the wall lift
 	await page.locator('button[data-control=reverse]').click();
+	await page.clock.runFor(50); // draw the first frame after the reversal
 	await expect(stage(page)).toContainText('every velocity reversed');
 	// …and about 1.5 s later the backward film reaches the start again.
 	await playUntil(page, stage(page), 'back at the start: hot left, cold right', 3000);
