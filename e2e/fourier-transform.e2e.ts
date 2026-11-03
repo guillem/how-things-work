@@ -219,6 +219,7 @@ test.describe('on a touch screen', () => {
 		await swipe(page, loop);
 		await expect(stage(page)).toContainText('12 circles drawing the heart');
 		await page.getByRole('button', { name: 'Draw with a finger' }).click();
+		await expect(page.locator('.stage')).toHaveCSS('touch-action', 'none');
 		await swipe(page, loop);
 		await expect(stage(page)).toContainText('12 circles drawing your drawing');
 		// One stroke per press: the button is ready again.
@@ -241,8 +242,11 @@ test.describe('on a touch screen', () => {
 		await expect(page).toHaveURL(/#draw-wave$/);
 		await expect(stage(page)).toContainText('The square wave rebuilt from 1 to 5 Hz');
 		await page.getByRole('button', { name: 'Draw with a finger' }).click();
+		await expect(page.locator('.stage')).toHaveCSS('touch-action', 'none');
 		await swipe(page, wave);
 		await expect(stage(page)).toContainText('Your drawing rebuilt from 1 to 5 Hz');
+		await expect(page).toHaveURL(/#draw-wave$/);
+		await expect(page.locator('.stage')).toHaveCSS('touch-action', 'auto');
 	});
 });
 

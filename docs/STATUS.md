@@ -72,7 +72,7 @@ the product roadmap is in [`BACKLOG.md`](BACKLOG.md), "After v1.3.0".
 
 ## Current development
 
-Dependency security repair (2026-11-03), preparing v1.3.4: override minimatch to 11.0.4
+Dependency security repair (2026-11-03), preparing v1.3.5: override minimatch to 11.0.4
 (CVE-2026-118764). Deepmerge has no published fix for CVE-2026-93753, so Svelte's dependency
 uses our documented, MIT-licensed local patch in `vendor/deepmerge`. It defines own data
 properties instead of invoking inherited setters. All three reported attack shapes poison
@@ -87,7 +87,11 @@ stroke invoked Chrome's native Back gesture. v1.3.4 adds a paused-clock helper, 
 short PCR state every 250 ms, and tests unarmed scrolling with a vertical gesture. Original
 assertions are retained. All three affected browser suites passed three consecutive runs
 (78 checks, six workers, no retries), and formatting/lint/types passed. Fresh full validation
-and live verification are still required.
+and live verification are still required. v1.3.4 passed the animation checks but its armed
+waveform gesture was still cancelled by Chrome's native navigation. v1.3.5 applies
+`touch-action: none` to the HTML stage container while Draw is armed (rather than relying
+only on SVG graphics), and verifies that normal scrolling is restored after the stroke.
+All Fourier browser checks passed five repeated runs (65 checks, no retries).
 
 Browser security update (2026-11-03): Playwright upgraded to 1.64.1; production browser tests,
 screenshots and cloud/CI setup use current Chrome Stable instead of the bundled Chromium.

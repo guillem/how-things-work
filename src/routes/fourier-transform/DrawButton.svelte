@@ -45,6 +45,12 @@
 </g>
 
 <style>
+	/* Protect the HTML container before a stroke starts. SVG graphics alone are
+	   not a reliable touch-action boundary for native pan/history gestures. */
+	:global(.stage:has(.draw-button[aria-pressed='true'])) {
+		touch-action: none;
+	}
+
 	.draw-button {
 		display: none;
 		cursor: pointer;
