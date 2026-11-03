@@ -65,6 +65,7 @@ test('catalogue, paths, shared code, deleted files and tooling the site uses fal
 		'src/lib/draw/Label.svelte',
 		'e2e/deleted.e2e.ts',
 		'package-lock.json',
+		'vendor/deepmerge/index.cjs',
 		'scripts/deleted.mjs',
 		'scripts/serve-pages.mjs'
 	]) {

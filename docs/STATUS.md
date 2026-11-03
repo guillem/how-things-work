@@ -72,6 +72,18 @@ the product roadmap is in [`BACKLOG.md`](BACKLOG.md), "After v1.3.0".
 
 ## Current development
 
+Dependency security repair (2026-11-03), preparing v1.3.3: override minimatch to 11.0.4
+(CVE-2026-118764). Deepmerge has no published fix for CVE-2026-93753, so Svelte's dependency
+uses our documented, MIT-licensed local patch in `vendor/deepmerge`. It defines own data
+properties instead of invoking inherited setters. All three reported attack shapes poison
+the original 4.3.1 result; the patched implementation blocks them. Six added model tests
+cover those attacks and configuration compatibility. The override is shared with the Svelte
+consumer and verified after a clean `npm ci`. Vendor edits invalidate all validation caches.
+The npm audit is now clear (zero findings); audit databases do not certify the local patch.
+Local Node 26 validation passed formatting, lint, types (zero warnings), 14 workflow tests
+and all 2,281 model tests. A release is authorized, gated on fresh full CI validation and
+the live smoke check.
+
 Browser security update (2026-11-03): Playwright upgraded to 1.64.1; production browser tests,
 screenshots and cloud/CI setup use current Chrome Stable instead of the bundled Chromium.
 A preflight rejects Chrome older than 156.0.8078.79 (the security baseline checked today).

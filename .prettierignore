@@ -20,3 +20,8 @@ bun.lockb
 # Topic-proposal research: candidate pool (machine-written) and the workflow scripts as they ran
 /docs/proposals/topics-200/data/
 /docs/proposals/topics-200/workflows/
+
+# Vendored upstream source: preserve the small security patch for review.
+/vendor/deepmerge/index.cjs
+/vendor/deepmerge/index.d.ts
+/vendor/deepmerge/license.txt

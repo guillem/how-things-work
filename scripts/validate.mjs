@@ -86,7 +86,7 @@ function stage(name, inputs, commands) {
 		.update(JSON.stringify([process.version, process.platform, process.arch, commands]));
 	// Tooling changes invalidate every stage. Documentation only invalidates formatting.
 	const config =
-		/(?:^|\/)(?:package(?:-lock)?\.json|[^/]*config[^/]*|Makefile|\.npmrc|\.nvmrc)$|^scripts\/(?:validate|validation-plan)\.mjs$|^\.(?:gitignore|prettierignore)$/;
+		/(?:^|\/)(?:package(?:-lock)?\.json|[^/]*config[^/]*|Makefile|\.npmrc|\.nvmrc)$|^scripts\/(?:validate|validation-plan)\.mjs$|^\.(?:gitignore|prettierignore)$|^vendor\//;
 	for (const file of files.filter((file) => inputs(file) || config.test(file))) {
 		hash.update(file);
 		const absolute = path.join(root, file);
